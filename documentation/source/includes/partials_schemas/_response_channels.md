@@ -1,4 +1,4 @@
-### ResponseChannels
+## ResponseChannels
 
 ```json
 {
@@ -27,11 +27,11 @@
 
 #### Propriedades
 |     Nome           |  Tipo                                               | Tamanho   |                            Definição                              | Mandatoriedade    |
-|:------------:      |:---------------------------------:                  |:-------:  |:--------------------------------------------------------------:   |:--------------:   |
+|:------------       |:---------------------------------                   |:-------   |:--------------------------------------------------------------    |:--------------    |
 | identification     | object                                              |           |                                                                   | Mandatório        |
-| » type             | <a href="#ChannelsType">ChannelsType</a>            |           | Tipo de canal de atendimento                                      | Mandatório        |
+| » type             | <a href="#channelstype">ChannelsType</a>            |           | Tipo de canal de atendimento                                      | Mandatório        |
 | » channelPhone     | string                                              |           | Telefone                                                          | Opcional          |
 | » channelURL       | string                                              |           | URL                                                               | Opcional          |
 | serviceAndFacility | object                                              |           | Informações sobre os serviços prestados                           | Mandatório        |
-| » services         | [<a href="#ChannelsService">ChannelsService</a>]  |           | Array de serviços prestados pelo canal de atendimento             | Mandatório        |
+| » services         | [<a href="#channelsservice">ChannelsService</a>]    |           | Array de serviços prestados pelo canal de atendimento             | Mandatório        |
 | » description      | string                                              | 2000      | Descrição adicional dos serviços                                  | Opcional          |   

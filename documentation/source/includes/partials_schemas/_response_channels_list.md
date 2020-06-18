@@ -1,4 +1,4 @@
-### ResponseChannelsList
+## ResponseChannelsList
 
 ```json
 {
@@ -52,8 +52,8 @@
 
 #### Propriedades
 |     Nome          |  Tipo                                               | Tamanho   |                            Definição                              | Mandatoriedade    |
-|:------------:     |:---------------------------------:                  |:-------:  |:--------------------------------------------------------------:   |:--------------:   |
+|:------------      |:---------------------------------                   |:-------   |:--------------------------------------------------------------    |:--------------    |
 | brand             | object                                              |           | Dados da instituição                                              | Mandatório        |
 | » name            | string                                              |           | Nome da instituição                                               | Mandatório        |
 | » identification  | string                                              |           | Identificador único da instituição                                | Mandatório        |
-| » channels        | [<a href="#ResponseChannels">ResponseChannels</a>]  |           | Array de objetos de canais de atendimento                         | Mandatório        |
+| » channels        | [<a href="#responsechannels">ResponseChannels</a>]  |           | Array de objetos de canais de atendimento                         | Mandatório        |

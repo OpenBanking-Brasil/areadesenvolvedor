@@ -1,8 +1,8 @@
-### ChannelsService
+## ChannelsService
 
 #### Enum
 |     Enum                                  |                            Definição                            |
-|:------------:                             |:--------------------------------------------------------------: |
+|:------------                              |:--------------------------------------------------------------  |
 | ABERTURA_CONTAS                           | ABERTURA DE CONTAS                                              |
 | RECEBIMENTOS                              | RECEBIMENTOS                                                    |
 | PAGAMENTOS_TRANSFERENCIAS ELETRONICAS     | PAGAMENTOS E TRANSFERÊNCIAS ELETRÔNICAS                         |
