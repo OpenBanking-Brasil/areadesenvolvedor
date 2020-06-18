@@ -1,0 +1,130 @@
+## Listar agências
+
+Version | Date | Author | Comments
+--------- | ------- | ----------- | -----------
+1.0.0 | MM DD YYYY | Open Banking Team | Versão base da aplicação
+
+### Descrição
+
+Essas especificações incluem todas as informações relevantes sobre os canais de atendimento.
+Esse endpoint retorna os possíveis canais de atendimento eletrônicos bem como suas informações de serviços prestados e formas de acesso.
+
+Um canal de atendimento consiste em:
+
+* Brand
+    * Name
+    * Identification
+    - Branches
+        + Identification
+            * Type
+            * Identification
+            * Name
+        + PostalAddress
+            * StreetType
+            * StreetName
+            * BuildingNumber
+            * AdditionalInfo
+            * District
+            * City
+            * State
+            * PostCode
+        + Availability
+            * OpeningTime
+            * ClosingTime
+            * Description1
+            * Description2
+            * Phone
+        + ServiceAndFacility
+            * Services
+            * Description
+
+### Top Level Design
+
+<a href='images/tld/TLD_Branches_v1.png' target="_blank">Imagem top level design</a>
+
+### Dicionário de Dados
+
+| Nome | Definição | Tipo | Tamanho | Mandatoriedade | Formato | Domínio | Restrições |
+|-|-|-|-|-|-|-|-|
+| Type | Tipo de canal de   atendimento | Enum |  | Mandatório |  | <ol><li>internet banking</li><li>mobile banking</li><li>central telefônica banking</li><li>SAC</li><li>ouvidoria</li><li>chat</li></ol> |  |
+| ChannelPhone | Telefone de acesso ao canal | String |  | Opcional |  |  |  |
+| ChannelURL | Endereço eletrônico de acesso   ao canal | String |  | Opcional |  |  |  |
+| Services | Enumeração de serviços -   Sugestão, usar o recurso de bitwise | Enum |  | Mandatório |  | <ol><li>abertura de contas</li><li>recebimentos</li><li>pagamentos e transferências eletrônicas</li><li>recebimentos e pagamentos de qualquer natureza</li><li>operações de crédito</li><li>cartão de crédito</li><li>operações de câmbio</li><li>investimentos</li><li>seguros</li><li>ATM na agência</li></ol> |  |
+| Description | Campo de texto livre para   descrever mais sobre os serviços | String | 2000 | Opcional |  |  |  |
+
+
+### Guia de Implementação
+
+/branches
+
+#### Listar todos os canais de atendimento eletrônico
+
+##### HTTP Request
+
+`GET https://example.com/open-banking/v1/open-data/branches`
+
+```python
+import channels
+
+api = channels.authorize('YOURAUTHTOKEN')
+api.channels.get()
+```
+
+```shell
+curl "https://example.com/open-banking/v1/open-data/branches"
+  -H "Authorization: YOURAUTHTOKEN"
+```
+
+```javascript
+const branches = require('channels');
+
+let api = channels.authorize('YOURAUTHTOKEN');
+let branches = api.branches.get();
+```
+
+> O comando acima retorna uma estrutura json como essa:
+
+```json
+{
+    "brand" : {
+        "name" : "",
+        "identification" : "",
+        "branches" : [
+            {
+                "identification" : {
+                    "type" : "",
+                    "identification" : "",
+                    "name" : ""
+                },    
+                "postalAddress" : {
+                    "streetType" : "", 
+                    "streetName" : "",
+                    "buildingNumber" : "",
+                    "additionalInfo" : "", 
+                    "district" : "", 
+                    "city" : "", 
+                    "state" : "", 
+                    "postCode" : ""
+                },
+                "availability" : {
+                    "openingTime" : "",
+                    "closingTime" : "",
+                    "description1" : "",
+                    "description2" : "",
+                    "phone" : ""
+                },
+                "serviceAndFacility" : {
+                    "services" : [], 
+                    "description" : ""
+                }
+            }   
+        ]
+    }
+}
+```
+
+Este endpoint lista todos os canais de atendimento eletrônico
+
+<aside class="success">
+Para utilizar essa API é necessária a autenticação de "open-data". <a href="#autenticacao">Autenticação</a>
+</aside>

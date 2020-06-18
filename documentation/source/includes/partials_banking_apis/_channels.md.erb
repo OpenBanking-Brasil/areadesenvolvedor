@@ -1,0 +1,134 @@
+## Listar canais de atendimento
+
+### Versão
+
+Version | Date | Author | Comments
+--------- | ------- | ----------- | -----------
+1.0.0 | MM DD YYYY | Open Banking Team | Versão base da aplicação
+
+### Descrição
+
+Essas especificações incluem todas as informações relevantes sobre os canais de atendimento.
+Esse endpoint retorna os possíveis canais de atendimento eletrônicos bem como suas informações de serviços prestados e formas de acesso.
+
+Um canal de atendimento consiste em:
+
+* Brand
+    - Channels
+        + Identification
+            * Type
+            * ChannelPhone
+            * ChannelURL
+        + ServiceAndFacility
+            * Services
+            * Description
+
+### Top Level Design
+
+<%= image_tag "images/tld/TLD_Channels_v1.png" %>
+
+### Especificação
+
+<%= image_tag "images/uml/UML_Channels_v1.png" %>
+
+### Dicionário de Dados
+
+| Nome | Definição | Tipo | Tamanho | Mandatoriedade | Formato | Domínio | Restrições |
+|-|-|-|-|-|-|-|-|
+| Type | Tipo de canal de   atendimento | Enum |  | Mandatório |  | <ol><li>internet banking</li><li>mobile banking</li><li>central telefônica banking</li><li>SAC</li><li>ouvidoria</li><li>chat</li></ol> |  |
+| ChannelPhone | Telefone de acesso ao canal | String |  | Opcional |  |  |  |
+| ChannelURL | Endereço eletrônico de acesso   ao canal | String |  | Opcional |  |  |  |
+| Services | Enumeração de serviços -   Sugestão, usar o recurso de bitwise | Enum |  | Mandatório |  | <ol><li>abertura de contas</li><li>recebimentos</li><li>pagamentos e transferências eletrônicas</li><li>recebimentos e pagamentos de qualquer natureza</li><li>operações de crédito</li><li>cartão de crédito</li><li>operações de câmbio</li><li>investimentos</li><li>seguros</li><li>ATM na agência</li></ol> |  |
+| Description | Campo de texto livre para   descrever mais sobre os serviços | String | 2000 | Opcional |  |  |  |
+
+
+### Swagger
+ 
+ <a href="#autenticacao">Download do arquivo swagger</a>
+
+### Guia de Implementação
+
+/channels
+
+#### Listar todos os canais de atendimento eletrônico
+
+##### HTTP Request
+
+`GET https://example.com/open-banking/v1/open-data/channels`
+
+```python
+import channels
+
+api = channels.authorize('YOURAUTHTOKEN')
+api.channels.get()
+```
+
+```shell
+curl "https://example.com/open-banking/v1/open-data/channels"
+  -H "Authorization: YOURAUTHTOKEN"
+```
+
+```javascript
+const channels = require('channels');
+
+let api = channels.authorize('YOURAUTHTOKEN');
+let channels = api.channels.get();
+```
+
+> O comando acima retorna uma estrutura json como essa:
+
+```json
+{
+    "brand": {
+        "name": "Nome do Banco",
+        "identification": "id",
+        "channels" : [
+            {
+                "identification" : {
+                    "type": "Internet Banking",
+                    "channelPhone": "99999999999",
+                    "channelURL": "https://example.com/channel"
+                },
+                "serviceAndFacility" : {
+                    "services" : [
+                        "abertura de contas",
+                        "recebimentos",
+                        "pagamentos e transferências eletrônicas",
+                        "recebimentos e pagamentos de qualquer natureza",
+                        "operações de crédito",
+                        "cartão de crédito",
+                        "operações de câmbio",
+                        "investimentos",
+                        "seguros",
+                        "ATM na agência"
+                    ],
+                    "description": "Canal de atendimento 1"
+                }
+            },
+            {
+                "identification" : {
+                    "type": "Mobile Banking",
+                    "channelURL": "https://example.com/channel"
+                },
+                "serviceAndFacility" : {
+                    "services" : [
+                        "recebimentos",
+                        "pagamentos e transferências eletrônicas",
+                        "recebimentos e pagamentos de qualquer natureza",
+                        "operações de crédito",
+                        "cartão de crédito",
+                        "seguros"
+                    ],
+                    "description": "Canal de atendimento 2"
+                }
+            }
+        ]
+    }
+}
+```
+
+Este endpoint lista todos os canais de atendimento eletrônico
+
+<aside class="success">
+Para utilizar essa API é necessária a autenticação de "open-data". <a href="#autenticacao">Autenticação</a>
+</aside>
