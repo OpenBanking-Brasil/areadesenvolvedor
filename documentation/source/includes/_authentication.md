@@ -1,41 +1,24 @@
 # Autenticação
 
-> To authorize, use this code:
+As API's de Open Banking estão dividas em dois escopos:  
 
-```ruby
-require 'kittn'
+- open-data
+- customer-data
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-```
+### open-data
 
-```python
-import kittn
+São API's que não envolvem dados de cliente, portanto não precisam de consentimento do mesmo para sua execução.  
+Ex.: Listagem de produtos, Listagem de agências, etc...
 
-api = kittn.authorize('meowmeowmeow')
-```
+Para API's pertencentes a este escopo, o consumidor da API deverá obter um client_id e client_secret com a instituição financeira e enviar estas informações no header de cada chamada conforme especificado abaixo:  
 
-```shell
-# With shell, you can just pass the correct header with each request
-curl "api_endpoint_here"
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-```
-
-> Make sure to replace `meowmeowmeow` with your API key.
-
-Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our [developer portal](http://example.com/developers).
-
-Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
-
-`Authorization: meowmeowmeow`
+<code>
+client_id: seu_client_id  
+client_secret: seu_client_secret  
+</code>
 
 <aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
+Você deve substituir <code>seu_client_id</code> e <code>seu_client_secret</code> pelas suas informações.
 </aside>
 
 

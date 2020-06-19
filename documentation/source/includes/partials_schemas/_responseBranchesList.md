@@ -1,5 +1,3 @@
-<a id="schemaResponseBranchesList"></a>
-
 ## ResponseBranchesList
 
 ```json
@@ -44,10 +42,8 @@
 |Nome|Tipo|Obrigatório|Descrição|
 |---|---|---|---|---|
 |data|object|Sim|none|none|
-|» brand|[Brand](#schemaBrand)|Sim|Dados de identificação da instituição financeira|
-|» branches|[[Branch](#schemaBranch)]|Sim|Lista de agências da instituição|
-
-<a id="schemaBranch"></a>
+|» brand|[Brand](#brand)|Sim|Dados de identificação da instituição financeira|
+|» branches|[[Branch](#branch)]|Sim|Lista de agências da instituição|
 
 ## Branch
 
@@ -84,12 +80,10 @@
 
 |Nome|Tipo|Obrigatório|Descrição|
 |---|---|---|---|---|
-|identification|[BranchIdentification](#schemaBranchIdentification)|Sim|Dados de identificação da agência|
-|postalAddress|[BranchPostalAddress](#schemaBranchPostalAddress)|Sim|Endereço da agência|
-|availability|[BranchAvailability](#schemaBranchAvailability)|Sim|Dias e horários de funcionamento da agência|
-|serviceAndFacility|[BranchServiceAndFacility](#schemaBranchServiceAndFacility)|Sim|Serviços fornecidos na agência|
-
-<a id="schemaBranchIdentification"></a>
+|identification|[BranchIdentification](#branchidentification)|Sim|Dados de identificação da agência|
+|postalAddress|[BranchPostalAddress](#branchpostaladdress)|Sim|Endereço da agência|
+|availability|[BranchAvailability](#branchavailability)|Sim|Dias e horários de funcionamento da agência|
+|serviceAndFacility|[BranchServiceAndFacility](#branchserviceandfacility)|Sim|Serviços fornecidos na agência|
 
 ## BranchIdentification
 
@@ -117,8 +111,6 @@
 |type|2. postos de atendimento|
 |type|3. postos de atendimento eletrônico|
 
-<a id="schemaBranchPostalAddress"></a>
-
 ## BranchPostalAddress
 
 ```json
@@ -144,8 +136,6 @@
 |city|string|mandatory|Cidade|
 |state|string|mandatory|Estado|
 |postCode|string|mandatory|CEP|
-
-<a id="schemaBranchAvailability"></a>
 
 ## BranchAvailability
 
@@ -185,8 +175,6 @@ Nome|Tipo|Obrigatório|Descrição|
 |---|---|
 |description2|1. Exceto feriados municipais, estaduais e nacionais|
 |description2|2. N/A|
-
-<a id="schemaBranchServiceAndFacility"></a>
 
 ## BranchServiceAndFacility
 
