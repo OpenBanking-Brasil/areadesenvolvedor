@@ -70,13 +70,13 @@
 
 |Nome|Tipo|Obrigatório|Descrição|
 |---|---|---|---|---|
-|identification|[BranchIdentification](#schemaBranchIdentification)|Sim|Dados de identificação da agência|
-|postalAddress|[BranchPostalAddress](#schemaBranchPostalAddress)|Sim|Endereço da agência|
-|serviceAndFacility|[BranchServiceAndFacility](#schemaBranchServiceAndFacility)|Sim|Serviços fornecidos na agência|
+|identification|[BankingAgentIdentification](#schemaBankingAgentIdentification)|Sim|Dados de identificação do Correspondente|
+|postalAddress|[BankingAgentPostalAddress](#schemaBankingAgentPostalAddress)|Sim|Endereço do Correspondente|
+|serviceAndFacility|[BankingAgentServiceAndFacility](#schemaBankingAgentServiceAndFacility)|Sim|Serviços fornecidos no Correspondente|
 
-<a id="schemaBranchIdentification"></a>
+<a id="schemaBankingAgentIdentification"></a>
 
-## BranchIdentification
+## BankingAgentIdentification
 
 ```json
 {
@@ -88,23 +88,23 @@
 
 |Nome|Tipo|Obrigatório|Descrição|
 |---|---|---|---|---|
-|type|[Enum BranchIdentificationType](#schemaEnumBranchIdentificationType)|mandatory|Tipo de agência|
-|identification|string|mandatory|Código da agência|
-|name|string|mandatory|Nome da agência|
+|type|[Enum BankingAgentIdentificationType](#schemaEnumBankingAgentIdentificationType)|mandatory|Tipo do Correspondente|
+|identification|string|mandatory|Código do Correspondente|
+|name|string|mandatory|Nome do Correspondente|
 
-<a id="schemaEnumBranchIdentificationType"></a>
+<a id="schemaEnumBankingAgentIdentificationType"></a>
 
-### Enum BranchIdentificationType
+### Enum BankingAgentIdentificationType
 
 |Propriedade|Valor|
 |---|---|
-|type|1. agências|
-|type|2. postos de atendimento|
-|type|3. postos de atendimento eletrônico|
+|type|1. Correspondentes|
+|type|2. Locais de atendimento|
+|type|3. Locais de atendimento eletrônico|
 
-<a id="schemaBranchPostalAddress"></a>
+<a id="schemaBankingAgentPostalAddress"></a>
 
-## BranchPostalAddress
+## BankingAgentPostalAddress
 
 ```json
 {
@@ -130,9 +130,9 @@
 |state|string|mandatory|Estado|
 |postCode|string|mandatory|CEP|
 
-<a id="schemaBranchServiceAndFacility"></a>
+<a id="schemaBankingAgentServiceAndFacility"></a>
 
-## BranchServiceAndFacility
+## BankingAgentServiceAndFacility
 
 ```json
 {
@@ -143,12 +143,12 @@
 
 Nome|Tipo|Obrigatório|Descrição|
 |---|---|---|---|---|
-|services|[[Enum BranchServiceAndFacilityServices](#schemaEnumBranchServiceAndFacilityServices)]|mandatory|none|
+|services|[[Enum BankingAgentServiceAndFacilityServices](#schemaEnumBankingAgentServiceAndFacilityServices)]|mandatory|none|
 |description|string|mandatory|none|
 
-<a id="schemaEnumBranchServiceAndFacilityServices"></a>
+<a id="schemaEnumBankingAgentServiceAndFacilityServices"></a>
 
-### Enum BranchServiceAndFacilityServices
+### Enum BankingAgentServiceAndFacilityServices
 
 |Propriedade|Valor|
 |---|---|
