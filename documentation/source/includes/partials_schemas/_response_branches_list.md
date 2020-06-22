@@ -2,40 +2,40 @@
 
 ```json
 {
-    "brand" : {
-        "name" : "",
-        "identification" : "",
-    },
-    "branches" : [
-        {
-            "identification" : {
-                "type" : "",
-                "identification" : "",
-                "name" : ""
-            },    
-            "postalAddress" : {
-                "streetType" : "", 
-                "streetName" : "",
-                "buildingNumber" : "",
-                "additionalInfo" : "", 
-                "district" : "", 
-                "city" : "", 
-                "state" : "", 
-                "postCode" : ""
-            },
-            "availability" : {
-                "openingTime" : "",
-                "closingTime" : "",
-                "description1" : "",
-                "description2" : "",
-                "phone" : ""
-            },
-            "serviceAndFacility" : {
-                "services" : [], 
-                "description" : ""
-            }
-        }   
+  "brand": {
+    "name": "",
+    "identification": "",
+    "branches": [
+      {
+        "identification": {
+          "type": "",
+          "identification": "",
+          "name": ""
+        },
+        "postalAddress": {
+          "streetType": "",
+          "streetName": "",
+          "buildingNumber": "",
+          "additionalInfo": "",
+          "district": "",
+          "city": "",
+          "state": "",
+          "postCode": ""
+        },
+        "availability": {
+          "openingTime": "",
+          "closingTime": "",
+          "description1": "",
+          "description2": "",
+          "phone": ""
+        },
+        "serviceAndFacility": {
+          "services": [],
+          "description": ""
+        }
+      }
     ]
+  }
 }
 ```
 
@@ -43,7 +43,21 @@
 |---|---|---|---|---|
 |data|object|Sim|none|none|
 |» brand|[Brand](#brand)|Sim|Dados de identificação da instituição financeira|
-|» branches|[[Branch](#branch)]|Sim|Lista de agências da instituição|
+
+## Brand
+
+```json
+{
+    "name" : "",
+    "identification" : "",
+}
+```
+|Nome|Tipo|Obrigatório|Descrição|
+|---|---|---|---|---|
+|name|string|Sim|Nome da instituição financeira|
+|identification|string|Sim|Código da instituição financeira|
+|branches|[[Branch](#branch)]|Sim|Lista de agências da instituição|
+
 
 ## Branch
 

@@ -16,4 +16,4 @@ Os componentes desta estrutura de URI estão descritos abaixo:
     - eletronic-channels
 
 Para realizar o consumo do método `eletronic-channels` da API `channels` na versão `1`, a URI ficaria com a seguinte estrutura:  
-``<host>/open-banking/channels/<versão>/<recurso>`
+``<host>/open-banking/channels/v1/eletronic-channels`
