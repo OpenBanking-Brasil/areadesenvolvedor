@@ -111,9 +111,9 @@
 
 |Nome|Tipo|Obrigatório|Descrição|
 |---|---|---|---|---|
-|type|[Enum BranchIdentificationType](#schemaEnumBranchIdentificationType)|mandatory|Tipo de agência|
-|identification|string|mandatory|Código da agência|
-|name|string|mandatory|Nome da agência|
+|type|[Enum BranchIdentificationType](#schemaEnumBranchIdentificationType)|mandatory|Tipo de dependência bancária|
+|identification|string|mandatory|Código da dependência bancária|
+|name|string|mandatory|Nome da dependência bancária|
 
 <a id="schemaEnumBranchIdentificationType"></a>
 

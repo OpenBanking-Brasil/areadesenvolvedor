@@ -1,0 +1,262 @@
+openapi: 3.0.0
+info:
+  title: API's OpenData do Open Banking Brasil
+  description: As API's descritas neste documento são referentes as API's da fase OpenData do Open Banking Brasil.
+  version: 1.0.0
+servers:
+  - url: http://api.banco.com.br/open-banking
+paths:
+  /channels/v1/branches:
+    get:
+      tags:
+      - "Channels"
+      summary: Obtém a lista de dependências próprias da instituição financeira.
+      responses:
+        '200':
+          description: Uma instituição financeira contendo sua lista de dependências próprias.
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/ResponseBranchesList'
+  /channels/v1/electronic-channels:
+    get:
+      tags:
+      - "Channels"
+      summary: Obtém a lista de canais eletrônicos de atendimento da instituição financeira.
+      responses:
+        '200':    # status code
+          description: Uma instituição financeira contendo sua lista de canais eletrônicos de atendimento.
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/ResponseEletronicChannelsList'
+  /channels/v1/banking-agents:
+    get:
+      tags:
+      - "Channels"
+      summary: Obtém a lista de dependências próprias da instituição financeira.
+      responses:
+        '200':    # status code
+          description: Uma instituição financeira contendo sua lista de dependências próprias.
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/ResponseBankingAgentsList'
+components:
+  schemas:
+    ResponseEletronicChannelsList:
+      type: object
+      properties:
+        brand:
+          $ref: '#/components/schemas/BrandEletronicChannels'
+    ResponseBranchesList:
+      type: object
+      properties:
+        brand:
+          $ref: '#/components/schemas/BrandBranches'
+    ResponseBankingAgentsList:
+      type: object
+      properties:
+        brand:
+          $ref: '#/components/schemas/BrandBankingAgents'
+    BrandBankingAgents:
+      allOf:
+        - $ref: '#/components/schemas/Brand'
+      properties:
+        channels:
+          type: array
+          items:
+            $ref: '#/components/schemas/BankingAgent'
+    BrandEletronicChannels:
+      allOf:
+        - $ref: '#/components/schemas/Brand'
+      properties:
+        channels:
+          type: array
+          items:
+            $ref: '#/components/schemas/EletronicChannel'
+    BrandBranches:
+      allOf:
+        - $ref: '#/components/schemas/Brand'
+      properties:
+        branches:
+          type: array
+          items:
+            $ref: '#/components/schemas/Branch'
+    Brand:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Nome da instituição financeira
+        cnpj:
+          type: string
+          description: CNPJ da instituição financeira
+    Branch:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: ["Agência","Posto de Atendimento","Posto de Atendimento Eletrônico"]
+          description: Tipo de dependência bancária
+        identification:
+          type: string
+          description: Código da dependência bancária
+        name:
+          type: string
+          description: Nome da dependência bancária
+        postalAddress:
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/PostalAddress'
+        availability:
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/Availability'
+        services:
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/BranchServices'
+    EletronicChannel:
+      type: object
+      properties:
+        identification:
+          $ref: '#/components/schemas/EletronicChannelIdentification'
+        services:
+          $ref: '#/components/schemas/EletronicChannelServices'
+    BankingAgent:
+      type: object
+      properties:
+        identification:
+          $ref: '#/components/schemas/BankingAgentIdentification'
+        services:
+          $ref: '#/components/schemas/BankingAgentServices'
+    EletronicChannelIdentification:
+      type: object
+      properties:
+        type:
+          type: string
+          description: Tipo de canal de atendimento
+          enum: ["Internet banking", "Mobile banking", "Central telefônica banking", "SAC", "Ouvidoria", "Chat"]
+        channelDDD:
+          type: integer
+          description: DDD do telefone do canal
+        channelNumber:
+          type: string
+          description: Telefone do canal
+        channelURL:
+          type: string
+          description: URL do canal
+    BankingAgentIdentification:
+      type: object
+      properties:
+        type:
+          type: string
+          description: Tipo de canal de atendimento
+          enum: ["Internet banking", "Mobile banking", "Central telefônica banking", "SAC", "Ouvidoria", "Chat"]
+        identification:
+          type: string
+          description: Identificador do agente bancário
+        name:
+          type: string
+          description: Nome do agente bancário
+    PostalAddress:
+      type: object
+      properties:
+        streetType:
+          type: string
+          description: Tipo de logradouro.
+          pattern: \w*\W*
+        streetName:
+          type: string
+          description: Nome do logradouro.
+          pattern: \w*\W*
+        buildingNumber:
+          type: string
+          description: Número.
+          pattern: \w*\W*
+        additionalInfo:
+          type: string
+          description: Complemento.
+          pattern: \w*\W*
+        district:
+          type: string
+          description: Bairro.
+          pattern: \w*\W*
+        city:
+          type: string
+          description: Cidade.
+          pattern: \w*\W*
+        state:
+          type: string
+          description: Estado.
+          pattern: ^[A-Z]{2}$
+          enum: [AC,AL,AP,AM,BA,CE,DF,ES,GO,MA,MT,MS,MG,PA,PB,PR,PE,PI,RJ,RN,RS,RO,RR,SC,SP,SE,TO]
+        postCode:
+          type: string
+          description: CEP.
+          pattern: ^\d{5}-\d{3}$
+      required: 
+        - streetType
+        - streetName
+        - buildingNumber
+        - district
+        - city
+        - state
+        - postCode
+    Availability:
+      type: object
+      properties:
+        openingTime:
+          type: string
+          description: Horário de abertura da agência.
+          pattern: ^([0|1|2]{1})([0-9]{1}):([0|1|2|3|4|5]{1})([0-9]{1})$
+        closingTime:
+          type: string
+          description: Horário de fechamento da agência.
+          pattern: ^([0|1|2]{1})([0-9]{1}):([0|1|2|3|4|5]{1})([0-9]{1})$
+        description1:
+          type: string
+          description: Descrição dos dias de abertura da agência.
+        description2:
+          type: string
+          description: Descrição das exceções dos dias de abertura da agência.
+        phone:
+          type: string
+          description: Telefone.
+    BranchServices:
+      type: object
+      properties:
+        services:
+          type: array
+          items:
+            type: string
+            enum: ["Abertura de contas","Recebimentos, pagamentos e transferências eletrônicas","Recebimentos e pagamentos de qualquer natureza","Operações de crédito","Cartão de crédito","Operações de câmbio","Investimentos","Seguros"]
+          description: Serviços oferecidos pela dependência própria
+        description:
+          type: string
+          description: Campo aberto para detalhamento
+    EletronicChannelServices:
+      type: object
+      properties:
+        services:
+          type: array
+          items:
+            type: string
+            enum: ["Abertura de contas","Recebimentos, pagamentos e transferências eletrônicas","Operações de crédito","Cartão de crédito","Operações de câmbio","Investimentos","Seguros", "Atendimento as demandas de cliente"]
+          description: Serviços oferecidos pelo canal eletrônico
+        description:
+          type: string
+          description: Campo aberto para detalhamento
+    BankingAgentServices:
+      type: object
+      properties:
+        services:
+          type: array
+          items:
+            type: string
+            enum: ["Recepção e encaminhamento de propostas de abertura de contas","Realização de recebimentos, pagamentos e transferências eletrônicas","Recebimentos e pagamentos de qualquer natureza","Execução ativa e passiva de ordens de pagamento","Recepção e encaminhamento de propostas de operações de crédito e de arrendamento mercantil","Recebimento e pagamentos relacionados a letras de câmbio de aceite da instituição","Recepção e encaminhamento de propostas de fornecimento de cartões de crédito","Realização de operações de câmbio"]
+          description: Serviços oferecidos pelo canal eletrônico
+        description:
+          type: string
+          description: Campo aberto para detalhamento
