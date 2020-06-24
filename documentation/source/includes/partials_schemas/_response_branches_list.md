@@ -4,13 +4,15 @@
 {
   "brand": {
     "name": "",
-    "identification": "",
     "branches": [
       {
         "identification": {
           "type": "",
           "identification": "",
-          "name": ""
+          "checkDigit": "",
+          "brandCNPJRoot": "",
+          "brandCNPJBranch": "",
+          "brandCNPJCheckDigit": ""
         },
         "postalAddress": {
           "streetType": "",
@@ -18,20 +20,26 @@
           "buildingNumber": "",
           "additionalInfo": "",
           "district": "",
-          "city": "",
-          "state": "",
+          "townName": "",
+          "countrySubDivision": "",
           "postCode": ""
         },
         "availability": {
-          "openingTime": "",
-          "closingTime": "",
-          "description1": "",
-          "description2": "",
-          "phone": ""
+          "standard" : [
+            {
+              "weekday": "",
+              "openingTime": "",
+              "closingTime": ""
+            }
+          ],
+          "exceptionNonAvailableDays" : "",
+          "exceptionAvailableDays" : "",
+          "phoneDDD" : "",
+          "phoneNumber" : ""
         },
         "serviceAndFacility": {
           "services": [],
-          "description": ""
+          "detail": ""
         }
       }
     ]

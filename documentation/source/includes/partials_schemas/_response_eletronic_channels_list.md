@@ -14,9 +14,9 @@
                         "channelPhoneDDD": "integer",
                         "channelPhoneNumber": "integer",
                         "channelURL": "string"
-                        "BrandCNPJRoot": "string",
-                        "BrandCNPJBranch" : "integer",
-                        "BrandCNPJCheckDigit" : "integer"
+                        "brandCNPJRoot": "string",
+                        "brandCNPJBranch" : "integer",
+                        "brandCNPJCheckDigit" : "integer"
                     },
                     "serviceAndFacility" : {
                         "services" : [
@@ -62,9 +62,9 @@
         "channelPhoneDDD": "integer",
         "channelPhoneNumber": "integer",
         "channelURL": "string",
-        "BrandCNPJRoot": "string",
-        "BrandCNPJBranch" : "integer",
-        "BrandCNPJCheckDigit" : "integer"
+        "brandCNPJRoot": "string",
+        "brandCNPJBranch" : "integer",
+        "brandCNPJCheckDigit" : "integer"
     },
     "serviceAndFacility" : {
         "services" : [
@@ -83,9 +83,9 @@
 | » ChannelPhoneDDD     | integer                                                              | 3         | Número de DDD (Discagem Direta à Distância) para  telefone de acesso ao Canal - se houver. Ex. '19'                                                                                                                                                                                     | Opcional          | Se não houver URL, deve ter telefone. Se houver telefone, obrigatoriamente deve ter DDD. |
 | » ChannelPhoneNumber  | string                                                               | 10        | Telefone                                                                                                                                                                                                                                                                                | Opcional          | Se não houver URL, deve ter telefone                                                     |
 | » channelURL          | string                                                               | 1024      | Endereço eletrônico de acesso ao canal                                                                                                                                                                                                                                                  | Opcional          | Se não houver telefone, deve ter URL                                                     |
-| » BrandCNPJRoot       | string                                                               | 10        | Raiz do CNPJ da instituição responsável pelo canal de atendimento eletrônico- o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. Os oito primeiros números à esquerda (XX. XXX. XXX) formam a "raiz" ou base, que identifica a empresa de forma única            | Mandatório        |                                                                                          |
-| » BrandCNPJBranch     | integer                                                              | 4         | Filial do CNPJ da instituição responsável pelo canal de atendimento eletrônico - corresponde aos quatro seguintes números de ordem das filiais da empresa. Normalmente a empresa matriz tem este campo preenchido com '0001'                                                            | Mandatório        |                                                                                          |
-| » BrandCNPJCheckDigit | integer                                                              | 2         | 2 dígitos verificação do CNPJ da instituição responsável pelo canal de atendimento eletrônico, corresponde aos dois últimos números . A composição do CNPJ completo pode ser assim representada, conforme ex. '50.685.362/0002-35'                                                      | Mandatório        |                                                                                          |
+| » brandCNPJRoot       | string                                                               | 10        | Raiz do CNPJ da instituição responsável pelo canal de atendimento eletrônico- o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. Os oito primeiros números à esquerda (XX. XXX. XXX) formam a "raiz" ou base, que identifica a empresa de forma única            | Mandatório        |                                                                                          |
+| » brandCNPJBranch     | integer                                                              | 4         | Filial do CNPJ da instituição responsável pelo canal de atendimento eletrônico - corresponde aos quatro seguintes números de ordem das filiais da empresa. Normalmente a empresa matriz tem este campo preenchido com '0001'                                                            | Mandatório        |                                                                                          |
+| » brandCNPJCheckDigit | integer                                                              | 2         | 2 dígitos verificação do CNPJ da instituição responsável pelo canal de atendimento eletrônico, corresponde aos dois últimos números . A composição do CNPJ completo pode ser assim representada, conforme ex. '50.685.362/0002-35'                                                      | Mandatório        |                                                                                          |
 | serviceAndFacility    | object                                                               | 80        | Informações sobre os serviços prestados                                                                                                                                                                                                                                                 | Mandatório        |                                                                                          |
 | » services            | [[Enum EletronicChannelsService](#schemaEletronicChannelsService)]   |           | Array de serviços disponíveis no Canal de Atendimento Eletrônico consultado                                                                                                                                                                                                             | Mandatório        |                                                                                          |
 | » detail              | string                                                               | 2000      | Campo de texto livre para descrever mais sobre os serviços                                                                                                                                                                                                                              | Opcional          |                                                                                          |
