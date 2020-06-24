@@ -149,7 +149,7 @@ let api = kittn.authorize('meowmeowmeow');
 let max = api.kittens.delete(2);
 ```
 
-> The above command returns JSON structured like this:
+> The above command returns JSON structured like this :
 
 ```json
 {
