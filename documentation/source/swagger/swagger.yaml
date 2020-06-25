@@ -34,10 +34,10 @@ paths:
     get:
       tags:
       - "Channels"
-      summary: Obtém a lista de correspondentes bancários da instituição financeira.
+      summary: Obtém a lista de dependências próprias da instituição financeira.
       responses:
         '200':    # status code
-          description: Uma instituição financeira contendo sua lista de correspondentes bancários.
+          description: Uma instituição financeira contendo sua lista de dependências próprias.
           content:
             application/json:
               schema: 
@@ -46,8 +46,12 @@ components:
   schemas:
     ResponseEletronicChannelsList:
       type: object
+      required:
+      - data
+      - links
+      - meta
       properties:
-        brand:
+        data:
           $ref: '#/components/schemas/BrandEletronicChannels'
     ResponseBranchesList:
       type: object
@@ -68,9 +72,10 @@ components:
           items:
             $ref: '#/components/schemas/BankingAgent'
     BrandEletronicChannels:
-      allOf:
-        - $ref: '#/components/schemas/Brand'
+      type: object
       properties:
+        name: 
+          type: string
         channels:
           type: array
           items:
@@ -137,7 +142,7 @@ components:
         type:
           type: string
           description: Tipo de canal de atendimento
-          enum: ["Internet banking", "Mobile banking", "Central telefônica banking", "SAC", "Ouvidoria", "Chat"]
+          enum: [1 => "Internet banking", 2 => "Mobile banking", 3 => "Central telefônica banking", 4 => "SAC", 5 => "Ouvidoria", 6 => "Chat"]
         channelDDD:
           type: integer
           description: DDD do telefone do canal
@@ -156,10 +161,10 @@ components:
           enum: ["Internet banking", "Mobile banking", "Central telefônica banking", "SAC", "Ouvidoria", "Chat"]
         identification:
           type: string
-          description: Identificador do correspondente bancário
+          description: Identificador do agente bancário
         name:
           type: string
-          description: Nome do correspondente bancário
+          description: Nome do agente bancário
     PostalAddress:
       type: object
       properties:
@@ -204,6 +209,26 @@ components:
         - city
         - state
         - postCode
+    Availability:
+      type: object
+      properties:
+        openingTime:
+          type: string
+          description: Horário de abertura da agência.
+          pattern: ^([0|1|2]{1})([0-9]{1}):([0|1|2|3|4|5]{1})([0-9]{1})$
+        closingTime:
+          type: string
+          description: Horário de fechamento da agência.
+          pattern: ^([0|1|2]{1})([0-9]{1}):([0|1|2|3|4|5]{1})([0-9]{1})$
+        description1:
+          type: string
+          description: Descrição dos dias de abertura da agência.
+        description2:
+          type: string
+          description: Descrição das exceções dos dias de abertura da agência.
+        phone:
+          type: string
+          description: Telefone.
     BranchServices:
       type: object
       properties:
