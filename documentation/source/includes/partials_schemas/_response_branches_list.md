@@ -47,26 +47,17 @@
 }
 ```
 
-|Nome|Tipo|Obrigatório|Descrição|
-|---|---|---|---|---|
-|data|object|Sim|none|none|
-|» brand|[Brand](#brand)|Sim|Dados de identificação da instituição financeira|
+### Propriedades
+|     Nome          |  Tipo                                           | Tamanho   |                            Definição                       | Mandatoriedade    |
+|:------------      |:---------------------------------               |:-------   |:----------------------------------------------------       |:--------------    |
+| data              | object                                          |           |                                                            | Mandatório        |
+| » brand           | object                                          |           | Dados da instituição                                       | Mandatório        |
+| »»  name          | string                                          | 30        | Nome do conglomerado proprietário da dependência (titular) | Mandatório        |
+| »»  branches      | [[Branch](#schemaBranch)]                       |           | Lista de agências da instituição                           | Mandatório        |
+| links             | [[LinksPaginated](#schemaLinksPaginated)]       |           |                                                            | Mandatório        |
+| meta              | [[MetaPaginated](#schemaMetaPaginated)]         |           |                                                            | Mandatório        |
 
-## Brand
-
-```json
-{
-    "name" : "",
-    "identification" : "",
-}
-```
-|Nome|Tipo|Obrigatório|Descrição|
-|---|---|---|---|---|
-|name|string|Sim|Nome da instituição financeira|
-|identification|string|Sim|Código da instituição financeira|
-|branches|[[Branch](#branch)]|Sim|Lista de agências da instituição|
-
-
+<a id="schemaBranch"></a>
 ## Branch
 
 ```json
