@@ -2,48 +2,61 @@
 
 ```json
 {
-  "brand": {
-    "name": "",
-    "branches": [
-      {
-        "identification": {
-          "type": "",
-          "identification": "",
-          "checkDigit": "",
-          "brandCNPJRoot": "",
-          "brandCNPJBranch": "",
-          "brandCNPJCheckDigit": ""
-        },
-        "postalAddress": {
-          "streetType": "",
-          "streetName": "",
-          "buildingNumber": "",
-          "additionalInfo": "",
-          "district": "",
-          "townName": "",
-          "countrySubDivision": "",
-          "postCode": ""
-        },
-        "availability": {
-          "standard" : [
-            {
-              "weekday": "",
-              "openingTime": "",
-              "closingTime": ""
+    "data": {
+      "brand": {
+        "name": "",
+        "branches": [
+          {
+            "identification": {
+              "type": "",
+              "identification": "",
+              "checkDigit": "",
+              "brandCNPJRoot": "",
+              "brandCNPJBranch": "",
+              "brandCNPJCheckDigit": ""
+            },
+            "postalAddress": {
+              "streetType": "",
+              "streetName": "",
+              "buildingNumber": "",
+              "additionalInfo": "",
+              "district": "",
+              "townName": "",
+              "countrySubDivision": "",
+              "postCode": ""
+            },
+            "availability": {
+              "standard" : [
+                {
+                  "weekday": "",
+                  "openingTime": "",
+                  "closingTime": ""
+                }
+              ],
+              "exceptionNonAvailableDays" : "",
+              "exceptionAvailableDays" : "",
+              "phoneDDD" : "",
+              "phoneNumber" : ""
+            },
+            "serviceAndFacility": {
+              "services": [],
+              "detail": ""
             }
-          ],
-          "exceptionNonAvailableDays" : "",
-          "exceptionAvailableDays" : "",
-          "phoneDDD" : "",
-          "phoneNumber" : ""
-        },
-        "serviceAndFacility": {
-          "services": [],
-          "detail": ""
-        }
+          }
+        ]
       }
-    ]
-  }
+    },
+    "links": {
+        "self": "string",
+        "first":"string",
+        "prev": "string",
+        "next": "string",
+        "last": "string"
+    },
+    "meta": {
+        "totalRecords": integer,
+        "totalPages": integer
+    }
 }
 ```
 
