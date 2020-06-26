@@ -1,232 +1,412 @@
-## ResponseBranchesList
+## ResponseBranchesList 
+<a id="schemaResponseBranchesList"></a>
 
 ```json
 {
-    "data": {
-      "brand": {
-        "name": "",
-        "branches": [
+  "data": {
+    "organization" : "string",
+    "companies" : [
+      {
+        "name" : "string",
+        "cnpjMain" : "string",
+        "cnpjSubsidiary" : "string",
+        "cnpjCheckNumber" : "string",
+        "branches" : [
           {
-            "identification": {
-              "type": "",
-              "identification": "",
-              "checkDigit": "",
-              "brandCNPJRoot": "",
-              "brandCNPJBranch": "",
-              "brandCNPJCheckDigit": ""
+            "identification" : {
+              "type" : "string",
+              "identification" : "string",
+              "checkDigit" : "string",
+              "name" : "string"
             },
-            "postalAddress": {
-              "streetType": "",
-              "streetName": "",
-              "buildingNumber": "",
-              "additionalInfo": "",
-              "district": "",
-              "townName": "",
-              "countrySubDivision": "",
-              "postCode": ""
+            "postalAddress" : {
+              "streetType" : "string",
+              "streetName" : "string",
+              "buildingNumber" : "string",
+              "additionalInfo" : "string",
+              "district" : "string",
+              "townName" : "string",
+              "countrySubDivision" : "string",
+              "postCode" : "string"
             },
-            "availability": {
+            "availability" : {
               "standard" : [
                 {
-                  "weekday": "",
-                  "openingTime": "",
-                  "closingTime": ""
+                  "weekday" : "Segunda-feira",
+                  "openingTime" : "00:00:00+0000",
+                  "closingTime" : "00:00:00+0000"
+                },
+                {
+                  "weekday" : "Terça-feira",
+                  "openingTime" : "00:00:00+0000",
+                  "closingTime" : "00:00:00+0000"
+                },
+                {
+                  "weekday" : "Quarta-feira",
+                  "openingTime" : "00:00:00+0000",
+                  "closingTime" : "00:00:00+0000"
+                },
+                {
+                  "weekday" : "Quinta-feira",
+                  "openingTime" : "00:00:00+0000",
+                  "closingTime" : "00:00:00+0000"
+                },
+                {
+                  "weekday" : "Sexta-feira",
+                  "openingTime" : "00:00:00+0000",
+                  "closingTime" : "00:00:00+0000"
                 }
               ],
-              "exceptionNonAvailableDays" : "",
-              "exceptionAvailableDays" : "",
-              "phoneDDD" : "",
-              "phoneNumber" : ""
+              "exceptionAvailability" : "string",
+              "phones" : [ 
+                {
+                  "type" : "string",
+                  "ddd" : "string",
+                  "number" : "string"
+                }
+              ]
             },
-            "serviceAndFacility": {
-              "services": [],
-              "detail": ""
+            "services" : {
+              "codes" : ["string"],
+              "detail" : "string"
             }
           }
         ]
       }
-    },
-    "links": {
-        "self": "string",
-        "first":"string",
-        "prev": "string",
-        "next": "string",
-        "last": "string"
-    },
-    "meta": {
-        "totalRecords": integer,
-        "totalPages": integer
-    }
+    ]
+  },
+  "links": {
+    "self": "https://api.banco.com.br/open-banking/channels/v1/electronic-channels",
+    "first": "https://api.banco.com.br/open-banking/channels/v1/electronic-channels",
+    "prev": "",
+    "next": "",
+    "last": "https://api.banco.com.br/open-banking/channels/v1/electronic-channels"
+  },
+  "meta": {
+    "totalRecords": 2,
+    "totalPages": 1
+  }
 }
 ```
 
 ### Propriedades
-|     Nome          |  Tipo                                           | Tamanho   |                            Definição                       | Mandatoriedade    |
-|:------------      |:---------------------------------               |:-------   |:----------------------------------------------------       |:--------------    |
-| data              | object                                          |           |                                                            | Mandatório        |
-| » brand           | object                                          |           | Dados da instituição                                       | Mandatório        |
-| »»  name          | string                                          | 30        | Nome do conglomerado proprietário da dependência (titular) | Mandatório        |
-| »»  branches      | [[Branch](#schemaBranch)]                       |           | Lista de agências da instituição                           | Mandatório        |
-| links             | [[LinksPaginated](#schemaLinksPaginated)]       |           |                                                            | Mandatório        |
-| meta              | [[MetaPaginated](#schemaMetaPaginated)]         |           |                                                            | Mandatório        |
+|     Nome          |  Tipo                                     | Obrigatório  |                            Definição                        |
+|:------------      |:---------------------------------         |:-----------  |:----------------------------------------------------        |
+| data              | object                                    | Sim          |                                                             |
+| » organization    | string                                    | Sim          | Nome do conglomerado proprietário da dependência (titular)  |
+| » companies       | [[BranchesCompanies](#schemaBranchesCompanies)]   | Sim          | Nome da instituição                                         |
+| links             | [[LinksPaginated](#schemaLinksPaginated)] | Sim          |                                                             |
+| meta              | [[MetaPaginated](#schemaMetaPaginated)]   | Sim          |                                                             |
 
-<a id="schemaBranch"></a>
-## Branch
+## Companies 
+<a id="schemaBranchesCompanies"></a>
 
 ```json
 {
-    "identification" : {
-        "type" : "",
-        "identification" : "",
-        "name" : ""
-    },    
-    "postalAddress" : {
-        "streetType" : "", 
-        "streetName" : "",
-        "buildingNumber" : "",
-        "additionalInfo" : "", 
-        "district" : "", 
-        "city" : "", 
-        "state" : "", 
-        "postCode" : ""
-    },
-    "availability" : {
-        "openingTime" : "",
-        "closingTime" : "",
-        "description1" : "",
-        "description2" : "",
-        "phone" : ""
-    },
-    "serviceAndFacility" : {
-        "services" : [], 
-        "description" : ""
+  "name" : "string",
+  "cnpjMain" : "string",
+  "cnpjSubsidiary" : "string",
+  "cnpjCheckNumber" : "string",
+  "branches" : [
+    {
+      "identification" : {
+        "type" : "string",
+        "identification" : "string",
+        "checkDigit" : "string",
+        "name" : "string"
+      },
+      "postalAddress" : {
+        "streetType" : "string",
+        "streetName" : "string",
+        "buildingNumber" : "string",
+        "additionalInfo" : "string",
+        "district" : "string",
+        "townName" : "string",
+        "countrySubDivision" : "string",
+        "postCode" : "string"
+      },
+      "availability" : {
+        "standard" : [
+          {
+            "weekday" : "Segunda-feira",
+            "openingTime" : "00:00:00+0000",
+            "closingTime" : "00:00:00+0000"
+          },
+          {
+            "weekday" : "Terça-feira",
+            "openingTime" : "00:00:00+0000",
+            "closingTime" : "00:00:00+0000"
+          },
+          {
+            "weekday" : "Quarta-feira",
+            "openingTime" : "00:00:00+0000",
+            "closingTime" : "00:00:00+0000"
+          },
+          {
+            "weekday" : "Quinta-feira",
+            "openingTime" : "00:00:00+0000",
+            "closingTime" : "00:00:00+0000"
+          },
+          {
+            "weekday" : "Sexta-feira",
+            "openingTime" : "00:00:00+0000",
+            "closingTime" : "00:00:00+0000"
+          }
+        ],
+        "exceptionAvailability" : "string",
+        "phones" : [ 
+          {
+            "type" : "string",
+            "ddd" : "string",
+            "number" : "string"
+          }
+        ]
+      },
+      "services" : {
+        "codes" : ["string"],
+        "detail" : "string"
+      }
     }
+  ]
 }
 ```
+|     Nome          |  Tipo                         | Obrigatório    |                            Descrição                       |
+|:------------      |:----------------------------- |:-------------  |:----------------------------------------------------       |
+| name              | object                        | Sim            |                                                            |
+| cnpjMain          | string                        | Sim            | CNPJ do conglomerado proprietário da dependência (titular) |
+| cnpjSubsidiary    | string                        | Sim            | CNPJ da subsidiária                                        |
+| cnpjCheckNumber   | string                        | Sim            | Digito verificador do CNPJ                                 |
+| branches          | [[Branch](#schemaBranch)]     | Sim            | Lista de dependências próprias da instituição              |
 
-|Nome|Tipo|Obrigatório|Descrição|
-|---|---|---|---|---|
-|identification|[BranchIdentification](#branchidentification)|Sim|Dados de identificação da agência|
-|postalAddress|[BranchPostalAddress](#branchpostaladdress)|Sim|Endereço da agência|
-|availability|[BranchAvailability](#branchavailability)|Sim|Dias e horários de funcionamento da agência|
-|serviceAndFacility|[BranchServiceAndFacility](#branchserviceandfacility)|Sim|Serviços fornecidos na agência|
-
-## BranchIdentification
+## Branch 
+<a id="schemaBranch"></a>
 
 ```json
 {
-    "type" : "",
-    "identification" : "",
-    "name" : ""
+  "identification" : {
+    "type" : "string",
+    "identification" : "string",
+    "checkDigit" : "string",
+    "name" : "string"
+  },
+  "postalAddress" : {
+    "streetType" : "string",
+    "streetName" : "string",
+    "buildingNumber" : "string",
+    "additionalInfo" : "string",
+    "district" : "string",
+    "townName" : "string",
+    "countrySubDivision" : "string",
+    "postCode" : "string"
+  },
+  "availability" : {
+    "standard" : [
+      {
+        "weekday" : "Segunda-feira",
+        "openingTime" : "00:00:00+0000",
+        "closingTime" : "00:00:00+0000"
+      },
+      {
+        "weekday" : "Terça-feira",
+        "openingTime" : "00:00:00+0000",
+        "closingTime" : "00:00:00+0000"
+      },
+      {
+        "weekday" : "Quarta-feira",
+        "openingTime" : "00:00:00+0000",
+        "closingTime" : "00:00:00+0000"
+      },
+      {
+        "weekday" : "Quinta-feira",
+        "openingTime" : "00:00:00+0000",
+        "closingTime" : "00:00:00+0000"
+      },
+      {
+        "weekday" : "Sexta-feira",
+        "openingTime" : "00:00:00+0000",
+        "closingTime" : "00:00:00+0000"
+      }
+    ],
+    "exceptionAvailability" : "string",
+    "phones" : [ 
+      {
+        "type" : "string",
+        "ddd" : "string",
+        "number" : "string"
+      }
+    ]
+  },
+  "services" : {
+    "codes" : ["string"],
+    "detail" : "string"
+  }
 }
 ```
 
 |Nome|Tipo|Obrigatório|Descrição|
 |---|---|---|---|---|
-|type|[Enum BranchIdentificationType](#schemaEnumBranchIdentificationType)|mandatory|Tipo de dependência bancária|
-|identification|string|mandatory|Código da dependência bancária|
-|name|string|mandatory|Nome da dependência bancária|
+|identification|[BranchIdentification](#schemaBranchIdentification)|Sim|Dados de identificação na dependência|
+|postalAddress|[BranchPostalAddress](#schemaBranchPostalAddress)|Sim|Endereço na dependência|
+|availability|[BranchAvailability](#schemaBranchAvailability)|Sim|Dias e horários de funcionamento na dependência|
+|services|[BranchServices](#schemaBranchServices)|Sim|Serviços fornecidos na agência|
 
+## BranchIdentification 
+<a id="schemaBranchIdentification"></a>
+
+```json
+{
+    "type" : "string",
+    "identification" : "string",
+    "checkDigit" : "string"
+    "name" : "string"
+}
+```
+
+|Nome|Tipo|Obrigatório|Descrição|
+|:---|:---|:---|:---|:---|
+|type|[Enum BranchIdentificationType](#schemaEnumBranchIdentificationType)|Sim|Tipo de dependência própria|
+|identification|string|Sim|Código da dependência bancária|
+|checkDigit|string|Sim|Dígito verificador do código|
+|name|string|Sim|Nome da dependência bancária|
+
+### Enum BranchIdentificationType 
 <a id="schemaEnumBranchIdentificationType"></a>
 
-### Enum BranchIdentificationType
+| Propriedade  | Código    | Definição                            |
+|:------------ |:--------- |:-----------------------------------  |
+|type          | 1         | Agências                             |
+|type          | 2         | Postos de atendimento                |
+|type          | 3         | Postos de atendimento eletrônico     |
 
-|Propriedade|Valor|
-|---|---|
-|type|1. agências|
-|type|2. postos de atendimento|
-|type|3. postos de atendimento eletrônico|
-
-## BranchPostalAddress
+## BranchPostalAddress 
+<a id="schemaBranchPostalAddress"></a>
 
 ```json
 {
-    "streetType" : "", 
-    "streetName" : "",
-    "buildingNumber" : "",
-    "additionalInfo" : "", 
-    "district" : "", 
-    "city" : "", 
-    "state" : "", 
-    "postCode" : ""
+  "streetType" : "string",
+  "streetName" : "string",
+  "buildingNumber" : "string",
+  "additionalInfo" : "string",
+  "district" : "string",
+  "townName" : "string",
+  "countrySubDivision" : "string",
+  "postCode" : "string"
 }
 ```
 
 |Nome|Tipo|Obrigatório|Descrição|
-|---|---|---|---|---|
-|streetType|string|mandatory|Tipo de logradouro|
-|streetName|string|mandatory|Nome do logradouro|
-|buildingNumber|string|mandatory|Número|
-|additionalInfo|string|mandatory|Complemento|
-|district|string|mandatory|Bairro|
-|city|string|mandatory|Cidade|
-|state|string|mandatory|Estado|
-|postCode|string|mandatory|CEP|
+|:---|:---|:---|:---|:---|
+|streetType|string|Sim|Tipo de logradouro|
+|streetName|string|Sim|Nome do logradouro|
+|buildingNumber|string|Sim|Número|
+|additionalInfo|string|Sim|Complemento|
+|district|string|Sim|Bairro|
+|townName|string|Sim|Cidade|
+|countrySubDivision|string|Sim|Estado|
+|postCode|string|Sim|CEP|
 
-## BranchAvailability
-
-```json
-{
-    "openingTime" : "",
-    "closingTime" : "",
-    "description1" : "",
-    "description2" : "",
-    "phone" : ""
-}
-```
-
-Nome|Tipo|Obrigatório|Descrição|
-|---|---|---|---|---|
-|openingTime|string|mandatory|Horário de abertura da agência|
-|closingTime|string|mandatory|Horário de fechamento da agência|
-|description1|[Enum BranchAvailabilityDescription1](#schemaEnumBranchAvailabilityDescription1)|mandatory|Descrição dos dias de abertura da agência|
-|description2|[Enum BranchAvailabilityDescription2](#schemaEnumBranchAvailabilityDescription2)|mandatory|Descrição das exceções dos dias de abertura da agência|
-|phone|string|mandatory|Telefone|
-
-<a id="schemaEnumBranchAvailabilityDescription1"></a>
-
-### Enum BranchAvailabilityDescription1
-
-|Propriedade|Valor|
-|---|---|
-|description1|1. De segunda feira a sábado|
-|description1|2. De segunda a sexta feira|
-|description1|3. Todos os dias da semana|
-
-<a id="schemaEnumBranchAvailabilityDescription2"></a>
-
-### Enum BranchAvailabilityDescription2
-
-|Propriedade|Valor|
-|---|---|
-|description2|1. Exceto feriados municipais, estaduais e nacionais|
-|description2|2. N/A|
-
-## BranchServiceAndFacility
+## BranchAvailability 
+<a id="schemaBranchAvailability"></a>
 
 ```json
 {
-    "services" : [], 
-    "description" : ""
+  "standard" : [
+    {
+      "weekday" : "Segunda-feira",
+      "openingTime" : "00:00:00+0000",
+      "closingTime" : "00:00:00+0000"
+    },
+    {
+      "weekday" : "Terça-feira",
+      "openingTime" : "00:00:00+0000",
+      "closingTime" : "00:00:00+0000"
+    },
+    {
+      "weekday" : "Quarta-feira",
+      "openingTime" : "00:00:00+0000",
+      "closingTime" : "00:00:00+0000"
+    },
+    {
+      "weekday" : "Quinta-feira",
+      "openingTime" : "00:00:00+0000",
+      "closingTime" : "00:00:00+0000"
+    },
+    {
+      "weekday" : "Sexta-feira",
+      "openingTime" : "00:00:00+0000",
+      "closingTime" : "00:00:00+0000"
+    }
+  ],
+  "exceptionAvailability" : "string",
+  "phones" : [ 
+    {
+      "type" : "string",
+      "ddd" : "string",
+      "number" : "string"
+    }
+  ]
 }
 ```
 
-Nome|Tipo|Obrigatório|Descrição|
-|---|---|---|---|---|
-|services|[[Enum BranchServiceAndFacilityServices](#schemaEnumBranchServiceAndFacilityServices)]|mandatory|none|
-|description|string|mandatory|none|
+| Nome                   | Tipo                               | Obrigatório | Descrição                                         |
+|:------------           |:------------------                 |:----------  |:----------------------------                      |
+| standard               | Array                              | Sim         | Lista com os dias da semana                       |
+| » weekday              | string                             | Sim         | Dia da semana                                     |
+| » openingTime          | [[UTCHour](#commonFieldUTCHour)]   | Sim         | Horário de abertura na dependência                |
+| » closingTime          | [[UTCHour](#commonFieldUTCHour)]   | Sim         | Horário de encerramento na dependência            |
+| exceptionAvailability  | string                             | Não         | Informações sobre as exceções de abertura         |
+| phones                 | [[BranchPhone(#schemaBranchPhone)]]| Não         | Lista de telefones para contato com a dependência | 
 
-<a id="schemaEnumBranchServiceAndFacilityServices"></a>
+## BranchPhone 
+<a id="schemaBranchPhone"></a>
 
-### Enum BranchServiceAndFacilityServices
+```json
+{
+  "type" : "string",
+  "ddd" : "string",
+  "number" : "string"
+}
+```
+| Nome       | Tipo                                               | Obrigatório | Descrição           |
+|:---------- |:-------------------------------------------------- |:----------- |:---------------     |
+| type       | [Enum BranchPhoneType](#schemaEnumBranchPhoneType) | Sim         | Tipo de telefone    |
+| ddd        | string                                             | Sim         | DDD                 |
+| number     | string                                             | Sim         | Número do telefone  |
 
-|Propriedade|Valor|
-|---|---|
-|services|1. abertura de contas|
-|services|2. recebimentos, pagamentos e transferências eletrônicas|
-|services|3. recebimentos e pagamentos de qualquer natureza|
-|services|4. operações de crédito|
-|services|5. cartão de crédito|
-|services|6. operações de câmbio|
-|services|7. investimentos|
-|services|8. seguros|
+## Enum BranchPhoneType 
+<a id="schemaEnumBranchPhoneType"></a>
+
+| Propriedade  | Código    | Definição        |
+|:------------ |:--------- |:---------------- |
+| type         | 1         | Telefone fixo    |
+| type         | 2         | Telefone móvel   |
+
+
+## BranchServices 
+<a id="schemaBranchServices"></a>
+
+```json
+{
+    "codes" : ["string"], 
+    "detail" : ""
+}
+```
+
+|Nome|Tipo|Obrigatório|Descrição|
+|:---|:---|:---|:---|:---|
+|services|[[Enum BranchServicesCodes](#schemaEnumBranchServicesCodes)]|Sim| Lista de serviços prestados |
+|detail|string|Não| Detalhes adicionais sobre os serviços prestados |
+
+### Enum BranchServicesCodes 
+<a id="schemaEnumBranchServicesCodes"></a>
+
+| Propriedade  | Código | Definição                                             |
+|:------------ |:------ |:----------------------------------------------------- |
+| codes        | 1      | Abertura de contas                                    |
+| codes        | 2      | Recebimentos, pagamentos e transferências eletrônicas |
+| codes        | 3      | Recebimentos e pagamentos de qualquer natureza        |
+| codes        | 4      | Operações de crédito                                  |
+| codes        | 5      | Cartão de crédito                                     |
+| codes        | 6      | Operações de câmbio                                   |
+| codes        | 7      | Investimentos                                         |
+| codes        | 8      | Seguros                                               |
