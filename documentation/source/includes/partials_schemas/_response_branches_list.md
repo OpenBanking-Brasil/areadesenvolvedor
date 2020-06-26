@@ -76,11 +76,11 @@
     ]
   },
   "links": {
-    "self": "https://api.banco.com.br/open-banking/channels/v1/electronic-channels",
-    "first": "https://api.banco.com.br/open-banking/channels/v1/electronic-channels",
+    "self": "https://api.banco.com.br/open-banking/channels/v1/branches",
+    "first": "https://api.banco.com.br/open-banking/channels/v1/branches",
     "prev": "",
     "next": "",
-    "last": "https://api.banco.com.br/open-banking/channels/v1/electronic-channels"
+    "last": "https://api.banco.com.br/open-banking/channels/v1/branches"
   },
   "meta": {
     "totalRecords": 2,
@@ -169,6 +169,7 @@
   ]
 }
 ```
+
 |     Nome          |  Tipo                         | Obrigatório    |                            Descrição                       |
 |:------------      |:----------------------------- |:-------------  |:----------------------------------------------------       |
 | name              | object                        | Sim            |                                                            |
@@ -247,7 +248,7 @@
 |identification|[BranchIdentification](#schemaBranchIdentification)|Sim|Dados de identificação na dependência|
 |postalAddress|[BranchPostalAddress](#schemaBranchPostalAddress)|Sim|Endereço na dependência|
 |availability|[BranchAvailability](#schemaBranchAvailability)|Sim|Dias e horários de funcionamento na dependência|
-|services|[BranchServices](#schemaBranchServices)|Sim|Serviços fornecidos na agência|
+|services|[BranchServices](#schemaBranchServices)|Sim|Serviços fornecidos na dependência|
 
 ## BranchIdentification 
 <a id="schemaBranchIdentification"></a>
@@ -393,7 +394,7 @@
 
 |Nome|Tipo|Obrigatório|Descrição|
 |:---|:---|:---|:---|:---|
-|services|[[Enum BranchServicesCodes](#schemaEnumBranchServicesCodes)]|Sim| Lista de serviços prestados |
+|codes|[[Enum BranchServicesCodes](#schemaEnumBranchServicesCodes)]|Sim| Lista de serviços prestados |
 |detail|string|Não| Detalhes adicionais sobre os serviços prestados |
 
 ### Enum BranchServicesCodes 
