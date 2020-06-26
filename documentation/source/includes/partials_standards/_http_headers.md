@@ -1,6 +1,6 @@
 ## HTTP Headers
 
-Supported HTTP headers, and their usage, for the standards are as laid out in the following sections.
+Headers HTTP suportado e seus usos.
 
 ### Request Headers
 |     Header Field                           |  Description                                     | Obrigatório?       |
