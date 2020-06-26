@@ -1,98 +1,93 @@
-<a id="schemaResponseEletronicChannelsList"></a>
 ## ResponseEletronicChannelsList
+<a id="schemaResponseEletronicChannelsList"></a>
 
 ```json
 {
-    "data": {
-        "brand": {
-            "name": "string",
-            "identification": "string",
-            "channels" : [
-                {
-                    "identification" : {
-                        "type": "EletronicChannelsType",
-                        "channelPhoneDDD": "integer",
-                        "channelPhoneNumber": "integer",
-                        "channelURL": "string"
-                        "brandCNPJRoot": "string",
-                        "brandCNPJBranch" : "integer",
-                        "brandCNPJCheckDigit" : "integer"
-                    },
-                    "serviceAndFacility" : {
-                        "services" : [
-                            "EletronicChannelsService"
-                        ],
-                        "detail": "string"
-                    }
-                }
-            ]
+  "data": {
+    "organization": "string",
+    "channels": [
+      {
+        "identification": {
+          "type": "string",
+          "phones": [
+            {
+              "ddi": "string",
+              "ddd": "string",
+              "number": "string",
+              "description": "string"
+            }
+          ]
+        },
+        "services": {
+          "codes": ["string"],
+          "detail": "string"
         }
-    },
-    "links": {
-        "self": "string",
-        "first":"string",
-        "prev": "string",
-        "next": "string",
-        "last": "string"
-    },
-    "meta": {
-        "totalRecords": integer,
-        "totalPages": integer
-    }
+      }
+    ]
+  },
+  "links": {
+    "self": "string",
+    "first": "string",
+    "prev": "string",
+    "next": "string",
+    "last": "string"
+  },
+  "meta": {
+    "totalRecords": "integer",
+    "totalPages": "integer"
+  }
 }
 ```
 
 ### Propriedades
-|     Nome          |  Tipo                                           | Tamanho   |                            Definição                 | Mandatoriedade    |
-|:------------      |:---------------------------------               |:-------   |:---------------------------------------------------- |:--------------    |
-| data              | object                                          |           |                                                      | Mandatório        |
-| » brand           | object                                          |           | Dados da instituição                                 | Mandatório        |
-| »»  name          | string                                          | 30        | Nome do conglomerado proprietário da dependência     | Mandatório        |
-| »»  channels      | [[EletronicChannels](#schemaEletronicChannels)] |           | Array de objetos de canais de atendimento eltrônico  | Mandatório        |
-| links             | [[LinksPaginated](#schemaLinksPaginated)]       |           |                                                      | Mandatório        |
-| meta              | [[MetaPaginated](#schemaMetaPaginated)]         |           |                                                      | Mandatório        |
+|     Nome          |  Tipo                                           | Obrigatório    |                            Definição                       |
+|:------------      |:---------------------------------               |:-------------- |:----------------------------------------------------       |
+| data              | object                                          |                |                                                            |
+| » organization    | string                                          | Sim            | Nome do conglomerado proprietário da dependência (titular) |
+| »  channels       | [[EletronicChannels](#schemaEletronicChannels)] | Sim            | Lista  de canais de atendimento eltrônico                  |
+| links             | [[LinksPaginated](#schemaLinksPaginated)]       | Sim            |                                                            |
+| meta              | [[MetaPaginated](#schemaMetaPaginated)]         | Sim            |                                                            |
 
-<a id="schemaEletronicChannels"></a>
 ## EletronicChannels
+<a id="schemaEletronicChannels"></a>
 
 ```json
 {
-    "identification" : {
-        "type": "EletronicChannelsType",
-        "channelPhoneDDD": "integer",
-        "channelPhoneNumber": "integer",
-        "channelURL": "string",
-        "brandCNPJRoot": "string",
-        "brandCNPJBranch" : "integer",
-        "brandCNPJCheckDigit" : "integer"
-    },
-    "serviceAndFacility" : {
-        "services" : [
-            "EletronicChannelsService"
-        ],
-        "detail": "string"
-    }
+  "identification": {
+    "type": "string",
+    "phones": [
+      {
+        "ddi": "string",
+        "ddd": "string",
+        "number": "string",
+        "description": "string"
+      }
+    ],
+    "url": "https://example.com/mobile-banking"
+  },
+  "services": {
+    "codes": ["string"],
+    "detail": "string"
+  }
 }
 ```
 
-### Propriedades
-|     Nome              |  Tipo                                                                | Tamanho   |                            Definição                                                                                                                                                                                                                                                    | Mandatoriedade    | Restrições                                                                               |
-|:------------          |:---------------------------------                                    |:-------   |:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------        |:--------------    |:-----------------                                                                        |
-| identification        | object                                                               |           |                                                                                                                                                                                                                                                                                         | Mandatório        |                                                                                          |
-| » type                | [Enum EletronicChannelsType](#schemaEletronicChannelsType)           | 30        | Tipo de canal de atendimento                                                                                                                                                                                                                                                            | Mandatório        |                                                                                          |
-| » ChannelPhoneDDD     | integer                                                              | 3         | Número de DDD (Discagem Direta à Distância) para  telefone de acesso ao Canal - se houver. Ex. '19'                                                                                                                                                                                     | Opcional          | Se não houver URL, deve ter telefone. Se houver telefone, obrigatoriamente deve ter DDD. |
-| » ChannelPhoneNumber  | string                                                               | 10        | Telefone                                                                                                                                                                                                                                                                                | Opcional          | Se não houver URL, deve ter telefone                                                     |
-| » channelURL          | string                                                               | 1024      | Endereço eletrônico de acesso ao canal                                                                                                                                                                                                                                                  | Opcional          | Se não houver telefone, deve ter URL                                                     |
-| » brandCNPJRoot       | string                                                               | 10        | Raiz do CNPJ da instituição responsável pelo canal de atendimento eletrônico- o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. Os oito primeiros números à esquerda (XX. XXX. XXX) formam a "raiz" ou base, que identifica a empresa de forma única            | Mandatório        |                                                                                          |
-| » brandCNPJBranch     | integer                                                              | 4         | Filial do CNPJ da instituição responsável pelo canal de atendimento eletrônico - corresponde aos quatro seguintes números de ordem das filiais da empresa. Normalmente a empresa matriz tem este campo preenchido com '0001'                                                            | Mandatório        |                                                                                          |
-| » brandCNPJCheckDigit | integer                                                              | 2         | 2 dígitos verificação do CNPJ da instituição responsável pelo canal de atendimento eletrônico, corresponde aos dois últimos números . A composição do CNPJ completo pode ser assim representada, conforme ex. '50.685.362/0002-35'                                                      | Mandatório        |                                                                                          |
-| serviceAndFacility    | object                                                               | 80        | Informações sobre os serviços prestados                                                                                                                                                                                                                                                 | Mandatório        |                                                                                          |
-| » services            | [[Enum EletronicChannelsService](#schemaEletronicChannelsService)]   |           | Array de serviços disponíveis no Canal de Atendimento Eletrônico consultado                                                                                                                                                                                                             | Mandatório        |                                                                                          |
-| » detail              | string                                                               | 2000      | Campo de texto livre para descrever mais sobre os serviços                                                                                                                                                                                                                              | Opcional          |                                                                                          |
+|     Nome              |  Tipo                                                                       | Obrigatório |                            Definição                                                                                                                                                                                                                                          | Restrições                                                                               |
+|:------------          |:--------------------------------------------------------------------------- |:----------- |:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |:-----------------                                                                        |
+| identification        | [EletronicChannelsIdentification](#schemaEletronicChannelsIdentification)   | Sim         |                                                                                                                                                                                                                                                                               |                                                                                          |
+| services              | [EletronicChannelsServices](#schemaEletronicChannelsServices)               | Sim         | Informações sobre os serviços prestados                                                                                                                                                                                                                                       |                                                                                          |
 
+## EletronicChannelsIdentification 
+<a id="schemaEletronicChannelsIdentification"></a>
 
-<a id="schemaEletronicChannelsType"></a>
+|     Nome     |  Tipo                                                          | Obrigatório |                            Definição               | Restrições                           |
+|:------------ |:---------------------------------                              |:----------- |:-------------------------------------------------- |:------------------------------------ |
+| type         | [Enum EletronicChannelsType](#schemaEletronicChannelsType)     | Sim         | Tipo de canal de atendimento                       |                                      |
+| phones       | [[EletronicChannelsPhones](#schemaEletronicChannelsPhones)]]   | Não         | Telefones de contato com o canal de atendimento    | Se não houver URL, deve ter telefone |
+| url          | string                                                         | Não         | Endereço eletrônico de acesso ao canal             | Se não houver telefone, deve ter URL |
+
 ### Enum EletronicChannelsType
+<a id="schemaEletronicChannelsType"></a>
 
 |     Propriedade  | Código        |                            Definição                            |
 |:------------     |:------------- |:--------------------------------------------------------------  |
@@ -103,16 +98,35 @@
 | type             | 5             | Ouvidoria                                                       |
 | type             | 6             | Chat                                                            |
 
-<a id="schemaEletronicChannelsService"></a>
-### Enum EletronicChannelsService
+## EletronicChannelsPhones 
+<a id="schemaEletronicChannelsPhones"></a>
 
-|     Enum        | Código  |                            Definição                            |
-|:------------    |:------- |:--------------------------------------------------------------  |
-| services        | 1       | Abertura de contas                                              |
-| services        | 2       | Recebimentos, pagamentos e transferências eletrônicas           |
-| services        | 3       | Recebimentos e pagamentos de qualquer natureza                  |
-| services        | 4       | Operações de crédito                                            |
-| services        | 5       | Cartão de crédito                                               |
-| services        | 6       | Operações de câmbio                                             |
-| services        | 7       | Investimentos                                                   |
-| services        | 8       | Seguros                                                         |
+|     Nome    |  Tipo  | Obrigatório |     Definição                                                                                        |
+|:---------   |:------ |:----------- |:-------------------------                                                                            |
+| ddi         | string | Não         | DDI                                                                                                  |
+| ddd         | string | Não         | DDD                                                                                                  |
+| number      | string | Sim         | Telefone para contato com o canal                                                                    |
+| description | string | Não         | Descrição do telefone e de quando ele deve ser utilizado. Ex: Para capitais e regiões metropolitanas |
+
+
+## EletronicChannelsServices 
+<a id="schemaEletronicChannelsServices"></a>
+
+|     Nome     |  Tipo                                                                              | Obrigatório |                            Definição               |
+|:------------ |:---------------------------------------------------------------------------------  |:----------- |:-------------------------------------------------- |
+| codes        | [[Enum EletronicChannelsServicesCodes](#schemaEnumEletronicChannelsServicesCodes)] | Sim         | Lista com a lista de serviços prestados pelo canal |
+| detail       | string                                                                             | Não         | Descrição adicional sobre os serviços prestados    |
+
+### Enum EletronicChannelsServicesCodes
+<a id="schemaEnumEletronicChannelsServicesCodes"></a>
+
+| Enum     | Código  |                            Definição                            |
+|:-------- |:------- |:--------------------------------------------------------------  |
+| codes    | 1       | Abertura de contas                                              |
+| codes    | 2       | Recebimentos, pagamentos e transferências eletrônicas           |
+| codes    | 3       | Recebimentos e pagamentos de qualquer natureza                  |
+| codes    | 4       | Operações de crédito                                            |
+| codes    | 5       | Cartão de crédito                                               |
+| codes    | 6       | Operações de câmbio                                             |
+| codes    | 7       | Investimentos                                                   |
+| codes    | 8       | Seguros                                                         |
