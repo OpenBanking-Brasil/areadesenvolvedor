@@ -3,20 +3,20 @@
 Padrões de HTTP Response Codes devem ser usados de acordo com a tabela a seguir.
 
 ### Codes
-|     Situation                                   |  HTTP Status	        | Notes             | POST | GET | DELETE |
+|     Situação                                   |  HTTP Status	        | Notas             | POST | GET | DELETE |
 |:------------------------------------------ |:------------------------ |:----------------      |
-| Query completed successfully       | 200 OK  |                        |  Sim  |  Sim  |  Não   |
-| Normal execution. The request has succeeded. | 201 Created | The operation results in the creation of a new resource. | Sim | Não | Não |
-| Delete operation completed successfully | 204 No Content |              | Sim | Não | Não |
-| The response is not modified since last call | 304 Not Modified | May be returned if standard caching headers such as ETag or If-modified-since are utilised | Sim | Sim | Não |
-| Request has malformed, missing or non-compliant JSON body or URL parameters | 400 Bad Request | The requested operation will not be carried out. | Sim | Sim | Sim |
-| Authorization header missing or invalid token | 401 Unauthorized | The operation was refused access. Re-authenticating may result in an appropriate token that may be used. | Sim | Sim | Sim |
-| Token has incorrect scope or a security policy was violated. | 403 Forbidden | The operation was refused access. Re-authenticating is unlikely to remediate the situation. It is expected that this error will result in an error payload | Sim | Sim | Sim |
-| The consumer tried to access the resource with a method that is not supported. | 405 Method Not Allowed | | Sim | Sim | Sim |
-| The request contained an Accept header other than permitted media types, a character set other than UTF-8 or a version that was not supported | 406 Not Acceptable | | Sim | Sim | Sim |
-| The operation was refused because the payload is in a format not supported by this method on the target resource. | 415 Unsupported Media Type | | Sim | Não | Não |
-| The request was well formed but was unable to be processed due to business logic specific to the request | 422 Unprocessable Entity | If applicable to the HTTP method it is expected that this error will result in an error payload | Sim | Sim | Não |
-| The operation was refused as too many requests have been made within a certain timeframe. | 429 Too Many Requests | Throttling is a NFR. The data holder should include a Retry-After header in the response indicating how long the data consumer must wait before retrying the operation. | Sim | Sim | Sim |
-| Something went wrong on the API gateway or micro-service | 500 Internal Server Error | The operation failed. | Sim | Sim | Sim |
-| Service is currently unavailable | 503 Service Unavailable | | Sim | Sim | Sim |
-| The server was unable to respond in a timely manner | 504 Gateway Timeout | Returned if a timeout has occurred but a resend of the original request is viable (otherwise use 500 instead) | Sim | Sim | Sim |
+| Consulta concluída com sucesso       | 200 OK  |                        |  Sim  |  Sim  |  Não   |
+| Execução normal. A solicitação foi bem sucedida. | 201 Created | A operação resulta na criação de um novo recurso. | Sim | Não | Não |
+| Operação de exclusão concluída com sucesso | 204 No Content |              | Sim | Não | Não |
+| A resposta não é modificada desde a última chamada | 304 Not Modified | Pode ser retornado se forem utilizados cabeçalhos de armazenamento em cache padrão, como ETag ou If-modified-since | Sim | Sim | Não |
+| A solicitação possui parâmetros JSON ou corpo JSON malformados, ausentes ou não compatíveis | 400 Bad Request | A operação solicitada não será realizada. | Sim | Sim | Sim |
+| Header de autorização ausente ou token inválido | 401 Unauthorized | A operação foi recusada. A nova autenticação pode resultar em um token apropriado que pode ser usado. | Sim | Sim | Sim |
+| O token tem escopo incorreto ou uma política de segurança foi violada. | 403 Forbidden | A operação foi recusada. É improvável que a nova autenticação corrija a situação. Espera-se que esse erro resulte em uma carga útil de erro | Sim | Sim | Sim |
+| O consumidor tentou acessar o recurso com um método não suportado. | 405 Method Not Allowed | | Sim | Sim | Sim |
+| A solicitação continha um cabeçalho Accept diferente dos tipos de mídia permitidos, um conjunto de caracteres diferente de UTF-8 ou uma versão não suportada | 406 Not Acceptable | | Sim | Sim | Sim |
+| A operação foi recusada porque a carga útil está em um formato não suportado por este método no recurso de destino. | 415 Unsupported Media Type | | Sim | Não | Não |
+| A solicitação foi bem formada, mas não pôde ser processada devido à lógica de negócios específica da solicitação | 422 Unprocessable Entity | Se aplicável ao método HTTP, espera-se que esse erro resulte em uma carga útil de erro | Sim | Sim | Não |
+| A operação foi recusada, pois muitas solicitações foram feitas dentro de um determinado período. | 429 Too Many Requests | A limitação é um NFR. O titular dos dados deve incluir um cabeçalho Repetir após na resposta indicando quanto tempo o consumidor de dados deve esperar antes de tentar novamente a operação. | Sim | Sim | Sim |
+| Ocorreu um erro no gateway da API ou no microsserviço | 500 Internal Server Error | A operação falhou. | Sim | Sim | Sim |
+| O serviço está indisponível no momento | 503 Service Unavailable | | Sim | Sim | Sim |
+| O servidor não pôde responder em tempo hábil | 504 Gateway Timeout | Retornado se ocorreu um tempo limite, mas um reenvio da solicitação original é viável (caso contrário, use 500) | Sim | Sim | Sim |
