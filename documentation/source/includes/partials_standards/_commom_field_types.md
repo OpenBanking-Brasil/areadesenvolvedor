@@ -1,2 +1,0 @@
-## Commom Field Types
-
