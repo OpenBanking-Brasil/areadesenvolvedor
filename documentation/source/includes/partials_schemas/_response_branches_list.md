@@ -394,7 +394,7 @@
 
 |Nome|Tipo|Obrigatório|Descrição|
 |:---|:---|:---|:---|:---|
-|services|[[Enum BranchServicesCodes](#schemaEnumBranchServicesCodes)]|Sim| Lista de serviços prestados |
+|codes|[[Enum BranchServicesCodes](#schemaEnumBranchServicesCodes)]|Sim| Lista de serviços prestados |
 |detail|string|Não| Detalhes adicionais sobre os serviços prestados |
 
 ### Enum BranchServicesCodes 

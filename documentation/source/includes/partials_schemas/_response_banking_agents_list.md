@@ -62,6 +62,8 @@
 | links             | [[LinksPaginated](#schemaLinksPaginated)]                     | Sim          |                                                             |
 | meta              | [[MetaPaginated](#schemaMetaPaginated)]                       | Sim          |                                                             |
 
+## BankingAgentContractor
+<a id="schemaBankingAgentsContractor"></a>
 
 ```json
 {
@@ -98,16 +100,13 @@
 }
 ```
 
-## BankingAgentContractor
-<a id="schemaBankingAgentContractor"></a>
-
 |     Nome          |  Tipo                                       |  Obrigatório    |                            Descrição                       |
 |:------------      |:-----------------------------               | :-------------  |:----------------------------------------------------       |
 | name              | object                                      |  Sim            |                                                            |
 | cnpjMain          | string                                      |  Sim            | CNPJ do conglomerado proprietário da dependência (titular) |
 | cnpjSubsidiary    | string                                      |  Sim            | CNPJ da subsidiária                                        |
 | cnpjCheckNumber   | string                                      |  Sim            | Digito verificador do CNPJ                                 |
-| bankingAgents     | [[BankingAgents](#schemaBankingAgents)]     | Sim             | Lista de correspondentes bancários                         |
+| bankingAgents     | [[BankingAgents](#schemaBankingAgent)]     | Sim             | Lista de correspondentes bancários                         |
 
 ## BankingAgent
 <a id="schemaBankingAgent"></a>
@@ -139,11 +138,11 @@
 }
 ```
 
-|Nome|Tipo|Obrigatório|Descrição|
-|---|---|---|---|---|
-|identification|[BankingAgentIdentification](#schemaBankingAgentIdentification)|Sim|Dados de identificação do correspondente|
-|postalAddress|[BankingAgentPostalAddress](#schemaBankingAgentPostalAddress)|Sim|Endereço do correspondente|
-|services|[BankingAgentServices](#schemaBankingAgentServices)|Sim|Serviços fornecidos pelo correspondente|
+| Nome | Tipo|Obrigatório|Descrição|
+|:---- |:---|:---|:---|:---|
+| identification |[BankingAgentIdentification](#schemaBankingAgentIdentification)|Sim|Dados de identificação do correspondente|
+| postalAddress |[BankingAgentPostalAddress](#schemaBankingAgentPostalAddress)|Sim|Endereço do correspondente|
+| services |[BankingAgentServices](#schemaBankingAgentServices)|Sim|Serviços fornecidos pelo correspondente|
 
 ## BankingAgentIdentification
 <a id="schemaBankingAgentIdentification"></a>
@@ -159,77 +158,67 @@
 }
 ```
 
-|Nome|Tipo|Obrigatório|Descrição|
-|---|---|---|---|---|
-|type|[Enum BankingAgentIdentificationType](#schemaEnumBankingAgentIdentificationType)|mandatory|Tipo do Correspondente|
-|identification|string|mandatory|Código do Correspondente|
-|name|string|mandatory|Nome do Correspondente|
-
-<a id="schemaEnumBankingAgentIdentificationType"></a>
-
-### Enum BankingAgentIdentificationType
-
-|Propriedade|Valor|
-|---|---|
-|type|1. Correspondentes|
-|type|2. Locais de atendimento|
-|type|3. Locais de atendimento eletrônico|
-
-<a id="schemaBankingAgentPostalAddress"></a>
+| Nome             | Tipo   | Obrigatório | Descrição                       |
+|:---------------- |:------ |:----------- |:------------------------------- |
+| corporationName  | string | Sim         | Nome                            |
+| tradingName      | string | Sim         | Razão social                    |
+| cnpjMain         | string | Sim         | Raiz do CNPJ                    |
+| cnpjSubsidiary   | string | Sim         | CNPJ da subsidiária             |
+| cnpjCheckNumber  | string | Sim         | Dígito verificador do CNPJ      |
+| groupName        | string | Sim         | Nome do Gruopo da contratante   |
 
 ## BankingAgentPostalAddress
+<a id="schemaBankingAgentPostalAddress"></a>
 
 ```json
 {
-    "streetType" : "", 
-    "streetName" : "",
-    "buildingNumber" : "",
-    "additionalInfo" : "", 
-    "district" : "", 
-    "city" : "", 
-    "state" : "", 
-    "postCode" : ""
+  "streetType": "string",
+  "streetName": "string",
+  "buildingNumber": "string",
+  "additionalInfo": "string",
+  "district": "string",
+  "townName": "string",
+  "countrySubDivision": "string",
+  "postCode": "string"
 }
 ```
 
 |Nome|Tipo|Obrigatório|Descrição|
-|---|---|---|---|---|
-|streetType|string|mandatory|Tipo de logradouro|
-|streetName|string|mandatory|Nome do logradouro|
-|buildingNumber|string|mandatory|Número|
-|additionalInfo|string|mandatory|Complemento|
-|district|string|mandatory|Bairro|
-|city|string|mandatory|Cidade|
-|state|string|mandatory|Estado|
-|postCode|string|mandatory|CEP|
+|:---|:---|:---|:---|:---|
+|streetType|string|Sim|Tipo de logradouro|
+|streetName|string|Sim|Nome do logradouro|
+|buildingNumber|string|Sim|Número|
+|additionalInfo|string|Sim|Complemento|
+|district|string|Sim|Bairro|
+|townName|string|Sim|Cidade|
+|countrySubDivision|string|Sim|Estado|
+|postCode|string|Sim|CEP|
 
-<a id="schemaBankingAgentServiceAndFacility"></a>
-
-## BankingAgentServiceAndFacility
+## BankingAgentServices
+<a id="schemaBankingAgentServices"></a>
 
 ```json
 {
-    "services" : [], 
-    "description" : ""
+    "codes" : ["string"], 
+    "detail" : ""
 }
 ```
 
-Nome|Tipo|Obrigatório|Descrição|
-|---|---|---|---|---|
-|services|[[Enum BankingAgentServiceAndFacilityServices](#schemaEnumBankingAgentServiceAndFacilityServices)]|mandatory|none|
-|description|string|mandatory|none|
+|Nome|Tipo|Obrigatório|Descrição|
+|:---|:---|:---|:---|:---|
+|codes|[[Enum BankingAgentsServicesCodes](#schemaEnumBankingAgentsServicesCodes)]|Sim| Lista de serviços prestados |
+|detail|string|Não| Detalhes adicionais sobre os serviços prestados |
 
-<a id="schemaEnumBankingAgentServiceAndFacilityServices"></a>
+### Enum BankingAgentsServicesCodes
+<a id="schemaEnumBankingAgentsServicesCodes"></a>
 
-### Enum BankingAgentServiceAndFacilityServices
-
-|Propriedade|Valor|
-|---|---|
-|services|1. abertura de contas|
-|services|2. recebimentos, pagamentos e transferências eletrônicas|
-|services|3. recebimentos e pagamentos de qualquer natureza|
-|services|4. operações de crédito|
-|services|5. cartão de crédito|
-|services|6. operações de câmbio|
-|services|7. investimentos|
-|services|8. seguros|
+| Propriedade  | Código | Definição                                             |
+|:------------ |:------ |:----------------------------------------------------- |
+| codes        | 1      | Abertura de contas                                    |
+| codes        | 2      | Recebimentos, pagamentos e transferências eletrônicas |
+| codes        | 3      | Recebimentos e pagamentos de qualquer natureza        |
+| codes        | 4      | Operações de crédito                                  |
+| codes        | 5      | Cartão de crédito                                     |
+| codes        | 6      | Operações de câmbio                                   |
+| codes        | 7      | Investimentos                                         |
+| codes        | 8      | Seguros                                               |
