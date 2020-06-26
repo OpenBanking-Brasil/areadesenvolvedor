@@ -1,6 +1,6 @@
 ## HTTP Response Codes
 
-The handling and usage of HTTP response codes for the standards will be according to the following table.
+Padrões de HTTP Response Codes devem ser usados de acordo com a tabela a seguir.
 
 ### Codes
 |     Situation                                   |  HTTP Status	        | Notes             | POST | GET | DELETE |
