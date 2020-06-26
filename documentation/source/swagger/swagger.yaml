@@ -6,6 +6,18 @@ info:
 servers:
   - url: http://api.banco.com.br/open-banking
 paths:
+  /channels/v1/banking-agents:
+    get:
+      tags:
+      - "Channels"
+      summary: Obtém a lista de dependências próprias da instituição financeira.
+      responses:
+        '200':
+          description: Uma instituição financeira contendo sua lista de dependências próprias.
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/ResponseBankingAgentsList'
   /channels/v1/branches:
     get:
       tags:
@@ -24,26 +36,181 @@ paths:
       - "Channels"
       summary: Obtém a lista de canais eletrônicos de atendimento da instituição financeira.
       responses:
-        '200':    # status code
+        '200':
           description: Uma instituição financeira contendo sua lista de canais eletrônicos de atendimento.
           content:
             application/json:
               schema: 
                 $ref: '#/components/schemas/ResponseEletronicChannelsList'
-  /channels/v1/banking-agents:
-    get:
-      tags:
-      - "Channels"
-      summary: Obtém a lista de dependências próprias da instituição financeira.
-      responses:
-        '200':    # status code
-          description: Uma instituição financeira contendo sua lista de dependências próprias.
-          content:
-            application/json:
-              schema: 
-                $ref: '#/components/schemas/ResponseBankingAgentsList'
 components:
   schemas:
+    ResponseBankingAgentsList:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          type: object
+          required:
+            - organization
+          properties:
+            organization:
+              type: string
+              maxLength: 30
+              description: Nome do conglomerado proprietário da dependência (titular). Ex. 'Organização Bradesco'; 'Itaú Unibanco'
+            contractors:
+              type: array
+              items:
+                allOf:
+                    - $ref: '#/components/schemas/CNPJ'
+                required:
+                  - name
+                properties:
+                  name:
+                    type: string
+                    maxLength: 30
+                    description: Nome do contratante do serviço do correspondente. Ex. 'Recovey'
+                  bankingAgents:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/BankingAgent'
+        links:
+          $ref: '#/components/schemas/Links'
+        meta:
+          $ref: '#/components/schemas/Meta'
+      example:
+        data:
+          organization: Itaú Unibanco
+          contractors:
+            - name: Recovery
+              cnpjMain: 14684579
+              cnpjSubsidiary: 0001
+              cnpjCheckNumber: 63
+              bankingAgents:
+                - identification: 
+                    corporationName: Abilio S/A
+                    groupName: Pão de Açucar
+                    tradingName: Pão de Açucar Minuto
+                    cnpjMain: 50870366
+                    cnpjSubsidiary: 0001
+                    cnpjCheckNumber: 90
+                  postalAddress:
+                    streetType: Alameda
+                    streetName: Santos
+                    buildingNumber: 534
+                    additionalInfo:
+                    district: Cerqueira César
+                    townName: São Paulo
+                    countrySubDivision: SP
+                    postCode: 06585-548
+                  services:
+                    codes: ["1","2"]
+                    detail: 
+        links:
+          self: https://api.banco.com.br/open-banking/channels/v1/banking-agents
+          first: https://api.banco.com.br/open-banking/channels/v1/banking-agents
+          prev:
+          next:
+          last: https://api.banco.com.br/open-banking/channels/v1/banking-agents
+        meta:
+          totalRecords: 1
+          totalPages: 1
+    ResponseBranchesList:
+      type: object
+      required:
+      - data
+      - links
+      - meta
+      properties:
+        data:
+          type: object
+          required:
+            - organization
+          properties:
+            organization:
+              type: string
+              maxLength: 30
+              description: Nome do conglomerado proprietário da dependência (titular). Ex. 'Organização Bradesco'; 'Itaú Unibanco'
+            companies:
+              required:
+                - name
+              type: object
+              properties:
+                name:
+                  type: string
+                  maxLength: 30
+                branches:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Branch'
+              allOf:
+                - $ref: '#/components/schemas/CNPJ'
+        links:
+          $ref: '#/components/schemas/Links'
+        meta:
+          $ref: '#/components/schemas/Meta'
+      example:
+        data:
+          organization: Itaú Unibanco
+          companies:
+            - name : Itaú BBA
+              cnpjMain : 14684579
+              cnpjSubsidiary : 0001
+              cnpjCheckNumber : 63
+              branches:
+                - identification:
+                    type : 1
+                    identification : 7055
+                    checkDigit : 0
+                    name : Agência Alameda Santos
+                  postalAddress:
+                    streetType: Alameda
+                    streetName: Santos
+                    buildingNumber: 534
+                    additionalInfo:
+                    district: Cerqueira César
+                    townName: São Paulo
+                    countrySubDivision: SP
+                    postCode: 06585-548
+                  availability:
+                    standard:
+                      - weekday : Segunda-feira
+                        openingTime : 13:00:00+0000
+                        closingTime : 19:00:00+0000
+                      - weekday : Terça-feira
+                        openingTime : 13:00:00+0000
+                        closingTime : 19:00:00+0000
+                      - weekday : Quarta-feira
+                        openingTime : 13:00:00+0000
+                        closingTime : 19:00:00+0000
+                      - weekday : Quinta-feira
+                        openingTime : 13:00:00+0000
+                        closingTime : 19:00:00+0000
+                      - weekday : Sexta-feira
+                        openingTime : 13:00:00+0000
+                        closingTime : 19:00:00+0000
+                    exceptionAvailability : Exceto feriados municipais, estaduais e nacionais
+                    phones:
+                      - type: 1
+                        ddd: 11
+                        number: 4444-5555
+                      - type: 2
+                        ddd: 11
+                        number: 99999-8888
+                  services:
+                    codes: ["1","2"]
+                    detail: 
+        links:
+          self: https://api.banco.com.br/open-banking/channels/v1/branches
+          first: https://api.banco.com.br/open-banking/channels/v1/branches
+          prev:
+          next:
+          last: https://api.banco.com.br/open-banking/channels/v1/branches
+        meta:
+          totalRecords: 1
+          totalPages: 1
     ResponseEletronicChannelsList:
       type: object
       required:
@@ -52,76 +219,231 @@ components:
       - meta
       properties:
         data:
-          $ref: '#/components/schemas/BrandEletronicChannels'
-    ResponseBranchesList:
+          type: object
+          properties:
+            organization:
+              type: string
+              maxLength: 30
+            channels:
+              type: array
+              items:
+                $ref: '#/components/schemas/EletronicChannel'
+          required:
+            - organization
+        links:
+            $ref: '#/components/schemas/Links'
+        meta:
+            $ref: '#/components/schemas/Meta'
+      example:
+        data:
+          organization: Itaú Unibanco
+          channels:
+            - identification:
+                type: 1
+                phones:
+                  - ddi: 
+                    ddd: 
+                    number: 0800-5522
+                    description: Para regiões metropolitanas e capitais usar o telefone
+                  - ddi: 
+                    ddd: 11
+                    number: 4004-4828
+                    description: Demais localidades
+                  - ddi: 55
+                    ddd: 11
+                    number: 44003-4820
+                    description: Para clientes no exterior
+              services:
+                codes: ["1","2","3"]
+                detail:
+        links:
+          self: https://api.banco.com.br/open-banking/channels/v1/electronic-channels
+          first: https://api.banco.com.br/open-banking/channels/v1/electronic-channels
+          prev:
+          next:
+          last: https://api.banco.com.br/open-banking/channels/v1/electronic-channels
+        meta:
+          totalRecords: 1
+          totalPages: 1
+    BankingAgent:
+      type: object
+      required:
+        - identification
+        - postalAddress
+        - services
+      properties:
+        identification:
+          $ref: '#/components/schemas/BankingAgentIdentification'
+        postalAddress:
+          $ref: '#/components/schemas/PostalAddress'
+        services:
+          $ref: '#/components/schemas/BankingAgentServices'
+    BankingAgentIdentification:
       type: object
       properties:
-        brand:
-          $ref: '#/components/schemas/BrandBranches'
-    ResponseBankingAgentsList:
-      type: object
-      properties:
-        brand:
-          $ref: '#/components/schemas/BrandBankingAgents'
-    BrandBankingAgents:
+        corporationName:
+          type: string
+          maxLength: 100
+        groupName:
+          type: string
+          maxLength: 100
+        tradingName:
+          type: string
+          maxLength: 100
       allOf:
-        - $ref: '#/components/schemas/Brand'
-      properties:
-        channels:
-          type: array
-          items:
-            $ref: '#/components/schemas/BankingAgent'
-    BrandEletronicChannels:
+        - $ref: '#/components/schemas/CNPJ'
+      required:
+        - corporationName
+    BankingAgentServices:
       type: object
       properties:
-        name: 
-          type: string
-        channels:
+        codes:
           type: array
           items:
-            $ref: '#/components/schemas/EletronicChannel'
-    BrandBranches:
-      allOf:
-        - $ref: '#/components/schemas/Brand'
-      properties:
-        branches:
-          type: array
-          items:
-            $ref: '#/components/schemas/Branch'
-    Brand:
-      type: object
-      properties:
-        name:
+            type: string
+            enum: ["1","2","3","4","5","6","7","8"]
+            maxLength: 2
+            pattern: ^\d{1,2}$
+            description: >
+              Serviços oferecidos pelo correspondente bancário
+              * `1` - Recepção e encaminhamento de propostas de abertura de contas
+              * `2` - Realização de recebimentos, pagamentos e transferências eletrônicas
+              * `3` - Recebimentos e pagamentos de qualquer natureza
+              * `4` - Execução ativa e passiva de ordens de pagamento
+              * `5` - Recepção e encaminhamento de propostas de operações de crédito e de arrendamento mercantil
+              * `6` - Recebimento e pagamentos relacionados a letras de câmbio de aceite da instituição
+              * `7` - Recepção e encaminhamento de propostas de fornecimento de cartões de crédito
+              * `8` - Realização de operações de câmbio
+          description: Serviços oferecidos pelo canal eletrônico
+        detail:
           type: string
-          description: Nome da instituição financeira
-        cnpj:
-          type: string
-          description: CNPJ da instituição financeira
+          maxLength: 2000
+          description: Campo aberto para detalhamento
+      required:
+        - codes
     Branch:
+      type: object
+      required:
+        - identification
+        - postalAddress
+        - services
+        - availability
+      properties:
+        identification:
+            $ref: '#/components/schemas/BranchIdentification'
+        postalAddress:
+            $ref: '#/components/schemas/PostalAddress'
+        availability:
+            $ref: '#/components/schemas/BranchAvailability'
+        services:
+            $ref: '#/components/schemas/BranchServices'
+    BranchIdentification:
       type: object
       properties:
         type:
           type: string
-          enum: ["Agência","Posto de Atendimento","Posto de Atendimento Eletrônico"]
-          description: Tipo de dependência bancária
+          enum: ["1","2","3"]
+          maxLength: 2
+          pattern: ^\d{1,2}$
+          description: > 
+            Tipo de dependência física
+            * `1` - Agência
+            * `2` - Posto de Atendimento
+            * `3` - Posto de Atendimento Eletrônico 
         identification:
           type: string
-          description: Código da dependência bancária
+          maxLength: 4
+          pattern: ^\d{4}$
+        checkDigit:
+          type: string
+          maxLength: 1
+          pattern: ^\d{1}$
         name:
           type: string
-          description: Nome da dependência bancária
-        postalAddress:
-          type: object
-          allOf:
-            - $ref: '#/components/schemas/PostalAddress'
-        availability:
-          type: object
-          allOf:
-            - $ref: '#/components/schemas/Availability'
-        services:
-          type: object
-          allOf:
-            - $ref: '#/components/schemas/BranchServices'
+          maxLength: 100
+      required:
+        - type
+        - identification
+        - name
+    BranchAvailability:
+      type: object
+      properties:
+        standard:
+          type: array
+          items:
+            properties:
+              weekday:
+                type: string
+                enum: ["Domingo","Segunda-feira","Terça-feira","Quarta-feira","Quinta-feira","Sexta-feira","Sábado"]
+                description: Dia da semana de abertura da dependência bancária
+                maxLength: 13
+              openingTime:
+                type: string
+                description: Horário de abertura da dependência bancária (UTC)
+                maxLength: 13
+                pattern: ^([0|1|2]{1})([0-9]{1}):([0|1|2|3|4|5]{1})([0-9]{1}):([0|1|2|3|4|5]{1})([0-9]{1})\+([0-9]{4})$
+              closingTime:
+                type: string
+                description: Horário de fechamento da dependência bancária (UTC)
+                maxLength: 13
+                pattern: ^([0|1|2]{1})([0-9]{1}):([0|1|2|3|4|5]{1})([0-9]{1}):([0|1|2|3|4|5]{1})([0-9]{1})\+([0-9]{4})$
+            required:
+              - weekday
+              - openingTime
+              - closingTime
+        exceptionAvailability:
+          type: string
+          maxLength: 2000
+        phones:
+          type: array
+          items:
+            properties:
+              type:
+                type: string
+                maxLength: 1
+                pattern: ^\d{1}$
+                description: >
+                  Tipo de Telefone
+                  * `1` - Fixo
+                  * `2` - Móvel
+              ddd:
+                type: string
+                maxLength: 2
+                pattern: ^\d{2}$
+              number:
+                type: string
+                maxLength: 10
+                pattern: ^([0-9]{4,5})-([0-9]{4})$
+          description: Telefone
+      required:
+        - standard
+        - exceptionAvailability
+    BranchServices:
+      type: object
+      properties:
+        codes:
+          type: array
+          items:
+            type: string
+            enum: ["1","2","3","4","5","6","7","8"]
+            maxLength: 2
+            pattern: ^\d{1,2}$
+          description: > 
+            Serviços oferecidos pela dependência própria
+            * `1` - Abertura de contas
+            * `2` - Recebimentos, pagamentos e transferências eletrônicas
+            * `3` - Recebimentos e pagamentos de qualquer natureza
+            * `4` - Operações de crédito
+            * `5` - Cartão de crédito
+            * `6` - Operações de câmbio
+            * `7` - Investimentos
+            * `8` - Seguros
+        detail:
+          type: string
+          description: Campo aberto para detalhamento
+          maxLength: 2000
+      required:
+        - codes
     EletronicChannel:
       type: object
       properties:
@@ -129,139 +451,171 @@ components:
           $ref: '#/components/schemas/EletronicChannelIdentification'
         services:
           $ref: '#/components/schemas/EletronicChannelServices'
-    BankingAgent:
-      type: object
-      properties:
-        identification:
-          $ref: '#/components/schemas/BankingAgentIdentification'
-        services:
-          $ref: '#/components/schemas/BankingAgentServices'
+      required:
+        - identification
+        - services
     EletronicChannelIdentification:
       type: object
+      required:
+        - type
       properties:
         type:
           type: string
-          description: Tipo de canal de atendimento
-          enum: [1 => "Internet banking", 2 => "Mobile banking", 3 => "Central telefônica banking", 4 => "SAC", 5 => "Ouvidoria", 6 => "Chat"]
-        channelDDD:
-          type: integer
-          description: DDD do telefone do canal
-        channelNumber:
+          enum: ["1","2","3","4","5","6"]
+          maxLength: 2
+          pattern: ^\d{1,2}$
+          description: >
+            Tipo de canal de atendimento eletrônico
+            * `1` - Internet banking
+            * `2` - Mobile banking
+            * `3` - Central telefônica banking
+            * `4` - SAC
+            * `5` - Ouvidoria
+            * `6` - Chat
+        phones:
+          type: array
+          items:
+            properties:
+              ddi:
+                type: string
+                maxLength: 2
+                pattern: ^\d{2}$
+              ddd:
+                type: string
+                maxLength: 2
+                pattern: ^\d{2}$
+              number:
+                type: string
+                maxLength: 10
+                pattern: ^([0-9]{4,5})-([0-9]{4})$
+              description:
+                type: string
+                maxLength: 50
+        url:
           type: string
-          description: Telefone do canal
-        channelURL:
-          type: string
-          description: URL do canal
-    BankingAgentIdentification:
+          maxLength: 1024
+    EletronicChannelServices:
       type: object
+      required:
+        - codes
       properties:
-        type:
+        codes:
+          type: array
+          items:
+            type: string
+            enum: ["1","2","3","4","5","6","7","8"]
+            maxLength: 2
+            pattern: ^\d{1,2}$
+            description: >
+              Serviços oferecidos pelo canal de atendimento eletrônico
+              * `1` - Abertura de contas
+              * `2` - Recebimentos, pagamentos e transferências eletrônicas
+              * `3` - Operações de crédito
+              * `4` - Cartão de crédito
+              * `5` - Operações de câmbio
+              * `6` - Investimentos
+              * `7` - Seguros
+              * `8` - Atendimento as demandas de cliente
+        detail:
           type: string
-          description: Tipo de canal de atendimento
-          enum: ["Internet banking", "Mobile banking", "Central telefônica banking", "SAC", "Ouvidoria", "Chat"]
-        identification:
-          type: string
-          description: Identificador do agente bancário
-        name:
-          type: string
-          description: Nome do agente bancário
+          maxLength: 2000
+          description: Campo aberto para detalhamento
     PostalAddress:
       type: object
       properties:
         streetType:
           type: string
-          description: Tipo de logradouro.
-          pattern: \w*\W*
+          description: Tipo de logradouro
+          maxLength: 10
+          enum: ["Aeroporto", "Alameda", "Área", "Avenida", "Campo", "Chácara", "Colônia", "Condomínio", "Conjunto", "Distrito", "Esplanada", "Estação", "Estrada", "Fazenda", "Feira", "Jardim", "Ladeira", "Lago", "Lagoa", "Largo", "Loteamento", "Núcleo", "Parque", "Passarela", "Pátio", "Praça", "Quadra", "Recanto", "Residencial", "Rodovia", "Rua", "Setor", "Sítio", "Travessa", "Trecho", "Trevo", "Vale", "Vereda", "Via", "Viaduto", "Viela", "Vila"]
         streetName:
           type: string
-          description: Nome do logradouro.
-          pattern: \w*\W*
+          description: Nome do logradouro
+          maxLength: 50
         buildingNumber:
           type: string
-          description: Número.
-          pattern: \w*\W*
+          description: Número
+          maxLength: 6
         additionalInfo:
           type: string
-          description: Complemento.
-          pattern: \w*\W*
+          description: Complemento
+          maxLength: 30
         district:
           type: string
-          description: Bairro.
-          pattern: \w*\W*
-        city:
+          description: Bairro
+          maxLength: 50
+        townName:
           type: string
-          description: Cidade.
-          pattern: \w*\W*
-        state:
+          description: Cidade
+          maxLength: 50
+        countrySubDivision:
           type: string
-          description: Estado.
+          description: Estado
           pattern: ^[A-Z]{2}$
           enum: [AC,AL,AP,AM,BA,CE,DF,ES,GO,MA,MT,MS,MG,PA,PB,PR,PE,PI,RJ,RN,RS,RO,RR,SC,SP,SE,TO]
+          maxLength: 2
         postCode:
           type: string
-          description: CEP.
+          description: CEP
           pattern: ^\d{5}-\d{3}$
+          maxLength: 9
       required: 
         - streetType
         - streetName
         - buildingNumber
         - district
-        - city
-        - state
+        - townName
+        - countrySubDivision
         - postCode
-    Availability:
+    CNPJ:
       type: object
       properties:
-        openingTime:
+        cnpjMain:
           type: string
-          description: Horário de abertura da agência.
-          pattern: ^([0|1|2]{1})([0-9]{1}):([0|1|2|3|4|5]{1})([0-9]{1})$
-        closingTime:
+          description: Raíz do CNPJ
+          pattern: ^\d{2}.\d{3}.\d{3}$
+          maxLength: 10
+        cnpjSubsidiary:
           type: string
-          description: Horário de fechamento da agência.
-          pattern: ^([0|1|2]{1})([0-9]{1}):([0|1|2|3|4|5]{1})([0-9]{1})$
-        description1:
+          description: Filial do CNPJ
+          pattern: ^\d{4}$
+          maxLength: 4
+        cnpjCheckNumber:
           type: string
-          description: Descrição dos dias de abertura da agência.
-        description2:
-          type: string
-          description: Descrição das exceções dos dias de abertura da agência.
-        phone:
-          type: string
-          description: Telefone.
-    BranchServices:
+          description: Dígitos de verificação do CNPJ
+          pattern: ^\d{2}$
+          maxLength: 2
+      required:
+        - cnpjMain
+        - cnpjSubsidiary
+        - cnpjCheckNumber 
+    Links:
       type: object
       properties:
-        services:
-          type: array
-          items:
-            type: string
-            enum: ["Abertura de contas","Recebimentos, pagamentos e transferências eletrônicas","Recebimentos e pagamentos de qualquer natureza","Operações de crédito","Cartão de crédito","Operações de câmbio","Investimentos","Seguros"]
-          description: Serviços oferecidos pela dependência própria
-        description:
+        self:
           type: string
-          description: Campo aberto para detalhamento
-    EletronicChannelServices:
+          description: URL da página atualmente requisitada
+        first:
+          type: string
+          description: URL da primeira página de registros
+        prev:
+          type: string
+          description: URL da página anterior de registros
+        next:
+          type: string
+          description: URL da próxima página de registros
+        last:
+          type: string
+          description: URL da última página de registros
+    Meta:
       type: object
       properties:
-        services:
-          type: array
-          items:
-            type: string
-            enum: ["Abertura de contas","Recebimentos, pagamentos e transferências eletrônicas","Operações de crédito","Cartão de crédito","Operações de câmbio","Investimentos","Seguros", "Atendimento as demandas de cliente"]
-          description: Serviços oferecidos pelo canal eletrônico
-        description:
-          type: string
-          description: Campo aberto para detalhamento
-    BankingAgentServices:
-      type: object
-      properties:
-        services:
-          type: array
-          items:
-            type: string
-            enum: ["Recepção e encaminhamento de propostas de abertura de contas","Realização de recebimentos, pagamentos e transferências eletrônicas","Recebimentos e pagamentos de qualquer natureza","Execução ativa e passiva de ordens de pagamento","Recepção e encaminhamento de propostas de operações de crédito e de arrendamento mercantil","Recebimento e pagamentos relacionados a letras de câmbio de aceite da instituição","Recepção e encaminhamento de propostas de fornecimento de cartões de crédito","Realização de operações de câmbio"]
-          description: Serviços oferecidos pelo canal eletrônico
-        description:
-          type: string
-          description: Campo aberto para detalhamento
+        totalRecords:
+          type: integer
+          description: Total de registros encontrados
+        totalPages:
+          type: integer
+          description: Total de páginas para os registros encontrados
+      required:
+        - totalRecords
+        - totalPages
