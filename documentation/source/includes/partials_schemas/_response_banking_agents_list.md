@@ -63,7 +63,7 @@
 |     Nome          |  Tipo                                                                | Obrigatório  |                            Definição                  |
 |:------------      |:---------------------------------                                    |:-----------  |:----------------------------------------------------  |
 | data              | object                                                               | Sim          |                                                       |
-| » organisation    | [[BankingAgentsOrganisation](#schemaBankingAgentsOrganisation)]        | Sim          | Lista das organizaçõs titulares das dependências      |
+| » organisation    | [[BankingAgentsOrganisation](#schemaBankingAgentsOrganisation)]      | Sim          | Lista das organizaçõs titulares das dependências      |
 | links             | [[LinksPaginated](#schemaLinksPaginated)]                            | Sim          |                                                       |
 | meta              | [[MetaPaginated](#schemaMetaPaginated)]                              | Sim          |                                                       |
 

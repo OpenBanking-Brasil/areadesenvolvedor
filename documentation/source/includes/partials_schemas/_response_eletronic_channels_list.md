@@ -4,42 +4,88 @@
 ```json
 {
   "data": {
-    "organisation": "string",
-    "channels": [
+    "organisation": [
       {
-        "identification": {
-          "type": "string",
-          "phones": [
-            {
-              "ddi": "string",
-              "ddd": "string",
-              "number": "string",
-              "description": "string"
+        "name": "string",
+        "channels": [
+          {
+            "identification": {
+              "typeCode": "string",
+              "phones": [
+                {
+                  "ddiCode": "string",
+                  "dddCode": "string",
+                  "number": "string",
+                  "descriptionText": "string"
+                }
+              ],
+              "urlName": "https://thebigbankcompany.sample.com"
+            },
+            "services": {
+              "codes": [
+                "string"
+              ],
+              "detailText": "string"
             }
-          ]
-        },
-        "services": {
-          "codes": ["string"],
-          "detail": "string"
-        }
+          }
+        ]
       }
-    ]
-  },
-  "links": {
-    "self": "string",
-    "first": "string",
-    "prev": "string",
-    "next": "string",
-    "last": "string"
-  },
-  "meta": {
-    "totalRecords": "integer",
-    "totalPages": "integer"
+    ],
+    "links": {
+      "self": "string",
+      "first": "string",
+      "prev": "string",
+      "next": "string",
+      "last": "string"
+    },
+    "meta": {
+      "totalRecords": "integer",
+      "totalPages": "integer"
+    }
   }
 }
 ```
 
+|     Nome          |  Tipo                                                                     | Obrigatório  |                            Definição                  |
+|:------------      |:---------------------------------                                         |:-----------  |:----------------------------------------------------  |
+| data              | object                                                                    | Sim          |                                                       |
+| » organisation    | [[EletronicChannelsOrganisation](#schemaEletronicChannelsOrganisation)]   | Sim          | Lista das organizaçõs titulares das dependências      |
+| links             | [[LinksPaginated](#schemaLinksPaginated)]                                 | Sim          |                                                       |
+| meta              | [[MetaPaginated](#schemaMetaPaginated)]                                   | Sim          |                                                       |
+
+## EletronicChannelsOrganisation
+<a id="schemaEletronicChannelsOrganisation"></a>
+
+```json
+{
+  "name": "string",
+  "channels": [
+    {
+      "identification": {
+        "typeCode": "string",
+        "phones": [
+          {
+            "ddiCode": "string",
+            "dddCode": "string",
+            "number": "string",
+            "descriptionText": "string"
+          }
+        ],
+        "urlName": "https://thebigbankcompany.sample.com"
+      },
+      "services": {
+        "codes": [
+          "string"
+        ],
+        "detailText": "string"
+      }
+    }
+  ]
+}
+```
+
 ### Propriedades
+<<<<<<< HEAD
 |     Nome          |  Tipo                                           | Obrigatório    |                            Definição                       |
 |:------------      |:---------------------------------               |:-------------- |:----------------------------------------------------       |
 | data              | object                                          |                |                                                            |
@@ -47,6 +93,12 @@
 | »  channels       | [[EletronicChannels](#schemaEletronicChannels)] | Sim            | Lista  de canais de atendimento eltrônico                  |
 | links             | [[LinksPaginated](#schemaLinksPaginated)]       | Sim            |                                                            |
 | meta              | [[MetaPaginated](#schemaMetaPaginated)]         | Sim            |                                                            |
+=======
+|     Nome     |  Tipo                                           | Obrigatório    |                            Definição                       |
+|:------------ |:---------------------------------               |:-------------- |:----------------------------------------------------       |
+| name         | string                                                        | Sim          | Nome do conglomerado responsável pela contrataçao do Correspondente  |
+| channels     | [[EletronicChannels](#schemaEletronicChannels)] | Sim            | Lista  de canais de atendimento eltrônico                  |
+>>>>>>> 0b8b076aa53c2362a21650d5c3b9e412d7298993
 
 ## EletronicChannels
 <a id="schemaEletronicChannels"></a>
@@ -54,20 +106,22 @@
 ```json
 {
   "identification": {
-    "type": "string",
+    "typeCode": "string",
     "phones": [
       {
-        "ddi": "string",
-        "ddd": "string",
+        "ddiCode": "string",
+        "dddCode": "string",
         "number": "string",
-        "description": "string"
+        "descriptionText": "string"
       }
     ],
-    "url": "https://example.com/mobile-banking"
+    "urlName": "https://thebigbankcompany.sample.com"
   },
   "services": {
-    "codes": ["string"],
-    "detail": "string"
+    "codes": [
+      "string"
+    ],
+    "detailText": "string"
   }
 }
 ```
@@ -80,33 +134,48 @@
 ## EletronicChannelsIdentification 
 <a id="schemaEletronicChannelsIdentification"></a>
 
+```json
+{
+  "typeCode": "string",
+  "phones": [
+    {
+      "ddiCode": "string",
+      "dddCode": "string",
+      "number": "string",
+      "descriptionText": "string"
+    }
+  ],
+  "urlName": "https://thebigbankcompany.sample.com"
+}
+```
+
 |     Nome     |  Tipo                                                          | Obrigatório |                            Definição               | Restrições                           |
 |:------------ |:---------------------------------                              |:----------- |:-------------------------------------------------- |:------------------------------------ |
-| type         | [Enum EletronicChannelsType](#schemaEletronicChannelsType)     | Sim         | Tipo de canal de atendimento                       |                                      |
+| typeCode     | [Enum EletronicChannelsType](#schemaEletronicChannelsType)     | Sim         | Tipo de canal de atendimento                       |                                      |
 | phones       | [[EletronicChannelsPhones](#schemaEletronicChannelsPhones)]]   | Não         | Telefones de contato com o canal de atendimento    | Se não houver URL, deve ter telefone |
-| url          | string                                                         | Não         | Endereço eletrônico de acesso ao canal             | Se não houver telefone, deve ter URL |
+| urlName      | string                                                         | Não         | Endereço eletrônico de acesso ao canal             | Se não houver telefone, deve ter URL |
 
 ### Enum EletronicChannelsType
 <a id="schemaEletronicChannelsType"></a>
 
 |     Propriedade  | Código        |                            Definição                            |
 |:------------     |:------------- |:--------------------------------------------------------------  |
-| type             | 1             | Internet banking                                                |
-| type             | 2             | Mobile banking                                                  |
-| type             | 3             | Central telefônica banking                                      |
-| type             | 4             | SAC                                                             |
-| type             | 5             | Ouvidoria                                                       |
-| type             | 6             | Chat                                                            |
+| typeCode         | 1             | Internet banking                                                |
+| typeCode         | 2             | Mobile banking                                                  |
+| typeCode         | 3             | Central telefônica banking                                      |
+| typeCode         | 4             | SAC                                                             |
+| typeCode         | 5             | Ouvidoria                                                       |
+| typeCode         | 6             | Chat                                                            |
 
 ## EletronicChannelsPhones 
 <a id="schemaEletronicChannelsPhones"></a>
 
-|     Nome    |  Tipo  | Obrigatório |     Definição                                                                                        |
-|:---------   |:------ |:----------- |:-------------------------                                                                            |
-| ddi         | string | Não         | DDI                                                                                                  |
-| ddd         | string | Não         | DDD                                                                                                  |
-| number      | string | Sim         | Telefone para contato com o canal                                                                    |
-| description | string | Não         | Descrição do telefone e de quando ele deve ser utilizado. Ex: Para capitais e regiões metropolitanas |
+|     Nome        |  Tipo  | Obrigatório |     Definição                                                                                                                |
+|:---------       |:------ |:----------- |:-------------------------                                                                                                    |
+| ddiCode         | string | Não         | DDI                                                                                                                          |
+| dddCode         | string | Não         | DDD                                                                                                                          |
+| number          | string | Sim         | Telefone para contato com o canal                                                                                            |
+| descriptionText | string | Não         | Mensagem complementar necessária para o agrupamento da identificação do telefone. Ex: Para capitais e regiões metropolitanas |
 
 
 ## EletronicChannelsServices 
@@ -115,7 +184,7 @@
 |     Nome     |  Tipo                                                                              | Obrigatório |                            Definição               |
 |:------------ |:---------------------------------------------------------------------------------  |:----------- |:-------------------------------------------------- |
 | codes        | [[Enum EletronicChannelsServicesCodes](#schemaEnumEletronicChannelsServicesCodes)] | Sim         | Lista com a lista de serviços prestados pelo canal |
-| detail       | string                                                                             | Não         | Descrição adicional sobre os serviços prestados    |
+| detailText   | string                                                                             | Não         | Descrição adicional sobre os serviços prestados    |
 
 ### Enum EletronicChannelsServicesCodes
 <a id="schemaEnumEletronicChannelsServicesCodes"></a>
