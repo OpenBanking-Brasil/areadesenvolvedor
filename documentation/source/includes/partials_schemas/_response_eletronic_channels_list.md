@@ -85,20 +85,10 @@
 ```
 
 ### Propriedades
-<<<<<<< HEAD
-|     Nome          |  Tipo                                           | Obrigatório    |                            Definição                       |
-|:------------      |:---------------------------------               |:-------------- |:----------------------------------------------------       |
-| data              | object                                          |                |                                                            |
-| » organisation    | string                                          | Sim            | Nome do conglomerado proprietário da dependência (titular) |
-| »  channels       | [[EletronicChannels](#schemaEletronicChannels)] | Sim            | Lista  de canais de atendimento eltrônico                  |
-| links             | [[LinksPaginated](#schemaLinksPaginated)]       | Sim            |                                                            |
-| meta              | [[MetaPaginated](#schemaMetaPaginated)]         | Sim            |                                                            |
-=======
 |     Nome     |  Tipo                                           | Obrigatório    |                            Definição                       |
 |:------------ |:---------------------------------               |:-------------- |:----------------------------------------------------       |
 | name         | string                                                        | Sim          | Nome do conglomerado responsável pela contrataçao do Correspondente  |
 | channels     | [[EletronicChannels](#schemaEletronicChannels)] | Sim            | Lista  de canais de atendimento eltrônico                  |
->>>>>>> 0b8b076aa53c2362a21650d5c3b9e412d7298993
 
 ## EletronicChannels
 <a id="schemaEletronicChannels"></a>
