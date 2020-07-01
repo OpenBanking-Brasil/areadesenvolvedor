@@ -4,7 +4,7 @@
 ```json
 {
   "data": {
-      "organization": "string",
+      "organisation": "string",
       "contractor": [
         {
           "name": "string",
@@ -57,7 +57,7 @@
 |     Nome          |  Tipo                                                         | Obrigatório  |                            Definição                        |
 |:------------      |:---------------------------------                             |:-----------  |:----------------------------------------------------        |
 | data              | object                                                        | Sim          |                                                             |
-| » organization    | string                                                        | Sim          | Nome do conglomerado proprietário da dependência (titular)  |
+| » organisation    | string                                                        | Sim          | Nome do conglomerado proprietário da dependência (titular)  |
 | » contractor      | [[BankingAgentsContractor](#schemaBankingAgentsContractor)]   | Sim          | Lista de contratantes                                       |
 | links             | [[LinksPaginated](#schemaLinksPaginated)]                     | Sim          |                                                             |
 | meta              | [[MetaPaginated](#schemaMetaPaginated)]                       | Sim          |                                                             |
