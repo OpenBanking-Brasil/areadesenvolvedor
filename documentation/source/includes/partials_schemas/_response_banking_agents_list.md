@@ -4,210 +4,272 @@
 ```json
 {
   "data": {
-      "organisation": "string",
-      "contractor": [
-        {
-          "name": "string",
-          "cnpjMain": "string",
-          "cnpjSubsidiary": "string",
-          "cnpjCheckNumber": "string",
-          "bankingAgents": [
-            {
-              "identification": {
-                "corporationName": "string",
-                "tradingName": "string",
-                "cnpjMain": "string",
-                "cnpjSubsidiary": "string",
-                "cnpjCheckNumber": "string",
-                "groupName": "string"
-              },
-              "postalAddress": {
-                "streetType": "string",
-                "streetName": "string",
-                "buildingNumber": "string",
-                "additionalInfo": "string",
-                "district": "string",
-                "townName": "string",
-                "countrySubDivision": "string",
-                "postCode": "string"
-              },
-              "services": {
-                "codes": ["string"],
-                "detail": "string"
+    "organisation": [
+      {
+        "name": "string",
+        "contractors": [
+          {
+            "name": "string",
+            "cnpjMainNumber": "string",
+            "cnpjSubsidiaryNumber": "string",
+            "cnpjCheckNumber": "string",
+            "bankingAgents": [
+              {
+                "identification": {
+                  "corporationName": "string",
+                  "groupName": "string",
+                  "tradingName": "string",
+                  "cnpjMainNumber": "string",
+                  "cnpjSubsidiaryNumber": "string",
+                  "cnpjCheckNumber": "string"
+                },
+                "postalAddress": {
+                  "streetTypeName": "string",
+                  "streetName": "string",
+                  "buildingNumber": "string",
+                  "additionalInfoText": "string",
+                  "districtName": "string",
+                  "townName": "string",
+                  "countrySubDivisionCode": "string",
+                  "postCode": "string"
+                },
+                "services": {
+                  "codes": [
+                    "string"
+                  ],
+                  "detailText": "string"
+                }
               }
-            }
-          ]
-        }
-      ]
-    },
-    "links": {
-      "self": "string",
-      "first": "string",
-      "prev": "string",
-      "next": "string",
-      "last": "string"
-    },
-    "meta": {
-      "totalRecords": "integer",
-      "totalPages": "integer"
-    }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "links": {
+    "self": "string",
+    "first": "string",
+    "prev": "string",
+    "next": "string",
+    "last": "string"
+  },
+  "meta": {
+    "totalRecords": "string",
+    "totalPages": "string"
+  }
 }
 ```
 
-|     Nome          |  Tipo                                                         | Obrigatório  |                            Definição                        |
-|:------------      |:---------------------------------                             |:-----------  |:----------------------------------------------------        |
-| data              | object                                                        | Sim          |                                                             |
-| » organisation    | string                                                        | Sim          | Nome do conglomerado proprietário da dependência (titular)  |
-| » contractor      | [[BankingAgentsContractor](#schemaBankingAgentsContractor)]   | Sim          | Lista de contratantes                                       |
-| links             | [[LinksPaginated](#schemaLinksPaginated)]                     | Sim          |                                                             |
-| meta              | [[MetaPaginated](#schemaMetaPaginated)]                       | Sim          |                                                             |
+|     Nome          |  Tipo                                                                | Obrigatório  |                            Definição                  |
+|:------------      |:---------------------------------                                    |:-----------  |:----------------------------------------------------  |
+| data              | object                                                               | Sim          |                                                       |
+| » organisation    | [[BankingAgentsOrganisation](#schemaBankingAgentsOrganisation)]        | Sim          | Lista das organizaçõs titulares das dependências      |
+| links             | [[LinksPaginated](#schemaLinksPaginated)]                            | Sim          |                                                       |
+| meta              | [[MetaPaginated](#schemaMetaPaginated)]                              | Sim          |                                                       |
 
-## BankingAgentContractor
+## BankingAgentsOrganisation
+<a id="schemaBankingAgentsOrganisation"></a>
+
+```json
+{
+  "name": "string",
+  "contractors": [
+    {
+      "name": "string",
+      "cnpjMainNumber": "string",
+      "cnpjSubsidiaryNumber": "string",
+      "cnpjCheckNumber": "string",
+      "bankingAgents": [
+        {
+          "identification": {
+            "corporationName": "string",
+            "groupName": "string",
+            "tradingName": "string",
+            "cnpjMainNumber": "string",
+            "cnpjSubsidiaryNumber": "string",
+            "cnpjCheckNumber": "string"
+          },
+          "postalAddress": {
+            "streetTypeName": "string",
+            "streetName": "string",
+            "buildingNumber": "string",
+            "additionalInfoText": "string",
+            "districtName": "string",
+            "townName": "string",
+            "countrySubDivisionCode": "string",
+            "postCode": "string"
+          },
+          "services": {
+            "codes": [
+              "string"
+            ],
+            "detailText": "string"
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+|     Nome        |  Tipo                                                         | Obrigatório  |                            Definição                                 |
+|:------------    |:---------------------------------                             |:-----------  |:----------------------------------------------------                 |
+| name            | string                                                        | Sim          | Nome do conglomerado responsável pela contrataçao do Correspondente  |
+| contractors     | [[BankingAgentsContractor](#schemaBankingAgentsContractor)]   | Sim          | Lista de contratantes                                                |
+
+
+## BankingAgentsContractor
 <a id="schemaBankingAgentsContractor"></a>
 
 ```json
 {
   "name": "string",
-  "cnpjMain": "string",
-  "cnpjSubsidiary": "string",
+  "cnpjMainNumber": "string",
+  "cnpjSubsidiaryNumber": "string",
   "cnpjCheckNumber": "string",
   "bankingAgents": [
     {
       "identification": {
         "corporationName": "string",
+        "groupName": "string",
         "tradingName": "string",
-        "cnpjMain": "string",
-        "cnpjSubsidiary": "string",
-        "cnpjCheckNumber": "string",
-        "groupName": "string"
+        "cnpjMainNumber": "string",
+        "cnpjSubsidiaryNumber": "string",
+        "cnpjCheckNumber": "string"
       },
       "postalAddress": {
-        "streetType": "string",
+        "streetTypeName": "string",
         "streetName": "string",
         "buildingNumber": "string",
-        "additionalInfo": "string",
-        "district": "string",
+        "additionalInfoText": "string",
+        "districtName": "string",
         "townName": "string",
-        "countrySubDivision": "string",
+        "countrySubDivisionCode": "string",
         "postCode": "string"
       },
       "services": {
-        "codes": ["string"],
-        "detail": "string"
+        "codes": [
+          "string"
+        ],
+        "detailText": "string"
       }
     }
   ]
 }
 ```
 
-|     Nome          |  Tipo                                       |  Obrigatório    |                            Descrição                       |
-|:------------      |:-----------------------------               | :-------------  |:----------------------------------------------------       |
-| name              | object                                      |  Sim            |                                                            |
-| cnpjMain          | string                                      |  Sim            | CNPJ do conglomerado proprietário da dependência (titular) |
-| cnpjSubsidiary    | string                                      |  Sim            | CNPJ da subsidiária                                        |
-| cnpjCheckNumber   | string                                      |  Sim            | Digito verificador do CNPJ                                 |
-| bankingAgents     | [[BankingAgents](#schemaBankingAgent)]     | Sim             | Lista de correspondentes bancários                         |
+|     Nome              |  Tipo                                    |  Obrigatório    |                            Descrição                                                                                 |
+|:------------          |:-----------------------------            | :-------------  |:----------------------------------------------------                                                                 |
+| name                  | string                                   | Sim             | Nome do contratante do serviço do correspondente                                                                     |
+| cnpjMainNumber        | string                                   | Sim             | Raiz do CNPJ do Contrante                                                                                            |
+| cnpjSubsidiaryNumber  | string                                   | Sim             | Filial do CNPJ do Contratante responsável pelo correspondente                                                        |
+| cnpjCheckNumber       | string                                   | Sim             | 2 dígitos verificação do CNPJ do Contratante responsável pelo correspondente, corresponde aos dois últimos números.  |
+| bankingAgents         | [[BankingAgent](#schemaBankingAgents)]   | Sim             | Lista de correspondentes bancários                                                                                   |
 
 ## BankingAgent
-<a id="schemaBankingAgent"></a>
+<a id="schemaBankingAgents"></a>
 
 ```json
 {
   "identification": {
     "corporationName": "string",
+    "groupName": "string",
     "tradingName": "string",
-    "cnpjMain": "string",
-    "cnpjSubsidiary": "string",
-    "cnpjCheckNumber": "string",
-    "groupName": "string"
+    "cnpjMainNumber": "string",
+    "cnpjSubsidiaryNumber": "string",
+    "cnpjCheckNumber": "string"
   },
   "postalAddress": {
-    "streetType": "string",
+    "streetTypeName": "string",
     "streetName": "string",
     "buildingNumber": "string",
-    "additionalInfo": "string",
-    "district": "string",
+    "additionalInfoText": "string",
+    "districtName": "string",
     "townName": "string",
-    "countrySubDivision": "string",
+    "countrySubDivisionCode": "string",
     "postCode": "string"
   },
   "services": {
-    "codes": ["string"],
-    "detail": "string"
+    "codes": [
+      "string"
+    ],
+    "detailText": "string"
   }
 }
 ```
 
 | Nome | Tipo|Obrigatório|Descrição|
 |:---- |:---|:---|:---|:---|
-| identification |[BankingAgentIdentification](#schemaBankingAgentIdentification)|Sim|Dados de identificação do correspondente|
-| postalAddress |[BankingAgentPostalAddress](#schemaBankingAgentPostalAddress)|Sim|Endereço do correspondente|
-| services |[BankingAgentServices](#schemaBankingAgentServices)|Sim|Serviços fornecidos pelo correspondente|
+| identification |[BankingAgentsIdentification](#schemaBankingAgentsIdentification)|Sim|Dados de identificação do correspondente|
+| postalAddress |[BankingAgentsPostalAddress](#schemaBankingAgentsPostalAddress)|Sim|Endereço do correspondente|
+| services |[BankingAgentsServices](#schemaBankingAgentsServices)|Sim|Serviços fornecidos pelo correspondente|
 
-## BankingAgentIdentification
-<a id="schemaBankingAgentIdentification"></a>
+## BankingAgentsIdentification
+<a id="schemaBankingAgentsIdentification"></a>
 
 ```json
 {
-    "corporationName": "string",
-    "tradingName": "string",
-    "cnpjMain": "string",
-    "cnpjSubsidiary": "string",
-    "cnpjCheckNumber": "string",
-    "groupName": "string"
+  "corporationName": "string",
+  "groupName": "string",
+  "tradingName": "string",
+  "cnpjMainNumber": "string",
+  "cnpjSubsidiaryNumber": "string",
+  "cnpjCheckNumber": "string"
 }
 ```
 
-| Nome             | Tipo   | Obrigatório | Descrição                       |
-|:---------------- |:------ |:----------- |:------------------------------- |
-| corporationName  | string | Sim         | Nome                            |
-| tradingName      | string | Sim         | Razão social                    |
-| cnpjMain         | string | Sim         | Raiz do CNPJ                    |
-| cnpjSubsidiary   | string | Sim         | CNPJ da subsidiária             |
-| cnpjCheckNumber  | string | Sim         | Dígito verificador do CNPJ      |
-| groupName        | string | Sim         | Nome do Gruopo da contratante   |
+| Nome                   | Tipo   | Obrigatório | Descrição                                                 |
+|:----------------       |:------ |:----------- |:-------------------------------                           |
+| corporationName        | string | Sim         | Nome do Correspondente Bancário                           |
+| groupName              | string | Sim         | Nome do conglomerado ao qual pertence o agente bancário   |
+| tradingName            | string | Sim         | Nome fantasia do Correspondente                    |
+| cnpjMainNumber         | string | Sim         | Raiz do CNPJ do Correspondente                    |
+| cnpjSubsidiaryNumber   | string | Sim         | Filial do CNPJ do Correspondente             |
+| cnpjCheckNumber        | string | Sim         | Dígito verificador do CNPJ      |
 
-## BankingAgentPostalAddress
-<a id="schemaBankingAgentPostalAddress"></a>
+## BankingAgentsPostalAddress
+<a id="schemaBankingAgentsPostalAddress"></a>
 
 ```json
 {
-  "streetType": "string",
+  "streetTypeName": "string",
   "streetName": "string",
   "buildingNumber": "string",
-  "additionalInfo": "string",
-  "district": "string",
+  "additionalInfoText": "string",
+  "districtName": "string",
   "townName": "string",
-  "countrySubDivision": "string",
+  "countrySubDivisionCode": "string",
   "postCode": "string"
 }
 ```
 
 |Nome|Tipo|Obrigatório|Descrição|
 |:---|:---|:---|:---|:---|
-|streetType|string|Sim|Tipo de logradouro|
+|streetTypeName|string|Sim|Tipo de logradouro|
 |streetName|string|Sim|Nome do logradouro|
 |buildingNumber|string|Sim|Número|
-|additionalInfo|string|Sim|Complemento|
-|district|string|Sim|Bairro|
+|additionalInfoText|string|Sim|Complemento|
+|districtName|string|Sim|Bairro|
 |townName|string|Sim|Cidade|
-|countrySubDivision|string|Sim|Estado|
+|countrySubDivisionCode|string|Sim|Estado|
 |postCode|string|Sim|CEP|
 
-## BankingAgentServices
-<a id="schemaBankingAgentServices"></a>
+## BankingAgentsServices
+<a id="schemaBankingAgentsServices"></a>
 
 ```json
 {
-    "codes" : ["string"], 
-    "detail" : ""
+  "codes": [
+    "string"
+  ],
+  "detailText": "string"
 }
 ```
 
 |Nome|Tipo|Obrigatório|Descrição|
 |:---|:---|:---|:---|:---|
 |codes|[[Enum BankingAgentsServicesCodes](#schemaEnumBankingAgentsServicesCodes)]|Sim| Lista de serviços prestados |
-|detail|string|Não| Detalhes adicionais sobre os serviços prestados |
+|detailText|string|Não| Detalhes adicionais sobre os serviços prestados |
 
 ### Enum BankingAgentsServicesCodes
 <a id="schemaEnumBankingAgentsServicesCodes"></a>
