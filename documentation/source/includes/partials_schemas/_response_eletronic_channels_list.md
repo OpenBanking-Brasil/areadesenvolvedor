@@ -87,7 +87,7 @@
 ### Propriedades
 |     Nome     |  Tipo                                           | Obrigatório    |                            Definição                       |
 |:------------ |:---------------------------------               |:-------------- |:----------------------------------------------------       |
-| name         | string                                                        | Sim          | Nome do conglomerado responsável pela contrataçao do Correspondente  |
+| name         | string                                          | Sim          | Nome do conglomerado responsável pela contrataçao do Correspondente  |
 | channels     | [[EletronicChannels](#schemaEletronicChannels)] | Sim            | Lista  de canais de atendimento eltrônico                  |
 
 ## EletronicChannels

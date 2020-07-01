@@ -294,9 +294,9 @@
 
 | Propriedade  | Código    | Definição                            |
 |:------------ |:--------- |:-----------------------------------  |
-|type          | 1         | Agências                             |
-|type          | 2         | Postos de atendimento                |
-|type          | 3         | Postos de atendimento eletrônico     |
+|typeNumber    | 1         | Agências                             |
+|typeNumber    | 2         | Postos de atendimento                |
+|typeNumber    | 3         | Postos de atendimento eletrônico     |
 
 ## BranchPostalAddress 
 <a id="schemaBranchPostalAddress"></a>
