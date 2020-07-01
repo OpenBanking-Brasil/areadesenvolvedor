@@ -53,7 +53,7 @@
                   "codes": [
                     "string"
                   ],
-                  "detail": "string"
+                  "detailText": "string"
                 }
               }
             ]
@@ -137,7 +137,7 @@
             "codes": [
               "string"
             ],
-            "detail": "string"
+            "detailText": "string"
           }
         }
       ]
@@ -200,7 +200,7 @@
         "codes": [
           "string"
         ],
-        "detail": "string"
+        "detailText": "string"
       }
     }
   ]
@@ -258,7 +258,7 @@
     "codes": [
       "string"
     ],
-    "detail": "string"
+    "detailText": "string"
   }
 }
 ```
@@ -285,8 +285,8 @@
 |Nome|Tipo|Obrigatório|Descrição|
 |:---|:---|:---|:---|:---|
 |typeNumber|[Enum BranchIdentificationType](#schemaEnumBranchIdentificationType)|Sim|Tipo de dependência própria|
-|identificationCode|string|Sim|Código da dependência bancária|
-|checkDigitNumber|string|Sim|Dígito verificador do código|
+|identificationCode|string|Sim|Código identificador da dependência|
+|checkDigitNumber|string|Sim|Dígito verificador do código da dependência|
 |name|string|Sim|Nome da dependência bancária|
 
 ### Enum BranchIdentificationType 
@@ -330,67 +330,48 @@
 
 ```json
 {
-  "standard" : [
+  "standard": [
     {
-      "weekday" : "Segunda-feira",
-      "openingTime" : "00:00:00+0000",
-      "closingTime" : "00:00:00+0000"
-    },
-    {
-      "weekday" : "Terça-feira",
-      "openingTime" : "00:00:00+0000",
-      "closingTime" : "00:00:00+0000"
-    },
-    {
-      "weekday" : "Quarta-feira",
-      "openingTime" : "00:00:00+0000",
-      "closingTime" : "00:00:00+0000"
-    },
-    {
-      "weekday" : "Quinta-feira",
-      "openingTime" : "00:00:00+0000",
-      "closingTime" : "00:00:00+0000"
-    },
-    {
-      "weekday" : "Sexta-feira",
-      "openingTime" : "00:00:00+0000",
-      "closingTime" : "00:00:00+0000"
+      "weekdayName": "string",
+      "openingTime": "string",
+      "closingTime": "string"
     }
   ],
-  "exceptionAvailability" : "string",
-  "phones" : [ 
+  "exceptionAvailabilityText": "string",
+  "publicAccessFlag": "string",
+  "phones": [
     {
-      "type" : "string",
-      "ddd" : "string",
-      "number" : "string"
+      "typeCode": "string",
+      "dddCode": "string",
+      "number": "string"
     }
   ]
 }
 ```
 
-| Nome                   | Tipo                               | Obrigatório | Descrição                                         |
-|:------------           |:------------------                 |:----------  |:----------------------------                      |
-| standard               | Array                              | Sim         | Lista com os dias da semana                       |
-| » weekday              | string                             | Sim         | Dia da semana                                     |
-| » openingTime          | [[UTCHour](#commonFieldUTCHour)]   | Sim         | Horário de abertura na dependência                |
-| » closingTime          | [[UTCHour](#commonFieldUTCHour)]   | Sim         | Horário de encerramento na dependência            |
-| exceptionAvailability  | string                             | Não         | Informações sobre as exceções de abertura         |
-| phones                 | [[BranchPhone(#schemaBranchPhone)]]| Não         | Lista de telefones para contato com a dependência | 
+| Nome                       | Tipo                               | Obrigatório | Descrição                                         |
+|:------------               |:------------------                 |:----------  |:----------------------------                      |
+| standard                   | Array                              | Sim         | Lista com os dias da semana                       |
+| » weekdayName              | string                             | Sim         | Dia da semana                                     |
+| » openingTime              | [[UTCHour](#commonFieldUTCHour)]   | Sim         | Horário de abertura na dependência                |
+| » closingTime              | [[UTCHour](#commonFieldUTCHour)]   | Sim         | Horário de encerramento na dependência            |
+| exceptionAvailabilityText  | string                             | Não         | Informações sobre as exceções de abertura         |
+| phones                     | [[BranchPhone(#schemaBranchPhone)]]| Não         | Lista de telefones para contato com a dependência | 
 
 ## BranchPhone 
 <a id="schemaBranchPhone"></a>
 
 ```json
 {
-  "type" : "string",
-  "ddd" : "string",
-  "number" : "string"
+  "typeCode": "string",
+  "dddCode": "string",
+  "number": "string"
 }
 ```
 | Nome       | Tipo                                               | Obrigatório | Descrição           |
 |:---------- |:-------------------------------------------------- |:----------- |:---------------     |
-| type       | [Enum BranchPhoneType](#schemaEnumBranchPhoneType) | Sim         | Tipo de telefone    |
-| ddd        | string                                             | Sim         | DDD                 |
+| typeCode   | [Enum BranchPhoneType](#schemaEnumBranchPhoneType) | Sim         | Tipo de telefone    |
+| dddCode    | string                                             | Sim         | DDD                 |
 | number     | string                                             | Sim         | Número do telefone  |
 
 ## Enum BranchPhoneType 
@@ -398,8 +379,8 @@
 
 | Propriedade  | Código    | Definição        |
 |:------------ |:--------- |:---------------- |
-| type         | 1         | Telefone fixo    |
-| type         | 2         | Telefone móvel   |
+| typeCode     | 1         | Telefone fixo    |
+| typeCode     | 2         | Telefone móvel   |
 
 
 ## BranchServices 
@@ -408,14 +389,14 @@
 ```json
 {
     "codes" : ["string"], 
-    "detail" : ""
+    "detailText" : ""
 }
 ```
 
 |Nome|Tipo|Obrigatório|Descrição|
 |:---|:---|:---|:---|:---|
 |codes|[[Enum BranchServicesCodes](#schemaEnumBranchServicesCodes)]|Sim| Lista de serviços prestados |
-|detail|string|Não| Detalhes adicionais sobre os serviços prestados |
+|detailText|string|Não| Campo de texto livre para descrever mais sobre os serviços |
 
 ### Enum BranchServicesCodes 
 <a id="schemaEnumBranchServicesCodes"></a>
