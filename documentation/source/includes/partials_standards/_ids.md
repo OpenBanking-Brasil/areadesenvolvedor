@@ -1,6 +1,7 @@
 ## Estabilidade do ID
 
-Nesta definição dos padrões IDs de recursos são OBRIGATÓRIOS para atender aos seguintes cenários:
+
+Dentro desses padrões, os IDs de recursos são NECESSÁRIOS para atender ao seguinte:
 
 * O ID de um recurso deve ser especificado no end point de uma API apenas para obter detalhes do recurso ou para realizar alterções no mesmo
 * Se o ID for especificado nos padrões do open-banking então ele é obrigatório e deverá ser fornecedo pela entidade implementadora da API de acordo com o padrão definido.
