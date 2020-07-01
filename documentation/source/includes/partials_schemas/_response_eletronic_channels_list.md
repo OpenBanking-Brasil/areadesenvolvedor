@@ -4,7 +4,7 @@
 ```json
 {
   "data": {
-    "organization": "string",
+    "organisation": "string",
     "channels": [
       {
         "identification": {
@@ -43,7 +43,7 @@
 |     Nome          |  Tipo                                           | Obrigatório    |                            Definição                       |
 |:------------      |:---------------------------------               |:-------------- |:----------------------------------------------------       |
 | data              | object                                          |                |                                                            |
-| » organization    | string                                          | Sim            | Nome do conglomerado proprietário da dependência (titular) |
+| » organisation    | string                                          | Sim            | Nome do conglomerado proprietário da dependência (titular) |
 | »  channels       | [[EletronicChannels](#schemaEletronicChannels)] | Sim            | Lista  de canais de atendimento eltrônico                  |
 | links             | [[LinksPaginated](#schemaLinksPaginated)]       | Sim            |                                                            |
 | meta              | [[MetaPaginated](#schemaMetaPaginated)]         | Sim            |                                                            |
