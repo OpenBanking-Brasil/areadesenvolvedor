@@ -63,7 +63,7 @@
 |     Nome          |  Tipo                                                                | Obrigatório  |                            Definição                  |
 |:------------      |:---------------------------------                                    |:-----------  |:----------------------------------------------------  |
 | data              | object                                                               | Sim          |                                                       |
-| » organisation    | [[BankingAgentsOrganisation](#schemaBankingAgentsOrganisation)]        | Sim          | Lista das organizaçõs titulares das dependências      |
+| » organisation    | [[BankingAgentsOrganisation](#schemaBankingAgentsOrganisation)]      | Sim          | Lista das organizaçõs titulares das dependências      |
 | links             | [[LinksPaginated](#schemaLinksPaginated)]                            | Sim          |                                                       |
 | meta              | [[MetaPaginated](#schemaMetaPaginated)]                              | Sim          |                                                       |
 
@@ -160,7 +160,7 @@
 
 |     Nome              |  Tipo                                    |  Obrigatório    |                            Descrição                                                                                 |
 |:------------          |:-----------------------------            | :-------------  |:----------------------------------------------------                                                                 |
-| name                  | object                                   | Sim             | Nome do contratante do serviço do correspondente                                                                     |
+| name                  | string                                   | Sim             | Nome do contratante do serviço do correspondente                                                                     |
 | cnpjMainNumber        | string                                   | Sim             | Raiz do CNPJ do Contrante                                                                                            |
 | cnpjSubsidiaryNumber  | string                                   | Sim             | Filial do CNPJ do Contratante responsável pelo correspondente                                                        |
 | cnpjCheckNumber       | string                                   | Sim             | 2 dígitos verificação do CNPJ do Contratante responsável pelo correspondente, corresponde aos dois últimos números.  |

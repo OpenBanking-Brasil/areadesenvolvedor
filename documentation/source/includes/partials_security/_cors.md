@@ -10,7 +10,7 @@ O Cross-Origin Resource Sharing (CORS) será permitido nos seguintes endpoints p
 
 As requisições pre-flight com o verbo OPTIONS deverão enviar os headers:
 
- * **Origin** Debe corresponder com o valor do dominio dos certificados MA-TLS
+ * **Origin** Deve corresponder com o valor do dominio dos certificados MA-TLS
  * Opcionalmente **Access-Control-Request-Method** indicando o método
 
 
