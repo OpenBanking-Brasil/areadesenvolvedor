@@ -2,7 +2,7 @@
 
 ### Contexto Open-data
 
-Não haverá endpoints específicos para Authorização e Autenticação.
+Não haverá endpoints específicos para Authorização e Autenticação com o intuito de maximizar o uso do Open-data.
 
 (Opcional)
 Disponibilizar um endpoint para validação WKS
