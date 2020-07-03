@@ -58,10 +58,10 @@ Importante:
 Quando o participante deseja adicionar um novo end point em uma API já especificada no padrão, o participante DEVE incluir seu `<PID>` como prefixo do recurso que será implementado.
 
 Por exemplo, assumindo a existência do end point abaixo para consulta das transações de uma conta:
-`<host>/open-banking/accounts/v1/{account ID}/transactions`
+`<host>/open-banking/accounts/v1/accounts/{account ID}/transactions`
 
 e o participante deseja adicionar um novo end point que resume as transações por um período, então este end point poderia ser definido como:
-`<host>/open-banking/accounts/v1/{account ID}/<PID>-balance-movement`
+`<host>/open-banking/accounts/v1/accounts/{account ID}/<PID>-balance-movement`
 
 Importante:
 
