@@ -1,12 +1,15 @@
 ## CORS
 
-O Cross-Origin Resource Sharing (CORS) será permitido nos seguintes endpoints para os Participantes cadastrados:
+### Open-Data
+O Cross-Origin Resource Sharing (CORS) para todas as origens (valor " * ") será permitido nos seguintes endpoints:
 
  * Open Data endpoints
    * Correspondentes bancários
    * Dependências
    * Canais eletrônicos
 
+### Customer-Data
+O Cross-Origin Resource Sharing (CORS) será permitido nos endpoints para os Participantes cadastrados:
 
 As requisições pre-flight com o verbo OPTIONS deverão enviar os headers:
 
