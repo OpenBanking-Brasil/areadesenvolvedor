@@ -1,3 +1,4 @@
 ## Tokens
 
-Não haverá tokens para os endpoints Open-Data
+### Contexto Open-data
+Não haverá tokens JWT para os endpoints Open-Data
