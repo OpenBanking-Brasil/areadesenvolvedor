@@ -10,41 +10,39 @@
         "companies": [
           {
             "name": "string",
-            "cnpjMainNumber": "string",
-            "cnpjSubsidiaryNumber": "string",
-            "cnpjCheckNumber": "string",
+            "cnpjNumber": "string",
             "branches": [
               {
                 "identification": {
-                  "typeNumber": "string",
-                  "identificationCode": "string",
-                  "checkDigitNumber": "string",
+                  "type": "string",
+                  "code": "string",
+                  "checkDigit": "string",
                   "name": "string"
                 },
                 "postalAddress": {
-                  "streetTypeName": "string",
+                  "streetType": "string",
                   "streetName": "string",
                   "buildingNumber": "string",
-                  "additionalInfoText": "string",
+                  "additionalInfo": "string",
                   "districtName": "string",
                   "townName": "string",
-                  "countrySubDivisionCode": "string",
+                  "countrySubDivision": "string",
                   "postCode": "string"
                 },
                 "availability": {
                   "standard": [
                     {
-                      "weekdayName": "string",
+                      "weekday": "string",
                       "openingTime": "string",
                       "closingTime": "string"
                     }
                   ],
-                  "exceptionAvailabilityText": "string",
-                  "publicAccessFlag":"string",
+                  "exceptionAvailability": "string",
+                  "allowPublicAccess": "string",
                   "phones": [
                     {
-                      "typeCode": "string",
-                      "dddCode": "string",
+                      "type": "string",
+                      "areaCode": "string",
                       "number": "string"
                     }
                   ]
@@ -53,7 +51,7 @@
                   "codes": [
                     "string"
                   ],
-                  "detailText": "string"
+                  "additionalInfo": "string"
                 }
               }
             ]
@@ -94,41 +92,39 @@
   "companies": [
     {
       "name": "string",
-      "cnpjMainNumber": "string",
-      "cnpjSubsidiaryNumber": "string",
-      "cnpjCheckNumber": "string",
+      "cnpjNumber": "string",
       "branches": [
         {
           "identification": {
-            "typeNumber": "string",
-            "identificationCode": "string",
-            "checkDigitNumber": "string",
+            "type": "string",
+            "code": "string",
+            "checkDigit": "string",
             "name": "string"
           },
           "postalAddress": {
-            "streetTypeName": "string",
+            "streetType": "string",
             "streetName": "string",
             "buildingNumber": "string",
-            "additionalInfoText": "string",
+            "additionalInfo": "string",
             "districtName": "string",
             "townName": "string",
-            "countrySubDivisionCode": "string",
+            "countrySubDivision": "string",
             "postCode": "string"
           },
           "availability": {
             "standard": [
               {
-                "weekdayName": "string",
+                "weekday": "string",
                 "openingTime": "string",
                 "closingTime": "string"
               }
             ],
-            "exceptionAvailabilityText": "string",
-            "publicAccessFlag": "string",
+            "exceptionAvailability": "string",
+            "allowPublicAccess": "string",
             "phones": [
               {
-                "typeCode": "string",
-                "dddCode": "string",
+                "type": "string",
+                "areaCode": "string",
                 "number": "string"
               }
             ]
@@ -137,7 +133,7 @@
             "codes": [
               "string"
             ],
-            "detailText": "string"
+            "additionalInfo": "string"
           }
         }
       ]
@@ -149,49 +145,47 @@
 |     Nome     |  Tipo                                    | Obrigatório  |                            Definição                         |
 |:------------ |:---------------------------------        |:-----------  |:----------------------------------------------------         |
 | name         | string                                   | Sim          | Nome do conglomerado proprietário da dependência (titular).  |
-| companies    | [[Companies](#schemaBranchesCompanies)]  | Sim          | Lista de instituições pertencentes à organização             |
+| companies    | [[BranchesCompanies](#schemaBranchesCompanies)]  | Sim          | Lista de instituições pertencentes à organização             |
 
-## Companies 
+## BranchesCompanies 
 <a id="schemaBranchesCompanies"></a>
 
 ```json
 {
   "name": "string",
-  "cnpjMainNumber": "string",
-  "cnpjSubsidiaryNumber": "string",
-  "cnpjCheckNumber": "string",
+  "cnpjNumber": "string",
   "branches": [
     {
       "identification": {
-        "typeNumber": "string",
-        "identificationCode": "string",
-        "checkDigitNumber": "string",
+        "type": "string",
+        "code": "string",
+        "checkDigit": "string",
         "name": "string"
       },
       "postalAddress": {
-        "streetTypeName": "string",
+        "streetType": "string",
         "streetName": "string",
         "buildingNumber": "string",
-        "additionalInfoText": "string",
+        "additionalInfo": "string",
         "districtName": "string",
         "townName": "string",
-        "countrySubDivisionCode": "string",
+        "countrySubDivision": "string",
         "postCode": "string"
       },
       "availability": {
         "standard": [
           {
-            "weekdayName": "string",
+            "weekday": "string",
             "openingTime": "string",
             "closingTime": "string"
           }
         ],
-        "exceptionAvailabilityText": "string",
-        "publicAccessFlag": "string",
+        "exceptionAvailability": "string",
+        "allowPublicAccess": "string",
         "phones": [
           {
-            "typeCode": "string",
-            "dddCode": "string",
+            "type": "string",
+            "areaCode": "string",
             "number": "string"
           }
         ]
@@ -200,20 +194,18 @@
         "codes": [
           "string"
         ],
-        "detailText": "string"
+        "additionalInfo": "string"
       }
     }
   ]
 }
 ```
 
-|     Nome               |  Tipo                         | Obrigatório    |                            Descrição                                                                                                |
-|:------------           |:----------------------------- |:-------------  |:----------------------------------------------------                                                                                |
-| name                   | string                        | Sim            | Nome da Instituição, pertencente à organização, responsável pela Dependência                                                        |
-| cnpjMainNumber         | string                        | Sim            | Raiz do CNPJ da instituição responsável pela dependência - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica |
-| cnpjSubsidiaryNumber   | string                        | Sim            | Filial do CNPJ da instituição responsável pela dependência                                                                          |
-| cnpjCheckNumber        | string                        | Sim            | 2 dígitos de verificação do CNPJ da instituição responsável pela dependência                                                        |
-| branches               | [[Branch](#schemaBranch)]     | Sim            | Lista de dependências próprias da instituição                                                                                       |
+|     Nome               |  Tipo                         | Obrigatório    |                            Descrição                                                                                        |
+|:------------           |:----------------------------- |:-------------  |:----------------------------------------------------                                                                        |
+| name                   | string                        | Sim            | Nome da Instituição, pertencente à organização, responsável pela Dependência                                                |
+| cnpjNumber             | string                        | Sim            | CNPJ da instituição responsável pela dependência - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica |
+| branches               | [[Branch](#schemaBranch)]     | Sim            | Lista de dependências próprias da instituição                                                                               |
 
 ## Branch 
 <a id="schemaBranch"></a>
@@ -221,35 +213,35 @@
 ```json
 {
   "identification": {
-    "typeNumber": "string",
-    "identificationCode": "string",
-    "checkDigitNumber": "string",
+    "type": "string",
+    "code": "string",
+    "checkDigit": "string",
     "name": "string"
   },
   "postalAddress": {
-    "streetTypeName": "string",
+    "streetType": "string",
     "streetName": "string",
     "buildingNumber": "string",
-    "additionalInfoText": "string",
+    "additionalInfo": "string",
     "districtName": "string",
     "townName": "string",
-    "countrySubDivisionCode": "string",
+    "countrySubDivision": "string",
     "postCode": "string"
   },
   "availability": {
     "standard": [
       {
-        "weekdayName": "string",
+        "weekday": "string",
         "openingTime": "string",
         "closingTime": "string"
       }
     ],
-    "exceptionAvailabilityText": "string",
-    "publicAccessFlag": "string",
+    "exceptionAvailability": "string",
+    "allowPublicAccess": "string",
     "phones": [
       {
-        "typeCode": "string",
-        "dddCode": "string",
+        "type": "string",
+        "areaCode": "string",
         "number": "string"
       }
     ]
@@ -258,7 +250,7 @@
     "codes": [
       "string"
     ],
-    "detailText": "string"
+    "additionalInfo": "string"
   }
 }
 ```
@@ -275,18 +267,18 @@
 
 ```json
 {
-  "typeNumber": "string",
-  "identificationCode": "string",
-  "checkDigitNumber": "string",
+  "type": "string",
+  "code": "string",
+  "checkDigit": "string",
   "name": "string"
 }
 ```
 
 |Nome|Tipo|Obrigatório|Descrição|
 |:---|:---|:---|:---|:---|
-|typeNumber|[Enum BranchIdentificationType](#schemaEnumBranchIdentificationType)|Sim|Tipo de dependência própria|
-|identificationCode|string|Sim|Código identificador da dependência|
-|checkDigitNumber|string|Sim|Dígito verificador do código da dependência|
+|type|[Enum BranchIdentificationType](#schemaEnumBranchIdentificationType)|Sim|Tipo de dependência própria|
+|code|string|Sim|Código identificador da dependência|
+|checkDigit|string|Sim|Dígito verificador do código da dependência|
 |name|string|Sim|Nome da dependência bancária|
 
 ### Enum BranchIdentificationType 
@@ -294,35 +286,35 @@
 
 | Propriedade  | Código    | Definição                            |
 |:------------ |:--------- |:-----------------------------------  |
-|typeNumber    | 1         | Agências                             |
-|typeNumber    | 2         | Postos de atendimento                |
-|typeNumber    | 3         | Postos de atendimento eletrônico     |
+| type         | 1         | Agências                             |
+| type         | 2         | Postos de atendimento                |
+| type         | 3         | Postos de atendimento eletrônico     |
 
 ## BranchPostalAddress 
 <a id="schemaBranchPostalAddress"></a>
 
 ```json
 {
-  "streetTypeName": "string",
+  "streetType": "string",
   "streetName": "string",
   "buildingNumber": "string",
-  "additionalInfoText": "string",
+  "additionalInfo": "string",
   "districtName": "string",
   "townName": "string",
-  "countrySubDivisionCode": "string",
+  "countrySubDivision": "string",
   "postCode": "string"
 }
 ```
 
 |Nome|Tipo|Obrigatório|Descrição|
 |:---|:---|:---|:---|:---|
-|streetTypeName|string|Sim|Tipo de logradouro|
+|streetType|string|Sim|Tipo de logradouro|
 |streetName|string|Sim|Nome do logradouro|
 |buildingNumber|string|Sim|Número|
-|additionalInfoText|string|Sim|Complemento|
+|additionalInfo|string|Sim|Complemento|
 |districtName|string|Sim|Bairro|
 |townName|string|Sim|Cidade|
-|countrySubDivisionCode|string|Sim|Estado|
+|countrySubDivision|string|Sim|Estado|
 |postCode|string|Sim|CEP|
 
 ## BranchAvailability 
@@ -332,46 +324,47 @@
 {
   "standard": [
     {
-      "weekdayName": "string",
+      "weekday": "string",
       "openingTime": "string",
       "closingTime": "string"
     }
   ],
-  "exceptionAvailabilityText": "string",
-  "publicAccessFlag": "string",
+  "exceptionAvailability": "string",
+  "allowPublicAccess": "string",
   "phones": [
     {
-      "typeCode": "string",
-      "dddCode": "string",
+      "type": "string",
+      "areaCode": "string",
       "number": "string"
     }
   ]
 }
 ```
 
-| Nome                       | Tipo                               | Obrigatório | Descrição                                         |
-|:------------               |:------------------                 |:----------  |:----------------------------                      |
-| standard                   | Array                              | Sim         | Lista com os dias da semana                       |
-| » weekdayName              | string                             | Sim         | Dia da semana                                     |
-| » openingTime              | [[UTCHour](#commonFieldUTCHour)]   | Sim         | Horário de abertura na dependência                |
-| » closingTime              | [[UTCHour](#commonFieldUTCHour)]   | Sim         | Horário de encerramento na dependência            |
-| exceptionAvailabilityText  | string                             | Não         | Informações sobre as exceções de abertura         |
-| phones                     | [[BranchPhone(#schemaBranchPhone)]]| Não         | Lista de telefones para contato com a dependência | 
+| Nome                       | Tipo                               | Obrigatório | Descrição                                                       |
+|:------------               |:------------------                 |:----------  |:----------------------------                                    |
+| standard                   | Array                              | Sim         | Lista com os dias da semana                                     |
+| » weekday                  | string                             | Sim         | Dia da semana                                                   |
+| » openingTime              | [[UTCHour](#commonFieldUTCHour)]   | Sim         | Horário de abertura na dependência                              |
+| » closingTime              | [[UTCHour](#commonFieldUTCHour)]   | Sim         | Horário de encerramento na dependência                          |
+| exceptionAvailability      | string                             | Não         | Informações sobre as exceções de abertura                       |
+| allowPublicAccess          | string                             | Sim         | Define se a dependência possui acesso ao público. True ou False |
+| phones                     | [[BranchPhone(#schemaBranchPhone)]]| Não         | Lista de telefones para contato com a dependência               | 
 
 ## BranchPhone 
 <a id="schemaBranchPhone"></a>
 
 ```json
 {
-  "typeCode": "string",
-  "dddCode": "string",
+  "type": "string",
+  "areaCode": "string",
   "number": "string"
 }
 ```
 | Nome       | Tipo                                               | Obrigatório | Descrição           |
 |:---------- |:-------------------------------------------------- |:----------- |:---------------     |
-| typeCode   | [Enum BranchPhoneType](#schemaEnumBranchPhoneType) | Sim         | Tipo de telefone    |
-| dddCode    | string                                             | Sim         | DDD                 |
+| type       | [Enum BranchPhoneType](#schemaEnumBranchPhoneType) | Sim         | Tipo de telefone    |
+| areaCode   | string                                             | Sim         | DDD                 |
 | number     | string                                             | Sim         | Número do telefone  |
 
 ## Enum BranchPhoneType 
@@ -379,8 +372,8 @@
 
 | Propriedade  | Código    | Definição        |
 |:------------ |:--------- |:---------------- |
-| typeCode     | 1         | Telefone fixo    |
-| typeCode     | 2         | Telefone móvel   |
+| type         | 1         | Telefone fixo    |
+| type         | 2         | Telefone móvel   |
 
 
 ## BranchServices 
@@ -388,15 +381,17 @@
 
 ```json
 {
-    "codes" : ["string"], 
-    "detailText" : ""
+  "codes": [
+    "string"
+  ],
+  "additionalInfo": "string"
 }
 ```
 
 |Nome|Tipo|Obrigatório|Descrição|
 |:---|:---|:---|:---|:---|
 |codes|[[Enum BranchServicesCodes](#schemaEnumBranchServicesCodes)]|Sim| Lista de serviços prestados |
-|detailText|string|Não| Campo de texto livre para descrever mais sobre os serviços |
+|additionalInfo|string|Não| Campo de texto livre para descrever mais sobre os serviços |
 
 ### Enum BranchServicesCodes 
 <a id="schemaEnumBranchServicesCodes"></a>
