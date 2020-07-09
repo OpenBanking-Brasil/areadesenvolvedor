@@ -20,7 +20,6 @@
                     "identification": {
                       "corporationName": "string",
                       "groupName": "string",
-                      "tradingName": "string",
                       "cnpjNumber": "string"
                     },
                     "postalAddress": {
@@ -88,7 +87,6 @@
               "identification": {
                 "corporationName": "string",
                 "groupName": "string",
-                "tradingName": "string",
                 "cnpjNumber": "string"
               },
               "postalAddress": {
@@ -137,7 +135,6 @@
           "identification": {
             "corporationName": "string",
             "groupName": "string",
-            "tradingName": "string",
             "cnpjNumber": "string"
           },
           "postalAddress": {
@@ -182,7 +179,6 @@
       "identification": {
         "corporationName": "string",
         "groupName": "string",
-        "tradingName": "string",
         "cnpjNumber": "string"
       },
       "postalAddress": {
@@ -220,7 +216,6 @@
   "identification": {
     "corporationName": "string",
     "groupName": "string",
-    "tradingName": "string",
     "cnpjNumber": "string"
   },
   "postalAddress": {
@@ -255,7 +250,6 @@
 {
   "corporationName": "string",
   "groupName": "string",
-  "tradingName": "string",
   "cnpjNumber": "string"
 }
 ```
@@ -263,8 +257,7 @@
 | Nome                   | Tipo   | Obrigatório | Descrição                                                 |
 |:----------------       |:------ |:----------- |:-------------------------------                           |
 | corporationName        | string | Sim         | Nome do Correspondente Bancário                           |
-| groupName              | string | Sim         | Nome do conglomerado ao qual pertence o agente bancário   |
-| tradingName            | string | Sim         | Nome fantasia do Correspondente                           |
+| groupName              | string | Não         | Nome do conglomerado ao qual pertence o agente bancário   |
 | cnpjNumber             | string | Sim         | CNPJ do Correspondente                                    |
 
 ## BankingAgentsPostalAddress

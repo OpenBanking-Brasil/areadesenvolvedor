@@ -69,33 +69,31 @@ components:
         data:
           organisation:
             - name: Big Banks
-              contractors:
-                - name: Brazil Contractor LTDA
-                  cnpjMainNumber: '14684579'
-                  cnpjSubsidiaryNumber: '1'
-                  cnpjCheckNumber: '63'
-                  bankingAgents:
-                    - identification:
-                        corporationName: Salt Mount S/A
-                        groupName: HyperMarkets
-                        tradingName: SmallMarket Express
-                        cnpjMainNumber: '50870366'
-                        cnpjSubsidiaryNumber: '1'
-                        cnpjCheckNumber: '90'
-                      postalAddress:
-                        streetTypeName: Alameda
-                        streetName: Santos
-                        buildingNumber: '1041'
-                        additionalInfoText: null
-                        districtName: Cerqueira César
-                        townName: São Paulo
-                        countrySubDivisionCode: SP
-                        postCode: 01419-002
-                      services:
-                        codes:
-                          - '1'
-                          - '2'
-                        detailText: null
+              companies:
+                - name: Brazil Campany LTDA
+                  cnpjNumber: '12345678901234'
+                  contractors:
+                    - name: Brazil Contractor LTDA
+                      cnpjNumber: '14684579163'
+                      bankingAgents:
+                        - identification:
+                            corporationName: Salt Mount S/A
+                            groupName: HyperMarkets
+                            cnpjNumber: '50870366190'
+                          postalAddress:
+                            streetType: Alameda
+                            streetName: Santos
+                            buildingNumber: '1041'
+                            additionalInfo: null
+                            districtName: Cerqueira César
+                            townName: São Paulo
+                            countrySubDivision: SP
+                            postCode: 01419-002
+                          services:
+                            codes:
+                              - '1'
+                              - '2'
+                            additionalInfo: null
         links:
           self: 'https://api.banco.com.br/open-banking/channels/v1/banking-agents'
           first: 'https://api.banco.com.br/open-banking/channels/v1/banking-agents'
@@ -109,16 +107,33 @@ components:
       type: object
       required:
         - name
-        - contractors
+        - companies
       properties:
         name:
           type: string
           description: Nome do conglomerado proprietário da dependência (titular).
+        companies:
+          type: array
+          items:
+            $ref: '#/components/schemas/BankingAgentsCompanies'
+          description: Lista de instituições pertencentes à organização  
+    BankingAgentsCompanies:
+      type: object
+      required:
+        - name
+        - cnpjNumber
+        - contractors
+      properties:
+        name:
+          type: string
+          description: Nome do conglomerado responsável pela contrataçao do Correspondente.
         contractors:
           type: array
           items:
             $ref: '#/components/schemas/BankingAgentsContractor'
-          description: Lista de contratantes  
+          description: Lista de contratantes
+      allOf:
+        - $ref: '#/components/schemas/CNPJ'
     BankingAgentsContractor:
       type: object
       required:
@@ -156,51 +171,65 @@ components:
       example:
         data:
           organization:
-            - name: string
+            - name: The Big Bank Company
               companies:
-                - name: string
-                  cnpjMainNumber: string
-                  cnpjSubsidiaryNumber: string
-                  cnpjCheckNumber: string
+                - name: RSR Bank
+                  cnpjNumber: '14684579163'
                   branches:
                     - identification:
-                        typeNumber: string
-                        identificationCode: string
-                        checkDigitNumber: string
-                        name: string
+                        type: '1'
+                        code: '7055'
+                        checkDigit: '0'
+                        name: Agência Alameda Santos
                       postalAddress:
-                        streetTypeName: string
-                        streetName: string
-                        buildingNumber: string
-                        additionalInfoText: string
-                        districtName: string
-                        townName: string
-                        countrySubDivisionCode: string
-                        postCode: string
+                        streetType: Alameda
+                        streetName: Santos
+                        buildingNumber: '1041'
+                        additionalInfo: null
+                        districtName: Cerqueira César
+                        townName: São Paulo
+                        countrySubDivision: SP
+                        postCode: 01419-002
                       availability:
                         standard:
-                          - weekdayName: string
-                            openingTime: string
-                            closingTime: string
-                        exceptionAvailabilityText: string
-                        publicAccessFlag: string
+                          - weekday: Segunda-feira
+                            openingTime: '13:00:00+0000'
+                            closingTime: '19:00:00+0000'
+                          - weekday: Terça-feira
+                            openingTime: '13:00:00+0000'
+                            closingTime: '19:00:00+0000'
+                          - weekday: Quarta-feira
+                            openingTime: '13:00:00+0000'
+                            closingTime: '19:00:00+0000'
+                          - weekday: Quinta-feira
+                            openingTime: '13:00:00+0000'
+                            closingTime: '19:00:00+0000'
+                          - weekday: Sexta-feira
+                            openingTime: '13:00:00+0000'
+                            closingTime: '19:00:00+0000'
+                        exceptionAvailability: 'Exceto feriados municipais, estaduais e nacionais'
+                        allowPublicAccess: 'true'
                         phones:
-                          - typeCode: string
-                            dddCode: string
-                            number: string
+                          - type: '1'
+                            areaCode: '11'
+                            number: 4444-5555
+                          - type: '2'
+                            areaCode: '11'
+                            number: 99999-8888
                       services:
                         codes:
-                          - string
-                        detailText: string
+                          - '1'
+                          - '2'
+                        additionalInfo: null
         links:
-          self: string
-          first: string
-          prev: string
-          next: string
-          last: string
+          self: 'https://api.banco.com.br/open-banking/channels/v1/branches'
+          first: 'https://api.banco.com.br/open-banking/channels/v1/branches'
+          prev: null
+          next: null
+          last: 'https://api.banco.com.br/open-banking/channels/v1/branches'
         meta:
-          totalRecords: integer
-          totalPages: integer
+          totalRecords: 1
+          totalPages: 1
     BranchesOrganisation:
       type: object
       required:
@@ -222,7 +251,7 @@ components:
       properties:
         name:
           type: string
-        bankingAgents:
+        branches:
           type: array
           items:
             $ref: '#/components/schemas/Branch'
@@ -252,51 +281,68 @@ components:
       example:
         data:
           organisation:
-            - name: The Big Bank Company
-              channels:
-                - identification:
-                    typeCode: '4'
-                    phones:
-                      - ddiCode: null
-                        dddCode: null
-                        number: 0800 555 1234
-                        descriptionText: Para regiões metropolitanas e capitais usar o telefone
-                      - ddiCode: null
-                        dddCode: '11'
-                        number: 4004-4828
-                        descriptionText: Demais localidades
-                      - ddiCode: '55'
-                        dddCode: '11'
-                        number: 44003-4820
-                        descriptionText: Para clientes no exterior
-                  services:
-                    codes:
-                      - '1'
-                      - '2'
-                      - '3'
-                    detailText: null
-                - identification:
-                    typeCode: '1'
-                    urlName: 'https://thebigbankcompany.sample.com'
-                  services:
-                    codes:
-                      - '1'
-                      - '2'
-                      - '3'
-                      - '4'
-                      - '6'
-                      - '7'
-                    detailText: Canal de atendimento 2
-          links:
-            self: 'https://api.banco.com.br/open-banking/channels/v1/electronic-channels'
-            first: 'https://api.banco.com.br/open-banking/channels/v1/electronic-channels'
-            prev: null
-            next: null
-            last: 'https://api.banco.com.br/open-banking/channels/v1/electronic-channels'
-          meta:
-            totalRecords: 1
-            totalPages: 1
+            - name: The Big Bank Organisation
+              companies:
+                - name: The Big Bank Company
+                  cnpjNumber: '12345678901234'
+                  channels:
+                    - identification:
+                        type: '4'
+                        phones:
+                          - countryCode: null
+                            areaCode: null
+                            number: 0800 555 1234
+                            additionalInfo: Para regiões metropolitanas e capitais usar o telefone
+                          - countryCode: null
+                            areaCode: '11'
+                            number: 4004-4828
+                            additionalInfo: Demais localidades
+                          - countryCode: '55'
+                            areaCode: '11'
+                            number: 44003-4820
+                            additionalInfo: Para clientes no exterior
+                      services:
+                        codes:
+                          - '1'
+                          - '2'
+                          - '3'
+                        additionalInfo: null
+                    - identification:
+                        type: '1'
+                        url: 'https://thebigbankcompany.sample.com'
+                      services:
+                        codes:
+                          - '1'
+                          - '2'
+                          - '3'
+                          - '4'
+                          - '6'
+                          - '7'
+                        additionalInfo: Canal de atendimento 2
+        links:
+          self: 'https://api.banco.com.br/open-banking/channels/v1/electronic-channels'
+          first: 'https://api.banco.com.br/open-banking/channels/v1/electronic-channels'
+          prev: null
+          next: null
+          last: 'https://api.banco.com.br/open-banking/channels/v1/electronic-channels'
+        meta:
+          totalRecords: 1
+          totalPages: 1
     EletronicChannelsOrganisation:
+      type: object
+      required:
+        - name
+        - companies
+      properties:
+        name:
+          type: string
+          description: Nome do conglomerado proprietário da dependência (titular).
+        companies:
+          type: array
+          items:
+            $ref: '#/components/schemas/EletronicChannelsCompanies'
+          description: Lista de instituições pertencentes à organização
+    EletronicChannelsCompanies:
       type: object
       required:
         - name
@@ -310,6 +356,8 @@ components:
           items:
             $ref: '#/components/schemas/EletronicChannel'
           description: Lista  de canais de atendimento eltrônico
+      allOf:
+        - $ref: '#/components/schemas/CNPJ'
     BankingAgent:
       type: object
       required:
@@ -330,9 +378,6 @@ components:
           type: string
           maxLength: 100
         groupName:
-          type: string
-          maxLength: 100
-        tradingName:
           type: string
           maxLength: 100
       allOf:
@@ -360,7 +405,7 @@ components:
               * `7` - Recepção e encaminhamento de propostas de fornecimento de cartões de crédito
               * `8` - Realização de operações de câmbio
           description: Serviços oferecidos pelo canal eletrônico
-        detailText:
+        additionalInfo:
           type: string
           maxLength: 2000
           description: Campo aberto para detalhamento
@@ -385,7 +430,7 @@ components:
     BranchIdentification:
       type: object
       properties:
-        typeNumber:
+        type:
           type: string
           enum: ["1","2","3"]
           maxLength: 2
@@ -395,11 +440,11 @@ components:
             * `1` - Agência
             * `2` - Posto de Atendimento
             * `3` - Posto de Atendimento Eletrônico 
-        identificationCode:
+        code:
           type: string
           maxLength: 4
           pattern: ^\d{4}$
-        checkDigitNumber:
+        checkDigit:
           type: string
           maxLength: 1
           pattern: ^\d{1}$
@@ -408,7 +453,8 @@ components:
           maxLength: 100
       required:
         - type
-        - identification
+        - code
+        - checkDigit
         - name
     BranchAvailability:
       type: object
@@ -417,7 +463,7 @@ components:
           type: array
           items:
             properties:
-              weekdayName:
+              weekday:
                 type: string
                 enum: ["Domingo","Segunda-feira","Terça-feira","Quarta-feira","Quinta-feira","Sexta-feira","Sábado"]
                 description: Dia da semana de abertura da dependência bancária
@@ -436,17 +482,17 @@ components:
               - weekday
               - openingTime
               - closingTime
-        exceptionAvailabilityText:
+        exceptionAvailability:
           type: string
           maxLength: 2000
-        publicAccessFlag:
+        allowPublicAccess:
           type: boolean
           enum: [true,false]
         phones:
           type: array
           items:
             properties:
-              typeCode:
+              type:
                 type: string
                 maxLength: 1
                 pattern: ^\d{1}$
@@ -454,7 +500,7 @@ components:
                   Tipo de Telefone
                   * `1` - Fixo
                   * `2` - Móvel
-              dddCode:
+              areaCode:
                 type: string
                 maxLength: 2
                 pattern: ^\d{2}$
@@ -466,7 +512,7 @@ components:
       required:
         - standard
         - exceptionAvailability
-        - publicAccessFlag
+        - allowPublicAccess
     BranchServices:
       type: object
       properties:
@@ -487,7 +533,7 @@ components:
             * `6` - Operações de câmbio
             * `7` - Investimentos
             * `8` - Seguros
-        detailText:
+        additionalInfo:
           type: string
           description: Campo aberto para detalhamento
           maxLength: 2000
@@ -506,9 +552,9 @@ components:
     EletronicChannelIdentification:
       type: object
       required:
-        - typeCode
+        - type
       properties:
-        typeCode:
+        type:
           type: string
           enum: ["1","2","3","4","5","6"]
           maxLength: 2
@@ -525,11 +571,11 @@ components:
           type: array
           items:
             properties:
-              ddiCode:
+              countryCode:
                 type: string
                 maxLength: 2
                 pattern: ^\d{2}$
-              dddCode:
+              areaCode:
                 type: string
                 maxLength: 2
                 pattern: ^\d{2}$
@@ -537,10 +583,10 @@ components:
                 type: string
                 maxLength: 13
                 pattern: ^([0-9]{4,5})-([0-9]{4})$
-              descriptionText:
+              additionalInfo:
                 type: string
                 maxLength: 50
-        urlName:
+        url:
           type: string
           maxLength: 1024
     EletronicChannelServices:
@@ -565,14 +611,14 @@ components:
               * `6` - Investimentos
               * `7` - Seguros
               * `8` - Atendimento as demandas de cliente
-        detailText:
+        additionalInfo:
           type: string
           maxLength: 2000
           description: Campo aberto para detalhamento
     PostalAddress:
       type: object
       properties:
-        streetTypeName:
+        streetType:
           type: string
           description: Tipo de logradouro
           maxLength: 10
@@ -585,7 +631,7 @@ components:
           type: string
           description: Número
           maxLength: 6
-        additionalInfoText:
+        additionalInfo:
           type: string
           description: Complemento
           maxLength: 30
@@ -597,7 +643,7 @@ components:
           type: string
           description: Cidade
           maxLength: 50
-        countrySubDivisionCode:
+        countrySubDivision:
           type: string
           description: Estado
           pattern: ^[A-Z]{2}$
@@ -612,32 +658,19 @@ components:
         - streetType
         - streetName
         - buildingNumber
-        - district
+        - districtName
         - townName
         - countrySubDivision
         - postCode
     CNPJ:
       type: object
       properties:
-        cnpjMainNumber:
+        cnpjNumber:
           type: string
-          description: Raíz do CNPJ
-          pattern: ^\d{2}.\d{3}.\d{3}$
-          maxLength: 10
-        cnpjSubsidiaryNumber:
-          type: string
-          description: Filial do CNPJ
-          pattern: ^\d{4}$
-          maxLength: 4
-        cnpjCheckNumber:
-          type: string
-          description: Dígitos de verificação do CNPJ
-          pattern: ^\d{2}$
-          maxLength: 2
+          description: CNPJ
+          maxLength: 14
       required:
-        - cnpjMain
-        - cnpjSubsidiary
-        - cnpjCheckNumber 
+        - cnpjNumber
     Links:
       type: object
       properties:
