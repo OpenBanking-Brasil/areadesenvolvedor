@@ -1,37 +1,78 @@
 ## Paginação
 
-Cada end point de API que pode retornar múltiplos registros irá estipular quando a paginação será suportada ou não. Nos casos onde a quantidade de registros a ser retornada não justifica o recurso de paginação, este recurso não estará disponível.
+Cada recurso de cada API pode possuir ou não paginação, caso a quantidade de registro retornados justifique a mesma. 
+A paginação estará disponível e deverá funcionar independente se o recurso permite filtros por query ou POST. Isso é, filtros e paginação são aplicados de forma independente.
 
-Para o uso do recurso de paginação não é necessário que a requisição possua filtros (seja via query string ou post body). Os recursos de filtro e paginação são aplicados independentemente.ch other.
+### Parâmetros de Requisição
 
-### Parâmetros de Query
+> Exemplo de query com paginação
 
-O consumidor do end point deverá enviar as informações sobre a paginação usando parâmetros de query. Quando a paginação for suportada no end point o consumir poderá enviar os seguintes parâmetros na query:
+```http
+GET {uri}?page=1&page-size=25
+```
 
-* **page** – o número da página que está sendo requisita (o valor da primeira página é 1)
-* **page-size** – o número de registros a ser retornado por página
 
-Se os parâmetros na query não forem enviados pelo consumidor do end point, os seguintes valores serão automaticamente assumidos:
+Quando existir paginação para o recurso deverá ser utilizado os parâmetros de query abaixo para a navegação dos resultados:
 
-* **page** – o valor padrão será 1 (primeira página) será assumido
-* **page-size** – o valor padrão será 25 (serão retornados 25 registros) será assumido
+| Parâmetro | Descrição                                                                  | Valor Padrão |
+|:--------- |:-------------------------------------------------------------------------- |:------------ |
+| page      | Número da página que está sendo requisita (o valor da primeira página é 1) | 1            |
+| page-size | Quantidade total de registros por páginas                                  | 25           |
+
+<aside class="notice">
+O valor padrão será assumido sempre que o parâmetro não estiver preenchido ou estiver nulo
+</aside>
 
 ### Atributos de Resposta
 
-Adicionalmente aos dados que foram requisitados, o provedor da API irá retornar as seguintes informações dentro do corpo da resposta.
 
-* No objeto `links` os seguintes atributos serão retornados:
-    * **first** - A URI para requisitar a primeira página. Obrigatório se a resposta não for a primeira página.
-    * **last** -  A URI para requisitar a última página. Obrigatório se a resposta não for a última página.
-    * **prev** - A URI para requisitar a página anterior. Obrigatório se a resposta não for a primeira página.
-    * **next** - A URI para requisitar a próxima página. Obrigatório se a resposta não for a última página.
-* No objeto `meta` os seguites atributos serão retornados:
-    * **totalRecords** - O número total de registros da requisição. Este atributo é obrigatório.
-    * **totalPages** - O número total de páginas da requisição. Este atributo é obrigatório. Se **totalRecords** for 0 **totalPages** deverá ser 0.
+> Exemplo de paginação
 
-Para cada um destes atributos o tamanho da página especificado na requisição deverá ser levado em conta quando os valores forem calculados.
+```json
+{
+  "data": {
+    "..."
+  },
+  "links": {
+    "self": "https://api.banco.com.br/open-banking/products-services/v1/personal-invoice-financing",
+    "first": "https://api.banco.com.br/open-banking/products-services/v1/personal-invoice-financing",
+    "prev": null,
+    "next": null,
+    "last": "https://api.banco.com.br/open-banking/products-services/v1/personal-invoice-financing"
+  },
+  "meta": {
+    "totalRecords": 1,
+    "totalPages": 1
+  }
+}
+```
 
-### Regras Adicionais de Paginação
+Além dos dados requisitados as respostas paginadas também terão em sua estrutura dois objetos adicionais que incluirão parâmetros para facilitar a nagevação das páginas:
 
-* Não é esperado que os provedores implementem paginação com isolamento de transação. Os dados que serão retornados podem mudar entre requisições subsequentes. Isto pode causar situações onde um mesmo registro pode ser retornado em mais de uma página.
-* O tamanho máximo da página é `1000` registros para qualquer end point (a menos que esteja explicíto outra regra na documentação do próprio end point). Se for requisitado uma quantidade de registros maior que o suportado o retorno será o código HTTP `422 Unprocessable Entity`.
+### Links
+No objeto `links`, serão retornadas as URI's de paginação conforme parâmetros abaixo:
+
+| Parâmetro | Descrição                                                                  | Restrição                                             |
+|:--------- |:-------------------------------------------------------------------------- |:----------------------------------------------------- |
+| first     | A URI para requisitar a primeira página.                                   | Obrigatório se a resposta não for a primeira página.  |
+| last      | A URI para requisitar a última página.                                     | Obrigatório se a resposta não for a última página.    |
+| prev      | A URI para requisitar a página anterior.                                   | Obrigatório se a resposta não for a primeira página.  |
+| next      | A URI para requisitar a próxima página.                                    | Obrigatório se a resposta não for a última página.    |
+
+### Meta
+No objeto `meta`, serão retornadas informações sobre o total de registros disponíveis
+
+| Parâmetro     | Descrição                                    | Restrição                                                                      |
+|:------------- |:-------------------------------------------- |:------------------------------------------------------------------------------ |
+| totalRecords  | O número total de registros da requisição.   | Este atributo é obrigatório                                                    | 
+| totalPages    | O número total de páginas da requisição.     | Este atributo é obrigatório. Se não possuir nenhum registro o valor deve ser 0 |
+
+<aside class="warning">
+Para cada um destes atributos o tamanho da página especificado na requisição deverá ser utilizado para o cálculo dos valores.
+</aside>
+
+### Regras Adicionais
+
+* Não é esperado que os provedores implementem paginação com isolamento de transação. `Os dados que serão retornados podem mudar entre requisições subsequentes. Isto pode causar situações onde um mesmo registro pode ser retornado em mais de uma página.`
+* O tamanho máximo da página é `1000` registros para qualquer endpoint (a menos que na documentação desse esteja informando outros valores).
+* Se for requisitado uma quantidade de registros maior que o suportado o retorno será o código HTTP `422 Unprocessable Entity`.
