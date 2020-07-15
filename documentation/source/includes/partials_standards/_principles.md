@@ -2,41 +2,39 @@
 
 Os seguintes princípios técnicos são a base para o desenvolvimento e implementação das APIs para o Open Banking no Brasil.
 
-### Princípio 1: APIs são RESTful
-Os padrões da API aderirão aos conceitos da API RESTful sempre que possível e sensato. 
+### Princípio 1: RESTful APIs
+A API irá aderir aos conceitos de RESTful API sempre que for possível e sensato 
 
-### Princípio 2: Padrões existentes e abertos 
-Os padrões existentes e abertos de mercado serão adotados sempre que possível, evitando ao máximo a criação de novos padrões.
+### Princípio 2: Padrões existentes 
+Os padrões existentes serão adotados onde for relevante/apropriado para minimizar “reinventar a roda”, favorecendo a experiência do desenvolvedor e do usuário
 
 ### Princípio 3: ISO 20022
-Os payloads das APIS serão desenvolvidos usando elementos e componentes de mensagem ISO 20022, modificando quando necessário para deixar o payload mais simples para atender as características do mercado brasileiro.
+API payloads serão desenvolvidos usando elementos e componentes de mensagem ISO 20022, modificando caso necessário para deixar o payload mais simples e/ou atender a características locais
 
-### Princípio 4: as APIs são extensíveis
-A extensibilidade deve acomodar casos de uso mais complexos no futuro e que permitam aos participantes a proposição de novas APIs ao ecossistema.
+### Princípio 4: Extensibilidade
+Os fluxos das APIs serão estendidos para atender a casos de uso mais complexos em futuros releases, e, portanto, esse princípio será mantido em mente durante o design e os procedimentos serão detalhados durante
+a implementação
 
 ### Princípio 5: Idempotencia
-As APIs devem ser ao máximo idempotentes para reduzir ao máximo a possibilidade de impactos negativos à experiência dos consumidores do ecossistema.
+APIs serão definidas como idempotentes para não causar uma experiência ruim ao consumidor ou aumentar os indicadores de risco falso positivos, evitando, dessa forma, utilização de verbos REST não idempotentes como,
+por exemplo, POST
 
 ### Princípio 6: Assinatura digital
-Em definição na squad de segurança para as demais fases.
+O uso de assinaturas digitais facilita o não-repúdio para as APIs do Open Banking – elas deverão ser aplicadas a requisições individuais e respostas,podem ser opcionalmente aplicadas para todas as respostas e requisições
 
 ### Princípio 7: Criptografia de mensagens
-Em definição na squad de segurança para as demais fases.
+Criptografia de mensagem será uma funcionalidade opcional para as APIs do Open Banking de forma a facilitar a proteção adicional dos dados em trânsito.
 
-### Princípio 8: Agnóstico a esquemas
-As APIs serão desenvolvidas ao máximo para atender as funcionalidades, independendo dos tipos (a exemplo de pagamentos: TED, DOC, etc.)
+### Princípio 8: Agnóstico a esquemas de pagamento
+A API será desenvolvida para ser independente do esquema de pagamento responsável pela realização do pagamento (i.e. pagamentos instantâneos, TED, DOC)
 
-### Princípio 9: APIs são agnósticas de implementação
-A implementação subjacente das APIs não deve ser restrita ou orientada pelas definições e padrões da API. Por outro lado, as opções de implementação subjacentes não devem ser visíveis ou deriváveis para os aplicativos clientes que usam as APIs.
+### Princípio 9: Códigos de Status
+A API usará dois códigos de status que atendem a dois propósitos diferentes: (i) o HTTP status code reflete o resultado da chamada da API e (ii) um campo status em algumas resource payloads reflete o status dos
+resources nos casos de acesso write (i.e. iniciação de pagamento)
 
-### Princípio 10: Códigos de Status
-A implementação das APIS devem seguir o mesmo padrão de códigos de status permitindo melhor experiência dos consumidores das APIs em qualquer instituição.
+### Princípio 10: Identificadores únicos
+Um recurso REST deverá ter um identificador exclusivo (p.ex.: uma chave primária) que possa ser usado para identificar o recurso. Esses identificadores exclusivos são usados para criar URLs para identificar e
+endereçar recursos específicos
 
-### Princípio 11: APIs são consistentes
-As definições de API em todo o conjunto de APIs devem ser consistentes uma com a outra o máximo possível. Onde possível, estruturas e padrões comuns de dados devem ser definidos e reutilizados.
-
-### Princípio 12: APIs são performáticas
-As definições da API devem considerar e incorporar implicações de desempenho durante o design, garantindo que chamadas repetidas não sejam necessárias para casos de uso simples e que os tamanhos de carga útil não apresentem problemas de desempenho.
-
-### Princípio 13: APIs são seguras
-As definições da API considerarão e incorporarão a necessidade de um alto grau de segurança para proteger os dados do cliente. Isso inclui o risco de violação técnica, mas também preocupações adicionais de vazamento inadvertido de dados através de cargas de dados e escopos excessivamente amplos. A segurança dos dados do cliente é um resultado de primeira ordem que os padrões da API devem procurar oferecer.
+### Princípio 11: Categorização dos requisitos de implementação
+Quando um requisito estiver sendo implementado por um doador e/ou um receptor, uma categorização diferente será aplicada. A funcionalidade, endpoints e campos em cada recurso serão categorizados como 'Obrigatório', 'Condicional' ou 'Opcional'
