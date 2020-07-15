@@ -18,9 +18,16 @@
                   {
                     "serviceName": "string",
                     "serviceCode": "string",
-                    "chargeTriggerInfo": "string",
-                    "maxPrice": "string",
-                    "currency": "string"
+                    "chargingTriggerInfo": "string",
+                    "chargingUnit": "string",
+                    "price": [
+                      {
+                        "type": "string",
+                        "value": "string",
+                        "currency": "string"
+                      }
+                    ],
+                    "additionalInfo": "string"
                   }
                 ],
                 "interestRates": [
@@ -82,9 +89,16 @@
             {
               "serviceName": "string",
               "serviceCode": "string",
-              "chargeTriggerInfo": "string",
-              "maxPrice": "string",
-              "currency": "string"
+              "chargingTriggerInfo": "string",
+              "chargingUnit": "string",
+              "price": [
+                {
+                  "type": "string",
+                  "value": "string",
+                  "currency": "string"
+                }
+              ],
+              "additionalInfo": "string"
             }
           ],
           "interestRates": [
@@ -127,9 +141,16 @@
         {
           "serviceName": "string",
           "serviceCode": "string",
-          "chargeTriggerInfo": "string",
-          "maxPrice": "string",
-          "currency": "string"
+          "chargingTriggerInfo": "string",
+          "chargingUnit": "string",
+          "price": [
+            {
+              "type": "string",
+              "value": "string",
+              "currency": "string"
+            }
+          ],
+          "additionalInfo": "string"
         }
       ],
       "interestRates": [
@@ -167,9 +188,16 @@
     {
       "serviceName": "string",
       "serviceCode": "string",
-      "chargeTriggerInfo": "string",
-      "maxPrice": "string",
-      "currency": "string"
+      "chargingTriggerInfo": "string",
+      "chargingUnit": "string",
+      "price": [
+        {
+          "type": "string",
+          "value": "string",
+          "currency": "string"
+        }
+      ],
+      "additionalInfo": "string"
     }
   ],
   "interestRates": [
@@ -237,27 +265,61 @@
 {
   "serviceName": "string",
   "serviceCode": "string",
-  "chargeTriggerInfo": "string",
-  "maxPrice": "string",
+  "chargingTriggerInfo": "string",
+  "chargingUnit": "string",
+  "price": [
+    {
+      "type": "string",
+      "value": "string",
+      "currency": "string"
+    }
+  ],
+  "additionalInfo": "string"
+}
+```
+
+|     Nome             |  Tipo                                                                    | Obrigatório    |                            Definição                                                                                                       |
+|:------------         |:------------------------------------------------------------------------ |:-------------- |:------------------------------------------------------------------------------------------------------------------------------------------ |
+| serviceName          | string                                                                   | Sim            | Nomes das Tarifas cobradas sobre Serviços ofertados à Modalidade de direitos creditórios descontados, para pessoa física. (Campo Livre)    |
+| serviceCode          | string                                                                   | Sim            | Sigla de identificação do serviço relacionado à Modalidade de direitos creditórios descontados, para pessoa física. Campo aberto           |
+| chargingTriggerInfo  | string                                                                   | Não            | Fatores geradores de cobrança que incidem sobre as Modalidades de direitos creditórios descontados, para pessoa física. Campo Livre        |
+| chargingUnit         | string                                                                   | Não            | Unidade ou forma de cobrança                                                                                                               |
+| price                | [[PersonalInvoiceFinancingPrice](#schemaPersonalInvoiceFinancingPrice)]  | Sim            | Lista de preços possíveis                                                                                                                  |
+| additionalInfo       | string                                                                   | Não            | Descrição de como é composto o valor da tarifa. p.ex. '0,25% sobre o excedente do limite acima de R$ 500,00'                               |
+
+## PersonalInvoiceFinancingPrice
+<a id="schemaPersonalInvoiceFinancingPrice"></a>
+
+```json
+{
+  "type": "string",
+  "value": "string",
   "currency": "string"
 }
 ```
 
-|     Nome                  |  Tipo                                                                                 | Obrigatório    |                            Definição                                                                                                       |
-|:------------              |:------------------------------------------------------------------------------------- |:-------------- |:------------------------------------------------------------------------------------------------------------------------------------------ |
-| serviceName               | string                                                                                | Sim            | Nomes das Tarifas cobradas sobre Serviços ofertados à Modalidade de direitos creditórios descontados, para pessoa física. (Campo Livre)    |
-| serviceCode               | string                                                                                | Sim            | Sigla de identificação do serviço relacionado à Modalidade de direitos creditórios descontados, para pessoa física. Campo aberto           |
-| chargeTriggerInfo         | string                                                                                | Não            | Fatores geradores de cobrança que incidem sobre as Modalidades de direitos creditórios descontados, para pessoa física. Campo Livre        |
-| maxPrice                  | string                                                                                | Sim            | Valor máximo para a tarifa cobrada, relativa ao serviço ofertado para a Modalidade de direitos creditórios descontados, para pessoa física |
-| currency                  | [Enum PersonalInvoiceFinancingCurrency](#schemaEnumPersonalInvoiceFinancingCurrency)  | Sim            | Moeda referente ao valor máximo da tarifa                                                                                                  |
+|     Nome     |  Tipo                                                                                  | Obrigatório    |                            Definição                                                                                                       |
+|:------------ |:-------------------------------------------------------------------------------------  |:-------------- |:------------------------------------------------------------------------------------------------------------------------------------------ |
+| type         | [Enum PersonalInvoiceFinancingPriceType](#schemaEnumPersonalInvoiceFinancingPriceType) | Sim            | Indica os tipos: mínimo, médio e máximo do valor informado. P.ex.'mínimo'                                                                  |
+| value        | string                                                                                 | Sim            | Valor máximo para a tarifa cobrada, relativa ao serviço ofertado para a Modalidade de direitos creditórios descontados, para pessoa física |
+| currency     | [Enum PersonalInvoiceFinancingCurrency](#schemaEnumPersonalInvoiceFinancingCurrency)   | Sim            | Moeda referente ao valor máximo da tarifa                                                                                                  |
+
+### Enum PersonalInvoiceFinancingPriceType
+<a id="schemaEnumPersonalInvoiceFinancingPriceType"></a>
+
+| Propriedade  | Código | Definição   |
+|:------------ |:------ |:----------- |
+| type         | MINIMO | Mínimo      |
+| type         | MEDIO  | Médio       |
+| type         | MAXIMO | Máximo      |
 
 ### Enum PersonalInvoiceFinancingCurrency
 <a id="schemaEnumPersonalInvoiceFinancingCurrency"></a>
 
-| Propriedade     | Código | Definição                                                                                             |
-|:--------------- |:------ |:----------------------------------------------------------------------------------------------------- |
-| currency        | BRL    | Real                                                                                                  |
-| currency        | ***    | Conforme ISO_4217 (ex: <a href="https://pt.wikipedia.org/wiki/ISO_4217" target="_blank">ISO_4217</a>) |
+| Propriedade  | Código | Definição                                                                                             |
+|:------------ |:------ |:----------------------------------------------------------------------------------------------------- |
+| currency     | BRL    | Real                                                                                                  |
+| currency     | ***    | Conforme ISO_4217 (ex: <a href="https://pt.wikipedia.org/wiki/ISO_4217" target="_blank">ISO_4217</a>) |
 
 ## PersonalInvoiceFinancingInterestRates 
 <a id="schemaPersonalInvoiceFinancingInterestRates"></a>
