@@ -21,11 +21,11 @@
                     "chargingTriggerInfo": "string",
                     "price": [
                       {
-                        "type": "1",
-                        "value": "45,00",
-                        "currency": "BRL",
+                        "type": "string",
+                        "value": "string",
+                        "currency": "string",
                         "priceInfo": "string",
-                        "changingUnit": "Por mês"
+                        "changingUnit": "string"
                       }
                     ]
                   }
@@ -90,11 +90,11 @@
               "chargingTriggerInfo": "string",
               "price": [
                 {
-                  "type": "1",
-                  "value": "45,00",
-                  "currency": "BRL",
+                  "type": "string",
+                  "value": "string",
+                  "currency": "string",
                   "priceInfo": "string",
-                  "changingUnit": "Por mês"
+                  "changingUnit": "string"
                 }
               ]
             }
@@ -140,11 +140,11 @@
           "chargingTriggerInfo": "string",
           "price": [
             {
-              "type": "1",
-              "value": "45,00",
-              "currency": "BRL",
+              "type": "string",
+              "value": "string",
+              "currency": "string",
               "priceInfo": "string",
-              "changingUnit": "Por mês"
+              "changingUnit": "string"
             }
           ]
         }
@@ -186,11 +186,11 @@
       "chargingTriggerInfo": "string",
       "price": [
         {
-          "type": "1",
-          "value": "45,00",
-          "currency": "BRL",
+          "type": "string",
+          "value": "string",
+          "currency": "string",
           "priceInfo": "string",
-          "changingUnit": "Por mês"
+          "changingUnit": "string"
         }
       ]
     }
@@ -228,11 +228,11 @@
   "chargingTriggerInfo": "string",
   "price": [
     {
-      "type": "1",
-      "value": "45,00",
-      "currency": "BRL",
+      "type": "string",
+      "value": "string",
+      "currency": "string",
       "priceInfo": "string",
-      "changingUnit": "Por mês"
+      "changingUnit": "string"
     }
   ]
 }
@@ -251,11 +251,11 @@
 {
   "price": [
     {
-      "type": "1",
-      "value": "45,00",
-      "currency": "BRL",
+      "type": "string",
+      "value": "string",
+      "currency": "string",
       "priceInfo": "string",
-      "changingUnit": "Por mês"
+      "changingUnit": "string"
     }
   ]
 }
