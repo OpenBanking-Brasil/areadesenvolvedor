@@ -14,5 +14,13 @@ Os componentes desta estrutura de URI estão descritos abaixo:
     - branches
     - eletronic-channels
 
+* Será mantida a língua inglesa para desenho da estrutura de URI
+* O elemento `[versão]` sofrerá ajustes e se limitará a informar a versão major, sem mencionar a versão minor
+    – Esse ajuste reduz complexidade de gestão, ao prover maior flexibilidade de atualização para o receptor e doador
+* A versão minor será repassada apenas no header do payload de resposta, orientando a instituição receptora sobre quais serão os dados no retorno
+    – Não haverá prazos para implementação de versões minor pelas instituições doadoras
+    – Alterações que resultem em quebra de contrato serão categorizadas como major
+
+
 Para realizar o consumo do método `eletronic-channels` da API `channels` na versão `1`, a URI ficaria com a seguinte estrutura:  
 `<host>/open-banking/channels/v1/eletronic-channels`
