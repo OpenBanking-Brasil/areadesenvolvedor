@@ -288,7 +288,7 @@
 ```
 |     Nome            |  Tipo                                                      | Obrigatório  |                            Definição                         |
 |:------------        |:---------------------------------                          |:-----------  |:----------------------------------------------------         |
-| type                | [PriceType] (#schemaEnumLoanFessPriceType)                 | Não          |   |
+| type                | [PriceType](#schemaEnumLoanFessPriceType)                  | Não          |   |
 | value               | string                                                     | Não          | Valor da tarifa cobrada, relativa ao serviço ofertado para a Modalidade de Empréstimo, para pessoa física/jurídica.             |
 | currency            | string                                                     | Não          | Moeda referente ao valor da Tarifa, segundo modelo ISO-4217            |
 | priceInfo           | string                                                     | Não          | Descrição de como é composto o valor da tarifa. p.ex. '0,25% sobre o excedente do limite acima de R$ 500,00'       |
