@@ -1,5 +1,5 @@
-## ResponseBusinessInvoiceFinancingList
-<a id="schemaResponseBusinessInvoiceFinancingList"></a>
+## ResponseBusinessInvoiceFinancingsList
+<a id="schemaResponseBusinessInvoiceFinancingsList"></a>
 
 ```json
 {
@@ -11,7 +11,7 @@
           {
             "name": "string",
             "cnpjNumber": "string",
-            "businessInvoiceFinancing": [
+            "businessInvoiceFinancings": [
               {
                 "type": "string",
                 "fees": [
@@ -68,12 +68,12 @@
 |     Nome          |  Tipo                                                                     | Obrigatório  |                            Definição                  |
 |:------------      |:---------------------------------                                         |:-----------  |:----------------------------------------------------  |
 | data              | object                                                                    | Sim          |                                                       |
-| » organisation    | [[BusinessInvoiceFinancingOrganisation](#schemaBusinessInvoiceFinancingOrganisation)]   | Sim          | Lista das organizaçõs titulares das dependências      |
+| » organisation    | [[BusinessInvoiceFinancingsOrganisation](#schemaBusinessInvoiceFinancingsOrganisation)]   | Sim          | Lista das organizaçõs titulares das dependências      |
 | links             | [[LinksPaginated](#schemaLinksPaginated)]                                 | Sim          |                                                       |
 | meta              | [[MetaPaginated](#schemaMetaPaginated)]                                   | Sim          |                                                       |
 
-## BusinessInvoiceFinancingOrganisation
-<a id="schemaBusinessInvoiceFinancingOrganisation"></a>
+## BusinessInvoiceFinancingsOrganisation
+<a id="schemaBusinessInvoiceFinancingsOrganisation"></a>
 
 ```json
 {
@@ -82,7 +82,7 @@
     {
       "name": "string",
       "cnpjNumber": "string",
-      "businessInvoiceFinancing": [
+      "businessInvoiceFinancings": [
         {
           "type": "string",
           "fees": [
@@ -125,16 +125,16 @@
 |     Nome     |  Tipo                                                                            | Obrigatório  |                            Definição                         |
 |:------------ |:---------------------------------                                                |:-----------  |:----------------------------------------------------         |
 | name         | string                                                                           | Sim          | Nome do conglomerado proprietário da dependência (titular).  |
-| companies    | [[BusinessInvoiceFinancingCompanies](#schemaBusinessInvoiceFinancingCompanies)]  | Sim          | Lista de instituições pertencentes à organização             |
+| companies    | [[BusinessInvoiceFinancingsCompanies](#schemaBusinessInvoiceFinancingsCompanies)]  | Sim          | Lista de instituições pertencentes à organização             |
 
-## BusinessInvoiceFinancingCompanies 
-<a id="schemaBusinessInvoiceFinancingCompanies"></a>
+## BusinessInvoiceFinancingsCompanies 
+<a id="schemaBusinessInvoiceFinancingsCompanies"></a>
 
 ```json
 {
   "name": "string",
   "cnpjNumber": "string",
-  "businessInvoiceFinancing": [
+  "businessInvoiceFinancings": [
     {
       "type": "string",
       "fees": [
@@ -176,10 +176,10 @@
 |:------------              |:---------------------------------                             |:-------------- |:----------------------------------------------------       |
 | name                      | string                                                        | Sim            | Nome do conglomerado responsável  |
 | cnpjNumber                | string                                                        | Sim            | CNPJ da instituição responsável |
-| businessInvoiceFinancing  | [[BusinessInvoiceFinancing](#schemaBusinessInvoiceFinancing)] | Sim            | Lista  de adiantamento de recebíveis                  |
+| businessInvoiceFinancings  | [[BusinessInvoiceFinancings](#schemaBusinessInvoiceFinancings)] | Sim            | Lista  de adiantamento de recebíveis                  |
 
-## BusinessInvoiceFinancing
-<a id="schemaBusinessInvoiceFinancing"></a>
+## BusinessInvoiceFinancings
+<a id="schemaBusinessInvoiceFinancings"></a>
 
 ```json
 {
@@ -219,47 +219,47 @@
 
 |     Nome              |  Tipo                                                                                                       | Obrigatório |                            Definição                                                                                                                                                                                                                                                  |
 |:------------          |:---------------------------------------------------------------------------                                 |:----------- |:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------         |
-| type                  | [Enum BusinessInvoiceFinancingType](#schemaEnumBusinessInvoiceFinancingType)                                | Sim         | Modalidades de direitos creditórios descontados ofertados para pessoas Jurídicas, conforme Circular 4015-Bacen. Direito creditório descontado é a antecipação de créditos relativos por ex. ao: desconto de duplicatas, desconto de cheques,antecipação de fatura de cartão de crédito  |
-| fees                  | [[BusinessInvoiceFinancingFees](#schemaBusinessInvoiceFinancingFees)]                                       | Sim         | Lista das Tarifas cobradas sobre Serviços ofertados à Modalidade de direitos creditórios descontados, para pessoa jurídica                                                                                                                                                              |
-| interestRates         | [[BusinessInvoiceFinancingInterestRates](#schemaBusinessInvoiceFinancingInterestRates)]                     | Sim         | Lista de taxas de juros remuneratórias                                                                                                                                                                                                                                                |
-| requiredWarranties    | [[Enum BusinessInvoiceFinancingRequiredWarranties](#schemaEnumBusinessInvoiceFinancingRequiredWarranties)]  | Sim         | Relação de garantias exigidas                                                                                                                                                                                                                                                         |
+| type                  | [Enum BusinessInvoiceFinancingsType](#schemaEnumBusinessInvoiceFinancingsType)                                | Sim         | Modalidades de direitos creditórios descontados ofertados para pessoas Jurídicas, conforme Circular 4015-Bacen. Direito creditório descontado é a antecipação de créditos relativos por ex. ao: desconto de duplicatas, desconto de cheques,antecipação de fatura de cartão de crédito  |
+| fees                  | [[BusinessInvoiceFinancingsFees](#schemaBusinessInvoiceFinancingsFees)]                                       | Sim         | Lista das Tarifas cobradas sobre Serviços ofertados à Modalidade de direitos creditórios descontados, para pessoa jurídica                                                                                                                                                              |
+| interestRates         | [[BusinessInvoiceFinancingsInterestRates](#schemaBusinessInvoiceFinancingsInterestRates)]                     | Sim         | Lista de taxas de juros remuneratórias                                                                                                                                                                                                                                                |
+| requiredWarranties    | [[Enum BusinessInvoiceFinancingsRequiredWarranties](#schemaEnumBusinessInvoiceFinancingsRequiredWarranties)]  | Sim         | Relação de garantias exigidas                                                                                                                                                                                                                                                         |
 | termsCondictions      | string                                                                                                      | Não         | Campo aberto para informar as condições contratuais relativas à Modalidade de direitos creditórios descontados informada                                                                                                                                                              |
 
 
-### Enum BusinessInvoiceFinancingType
-<a id="schemaEnumBusinessInvoiceFinancingType"></a>
+### Enum BusinessInvoiceFinancingsType
+<a id="schemaEnumBusinessInvoiceFinancingsType"></a>
 
-| Propriedade  | Código | Definição                                             |
-|:------------ |:------ |:----------------------------------------------------- |
-| type         | 1      | Desconto de duplicatas                                |
-| type         | 2      | Desconto de cheques                                   |
-| type         | 3      | Antecipação de fatura de cartão de crédito            |
-| type         | 4      | Outros direitos creditórios descontados               |
-| type         | 5      | Outros títulos descontados                            |
+| Propriedade  | Código                                    | Definição                                             |
+|:------------ |:----------------------------------------- |:----------------------------------------------------- |
+| type         | DESCONTO_DUPLICATAS                       | Desconto de duplicatas                                |
+| type         | DESCONTO_CHEQUES                          | Desconto de cheques                                   |
+| type         | ANTECIPACAO_FATURA_CARTAO_CREDITO         | Antecipação de fatura de cartão de crédito            |
+| type         | OUTROS_DIREITOS_CREDITORIOS_DESCONTADOS   | Outros direitos creditórios descontados               |
+| type         | OUTROS_TÍTULOS_DESCONTADOS                | Outros títulos descontados                            |
 
 
-### Enum BusinessInvoiceFinancingRequiredWarranties
-<a id="schemaEnumBusinessInvoiceFinancingRequiredWarranties"></a>
+### Enum BusinessInvoiceFinancingsRequiredWarranties
+<a id="schemaEnumBusinessInvoiceFinancingsRequiredWarranties"></a>
 
-| Propriedade        | Código | Definição                                             |
-|:------------------ |:------ |:----------------------------------------------------- |
-| requiredWarranties | 1      | Cessão de direitos creditórios                        |
-| requiredWarranties | 2      | Caução                                                |
-| requiredWarranties | 3      | Penhor                                                |
-| requiredWarranties | 4      | Alienação fiduciária                                  |
-| requiredWarranties | 5      | Hipoteca                                              |
-| requiredWarranties | 6      | Operações garantidas pelo governo                     |
-| requiredWarranties | 7      | Outras garantias não fidejussórias                    |
-| requiredWarranties | 8      | Seguros e assemelhados                                |
-| requiredWarranties | 9      | Garantia fidejussória                                 |
-| requiredWarranties | 10     | Bens arrendados                                       |
-| requiredWarranties | 11     | Garantias internacionais                              |
-| requiredWarranties | 12     | Operações garantidas por outras entidades             |
-| requiredWarranties | 13     | Acordos de compensação                                |
-| requiredWarranties | 14     | Não aplicável                                         |
+| Propriedade        | Código                                     | Definição                                             |
+|:------------------ |:------------------------------------------ |:----------------------------------------------------- |
+| requiredWarranties | CESSAO_DIREITOS_CREDITORIOS                | Cessão de direitos creditórios                        |
+| requiredWarranties | CAUCAO                                     | Caução                                                |
+| requiredWarranties | PENHOR                                     | Penhor                                                |
+| requiredWarranties | ALIENACAO_FIDUCIARIA                       | Alienação fiduciária                                  |
+| requiredWarranties | HIPOTECA                                   | Hipoteca                                              |
+| requiredWarranties | OPERACOES_GARANTIDAS_GOVERNO               | Operações garantidas pelo governo                     |
+| requiredWarranties | OUTRAS_GARANTIAS_NAO_FIDEJUSSORIAS         | Outras garantias não fidejussórias                    |
+| requiredWarranties | SEGUROS_ASSEMELHADOS                       | Seguros e assemelhados                                |
+| requiredWarranties | GARANTIA_FIDEJUSSORIA                      | Garantia fidejussória                                 |
+| requiredWarranties | BENS_ARRENDADOS                            | Bens arrendados                                       |
+| requiredWarranties | GARANTIAS_INTERNACIONAIS                   | Garantias internacionais                              |
+| requiredWarranties | OPERACOES_GARANTIDAS_OUTRAS_ENTIDADE       | Operações garantidas por outras entidades             |
+| requiredWarranties | ACORDOS_COMPENSACAO                        | Acordos de compensação                                |
+| requiredWarranties | NAO_APLICAVEL                              | Não aplicável                                         |
 
-## BusinessInvoiceFinancingFees 
-<a id="schemaBusinessInvoiceFinancingFees"></a>
+## BusinessInvoiceFinancingsFees 
+<a id="schemaBusinessInvoiceFinancingsFees"></a>
 
 ```json
 {
@@ -284,11 +284,11 @@
 | serviceCode          | string                                                                   | Sim            | Sigla de identificação do serviço relacionado à Modalidade de direitos creditórios descontados, para pessoa jurídica. Campo aberto           |
 | chargingTriggerInfo  | string                                                                   | Não            | Fatores geradores de cobrança que incidem sobre as Modalidades de direitos creditórios descontados, para pessoa jurídica. Campo Livre        |
 | chargingUnit         | string                                                                   | Não            | Unidade ou forma de cobrança                                                                                                               |
-| price                | [[BusinessInvoiceFinancingPrice](#schemaBusinessInvoiceFinancingPrice)]  | Sim            | Lista de preços possíveis                                                                                                                  |
+| price                | [[BusinessInvoiceFinancingsPrice](#schemaBusinessInvoiceFinancingsPrice)]  | Sim            | Lista de preços possíveis                                                                                                                  |
 | additionalInfo       | string                                                                   | Não            | Descrição de como é composto o valor da tarifa. p.ex. '0,25% sobre o excedente do limite acima de R$ 500,00'                               |
 
-## BusinessInvoiceFinancingPrice
-<a id="schemaBusinessInvoiceFinancingPrice"></a>
+## BusinessInvoiceFinancingsPrice
+<a id="schemaBusinessInvoiceFinancingsPrice"></a>
 
 ```json
 {
@@ -300,12 +300,12 @@
 
 |     Nome     |  Tipo                                                                                  | Obrigatório    |                            Definição                                                                                                       |
 |:------------ |:-------------------------------------------------------------------------------------  |:-------------- |:------------------------------------------------------------------------------------------------------------------------------------------ |
-| type         | [Enum BusinessInvoiceFinancingPriceType](#schemaEnumBusinessInvoiceFinancingPriceType) | Sim            | Indica os tipos: mínimo, médio e máximo do valor informado. P.ex.'mínimo'                                                                  |
-| value        | string                                                                                 | Sim            | Valor máximo para a tarifa cobrada, relativa ao serviço ofertado para a Modalidade de direitos creditórios descontados, para pessoa jurídica |
-| currency     | [Enum BusinessInvoiceFinancingCurrency](#schemaEnumBusinessInvoiceFinancingCurrency)   | Sim            | Moeda referente ao valor máximo da tarifa                                                                                                  |
+| type         | [Enum BusinessInvoiceFinancingsPriceType](#schemaEnumBusinessInvoiceFinancingsPriceType) | Sim            | Indica os tipos: mínimo, médio e máximo do valor informado. P.ex.'mínimo'                                                                  |
+| value        | string                                                                                 | Sim            | Valor para a tarifa cobrada, relativa ao serviço ofertado para a Modalidade de direitos creditórios descontados, para pessoa jurídica |
+| currency     | [Enum BusinessInvoiceFinancingsCurrency](#schemaEnumBusinessInvoiceFinancingsCurrency)   | Sim            | Moeda referente ao valor da tarifa                                                                                                  |
 
-### Enum BusinessInvoiceFinancingPriceType
-<a id="schemaEnumBusinessInvoiceFinancingPriceType"></a>
+### Enum BusinessInvoiceFinancingsPriceType
+<a id="schemaEnumBusinessInvoiceFinancingsPriceType"></a>
 
 | Propriedade  | Código | Definição   |
 |:------------ |:------ |:----------- |
@@ -313,16 +313,16 @@
 | type         | MEDIO  | Médio       |
 | type         | MAXIMO | Máximo      |
 
-### Enum BusinessInvoiceFinancingCurrency
-<a id="schemaEnumBusinessInvoiceFinancingCurrency"></a>
+### Enum BusinessInvoiceFinancingsCurrency
+<a id="schemaEnumBusinessInvoiceFinancingsCurrency"></a>
 
 | Propriedade  | Código | Definição                                                                                             |
 |:------------ |:------ |:----------------------------------------------------------------------------------------------------- |
 | currency     | BRL    | Real                                                                                                  |
 | currency     | ***    | Conforme ISO_4217 (ex: <a href="https://pt.wikipedia.org/wiki/ISO_4217" target="_blank">ISO_4217</a>) |
 
-## BusinessInvoiceFinancingInterestRates 
-<a id="schemaBusinessInvoiceFinancingInterestRates"></a>
+## BusinessInvoiceFinancingsInterestRates 
+<a id="schemaBusinessInvoiceFinancingsInterestRates"></a>
 
 ```json
 {
@@ -339,13 +339,13 @@
 |:------------              |:------------------------------------------------------------------------------------------- |:-------------- |:------------------------------------------------------------------------------------------------------------------------------------------ |
 | rate                      | string                                                                                      | Sim            | Percentual que incide sobre a composição da  taxa de juros remuneratórias                                                                                                                                                                                                                                             |
 | referencialRate           | string                                                                                      | Sim            | Taxa Referencial se configura como uma taxa de juros de referência, ou seja, um indicador geral da economia brasileira. Por isso, é utilizada na hora de calcular o rendimento de determinadas aplicações financeiras                                                                                                 |
-| indexer                   | [Enum BusinessInvoiceFinancingIndexer](#schemaEnumBusinessInvoiceFinancingIndexer)          | Sim            | Indexador é o termo utilizado para se referir aos índices usados como base para corrigir os valores monetários de um determinado ativo. No Brasil, os indexadores mais comuns são o IPCA, a taxa Selic e o CDI                                                                                                        |
-| prePostTax                | [Enum BusinessInvoiceFinancingPrePostTax](#schemaEnumBusinessInvoiceFinancingPrePostTax)    | Sim            | Indicador de pré ou pós. A diferença básica é que, enquanto o prefixado apresenta rentabilidade definida, o pós-fixado acompanha algum indicador. Assim, quem investe no primeiro grupo sabe como será seu rendimento previamente, enquanto quem investe no segundo, só conhecerá os resultados na data de vencimento |
-| frequency                 | [Enum BusinessInvoiceFinancingFrequency](#schemaEnumBusinessInvoiceFinancingFrequency)      | Sim            | Frequência sobre a qual incide a Remuneração                                                                                                                                                                                                                                                                          |
+| indexer                   | [Enum BusinessInvoiceFinancingsIndexer](#schemaEnumBusinessInvoiceFinancingsIndexer)          | Sim            | Indexador é o termo utilizado para se referir aos índices usados como base para corrigir os valores monetários de um determinado ativo. No Brasil, os indexadores mais comuns são o IPCA, a taxa Selic e o CDI                                                                                                        |
+| prePostTax                | [Enum BusinessInvoiceFinancingsPrePostTax](#schemaEnumBusinessInvoiceFinancingsPrePostTax)    | Sim            | Indicador de pré ou pós. A diferença básica é que, enquanto o prefixado apresenta rentabilidade definida, o pós-fixado acompanha algum indicador. Assim, quem investe no primeiro grupo sabe como será seu rendimento previamente, enquanto quem investe no segundo, só conhecerá os resultados na data de vencimento |
+| frequency                 | [Enum BusinessInvoiceFinancingsFrequency](#schemaEnumBusinessInvoiceFinancingsFrequency)      | Sim            | Frequência sobre a qual incide a Remuneração                                                                                                                                                                                                                                                                          |
 | incomeRateInfo            | string                                                                                      | Não            | Descrição da Remuneração relativa as taxas de juros remuneratórias sobre a modalidade de direitos creditórios descontados infomrada, para pessoa jurídica                                                                                                                                                               |
 
-### Enum BusinessInvoiceFinancingIndexer
-<a id="schemaEnumBusinessInvoiceFinancingIndexer"></a>
+### Enum BusinessInvoiceFinancingsIndexer
+<a id="schemaEnumBusinessInvoiceFinancingsIndexer"></a>
 
 | Propriedade  | Código | Definição   |
 |:------------ |:------ |:----------- |
@@ -353,22 +353,20 @@
 | indexer      | SELIC  | SELIC       |
 | indexer      | CDI    | CDI         |
 
-### Enum BusinessInvoiceFinancingPrePostTax
-<a id="schemaEnumBusinessInvoiceFinancingPrePostTax"></a>
+### Enum BusinessInvoiceFinancingsPrePostTax
+<a id="schemaEnumBusinessInvoiceFinancingsPrePostTax"></a>
 
 | Propriedade  | Código | Definição   |
 |:------------ |:------ |:----------- |
 | prePostTax   | PRE    | Pré fixado  |
 | prePostTax   | POS    | Pós fixado  |
 
-### Enum BusinessInvoiceFinancingFrequency
-<a id="schemaEnumBusinessInvoiceFinancingFrequency"></a>
+### Enum BusinessInvoiceFinancingsFrequency
+<a id="schemaEnumBusinessInvoiceFinancingsFrequency"></a>
 
 | Propriedade  | Código | Definição   |
 |:------------ |:------ |:----------- |
-| frequency    | a.d    | Ao dia      |
-| frequency    | a.m    | Ao mês      |
-| frequency    | a.a    | Ao ano      |
-
-
+| frequency    | AD     | Ao dia      |
+| frequency    | AM     | Ao mês      |
+| frequency    | AA     | Ao ano      |
 
