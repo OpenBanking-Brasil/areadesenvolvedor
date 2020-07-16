@@ -176,5 +176,5 @@
 |:------------    |:---------------------------------                             |:-----------  |:----------------------------------------------------                 |
 | cnpjNumber      | string                                                        | Sim          | Número do CNPJ do conglomerado                                       |
 | name            | string                                                        | Sim          | Nome da Instituição, pertencente à organização, responsável pela comercialização das modalidades de Empréstimos para Pessoas Físicas consultadas.  |
-| businessLoans   | [[Loans](#schemaLoans)]                                       | Sim          | Empréstimos Pessoas Físicas/Jurídicas                                          |
+| businessLoans   | [[Loans](#schemaLoans)]                                       | Sim          | Empréstimos Pessoas Físicas                                          |
 

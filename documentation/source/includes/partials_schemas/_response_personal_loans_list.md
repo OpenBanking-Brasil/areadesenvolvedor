@@ -176,7 +176,7 @@
 |:------------    |:---------------------------------                             |:-----------  |:----------------------------------------------------                 |
 | cnpjNumber      | string                                                        | Sim          | Número do CNPJ do conglomerado                                       |
 | name            | string                                                        | Sim          | Nome da Instituição, pertencente à organização, responsável pela comercialização das modalidades de Empréstimos para Pessoas Físicas consultadas.  |
-| personalLoans   | [[Loans](#schemaLoans)]                                       | Sim          | Empréstimos Pessoas Físicas/Jurídicas                                          |
+| personalLoans   | [[Loans](#schemaLoans)]                                       | Sim          | Empréstimos Pessoas Físicas                                          |
 
 
 ## Loans
@@ -220,7 +220,7 @@
 
 |     Nome            |  Tipo                                                      | Obrigatório  |                            Definição                         |
 |:------------        |:---------------------------------                          |:-----------  |:----------------------------------------------------         |
-| types               | [LoansTypes](#schemaEnumLoanTypes)                  | Sim          | Modalidades de empréstimos ofertados para pessoas físicas/jurídicas  |
+| types               | [LoansTypes](#schemaEnumLoanTypes)                  | Sim          | Modalidades de empréstimos ofertados para pessoas físicas  |
 | fees                | [[LoanFees](#schemaLoanFees)]                              | Sim          |              |
 | interestRates       | [[InterestRates](#schemaInterestRates)]                    | Sim          |              |
 | requiredWarranties  | [[RequiredWarranties](#schemaEnumRequiredWarranties)]  | Sim          |        |
