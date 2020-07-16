@@ -1,116 +1,114 @@
-## Convenções do Payload 
+## Convenções de payload 
 
-Esta seção do padrão descreve as estruturas de carga útil de solicitação e resposta para todos os pontos de extremidade da API, bem como as convenções de nomenclatura para campos.
+Esta seção do padrão descreve as estruturas padrões de requisição e resposta para todos os end points das APIs, assim como as convenções de nomenclatura para os atributos.
 
-### Estrutura de Request do Payload
+### Estrutura de requisição
 
-Cada carga de solicitação de API DEVE ter um objeto JSON no nível raiz conhecido como **root object**. Este objeto DEVE conter um objeto de `data` para armazenar os dados primários da solicitação.
+> Estrutura da requisição
 
-O objeto raiz conterá um `meta` objeto se, e somente se, for especificamente NECESSÁRIO pelo ponto final. O metaobjeto é usado para fornecer informações adicionais, como dados de autorização do segundo fator, gerenciamento de tráfego, contagens de paginação ou outros propósitos complementares ao funcionamento da API.
+```json
+{
+  "data": {
+    "..."
+  }
+}
+```
+Cada requisição deve ser um objeto JSON contendo um objeto `data` para armazenar os dados primários da requisição.
 
-A definição do conteúdo para o objeto `data` e o `meta` objeto será definida separadamente para cada ponto final.
+No mesmo nível do objeto `data`, poderá existir um objeto `meta` se assim for especificado pelo end point.
+O meta objeto é usado para fornecer informações adicionais ao end point, como parâmetros de paginação contagens de paginação ou outros propósitos complementares ao funcionamento da API.
 
-### Estrutura de retorno do Payload
+A definição do conteúdo para o objeto `data` será definida separadamente para cada end point.
 
-Cada carga de solicitação de API DEVE ter um objeto JSON no nível raiz conhecido como **root object**.
+### Estrutura de resposta
 
-O conteúdo do objeto raiz é o seguinte:
+> Estrutura de resposta
 
-* Se a resposta for bem-sucedida (200 OK), o objeto root:
-    - DEVE conter um objeto `data`
-    - DEVE conter um objeto `links`
-    - PODE conter um objeto `meta`, se NECESSÁRIO pela definição do ponto final específico
-* Se a resposta for malsucedida (não 200 OK), o objeto raiz:
-    - PODE conter um objeto `erros` (conforme a definição específica do ponto final)
+```json
+{
+  "data": {
+    "..."
+  },
+  "links":{
+    "..."
+  },
+  "meta": {
+    "..."
+  }
+}
+```
+Cada end point retornará um objeto JSON contendo os atributos abaixo:
+
+* Se a resposta for bem-sucedida (200 OK), o objeto JSON irá conter:
+    - obrigatóriamente um objeto `data`
+    - obrigatóriamente um objeto `links`
+    - opicionalmente um objeto `meta`, se necessário pela definição do end point requisitado
+* Se a resposta for malsucedida (não 200 OK), o objeto JSON poderá conter:
+    - um objeto `errors` (conforme a definição específica do end point)
     
-A definição do conteúdo para o objeto `data` e o `meta` objeto será definida separadamente para cada ponto final.
+A definição do conteúdo para os objeto `data` e `meta` serão definidas separadamente para cada end point.
 
-O objeto `links` conterá links para pontos finais da API relacionados. Isso incluirá links para oferecer suporte à paginação.
+O objeto `links` irá conter URI's para end points da API requisitada, apontando para pontos específicos relacioados ao recurso de paginação.
 
-O objeto de links DEVE conter um campo chamado `self` que terá o URI totalmente qualificado para a solicitação atual como um valor.
-
-O objeto `erros` será uma matriz de zero ou mais objetos não nomeados. Os campos em cada um desses objetos serão os seguintes:
-
-* campo `code` DEVE estar presente: contém um código de erro específico do ponto final
-* campo `title` DEVE estar presente: contém um rótulo legível por humanos do erro que é constante por código
-* campo `detail` DEVE estar presente: contém uma descrição legível por humanos deste erro específico
-* O objeto `meta` PODE estar presente: contém dados específicos adicionais sobre o ponto final relevantes para o erro
-
-### Convenções de nomenclatura de campo
-
-### Caracteres válidos em nomes de campos
-
-Todos os nomes de campos definidos em uma carga útil de solicitação ou resposta DEVEM ser tratados com distinção entre maiúsculas e minúsculas por clientes e servidores e DEVEM atender a todas as seguintes condições:
-
-* Os nomes dos membros DEVEM conter pelo menos um caractere.
-* Os nomes dos membros DEVEM conter apenas os caracteres permitidos listados abaixo:
-    - U+0061 to U+007A, a-z
-    - U+0041 to U+005A, A-Z
-    - U+0030 to U+0039, 0-9
-* Além disso, os seguintes caracteres são permitidos nos nomes dos campos, exceto como o primeiro ou o último caractere:
-    - U+002D HYPHEN-MINUS, '-'
-    - U+005F LOW LINE, '_'
-    - U+0024 DOLLAR SIGN, '$'
-
-Qualquer outro caractere NÃO DEVE ser usado nos nomes dos campos.
-
-### Estilo de nomeação de campo
-
-Os nomes dos campos DEVEM ser nomes significativos com semântica definida.
-
-Os campos que representam os mesmos dados em diferentes cargas úteis ou partes diferentes de uma carga útil DEVEM ter o mesmo nome.
-
-Tipos de matriz devem ter nomes de campos no plural. Todos os outros nomes de campo DEVERÃO ser singulares.
-
-Os nomes dos campos DEVEM ser definidos usando camel case com os seguintes esclarecimentos:
-
-* Se um nome de campo é um acrônimo único, DEVE estar em minúsculas
-* Se um nome de campo contiver um acrônimo junto com outras palavras, PODE estar em maiúsculas
-* O primeiro caractere em um nome de campo DEVE ser minúsculo, a menos que faça parte de um acrônimo
-
-Os campos NÃO devem ser nomeados usando tokens javascript reservados.
-
-### Maps
-
-Para JSON maps (ou seja, pares chave / valor), qualquer caractere Unicode PODE ser usado como nome de campo e requisitos estilísticos não se aplicam.
-
-### Convenções de propriedade de campo
-
-### Tipos de dados de campo
+O objeto de links sempre irá conter o atributo `self` que irá apontar para a URI da solicitação atual.
 
 
-Cada campo definido para as cargas úteis de um ponto final DEVE ter um tipo de dados atribuído.
+> Estrutura de resposta de erros
 
-A lista de tipos de dados válidos é definida na seção [tipos de dados comuns](#common_field_types). Se um tipo de dados personalizado é necessário para um campo, o campo DEVE ser classificado como uma string com uma descrição clara de como o valor da propriedade deve ser interpretado ou definido.
+```json
+{
+  "errors": [
+    {
+        "code": "...",
+        "title": "...",
+        "detail": "..."
+    }
+  ],
+  "meta":{
+    "..."
+  }
+}
+```
 
-### Campos Obrigatórios / Opcionais
+* O objeto `errors` será um array de zero ou mais objetos. Os atributos deste objeto serão os descritos abaixo:
+    - obrigatóriamente o atributo `code` contendo um código de erro específico do end point
+    - obrigatóriamente o atributo `title` contendo um título legível por humanos do erro deste erro específico
+    - obrigatóriamente o atributo `detail` contendo uma descrição legível por humanos deste erro específico
+    - opcionalmente o objeto `meta` contendo dados adicionais sobre o end point que sejam relevantes para o erro
 
-Cada campo definido para as cargas úteis de um ponto final DEVE ter um status atribuído obrigatório, opcional ou condicional.
+### Convenções de nomenclatura de atributos
 
-Os campos obrigatórios DEVEM estar presentes e ter um valor não nulo em uma carga útil de solicitação ou resposta para que a carga útil seja considerada válida.
+<b>Caracteres válidos em nomes de atributos</b>
 
-Os campos opcionais PODEM estar presentes, mas isso não é garantido. Também é válido que esses campos estejam presentes, mas tenham um valor nulo. Observe que os campos opcionais indicam que os dados às vezes não podem ser mantidos por um titular de dados e este é um cenário esperado.
+Todos os nomes de objetos e atributos definidos nos objetos JSON de requisição e resposta devem ser nomeados seguindo o padrão camelCase, tendo seu nome composto apenas por letras (a-z, A-Z) e números (0-9).
 
-Os campos condicionais DEVEM ter uma declaração condicional associada. Se a declaração condicional for verdadeira em uma solicitação ou resposta específica, o campo será considerado obrigatório. Se a declaração condicional for falsa, o campo será considerado opcional.
+Qualquer outro caractere não deve ser usado nos nomes dos objetos e atributos, com execeção do caractere `-` (hífen), que poderá ser utilizando apenas conforme descrito na sessão [Extensibilidade](#introducao-extensibilidade).
 
-*  Note that for optional fields are not considered optionally implementable by a Data Holder. For instance, if a Data Holder holds data in digital form for a Customer that is represented in a payload then it is expected that this data will be shared when authorised by the Customer. For payloads unrelated to Customers, such as product reference data, there is more discretion for the Data Holder but other drivers, such as complementary regulation or the requirement to align to other channels, should be taken into consideration. 
+<b>Estilo de nomeação de atributos</b>
 
-### Campos vazios / nulos
+Os nomes dos objetos e atributos devem ser nomes significativos e em língua inglesa. Quando houver diferença entre inglês(Estados Unidos) e inglês (Reino Unido) no termo a ser utilizado, deverá ser utilizado o termo em inglês(Reino Unido).
+Ex: Utilizar o termo Post Code (Reino Unido) ao invés de Zip Code (Estados Unidos).
 
-Um campo vazio (ou seja, um campo que não está presente em uma carga útil) será considerado equivalente a um campo que esteja presente com um valor `null`.
+Arrays devem ser nomeados no plural. Demais atributos deverão ser nomeados no singular.
 
-Uma sequência vazia (`“”`) não é considerada equivalente a `null`.
+### Convenções de propriedade dos atributos
 
-Um valor booleano de false não é considerado equivalente a `null`. Os campos booleanos opcionais, por implicação, têm três valores possíveis: verdadeiro, falso e indeterminado (ou seja, `null`).
+<b>Tipos de dados dos atributos</b>
 
-### Convenções de objeto
+Cada atributo deverá estar associado a um tipo de dados. A lista de tipos de dados válidos está definida na seção [tipos de dados comuns](#introducao-tipos-de-dados-comuns). Se um tipo de dados personalizado é necessário para um atributo, o mesmo deverá ser classificado como uma string com uma descrição clara de como o valor da propriedade deve ser interpretado.
 
-Uma convenção específica será aplicada aos objetos de união.
+<b>Atributos Obrigatórios / Opcionais</b>
 
-Nos padrões, um objeto de união é usado em uma situação em que um conjunto de dados pode ser representado com diferentes conjuntos de campos, dependendo do contexto. Para manter a digitação forte dos campos, será usada uma de uma série de estruturas de objetos conhecidas. Um exemplo em que essa técnica é usada na norma está na definição de saldos de contas em que as informações do saldo podem ser representadas de maneira diferente, mas sem ambiguidade, para diferentes tipos de contas.
+Cada atributo definido deverá ter um status indicando se o mesmo é obrigatório ou opcional.
 
-Para objetos de união, um campo adicional, com um sufixo conhecido, é usado para identificar o tipo de objeto que foi fornecido especificamente.
+Os atributos obrigatórios devem estar presentes e ter um valor não nulo, sejam em uma requisição ou resposta, para que payload seja considerado válido.
 
-Como o nome desse campo é constante, ele pode ser usado para executar uma pesquisa indireta no tipo de objeto que foi realmente fornecido, removendo a necessidade de verificar qual objeto está presente.
+Os atributos opcionais podem ter uma restrição vinculada à eles, tornando-os obrigatórios conforme a situação descrita na coluna restrição do dicionário de dados.
 
-Um campo desse tipo sempre será especificado com o sufixo `UType`, que significa Tipo de União.
+<b>Atributos vazios / nulos</b>
+
+Um atributo omitido (ou seja, um atributo que não está presente em payload) será considerado equivalente a um atributo que esteja presente com o valor `null`.
+
+Uma string vazia (`“”`) não será considerada equivalente a `null`.
+
+O valor booleano `false` não será considerado equivalente a `null`. Os atributos booleanos opcionais, por definição, possuirão três valores possíveis: verdadeiro(`true`), falso(`false`) e indeterminado (`null`).

@@ -1,26 +1,31 @@
 ## Versionamento
 
-Foram adotados padrões de versionamento diferentes para API e para a documentação. A documentação terá o versionamento conforme descrito na sessão [Versionamento da documentação](#versionamento-da-documentacao) e as API terão o versionamento conforme descrito na sessão [Versionamento da URI](#versionamento-da-uri).
+O controle de versão contemplará 4 tipos de lançamento (i.e. major, minor, patch e release candidate) e terá
+prazos definidos para lançamento e implementação de novas versões major, bem como suporte de versões anteriores.
 
-### Versionamento da documentação
+> O versionamento terá o seguinte formato contemplando 4 tipos de lançamentos de versões:
+`1.12.2.rc1 - significando versão major 1, versão minor 12 , aplicação de patchs versão 2 e release candidate 1 `
 
-> O versionamento da documentação terá o seguinte formato:
-`1.12.2 - significando versão major 1, versão minor 12 e correção de bugs versão 2 `
+* **Major**: inclui novas características do roadmap, mudanças e correções a serem incorporadas
+    - Ex. v1.0.0, v2.0.0
+* **Minor**: pequenas mudanças nos elementos já existentes
+    - Devem ser a exceção para atender às alterações urgentes que não podem esperar até a próxima versão principal (major).
+    - Ex. v1.1.0, v1.2.0
+* **Patch**: esclarecimentos às especificações publicadas pelo diretório, não incluem alterações funcionais
+    - Ex. v1.1.1, v1.1.2
+* **Release candidate**: versões de pré-lançamento de qualquer patch futuro, minor ou major.
+    - Ex. v1.0.0-rc , v1.0.0-rc2
 
-A documentação será versionada usando o padrão de versionamento em 3 partes `<major>.<minor>.<bug fix>`. Esta versão será utilizada para descrever as atualizações no [Controle de Alterações](#change-log).
+* Cronograma definido de novas versões dos padrões para que os participantes consigam se planejar e desenvolver novas APIs
+* Cada um dos lançamentos tem um prazo pré-estabelecido para ser implementado pelos participantes, mitigando o risco de múltiplas versões
 
-Cada uma das 3 partes do versionamento são incrementadas independentemente e estão detalhadas abaixo:
+* Em linha com a proposta de cronograma de novas versões, serão definidos ciclos de vida para as APIs versionadas
+* Lançamentos minor não devem configurar uma quebra de contrato, impactar significativamente endpoints e/ou exigir manutenção crítica
+* Não serão feitos mais do que um lançamento de versão major em um período de 6 meses
+    – Demais lançamentos podem ocorrer a qualquer momento
+* Doadores deverão implementar cada versão major em um período de 6 meses
+* Doadores deverão fornecer suporte para versões anteriores por 6 meses para major version
+* Mudança/implementação de novas versões deverão ser notificadas pelos doadores (método a ser acordado
+futuramente entre os participantes)
+* Credenciais de acesso associadas as APIs deverão ser agnósticas a versão
 
-* **major**: Versão principal da documentação. Será incrementado apenas quando houverem grandes mudanças nas API's a ponto de não ser possível manter a retrocompatibilidade. Este tipo de mudança pode ser mudança nos critérios de segurança, mudanças nas estruturas de dados ou mudança de protocolo.
-* **minor**: Será incrementada quando houverem mudanças significativas nas API's.
-* **bug fix**: Correções pequenas para esclarer dúvidas afim de evitar erros de interpretação da documentação.
-
-### Versionamento da URI
-
-> A estrutura base da URI contendo a versão é:  
-`http://<host>/open-banking/<api>/v<version>`
-
-Cada API possuirá uma versão e seus end points deverão seguir a versão da API.
-
-### Versionamento do End Point 
-Os end points não terão versionamento próprio, devendo respeitar o versionamento da API conforme descrito na sessão [Versionamento da URI](#versionamento-da-uri)

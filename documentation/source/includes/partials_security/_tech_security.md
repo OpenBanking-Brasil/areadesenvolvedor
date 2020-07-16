@@ -1,4 +1,4 @@
-## Segurança Técnica
+## Segurança técnica
 
 ### Uso do TLS
 Todas as chamadas HTTP usarão HTTPS incorporando TLS >= 1.2
