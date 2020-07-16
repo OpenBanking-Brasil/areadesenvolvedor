@@ -11,7 +11,7 @@ prazos definidos para lançamento e implementação de novas versões major, bem
 * **Minor**: pequenas mudanças nos elementos já existentes
     - Devem ser a exceção para atender às alterações urgentes que não podem esperar até a próxima versão principal (major).
     - Ex. v1.1.0, v1.2.0
-* **Patch**: esclarecimentos às especificações publicadas pelo OBIE, não incluem alterações funcionais
+* **Patch**: esclarecimentos às especificações publicadas pelo diretório, não incluem alterações funcionais
     - Ex. v1.1.1, v1.1.2
 * **Release candidate**: versões de pré-lançamento de qualquer patch futuro, minor ou major.
     - Ex. v1.0.0-rc , v1.0.0-rc2
