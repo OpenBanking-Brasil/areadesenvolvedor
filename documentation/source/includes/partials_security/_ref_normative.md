@@ -1,4 +1,4 @@
-## Referencias Normativas
+## Referências normativas
 
 |Referença|Descrição|Versão|
 |---------|---------|------|

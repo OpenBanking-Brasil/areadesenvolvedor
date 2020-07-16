@@ -1,4 +1,4 @@
-## Referencias informativas
+## Referências informativas
 
 |Referença|Descrição|
 |---------|---------|

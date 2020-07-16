@@ -1,4 +1,4 @@
-## Endpoints
+## End points
 
 ### Contexto Open-data
 

@@ -1,4 +1,4 @@
-## Glossario
+## Glossário
 
 * **API**: Application Programming Interface.
 * **CA**: Certificate Authority.

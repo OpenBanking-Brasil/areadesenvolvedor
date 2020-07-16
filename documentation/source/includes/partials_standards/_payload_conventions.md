@@ -1,4 +1,4 @@
-## Convenções de Payload 
+## Convenções de payload 
 
 Esta seção do padrão descreve as estruturas padrões de requisição e resposta para todos os end points das APIs, assim como as convenções de nomenclatura para os atributos.
 

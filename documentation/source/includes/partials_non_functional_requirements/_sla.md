@@ -1,4 +1,4 @@
-## Nível de Serviço (SLA)
+## Nível de serviço (SLA)
 O suporte eficaz da disponibilidade do Open Banking mantém níveis consistentes de serviços do sistema. 
 Níveis de Serviço definidos:  
 
