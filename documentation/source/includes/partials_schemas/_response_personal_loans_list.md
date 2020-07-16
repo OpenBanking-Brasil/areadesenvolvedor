@@ -40,7 +40,9 @@
                     "incomeRateInfo": "string"
                   }
                 ],
-                "requiredWarranties": "string",
+                "requiredWarranties": [
+                  "string"
+                ],
                 "termsConditions": "string"
               }
             ]
@@ -67,8 +69,8 @@
 |:------------      |:---------------------------------                                    |:-----------  |:----------------------------------------------------  |
 | data              | object                                                               | Sim          |                                                       |
 | organisation      | [[PersonalLoansOrganisation](#schemaPersonalLoansOrganisation)]      | Sim          | Lista das organizaçõs titulares das dependências      |
-| links             | [[LinksPaginated](#schemaLinksPaginated)]                            | Sim          |                                                       |
-| meta              | [[MetaPaginated](#schemaMetaPaginated)]                              | Sim          |                                                       |
+| links             | [LinksPaginated](#schemaLinksPaginated)                            | Sim          |                                                       |
+| meta              | [MetaPaginated](#schemaMetaPaginated)                             | Sim          |                                                       |
 
 ## PersonalLoansOrganisation
 <a id="schemaPersonalLoansOrganisation"></a>
@@ -109,7 +111,9 @@
               "incomeRateInfo": "string"
             }
           ],
-          "requiredWarranties": "string",
+          "requiredWarranties": [
+                  "string"
+                ],
           "termsConditions": "string"
         }
       ]
@@ -159,7 +163,9 @@
           "incomeRateInfo": "string"
         }
       ],
-      "requiredWarranties": "string",
+      "requiredWarranties": [
+        "string"
+      ],
       "termsConditions": "string"
     }
   ]  
@@ -205,18 +211,38 @@
       "incomeRateInfo": "string"
     }
   ],
-  "requiredWarranties": "string",
+  "requiredWarranties": [
+    "string"
+  ],
   "termsConditions": "string"
     }
 ```
 
 |     Nome            |  Tipo                                                      | Obrigatório  |                            Definição                         |
 |:------------        |:---------------------------------                          |:-----------  |:----------------------------------------------------         |
-| types               | [[EnumType](#schemaEnumType)]                              | Sim          | Modalidades de empréstimos ofertados para pessoas físicas/jurídicas  |
+| types               | [LoansTypes](#schemaEnumLoanTypes)                  | Sim          | Modalidades de empréstimos ofertados para pessoas físicas/jurídicas  |
 | fees                | [[LoanFees](#schemaLoanFees)]                              | Sim          |              |
 | interestRates       | [[InterestRates](#schemaInterestRates)]                    | Sim          |              |
-| requiredWarranties  | [[EnumRequiredWarranties](#schemaEnumRequiredWarranties)]  | Sim          |        |
+| requiredWarranties  | [[RequiredWarranties](#schemaEnumRequiredWarranties)]  | Sim          |        |
 | termsConditions     | string                                                     | Sim          |        |
+
+### Enum LoanTypes
+<a id="schemaEnumLoanTypes"></a>
+
+| Propriedade  | Valor 
+|:------------ |:------ 
+| types   | ADIANTAMENTO_DEPOSITANTE    
+| types   | CREDITO_PESSOAL_CONSIGNADO
+| types   | CREDITO_PESSOAL_NAO_CONSIGNADO
+| types   | CHEQUE_ESPECIAL
+| types   | CONTA_GARANTIDA
+| types   | HOME_EQUITY
+| types   | MICROCREDITO
+| types   | MICROCREDITO_CONSIGNADO
+| types   | OUTROS_EMPRESTIMOS
+| types   | CARTAO_CREDITO
+| types   | RECEBIVEIS_ADQUIRIDOS
+
 
 ## LoanFees
 <a id="schemaLoanFees"></a>
@@ -262,12 +288,20 @@
 ```
 |     Nome            |  Tipo                                                      | Obrigatório  |                            Definição                         |
 |:------------        |:---------------------------------                          |:-----------  |:----------------------------------------------------         |
-| type                | [[EnumType](#schemaEnumLoanFessPriceType)]                 | Não          |   |
-| value               | string                                                     | Não          | Valor da tarifa cobrada, relativa ao serviço ofertado para a Modalidade de Empréstimo, para pessoa física/jurídica. P.ex. 45,00             |
+| type                | [PriceType] (#schemaEnumLoanFessPriceType)                 | Não          |   |
+| value               | string                                                     | Não          | Valor da tarifa cobrada, relativa ao serviço ofertado para a Modalidade de Empréstimo, para pessoa física/jurídica.             |
 | currency            | string                                                     | Não          | Moeda referente ao valor da Tarifa, segundo modelo ISO-4217            |
 | priceInfo           | string                                                     | Não          | Descrição de como é composto o valor da tarifa. p.ex. '0,25% sobre o excedente do limite acima de R$ 500,00'       |
 | changingUnit        | string                                                     | Sim          | Unidade ou forma de cobrança      |
 
+### Enum PriceType
+<a id="schemaEnumLoanFessPriceType"></a>
+
+| Propriedade  | Valor 
+|:------------ |:------ 
+| type        | MINIMO      
+| type        | MEDIO      
+| type        | MAXIMO     
 
 ## InterestRates
 <a id="schemaInterestRates"></a>
@@ -288,55 +322,65 @@
 | rate                   | string                                       | Não         | Percentual que incide sobre a composição das taxas de juros remuneratórias                          |
 | referencialRate        | string                                       | Não         | Taxa Referencial se configura como uma taxa de juros de referência, ou seja, um indicador geral da economia brasileira. Por isso, é utilizada na hora de calcular o rendimento de determinadas aplicações financeiras   |
 | indexer                | string                                       | Não         | Indexador é o termo utilizado para se referir aos índices usados como base para corrigir os valores monetários de um determinado ativo. No Brasil, os indexadores mais comuns são o IPCA, a taxa Selic e o CDI                                    |
-| prePostTax             | [[EnumPrePosTax](#schemaEnumTypePrePosTax)]  | Não         |                                   |
-| frecuency              | [[EnumFrecuency](#schemaEnumFrecuency)]      | Não         |                                   |
+| prePostTax             | [PrePosTax](#schemaEnumTypePrePosTax)  | Não         |                                   |
+| frecuency              | [Frecuency](#schemaEnumFrecuency)      | Não         |                                   |
 | incomeRateInfo         | string                                       | Não         | Descrição da Remuneração relativa as taxas de juros remuneratóriassobre a modalidad de Empréstimo para pessoa física/jurídica                                    |
 
 
-## PrePostTax
+### Enum PrePostTax
 <a id="schemaEnumTypePrePosTax"></a>
 
-| Propriedade  | Código | Definição                                             |
-|:------------ |:------ |:----------------------------------------------------- |
-| codes        | 1      | Pré                                                   |
-| codes        | 2      | Pós                                                   |
+| Propriedade  | Valor                                             
+|:------------ |:------ 
+| prePostTax   | PRE    
+| prePostTax   | POS    
 
 
-## Frecuency
+### Enum Frecuency
 <a id="schemaEnumFrecuency"></a>
 
-| Propriedade  | Código | Definição                                             |
-|:------------ |:------ |:----------------------------------------------------- |
-| codes        | 1      | a.d.                                                  |
-| codes        | 2      | a.m.                                                  |
-| codes        | 3      | a.a.                                                  |
+| Propriedade  | Valor                                       
+|:------------ |:------ 
+| frequency    | AD    
+| frequency    | AM    
+| frequency    | AA   
 
-## Type
-<a id="schemaEnumLoanFessPriceType"></a>
-
-| Propriedade  | Código | Definição                                             |
-|:------------ |:------ |:----------------------------------------------------- |
-| codes        | 1      | Mínimo                                                |
-| codes        | 2      | Médio                                                 |
-| codes        | 3      | Máximo                                                |
-
-
-## RequiredWarranties
+### Enum RequiredWarranties
 <a id="schemaEnumRequiredWarranties"></a>
 
-| Propriedade  | Código | Definição                                             |
-|:------------ |:------ |:----------------------------------------------------- |
-| codes        | 1      | Cessão de direitos creditórios                        |
-| codes        | 2      | Caução                                                |
-| codes        | 3      | Penhor                                                |
-| codes        | 4      | Alienação fiduciária                                  |
-| codes        | 5      | Hipoteca                                              |
-| codes        | 6      | Operações garantidas pelo governo                     |
-| codes        | 7      | Outras garantias não fidejussóriaa                    |
-| codes        | 8      | Seguros e assemelhados                                |
-| codes        | 9      | Garantia fidejussória                                 |
-| codes        | 10     | Bens arrendados                                       |
-| codes        | 11     | Garantias internacionais                              |
-| codes        | 12     | Operações garantidas por outras entidades             |
-| codes        | 13     | Acordos de compensação                                |
-| codes        | 14     | Não aplicável                                         |
+| Propriedade  | Valor                                            
+|:------------ |:------ 
+| requiredWarranties        | CESSAO_DIR_CRE_DUPLICATAS     
+| requiredWarranties        | CESSAO_DIR_CRE_CHEQUES      
+| requiredWarranties        | CESSAO_DIR_CRE_FA_CARTAO_CRED      
+| requiredWarranties        | CESSAO_DIR_CRE_AP_FI_RE_FIXA      
+| requiredWarranties        | CESSAO_DIR_CRE_AP_FIN_RE_VARI      
+| requiredWarranties        | CESSAO_DIR_CRE_AÇOES_DEBENTUR      
+| requiredWarranties        | CESSAO_DIR_CRE_TRI_REC_ORÇAME      
+| requiredWarranties        | CESSAO_DIR_CRE_DIR_ALUGUEIS      
+| requiredWarranties        | CESSAO_DIR_CRE_NOT_PRO_DIR_CR      
+| requiredWarranties        | CAUÇAO_DUPLICATAS     
+| requiredWarranties        | CAUÇAO_CHEQUES     
+| requiredWarranties        | CAUÇAO_FACTURA_CARTAO_CREDITO     
+| requiredWarranties        | CAUÇAO_AP_FINAN_RENDA_FIXA     
+| requiredWarranties        | CAUÇAO_AP_FINAN_RENDA_VARIA   
+| requiredWarranties        | CAUÇAO_AÇOES_DEBENTURES
+| requiredWarranties        | CAUÇAO_TRIB_RECEITAS_ORNAMET
+| requiredWarranties        | CAUÇAO_DIREITOS_ALUGUEIS
+| requiredWarranties        | CAUÇAO_DEPOSITO_TITULOS
+| requiredWarranties        | CAUÇAO_DEP_PRA_POU_OU_PF  
+| requiredWarranties        | CAUÇAO_NOT_PROMIS_OUTROS_DC
+| requiredWarranties        | PENHOR_DUPLICATAS
+| requiredWarranties        | PENHOR_CHEQUES
+| requiredWarranties        | PENHOR_FAT_CARTAO_CREDITO
+| requiredWarranties        | PENHOR_AP_FINAN_RENDA_FIXA
+| requiredWarranties        | PENHOR_AP_FINAN_RENDA_VARIA
+| requiredWarranties        | PENHOR_AÇOES_DEBENTURES
+| requiredWarranties        | PENHOR_TRIB_RECETAS_ORÇAMET
+
+
+ 
+
+
+
+

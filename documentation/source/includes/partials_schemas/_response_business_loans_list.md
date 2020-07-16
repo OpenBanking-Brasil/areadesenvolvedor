@@ -40,7 +40,9 @@
                     "incomeRateInfo": "string"
                   }
                 ],
-                "requiredWarranties": "string",
+                "requiredWarranties": [
+                  "string"
+                ],
                 "termsConditions": "string"
               }
             ]
@@ -67,8 +69,8 @@
 |:------------      |:---------------------------------                                    |:-----------  |:----------------------------------------------------  |
 | data              | object                                                               | Sim          |                                                       |
 | organisation      | [[BusinessLoansOrganisation](#schemaBusinessLoansOrganisation)]      | Sim          | Lista das organizaçõs titulares das dependências      |
-| links             | [[LinksPaginated](#schemaLinksPaginated)]                            | Sim          |                                                       |
-| meta              | [[MetaPaginated](#schemaMetaPaginated)]                              | Sim          |                                                       |
+| links             | [LinksPaginated](#schemaLinksPaginated)                            | Sim          |                                                       |
+| meta              | [MetaPaginated](#schemaMetaPaginated)                              | Sim          |                                                       |
 
 ## BusinessLoansOrganisation
 <a id="schemaBusinessLoansOrganisation"></a>
@@ -109,7 +111,9 @@
               "incomeRateInfo": "string"
             }
           ],
-          "requiredWarranties": "string",
+          "requiredWarranties": [
+            "string"
+          ],
           "termsConditions": "string"
         }
       ]
@@ -159,7 +163,9 @@
           "incomeRateInfo": "string"
         }
       ],
-      "requiredWarranties": "string",
+      "requiredWarranties": [
+        "string"
+      ],
       "termsConditions": "string"
     }
   ]  
