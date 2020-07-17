@@ -11,14 +11,10 @@
           {
             "name": "string",
             "cnpjNumber": "string",
-            "contractors": [
+            "personalAccounts": [
               {
-                "name": "string",
-                "cnpjNumber": "string",
-                "bankingAgents": [
-                  {
-                    "identification": {
-                      "corporationName": "string",
+                "identification": {
+                      "type": "string",
                       "groupName": "string",
                       "cnpjNumber": "string"
                     },
@@ -38,7 +34,7 @@
                       ],
                       "additionalInfo": "string"
                     }
-                  }
+                  
                 ]
               }
             ]
