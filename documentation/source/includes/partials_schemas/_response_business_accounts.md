@@ -1,51 +1,79 @@
-## ResponseBankingAgentsList
-<a id="schemaResponseBankingAgentsList"></a>
+## ResponseBusinessAccountsList
+<a id="schemaResponseBusinessAccountsList"></a>
 
 ```json
 {
+  
   "data": {
-    "organisation": [
-      {
-        "name": "string",
-        "companies": [
-          {
-            "name": "string",
-            "cnpjNumber": "string",
-            "contractors": [
-              {
-                "name": "string",
-                "cnpjNumber": "string",
-                "bankingAgents": [
+    "organisation": {
+      "name": "string",
+      "companies": [
+        {
+          "name": "string",
+          "cnpjNumber": "string",
+          "businessAccounts": [
+            {
+              "type": "string",
+              "fees": {
+                "priorityServices": [
                   {
-                    "identification": {
-                      "corporationName": "string",
-                      "groupName": "string",
-                      "cnpjNumber": "string"
+                    "name": "string",
+                    "code": "string",
+                    "chargingTriggerInfo": "string",
+                    "maxPrice": "string",
+                    "currency": "string",
+                    "chargingUnit": "string"
+                  }
+                ],
+                "otherServices": [
+                  {
+                    "name": "string",
+                    "code": "string",
+                    "chargingTriggerInfo": "string",
+                    "price": {
+                      "type": "string",
+                      "value": "string",
+                      "currency": "string"
                     },
-                    "postalAddress": {
-                      "streetType": "string",
-                      "streetName": "string",
-                      "buildingNumber": "string",
-                      "additionalInfo": "string",
-                      "districtName": "string",
-                      "townName": "string",
-                      "countrySubDivision": "string",
-                      "postCode": "string"
-                    },
-                    "services": {
-                      "codes": [
-                        "string"
-                      ],
-                      "additionalInfo": "string"
-                    }
+                    "currency": "string",
+                    "additionalInfo": "string",
+                    "chargingUnit": "string"
                   }
                 ]
+              },
+              "serviceBundles": {
+                "type": "string",
+                "services": [
+                  {
+                    "code": "string",
+                    "eventLimitQuantity": "string",
+                    "freeEventQuantity": "string",
+                    "maxPrice": "string",
+                    "currency": "string"
+                  }
+                ]
+              },
+              "openCloseChannels": "string",
+              "transactionMethods": "string",
+              "termsConditions": {
+                "minimumBalance": "string",
+                "minimumBalanceCurrency": "string",
+                "elegibilityCriteriaInfo": "string",
+                "closingProcessInfo": "string"
+              },
+              "incomeRates": {
+                "rate": "string",
+                "referencialRate": "string",
+                "indexer": "string",
+                "prePostTax": "string",
+                "frequency": "string",
+                "additionalInfo": "string"
               }
-            ]
-          }
-        ]
-      }
-    ]
+            }
+          ]
+        }
+      ]
+    }
   },
   "links": {
     "self": "string",
@@ -64,194 +92,315 @@
 |     Nome          |  Tipo                                                                | Obrigatório  |                            Definição                  |
 |:------------      |:---------------------------------                                    |:-----------  |:----------------------------------------------------  |
 | data              | object                                                               | Sim          |                                                       |
-| » organisation    | [[BankingAgentsOrganisation](#schemaBankingAgentsOrganisation)]      | Sim          | Lista das organizaçõs titulares das dependências      |
+| » organisation    | [[BusinessAccountOrganisation](#schemaBusinessAccountOrganisation)]  | Sim          | Lista das organizações responáveis pelas contas |
 | links             | [[LinksPaginated](#schemaLinksPaginated)]                            | Sim          |                                                       |
 | meta              | [[MetaPaginated](#schemaMetaPaginated)]                              | Sim          |                                                       |
 
-## BankingAgentsOrganisation
-<a id="schemaBankingAgentsOrganisation"></a>
+## BusinessAccountOrganisation
+<a id="schemaBusinessAccountOrganisation"></a>
 
 ```json
 {
-  "name": "string",
-  "companies": [
-    {
       "name": "string",
-      "cnpjNumber": "string",
-      "contractors": [
+      "companies": [
         {
           "name": "string",
           "cnpjNumber": "string",
-          "bankingAgents": [
+          "businessAccounts": [
             {
-              "identification": {
-                "corporationName": "string",
-                "groupName": "string",
-                "cnpjNumber": "string"
-              },
-              "postalAddress": {
-                "streetType": "string",
-                "streetName": "string",
-                "buildingNumber": "string",
-                "additionalInfo": "string",
-                "districtName": "string",
-                "townName": "string",
-                "countrySubDivision": "string",
-                "postCode": "string"
-              },
-              "services": {
-                "codes": [
-                  "string"
+              "type": "string",
+              "fees": {
+                "priorityServices": [
+                  {
+                    "name": "string",
+                    "code": "string",
+                    "chargingTriggerInfo": "string",
+                    "maxPrice": "string",
+                    "currency": "string",
+                    "chargingUnit": "string"
+                  }
                 ],
+                "otherServices": [
+                  {
+                    "name": "string",
+                    "code": "string",
+                    "chargingTriggerInfo": "string",
+                    "price": {
+                      "type": "string",
+                      "value": "string",
+                      "currency": "string"
+                    },
+                    "currency": "string",
+                    "additionalInfo": "string",
+                    "chargingUnit": "string"
+                  }
+                ]
+              },
+              "serviceBundles": {
+                "name": "string",
+                "services": [
+                  {
+                    "code": "string",
+                    "eventLimitQuantity": "string",
+                    "freeEventQuantity": "string",
+                    "maxPrice": "string",
+                    "currency": "string"
+                  }
+                ]
+              },
+              "openCloseChannels": "string",
+              "transactionMethods": "string",
+              "termsConditions": {
+                "minimumBalance": "string",
+                "minimumBalanceCurrency": "string",
+                "elegibilityCriteriaInfo": "string",
+                "closingProcessInfo": "string"
+              },
+              "incomeRates": {
+                "rate": "string",
+                "referencialRate": "string",
+                "indexer": "string",
+                "prePostTax": "string",
+                "frequency": "string",
                 "additionalInfo": "string"
               }
             }
           ]
         }
       ]
-    }
-  ]
 }
 ```
 
-|     Nome     |  Tipo                                                      | Obrigatório  |                            Definição                         |
-|:------------ |:---------------------------------                          |:-----------  |:----------------------------------------------------         |
-| name         | string                                                     | Sim          | Nome do conglomerado proprietário da dependência (titular).  |
-| companies    | [[BankingAgentsCompanies](#schemaBankingAgentsCompanies)]  | Sim          | Lista de instituições pertencentes à organização             |
+|     Nome     |  Tipo                                                        | Obrigatório  |                            Definição                         |
+|:------------ |:---------------------------------                            |:-----------  |:----------------------------------------------------         |
+| name         | string                                                       | Sim          | Nome do conglomerado responsável pelas contas (banco).  |
+| companies    | [[BusinessAccountCompanies](#schemaBusinessAccountCompanies)]| Sim          | Lista de instituições pertencentes à organização             |
 
-## BankingAgentsCompanies 
-<a id="schemaBankingAgentsCompanies"></a>
+## BusinessAccountCompanies 
+<a id="schemaBusinessAccountCompanies"></a>
 
 ```json
 {
-  "name": "string",
-  "cnpjNumber": "string",
-  "contractors": [
-    {
-      "name": "string",
-      "cnpjNumber": "string",
-      "bankingAgents": [
-        {
-          "identification": {
-            "corporationName": "string",
-            "groupName": "string",
-            "cnpjNumber": "string"
-          },
-          "postalAddress": {
-            "streetType": "string",
-            "streetName": "string",
-            "buildingNumber": "string",
-            "additionalInfo": "string",
-            "districtName": "string",
-            "townName": "string",
-            "countrySubDivision": "string",
-            "postCode": "string"
-          },
-          "services": {
-            "codes": [
-              "string"
-            ],
-            "additionalInfo": "string"
-          }
+          "name": "string",
+          "cnpjNumber": "string",
+          "businessAccounts": [
+            {
+              "type": "string",
+              "fees": {
+                "priorityServices": [
+                  {
+                    "name": "string",
+                    "code": "string",
+                    "chargingTriggerInfo": "string",
+                    "maxPrice": "string",
+                    "currency": "string",
+                    "chargingUnit": "string"
+                  }
+                ],
+                "otherServices": [
+                  {
+                    "name": "string",
+                    "code": "string",
+                    "chargingTriggerInfo": "string",
+                    "price": {
+                      "type": "string",
+                      "value": "string",
+                      "currency": "string"
+                    },
+                    "currency": "string",
+                    "additionalInfo": "string",
+                    "chargingUnit": "string"
+                  }
+                ]
+              },
+              "serviceBundles": {
+                "name": "string",
+                "services": [
+                  {
+                    "code": "string",
+                    "eventLimitQuantity": "string",
+                    "freeEventQuantity": "string",
+                    "maxPrice": "string",
+                    "currency": "string"
+                  }
+                ]
+              },
+              "openCloseChannels": "string",
+              "transactionMethods": "string",
+              "termsConditions": {
+                "minimumBalance": "string",
+                "minimumBalanceCurrency": "string",
+                "elegibilityCriteriaInfo": "string",
+                "closingProcessInfo": "string"
+              },
+              "incomeRates": {
+                "rate": "string",
+                "referencialRate": "string",
+                "indexer": "string",
+                "prePostTax": "string",
+                "frequency": "string",
+                "additionalInfo": "string"
+              }
+            }
+          ]
         }
-      ]
-    }
-  ]
-}
 ```
 
 |     Nome        |  Tipo                                                         | Obrigatório  |                            Definição                                 |
 |:------------    |:---------------------------------                             |:-----------  |:----------------------------------------------------                 |
-| name            | string                                                        | Sim          | Nome do conglomerado responsável pela contrataçao do Correspondente  |
+| name            | string                                                        | Sim          | Nome do conglomerado responsável pelas contas                        |
 | cnpjNumber      | string                                                        | Sim          | Número do CNPJ do conglomerado                                       |
-| contractors     | [[BankingAgentsContractor](#schemaBankingAgentsContractor)]   | Sim          | Lista de contratantes                                                |
+| businessAccounts| [[BusinessAccounts](#schemaBusinesslAccounts)]                 | Sim         | Lista de contas pessoa jurídica                                      |
 
 
-## BankingAgentsContractor
-<a id="schemaBankingAgentsContractor"></a>
+## BusinessAccounts
+<a id="schemaBusinessAccounts"></a>
 
 ```json
 {
-  "name": "string",
-  "cnpjNumber": "string",
-  "bankingAgents": [
-    {
-      "identification": {
-        "corporationName": "string",
-        "groupName": "string",
-        "cnpjNumber": "string"
-      },
-      "postalAddress": {
-        "streetType": "string",
-        "streetName": "string",
-        "buildingNumber": "string",
-        "additionalInfo": "string",
-        "districtName": "string",
-        "townName": "string",
-        "countrySubDivision": "string",
-        "postCode": "string"
-      },
-      "services": {
-        "codes": [
-          "string"
-        ],
-        "additionalInfo": "string"
-      }
-    }
-  ]
-}
+              "type": "string",
+              "fees": {
+                "priorityServices": [
+                  {
+                    "name": "string",
+                    "code": "string",
+                    "chargingTriggerInfo": "string",
+                    "maxPrice": "string",
+                    "currency": "string",
+                    "chargingUnit": "string"
+                  }
+                ],
+                "otherServices": [
+                  {
+                    "name": "string",
+                    "code": "string",
+                    "chargingTriggerInfo": "string",
+                    "price": {
+                      "type": "string",
+                      "value": "string",
+                      "currency": "string"
+                    },
+                    "currency": "string",
+                    "additionalInfo": "string",
+                    "chargingUnit": "string"
+                  }
+                ]
+              },
+              "serviceBundles": {
+                "name": "string",
+                "services": [
+                  {
+                    "code": "string",
+                    "eventLimitQuantity": "string",
+                    "freeEventQuantity": "string",
+                    "maxPrice": "string",
+                    "currency": "string"
+                  }
+                ]
+              },
+              "openCloseChannels": "string",
+              "transactionMethods": "string",
+              "termsConditions": {
+                "minimumBalance": "string",
+                "minimumBalanceCurrency": "string",
+                "elegibilityCriteriaInfo": "string",
+                "closingProcessInfo": "string"
+              },
+              "incomeRates": {
+                "rate": "string",
+                "referencialRate": "string",
+                "indexer": "string",
+                "prePostTax": "string",
+                "frequency": "string",
+                "additionalInfo": "string"
+              }
+            }
 ```
 
 |     Nome              |  Tipo                                    |  Obrigatório    |                            Descrição                  |
 |:------------          |:-----------------------------            | :-------------  |:----------------------------------------------------  |
-| name                  | string                                   | Sim             | Nome do contratante do serviço do correspondente      |
-| cnpjNumber            | string                                   | Sim             | CNPJ do Contrante                                     |
-| bankingAgents         | [[BankingAgent](#schemaBankingAgents)]   | Sim             | Lista de correspondentes bancários                    |
+| type                  | string                                   | Sim             | Nome do tipo da conta                                 |
+| fees                  | string                                   | Sim             | Nome das Tarifas cobradas                             |
+| serviceBundles        | string                                   | Sim             | Nome dos pacotes de serviços                          |
+| openCloseChannels     | string                                   | Sim             | Canais disponiveis                                    |
+| transactionMethods    | string                                   | Sim             | Lista de formas de movimentações                      |
+| termsConditions       | string                                   | Sim             | Termos e condições contratuais                        |
+| incomeRates           | string                                   | Sim             | Valores dos percentuais de taxas                      |
 
-## BankingAgent
-<a id="schemaBankingAgents"></a>
+
+## FeesPersonalAccount
+<a id="schemaFeesPersonalAccount"></a>
 
 ```json
 {
-  "identification": {
-    "corporationName": "string",
-    "groupName": "string",
-    "cnpjNumber": "string"
-  },
-  "postalAddress": {
-    "streetType": "string",
-    "streetName": "string",
-    "buildingNumber": "string",
-    "additionalInfo": "string",
-    "districtName": "string",
-    "townName": "string",
-    "countrySubDivision": "string",
-    "postCode": "string"
-  },
-  "services": {
-    "codes": [
-      "string"
-    ],
-    "additionalInfo": "string"
-  }
-}
+                "priorityServices": [
+                  {
+                    "name": "string",
+                    "code": "string",
+                    "chargingTriggerInfo": "string",
+                    "maxPrice": "string",
+                    "currency": "string",
+                    "chargingUnit": "string"
+                  }
+                ],
+                "otherServices": [
+                  {
+                    "name": "string",
+                    "code": "string",
+                    "chargingTriggerInfo": "string",
+                    "price": {
+                      "type": "string",
+                      "value": "string",
+                      "currency": "string"
+                    },
+                    "currency": "string",
+                    "additionalInfo": "string",
+                    "chargingUnit": "string"
+                  }
+                ]
+              }
 ```
 
-| Nome | Tipo|Obrigatório|Descrição|
-|:---- |:---|:---|:---|:---|
-| identification |[BankingAgentsIdentification](#schemaBankingAgentsIdentification)|Sim|Dados de identificação do correspondente|
-| postalAddress |[BankingAgentsPostalAddress](#schemaBankingAgentsPostalAddress)|Sim|Endereço do correspondente|
-| services |[BankingAgentsServices](#schemaBankingAgentsServices)|Sim|Serviços fornecidos pelo correspondente|
+|     Nome              |  Tipo                                    |  Obrigatório    |                            Descrição                  |
+|:------------          |:-----------------------------            | :-------------  |:----------------------------------------------------  |
+| type                  | string                                   | Sim             | Nome do tipo da conta                                 |
 
-## BankingAgentsIdentification
-<a id="schemaBankingAgentsIdentification"></a>
+## BusinessAccountPriorityServices
+<a id="schemaBusinessAccountPriorityServices></a>
 
 ```json
 {
-  "corporationName": "string",
-  "groupName": "string",
-  "cnpjNumber": "string"
-}
+                    "name": "string",
+                    "code": "string",
+                    "chargingTriggerInfo": "string",
+                    "maxPrice": "string",
+                    "currency": "string",
+                    "chargingUnit": "string"
+                  }
+```
+
+|     Nome              |  Tipo                                    |  Obrigatório    |                            Descrição                  |
+|:------------          |:-----------------------------            | :-------------  |:----------------------------------------------------  |
+| type                  | string                                   | Sim             | Nome do tipo da conta                                 |
+
+
+## BusinessAccountOtherServices
+<a id="schemaBusinessAccountOtherServices></a>
+
+```json
+{
+                    "name": "string",
+                    "code": "string",
+                    "chargingTriggerInfo": "string",
+                    "price": {
+                      "type": "string",
+                      "value": "string",
+                      "currency": "string"
+                    },
+                    "currency": "string",
+                    "additionalInfo": "string",
+                    "chargingUnit": "string"
+                  }
 ```
 
 | Nome                   | Tipo   | Obrigatório | Descrição                                                 |
