@@ -218,11 +218,11 @@
 
 |     Nome            |  Tipo                                                      | Obrigatório  |                            Definição                         |
 |:------------        |:---------------------------------                          |:-----------  |:----------------------------------------------------         |
-| types               | [LoansTypes](#schemaEnumLoanTypes)                  | Sim          | Modalidades de empréstimos ofertados.  |
-| fees                | [[LoanFees](#schemaLoanFees)]                              | Sim          |              |
-| interestRates       | [[InterestRates](#schemaInterestRates)]                    | Sim          |              |
-| requiredWarranties  | [[RequiredWarranties](#schemaEnumRequiredWarranties)]  | Sim          |        |
-| termsConditions     | string                                                     | Sim          |        |
+| types               | [LoansTypes](#schemaEnumLoanTypes)                  | Sim          | Modalidades de empréstimos ofertados para pessoas Físicas/Jurídicas, conforme Circular <a href='https://www.bcb.gov.br/pre/normativos/busca/downloadNormativo.asp?arquivo=/Lists/Normativos/Attachments/51025/Circ_4015_v1_O.pdf' target="_blank">4015-Bacem</a>|
+| fees                | [[LoanFees](#schemaLoanFees)]                              | Sim          | Tarifas cobradas sobre Serviços ofertados à Modalidade de Empréstimo             |
+| interestRates       | [[InterestRates](#schemaInterestRates)]                    | Sim          | Taxas de juros remuneratórias             |
+| requiredWarranties  | [[RequiredWarranties](#schemaEnumRequiredWarranties)]  | Sim          | <a href='https://www.bcb.gov.br/estabilidadefinanceira/scrdoc3040' target="_blank">3040 do Bacem</a>       |
+| termsConditions     | string                                                     | Sim          | Condições contratuais relativas à Modalidade de Empréstimo       |
 
 ### Enum LoanTypes
 <a id="schemaEnumLoanTypes"></a>
@@ -288,7 +288,7 @@
 |:------------        |:---------------------------------                          |:-----------  |:----------------------------------------------------         |
 | type                | [PriceType](#schemaEnumLoanFessPriceType)                  | Não          |   |
 | value               | string                                                     | Não          | Valor da tarifa cobrada, relativa ao serviço ofertado para a Modalidade de Empréstimo, para pessoa física/jurídica.             |
-| currency            | string                                                     | Não          | Moeda referente ao valor da Tarifa, segundo modelo ISO-4217            |
+| currency            | string                                                     | Não          | Moeda referente ao valor da Tarifa, segundo modelo <a href='https://www.iso.org/iso-4217-currency-codes.html' target="_blank">ISO-4217</a>           |
 | additionalInfo           | string                                                     | Não          | Descrição de como é composto o valor da tarifa. p.ex. '0,25% sobre o excedente do limite acima de R$ 500,00'       |
 | changingUnit        | string                                                     | Sim          | Unidade ou forma de cobrança      |
 
