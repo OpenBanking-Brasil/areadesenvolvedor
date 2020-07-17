@@ -48,6 +48,7 @@
           }
         ]
       }
+    ]
   },
   "links": {
     "self": "string",
@@ -76,7 +77,8 @@
 ```json
 {
   "name": "string",
-  "companies": {
+  "companies": [
+    {
       "cnpjNumber": "string",
       "name": "string",
       "businessLoans": [
@@ -115,6 +117,7 @@
         }
       ]
     }
+  ]
 }
 ```
 
