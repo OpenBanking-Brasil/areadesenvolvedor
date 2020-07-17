@@ -218,7 +218,7 @@
 
 |     Nome            |  Tipo                                                      | Obrigatório  |                            Definição                         |
 |:------------        |:---------------------------------                          |:-----------  |:----------------------------------------------------         |
-| types               | [LoansTypes](#schemaEnumLoanTypes)                  | Sim          | Modalidades de empréstimos ofertados para pessoas físicas  |
+| types               | [LoansTypes](#schemaEnumLoanTypes)                  | Sim          | Modalidades de empréstimos ofertados.  |
 | fees                | [[LoanFees](#schemaLoanFees)]                              | Sim          |              |
 | interestRates       | [[InterestRates](#schemaInterestRates)]                    | Sim          |              |
 | requiredWarranties  | [[RequiredWarranties](#schemaEnumRequiredWarranties)]  | Sim          |        |
