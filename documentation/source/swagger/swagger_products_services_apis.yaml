@@ -87,7 +87,32 @@ paths:
             application/json:
               schema: 
                 $ref: '#/components/schemas/BusinessCreditCardResponse'
-                
+
+  /personal-financings:
+    get:
+      tags:
+      - "Products and Services"
+      summary: Obtém a lista de Financiamentos de Pessoa Física.
+      responses:
+        '200':
+          description: Retorna lista de financiamentos de pessoa física.
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/ResponsePersonalFinancingsList'
+
+  /business-financings:
+    get:
+      tags:
+      - "Products and Services"
+      summary: Obtém a lista de Financiamentos de Pessoa Física.
+      responses:
+        '200':
+          description: Retorna lista de financiamentos de pessoa jurídica.
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/ResponseBusinessFinancingsList'
 components:
   ###############
   ##  Schemas  ##
@@ -1553,6 +1578,472 @@ components:
           maxLength: 50
           description: "Unidade ou forma de cobrança"
           example: "Por evento"
+
+  ##########################
+  ##  Personal Financings ##
+  ##########################
+  
+    ##### ResponsePersonalFinancingsList #####
+    ResponsePersonalFinancingsList:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          type: object
+          required:
+            - organisation
+          properties:
+            organisation:
+              type: array
+              items:
+                $ref: '#/components/schemas/PersonalFinancingsOrganisation'
+              description: Lista das organizaçõs titulares dos financiamentos
+        links:
+          $ref: '#/components/schemas/Links'
+        meta:
+          $ref: '#/components/schemas/Meta'
+      example:
+        data:
+          organisation:
+            - name: The Big Bank Organisation
+              companies:
+                - name: The Big Bank Company
+                  cnpjNumber: '12345678901234'
+                  personalFinancings:
+                    - type: FINANCIMENTO_IMOBILIARIO_SFI
+                      fees:
+                        - serviceName: Taxa de Cadastro
+                          serviceCode: TC
+                          chargingTriggerInfo: Fatores geradores da taxa
+                          chargingUnit: Por novo contrato
+                          price:
+                            - type: minimo
+                              value: '500'
+                              currency: BRL
+                          additionalInfo: Vamor mínimo aplicado
+                      interestRates:
+                        - rate: '9'
+                          referencialRate: null
+                          indexer: IGPM
+                          prePostTax: POS
+                          frequency: a.a.
+                          incomeRateInfo: Informações adicionais do calculo de juros
+                      requiredWarranties:
+                        - Caução
+                      termsCondictions: Lista dos termos em texto livre ou URL de indicação das condições
+        links:
+          self: 'https://api.banco.com.br/open-banking/products-services/v1/personal-financings'
+          first: 'https://api.banco.com.br/open-banking/products-services/v1/personal-financings'
+          prev: null
+          next: null
+          last: 'https://api.banco.com.br/open-banking/products-services/v1/personal-financings'
+        meta:
+          totalRecords: 1
+          totalPages: 1
+        
+    ##### PersonalFinancingsOrganisation #####
+    PersonalFinancingsOrganisation:
+      type: object
+      required:
+        - name
+        - companies
+      properties:
+        name:
+          type: string
+          description: Nome do conglomerado.
+        companies:
+          type: array
+          items:
+            $ref: '#/components/schemas/PersonalFinancingsCompanies'
+          description: Lista de instituições pertencentes à organização  
+    ##### PersonalFinancingsCompanies #####
+    PersonalFinancingsCompanies:
+      type: object
+      required:
+        - name
+        - cnpjNumber
+        - personalFinancings
+      properties:
+        name:
+          type: string
+          description: Nome do conglomerado responsável.
+        personalFinancings:
+          type: array
+          items:
+            $ref: '#/components/schemas/PersonalFinancings'
+          description: Lista de financiamentos
+      allOf:
+        - $ref: '#/components/schemas/CNPJ'
+    ##### PersonalFinancings #####
+    PersonalFinancings:
+      type: object
+      required:
+        - type
+        - fees
+        - interestRates
+        - requiredWarranties
+      properties:
+        type:
+          type: string
+          enum: ["AQUISICAO_BENS_VEICULOS_AUTOMOTORES",
+                "AQUISICAO_BENS_OUTROS_BENS",
+                "MICROCREDITO_PRODUTIVO_ORIENTADO",
+                "CARTAO_CREDITO",
+                "FINANCIAMENTOS_RURAIS_CUSTEIO",
+                "FINANCIAMENTOS_RURAIS_INVESTIMENTO",
+                "FINANCIAMENTOS_RURAIS_COMERCIALIZACAO",
+                "FINANCIAMENTOS_RURAIS_INDUSTRIALIZACAO",
+                "FINANCIMENTO_IMOBILIARIO_SFH",
+                "FINANCIMENTO_IMOBILIARIO_SFI"]
+          description: "Modalidades de financiamentos ofertados para pessoas físicas, conforme Circular 4015-Bacen. Segundo cartilha do Bacen: Financiamento é um contrato entre o cliente e uma instituição financeira, mas com, destinação específica como para a aquisição de veículo ou de bem imóvel, que funcionam como garantia para o crédito concedido"
+        fees:
+          type: array
+          items:
+            $ref: '#/components/schemas/PersonalFinancingsFees'
+        interestRates:
+          type: array
+          items:
+            $ref: '#/components/schemas/PersonalFinancingsInterestRates'
+        requiredWarranties:
+          type: string
+          enum: ["CESSAO_DIREITOS_CREDITORIOS",
+                "CAUCAO",
+                "PENHOR",
+                "ALIENACAO_FIDUCIARIA",
+                "HIPOTECA",
+                "OPERACOES_GARANTIDAS_GOVERNO",
+                "OUTRAS_GARANTIAS_NAO_FIDEJUSSORIAS",
+                "SEGUROS_ASSEMELHADOS",
+                "GARANTIA_FIDEJUSSORIA",
+                "BENS_ARRENDADOS",
+                "GARANTIAS_INTERNACIONAIS",
+                "OPERACOES_GARANTIDAS_OUTRAS_ENTIDADE",
+                "ACORDOS_COMPENSACAO",
+                "NAO_APLICAVEL"]
+          description: "Relação de garantias exigidas"
+        termsCondictions:
+          type: string
+          description: "Campo aberto para informar as condições contratuais relativas à Modalidade de Financiamento para pessoa física. Pode ser informada a URL referente ao endereço onde constam as condições informadas"
+    ##### PersonalFinancingsFees #####
+    PersonalFinancingsFees:
+      type: object
+      properties:
+        serviceName:
+          type: string
+          description: "Nomes das Tarifas cobradas sobre Serviços ofertados à Modalidade de Financiamento, para pessoa física"
+        serviceCode:
+          type: string
+          description: "Sigla de identificação do serviço relacionado à Modalidade de Financiamento informada, para pessoa física. Campo aberto"
+        chargingTriggerInfo:
+          type: string
+          description: "Fatores geradores de cobrança que incidem sobre as Modalidades de Financiamentos, para pessoa física. Campo Livre"
+        chargingUnit:
+          type: string
+          description: "Unidade ou forma de cobrança"
+        price:
+          type: array
+          items:
+            $ref: '#/components/schemas/PersonalFinancingsPrice'
+          description: "Lista de preços possíveis"
+        additionalInfo:
+          type: string
+          description: "Descrição de como é composto o valor da tarifa. p.ex. '0,25% sobre o excedente do limite acima de R$ 500,00'"
+      required:
+        - serviceName
+        - serviceCode
+        - price
+    ##### PersonalFinancingsPrice #####
+    PersonalFinancingsPrice:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: ["MINIMO",
+                "MEDIO",
+                "MAXIMO"]
+          description: "Indica os tipos: mínimo, médio e máximo do valor informado."
+        value:
+          type: string
+          description: "Valor da tarifa cobrada, relativa ao serviço ofertado para a Modalidade de Empréstimo, para pessoa"
+        currency:
+          type: string
+          enum: ["BRL","... ISO_4217"]
+          description: "Moeda referente ao valor da tarifa"
+      required:
+        - type
+        - value
+        - currency
+    ##### PersonalFinancingsInterestRates #####
+    PersonalFinancingsInterestRates:
+      type: object
+      properties:
+        rate:
+          type: string
+          description: "Percentual que incide sobre a composição da  taxa de juros remuneratórias"
+        referencialRate:
+          type: string
+          description: "Taxa Referencial se configura como uma taxa de juros de referência, ou seja, um indicador geral da economia brasileira. Por isso, é utilizada na hora de calcular o rendimento de determinadas aplicações financeiras"
+        indexer:
+          type: string
+          enum: ["IPCA",
+                "SELIC",
+                "CDI"]
+          description: "Indexador é o termo utilizado para se referir aos índices usados como base para corrigir os valores monetários de um determinado ativo. No Brasil, os indexadores mais comuns são o IPCA, a taxa Selic e o CDI"
+        prePostTax:
+          type: string
+          enum: ["PRE",
+                "POS"]
+          description: "Indicador de pré ou pós. A diferença básica é que, enquanto o prefixado apresenta rentabilidade definida, o pós-fixado acompanha algum indicador. Assim, quem investe no primeiro grupo sabe como será seu rendimento previamente, enquanto quem investe no segundo, só conhecerá os resultados na data de vencimento"
+        frequency:
+          type: string
+          enum: ["AD",
+                "AM",
+                "AA"]
+          description: "Frequência sobre a qual incide a Remuneração"
+        incomeRateInfo:
+          type: string
+          description: "Descrição da Remuneração relativa as taxas de juros remuneratórias sobre a modalidade de Financiamento informada, para pessoa física"
+      required:
+        - rate
+        - referencialRate
+        - indexer
+        - prePostTax
+        - frequency
+
+  ##########################
+  ##  Business Financings ##
+  ##########################
+  
+    ##### ResponseBusinessFinancingsList #####
+    ResponseBusinessFinancingsList:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          type: object
+          required:
+            - organisation
+          properties:
+            organisation:
+              type: array
+              items:
+                $ref: '#/components/schemas/BusinessFinancingsOrganisation'
+              description: Lista das organizaçõs titulares dos financiamentos
+        links:
+          $ref: '#/components/schemas/Links'
+        meta:
+          $ref: '#/components/schemas/Meta'
+      example:
+        data:
+          organisation:
+            - name: The Big Bank Organisation
+              companies:
+                - name: The Big Bank Company
+                  cnpjNumber: '12345678901234'
+                  businessFinancings:
+                    - type: FINANCIAMENTOS_RURAIS_INVESTIMENTO
+                      fees:
+                        - serviceName: Taxa de Cadastro
+                          serviceCode: TC
+                          chargingTriggerInfo: Fatores geradores da taxa
+                          chargingUnit: Por novo contrato
+                          price:
+                            - type: minimo
+                              value: '500'
+                              currency: BRL
+                          additionalInfo: Vamor mínimo aplicado
+                      interestRates:
+                        - rate: '9'
+                          referencialRate: null
+                          indexer: IGPM
+                          prePostTax: POS
+                          frequency: a.a.
+                          incomeRateInfo: Informações adicionais do calculo de juros
+                      requiredWarranties:
+                        - Caução
+                      termsCondictions: Lista dos termos em texto livre ou URL de indicação das condições
+        links:
+          self: 'https://api.banco.com.br/open-banking/products-services/v1/business-financings'
+          first: 'https://api.banco.com.br/open-banking/products-services/v1/business-financings'
+          prev: null
+          next: null
+          last: 'https://api.banco.com.br/open-banking/products-services/v1/business-financings'
+        meta:
+          totalRecords: 1
+          totalPages: 1
+    ##### BusinessFinancingsOrganisation #####
+    BusinessFinancingsOrganisation:
+      type: object
+      required:
+        - name
+        - companies
+      properties:
+        name:
+          type: string
+          description: Nome do conglomerado.
+        companies:
+          type: array
+          items:
+            $ref: '#/components/schemas/BusinessFinancingsCompanies'
+          description: Lista de instituições pertencentes à organização  
+    ##### BusinessFinancingsCompanies #####
+    BusinessFinancingsCompanies:
+      type: object
+      required:
+        - name
+        - cnpjNumber
+        - businessFinancings
+      properties:
+        name:
+          type: string
+          description: Nome do conglomerado responsável.
+        businessFinancings:
+          type: array
+          items:
+            $ref: '#/components/schemas/BusinessFinancings'
+          description: Lista de financiamentos
+      allOf:
+        - $ref: '#/components/schemas/CNPJ'
+    ##### BusinessFinancings #####
+    BusinessFinancings:
+      type: object
+      required:
+        - type
+        - fees
+        - interestRates
+        - requiredWarranties
+      properties:
+        type:
+          type: string
+          enum: ["AQUISICAO_BENS_VEICULOS_AUTOMOTORES",
+                "AQUISICAO_BENS_OUTROS_BENS",
+                "MICROCREDITO_PRODUTIVO_ORIENTADO",
+                "FINANCIAMENTOS_RURAIS_CUSTEIO",
+                "FINANCIAMENTOS_RURAIS_INVESTIMENTO",
+                "FINANCIAMENTOS_RURAIS_COMERCIALIZACAO",
+                "FINANCIAMENTOS_RURAIS_INDUSTRIALIZACAO",
+                "FINANCIMENTO_IMOBILIARIO_SFH",
+                "FINANCIMENTO_IMOBILIARIO_SFI"]
+          description: "Modalidades de financiamentos ofertados para pessoas jurídicas, conforme Circular 4015-Bacen. Segundo cartilha do Bacen: Financiamento é um contrato entre o cliente e uma instituição financeira, mas com, destinação específica como para a aquisição de veículo ou de bem imóvel, que funcionam como garantia para o crédito concedido"
+        fees:
+          type: array
+          items:
+            $ref: '#/components/schemas/BusinessFinancingsFees'
+        interestRates:
+          type: array
+          items:
+            $ref: '#/components/schemas/BusinessFinancingsInterestRates'
+        requiredWarranties:
+          type: string
+          enum: ["CESSAO_DIREITOS_CREDITORIOS",
+                "CAUCAO",
+                "PENHOR",
+                "ALIENACAO_FIDUCIARIA",
+                "HIPOTECA",
+                "OPERACOES_GARANTIDAS_GOVERNO",
+                "OUTRAS_GARANTIAS_NAO_FIDEJUSSORIAS",
+                "SEGUROS_ASSEMELHADOS",
+                "GARANTIA_FIDEJUSSORIA",
+                "BENS_ARRENDADOS",
+                "GARANTIAS_INTERNACIONAIS",
+                "OPERACOES_GARANTIDAS_OUTRAS_ENTIDADE",
+                "ACORDOS_COMPENSACAO",
+                "NAO_APLICAVEL"]
+          description: "Relação de garantias exigidas"
+        termsCondictions:
+          type: string
+          description: "Campo aberto para informar as condições contratuais relativas à Modalidade de Financiamento para pessoa jurídica. Pode ser informada a URL referente ao endereço onde constam as condições informadas"
+    ##### BusinessFinancingsFees #####
+    BusinessFinancingsFees:
+      type: object
+      properties:
+        serviceName:
+          type: string
+          description: "Nomes das Tarifas cobradas sobre Serviços ofertados à Modalidade de Financiamento, para pessoa jurídica"
+        serviceCode:
+          type: string
+          description: "Sigla de identificação do serviço relacionado à Modalidade de Financiamento informada, para pessoa jurídica. Campo aberto"
+        chargingTriggerInfo:
+          type: string
+          description: "Fatores geradores de cobrança que incidem sobre as Modalidades de Financiamentos, para pessoa jurídica. Campo Livre"
+        chargingUnit:
+          type: string
+          description: "Unidade ou forma de cobrança"
+        price:
+          type: array
+          items:
+            $ref: '#/components/schemas/BusinessFinancingsPrice'
+          description: "Lista de preços possíveis"
+        additionalInfo:
+          type: string
+          description: "Descrição de como é composto o valor da tarifa. p.ex. '0,25% sobre o excedente do limite acima de R$ 500,00'"
+      required:
+        - serviceName
+        - serviceCode
+        - price
+    ##### BusinessFinancingsPrice #####
+    BusinessFinancingsPrice:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: ["MINIMO",
+                "MEDIO",
+                "MAXIMO"]
+          description: "Indica os tipos: mínimo, médio e máximo do valor informado."
+        value:
+          type: string
+          description: "Valor da tarifa cobrada, relativa ao serviço ofertado para a Modalidade de Empréstimo, para pessoa"
+        currency:
+          type: string
+          enum: ["BRL","... ISO_4217"]
+          description: "Moeda referente ao valor da tarifa"
+      required:
+        - type
+        - value
+        - currency
+    ##### BusinessFinancingsInterestRates #####
+    BusinessFinancingsInterestRates:
+      type: object
+      properties:
+        rate:
+          type: string
+          description: "Percentual que incide sobre a composição da  taxa de juros remuneratórias"
+        referencialRate:
+          type: string
+          description: "Taxa Referencial se configura como uma taxa de juros de referência, ou seja, um indicador geral da economia brasileira. Por isso, é utilizada na hora de calcular o rendimento de determinadas aplicações financeiras"
+        indexer:
+          type: string
+          enum: ["IPCA",
+                "SELIC",
+                "CDI"]
+          description: "Indexador é o termo utilizado para se referir aos índices usados como base para corrigir os valores monetários de um determinado ativo. No Brasil, os indexadores mais comuns são o IPCA, a taxa Selic e o CDI"
+        prePostTax:
+          type: string
+          enum: ["PRE",
+                "POS"]
+          description: "Indicador de pré ou pós. A diferença básica é que, enquanto o prefixado apresenta rentabilidade definida, o pós-fixado acompanha algum indicador. Assim, quem investe no primeiro grupo sabe como será seu rendimento previamente, enquanto quem investe no segundo, só conhecerá os resultados na data de vencimento"
+        frequency:
+          type: string
+          enum: ["AD",
+                "AM",
+                "AA"]
+          description: "Frequência sobre a qual incide a Remuneração"
+        incomeRateInfo:
+          type: string
+          description: "Descrição da Remuneração relativa as taxas de juros remuneratórias sobre a modalidade de Financiamento informada, para pessoa jurídica"
+      required:
+        - rate
+        - referencialRate
+        - indexer
+        - prePostTax
+        - frequency
         
   ####################
   ##  Links & Meta  ##
