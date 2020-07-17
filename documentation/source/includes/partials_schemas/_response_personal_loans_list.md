@@ -4,8 +4,7 @@
 ```json
 {
   "data": {
-    "organisation":
-      {
+    "organisations": {
         "name": "string",
         "companies": [
           {

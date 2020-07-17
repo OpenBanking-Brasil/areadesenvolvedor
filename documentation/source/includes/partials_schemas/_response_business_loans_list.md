@@ -4,8 +4,7 @@
 ```json
 {
   "data": {
-    "organisation": [
-      {
+    "organisation": {
         "name": "string",
         "companies": [
           {
@@ -49,7 +48,6 @@
           }
         ]
       }
-    ]
   },
   "links": {
     "self": "string",
@@ -78,8 +76,7 @@
 ```json
 {
   "name": "string",
-  "companies": [
-    {
+  "companies": {
       "cnpjNumber": "string",
       "name": "string",
       "businessLoans": [
@@ -118,7 +115,6 @@
         }
       ]
     }
-  ]
 }
 ```
 
