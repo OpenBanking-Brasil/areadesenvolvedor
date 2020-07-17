@@ -104,7 +104,7 @@ components:
           maxLength: 2000
           description: "Descrição da Remuneração"
   
-   ##### AccountOtherServicesPrice ##### 
+  ##### AccountOtherServicesPrice ##### 
     AccountOtherServicesPrice:
       type: object
       required: 
@@ -184,6 +184,9 @@ components:
                           required:
                             - type
                             - fees
+                            - serviceBundles
+                            - openCloseChannels
+                            - transactionMethods
                             - termsConditions
                             - incomeRates
                           properties:
@@ -209,6 +212,74 @@ components:
                                   type: array
                                   items:
                                     $ref: '#/components/schemas/PersonalAccountsOtherServices'
+                            serviceBundles:
+                                type: object
+                                required: 
+                                  - name
+                                  - services
+                                properties:
+                                  name:
+                                    type: string
+                                    maxLength: 50
+                                    description: "Nome do Pacote de Serviços dado pela instituição."
+                                  services:
+                                    type: array
+                                    items:
+                                      required: 
+                                        - code
+                                        - eventLimitQuantity
+                                        - freeEventQuantity
+                                        - maxPrice
+                                        - currency
+                                      properties:
+                                        code:
+                                          type: string
+                                          maxLength: 30
+                                          description: "Código que identifica o Serviço que compõe o Pacote de Serviços, podendo ser da lista de Serviços Prioritários ou Outros Serviços"
+                                          example: "segundo Resolução 3.919 do Bacen: 'SAQUEterminal'."
+                                        eventLimitQuantity:
+                                          type: string
+                                          maxLength: 4
+                                          description: "Quantidade de eventos previstos no Pacote de Serviços (Número de eventos incluídos no mês"
+                                          example: "2"
+                                        freeEventQuantity:
+                                          type: string
+                                          maxLength: 4
+                                          description: "Quantidade de eventos previstos no Pacote de Serviços com isenção de Tarifa"
+                                          example: "1"
+                                        maxPrice:
+                                          type: string
+                                          maxLength: 4
+                                          description: "Valor máximo da tarifa referente ao Serviço que compõe o Pacote de Serviços (valor publicado e  divulgado)."
+                                        currency:
+                                          type: string
+                                          maxLength: 3
+                                          pattern: ^([A-Z]{3})$
+                                          description: "Moeda referente ao valor da tarifa conforme ISO-4217"
+                                          example: "BRL"
+                            openCloseChannels:
+                              type: string
+                              enum: [
+                                "DEPENDENCIAS_PROPRIAS",
+                                "CORRESPONDENTES_BANCARIOS",
+                                "INTERNET_BANKING",
+                                "MOBILE_BANKING",
+                                "CENTRAL_TELEFONICA",
+                                "CHAT",
+                                "OUTROS"
+                                ]
+                              description: "Canais disponíveis para abertura e encerramento de contas"
+                              example: "CENTRAL_TELEFONICA"
+                            transactionMethods:
+                              type: string
+                              enum: [
+                                "MOVIMENTACAO_ELETRONICA",
+                                "MOVIMENTACAO_CHEQUE",
+                                "MOVIMENTACAO_CARTAO",
+                                "MOVIMENTACAO_PRESENCIAL"
+                                ]
+                              description: "Lista de formas de movimentação possíveis para a conta"
+                              example: "MOVIMENTACAO_PRESENCIAL"
                             termsConditions:
                               $ref: '#/components/schemas/AccountsTermsConditions'
                             incomeRates:
