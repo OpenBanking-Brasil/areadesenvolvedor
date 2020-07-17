@@ -375,6 +375,3 @@
 | frequency    | AD     | Ao dia      |
 | frequency    | AM     | Ao mês      |
 | frequency    | AA     | Ao ano      |
-
-
-
