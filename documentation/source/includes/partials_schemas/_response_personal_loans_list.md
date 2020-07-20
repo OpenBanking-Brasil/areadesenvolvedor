@@ -220,8 +220,8 @@
 |:------------        |:---------------------------------                          |:-----------  |:----------------------------------------------------         |
 | types               | [LoansTypes](#schemaEnumLoanTypes)                  | Sim          | Modalidades de empréstimos ofertados para pessoas Físicas/Jurídicas, conforme Circular <a href='https://www.bcb.gov.br/pre/normativos/busca/downloadNormativo.asp?arquivo=/Lists/Normativos/Attachments/51025/Circ_4015_v1_O.pdf' target="_blank">4015-Bacem</a>|
 | fees                | [[LoanFees](#schemaLoanFees)]                              | Sim          | Tarifas cobradas sobre Serviços ofertados à Modalidade de Empréstimo             |
-| interestRates       | [[InterestRates](#schemaInterestRates)]                    | Sim          | Taxas de juros remuneratórias             |
-| requiredWarranties  | [[RequiredWarranties](#schemaEnumRequiredWarranties)]  | Sim          | <a href='https://www.bcb.gov.br/estabilidadefinanceira/scrdoc3040' target="_blank">3040 do Bacem</a>       |
+| interestRates       | [[InterestRates](#schemaLoanInterestRates)]                    | Sim          | Taxas de juros remuneratórias             |
+| requiredWarranties  | [[RequiredWarranties](#schemaEnumRequiredWarranties)]  | Sim          | Relação de garantias exigidas, segundo documento <a href='https://www.bcb.gov.br/estabilidadefinanceira/scrdoc3040' target="_blank">3040 do Bacem</a>       |
 | termsConditions     | string                                                     | Sim          | Condições contratuais relativas à Modalidade de Empréstimo       |
 
 ### Enum LoanTypes
@@ -286,7 +286,7 @@
 ```
 |     Nome            |  Tipo                                                      | Obrigatório  |                            Definição                         |
 |:------------        |:---------------------------------                          |:-----------  |:----------------------------------------------------         |
-| type                | [PriceType](#schemaEnumLoanFessPriceType)                  | Não          |   |
+| type                | [PriceType](#schemaEnumLoanFessPriceType)                  | Não          | Indica os tipos: mínimo, médio e máximo do valor informado.  |
 | value               | string                                                     | Não          | Valor da tarifa cobrada, relativa ao serviço ofertado para a Modalidade de Empréstimo, para pessoa física/jurídica.             |
 | currency            | string                                                     | Não          | Moeda referente ao valor da Tarifa, segundo modelo <a href='https://www.iso.org/iso-4217-currency-codes.html' target="_blank">ISO-4217</a>           |
 | additionalInfo           | string                                                     | Não          | Descrição de como é composto o valor da tarifa. p.ex. '0,25% sobre o excedente do limite acima de R$ 500,00'       |
@@ -301,8 +301,8 @@
 | type        | MEDIO      
 | type        | MAXIMO     
 
-## InterestRates
-<a id="schemaInterestRates"></a>
+## LoanInterestRates
+<a id="schemaLoanInterestRates"></a>
 
 ```json
 {
@@ -320,8 +320,8 @@
 | rate                   | string                                       | Não         | Percentual que incide sobre a composição das taxas de juros remuneratórias                          |
 | referencialRate        | string                                       | Não         | Taxa Referencial se configura como uma taxa de juros de referência, ou seja, um indicador geral da economia brasileira. Por isso, é utilizada na hora de calcular o rendimento de determinadas aplicações financeiras   |
 | indexer                | string                                       | Não         | Indexador é o termo utilizado para se referir aos índices usados como base para corrigir os valores monetários de um determinado ativo. No Brasil, os indexadores mais comuns são o IPCA, a taxa Selic e o CDI                                    |
-| prePostTax             | [PrePosTax](#schemaEnumTypePrePosTax)  | Não         |                                   |
-| frecuency              | [Frecuency](#schemaEnumFrecuency)      | Não         |                                   |
+| prePostTax             | [PrePosTax](#schemaEnumTypePrePosTax)  | Não         | Indicador de pré ou pós. A diferença básica é que, enquanto o prefixado apresenta rentabilidade definida, o pós-fixado acompanha algum indicador. Assim, quem investe no primeiro grupo sabe como será seu rendimento previamente, enquanto quem investe no segundo, só conhecerá os resultados na data de vencimento                                  |
+| frecuency              | [Frecuency](#schemaEnumFrecuency)      | Não         | Código que indica Frequência sobre a qual incide a Remuneração.                                  |
 | incomeRateInfo         | string                                       | Não         | Descrição da Remuneração relativa as taxas de juros remuneratóriassobre a modalidad de Empréstimo para pessoa física/jurídica                                    |
 
 
