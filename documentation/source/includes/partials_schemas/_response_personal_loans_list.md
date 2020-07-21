@@ -178,7 +178,7 @@
 
 
 ## PersonalLoans
-<a id="schemaPersonaLoans"></a>
+<a id="schemaPersonalLoans"></a>
 
 ```json
 {
