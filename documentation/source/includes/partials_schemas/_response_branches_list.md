@@ -399,10 +399,10 @@
 | Propriedade  | Código                                               | Definição                                             |
 |:------------ |:---------------------------------------------------- |:----------------------------------------------------- |
 | codes        | ABERTURA_CONTAS                                      | Abertura de contas                                    |
-| codes        | RECEBIMENTOS_PAGAMENTOS_TRANSFERÊNCIAS_ELETRONICAS   | Recebimentos, pagamentos e transferências eletrônicas |
+| codes        | RECEBIMENTOS_PAGAMENTOS_TRANSFERENCIAS_ELETRONICAS   | Recebimentos, pagamentos e transferências eletrônicas |
 | codes        | RECEBIMENTOS_PAGAMENTOS_QUALQUER_NATUREZA            | Recebimentos e pagamentos de qualquer natureza        |
 | codes        | OPERACOES_CREDITO                                    | Operações de crédito                                  |
 | codes        | CARTAO_CREDITO                                       | Cartão de crédito                                     |
-| codes        | OPERACOES_CÂMBIO                                     | Operações de câmbio                                   |
+| codes        | OPERACOES_CAMBIO                                     | Operações de câmbio                                   |
 | codes        | INVESTIMENTOS                                        | Investimentos                                         |
 | codes        | SEGUROS                                              | Seguros                                               |
