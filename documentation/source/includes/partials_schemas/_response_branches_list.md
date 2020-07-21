@@ -284,11 +284,11 @@
 ### Enum BranchIdentificationType 
 <a id="schemaEnumBranchIdentificationType"></a>
 
-| Propriedade  | Código    | Definição                            |
-|:------------ |:--------- |:-----------------------------------  |
-| type         | 1         | Agências                             |
-| type         | 2         | Postos de atendimento                |
-| type         | 3         | Postos de atendimento eletrônico     |
+| Propriedade  | Código                         | Definição                            |
+|:------------ |:------------------------------ |:-----------------------------------  |
+| type         | AGENCIA                        | Agências                             |
+| type         | POSTO_ATENDIMENTO              | Postos de atendimento                |
+| type         | POSTO_ATENDIMENTO_ELETRONICO   | Postos de atendimento eletrônico     |
 
 ## BranchPostalAddress 
 <a id="schemaBranchPostalAddress"></a>
@@ -372,8 +372,8 @@
 
 | Propriedade  | Código    | Definição        |
 |:------------ |:--------- |:---------------- |
-| type         | 1         | Telefone fixo    |
-| type         | 2         | Telefone móvel   |
+| type         | FIXO      | Telefone fixo    |
+| type         | MOVEL     | Telefone móvel   |
 
 
 ## BranchServices 
@@ -396,13 +396,13 @@
 ### Enum BranchServicesCodes 
 <a id="schemaEnumBranchServicesCodes"></a>
 
-| Propriedade  | Código | Definição                                             |
-|:------------ |:------ |:----------------------------------------------------- |
-| codes        | 1      | Abertura de contas                                    |
-| codes        | 2      | Recebimentos, pagamentos e transferências eletrônicas |
-| codes        | 3      | Recebimentos e pagamentos de qualquer natureza        |
-| codes        | 4      | Operações de crédito                                  |
-| codes        | 5      | Cartão de crédito                                     |
-| codes        | 6      | Operações de câmbio                                   |
-| codes        | 7      | Investimentos                                         |
-| codes        | 8      | Seguros                                               |
+| Propriedade  | Código                                               | Definição                                             |
+|:------------ |:---------------------------------------------------- |:----------------------------------------------------- |
+| codes        | ABERTURA_CONTAS                                      | Abertura de contas                                    |
+| codes        | RECEBIMENTOS_PAGAMENTOS_TRANSFERÊNCIAS_ELETRONICAS   | Recebimentos, pagamentos e transferências eletrônicas |
+| codes        | RECEBIMENTOS_PAGAMENTOS_QUALQUER_NATUREZA            | Recebimentos e pagamentos de qualquer natureza        |
+| codes        | OPERACOES_CREDITO                                    | Operações de crédito                                  |
+| codes        | CARTAO_CREDITO                                       | Cartão de crédito                                     |
+| codes        | OPERACOES_CÂMBIO                                     | Operações de câmbio                                   |
+| codes        | INVESTIMENTOS                                        | Investimentos                                         |
+| codes        | SEGUROS                                              | Seguros                                               |

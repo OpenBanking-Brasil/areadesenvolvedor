@@ -307,13 +307,13 @@
 ### Enum BankingAgentsServicesCodes
 <a id="schemaEnumBankingAgentsServicesCodes"></a>
 
-| Propriedade  | Código | Definição                                             |
-|:------------ |:------ |:----------------------------------------------------- |
-| codes        | 1      | Abertura de contas                                    |
-| codes        | 2      | Recebimentos, pagamentos e transferências eletrônicas |
-| codes        | 3      | Recebimentos e pagamentos de qualquer natureza        |
-| codes        | 4      | Operações de crédito                                  |
-| codes        | 5      | Cartão de crédito                                     |
-| codes        | 6      | Operações de câmbio                                   |
-| codes        | 7      | Investimentos                                         |
-| codes        | 8      | Seguros                                               |
+| Propriedade  | Código                                               | Definição                                             |
+|:------------ |:---------------------------------------------------- |:----------------------------------------------------- |
+| codes        | ABERTURA_CONTAS                                      | Abertura de contas                                    |
+| codes        | RECEBIMENTOS_PAGAMENTOS_TRANSFERÊNCIAS_ELETRONICAS   | Recebimentos, pagamentos e transferências eletrônicas |
+| codes        | RECEBIMENTOS_PAGAMENTOS_QUALQUER_NATUREZA            | Recebimentos e pagamentos de qualquer natureza        |
+| codes        | OPERACOES_CREDITO                                    | Operações de crédito                                  |
+| codes        | CARTAO_CREDITO                                       | Cartão de crédito                                     |
+| codes        | OPERACOES_CÂMBIO                                     | Operações de câmbio                                   |
+| codes        | INVESTIMENTOS                                        | Investimentos                                         |
+| codes        | SEGUROS                                              | Seguros                                               |
