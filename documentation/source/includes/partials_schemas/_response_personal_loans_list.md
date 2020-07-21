@@ -296,9 +296,9 @@
 
 | Propriedade  | Valor    | Descrição   
 |:------------ |:------   |:---------
-| type        | MINIMO    |  
-| type        | MEDIO     |
-| type        | MAXIMO     |
+| type        | MINIMO    | Mínimo
+| type        | MEDIO     | Médio
+| type        | MAXIMO     | Máximo
 
 ## LoanInterestRates
 <a id="schemaLoanInterestRates"></a>
