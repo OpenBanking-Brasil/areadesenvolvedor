@@ -286,8 +286,8 @@
 |     Nome            |  Tipo                                                      | Obrigatório  |                            Definição                         |
 |:------------        |:---------------------------------                          |:-----------  |:----------------------------------------------------         |
 | type                | [PriceType](#schemaEnumLoanFessPriceType)                  | Não          | Indica os tipos: mínimo, médio e máximo do valor informado.  |
-| value               | string                                                     | Não          | Valor da tarifa cobrada, relativa ao serviço ofertado para a Modalidade de Empréstimo, para pessoa física/jurídica.             |
-| currency            | string                                                     | Não          | Moeda referente ao valor da Tarifa, segundo modelo <a href='https://www.iso.org/iso-4217-currency-codes.html' target="_blank">ISO-4217</a>           |
+| value               | AmountString                                                     | Não          | Valor da tarifa cobrada, relativa ao serviço ofertado para a Modalidade de Empréstimo, para pessoa física/jurídica.             |
+| currency            | CurrencyString                                                     | Não          | Moeda referente ao valor da Tarifa, segundo modelo <a href='https://www.iso.org/iso-4217-currency-codes.html' target="_blank">ISO-4217</a>           |
 | additionalInfo           | string                                                     | Não          | Descrição de como é composto o valor da tarifa. p.ex. '0,25% sobre o excedente do limite acima de R$ 500,00'       |
 | changingUnit        | string                                                     | Sim          | Unidade ou forma de cobrança      |
 
