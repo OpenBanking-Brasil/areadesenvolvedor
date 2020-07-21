@@ -4,7 +4,7 @@
 ```json
 {
   "data": {
-    "organisation": [
+    "brand": [
       {
         "name": "string",
         "companies": [
@@ -65,15 +65,15 @@
 }
 ```
 
-|     Nome          |  Tipo                                                                     | Obrigatório  |                            Definição                  |
-|:------------      |:---------------------------------                                         |:-----------  |:----------------------------------------------------  |
-| data              | object                                                                    | Sim          |                                                       |
-| » organisation    | [[PersonalFinancingsOrganisation](#schemaPersonalFinancingsOrganisation)] | Sim          | Lista das organizaçõs titulares das dependências      |
-| links             | [[LinksPaginated](#schemaLinksPaginated)]                                 | Sim          |                                                       |
-| meta              | [[MetaPaginated](#schemaMetaPaginated)]                                   | Sim          |                                                       |
+|     Nome      |  Tipo                                                       | Obrigatório  |                            Definição                  |
+|:------------  |:---------------------------------                           |:-----------  |:----------------------------------------------------  |
+| data          | object                                                      | Sim          |                                                       |
+| » brand       | [[PersonalFinancingsBrand](#schemaPersonalFinancingsBrand)] | Sim          | Lista das organizaçõs titulares das dependências      |
+| links         | [[LinksPaginated](#schemaLinksPaginated)]                   | Sim          |                                                       |
+| meta          | [[MetaPaginated](#schemaMetaPaginated)]                     | Sim          |                                                       |
 
-## PersonalFinancingsOrganisation
-<a id="schemaPersonalFinancingsOrganisation"></a>
+## PersonalFinancingsBrand
+<a id="schemaPersonalFinancingsBrand"></a>
 
 ```json
 {
@@ -124,8 +124,8 @@
 
 |     Nome     |  Tipo                                                                | Obrigatório  |                            Definição                         |
 |:------------ |:---------------------------------                                    |:-----------  |:----------------------------------------------------         |
-| name         | string                                                               | Sim          | Nome do conglomerado proprietário da dependência (titular).  |
-| companies    | [[PersonalFinancingsCompanies](#schemaPersonalFinancingsCompanies)]  | Sim          | Lista de instituições pertencentes à organização             |
+| name         | string                                                               | Sim          | Nome da Marca proprietária da dependência (titular).  |
+| companies    | [[PersonalFinancingsCompanies](#schemaPersonalFinancingsCompanies)]  | Sim          | Lista de instituições pertencentes à marca             |
 
 ## PersonalFinancingsCompanies 
 <a id="schemaPersonalFinancingsCompanies"></a>

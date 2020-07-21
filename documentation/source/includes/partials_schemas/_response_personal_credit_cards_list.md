@@ -4,7 +4,7 @@
 ```json
 {
   "data": {
-    "organisation": {
+    "brand": {
       "name": "string",
       "companies": [
         {
@@ -78,15 +78,15 @@
 }
 ```
 
-|     Nome          |  Tipo                                                                     | Obrigatório  |                            Definição                                                                                     |
-|:------------------|:--------------------------------------------------------------------------|:-------------|:-------------------------------------------------------------------------------------------------------------------------|
-| data              | object                                                                    | Sim          |                                                                                                                          |
-| » organisation    | [PersonalCreditCardsOrganisation](#schemaPersonalCreditCardsOrganisation) | Sim          | Conglomerado das instituições financeiras que fornecem produtos e serviços de cartões de crédito para pessoa física      |
-| links             | [LinksPaginated](#schemaLinksPaginated)                                   | Sim          |                                                                                                                          |
-| meta              | [MetaPaginated](#schemaMetaPaginated)                                     | Sim          |                                                                                                                          |
+|     Nome   |  Tipo                                                                     | Obrigatório  |                            Definição                                                                                     |
+|:-----------|:--------------------------------------------------------------------------|:-------------|:-------------------------------------------------------------------------------------------------------------------------|
+| data       | object                                                                    | Sim          |                                                                                                                          |
+| » brand    | [PersonalCreditCardsBrand](#schemaPersonalCreditCardsBrand) | Sim         | Dados da Marca selecionada pelas Organizações que fornecem produtos e serviços de cartões de crédito para pessoa física      |
+| links      | [LinksPaginated](#schemaLinksPaginated)                                   | Sim          |                                                                                                                          |
+| meta       | [MetaPaginated](#schemaMetaPaginated)                                     | Sim          |                                                                                                                          |
 
-## PersonalCreditCardsOrganisation
-<a id="schemaPersonalCreditCardsOrganisation"></a>
+## PersonalCreditCardsBrand
+<a id="schemaPersonalCreditCardsBrand"></a>
 
 ```json
 {
@@ -152,8 +152,8 @@
 
 |     Nome     |  Tipo                                                                    | Obrigatório  |                            Definição                                         |
 |:-------------|:-------------------------------------------------------------------------|:-----------  |:-----------------------------------------------------------------------------|
-| name         | string                                                                   | Sim          | Nome do conglomerado ao qual as instituições financeiras estão subordinadas  |
-| companies    | [[PersonalCreditCardsCompanies](#schemaPersonalCreditCardsCompanies)]    | Sim          | Lista de instituições pertencentes ao conglomerado                           |
+| name         | string                                                                   | Sim          | Nome da Marca ao qual as instituições financeiras estão subordinadas  |
+| companies    | [[PersonalCreditCardsCompanies](#schemaPersonalCreditCardsCompanies)]    | Sim          | Lista de instituições pertencentes à marca                           |
 
 ## PersonalCreditCardsCompanies 
 <a id="schemaPersonalCreditCardsCompanies"></a>
