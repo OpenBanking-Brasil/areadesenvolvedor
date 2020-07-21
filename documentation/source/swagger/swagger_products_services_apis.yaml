@@ -853,15 +853,15 @@ components:
           required:
             - organisation
           properties:
-            organisation:
-                $ref: '#/components/schemas/PersonalLoansOrganisation'
+            brand:
+                $ref: '#/components/schemas/PersonalLoansBrand'
         links:
           $ref: '#/components/schemas/Links'
         meta:
           $ref: '#/components/schemas/Meta'
-          
-  ##### PersonalLoansOrganisation #####      
-    PersonalLoansOrganisation:
+
+  ##### PersonalLoansBrand #####
+    PersonalLoansBrand:
       type: object
       required:
         - name
@@ -896,15 +896,15 @@ components:
         personalLoans:
           type: array
           items:
-            $ref: '#/components/schemas/Loans'
-          description: Lista   
+            $ref: '#/components/schemas/PersonalLoans'
+          description: Lista
       allOf:
-        - $ref: '#/components/schemas/CNPJ'  
-         
+        - $ref: '#/components/schemas/CNPJ'
+
   ######################
   ##  Business Loans  ##
   ######################
-  
+
   #### ResponseBusinessLoansList ####
     ResponseBusinessLoansList:
       type: object
@@ -918,15 +918,15 @@ components:
           required:
             - organisation
           properties:
-            organisation:
-                 $ref: '#/components/schemas/BusinessLoansOrganisation'
+            brand:
+                 $ref: '#/components/schemas/BusinessLoansBrand'
         links:
           $ref: '#/components/schemas/Links'
         meta:
-          $ref: '#/components/schemas/Meta'  
-          
-  ##### BusinessLoansOrganisation #####      
-    BusinessLoansOrganisation:
+          $ref: '#/components/schemas/Meta'
+
+  ##### BusinessLoansBrand #####
+    BusinessLoansBrand:
       type: object
       required:
         - name
@@ -961,17 +961,17 @@ components:
         businessLoans:
           type: array
           items:
-            $ref: '#/components/schemas/Loans'
-          description: Lista   
+            $ref: '#/components/schemas/BusinessLoans'
+          description: Lista
       allOf:
-        - $ref: '#/components/schemas/CNPJ'         
-    
+        - $ref: '#/components/schemas/CNPJ'
+
     #######################################
     ##  Commons  Personal/Business Loans ##
     #######################################
-        
-    #### Loans ####
-    Loans:
+
+    #### PersonalLoans ####
+    PersonalLoans:
       type: object
       required:
         - types
@@ -993,13 +993,13 @@ components:
             - OUTROS_EMPRESTIMOS
             - CARTAO_CREDITO
             - RECEBIVEIS_ADQUIRIDOS
-          description: "Modalidades de empréstimos ofertados para pessoas físicas/jurídicas"
+          description: "Modalidades de empréstimos ofertados para pessoas físicas"
           example: "CHEQUE_ESPECIAL"
         fees:
           type: array
           items:
             $ref: '#/components/schemas/LoanFees'
-          description: Lista   
+          description: Lista
         interestRates:
           type: array
           items:
@@ -1007,32 +1007,56 @@ components:
         requiredWarranties:
           type: array
           items:
-            type: string
-            enum: 
-              - CESSAO_DIREITOS_CREDITORIOS
-              - CAUÇAO
-              - PENHOR
-              - ANILEAÇAO_FIDUCIARIA
-              - HIPOTECA
-              - OPERAÇOES_GARANTIDAS_GOVERNO
-              - OUTRAS_GARANT_NO_FIDEJUSSORIAS
-              - SEGUROS_ASSEMELHADOS
-              - GARANTIA_FIDEJUSSORIA
-              - BENS_ARRENDADOS
-              - GARANTIAS_INTERNACIONAIS
-              - OPERAÇOES_GARAN_OUTR_ENTIDADES
-              - ACORDOS_DE_COMPENSAÇAO
-              - NAO_APLICAVEL
-            maxLength: 50
-            description: "Relação de garantias exigidas"
-            example: "CESSAO_DIREITOS_CREDITORIOS"
+            $ref: '#/components/schemas/RequiredWarranties'
         termsConditions:
           type: string
           pattern: '\w*\W*'
           maxLength: 2000
           description: "Campo aberto para informar as condições contratuais relativas à Modalidade de Empréstimo para pessoa física informada. Pode ser informada a URL referente ao endereço onde constam as condições informadas"
           example: ""
-    
+    #### BusinessLoans ####
+    BusinessLoans:
+      type: object
+      required:
+        - types
+        - feeds
+        - interestRates
+        - requiredWarranties
+      properties:
+        types:
+          type: string
+          enum:
+            - ADIANTAMENTO_DEPOSITANTE
+            - CHEQUE_ESPECIAL
+            - CONTA_GARANTIDA
+            - CAPITAL_GIRO_VENCIMI_365
+            - CAPITAL_GIRO_VENCIMI_SUP_365
+            - CAPITAL_GIRO_ROTATIVO
+            - ARO
+            - MICROCREDITO_PROD_ORIENTADO
+            - CARTAO_CREDITO_NAO_MIGRADO
+          description: "Modalidades de empréstimos ofertados para pessoas jurídicas"
+          example: "CHEQUE_ESPECIAL"
+        fees:
+          type: array
+          items:
+            $ref: '#/components/schemas/LoanFees'
+          description: Lista
+        interestRates:
+          type: array
+          items:
+            $ref: '#/components/schemas/LoanInterestRates'
+        requiredWarranties:
+          type: array
+          items:
+            $ref: '#/components/schemas/RequiredWarranties'
+        termsConditions:
+          type: string
+          pattern: '\w*\W*'
+          maxLength: 2000
+          description: "Campo aberto para informar as condições contratuais relativas à Modalidade de Empréstimo para pessoa física informada. Pode ser informada a URL referente ao endereço onde constam as condições informadas"
+          example: ""
+
     #### Fees ####
     LoanFees:
       type: object
@@ -1085,12 +1109,14 @@ components:
           type: string
           pattern: '^(\d{1,9}\,\d{2}){1}$'
           maxLength: 12
+          x-cds-type: AmountString
           description: "Valor da tarifa cobrada, relativa ao serviço ofertado para a Modalidade de Empréstimo, para pessoa física/jurídica."
           example: "45,00"
         currency:
           type: string
           pattern: '^(\W{3}){1}$'
           maxLength: 3
+          x-cds-type: CurrencyString
           description: "Moeda referente ao valor da Tarifa, segundo modelo ISO-4217."
           example: "BRL"
         additionalInfo:
@@ -1151,8 +1177,29 @@ components:
           maxLength: 2000
           description: "Descrição da Remuneração relativa as taxas de juros remuneratóriassobre a modalidad de Empréstimo para pessoa física/jurídica"
           example: ""
-
-  
+  ####  Required Warranties  ####
+    RequiredWarranties:
+          type: array
+          items:
+            type: string
+            enum:
+              - CESSAO_DIREITOS_CREDITORIOS
+              - CAUÇAO
+              - PENHOR
+              - ANILEAÇAO_FIDUCIARIA
+              - HIPOTECA
+              - OPERAÇOES_GARANTIDAS_GOVERNO
+              - OUTRAS_GARANT_NO_FIDEJUSSORIAS
+              - SEGUROS_ASSEMELHADOS
+              - GARANTIA_FIDEJUSSORIA
+              - BENS_ARRENDADOS
+              - GARANTIAS_INTERNACIONAIS
+              - OPERAÇOES_GARAN_OUTR_ENTIDADES
+              - ACORDOS_DE_COMPENSAÇAO
+              - NAO_APLICAVEL
+            maxLength: 50
+            description: "Relação de garantias exigidas"
+            example: "CESSAO_DIREITOS_CREDITORIOS"
   ############
   ##  CNPJ  ##
   ############
