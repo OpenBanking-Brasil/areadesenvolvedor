@@ -4,7 +4,7 @@
 ```json
 {
   "data": {
-    "organisation": {
+    "brand": {
         "name": "string",
         "companies": [
           {
@@ -67,12 +67,12 @@
 |     Nome          |  Tipo                                                                | Obrigatório  |                            Definição                  |
 |:------------      |:---------------------------------                                    |:-----------  |:----------------------------------------------------  |
 | data              | object                                                               | Sim          |                                                       |
-| organisation      | [[BusinessLoansOrganisation](#schemaBusinessLoansOrganisation)]      | Sim          | Lista das organizaçõs titulares das dependências      |
+| brand      | [[BusinessLoansBrand](#schemaBusinessLoansBrand)]      | Sim          | Lista das organizaçõs titulares das dependências      |
 | links             | [LinksPaginated](#schemaLinksPaginated)                            | Sim          |                                                       |
 | meta              | [MetaPaginated](#schemaMetaPaginated)                              | Sim          |                                                       |
 
-## BusinessLoansOrganisation
-<a id="schemaBusinessLoansOrganisation"></a>
+## BusinessLoansBrand
+<a id="schemaBusinessLoansBrand"></a>
 
 ```json
 {
