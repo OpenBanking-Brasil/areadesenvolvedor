@@ -125,7 +125,7 @@
 | name         | string                                                     | Sim          | Nome do conglomerado proprietário da dependência (titular).  |
 | companies    | [[PersonalLoansCompanies](#schemaPersonalLoansCompanies)]  | Sim          | Lista de instituições pertencentes à organização             |
 
-## PersonalLoansCompanies 
+## PersonalLoansCompanies
 <a id="schemaPersonalLoansCompanies"></a>
 
 ```json
@@ -174,11 +174,11 @@
 |:------------    |:---------------------------------                             |:-----------  |:----------------------------------------------------                 |
 | cnpjNumber      | string                                                        | Sim          | Número do CNPJ do conglomerado                                       |
 | name            | string                                                        | Sim          | Nome da Instituição, pertencente à organização, responsável pela comercialização das modalidades de Empréstimos para Pessoas Físicas consultadas.  |
-| personalLoans   | [[Loans](#schemaLoans)]                                       | Sim          | Empréstimos Pessoas Físicas                                          |
+| personalLoans   | [[PersonalLoans](#schemaPersonalLoans)]                                       | Sim          | Empréstimos Pessoas Físicas                                          |
 
 
-## Loans
-<a id="schemaLoans"></a>
+## PersonalLoans
+<a id="schemaPersonaLoans"></a>
 
 ```json
 {
@@ -218,28 +218,27 @@
 
 |     Nome            |  Tipo                                                      | Obrigatório  |                            Definição                         |
 |:------------        |:---------------------------------                          |:-----------  |:----------------------------------------------------         |
-| types               | [LoansTypes](#schemaEnumLoanTypes)                  | Sim          | Modalidades de empréstimos ofertados para pessoas Físicas/Jurídicas, conforme Circular <a href='https://www.bcb.gov.br/pre/normativos/busca/downloadNormativo.asp?arquivo=/Lists/Normativos/Attachments/51025/Circ_4015_v1_O.pdf' target="_blank">4015-Bacem</a>|
+| types               | [PersonalLoansTypes](#schemaEnumPersonalLoanTypes)                  | Sim          | Modalidades de empréstimos ofertados para pessoas Físicas, conforme Circular <a href='https://www.bcb.gov.br/pre/normativos/busca/downloadNormativo.asp?arquivo=/Lists/Normativos/Attachments/51025/Circ_4015_v1_O.pdf' target="_blank">4015-Bacem</a>|
 | fees                | [[LoanFees](#schemaLoanFees)]                              | Sim          | Tarifas cobradas sobre Serviços ofertados à Modalidade de Empréstimo             |
-| interestRates       | [[InterestRates](#schemaLoanInterestRates)]                    | Sim          | Taxas de juros remuneratórias             |
+| interestRates       | [[LoanInterestRates](#schemaLoanInterestRates)]                    | Sim          | Taxas de juros remuneratórias             |
 | requiredWarranties  | [[RequiredWarranties](#schemaEnumRequiredWarranties)]  | Sim          | Relação de garantias exigidas, segundo documento <a href='https://www.bcb.gov.br/estabilidadefinanceira/scrdoc3040' target="_blank">3040 do Bacem</a>       |
 | termsConditions     | string                                                     | Sim          | Condições contratuais relativas à Modalidade de Empréstimo       |
 
-### Enum LoanTypes
-<a id="schemaEnumLoanTypes"></a>
+### Enum PersonalLoanTypes
+<a id="schemaEnumPersonalLoanTypes"></a>
 
-| Propriedade  | Valor 
-|:------------ |:------ 
-| types   | ADIANTAMENTO_DEPOSITANTE    
-| types   | CREDITO_PESSOAL_CONSIGNADO
-| types   | CREDITO_PESSOAL_NAO_CONSIGNADO
-| types   | CHEQUE_ESPECIAL
-| types   | CONTA_GARANTIDA
-| types   | HOME_EQUITY
-| types   | MICROCREDITO
-| types   | MICROCREDITO_CONSIGNADO
-| types   | OUTROS_EMPRESTIMOS
-| types   | CARTAO_CREDITO
-| types   | RECEBIVEIS_ADQUIRIDOS
+| Propriedade  | Valor                        | Descrição
+|:------------ |:------                       |:------
+| types   | ADIANTAMENTO_DEPOSITANTE    | Adiantamento a depositante
+| types   | CREDITO_PESSOAL_CONSIGNADO  | Crédito pessoal consignado
+| types   | CREDITO_PESSOAL_NAO_CONSIGNADO  | Crédito pessoal não consignado
+| types   | CHEQUE_ESPECIAL | Cheque especial
+| types   | CONTA_GARANTIDA | Conta garantida
+| types   | HOME_EQUITY | Home equity
+| types   | MICROCREDITO_PROD_ORIENTADO  | Microcrédito produtivo orientado
+| types   | OUTROS_EMPRESTIMOS  | Outros empréstimos
+| types   | CARTAO_CREDITO_NAO_MIGRADO  | Cartão de crédito - não migrado
+| types   | RECEBIVEIS_ADQUIRIDOS | Recebíveis adquiridos
 
 
 ## LoanFees
@@ -295,11 +294,11 @@
 ### Enum PriceType
 <a id="schemaEnumLoanFessPriceType"></a>
 
-| Propriedade  | Valor 
-|:------------ |:------ 
-| type        | MINIMO      
-| type        | MEDIO      
-| type        | MAXIMO     
+| Propriedade  | Valor    | Descrição   
+|:------------ |:------   |:---------
+| type        | MINIMO    |  
+| type        | MEDIO     |
+| type        | MAXIMO     |
 
 ## LoanInterestRates
 <a id="schemaLoanInterestRates"></a>
@@ -328,45 +327,37 @@
 ### Enum PrePostTax
 <a id="schemaEnumTypePrePosTax"></a>
 
-| Propriedade  | Valor                                             
-|:------------ |:------ 
-| prePostTax   | PRE    
-| prePostTax   | POS    
+| Propriedade  | Valor      | Descrição                                       
+|:------------ |:------     |:---------
+| prePostTax   | PRE    | Pré fixado
+| prePostTax   | POS    | Pós fixado
 
 
 ### Enum Frecuency
 <a id="schemaEnumFrecuency"></a>
 
-| Propriedade  | Valor                                       
-|:------------ |:------ 
-| frequency    | AD    
-| frequency    | AM    
-| frequency    | AA   
+| Propriedade  | Valor     | Descrição                                   
+|:------------ |:------    |:---------
+| frequency    | AD    | Ao dia
+| frequency    | AM    | Ao mês
+| frequency    | AA   | Ao ano
 
 ### Enum RequiredWarranties
 <a id="schemaEnumRequiredWarranties"></a>
 
-| Propriedade  | Valor                                            
-|:------------ |:------ 
-| requiredWarranties        | CESSAO_DIREITOS_CREDITORIOS     
-| requiredWarranties        | CAUÇAO      
-| requiredWarranties        | PENHOR      
-| requiredWarranties        | ANILEAÇAO_FIDUCIARIA      
-| requiredWarranties        | HIPOTECA      
-| requiredWarranties        | OPERAÇOES_GARANTIDAS_GOVERNO      
-| requiredWarranties        | OUTRAS_GARANT_NO_FIDEJUSSORIAS      
-| requiredWarranties        | SEGUROS_ASSEMELHADOS      
-| requiredWarranties        | GARANTIA_FIDEJUSSORIA      
-| requiredWarranties        | BENS_ARRENDADOS     
-| requiredWarranties        | GARANTIAS_INTERNACIONAIS     
-| requiredWarranties        | OPERAÇOES_GARAN_OUTR_ENTIDADES     
-| requiredWarranties        | ACORDOS_DE_COMPENSAÇAO     
-| requiredWarranties        | NAO_APLICAVEL   
-
-
-
- 
-
-
-
-
+| Propriedade  | Valor                                        | Descrição                                    
+|:------------ |:------                                       |:------
+| requiredWarranties        | CESSAO_DIREITOS_CREDITORIOS     | Cessão de direitos creditórios
+| requiredWarranties        | CAUÇAO                          | Caução
+| requiredWarranties        | PENHOR                          | Penhor
+| requiredWarranties        | ANILEAÇAO_FIDUCIARIA            | Alienação fiduciária
+| requiredWarranties        | HIPOTECA                        | Hipoteca
+| requiredWarranties        | OPERAÇOES_GARANTIDAS_GOVERNO    |  Operações garantidas pelo governo
+| requiredWarranties        | OUTRAS_GARANT_NO_FIDEJUSSORIAS  | Outras garantias não fidejussórias
+| requiredWarranties        | SEGUROS_ASSEMELHADOS            | Seguros e assemelhados
+| requiredWarranties        | GARANTIA_FIDEJUSSORIA           | Garantia fidejussória
+| requiredWarranties        | BENS_ARRENDADOS                 | Bens arrendados
+| requiredWarranties        | GARANTIAS_INTERNACIONAIS        | Garantias internacionais
+| requiredWarranties        | OPERAÇOES_GARAN_OUTR_ENTIDADES  | Operações garantidas por outras entidades
+| requiredWarranties        | ACORDOS_DE_COMPENSAÇAO          | Acordos de compensação
+| requiredWarranties        | NAO_APLICAVEL                   | Não aplicável
