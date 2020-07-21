@@ -4,7 +4,7 @@
 ```json
 {
   "data": {
-    "organisation": [
+    "brand": [
       {
         "name": "string",
         "companies": [
@@ -78,13 +78,13 @@
 |     Nome          |  Tipo                                                     | Obrigatório  |                            Definição                  |
 |:------------      |:---------------------------------                         |:-----------  |:----------------------------------------------------  |
 | data              | object                                                    | Sim          |                                                       |
-| » organisation    | [[BranchesOrganisation](#schemaBranchesOrganisation)]     | Sim          | Lista das organizaçõs titulares das dependências      |
+| » brand           | [[BranchesBrand](#schemaBranchesBrand)]     | Sim          | Lista das organizaçõs titulares das dependências      |
 | links             | [[LinksPaginated](#schemaLinksPaginated)]                 | Sim          |                                                       |
 | meta              | [[MetaPaginated](#schemaMetaPaginated)]                   | Sim          |                                                       |
 
 
-## BranchesOrganisation
-<a id="schemaBranchesOrganisation"></a>
+## BranchesBrand
+<a id="schemaBranchesBrand"></a>
 
 ```json
 {
@@ -142,10 +142,10 @@
 }
 ```
 
-|     Nome     |  Tipo                                    | Obrigatório  |                            Definição                         |
-|:------------ |:---------------------------------        |:-----------  |:----------------------------------------------------         |
-| name         | string                                   | Sim          | Nome do conglomerado proprietário da dependência (titular).  |
-| companies    | [[BranchesCompanies](#schemaBranchesCompanies)]  | Sim          | Lista de instituições pertencentes à organização             |
+|     Nome     |  Tipo                                            | Obrigatório  |                            Definição                     |
+|:------------ |:---------------------------------                |:-----------  |:----------------------------------------------------     |
+| name         | string                                           | Sim          | Nome da Marca selecionada pelas Organizações (titular).  |
+| companies    | [[BranchesCompanies](#schemaBranchesCompanies)]  | Sim          | Lista de instituições pertencentes à marca         |
 
 ## BranchesCompanies 
 <a id="schemaBranchesCompanies"></a>
@@ -203,7 +203,7 @@
 
 |     Nome               |  Tipo                         | Obrigatório    |                            Descrição                                                                                        |
 |:------------           |:----------------------------- |:-------------  |:----------------------------------------------------                                                                        |
-| name                   | string                        | Sim            | Nome da Instituição, pertencente à organização, responsável pela Dependência                                                |
+| name                   | string                        | Sim            | Nome da Instituição, pertencente à marca, responsável pela Dependência                                                |
 | cnpjNumber             | string                        | Sim            | CNPJ da instituição responsável pela dependência - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica |
 | branches               | [[Branch](#schemaBranch)]     | Sim            | Lista de dependências próprias da instituição                                                                               |
 

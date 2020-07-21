@@ -4,7 +4,7 @@
 ```json
 {
   "data": {
-    "organisation": [
+    "brand": [
       {
         "name": "string",
         "companies": [
@@ -64,12 +64,12 @@
 |     Nome          |  Tipo                                                                | Obrigatório  |                            Definição                  |
 |:------------      |:---------------------------------                                    |:-----------  |:----------------------------------------------------  |
 | data              | object                                                               | Sim          |                                                       |
-| » organisation    | [[BankingAgentsOrganisation](#schemaBankingAgentsOrganisation)]      | Sim          | Lista das organizaçõs titulares das dependências      |
+| » brand           | [[BankingAgentsBrand](#schemaBankingAgentsBrand)]      | Sim          | Lista das organizaçõs titulares das dependências      |
 | links             | [[LinksPaginated](#schemaLinksPaginated)]                            | Sim          |                                                       |
 | meta              | [[MetaPaginated](#schemaMetaPaginated)]                              | Sim          |                                                       |
 
-## BankingAgentsOrganisation
-<a id="schemaBankingAgentsOrganisation"></a>
+## BankingAgentsBrand
+<a id="schemaBankingAgentsBrand"></a>
 
 ```json
 {
@@ -116,8 +116,8 @@
 
 |     Nome     |  Tipo                                                      | Obrigatório  |                            Definição                         |
 |:------------ |:---------------------------------                          |:-----------  |:----------------------------------------------------         |
-| name         | string                                                     | Sim          | Nome do conglomerado proprietário da dependência (titular).  |
-| companies    | [[BankingAgentsCompanies](#schemaBankingAgentsCompanies)]  | Sim          | Lista de instituições pertencentes à organização             |
+| name         | string                                                     | Sim          | Nome da Marca selecionada pelas Organizações (titular).  |
+| companies    | [[BankingAgentsCompanies](#schemaBankingAgentsCompanies)]  | Sim          | Lista de instituições pertencentes à marca             |
 
 ## BankingAgentsCompanies 
 <a id="schemaBankingAgentsCompanies"></a>
