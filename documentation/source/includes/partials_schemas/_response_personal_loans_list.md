@@ -240,7 +240,7 @@
 | types   | CARTAO_CREDITO_NAO_MIGRADO  | Cartão de crédito - não migrado
 | types   | RECEBIVEIS_ADQUIRIDOS | Recebíveis adquiridos
 
-### Enumerated PersonalLoans requiredWarranties values
+### Enumerated Loans requiredWarranties values
 <a id="schemaEnumRequiredWarranties"></a>
 
 | Propriedade  | Valor                                        | Descrição                                    
