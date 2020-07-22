@@ -224,7 +224,7 @@
 | requiredWarranties  | [[string](#schemaEnumRequiredWarranties)]  | Sim          | Relação de garantias exigidas, segundo documento <a href='https://www.bcb.gov.br/estabilidadefinanceira/scrdoc3040' target="_blank">3040 do Bacem</a>       |
 | termsConditions     | string                                                     | Sim          | Condições contratuais relativas à Modalidade de Empréstimo       |
 
-### Enumerated values
+### Enumerated PersonalLoans types values
 <a id="schemaEnumPersonalLoanTypes"></a>
 
 | Propriedade  | Valor                        | Descrição
@@ -240,6 +240,25 @@
 | types   | CARTAO_CREDITO_NAO_MIGRADO  | Cartão de crédito - não migrado
 | types   | RECEBIVEIS_ADQUIRIDOS | Recebíveis adquiridos
 
+### Enumerated PersonalLoans requiredWarranties values
+<a id="schemaEnumRequiredWarranties"></a>
+
+| Propriedade  | Valor                                        | Descrição                                    
+|:------------ |:------                                       |:------
+| requiredWarranties        | CESSAO_DIREITOS_CREDITORIOS     | Cessão de direitos creditórios
+| requiredWarranties        | CAUÇAO                          | Caução
+| requiredWarranties        | PENHOR                          | Penhor
+| requiredWarranties        | ANILEAÇAO_FIDUCIARIA            | Alienação fiduciária
+| requiredWarranties        | HIPOTECA                        | Hipoteca
+| requiredWarranties        | OPERAÇOES_GARANTIDAS_GOVERNO    |  Operações garantidas pelo governo
+| requiredWarranties        | OUTRAS_GARANT_NO_FIDEJUSSORIAS  | Outras garantias não fidejussórias
+| requiredWarranties        | SEGUROS_ASSEMELHADOS            | Seguros e assemelhados
+| requiredWarranties        | GARANTIA_FIDEJUSSORIA           | Garantia fidejussória
+| requiredWarranties        | BENS_ARRENDADOS                 | Bens arrendados
+| requiredWarranties        | GARANTIAS_INTERNACIONAIS        | Garantias internacionais
+| requiredWarranties        | OPERAÇOES_GARAN_OUTR_ENTIDADES  | Operações garantidas por outras entidades
+| requiredWarranties        | ACORDOS_DE_COMPENSAÇAO          | Acordos de compensação
+| requiredWarranties        | NAO_APLICAVEL                   | Não aplicável
 
 ## LoanFees
 <a id="schemaLoanFees"></a>
@@ -291,7 +310,7 @@
 | additionalInfo           | string                                                     | Não          | Descrição de como é composto o valor da tarifa. p.ex. '0,25% sobre o excedente do limite acima de R$ 500,00'       |
 | changingUnit        | string                                                     | Sim          | Unidade ou forma de cobrança      |
 
-### Enumerated values
+### Enumerated LoanFeesPrice type values
 <a id="schemaEnumLoanFessPriceType"></a>
 
 | Propriedade  | Valor    | Descrição   
@@ -324,7 +343,7 @@
 | incomeRateInfo         | string                                       | Não         | Descrição da Remuneração relativa as taxas de juros remuneratóriassobre a modalidad de Empréstimo para pessoa física/jurídica                                    |
 
 
-### Enumerated values
+### Enumerated LoanInterestRates prePostTax values
 <a id="schemaEnumTypePrePosTax"></a>
 
 | Propriedade  | Valor      | Descrição                                       
@@ -333,7 +352,7 @@
 | prePostTax   | POS    | Pós fixado
 
 
-### Enumerated values
+### Enumerated LoanInterestRates frecuency values
 <a id="schemaEnumFrecuency"></a>
 
 | Propriedade  | Valor     | Descrição                                   
@@ -341,23 +360,3 @@
 | frequency    | AD    | Ao dia
 | frequency    | AM    | Ao mês
 | frequency    | AA   | Ao ano
-
-### Enum RequiredWarranties
-<a id="schemaEnumRequiredWarranties"></a>
-
-| Propriedade  | Valor                                        | Descrição                                    
-|:------------ |:------                                       |:------
-| requiredWarranties        | CESSAO_DIREITOS_CREDITORIOS     | Cessão de direitos creditórios
-| requiredWarranties        | CAUÇAO                          | Caução
-| requiredWarranties        | PENHOR                          | Penhor
-| requiredWarranties        | ANILEAÇAO_FIDUCIARIA            | Alienação fiduciária
-| requiredWarranties        | HIPOTECA                        | Hipoteca
-| requiredWarranties        | OPERAÇOES_GARANTIDAS_GOVERNO    |  Operações garantidas pelo governo
-| requiredWarranties        | OUTRAS_GARANT_NO_FIDEJUSSORIAS  | Outras garantias não fidejussórias
-| requiredWarranties        | SEGUROS_ASSEMELHADOS            | Seguros e assemelhados
-| requiredWarranties        | GARANTIA_FIDEJUSSORIA           | Garantia fidejussória
-| requiredWarranties        | BENS_ARRENDADOS                 | Bens arrendados
-| requiredWarranties        | GARANTIAS_INTERNACIONAIS        | Garantias internacionais
-| requiredWarranties        | OPERAÇOES_GARAN_OUTR_ENTIDADES  | Operações garantidas por outras entidades
-| requiredWarranties        | ACORDOS_DE_COMPENSAÇAO          | Acordos de compensação
-| requiredWarranties        | NAO_APLICAVEL                   | Não aplicável
