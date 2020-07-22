@@ -221,7 +221,7 @@
 | types               | [string](#schemaEnumPersonalLoanTypes)                  | Sim          | Modalidades de empréstimos ofertados para pessoas Físicas, conforme Circular <a href='https://www.bcb.gov.br/pre/normativos/busca/downloadNormativo.asp?arquivo=/Lists/Normativos/Attachments/51025/Circ_4015_v1_O.pdf' target="_blank">4015-Bacem</a>|
 | fees                | [[LoanFees](#schemaLoanFees)]                              | Sim          | Tarifas cobradas sobre Serviços ofertados à Modalidade de Empréstimo             |
 | interestRates       | [[LoanInterestRates](#schemaLoanInterestRates)]                    | Sim          | Taxas de juros remuneratórias             |
-| requiredWarranties  | [[RequiredWarranties](#schemaEnumRequiredWarranties)]  | Sim          | Relação de garantias exigidas, segundo documento <a href='https://www.bcb.gov.br/estabilidadefinanceira/scrdoc3040' target="_blank">3040 do Bacem</a>       |
+| requiredWarranties  | [[string](#schemaEnumRequiredWarranties)]  | Sim          | Relação de garantias exigidas, segundo documento <a href='https://www.bcb.gov.br/estabilidadefinanceira/scrdoc3040' target="_blank">3040 do Bacem</a>       |
 | termsConditions     | string                                                     | Sim          | Condições contratuais relativas à Modalidade de Empréstimo       |
 
 ### Enumerated values
