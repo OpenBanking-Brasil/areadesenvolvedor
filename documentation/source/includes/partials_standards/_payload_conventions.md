@@ -1,6 +1,6 @@
 ## Convenções de payload 
 
-Esta seção do padrão descreve as estruturas padrões de requisição e resposta para todos os end points das APIs, assim como as convenções de nomenclatura para os atributos.
+Esta seção do padrão descreve as estruturas padrões de requisição e resposta para todos os endpoints das APIs, assim como as convenções de nomenclatura para os atributos.
 
 ### Estrutura de requisição
 
@@ -15,10 +15,10 @@ Esta seção do padrão descreve as estruturas padrões de requisição e respos
 ```
 Cada requisição deve ser um objeto JSON contendo um objeto `data` para armazenar os dados primários da requisição.
 
-No mesmo nível do objeto `data`, poderá existir um objeto `meta` se assim for especificado pelo end point.
-O meta objeto é usado para fornecer informações adicionais ao end point, como parâmetros de paginação contagens de paginação ou outros propósitos complementares ao funcionamento da API.
+No mesmo nível do objeto `data`, poderá existir um objeto `meta` se assim for especificado pelo endpoint.
+O objeto `meta`  é usado para fornecer informações adicionais ao endpoint, como parâmetros de paginação contagens de paginação ou outros propósitos complementares ao funcionamento da API.
 
-A definição do conteúdo para o objeto `data` será definida separadamente para cada end point.
+A definição do conteúdo para o objeto `data` será definida separadamente para cada endpoint.
 
 ### Estrutura de resposta
 
@@ -37,18 +37,18 @@ A definição do conteúdo para o objeto `data` será definida separadamente par
   }
 }
 ```
-Cada end point retornará um objeto JSON contendo os atributos abaixo:
+Cada endpoint retornará um objeto JSON contendo os atributos abaixo:
 
 * Se a resposta for bem-sucedida (200 OK), o objeto JSON irá conter:
     - obrigatóriamente um objeto `data`
     - obrigatóriamente um objeto `links`
-    - opicionalmente um objeto `meta`, se necessário pela definição do end point requisitado
+    - opicionalmente um objeto `meta`, se necessário pela definição do endpoint requisitado
 * Se a resposta for malsucedida (não 200 OK), o objeto JSON poderá conter:
-    - um objeto `errors` (conforme a definição específica do end point)
+    - um objeto `errors` (conforme a definição específica do endpoint)
     
-A definição do conteúdo para os objeto `data` e `meta` serão definidas separadamente para cada end point.
+A definição do conteúdo para os objeto `data` e `meta` serão definidas separadamente para cada endpoint.
 
-O objeto `links` irá conter URI's para end points da API requisitada, apontando para pontos específicos relacioados ao recurso de paginação.
+O objeto `links` irá conter URI's para endpoints da API requisitada, apontando para pontos específicos relacioados ao recurso de paginação.
 
 O objeto de links sempre irá conter o atributo `self` que irá apontar para a URI da solicitação atual.
 
@@ -71,10 +71,10 @@ O objeto de links sempre irá conter o atributo `self` que irá apontar para a U
 ```
 
 * O objeto `errors` será um array de zero ou mais objetos. Os atributos deste objeto serão os descritos abaixo:
-    - obrigatóriamente o atributo `code` contendo um código de erro específico do end point
+    - obrigatóriamente o atributo `code` contendo um código de erro específico do endpoint
     - obrigatóriamente o atributo `title` contendo um título legível por humanos do erro deste erro específico
     - obrigatóriamente o atributo `detail` contendo uma descrição legível por humanos deste erro específico
-    - opcionalmente o objeto `meta` contendo dados adicionais sobre o end point que sejam relevantes para o erro
+    - opcionalmente o objeto `meta` contendo dados adicionais sobre o endpoint que sejam relevantes para o erro
 
 ### Convenções de nomenclatura de atributos
 
@@ -86,7 +86,7 @@ Qualquer outro caractere não deve ser usado nos nomes dos objetos e atributos, 
 
 <b>Estilo de nomeação de atributos</b>
 
-Os nomes dos objetos e atributos devem ser nomes significativos e em língua inglesa. Quando houver diferença entre inglês(Estados Unidos) e inglês (Reino Unido) no termo a ser utilizado, deverá ser utilizado o termo em inglês(Reino Unido).
+Os nomes dos objetos e atributos devem ser nomes significativos e em língua inglesa. Quando houver diferença entre inglês americano e inglês britânico no termo a ser utilizado, deverá ser utilizado o termo em inglês britânico.
 Ex: Utilizar o termo Post Code (Reino Unido) ao invés de Zip Code (Estados Unidos).
 
 Arrays devem ser nomeados no plural. Demais atributos deverão ser nomeados no singular.
