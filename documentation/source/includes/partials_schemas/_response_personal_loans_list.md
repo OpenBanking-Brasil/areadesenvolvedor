@@ -276,12 +276,12 @@
   ]
 }
 ```
-|     Nome            |  Tipo                                                      | Obrigatório  |                            Definição                         |
-|:------------        |:---------------------------------                          |:-----------  |:----------------------------------------------------         |
-| serviceName         | string                                                     | Sim          | Nomes das Tarifas cobradas sobre Serviços relacionados à Modalidade informada do Empréstimo para pessoa física/jurídica.  |
-| serviceCode         | string                                                     | Sim          | Sigla de identificação do serviço relacionado à Modalidade informada de Empréstimo para pessoa física/jurídica.             |
-| chargingTriggerInfo | string                                                     | Sim          | Fatores geradores de cobrança que incidem sobre as Modalidades informada de Empréstimos para pessoa física/jurídica.             |
-| price               | [[LoanFeesPrice](#schemaLoanFeesPrice)]                    | Sim          | Valor máximo para a tarifa cobrada, relativa ao serviço relacionado à Modalidade de Empréstimo para pessoa física/jurídica informada.       |
+|     Nome            |  Tipo                                                      | Obrigatório  |                            Definição                         | Restrições
+|:------------        |:---------------------------------                          |:-----------  |:----------------------------------------------------         | :------
+| serviceName         | string                                                     | Sim          | Nomes das Tarifas cobradas sobre Serviços relacionados à Modalidade informada do Empréstimo para pessoa física/jurídica.  | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para o item priceInfo
+| serviceCode         | string                                                     | Sim          | Sigla de identificação do serviço relacionado à Modalidade informada de Empréstimo para pessoa física/jurídica.             | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para o item priceInfo
+| chargingTriggerInfo | string                                                     | Sim          | Fatores geradores de cobrança que incidem sobre as Modalidades informada de Empréstimos para pessoa física/jurídica.             | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para o item priceInfo
+| price               | [[LoanFeesPrice](#schemaLoanFeesPrice)]                    | Sim          | Valor máximo para a tarifa cobrada, relativa ao serviço relacionado à Modalidade de Empréstimo para pessoa física/jurídica informada.       | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
 
 ## LoanFeesPrice
 <a id="schemaLoanFeesPrice"></a>
@@ -299,13 +299,13 @@
   ]
 }
 ```
-|     Nome            |  Tipo                                                      | Obrigatório  |                            Definição                         |
-|:------------        |:---------------------------------                          |:-----------  |:----------------------------------------------------         |
+|     Nome            |  Tipo                                                      | Obrigatório  |                            Definição                         | Restrições
+|:------------        |:---------------------------------                          |:-----------  |:----------------------------------------------------         | :------
 | type                | [string](#schemaEnumLoanFessPriceType)                  | Não          | Indica os tipos: mínimo, médio e máximo do valor informado.  |
 | value               | AmountString                                                     | Não          | Valor da tarifa cobrada, relativa ao serviço ofertado para a Modalidade de Empréstimo, para pessoa física/jurídica.             |
 | currency            | CurrencyString                                                     | Não          | Moeda referente ao valor da Tarifa, segundo modelo <a href='https://www.iso.org/iso-4217-currency-codes.html' target="_blank">ISO-4217</a>           |
 | additionalInfo           | string                                                     | Não          | Descrição de como é composto o valor da tarifa. p.ex. '0,25% sobre o excedente do limite acima de R$ 500,00'       |
-| changingUnit        | string                                                     | Sim          | Unidade ou forma de cobrança      |
+| changingUnit        | string                                                     | Sim          | Unidade ou forma de cobrança      | Este campo sempre deverá estar preenchido
 
 ### Enumerated LoanFeesPrice type values
 <a id="schemaEnumLoanFessPriceType"></a>
