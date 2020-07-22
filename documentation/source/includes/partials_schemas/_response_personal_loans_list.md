@@ -230,15 +230,12 @@
 | Propriedade  | Valor                        | Descrição
 |:------------ |:------                       |:------
 | types   | ADIANTAMENTO_DEPOSITANTE    | Adiantamento a depositante
-| types   | CREDITO_PESSOAL_CONSIGNADO  | Crédito pessoal consignado
-| types   | CREDITO_PESSOAL_NAO_CONSIGNADO  | Crédito pessoal não consignado
-| types   | CHEQUE_ESPECIAL | Cheque especial
-| types   | CONTA_GARANTIDA | Conta garantida
-| types   | HOME_EQUITY | Home equity
-| types   | MICROCREDITO_PROD_ORIENTADO  | Microcrédito produtivo orientado
-| types   | OUTROS_EMPRESTIMOS  | Outros empréstimos
-| types   | CARTAO_CREDITO_NAO_MIGRADO  | Cartão de crédito - não migrado
-| types   | RECEBIVEIS_ADQUIRIDOS | Recebíveis adquiridos
+| types   | EMPRESTIMO_CREDITO_PESSOAL_CONSIGNADO  | Crédito pessoal consignado
+| types   | EMPRESTIMO_CREDITO_PESSOAL_NAO_CONSIGNADO  | Crédito pessoal não consignado
+| types   | EMPRESTIMO_CHEQUE_ESPECIAL | Cheque especial
+| types   | EMPRESTIMO_CONTA_GARANTIDA | Conta garantida
+| types   | EMPRESTIMO_HOME_EQUITY | Home equity
+| types   | EMPRESTIMO_MICROCREDITO_PRODUCTIVO_ORIENTADO  | Microcrédito produtivo orientado
 
 ### Enumerated Loans requiredWarranties values
 <a id="schemaEnumRequiredWarranties"></a>
