@@ -1,5 +1,5 @@
-## ResponseElectronicChannelsList
-<a id="schemaResponseElectronicChannelsList"></a>
+## ResponsePhoneChannelsList
+<a id="schemaResponsePhoneChannelsList"></a>
 
 ```json
 {
@@ -15,7 +15,14 @@
               {
                 "identification": {
                   "type": "string",
-                  "url": "string"
+                  "phones": [
+                    {
+                      "countryCode": "string",
+                      "areaCode": "string",
+                      "number": "string",
+                      "additionalInfo": "string"
+                    }
+                  ]
                 },
                 "services": {
                   "codes": [
@@ -47,12 +54,12 @@
 |     Nome        |  Tipo                                                       | Obrigatório  |                            Definição                  |
 |:------------    |:---------------------------------                           |:-----------  |:----------------------------------------------------  |
 | data            | object                                                      | Sim          |                                                       |
-| » brand         | [[ElectronicChannelsBrand](#schemaElectronicChannelsBrand)]   | Sim          | Lista das organizaçõs titulares das dependências      |
+| » brand         | [[PhoneChannelsBrand](#schemaPhoneChannelsBrand)]   | Sim          | Lista das organizaçõs titulares das dependências      |
 | links           | [[LinksPaginated](#schemaLinksPaginated)]                   | Sim          |                                                       |
 | meta            | [[MetaPaginated](#schemaMetaPaginated)]                     | Sim          |                                                       |
 
-## ElectronicChannelsBrand
-<a id="schemaElectronicChannelsBrand"></a>
+## PhoneChannelsBrand
+<a id="schemaPhoneChannelsBrand"></a>
 
 ```json
 {
@@ -65,7 +72,14 @@
         {
           "identification": {
             "type": "string",
-            "url": "string"
+            "phones": [
+              {
+                "countryCode": "string",
+                "areaCode": "string",
+                "number": "string",
+                "additionalInfo": "string"
+              }
+            ]
           },
           "services": {
             "codes": [
@@ -83,10 +97,10 @@
 |     Nome     |  Tipo                                                              | Obrigatório  |                            Definição                         |
 |:------------ |:---------------------------------                                  |:-----------  |:----------------------------------------------------         |
 | name         | string                                                             | Sim          | Nome da marca proprietária da dependência (titular).  |
-| companies    | [[ElectronicChannelsCompanies](#schemaElectronicChannelsCompanies)]  | Sim          | Lista de instituições pertencentes à marca             |
+| companies    | [[PhoneChannelsCompanies](#schemaPhoneChannelsCompanies)]  | Sim          | Lista de instituições pertencentes à marca             |
 
-## ElectronicChannelsCompanies
-<a id="schemaElectronicChannelsCompanies"></a>
+## PhoneChannelsCompanies
+<a id="schemaPhoneChannelsCompanies"></a>
 
 ```json
 {
@@ -96,7 +110,14 @@
     {
       "identification": {
         "type": "string",
-        "url": "string"
+        "phones": [
+          {
+            "countryCode": "string",
+            "areaCode": "string",
+            "number": "string",
+            "additionalInfo": "string"
+          }
+        ]
       },
       "services": {
         "codes": [
@@ -113,16 +134,23 @@
 |:------------ |:---------------------------------               |:-------------- |:----------------------------------------------------       |
 | name         | string                                          | Sim            | Nome do conglomerado responsável pela contrataçao do Correspondente  |
 | cnpjNumber   | string                                          | Sim            | CNPJ da instituição responsável pela dependência - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica |
-| channels     | [[ElectronicChannels](#schemaElectronicChannels)] | Sim            | Lista  de canais de atendimento eltrônico                  |
+| channels     | [[PhoneChannels](#schemaPhoneChannels)] | Sim            | Lista  de canais de atendimento telefônico                  |
 
-## ElectronicChannels
-<a id="schemaElectronicChannels"></a>
+## PhoneChannels
+<a id="schemaPhoneChannels"></a>
 
 ```json
 {
   "identification": {
     "type": "string",
-    "url": "string"
+    "phones": [
+      {
+        "countryCode": "string",
+        "areaCode": "string",
+        "number": "string",
+        "additionalInfo": "string"
+      }
+    ]
   },
   "services": {
     "codes": [
@@ -135,47 +163,62 @@
 
 |     Nome              |  Tipo                                                                       | Obrigatório |                            Definição                                                                                                                                                                                                                                          | Restrições                                                                               |
 |:------------          |:--------------------------------------------------------------------------- |:----------- |:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |:-----------------                                                                        |
-| identification        | [ElectronicChannelsIdentification](#schemaElectronicChannelsIdentification)   | Sim         |                                                                                                                                                                                                                                                                               |                                                                                          |
-| services              | [ElectronicChannelsServices](#schemaElectronicChannelsServices)               | Sim         | Informações sobre os serviços prestados                                                                                                                                                                                                                                       |                                                                                          |
+| identification        | [PhoneChannelsIdentification](#schemaPhoneChannelsIdentification)   | Sim         |                                                                                                                                                                                                                                                                               |                                                                                          |
+| services              | [PhoneChannelsServices](#schemaPhoneChannelsServices)               | Sim         | Informações sobre os serviços prestados                                                                                                                                                                                                                                       |                                                                                          |
 
-## ElectronicChannelsIdentification
-<a id="schemaElectronicChannelsIdentification"></a>
+## PhoneChannelsIdentification
+<a id="schemaPhoneChannelsIdentification"></a>
 
 ```json
 {
   "type": "string",
-  "url": "string"
+  "phones": [
+    {
+      "countryCode": "string",
+      "areaCode": "string",
+      "number": "string",
+      "additionalInfo": "string"
+    }
+  ],
 }
 ```
 
 |     Nome     |  Tipo                                                          | Obrigatório |                            Definição               | Restrições                           |
 |:------------ |:---------------------------------                              |:----------- |:-------------------------------------------------- |:------------------------------------ |
-| type         | [Enum ElectronicChannelsType](#schemaElectronicChannelsType)     | Sim         | Tipo de canal de atendimento                       | O Tipo de Canal determina o Tipo de Acesso a ele relacionado:URL para acesso ao internet banking,URL para aquisição do app ,URL da central,URL do SAC,URL da ouvidoria,URL para chat                                     |
-| url          | string                                                         | Não         | Endereço eletrônico de acesso ao canal             |  |
+| type         | [Enum PhoneChannelsType](#schemaPhoneChannelsType)     | Sim         | Tipo de canal telefônico de atendimento                       |  O Tipo de Canal determina o Tipo de Acesso a ele relacionado:  telefone da central,  telefone do SAC, s telefone da ouvidoria, |
+| phones       | [[PhoneChannelsPhones](#schemaPhoneChannelsPhones)]]   | Não         | Telefones de contato com o canal de atendimento    |  |
 
-### Enum ElectronicChannelsType
-<a id="schemaElectronicChannelsType"></a>
+### Enum PhoneChannelsType
+<a id="schemaPhoneChannelsType"></a>
 
 |     Propriedade  | Código                      |                            Definição                            |
 |:------------     |:--------------------------- |:--------------------------------------------------------------  |
-| type             | INTERNET_BANKING            | Internet banking                                                |
-| type             | MOBILE_BANKING              | Mobile banking                                                  |
+| type             | CENTRAL_TELEFONICA_BANKING  | Central telefônica banking                                      |
 | type             | SAC                         | SAC                                                             |
 | type             | OUVIDORIA                   | Ouvidoria                                                       |
 | type             | CHAT                        | Chat                                                            |
 
+## PhoneChannelsPhones
+<a id="schemaPhoneChannelsPhones"></a>
+
+|     Nome        |  Tipo  | Obrigatório |     Definição                                                                                                                |
+|:---------       |:------ |:----------- |:-------------------------                                                                                                    |
+| countryCode     | string | Não         | DDI                                                                                                                          |
+| areaCode        | string | Não         | DDD                                                                                                                          |
+| number          | string | Sim         | Telefone para contato com o canal                                                                                            |
+| additionalInfo  | string | Não         | Mensagem complementar necessária para o agrupamento da identificação do telefone |
 
 
-## ElectronicChannelsServices
-<a id="schemaElectronicChannelsServices"></a>
+## PhoneChannelsServices
+<a id="schemaPhoneChannelsServices"></a>
 
 |     Nome         |  Tipo                                                                              | Obrigatório |                            Definição               |
 |:------------     |:---------------------------------------------------------------------------------  |:----------- |:-------------------------------------------------- |
-| codes            | [[Enum ElectronicChannelsServicesCodes](#schemaEnumElectronicChannelsServicesCodes)] | Sim         | Lista com a lista de serviços prestados pelo canal |
+| codes            | [[Enum PhoneChannelsServicesCodes](#schemaEnumPhoneChannelsServicesCodes)] | Sim         | Lista com a lista de serviços prestados pelo canal |
 | additionalInfo   | string                                                                             | Não         | Descrição adicional sobre os serviços prestados    |
 
-### Enum ElectronicChannelsServicesCodes
-<a id="schemaEnumElectronicChannelsServicesCodes"></a>
+### Enum PhoneChannelsServicesCodes
+<a id="schemaEnumPhoneChannelsServicesCodes"></a>
 
 | Propriedade  | Código                                               | Definição                                             |
 |:------------ |:---------------------------------------------------- |:----------------------------------------------------- |

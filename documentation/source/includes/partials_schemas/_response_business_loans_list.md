@@ -230,11 +230,9 @@
 | Propriedade  | Valor                        | Descrição
 |:------------ |:------                       |:------
 | types   | ADIANTAMENTO_DEPOSITANTE    | Adiantamento a depositante
-| types   | CHEQUE ESPECIAL  | Cheque especial
-| types   | CONTA_GARANTIDA  | Conta garantida
-| types   | CAPITAL_GIRO_VENCIMI_365 | Capital de giro com prazo de vencimento até 365 dias
-| types   | CAPITAL_GIRO_VENCIMI_SUP_365 | Capital de giro com prazo de vencimento superior a 365 dias
-| types   | CAPITAL_GIRO_ROTATIVO | Capital de giro rotativo
-| types   | ARO  | Adiantamento de receitas orçamentárias
-| types   | MICROCREDITO_PROD_ORIENTADO  | Microcrédito produtivo orientado
-| types   | CARTAO_CREDITO_NAO_MIGRADO  | Cartão de crédito – não migrado
+| types   | EMPRESTIMO_CHEQUE ESPECIAL  | Cheque especial
+| types   | EMPRESTIMO_CONTA_GARANTIDA  | Conta garantida
+| types   | EMPRESTIMO_CAPITAL_GIRO_VENCIMIENTO_365 | Capital de giro com prazo de vencimento até 365 dias
+| types   | EMPRESTIMO_CAPITAL_GIRO_VENCIMIENTO_SUP_365 | Capital de giro com prazo de vencimento superior a 365 dias
+| types   | EMPRESTIMO_CAPITAL_GIRO_ROTATIVO | Capital de giro rotativo
+| types   | EMPRESTIMO_MICROCREDITO_PROD_ORIENTADO  | Microcrédito produtivo orientado
