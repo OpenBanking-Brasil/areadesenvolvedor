@@ -4,7 +4,7 @@
 ```json
 {
   "data": {
-    "organisation": {
+    "brand": {
       "name": "string",
       "companies": [
         {
@@ -68,15 +68,15 @@
 }
 ```
 
-|     Nome          |  Tipo                                                                     | Obrigatório  |                            Definição                                                                                     |
-|:------------------|:--------------------------------------------------------------------------|:-------------|:-------------------------------------------------------------------------------------------------------------------------|
-| data              | object                                                                    | Sim          |                                                                                                                          |
-| » organisation    | [BusinessCreditCardsOrganisation](#schemaBusinessCreditCardsOrganisation) | Sim          | Conglomerado das instituições financeiras que fornecem produtos e serviços de cartões de crédito para pessoa jurídica    |
-| links             | [LinksPaginated](#schemaLinksPaginated)                                   | Sim          |                                                                                                                          |
-| meta              | [MetaPaginated](#schemaMetaPaginated)                                     | Sim          |                                                                                                                          |
+|     Nome          |  Tipo                                                       | Obrigatório  |                            Definição                                                                      |
+|:------------------|:----------------------------------------------------------- |:------------ |:--------------------------------------------------------------------------------------------------------- | 
+| data              | object                                                      | Sim          |                                                                                                           |
+| » brand           | [BusinessCreditCardsBrand](#schemaBusinessCreditCardsBrand) | Sim          | Dados da Marca selecionada que fornecem produtos e serviços de cartões de crédito para pessoa jurídica    |
+| links             | [LinksPaginated](#schemaLinksPaginated)                     | Sim          |                                                                                                           |
+| meta              | [MetaPaginated](#schemaMetaPaginated)                       | Sim          |                                                                                                           |
 
-## BusinessCreditCardsOrganisation
-<a id="schemaBusinessCreditCardsOrganisation"></a>
+## BusinessCreditCardsBrand
+<a id="schemaBusinessCreditCardsBrand"></a>
 
 ```json
 {
@@ -130,10 +130,10 @@
 }
 ```
 
-|     Nome     |  Tipo                                                                    | Obrigatório  |                            Definição                                         |
-|:-------------|:-------------------------------------------------------------------------|:-----------  |:-----------------------------------------------------------------------------|
-| name         | string                                                                   | Sim          | Nome do conglomerado ao qual as instituições financeiras estão subordinadas  |
-| companies    | [[BusinessCreditCardsCompanies](#schemaBusinessCreditCardsCompanies)]    | Sim          | Lista de instituições pertencentes ao conglomerado                           |
+|     Nome     |  Tipo                                                                    | Obrigatório  |                            Definição                 |
+|:-------------|:-------------------------------------------------------------------------|:-----------  |:---------------------------------------------------- |
+| name         | string                                                                   | Sim          | Nome da Marca selecionada pelas Organizações         |
+| companies    | [[BusinessCreditCardsCompanies](#schemaBusinessCreditCardsCompanies)]    | Sim          | Lista de instituições pertencentes a marca           |
 
 ## BusinessCreditCardsCompanies 
 <a id="schemaBusinessCreditCardsCompanies"></a>

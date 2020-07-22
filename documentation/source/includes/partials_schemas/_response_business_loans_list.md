@@ -123,8 +123,8 @@
 
 |     Nome     |  Tipo                                                      | Obrigatório  |                            Definição                         |
 |:------------ |:---------------------------------                          |:-----------  |:----------------------------------------------------         |
-| name         | string                                                     | Sim          | Nome do conglomerado proprietário da dependência (titular).  |
-| companies    | [[BusinessLoansCompanies](#schemaBusinessLoansCompanies)]  | Sim          | Lista de instituições pertencentes à organização             |
+| name         | string                                                     | Sim          | Nome da marca proprietária da dependência (titular).  |
+| companies    | [[BusinessLoansCompanies](#schemaBusinessLoansCompanies)]  | Sim          | Lista de instituições pertencentes à marca             |
 
 ## BusinessLoansCompanies
 <a id="schemaBusinessLoansCompanies"></a>
@@ -174,7 +174,7 @@
 |     Nome        |  Tipo                                                         | Obrigatório  |                            Definição                                 |
 |:------------    |:---------------------------------                             |:-----------  |:----------------------------------------------------                 |
 | cnpjNumber      | string                                                        | Sim          | Número do CNPJ do conglomerado                                       |
-| name            | string                                                        | Sim          | Nome da Instituição, pertencente à organização, responsável pela comercialização das modalidades de Empréstimos para Pessoas Jurídicas consultadas.  |
+| name            | string                                                        | Sim          | Nome da Instituição, pertencente à marca, responsável pela comercialização das modalidades de Empréstimos para Pessoas Jurídicas consultadas.  |
 | businessLoans   | [[BusinessLoans](#schemaBusinessLoans)]                                       | Sim          | Empréstimos Pessoas Jurídicas                                          |
 
 ## BusinessLoans

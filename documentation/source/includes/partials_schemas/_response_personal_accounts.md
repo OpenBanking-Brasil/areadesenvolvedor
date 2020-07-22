@@ -5,7 +5,7 @@
 {
   
   "data": {
-    "organisation": {
+    "brand": {
       "name": "string",
       "companies": [
         {
@@ -89,15 +89,15 @@
 }
 ```
 
-|     Nome          |  Tipo                                                                | Obrigatório  |                            Definição                  |
-|:------------      |:---------------------------------                                    |:-----------  |:----------------------------------------------------  |
-| data              | object                                                               | Sim          |                                                       |
-| » organisation    | [[PersonalAccountOrganisation](#schemaPersonalAccountOrganisation)]      | Sim          | Lista das organizações responáveis pelas contas |
-| links             | [[LinksPaginated](#schemaLinksPaginated)]                            | Sim          |                                                       |
-| meta              | [[MetaPaginated](#schemaMetaPaginated)]                              | Sim          |                                                       |
+|     Nome      |  Tipo                                                     | Obrigatório  |                            Definição                  |
+|:------------  |:---------------------------------                         |:-----------  |:----------------------------------------------------  |
+| data          | object                                                    | Sim          |                                                       |
+| » brand       | [[PersonalAccountBrand](#schemaPersonalAccountBrand)]     | Sim          | Lista das organizações responáveis pelas contas |
+| links         | [[LinksPaginated](#schemaLinksPaginated)]                 | Sim          |                                                       |
+| meta          | [[MetaPaginated](#schemaMetaPaginated)]                   | Sim          |                                                       |
 
-## PersonalAccountOrganisation
-<a id="schemaPersonalAccountOrganisation"></a>
+## PersonalAccountBrand
+<a id="schemaPersonalAccountBrand"></a>
 
 ```json
 {
@@ -173,8 +173,8 @@
 
 |     Nome     |  Tipo                                                      | Obrigatório  |                            Definição                         |
 |:------------ |:---------------------------------                          |:-----------  |:----------------------------------------------------         |
-| name         | string                                                     | Sim          | Nome do conglomerado responsável pelas contas (banco).  |
-| companies    | [[PersonalAccountCompanies](#schemaPersonalAccountCompanies)]  | Sim          | Lista de instituições pertencentes à organização             |
+| name         | string                                                     | Sim          | Nome da Marca responsável pelas contas (banco).  |
+| companies    | [[PersonalAccountCompanies](#schemaPersonalAccountCompanies)]  | Sim          | Lista de instituições pertencentes à marca             |
 
 ## PersonalAccountCompanies 
 <a id="schemaPersonalAccountCompanies"></a>

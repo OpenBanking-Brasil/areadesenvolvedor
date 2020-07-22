@@ -4,7 +4,7 @@
 ```json
 {
   "data": {
-    "organisation": [
+    "brand": [
       {
         "name": "string",
         "companies": [
@@ -52,15 +52,15 @@
 }
 ```
 
-|     Nome          |  Tipo                                                                     | Obrigatório  |                            Definição                  |
-|:------------      |:---------------------------------                                         |:-----------  |:----------------------------------------------------  |
-| data              | object                                                                    | Sim          |                                                       |
-| » organisation    | [[EletronicChannelsOrganisation](#schemaEletronicChannelsOrganisation)]   | Sim          | Lista das organizaçõs titulares das dependências      |
-| links             | [[LinksPaginated](#schemaLinksPaginated)]                                 | Sim          |                                                       |
-| meta              | [[MetaPaginated](#schemaMetaPaginated)]                                   | Sim          |                                                       |
+|     Nome        |  Tipo                                                       | Obrigatório  |                            Definição                  |
+|:------------    |:---------------------------------                           |:-----------  |:----------------------------------------------------  |
+| data            | object                                                      | Sim          |                                                       |
+| » brand         | [[EletronicChannelsBrand](#schemaEletronicChannelsBrand)]   | Sim          | Lista das organizaçõs titulares das dependências      |
+| links           | [[LinksPaginated](#schemaLinksPaginated)]                   | Sim          |                                                       |
+| meta            | [[MetaPaginated](#schemaMetaPaginated)]                     | Sim          |                                                       |
 
-## EletronicChannelsOrganisation
-<a id="schemaEletronicChannelsOrganisation"></a>
+## EletronicChannelsBrand
+<a id="schemaEletronicChannelsBrand"></a>
 
 ```json
 {
@@ -98,8 +98,8 @@
 
 |     Nome     |  Tipo                                                              | Obrigatório  |                            Definição                         |
 |:------------ |:---------------------------------                                  |:-----------  |:----------------------------------------------------         |
-| name         | string                                                             | Sim          | Nome do conglomerado proprietário da dependência (titular).  |
-| companies    | [[EletronicChannelsCompanies](#schemaEletronicChannelsCompanies)]  | Sim          | Lista de instituições pertencentes à organização             |
+| name         | string                                                             | Sim          | Nome da marca proprietária da dependência (titular).  |
+| companies    | [[EletronicChannelsCompanies](#schemaEletronicChannelsCompanies)]  | Sim          | Lista de instituições pertencentes à marca             |
 
 ## EletronicChannelsCompanies 
 <a id="schemaEletronicChannelsCompanies"></a>
@@ -231,10 +231,10 @@
 | Propriedade  | Código                                               | Definição                                             |
 |:------------ |:---------------------------------------------------- |:----------------------------------------------------- |
 | codes        | ABERTURA_CONTAS                                      | Abertura de contas                                    |
-| codes        | RECEBIMENTOS_PAGAMENTOS_TRANSFERÊNCIAS_ELETRONICAS   | Recebimentos, pagamentos e transferências eletrônicas |
+| codes        | RECEBIMENTOS_PAGAMENTOS_TRANSFERENCIAS_ELETRONICAS   | Recebimentos, pagamentos e transferências eletrônicas |
 | codes        | RECEBIMENTOS_PAGAMENTOS_QUALQUER_NATUREZA            | Recebimentos e pagamentos de qualquer natureza        |
 | codes        | OPERACOES_CREDITO                                    | Operações de crédito                                  |
 | codes        | CARTAO_CREDITO                                       | Cartão de crédito                                     |
-| codes        | OPERACOES_CÂMBIO                                     | Operações de câmbio                                   |
+| codes        | OPERACOES_CAMBIO                                     | Operações de câmbio                                   |
 | codes        | INVESTIMENTOS                                        | Investimentos                                         |
 | codes        | SEGUROS                                              | Seguros                                               |

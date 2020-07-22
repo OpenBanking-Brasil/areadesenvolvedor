@@ -4,7 +4,7 @@
 ```json
 {
   "data": {
-    "organisation": [
+    "brand": [
       {
         "name": "string",
         "companies": [
@@ -68,12 +68,12 @@
 |     Nome          |  Tipo                                                                     | Obrigatório  |                            Definição                  |
 |:------------      |:---------------------------------                                         |:-----------  |:----------------------------------------------------  |
 | data              | object                                                                    | Sim          |                                                       |
-| » organisation    | [[BusinessInvoiceFinancingsOrganisation](#schemaBusinessInvoiceFinancingsOrganisation)]   | Sim          | Lista das organizaçõs titulares das dependências      |
+| » brand           | [[BusinessInvoiceFinancingsBrand](#schemaBusinessInvoiceFinancingsBrand)]   | Sim          | Lista das organizaçõs titulares das dependências      |
 | links             | [[LinksPaginated](#schemaLinksPaginated)]                                 | Sim          |                                                       |
 | meta              | [[MetaPaginated](#schemaMetaPaginated)]                                   | Sim          |                                                       |
 
-## BusinessInvoiceFinancingsOrganisation
-<a id="schemaBusinessInvoiceFinancingsOrganisation"></a>
+## BusinessInvoiceFinancingsBrand
+<a id="schemaBusinessInvoiceFinancingsBrand"></a>
 
 ```json
 {
@@ -124,8 +124,8 @@
 
 |     Nome     |  Tipo                                                                            | Obrigatório  |                            Definição                         |
 |:------------ |:---------------------------------                                                |:-----------  |:----------------------------------------------------         |
-| name         | string                                                                           | Sim          | Nome do conglomerado proprietário da dependência (titular).  |
-| companies    | [[BusinessInvoiceFinancingsCompanies](#schemaBusinessInvoiceFinancingsCompanies)]  | Sim          | Lista de instituições pertencentes à organização             |
+| name         | string                                                                           | Sim          | Nome da marca proprietária da dependência (titular).  |
+| companies    | [[BusinessInvoiceFinancingsCompanies](#schemaBusinessInvoiceFinancingsCompanies)]  | Sim          | Lista de instituições pertencentes à marca             |
 
 ## BusinessInvoiceFinancingsCompanies 
 <a id="schemaBusinessInvoiceFinancingsCompanies"></a>
