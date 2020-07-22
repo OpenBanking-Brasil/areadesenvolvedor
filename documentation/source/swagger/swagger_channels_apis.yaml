@@ -40,8 +40,20 @@ paths:
           description: Uma instituição financeira contendo sua lista de canais eletrônicos de atendimento.
           content:
             application/json:
-              schema: 
-                $ref: '#/components/schemas/ResponseEletronicChannelsList'
+              schema:
+                $ref: '#/components/schemas/ResponseElectronicChannelsList'
+  /phone-channels:
+    get:
+      tags:
+      - "Channels"
+      summary: ""
+      responses:
+        '200':
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponsePhoneChannelsList'
 components:
   schemas:
     ResponseBankingAgentsList:
@@ -260,7 +272,7 @@ components:
             $ref: '#/components/schemas/Branch'
       allOf:
         - $ref: '#/components/schemas/CNPJ'
-    ResponseEletronicChannelsList:
+    ResponseElectronicChannelsList:
       type: object
       required:
       - data
@@ -273,66 +285,12 @@ components:
             - brand
           properties:
             brand:
-                $ref: '#/components/schemas/EletronicChannelsBrand'
+                $ref: '#/components/schemas/ElectronicChannelsBrand'
         links:
           $ref: '#/components/schemas/Links'
         meta:
           $ref: '#/components/schemas/Meta'
-      example:
-        data:
-          brand:
-              name: The Big Bank Brand
-              companies:
-                - name: The Big Bank Company
-                  cnpjNumber: '12345678901234'
-                  channels:
-                    - identification:
-                        type: MOBILE_BANKING
-                        phones:
-                          - countryCode: null
-                            areaCode: null
-                            number: 0800 555 1234
-                            additionalInfo: Para regiões metropolitanas e capitais usar o telefone
-                          - countryCode: null
-                            areaCode: '11'
-                            number: 4004-4828
-                            additionalInfo: Demais localidades
-                          - countryCode: '55'
-                            areaCode: '11'
-                            number: 44003-4820
-                            additionalInfo: Para clientes no exterior
-                      services:
-                        codes:
-                          - ABERTURA_CONTAS
-                          - RECEBIMENTOS_PAGAMENTOS_TRANSFERÊNCIAS_ELETRONICAS
-                          - RECEBIMENTOS_PAGAMENTOS_QUALQUER_NATUREZA
-                          - OPERACOES_CREDITO
-                          - CARTAO_CREDITO
-                          - OPERACOES_CÂMBIO
-                          - INVESTIMENTOS
-                          - SEGUROS
-                        additionalInfo: null
-                    - identification:
-                        type: INTERNET_BANKING
-                        url: 'https://thebigbankcompany.sample.com'
-                      services:
-                        codes:
-                          - ABERTURA_CONTAS
-                          - RECEBIMENTOS_PAGAMENTOS_TRANSFERÊNCIAS_ELETRONICAS
-                          - RECEBIMENTOS_PAGAMENTOS_QUALQUER_NATUREZA
-                          - OPERACOES_CREDITO
-                          - CARTAO_CREDITO
-                        additionalInfo: Canal de atendimento 2
-        links:
-          self: 'https://api.banco.com.br/open-banking/channels/v1/electronic-channels'
-          first: 'https://api.banco.com.br/open-banking/channels/v1/electronic-channels'
-          prev: null
-          next: null
-          last: 'https://api.banco.com.br/open-banking/channels/v1/electronic-channels'
-        meta:
-          totalRecords: 1
-          totalPages: 1
-    EletronicChannelsBrand:
+    ElectronicChannelsBrand:
       type: object
       required:
         - name
@@ -341,12 +299,13 @@ components:
         name:
           type: string
           description: Nome da marca selecionada pela Organização proprietária da dependência (titular).
+          example: "Marca A"
         companies:
           type: array
           items:
-            $ref: '#/components/schemas/EletronicChannelsCompanies'
+            $ref: '#/components/schemas/ElectronicChannelsCompanies'
           description: Lista de instituições pertencentes à marca
-    EletronicChannelsCompanies:
+    ElectronicChannelsCompanies:
       type: object
       required:
         - name
@@ -355,11 +314,13 @@ components:
         name:
           type: string
           description: Nome da marca selecionada pela Organização proprietária da dependência (titular).
+          example: "Empresa da Marca A"
         channels:
           type: array
           items:
-            $ref: '#/components/schemas/EletronicChannel'
+            $ref: '#/components/schemas/ElectronicChannel'
           description: Lista  de canais de atendimento eltrônico
+
       allOf:
         - $ref: '#/components/schemas/CNPJ'
     BankingAgent:
@@ -555,17 +516,17 @@ components:
           maxLength: 2000
       required:
         - codes
-    EletronicChannel:
+    ElectronicChannel:
       type: object
       properties:
         identification:
-          $ref: '#/components/schemas/EletronicChannelIdentification'
+          $ref: '#/components/schemas/ElectronicChannelIdentification'
         services:
-          $ref: '#/components/schemas/EletronicChannelServices'
+          $ref: '#/components/schemas/ElectronicChannelServices'
       required:
         - identification
         - services
-    EletronicChannelIdentification:
+    ElectronicChannelIdentification:
       type: object
       required:
         - type
@@ -574,43 +535,18 @@ components:
           type: string
           enum: ["INTERNET_BANKING",
                 "MOBILE_BANKING",
-                "CENTRAL_TELEFONICA_BANKING",
                 "SAC",
                 "OUVIDORIA",
                 "CHAT"]
           maxLength: 2
           pattern: ^\d{1,2}$
-          description: >
-            Tipo de canal de atendimento eletrônico
-            * `INTERNET_BANKING` - Internet banking
-            * `MOBILE_BANKING` - Mobile banking
-            * `CENTRAL_TELEFONICA_BANKING` - Central telefônica banking
-            * `SAC` - SAC
-            * `OUVIDORIA` - Ouvidoria
-            * `CHAT` - Chat
-        phones:
-          type: array
-          items:
-            properties:
-              countryCode:
-                type: string
-                maxLength: 2
-                pattern: ^\d{2}$
-              areaCode:
-                type: string
-                maxLength: 2
-                pattern: ^\d{2}$
-              number:
-                type: string
-                maxLength: 13
-                pattern: ^([0-9]{4,5})-([0-9]{4})$
-              additionalInfo:
-                type: string
-                maxLength: 50
+          description: "Tipo de canal de atendimento eletrônico"
+          example: "CHAT"
         url:
           type: string
           maxLength: 1024
-    EletronicChannelServices:
+          example: "https://example.com/mobile-banking"
+    ElectronicChannelServices:
       type: object
       required:
         - codes
@@ -629,20 +565,13 @@ components:
                     "SEGUROS"]
             maxLength: 2
             pattern: ^\d{1,2}$
-            description: >
-              Serviços oferecidos pelo canal de atendimento eletrônico
-              * `ABERTURA_CONTAS` - Abertura de contas
-              * `RECEBIMENTOS_PAGAMENTOS_TRANSFERENCIAS_ELETRONICAS` - Recebimentos, pagamentos e transferências eletrônicas
-              * `RECEBIMENTOS_PAGAMENTOS_QUALQUER_NATUREZA` - Recebimentos e pagamentos de qualquer natureza
-              * `OPERACOES_CREDITO` - Operações de crédito
-              * `CARTAO_CREDITO` - Cartão de crédito
-              * `OPERACOES_CAMBIO` - Operações de câmbio
-              * `INVESTIMENTOS` - Investimentos
-              * `SEGUROS` - Seguros
+            description: "Serviços oferecidos pelo canal de atendimento eletrônico"
+            example: "ABERTURA_CONTAS"
         additionalInfo:
           type: string
           maxLength: 2000
           description: Campo aberto para detalhamento
+          example: ""
     PostalAddress:
       type: object
       properties:
@@ -690,13 +619,159 @@ components:
         - townName
         - countrySubDivision
         - postCode
+  ####################
+  ## Phone Channels ##
+  ####################
+  #### ResponsePhoneChannelsList ####
+    ResponsePhoneChannelsList:
+      type: object
+      required:
+      - data
+      - links
+      - meta
+      properties:
+        data:
+          type: object
+          required:
+            - brand
+          properties:
+            brand:
+                $ref: '#/components/schemas/PhonesChannelsBrand'
+        links:
+          $ref: '#/components/schemas/Links'
+        meta:
+          $ref: '#/components/schemas/Meta'
+
+  #### PhonesChannelsBrand ####
+    PhonesChannelsBrand:
+      type: object
+      required:
+        - name
+        - companies
+      properties:
+        name:
+          type: string
+          pattern: '\w*\W*'
+          maxLength: 30
+          description: "Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a 'marca' utilizada está em definição pelos participantes."
+          example: "Marca A"
+        companies:
+          type: array
+          items:
+            $ref: '#/components/schemas/PhonesChannelsCompanies'
+          description: Lista de instituições pertencentes à marca
+
+  #### PhoneChannelsCompanies ####
+    PhonesChannelsCompanies:
+      type: object
+      required:
+        - name
+        - channels
+      properties:
+        name:
+          type: string
+          description: "Nome da Instituição, pertencente à organização, responsável pelo Canal Telefônico."
+          example: "Empresa da Marca A"
+        channels:
+          type: array
+          items:
+            $ref: '#/components/schemas/PhoneChannel'
+          description: Lista  de canais de atendimento telefônico
+      allOf:
+        - $ref: '#/components/schemas/CNPJ'
+  #### PhoneChannel ####
+    PhoneChannel:
+      type: object
+      properties:
+        identification:
+          $ref: '#/components/schemas/PhoneChannelIdentification'
+        services:
+          $ref: '#/components/schemas/PhoneChannelServices'
+      required:
+        - identification
+        - services
+  #### PhoneChannelIdentification ####
+    PhoneChannelIdentification:
+      type: object
+      required:
+        - type
+      properties:
+        type:
+          type: string
+          enum: [
+                "CENTRAL_TELEFONICA_BANKING",
+                "SAC",
+                "OUVIDORIA"
+                ]
+          maxLength: 2
+          pattern: ^\d{1,2}$
+          description: "Tipo de canal telefônico de atendimento"
+          example: "OUVIDORIA"
+        phones:
+          type: array
+          items:
+            properties:
+              countryCode:
+                type: string
+                maxLength: 2
+                pattern: ^\d{2}$
+                example: "55"
+                description: "Número de DDI (Discagem Direta Internacional) para  telefone de acesso ao Canal - se houver."
+              areaCode:
+                type: string
+                maxLength: 2
+                pattern: ^\d{2}$
+                example: "19"
+                description: "Número de DDD (Discagem Direta à Distância) para  telefone de acesso ao Canal - se houver."
+              number:
+                type: string
+                maxLength: 13
+                pattern: ^([0-9]{4,5})-([0-9]{4})$
+                example: "0800-778-7788"
+                description: "Número de telefone de acesso ao canal. "
+              additionalInfo:
+                type: string
+                maxLength: 50
+                example: "Mensagem complementar necessária para o agrupamento da identificação do telefone."
+ #### PhoneChannelServices ####
+    PhoneChannelServices:
+      type: object
+      required:
+        - codes
+      properties:
+        codes:
+          type: array
+          items:
+            type: string
+            enum: ["ABERTURA_CONTAS",
+                    "RECEBIMENTOS_PAGAMENTOS_TRANSFERENCIAS_ELETRONICAS",
+                    "RECEBIMENTOS_PAGAMENTOS_QUALQUER_NATUREZA",
+                    "OPERACOES_CREDITO",
+                    "CARTAO_CREDITO",
+                    "OPERACOES_CAMBIO",
+                    "INVESTIMENTOS",
+                    "SEGUROS",
+                    "ATENDIMENTO_DEMANDAS_CLIENTE"]
+            maxLength: 2
+            pattern: ^\d{1,2}$
+            description: "Serviços disponíveis no Canal Telefônico de Atendimento consultado"
+        additionalInfo:
+          type: string
+          maxLength: 2000
+          description: "Campo de texto livre para descrever mais sobre os serviços"
+          example: ""
+  ##########
+  ## CNPJ ##
+  ##########
     CNPJ:
       type: object
       properties:
         cnpjNumber:
           type: string
+          pattern: '^(\d{14})$'
           description: CNPJ
           maxLength: 14
+          example: 50.685.362/0001-35
       required:
         - cnpjNumber
   ####################
