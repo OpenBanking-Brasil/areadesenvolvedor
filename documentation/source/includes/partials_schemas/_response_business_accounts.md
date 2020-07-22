@@ -5,7 +5,7 @@
 {
   
   "data": {
-    "organisation": {
+    "brand": {
       "name": "string",
       "companies": [
         {
@@ -89,15 +89,15 @@
 }
 ```
 
-|     Nome          |  Tipo                                                                | Obrigatório  |                            Definição                  |
-|:------------      |:---------------------------------                                    |:-----------  |:----------------------------------------------------  |
-| data              | object                                                               | Sim          |                                                       |
-| » organisation    | [[BusinessAccountOrganisation](#schemaBusinessAccountOrganisation)]  | Sim          | Lista das organizações responáveis pelas contas |
-| links             | [[LinksPaginated](#schemaLinksPaginated)]                            | Sim          |                                                       |
-| meta              | [[MetaPaginated](#schemaMetaPaginated)]                              | Sim          |                                                       |
+|     Nome          |  Tipo                                                  | Obrigatório  |                            Definição                  |
+|:------------      |:---------------------------------                      |:-----------  |:----------------------------------------------------  |
+| data              | object                                                 | Sim          |                                                       |
+| » brand           | [[BusinessAccountBrand](#schemaBusinessAccountBrand)]  | Sim          | Lista das organizações responáveis pelas contas |
+| links             | [[LinksPaginated](#schemaLinksPaginated)]              | Sim          |                                                       |
+| meta              | [[MetaPaginated](#schemaMetaPaginated)]                | Sim          |                                                       |
 
-## BusinessAccountOrganisation
-<a id="schemaBusinessAccountOrganisation"></a>
+## BusinessAccountBrand
+<a id="schemaBusinessAccountBrand"></a>
 
 ```json
 {
@@ -173,77 +173,77 @@
 
 |     Nome     |  Tipo                                                        | Obrigatório  |                            Definição                         |
 |:------------ |:---------------------------------                            |:-----------  |:----------------------------------------------------         |
-| name         | string                                                       | Sim          | Nome do conglomerado responsável pelas contas (banco).  |
-| companies    | [[BusinessAccountCompanies](#schemaBusinessAccountCompanies)]| Sim          | Lista de instituições pertencentes à organização             |
+| name         | string                                                       | Sim          | Nome da Marca selecionada responsável pelas contas (banco).  |
+| companies    | [[BusinessAccountCompanies](#schemaBusinessAccountCompanies)]| Sim          | Lista de instituições pertencentes à marca             |
 
 ## BusinessAccountCompanies 
 <a id="schemaBusinessAccountCompanies"></a>
 
 ```json
 {
-          "name": "string",
-          "cnpjNumber": "string",
-          "businessAccounts": [
-            {
+  "name": "string",
+  "cnpjNumber": "string",
+  "businessAccounts": [
+    {
+      "type": "string",
+      "fees": {
+        "priorityServices": [
+          {
+            "name": "string",
+            "code": "string",
+            "chargingTriggerInfo": "string",
+            "maxPrice": "string",
+            "currency": "string",
+            "chargingUnit": "string"
+          }
+        ],
+        "otherServices": [
+          {
+            "name": "string",
+            "code": "string",
+            "chargingTriggerInfo": "string",
+            "price": {
               "type": "string",
-              "fees": {
-                "priorityServices": [
-                  {
-                    "name": "string",
-                    "code": "string",
-                    "chargingTriggerInfo": "string",
-                    "maxPrice": "string",
-                    "currency": "string",
-                    "chargingUnit": "string"
-                  }
-                ],
-                "otherServices": [
-                  {
-                    "name": "string",
-                    "code": "string",
-                    "chargingTriggerInfo": "string",
-                    "price": {
-                      "type": "string",
-                      "value": "string",
-                      "currency": "string"
-                    },
-                    "currency": "string",
-                    "additionalInfo": "string",
-                    "chargingUnit": "string"
-                  }
-                ]
-              },
-              "serviceBundles": {
-                "name": "string",
-                "services": [
-                  {
-                    "code": "string",
-                    "eventLimitQuantity": "string",
-                    "freeEventQuantity": "string",
-                    "maxPrice": "string",
-                    "currency": "string"
-                  }
-                ]
-              },
-              "openCloseChannels": "string",
-              "transactionMethods": "string",
-              "termsConditions": {
-                "minimumBalance": "string",
-                "minimumBalanceCurrency": "string",
-                "elegibilityCriteriaInfo": "string",
-                "closingProcessInfo": "string"
-              },
-              "incomeRates": {
-                "rate": "string",
-                "referencialRate": "string",
-                "indexer": "string",
-                "prePostTax": "string",
-                "frequency": "string",
-                "additionalInfo": "string"
-              }
-            }
-          ]
-        }
+              "value": "string",
+              "currency": "string"
+            },
+            "currency": "string",
+            "additionalInfo": "string",
+            "chargingUnit": "string"
+          }
+        ]
+      },
+      "serviceBundles": {
+        "name": "string",
+        "services": [
+          {
+            "code": "string",
+            "eventLimitQuantity": "string",
+            "freeEventQuantity": "string",
+            "maxPrice": "string",
+            "currency": "string"
+          }
+        ]
+      },
+      "openCloseChannels": "string",
+      "transactionMethods": "string",
+      "termsConditions": {
+        "minimumBalance": "string",
+        "minimumBalanceCurrency": "string",
+        "elegibilityCriteriaInfo": "string",
+        "closingProcessInfo": "string"
+      },
+      "incomeRates": {
+        "rate": "string",
+        "referencialRate": "string",
+        "indexer": "string",
+        "prePostTax": "string",
+        "frequency": "string",
+        "additionalInfo": "string"
+      }
+    }
+  ]
+}
 ```
 
 |     Nome        |  Tipo                                                         | Obrigatório  |                            Definição                                 |

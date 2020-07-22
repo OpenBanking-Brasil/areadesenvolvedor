@@ -18,7 +18,11 @@ Os fluxos das APIs serão estendidos para atender a casos de uso mais complexos 
 APIs serão definidas como idempotentes para não causar uma experiência ruim ao consumidor ou aumentar os indicadores de risco falso positivos, evitando, dessa forma, utilização de verbos REST não idempotentes como, por exemplo, POST.
 
 ### Princípio 6: Assinatura digital
+<<<<<<< HEAD
 O uso de assinaturas digitais facilita o não-repúdio para as APIs do Open Banking – elas deverão ser aplicadas a requisições individuais e respostas,podem ser opcionalmente aplicadas para todas as respostas e requisições.
+=======
+O uso de assinaturas digitais facilita o não-repúdio para as APIs do Open Banking – elas deverão ser aplicadas a requisições individuais e respostas, podem ser opcionalmente aplicadas para todas as respostas e requisições.
+>>>>>>> 26183421b398d447957ec069186294f25ac21807
 
 ### Princípio 7: Criptografia de mensagens
 Criptografia de mensagem será uma funcionalidade opcional para as APIs do Open Banking de forma a facilitar a proteção adicional dos dados em trânsito.

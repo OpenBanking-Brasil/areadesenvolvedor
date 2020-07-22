@@ -4,7 +4,7 @@
 ```json
 {
   "data": {
-    "organisation": [
+    "brand": [
       {
         "name": "string",
         "companies": [
@@ -52,15 +52,15 @@
 }
 ```
 
-|     Nome          |  Tipo                                                                     | Obrigatório  |                            Definição                  |
-|:------------      |:---------------------------------                                         |:-----------  |:----------------------------------------------------  |
-| data              | object                                                                    | Sim          |                                                       |
-| » organisation    | [[EletronicChannelsOrganisation](#schemaEletronicChannelsOrganisation)]   | Sim          | Lista das organizaçõs titulares das dependências      |
-| links             | [[LinksPaginated](#schemaLinksPaginated)]                                 | Sim          |                                                       |
-| meta              | [[MetaPaginated](#schemaMetaPaginated)]                                   | Sim          |                                                       |
+|     Nome        |  Tipo                                                       | Obrigatório  |                            Definição                  |
+|:------------    |:---------------------------------                           |:-----------  |:----------------------------------------------------  |
+| data            | object                                                      | Sim          |                                                       |
+| » brand         | [[EletronicChannelsBrand](#schemaEletronicChannelsBrand)]   | Sim          | Lista das organizaçõs titulares das dependências      |
+| links           | [[LinksPaginated](#schemaLinksPaginated)]                   | Sim          |                                                       |
+| meta            | [[MetaPaginated](#schemaMetaPaginated)]                     | Sim          |                                                       |
 
-## EletronicChannelsOrganisation
-<a id="schemaEletronicChannelsOrganisation"></a>
+## EletronicChannelsBrand
+<a id="schemaEletronicChannelsBrand"></a>
 
 ```json
 {
@@ -98,8 +98,8 @@
 
 |     Nome     |  Tipo                                                              | Obrigatório  |                            Definição                         |
 |:------------ |:---------------------------------                                  |:-----------  |:----------------------------------------------------         |
-| name         | string                                                             | Sim          | Nome do conglomerado proprietário da dependência (titular).  |
-| companies    | [[EletronicChannelsCompanies](#schemaEletronicChannelsCompanies)]  | Sim          | Lista de instituições pertencentes à organização             |
+| name         | string                                                             | Sim          | Nome da marca proprietária da dependência (titular).  |
+| companies    | [[EletronicChannelsCompanies](#schemaEletronicChannelsCompanies)]  | Sim          | Lista de instituições pertencentes à marca             |
 
 ## EletronicChannelsCompanies 
 <a id="schemaEletronicChannelsCompanies"></a>
@@ -197,14 +197,14 @@
 ### Enum EletronicChannelsType
 <a id="schemaEletronicChannelsType"></a>
 
-|     Propriedade  | Código        |                            Definição                            |
-|:------------     |:------------- |:--------------------------------------------------------------  |
-| type             | 1             | Internet banking                                                |
-| type             | 2             | Mobile banking                                                  |
-| type             | 3             | Central telefônica banking                                      |
-| type             | 4             | SAC                                                             |
-| type             | 5             | Ouvidoria                                                       |
-| type             | 6             | Chat                                                            |
+|     Propriedade  | Código                      |                            Definição                            |
+|:------------     |:--------------------------- |:--------------------------------------------------------------  |
+| type             | INTERNET_BANKING            | Internet banking                                                |
+| type             | MOBILE_BANKING              | Mobile banking                                                  |
+| type             | CENTRAL_TELEFONICA_BANKING  | Central telefônica banking                                      |
+| type             | SAC                         | SAC                                                             |
+| type             | OUVIDORIA                   | Ouvidoria                                                       |
+| type             | CHAT                        | Chat                                                            |
 
 ## EletronicChannelsPhones 
 <a id="schemaEletronicChannelsPhones"></a>
@@ -228,13 +228,13 @@
 ### Enum EletronicChannelsServicesCodes
 <a id="schemaEnumEletronicChannelsServicesCodes"></a>
 
-| Enum     | Código  |                            Definição                            |
-|:-------- |:------- |:--------------------------------------------------------------  |
-| codes    | 1       | Abertura de contas                                              |
-| codes    | 2       | Recebimentos, pagamentos e transferências eletrônicas           |
-| codes    | 3       | Recebimentos e pagamentos de qualquer natureza                  |
-| codes    | 4       | Operações de crédito                                            |
-| codes    | 5       | Cartão de crédito                                               |
-| codes    | 6       | Operações de câmbio                                             |
-| codes    | 7       | Investimentos                                                   |
-| codes    | 8       | Seguros                                                         |
+| Propriedade  | Código                                               | Definição                                             |
+|:------------ |:---------------------------------------------------- |:----------------------------------------------------- |
+| codes        | ABERTURA_CONTAS                                      | Abertura de contas                                    |
+| codes        | RECEBIMENTOS_PAGAMENTOS_TRANSFERENCIAS_ELETRONICAS   | Recebimentos, pagamentos e transferências eletrônicas |
+| codes        | RECEBIMENTOS_PAGAMENTOS_QUALQUER_NATUREZA            | Recebimentos e pagamentos de qualquer natureza        |
+| codes        | OPERACOES_CREDITO                                    | Operações de crédito                                  |
+| codes        | CARTAO_CREDITO                                       | Cartão de crédito                                     |
+| codes        | OPERACOES_CAMBIO                                     | Operações de câmbio                                   |
+| codes        | INVESTIMENTOS                                        | Investimentos                                         |
+| codes        | SEGUROS                                              | Seguros                                               |

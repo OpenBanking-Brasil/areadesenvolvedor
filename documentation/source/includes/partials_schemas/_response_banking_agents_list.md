@@ -4,7 +4,7 @@
 ```json
 {
   "data": {
-    "organisation": [
+    "brand": [
       {
         "name": "string",
         "companies": [
@@ -64,12 +64,12 @@
 |     Nome          |  Tipo                                                                | Obrigatório  |                            Definição                  |
 |:------------      |:---------------------------------                                    |:-----------  |:----------------------------------------------------  |
 | data              | object                                                               | Sim          |                                                       |
-| » organisation    | [[BankingAgentsOrganisation](#schemaBankingAgentsOrganisation)]      | Sim          | Lista das organizaçõs titulares das dependências      |
+| » brand           | [[BankingAgentsBrand](#schemaBankingAgentsBrand)]      | Sim          | Lista das organizaçõs titulares das dependências      |
 | links             | [[LinksPaginated](#schemaLinksPaginated)]                            | Sim          |                                                       |
 | meta              | [[MetaPaginated](#schemaMetaPaginated)]                              | Sim          |                                                       |
 
-## BankingAgentsOrganisation
-<a id="schemaBankingAgentsOrganisation"></a>
+## BankingAgentsBrand
+<a id="schemaBankingAgentsBrand"></a>
 
 ```json
 {
@@ -116,8 +116,8 @@
 
 |     Nome     |  Tipo                                                      | Obrigatório  |                            Definição                         |
 |:------------ |:---------------------------------                          |:-----------  |:----------------------------------------------------         |
-| name         | string                                                     | Sim          | Nome do conglomerado proprietário da dependência (titular).  |
-| companies    | [[BankingAgentsCompanies](#schemaBankingAgentsCompanies)]  | Sim          | Lista de instituições pertencentes à organização             |
+| name         | string                                                     | Sim          | Nome da Marca selecionada pelas Organizações (titular).  |
+| companies    | [[BankingAgentsCompanies](#schemaBankingAgentsCompanies)]  | Sim          | Lista de instituições pertencentes à marca             |
 
 ## BankingAgentsCompanies 
 <a id="schemaBankingAgentsCompanies"></a>
@@ -307,13 +307,13 @@
 ### Enum BankingAgentsServicesCodes
 <a id="schemaEnumBankingAgentsServicesCodes"></a>
 
-| Propriedade  | Código | Definição                                             |
-|:------------ |:------ |:----------------------------------------------------- |
-| codes        | 1      | Abertura de contas                                    |
-| codes        | 2      | Recebimentos, pagamentos e transferências eletrônicas |
-| codes        | 3      | Recebimentos e pagamentos de qualquer natureza        |
-| codes        | 4      | Operações de crédito                                  |
-| codes        | 5      | Cartão de crédito                                     |
-| codes        | 6      | Operações de câmbio                                   |
-| codes        | 7      | Investimentos                                         |
-| codes        | 8      | Seguros                                               |
+| Propriedade  | Código                                               | Definição                                                                                   |
+|:------------ |:---------------------------------------------------- |:------------------------------------------------------------------------------------------- |
+| codes        | ABERTURA_CONTAS                                      | Recepção e encaminhamento de propostas de abertura de contas                                |
+| codes        | RECEBIMENTOS_PAGAMENTOS_TRANSFERENCIAS_ELETRONICAS   | Realização de recebimentos, pagamentos e transferências eletrônicas                         |
+| codes        | RECEBIMENTOS_PAGAMENTOS_QUALQUER_NATUREZA            | Recebimentos e pagamentos de qualquer natureza                                              |
+| codes        | ORDEM_PAGAMENTO                                      | Execução ativa e passiva de ordens de pagamento                                             |
+| codes        | OPERACOES_CREDITO                                    | Recepção e encaminhamento de propostas de operações de crédito e de arrendamento mercantil  |
+| codes        | RECEBIMENTOS_PAGAMENTOS_LETRAS_CAMBIO                | Recebimento e pagamentos relacionados a letras de câmbio de aceite da instituição           |
+| codes        | CARTAO_CREDITO                                       | Recepção e encaminhamento de propostas de fornecimento de cartões de crédito                |
+| codes        | OPERACOES_CAMBIO                                     | Realização de operações de câmbio                                                           |

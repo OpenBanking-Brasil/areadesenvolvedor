@@ -4,7 +4,7 @@
 ```json
 {
   "data": {
-    "organisation": [
+    "brand": [
       {
         "name": "string",
         "companies": [
@@ -78,13 +78,13 @@
 |     Nome          |  Tipo                                                     | Obrigatório  |                            Definição                  |
 |:------------      |:---------------------------------                         |:-----------  |:----------------------------------------------------  |
 | data              | object                                                    | Sim          |                                                       |
-| » organisation    | [[BranchesOrganisation](#schemaBranchesOrganisation)]     | Sim          | Lista das organizaçõs titulares das dependências      |
+| » brand           | [[BranchesBrand](#schemaBranchesBrand)]     | Sim          | Lista das organizaçõs titulares das dependências      |
 | links             | [[LinksPaginated](#schemaLinksPaginated)]                 | Sim          |                                                       |
 | meta              | [[MetaPaginated](#schemaMetaPaginated)]                   | Sim          |                                                       |
 
 
-## BranchesOrganisation
-<a id="schemaBranchesOrganisation"></a>
+## BranchesBrand
+<a id="schemaBranchesBrand"></a>
 
 ```json
 {
@@ -142,10 +142,10 @@
 }
 ```
 
-|     Nome     |  Tipo                                    | Obrigatório  |                            Definição                         |
-|:------------ |:---------------------------------        |:-----------  |:----------------------------------------------------         |
-| name         | string                                   | Sim          | Nome do conglomerado proprietário da dependência (titular).  |
-| companies    | [[BranchesCompanies](#schemaBranchesCompanies)]  | Sim          | Lista de instituições pertencentes à organização             |
+|     Nome     |  Tipo                                            | Obrigatório  |                            Definição                     |
+|:------------ |:---------------------------------                |:-----------  |:----------------------------------------------------     |
+| name         | string                                           | Sim          | Nome da Marca selecionada pelas Organizações (titular).  |
+| companies    | [[BranchesCompanies](#schemaBranchesCompanies)]  | Sim          | Lista de instituições pertencentes à marca         |
 
 ## BranchesCompanies 
 <a id="schemaBranchesCompanies"></a>
@@ -203,7 +203,7 @@
 
 |     Nome               |  Tipo                         | Obrigatório    |                            Descrição                                                                                        |
 |:------------           |:----------------------------- |:-------------  |:----------------------------------------------------                                                                        |
-| name                   | string                        | Sim            | Nome da Instituição, pertencente à organização, responsável pela Dependência                                                |
+| name                   | string                        | Sim            | Nome da Instituição, pertencente à marca, responsável pela Dependência                                                |
 | cnpjNumber             | string                        | Sim            | CNPJ da instituição responsável pela dependência - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica |
 | branches               | [[Branch](#schemaBranch)]     | Sim            | Lista de dependências próprias da instituição                                                                               |
 
@@ -284,11 +284,11 @@
 ### Enum BranchIdentificationType 
 <a id="schemaEnumBranchIdentificationType"></a>
 
-| Propriedade  | Código    | Definição                            |
-|:------------ |:--------- |:-----------------------------------  |
-| type         | 1         | Agências                             |
-| type         | 2         | Postos de atendimento                |
-| type         | 3         | Postos de atendimento eletrônico     |
+| Propriedade  | Código                         | Definição                            |
+|:------------ |:------------------------------ |:-----------------------------------  |
+| type         | AGENCIA                        | Agências                             |
+| type         | POSTO_ATENDIMENTO              | Postos de atendimento                |
+| type         | POSTO_ATENDIMENTO_ELETRONICO   | Postos de atendimento eletrônico     |
 
 ## BranchPostalAddress 
 <a id="schemaBranchPostalAddress"></a>
@@ -372,8 +372,8 @@
 
 | Propriedade  | Código    | Definição        |
 |:------------ |:--------- |:---------------- |
-| type         | 1         | Telefone fixo    |
-| type         | 2         | Telefone móvel   |
+| type         | FIXO      | Telefone fixo    |
+| type         | MOVEL     | Telefone móvel   |
 
 
 ## BranchServices 
@@ -396,13 +396,13 @@
 ### Enum BranchServicesCodes 
 <a id="schemaEnumBranchServicesCodes"></a>
 
-| Propriedade  | Código | Definição                                             |
-|:------------ |:------ |:----------------------------------------------------- |
-| codes        | 1      | Abertura de contas                                    |
-| codes        | 2      | Recebimentos, pagamentos e transferências eletrônicas |
-| codes        | 3      | Recebimentos e pagamentos de qualquer natureza        |
-| codes        | 4      | Operações de crédito                                  |
-| codes        | 5      | Cartão de crédito                                     |
-| codes        | 6      | Operações de câmbio                                   |
-| codes        | 7      | Investimentos                                         |
-| codes        | 8      | Seguros                                               |
+| Propriedade  | Código                                               | Definição                                             |
+|:------------ |:---------------------------------------------------- |:----------------------------------------------------- |
+| codes        | ABERTURA_CONTAS                                      | Abertura de contas                                    |
+| codes        | RECEBIMENTOS_PAGAMENTOS_TRANSFERENCIAS_ELETRONICAS   | Recebimentos, pagamentos e transferências eletrônicas |
+| codes        | RECEBIMENTOS_PAGAMENTOS_QUALQUER_NATUREZA            | Recebimentos e pagamentos de qualquer natureza        |
+| codes        | OPERACOES_CREDITO                                    | Operações de crédito                                  |
+| codes        | CARTAO_CREDITO                                       | Cartão de crédito                                     |
+| codes        | OPERACOES_CAMBIO                                     | Operações de câmbio                                   |
+| codes        | INVESTIMENTOS                                        | Investimentos                                         |
+| codes        | SEGUROS                                              | Seguros                                               |
