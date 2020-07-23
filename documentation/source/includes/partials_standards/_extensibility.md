@@ -101,4 +101,4 @@ Quando for adicionado um novo parâmetro de query a um endpoint existente, o nov
 
 ### Extensão do versionamento
 
-Como descrito na sessão [versionamento](#introducao-versionamento), o versionamento existe apenas no nível das APIs e não no nível dos endpoints, no entanto caso seja necessário realizar versionamento de um endpoint customizado, o participante poderá utilizar o header `x-<PID>-v` para que o consumidor possa especificar qual versão do endpoint está requisitando.
+Como descrito na seção [versionamento](#introducao-versionamento), o versionamento existe apenas no nível das APIs e não no nível dos endpoints, no entanto caso seja necessário realizar versionamento de um endpoint customizado, o participante poderá utilizar o header `x-<PID>-v` para que o consumidor possa especificar qual versão do endpoint está requisitando.
