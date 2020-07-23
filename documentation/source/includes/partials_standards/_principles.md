@@ -9,25 +9,16 @@ A API irá aderir aos conceitos de RESTful API sempre que for possível e sensat
 Os padrões existentes serão adotados onde for relevante/apropriado para minimizar “reinventar a roda”, favorecendo a experiência do desenvolvedor e do usuário.
 
 ### Princípio 3: ISO 20022
-Os payloads das API serão desenvolvidos usando elementos e componentes de mensagem ISO 20022, modificando caso necessário para deixar o payload mais simples e/ou atender a características locais.
+Os payloads das API serão desenvolvidos usando elementos e componentes de mensagem ISO 20022, que serão modificados caso necessário para deixar o payload mais simples e/ou atender à características locais.
 
 ### Princípio 4: Extensibilidade
-Os fluxos das APIs serão estendidos para atender a casos de uso mais complexos em futuros releases, e, portanto, esse princípio será mantido em mente durante o design e os procedimentos serão detalhados durante a implementação.
+Os fluxos das APIs serão estendidos para atender a casos de uso mais complexos em futuros releases, e, portanto, esse princípio será mantido em mente durante o design, e os procedimentos serão detalhados durante a implementação.
 
-### Princípio 5: Idempotência
-APIs serão definidas como idempotentes para melhorar a experiência do consumidor, retornando sempre o mesmo resultado de uma requisição realizada com sucesso independente do número de vezes que é executada, evitando, dessa forma, utilização de verbos REST não idempotentes como, por exemplo, POST.
+### Princípio 5: Códigos de Status
+A API usará dois códigos de status que atendem a dois propósitos diferentes: (i) o HTTP status code reflete o resultado da chamada da API e (ii) um campo status em alguns resource payloads reflete o status dos resources nos casos de acesso write (p.ex. iniciação de pagamento).
 
-### Princípio 6: Assinatura digital
-O uso de assinaturas digitais facilita o não-repúdio para as APIs do Open Banking – elas deverão ser aplicadas a requisições individuais e respostas, podem ser opcionalmente aplicadas para todas as respostas e requisições.
-
-### Princípio 7: Criptografia de mensagens
-Criptografia de mensagem será uma funcionalidade opcional para as APIs do Open Banking de forma a facilitar a proteção adicional dos dados em trânsito.
-
-### Princípio 8: Códigos de Status
-A API usará dois códigos de status que atendem a dois propósitos diferentes: (i) o HTTP status code reflete o resultado da chamada da API e (ii) um campo status em algumas resource payloads reflete o status dos resources nos casos de acesso write (i.e. iniciação de pagamento).
-
-### Princípio 9: Identificadores únicos
+### Princípio 6: Identificadores únicos
 Um recurso REST deverá ter um identificador exclusivo (p.ex.: uma chave primária) que possa ser usado para identificar o recurso. Esses identificadores exclusivos são usados para criar URLs para identificar e endereçar recursos específicos.
 
-### Princípio 10: Categorização dos requisitos de implementação
-Quando um requisito estiver sendo implementado por um doador e/ou um receptor, uma categorização diferente será aplicada. A funcionalidade, endpoints e campos em cada recurso serão categorizados como 'Obrigatório', 'Condicional' ou 'Opcional'.
+### Princípio 7: Categorização dos requisitos de implementação
+Quando um requisito estiver sendo implementado por um transmissor e/ou um receptor, uma categorização diferente será aplicada. As funcionalidades, endpoints e campos em cada recurso serão categorizados como 'Obrigatório', 'Condicional' ou 'Opcional'.
