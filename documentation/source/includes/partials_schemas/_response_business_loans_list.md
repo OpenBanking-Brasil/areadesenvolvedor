@@ -224,9 +224,9 @@
 | requiredWarranties  | [[string](#schemaEnumRequiredWarranties)]  | Sim          | Relação de garantias exigidas, segundo documento <a href='https://www.bcb.gov.br/estabilidadefinanceira/scrdoc3040' target="_blank">3040 do Bacem</a>       |
 | termsConditions     | string                                                     | Sim          | Condições contratuais relativas à Modalidade de Empréstimo       |
 
-### Enumerated BusinessLoan types
+### Enum BusinessLoan Types
 <a id="schemaEnumBusinessLoanTypes"></a>
-
+  
 | Propriedade  | Valor                        | Descrição
 |:------------ |:------                       |:------
 | types   | ADIANTAMENTO_DEPOSITANTE    | Adiantamento a depositante

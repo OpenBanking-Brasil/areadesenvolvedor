@@ -224,7 +224,7 @@
 | requiredWarranties  | [[string](#schemaEnumRequiredWarranties)]  | Sim          | Relação de garantias exigidas, segundo documento <a href='https://www.bcb.gov.br/estabilidadefinanceira/scrdoc3040' target="_blank">3040 do Bacem</a>       |
 | termsConditions     | string                                                     | Sim          | Condições contratuais relativas à Modalidade de Empréstimo       |
 
-### Enumerated PersonalLoans types values
+### Enum PersonalLoans Types
 <a id="schemaEnumPersonalLoanTypes"></a>
 
 | Propriedade  | Valor                        | Descrição
@@ -237,7 +237,7 @@
 | types   | EMPRESTIMO_HOME_EQUITY | Home equity
 | types   | EMPRESTIMO_MICROCREDITO_PRODUCTIVO_ORIENTADO  | Microcrédito produtivo orientado
 
-### Enumerated Loans requiredWarranties values
+### Enum PersonalLoans RequiredWarranties
 <a id="schemaEnumRequiredWarranties"></a>
 
 | Propriedade  | Valor                                        | Descrição                                    
@@ -307,7 +307,7 @@
 | additionalInfo           | string                                                     | Não          | Descrição de como é composto o valor da tarifa. p.ex. '0,25% sobre o excedente do limite acima de R$ 500,00'       |
 | changingUnit        | string                                                     | Sim          | Unidade ou forma de cobrança      | Este campo sempre deverá estar preenchido
 
-### Enumerated LoanFeesPrice type values
+### Enum LoanFeesPrice Type
 <a id="schemaEnumLoanFessPriceType"></a>
 
 | Propriedade  | Valor    | Descrição   
@@ -340,7 +340,7 @@
 | incomeRateInfo         | string                                       | Não         | Descrição da Remuneração relativa as taxas de juros remuneratóriassobre a modalidad de Empréstimo para pessoa física/jurídica                                    |
 
 
-### Enumerated LoanInterestRates prePostTax values
+### Enum LoanInterestRates PrePostTax
 <a id="schemaEnumTypePrePosTax"></a>
 
 | Propriedade  | Valor      | Descrição                                       
@@ -349,7 +349,7 @@
 | prePostTax   | POS    | Pós fixado
 
 
-### Enumerated LoanInterestRates frecuency values
+### Enum LoanInterestRates Frecuency
 <a id="schemaEnumFrecuency"></a>
 
 | Propriedade  | Valor     | Descrição                                   
