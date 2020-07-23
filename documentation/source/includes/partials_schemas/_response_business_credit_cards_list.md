@@ -15,11 +15,12 @@
               "name": "string",
               "identification": {
                 "productType": "string",
-                "brandCode": "string"
+                "creditCardNetwork": "string",
+                "additionalInfo": "string"
               },
               "rewardsProgram": {
-                "hasProgramReward": boolean,
-                "programRewardInfo": "string"
+                "hasRewardProgram": boolean,
+                "rewardProgramInfo": "string"
               },
               "fees": {
                 "services": [
@@ -40,7 +41,8 @@
               "interestRates": {
                 "feeRate": "string",
                 "instalmentRate": "string",
-                "code": "string"
+                "code": "string",
+                "additionalInfo": "string"
               },
               "termsConditions": {
                 "minimumFeeRate": "string",
@@ -90,11 +92,12 @@
           "name": "string",
           "identification": {
             "productType": "string",
-            "brandCode": "string"
+            "creditCardNetwork": "string",
+            "additionalInfo": "string"
           },
           "rewardsProgram": {
-            "hasProgramReward": boolean,
-            "programRewardInfo": "string"
+            "hasRewardProgram": boolean,
+            "rewardProgramInfo": "string"
           },
           "fees": {
             "services": [
@@ -115,7 +118,8 @@
           "interestRates": {
             "feeRate": "string",
             "instalmentRate": "string",
-            "code": "string"
+            "code": "string",
+            "additionalInfo": "string"
           },
           "termsConditions": {
             "minimumFeeRate": "string",
@@ -147,11 +151,12 @@
       "name": "string",
       "identification": {
         "productType": "string",
-        "brandCode": "string"
+        "creditCardNetwork": "string",
+        "additionalInfo": "string"
       },
       "rewardsProgram": {
-        "hasProgramReward": boolean,
-        "programRewardInfo": "string"
+        "hasRewardProgram": boolean,
+        "rewardProgramInfo": "string"
       },
       "fees": {
         "services": [
@@ -172,7 +177,8 @@
       "interestRates": {
         "feeRate": "string",
         "instalmentRate": "string",
-        "code": "string"
+        "code": "string",
+        "additionalInfo": "string"
       },
       "termsConditions": {
         "minimumFeeRate": "string",
@@ -199,11 +205,12 @@
   "name": "string",
   "identification": {
     "productType": "string",
-    "brandCode": "string"
+    "creditCardNetwork": "string",
+    "additionalInfo": "string"
   },
   "rewardsProgram": {
-    "hasProgramReward": boolean,
-    "programRewardInfo": "string"
+    "hasRewardProgram": boolean,
+    "rewardProgramInfo": "string"
   },
   "fees": {
     "services": [
@@ -224,7 +231,8 @@
   "interestRates": {
     "feeRate": "string",
     "instalmentRate": "string",
-    "code": "string"
+    "code": "string",
+    "additionalInfo": "string"
   },
   "termsConditions": {
     "minimumFeeRate": "string",
@@ -238,71 +246,26 @@
 |     Nome              |  Tipo                                                                             | Obrigatório |                            Definição                                      |
 |:----------------------|:----------------------------------------------------------------------------------|:------------|:--------------------------------------------------------------------------|
 | name                  | string                                                                            | Sim         | Denominação/Identificação do nome da conta (cartão de crédito)            |
-| identification        | [BusinessCreditCardsIdentification](#schemaBusinessCreditCardsIdentification)     | Sim         | Informações de identificação do cartão de crédito                         |
+| identification        | [CreditCardsIdentification](#schemaCreditCardsIdentification)                     | Sim         | Informações de identificação do cartão de crédito                         |
 | rewardsProgram        | [BusinessCreditCardsRewardsProgram](#schemaBusinessCreditCardsRewardsProgram)     | Sim         | Informações sobre programas de recompensa presentes no cartão de crédito  |
 | fees                  | [BusinessCreditCardsFees](#schemaBusinessCreditCardsFees)                         | Sim         | Informações sobre tarifas cobradas sobre o produto e serviços             |
 | interestRates         | [BusinessCreditCardsInterestRates](#schemaBusinessCreditCardsInterestRates)       | Sim         | Informações sobre taxas de juros                                          |
 | termsConditions       | [BusinessCreditCardsTermsConditions](#schemaBusinessCreditCardsTermsConditions)   | Sim         | Informações sobre termos e condições para aquisição e cancelamento        |
-
-## BusinessCreditCardsIdentification
-<a id="schemaBusinessCreditCardsIdentification"></a>
-
-```json
-{
-
-  "productType": "string",
-  "brandCode": "string"
-}
-```
-
-|     Nome         |  Tipo                                                                          | Obrigatório    |    Definição                                                                                                                                                                                                                                                                                                                               |
-|:-----------------|:-------------------------------------------------------------------------------|:-------------- |:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| productType      | [Enum BusinessCreditCardProductType](#schemaEnumBusinessCreditCardProductType) | Sim            | Categoria atribuída a um cartão de pagamento, sob uma certa denominação, que lhe agrega um conjunto de vantagens, diferenciando-o de acordo com o perfil do portador. Essa categoria é definida pelo BACEN e está contida no documento de nome 'Elaboração e Remessa de Informações Relativas aos Cartões de Pagamento  Emissores'         |
-| brandCode        | [Enum BusinessCreditCardBrandCode](#schemaEnumBusinessCreditCardBrandCode)     | Sim            | Categoria de Bandeiras de Cartões. Bandeira é a detentora de todos os direitos e deveres da utilização da marca estampada no cartão, inclusive as bandeiras pertencentes aos emissores. Essas bandeiras estão definidas em documento do BACEN de nome 'Elaboração e Remessa de Informações Relativas aos Cartões de Pagamento  Emissores'  |
-
-### Enum BusinessCreditCardProductType
-<a id="schemaEnumBusinessCreditCardProductType"></a>
-
-| Propriedade         | Código                  | Definição              |
-|:------------------- |:------------------------|:---------------------- |
-| productType         | CLASSIC_NACIONAL        | Classic Nacional       |
-| productType         | CLASSIC_INTERNACIONAL   | Classic Internacional  |
-| productType         | GOLD                    | Gold                   |
-| productType         | PLATINUM                | Platinum               |
-| productType         | INFINITE                | Infinite               |
-| productType         | ELECTRON                | Electron               |
-| productType         | STANDARD_NACIONAL       | Standard Nacional      |
-| productType         | STANDARD_INTERNACIONAL  | Standard Internacional |
-
-### Enum BusinessCreditCardBrandCode
-<a id="schemaEnumBusinessCreditCardBrandCode"></a>
-
-| Propriedade       | Código            | Definição           |
-|:------------------|:------------------|:------------------- |
-| brandCode         | VISA              | Visa                |
-| brandCode         | MASTERCARD        | MasterCard          |
-| brandCode         | AMERICAN_EXPRESS  | American Express    |
-| brandCode         | DINERS_CLUB       | Diners Club         |
-| brandCode         | HIPERCARD         | Hipercard           |
-| brandCode         | BANDEIRA_PROPRIA  | Bandeira própria    |
-| brandCode         | CHEQUE_ELETRONICO | Cheque Eletrônico   |
-| brandCode         | ELO               | Elo                 |
-| brandCode         | OUTRAS            | Outras              |
 
 ## BusinessCreditCardsRewardsProgram
 <a id="schemaBusinessCreditCardsRewardsProgram"></a>
 
 ```json
 {
-  "hasProgramReward": boolean,
-  "programRewardInfo": "string"
+  "hasRewardProgram": boolean,
+  "rewardProgramInfo": "string"
 }
 ```
 
 |     Nome            |  Tipo           | Obrigatório     |    Definição                                                                                                                                                  |
 |:--------------------|:--------------- |:--------------  |:------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| hasProgramReward    | boolean         | Sim             | Indicador da existência de programa de fidelidade/recompensa associado à conta                                                                                |
-| programRewardInfo   | string          | Não             | Informações de termos e condições do programa de fidelidade/recompensa. Pode ser informada a URL referente ao endereço onde constam as condições informadas   |
+| hasRewardProgram    | boolean         | Sim             | Indicador da existência de programa de fidelidade/recompensa associado à conta                                                                                |
+| rewardProgramInfo   | string          | Não             | Informações de termos e condições do programa de fidelidade/recompensa. Pode ser informada a URL referente ao endereço onde constam as condições informadas   |
 
 ## BusinessCreditCardsFees
 <a id="schemaBusinessCreditCardsFees"></a>
@@ -381,7 +344,8 @@
 {
   "feeRate": "string",
   "instalmentRate": "string",
-  "code": "string"
+  "code": "string",
+  "additionalInfo": "string"
 }
 ```
 
@@ -389,7 +353,8 @@
 |:----------------|:--------------------------------------------------------------------------------------------|:----------------|:---------------------------------------------------------------------------------------------------------------------------------------|
 | feeRate         | string                                                                                      | Sim             | Percentual que corresponde a taxa aplicada para utilização de Crédito Rotativo                                                         |
 | instalmentRate  | string                                                                                      | Sim             | Percentual que corresponde a taxa aplicada para pagamento parcelado do saldo devedor quando não realizado pagamento integral da fatura |
-| code            | [BusinessCreditCardsInterestRatesCode](#schemaEnumBusinessCreditCardsInterestRatesCode)     | Sim             | Lista de outras operações de crédito                                                                                                   |
+| code            | [Enum BusinessCreditCardsInterestRatesCode](#schemaEnumBusinessCreditCardsInterestRatesCode)     | Sim             | Lista de outras operações de crédito                                                                                                   |
+| additionalInfo  | string                                                                                      | Sim             | Campo Texto para descrever outras operações de crédito marcadas como 'Outros'                                                          |
 
 ### Enum BusinessCreditCardsInterestRatesCode
 <a id="schemaEnumBusinessCreditCardsInterestRatesCode"></a>
