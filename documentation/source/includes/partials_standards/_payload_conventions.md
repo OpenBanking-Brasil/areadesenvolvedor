@@ -82,7 +82,7 @@ O objeto de links sempre irá conter o atributo `self` que irá apontar para a U
 
 Todos os nomes de objetos e atributos definidos nos objetos JSON de requisição e resposta devem ser nomeados seguindo o padrão camelCase, tendo seu nome composto apenas por letras (a-z, A-Z) e números (0-9).
 
-Qualquer outro caractere não deve ser usado nos nomes dos objetos e atributos, com execeção do caractere `-` (hífen), que poderá ser utilizando apenas conforme descrito na sessão [Extensibilidade](#introducao-extensibilidade).
+Qualquer outro caractere não deve ser usado nos nomes dos objetos e atributos, com execeção do caractere `-` (hífen), que poderá ser utilizando apenas conforme descrito na seção [Extensibilidade](#introducao-extensibilidade).
 
 <b>Estilo de nomeação de atributos</b>
 

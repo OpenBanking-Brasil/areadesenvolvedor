@@ -15,18 +15,17 @@
               "name": "string",
               "identification": {
                 "productType": "string",
-                "brandCode": "string"
+                "creditCardNetwork": "string",
+                "additionalInfo": "string"
               },
               "rewardsProgram": {
-                "hasProgramReward": boolean,
-                "programRewardInfo": "string"
+                "hasRewardProgram": boolean,
+                "rewardProgramInfo": "string"
               },
               "fees": {
                 "priorityServices": [
                   {
-                    "name": "string",
                     "code": "string",
-                    "chargingTriggerInfo": "string",
                     "maxPrice": "string",
                     "currency": "string",
                     "chargingUnit": "string"
@@ -50,7 +49,8 @@
               "interestRates": {
                 "feeRate": "string",
                 "instalmentRate": "string",
-                "code": "string"
+                "code": "string",
+                "additionalInfo": "string"
               },
               "termsConditions": {
                 "minimumFeeRate": "string",
@@ -100,18 +100,17 @@
           "name": "string",
           "identification": {
             "productType": "string",
-            "brandCode": "string"
+            "creditCardNetwork": "string",
+            "additionalInfo": "string"
           },
           "rewardsProgram": {
-            "hasProgramReward": boolean,
-            "programRewardInfo": "string"
+            "hasRewardProgram": boolean,
+            "rewardProgramInfo": "string"
           },
           "fees": {
             "priorityServices": [
               {
-                "name": "string",
                 "code": "string",
-                "chargingTriggerInfo": "string",
                 "maxPrice": "string",
                 "currency": "string",
                 "chargingUnit": "string"
@@ -135,7 +134,8 @@
           "interestRates": {
             "feeRate": "string",
             "instalmentRate": "string",
-            "code": "string"
+            "code": "string",
+            "additionalInfo": "string"
           },
           "termsConditions": {
             "minimumFeeRate": "string",
@@ -167,18 +167,17 @@
       "name": "string",
       "identification": {
         "productType": "string",
-        "brandCode": "string"
+        "creditCardNetwork": "string",
+        "additionalInfo": "string"
       },
       "rewardsProgram": {
-        "hasProgramReward": boolean,
-        "programRewardInfo": "string"
+        "hasRewardProgram": boolean,
+        "rewardProgramInfo": "string"
       },
       "fees": {
         "priorityServices": [
           {
-            "name": "string",
             "code": "string",
-            "chargingTriggerInfo": "string",
             "maxPrice": "string",
             "currency": "string",
             "chargingUnit": "string"
@@ -202,7 +201,8 @@
       "interestRates": {
         "feeRate": "string",
         "instalmentRate": "string",
-        "code": "string"
+        "code": "string",
+        "additionalInfo": "string"
       },
       "termsConditions": {
         "minimumFeeRate": "string",
@@ -229,18 +229,17 @@
   "name": "string",
   "identification": {
     "productType": "string",
-    "brandCode": "string"
+    "creditCardNetwork": "string",
+    "additionalInfo": "string"
   },
   "rewardsProgram": {
-    "hasProgramReward": boolean,
-    "programRewardInfo": "string"
+    "hasRewardProgram": boolean,
+    "rewardProgramInfo": "string"
   },
   "fees": {
     "priorityServices": [
       {
-        "name": "string",
         "code": "string",
-        "chargingTriggerInfo": "string",
         "maxPrice": "string",
         "currency": "string",
         "chargingUnit": "string"
@@ -264,7 +263,8 @@
   "interestRates": {
     "feeRate": "string",
     "instalmentRate": "string",
-    "code": "string"
+    "code": "string",
+    "additionalInfo": "string"
   },
   "termsConditions": {
     "minimumFeeRate": "string",
@@ -278,27 +278,29 @@
 |     Nome              |  Tipo                                                                             | Obrigatório |                            Definição                                      |
 |:----------------------|:----------------------------------------------------------------------------------|:------------|:--------------------------------------------------------------------------|
 | name                  | string                                                                            | Sim         | Denominação/Identificação do nome da conta (cartão de crédito)            |
-| identification        | [PersonalCreditCardsIdentification](#schemaPersonalCreditCardsIdentification)     | Sim         | Informações de identificação do cartão de crédito                         |
+| identification        | [CreditCardsIdentification](#schemaCreditCardsIdentification)                     | Sim         | Informações de identificação do cartão de crédito                         |
 | rewardsProgram        | [PersonalCreditCardsRewardsProgram](#schemaPersonalCreditCardsRewardsProgram)     | Sim         | Informações sobre programas de recompensa presentes no cartão de crédito  |
 | fees                  | [PersonalCreditCardsFees](#schemaPersonalCreditCardsFees)                         | Sim         | Informações sobre tarifas cobradas sobre o produto e serviços             |
 | interestRates         | [PersonalCreditCardsInterestRates](#schemaPersonalCreditCardsInterestRates)       | Sim         | Informações sobre taxas de juros                                          |
 | termsConditions       | [PersonalCreditCardsTermsConditions](#schemaPersonalCreditCardsTermsConditions)   | Sim         | Informações sobre termos e condições para aquisição e cancelamento        |
 
-## PersonalCreditCardsIdentification
-<a id="schemaPersonalCreditCardsIdentification"></a>
+## CreditCardsIdentification
+<a id="schemaCreditCardsIdentification"></a>
 
 ```json
 {
 
   "productType": "string",
-  "brandCode": "string"
+  "creditCardNetwork": "string",
+  "additionalInfo": "string"
 }
 ```
 
-|     Nome         |  Tipo                                                                          | Obrigatório    |    Definição                                                                                                                                                                                                                                                                                                                               |
-|:-----------------|:-------------------------------------------------------------------------------|:-------------- |:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| productType      | [Enum PersonalCreditCardProductType](#schemaEnumPersonalCreditCardProductType) | Sim            | Categoria atribuída a um cartão de pagamento, sob uma certa denominação, que lhe agrega um conjunto de vantagens, diferenciando-o de acordo com o perfil do portador. Essa categoria é definida pelo BACEN e está contida no documento de nome 'Elaboração e Remessa de Informações Relativas aos Cartões de Pagamento  Emissores'         |
-| brandCode        | [Enum PersonalCreditCardBrandCode](#schemaEnumPersonalCreditCardBrandCode)     | Sim            | Categoria de Bandeiras de Cartões. Bandeira é a detentora de todos os direitos e deveres da utilização da marca estampada no cartão, inclusive as bandeiras pertencentes aos emissores. Essas bandeiras estão definidas em documento do BACEN de nome 'Elaboração e Remessa de Informações Relativas aos Cartões de Pagamento  Emissores'  |
+|     Nome          |  Tipo                                                                          | Obrigatório    |    Definição                                                                                                                                                                                                                                                                                                                               |
+|:----------------- |:-------------------------------------------------------------------------------|:-------------- |:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| productType       | [Enum PersonalCreditCardProductType](#schemaEnumPersonalCreditCardProductType) | Sim            | Categoria atribuída a um cartão de pagamento, sob uma certa denominação, que lhe agrega um conjunto de vantagens, diferenciando-o de acordo com o perfil do portador. Essa categoria é definida pelo BACEN e está contida no documento de nome 'Elaboração e Remessa de Informações Relativas aos Cartões de Pagamento  Emissores'         |
+| creditCardNetwork | [Enum PersonalCreditCardBrandCode](#schemaEnumPersonalCreditCardBrandCode)     | Sim            | Categoria de Bandeiras de Cartões. Bandeira é a detentora de todos os direitos e deveres da utilização da marca estampada no cartão, inclusive as bandeiras pertencentes aos emissores. Essas bandeiras estão definidas em documento do BACEN de nome 'Elaboração e Remessa de Informações Relativas aos Cartões de Pagamento  Emissores'  |
+| additionalInfo    | string                                                                         | Não            | Texto livre para especificar categoria de bandeira marcada como 'Outras'                                                                                                                                                                                                                                                                   |
 
 ### Enum PersonalCreditCardProductType
 <a id="schemaEnumPersonalCreditCardProductType"></a>
@@ -334,15 +336,15 @@
 
 ```json
 {
-  "hasProgramReward": boolean,
-  "programRewardInfo": "string"
+  "hasRewardProgram": boolean,
+  "rewardProgramInfo": "string"
 }
 ```
 
 |     Nome            |  Tipo           | Obrigatório     |    Definição                                                                                                                                                  |
 |:--------------------|:--------------- |:--------------  |:------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| hasProgramReward    | boolean         | Sim             | Indicador da existência de programa de fidelidade/recompensa associado à conta                                                                                |
-| programRewardInfo   | string          | Não             | Informações de termos e condições do programa de fidelidade/recompensa. Pode ser informada a URL referente ao endereço onde constam as condições informadas   |
+| hasRewardProgram    | boolean         | Sim             | Indicador da existência de programa de fidelidade/recompensa associado à conta                                                                                |
+| rewardProgramInfo   | string          | Não             | Informações de termos e condições do programa de fidelidade/recompensa. Pode ser informada a URL referente ao endereço onde constam as condições informadas   |
 
 ## PersonalCreditCardsFees
 <a id="schemaPersonalCreditCardsFees"></a>
@@ -351,9 +353,7 @@
 {
   "priorityServices": [
     {
-      "name": "string",
       "code": "string",
-      "chargingTriggerInfo": "string",
       "maxPrice": "string",
       "currency": "string",
       "chargingUnit": "string"
@@ -386,9 +386,7 @@
 
 ```json
 {
-  "name": "string",
   "code": "string",
-  "chargingTriggerInfo": "string",
   "maxPrice": "string",
   "currency": "string",
   "chargingUnit": "string"
@@ -397,25 +395,10 @@
 
 |     Nome            |  Tipo                                                                                                                             | Obrigatório     |    Definição                                                                                      |
 |:--------------------|:----------------------------------------------------------------------------------------------------------------------------------|:----------------|:--------------------------------------------------------------------------------------------------|
-| name                | [Enum PersonalCreditCardsPriorityServicesName](#schemaEnumPersonalCreditCardsPriorityServicesName)                                | Sim             | Nomes das Tarifas cobradas sobre serviços relacionados à modalidade informada de contas de pagamento pós-pagas para pessoa física conforme resolução 3.919 do BACEN   |
 | code                | [Enum PersonalCreditCardsPriorityServicesCode](#schemaEnumPersonalCreditCardsPriorityServicesCode)                                | Sim             | Sigla de identificação do serviço relacionado à modalidade de contas de pagamento pós-pagas para pessoa física informada conforme resolução 3.919 do BACEN            |
-| chargingTriggerInfo | [Enum PersonalCreditCardsPriorityServicesChargingTriggerInfo](#schemaEnumPersonalCreditCardsPriorityServicesChargingTriggerInfo)  | Sim             | Fatores geradores de cobrança que incidem sobre as modalidades inforrmadas de contas de pagamento pós-pagas para pessoa física conforme resolução 3.919 do BACEN      |
 | maxPrice            | string                                                                                                                            | Sim             | Valor máximo para a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa física                        |
 | currency            | string                                                                                                                            | Sim             | Moeda referente ao valor da tarifa conforme ISO-4217                                                                                                                  |
 | chargingUnit        | string                                                                                                                            | Sim             | Unidade ou forma de cobrança                                                                                                                                          |
-
-### Enum PersonalCreditCardsPriorityServicesName
-<a id="schemaEnumPersonalCreditCardsPriorityServicesName"></a>
-
-| Propriedade  | Código                                             | Definição                                                                   |
-|:-------------|:---------------------------------------------------|:--------------------------------------------------------------------------- |
-| name         | ANUIDADE_CARTAO_BASICO_NACIONAL                    | Anuidade - Cartão básico nacional                                           |
-| name         | ANUIDADE_CARTAO_BASICO_INTERNACIONAL               | Anuidade - Cartão básico internacional                                      |
-| name         | FORNECIMENTO_SEG_VIA_CARTAO_CREDITO                | Fornecimento de 2ª via de cartão com função crédito                         |
-| name         | UTILIZACAO_CANAIS_ATEND_RETIRADA_ESPECIE_PAIS      | Utilização de canais de atendimento para retirada em espécie no país        |
-| name         | UTILIZACAO_CANAIS_ATEND_REDIRADA_ESPECIA_EXTERIOR  | Utilização de canais de atendimento para retirada em espécie no exterior    |
-| name         | PAGAMENTO_CONTAS_UTILIZANDO_FUNCAO_CREDITO         | Pagamento de contas utilizando a função crédito                             |
-| name         | AVALIACAO_EMERGENCIAL_CREDITO                      | Avaliação emergencial de crédito                                            |
 
 ### Enum PersonalCreditCardsPriorityServicesCode
 <a id="schemaEnumPersonalCreditCardsPriorityServicesCode"></a>
@@ -429,19 +412,6 @@
 | code         | RETIRADA_EXTERIOR              | Utilização de canais de atendimento para retirada em espécie no exterior    |
 | code         | PAGAMENTO_CONTAS               | Pagamento de contas utilizando a função crédito                             |
 | code         | AVALIACAO_EMERGENCIAL_CREDITO  | Avaliação emergencial de crédito                                            |
-
-### Enum PersonalCreditCardsPriorityServicesChargingTriggerInfo
-<a id="schemaEnumPersonalCreditCardsPriorityServicesChargingTriggerInfo"></a>
-
-| Propriedade                 | Código                                             | Definição                                                                   |
-|:----------------------------|:---------------------------------------------------|:--------------------------------------------------------------------------- |
-| chargingTriggerInfo         | ANUIDADE_CARTAO_BASICO_NACIONAL                    | Disponibilização de rede de estabelecimentos afiliados, instalada no País, para pagamentos de bens e serviços, cobrada no máximo uma vez a cada doze meses, admitido o parcelamento da cobrança |
-| chargingTriggerInfo         | ANUIDADE_CARTAO_BASICO_INTERNACIONAL               | Disponibilização de rede de estabelecimentos afiliados, instalada no País e no exterior, para pagamentos de bens e serviços, cobrada no máximo uma vez a cada doze meses, admitido o parcelamento da cobrança |
-| chargingTriggerInfo         | FORNECIMENTO_SEG_VIA_CARTAO_CREDITO                | Confecção e emissão de novo cartão com função crédito, restrito a casos de pedidos de reposição formulados pelo detentor do cartão, decorrente de perda, roubo, furto, danificação e outros motivos não imputáveis à instituição emitente |
-| chargingTriggerInfo         | UTILIZACAO_CANAIS_ATEND_RETIRADA_ESPECIE_PAIS      | Disponibilização e utilização pelo cliente de canais de atendimento disponíveis no País para retirada em espécie na função crédito |
-| chargingTriggerInfo         | UTILIZACAO_CANAIS_ATEND_REDIRADA_ESPECIA_EXTERIOR  | Disponibilização e utilização pelo cliente de canais de atendimento disponíveis no exterior para retirada em espécie na função crédito ou débito |
-| chargingTriggerInfo         | PAGAMENTO_CONTAS_UTILIZANDO_FUNCAO_CREDITO         | Realização de procedimentos operacionais para o pagamento de contas (água, luz, telefone, gás, tributos, boletos de cobrança, etc.), utilizando a função crédito do cartão |
-| chargingTriggerInfo         | AVALIACAO_EMERGENCIAL_CREDITO                      | Avaliação de viabilidade e de riscos para a concessão de crédito em caráter emergencial, a pedido do cliente, por meio de atendimento pessoal, para realização de despesa acima do limite do cartão, cobrada no máximo uma vez nos últimos trinta dias |
 
 ## PersonalCreditCardsOtherServices
 <a id="schemaPersonalCreditCardsOtherServices"></a>
@@ -494,7 +464,8 @@
 {
   "feeRate": "string",
   "instalmentRate": "string",
-  "code": "string"
+  "code": "string",
+  "additionalInfo": "string"
 }
 ```
 
@@ -502,7 +473,8 @@
 |:----------------|:--------------------------------------------------------------------------------------------|:----------------|:---------------------------------------------------------------------------------------------------------------------------------------|
 | feeRate         | string                                                                                      | Sim             | Percentual que corresponde a taxa aplicada para utilização de Crédito Rotativo                                                         |
 | instalmentRate  | string                                                                                      | Sim             | Percentual que corresponde a taxa aplicada para pagamento parcelado do saldo devedor quando não realizado pagamento integral da fatura |
-| code            | [PersonalCreditCardsInterestRatesCode](#schemaEnumPersonalCreditCardsInterestRatesCode)     | Sim             | Lista de outras operações de crédito                                                                                                   |
+| code            | [Enum PersonalCreditCardsInterestRatesCode](#schemaEnumPersonalCreditCardsInterestRatesCode)     | Sim             | Lista de outras operações de crédito                                                                                                   |
+| additionalInfo  | string                                                                                      | Sim             | Campo Texto para descrever outras operações de crédito marcadas como 'Outros'                                                          |
 
 ### Enum PersonalCreditCardsInterestRatesCode
 <a id="schemaEnumPersonalCreditCardsInterestRatesCode"></a>
