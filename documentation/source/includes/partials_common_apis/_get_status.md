@@ -1,4 +1,43 @@
-## API de Staus
+## API de Status
+
+`GET /discovery/status`
+
+> Exemplo de código
+
+```http
+GET https://api.banco.com.br/open-banking/discovery/v1/status HTTP/1.1
+Host: api.banco.com.br
+Accept: application/json
+
+```
+
+```javascript
+var req = new XMLHttpRequest();
+req.setRequestHeader("Accept", "application/json");
+req.open("GET", "https://api.banco.com.br/open-banking/discovery/v1/status", true);
+req.send();
+```
+
+> O comando acima retorna uma estrutura json como essa:
+
+```json
+{
+  "data": {
+    "status": "OK",
+    "explanation": "Retorno com Sucesso",
+    "detectionTime": "2020-01-01T01:00:00+00:00",
+    "expectedResolutionTime": "2020-01-01T01:00:00+00:00",
+    "updateTime": "2020-01-02T01:00:00+00:00"
+  },
+  "links": {
+    "self": "https://api.banco.com.br/open-banking/discovery/v1/status"
+  },
+  "meta": {
+    "totalRecords": 1,
+    "totalPages": 1
+  }
+}
+```
 
 Obtém a descrição referente ao código de status retornado pelas APIs 
 
@@ -8,12 +47,13 @@ Versão |
 
 ### Parâmetros
 
-
-
 | Nome   | Local | Tipo  | Obrigatório | Descrição                               |
 |--------|-------|-------|-------------|-----------------------------------------|
-|x-v     |header |string | SIM         | Versão do ponto de extremidade da API solicitada pelo cliente. Deve ser definido como um número inteiro positivo. O detentor dos dados deve responder com a versão mais alta suportada entre x-min-ve x-v. Se o valor de x-min-v for igual ou superior ao valor de x-v, o cabeçalho x-min-v deve ser tratado como ausente. Se todas as versões solicitadas não forem suportadas, o titular dos dados deverá responder com um 406 Não Aceitável. Consulte Cabeçalhos HTTP  |
-|x-min-v |header |string | Opcional    | Versão mínima do ponto de extremidade da API solicitada pelo cliente. Deve ser definido como um número inteiro positivo, se fornecido. O detentor dos dados deve responder com a versão mais alta suportada entre x-min-ve x-v. Se todas as versões solicitadas não forem suportadas, o titular dos dados deverá responder com um 406 Não Aceitável. |
 
+### Resposta
+
+|Status |Significado|Descrição  |Schema                                                                 |
+|-------|-----------|-----------|-----------------------------------------------------------------------|
+|200    |OK         |Sucesso    |[ResponseDiscoveryStatusList](#schemaResponseDiscoveryStatusList)    |
 
 
