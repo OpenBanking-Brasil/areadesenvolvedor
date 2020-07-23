@@ -226,8 +226,8 @@
 
 ### Enum BusinessLoan Types
 <a id="schemaEnumBusinessLoanTypes"></a>
-  
-| Propriedade  | Valor                        | Descrição
+
+| Propriedade  | Valor                        | Definição
 |:------------ |:------                       |:------
 | types   | ADIANTAMENTO_DEPOSITANTE    | Adiantamento a depositante
 | types   | EMPRESTIMO_CHEQUE ESPECIAL  | Cheque especial

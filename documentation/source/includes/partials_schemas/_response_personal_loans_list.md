@@ -227,7 +227,7 @@
 ### Enum PersonalLoans Types
 <a id="schemaEnumPersonalLoanTypes"></a>
 
-| Propriedade  | Valor                        | Descrição
+| Propriedade  | Valor                        | Definição
 |:------------ |:------                       |:------
 | types   | ADIANTAMENTO_DEPOSITANTE    | Adiantamento a depositante
 | types   | EMPRESTIMO_CREDITO_PESSOAL_CONSIGNADO  | Crédito pessoal consignado
@@ -240,7 +240,7 @@
 ### Enum PersonalLoans RequiredWarranties
 <a id="schemaEnumRequiredWarranties"></a>
 
-| Propriedade  | Valor                                        | Descrição                                    
+| Propriedade  | Valor                                        | Definição                                    
 |:------------ |:------                                       |:------
 | requiredWarranties        | CESSAO_DIREITOS_CREDITORIOS     | Cessão de direitos creditórios
 | requiredWarranties        | CAUÇAO                          | Caução
@@ -330,7 +330,7 @@
 }
 ```
 
-| Nome                   | Tipo                                         | Obrigatório | Descrição                                                 |
+| Nome                   | Tipo                                         | Obrigatório | Definição                                                 |
 |:----------------       |:------                                       |:----------- |:-------------------------------                           |
 | rate                   | string                                       | Não         | Percentual que incide sobre a composição das taxas de juros remuneratórias                          |
 | referencialRate        | string                                       | Não         | Taxa Referencial se configura como uma taxa de juros de referência, ou seja, um indicador geral da economia brasileira. Por isso, é utilizada na hora de calcular o rendimento de determinadas aplicações financeiras   |
@@ -343,7 +343,7 @@
 ### Enum LoanInterestRates PrePostTax
 <a id="schemaEnumTypePrePosTax"></a>
 
-| Propriedade  | Valor      | Descrição                                       
+| Propriedade  | Valor      | Definição                                       
 |:------------ |:------     |:---------
 | prePostTax   | PRE    | Pré fixado
 | prePostTax   | POS    | Pós fixado
@@ -352,7 +352,7 @@
 ### Enum LoanInterestRates Frecuency
 <a id="schemaEnumFrecuency"></a>
 
-| Propriedade  | Valor     | Descrição                                   
+| Propriedade  | Valor     | Definição                                   
 |:------------ |:------    |:---------
 | frequency    | AD    | Ao dia
 | frequency    | AM    | Ao mês
