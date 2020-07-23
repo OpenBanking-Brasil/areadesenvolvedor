@@ -67,7 +67,7 @@
 |     Nome          |  Tipo                                                                | Obrigatório  |                            Definição                  |
 |:------------      |:---------------------------------                                    |:-----------  |:----------------------------------------------------  |
 | data              | object                                                               | Sim          |                                                       |
-| brand      | [[BusinessLoansBrand](#schemaBusinessLoansBrand)]      | Sim          | Lista das organizaçõs titulares das dependências      |
+| brand             | [[BusinessLoansBrand](#schemaBusinessLoansBrand)]      | Sim          | Lista das organizaçõs titulares das dependências      |
 | links             | [LinksPaginated](#schemaLinksPaginated)                            | Sim          |                                                       |
 | meta              | [MetaPaginated](#schemaMetaPaginated)                              | Sim          |                                                       |
 
@@ -175,7 +175,7 @@
 |:------------    |:---------------------------------                             |:-----------  |:----------------------------------------------------                 |
 | cnpjNumber      | string                                                        | Sim          | Número do CNPJ do conglomerado                                       |
 | name            | string                                                        | Sim          | Nome da Instituição, pertencente à marca, responsável pela comercialização das modalidades de Empréstimos para Pessoas Jurídicas consultadas.  |
-| businessLoans   | [[BusinessLoans](#schemaBusinessLoans)]                                       | Sim          | Empréstimos Pessoas Jurídicas                                          |
+| businessLoans   | [[BusinessLoans](#schemaBusinessLoans)]                       | Sim          | Empréstimos Pessoas Jurídicas                                          |
 
 ## BusinessLoans
 <a id="schemaBusinessLoans"></a>

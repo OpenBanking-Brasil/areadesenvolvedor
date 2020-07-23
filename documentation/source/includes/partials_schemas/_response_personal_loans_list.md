@@ -301,10 +301,10 @@
 ```
 |     Nome            |  Tipo                                                      | Obrigatório  |                            Definição                         | Restrições
 |:------------        |:---------------------------------                          |:-----------  |:----------------------------------------------------         | :------
-| type                | [string](#schemaEnumLoanFessPriceType)                  | Não          | Indica os tipos: mínimo, médio e máximo do valor informado.  |
-| value               | AmountString                                                     | Não          | Valor da tarifa cobrada, relativa ao serviço ofertado para a Modalidade de Empréstimo, para pessoa física/jurídica.             |
-| currency            | CurrencyString                                                     | Não          | Moeda referente ao valor da Tarifa, segundo modelo <a href='https://www.iso.org/iso-4217-currency-codes.html' target="_blank">ISO-4217</a>           |
-| additionalInfo           | string                                                     | Não          | Descrição de como é composto o valor da tarifa. p.ex. '0,25% sobre o excedente do limite acima de R$ 500,00'       |
+| type                | [string](#schemaEnumLoanFessPriceType)                     | Não          | Indica os tipos: mínimo, médio e máximo do valor informado.  |
+| value               | [AmountString](#commonFieldAmountString)                   | Não          | Valor da tarifa cobrada, relativa ao serviço ofertado para a Modalidade de Empréstimo, para pessoa física/jurídica.             |
+| currency            | [CurrencyString](#commonFieldCurrencyString)               | Não          | Moeda referente ao valor da Tarifa, segundo modelo <a href='https://www.iso.org/iso-4217-currency-codes.html' target="_blank">ISO-4217</a>           |
+| additionalInfo      | string                                                     | Não          | Descrição de como é composto o valor da tarifa. p.ex. '0,25% sobre o excedente do limite acima de R$ 500,00'       |
 | changingUnit        | string                                                     | Sim          | Unidade ou forma de cobrança      | Este campo sempre deverá estar preenchido
 
 ### Enum LoanFeesPrice Type
@@ -332,19 +332,19 @@
 
 | Nome                   | Tipo                                         | Obrigatório | Definição                                                 |
 |:----------------       |:------                                       |:----------- |:-------------------------------                           |
-| rate                   | string                                       | Não         | Percentual que incide sobre a composição das taxas de juros remuneratórias                          |
-| referencialRate        | string                                       | Não         | Taxa Referencial se configura como uma taxa de juros de referência, ou seja, um indicador geral da economia brasileira. Por isso, é utilizada na hora de calcular o rendimento de determinadas aplicações financeiras   |
+| rate                   | [RateString](#commonFieldRateString)         | Não         | Percentual que incide sobre a composição das taxas de juros remuneratórias                          |
+| referencialRate        | [RateString](#commonFieldRateString)         | Não         | Taxa Referencial se configura como uma taxa de juros de referência, ou seja, um indicador geral da economia brasileira. Por isso, é utilizada na hora de calcular o rendimento de determinadas aplicações financeiras   |
 | indexer                | string                                       | Não         | Indexador é o termo utilizado para se referir aos índices usados como base para corrigir os valores monetários de um determinado ativo. No Brasil, os indexadores mais comuns são o IPCA, a taxa Selic e o CDI                                    |
-| prePostTax             | [string](#schemaEnumTypePrePosTax)  | Não         | Indicador de pré ou pós. A diferença básica é que, enquanto o prefixado apresenta rentabilidade definida, o pós-fixado acompanha algum indicador. Assim, quem investe no primeiro grupo sabe como será seu rendimento previamente, enquanto quem investe no segundo, só conhecerá os resultados na data de vencimento                                  |
-| frecuency              | [string](#schemaEnumFrecuency)      | Não         | Código que indica Frequência sobre a qual incide a Remuneração.                                  |
+| prePostTax             | [string](#schemaEnumTypePrePosTax)           | Não         | Indicador de pré ou pós. A diferença básica é que, enquanto o prefixado apresenta rentabilidade definida, o pós-fixado acompanha algum indicador. Assim, quem investe no primeiro grupo sabe como será seu rendimento previamente, enquanto quem investe no segundo, só conhecerá os resultados na data de vencimento                                  |
+| frecuency              | [string](#schemaEnumFrecuency)               | Não         | Código que indica Frequência sobre a qual incide a Remuneração.                                  |
 | incomeRateInfo         | string                                       | Não         | Descrição da Remuneração relativa as taxas de juros remuneratóriassobre a modalidad de Empréstimo para pessoa física/jurídica                                    |
 
 
 ### Enum LoanInterestRates PrePostTax
 <a id="schemaEnumTypePrePosTax"></a>
 
-| Propriedade  | Valor      | Definição                                       
-|:------------ |:------     |:---------
+| Propriedade  | Valor  | Definição                                       
+|:------------ |:------ |:---------
 | prePostTax   | PRE    | Pré fixado
 | prePostTax   | POS    | Pós fixado
 

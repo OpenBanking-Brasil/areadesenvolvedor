@@ -303,11 +303,11 @@
 }
 ```
 
-|     Nome     |  Tipo                                                                                  | Obrigatório    |                            Definição                                                                                                       |
-|:------------ |:-------------------------------------------------------------------------------------  |:-------------- |:------------------------------------------------------------------------------------------------------------------------------------------ |
-| type         | [Enum BusinessFinancingsPriceType](#schemaEnumBusinessFinancingsPriceType)             | Sim            | Indica os tipos: mínimo, médio e máximo do valor informado. P.ex.'mínimo'                                                                  |
-| value        | string                                                                                 | Sim            | Valor da tarifa cobrada, relativa ao serviço ofertado para a Modalidade de Empréstimo, para pessoa jurídica                                  |
-| currency     | [Enum BusinessFinancingsCurrency](#schemaEnumBusinessFinancingsCurrency)               | Sim            | Moeda referente ao valor da tarifa                                                                                                  |
+|     Nome     |  Tipo                                                                        | Obrigatório    |                            Definição                                                                                                       |
+|:------------ |:-----------------------------------------------------------------------------|:-------------- |:------------------------------------------------------------------------------------------------------------------------------------------ |
+| type         | [Enum BusinessFinancingsPriceType](#schemaEnumBusinessFinancingsPriceType)   | Sim            | Indica os tipos: mínimo, médio e máximo do valor informado. P.ex.'mínimo'                                                                  |
+| value        | [AmountString](#commonFieldAmountString)                                     | Sim            | Valor da tarifa cobrada, relativa ao serviço ofertado para a Modalidade de Empréstimo, para pessoa jurídica                                  |
+| currency     | [CurrencyString](#commonFieldCurrencyString)                                 | Sim            | Moeda referente ao valor da tarifa                                                                                                  |
 
 ### Enum BusinessFinancingsPriceType
 <a id="schemaEnumBusinessFinancingsPriceType"></a>
@@ -317,14 +317,6 @@
 | type         | MINIMO | Mínimo      |
 | type         | MEDIO  | Médio       |
 | type         | MAXIMO | Máximo      |
-
-### Enum BusinessFinancingsCurrency
-<a id="schemaEnumBusinessFinancingsCurrency"></a>
-
-| Propriedade  | Código | Definição                                                                                             |
-|:------------ |:------ |:----------------------------------------------------------------------------------------------------- |
-| currency     | BRL    | Real                                                                                                  |
-| currency     | ***    | Conforme ISO_4217 (ex: <a href="https://pt.wikipedia.org/wiki/ISO_4217" target="_blank">ISO_4217</a>) |
 
 ## BusinessFinancingsInterestRates 
 <a id="schemaBusinessFinancingsInterestRates"></a>
@@ -342,8 +334,8 @@
 
 |     Nome                  |  Tipo                                                                           | Obrigatório    |                            Definição                                                                                                                                                                                                                                                                                  |
 |:------------              |:------------------------------------------------------------------------------- |:-------------- |:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| rate                      | string                                                                          | Sim            | Percentual que incide sobre a composição da  taxa de juros remuneratórias                                                                                                                                                                                                                                             |
-| referencialRate           | string                                                                          | Sim            | Taxa Referencial se configura como uma taxa de juros de referência, ou seja, um indicador geral da economia brasileira. Por isso, é utilizada na hora de calcular o rendimento de determinadas aplicações financeiras                                                                                                 |
+| rate                      | [RateString](#commonFieldRateString)                                            | Sim            | Percentual que incide sobre a composição da  taxa de juros remuneratórias                                                                                                                                                                                                                                             |
+| referencialRate           | [RateString](#commonFieldRateString)                                            | Sim            | Taxa Referencial se configura como uma taxa de juros de referência, ou seja, um indicador geral da economia brasileira. Por isso, é utilizada na hora de calcular o rendimento de determinadas aplicações financeiras                                                                                                 |
 | indexer                   | [Enum BusinessFinancingsIndexer](#schemaEnumBusinessFinancingsIndexer)          | Sim            | Indexador é o termo utilizado para se referir aos índices usados como base para corrigir os valores monetários de um determinado ativo. No Brasil, os indexadores mais comuns são o IPCA, a taxa Selic e o CDI                                                                                                        |
 | prePostTax                | [Enum BusinessFinancingsPrePostTax](#schemaEnumBusinessFinancingsPrePostTax)    | Sim            | Indicador de pré ou pós. A diferença básica é que, enquanto o prefixado apresenta rentabilidade definida, o pós-fixado acompanha algum indicador. Assim, quem investe no primeiro grupo sabe como será seu rendimento previamente, enquanto quem investe no segundo, só conhecerá os resultados na data de vencimento |
 | frequency                 | [Enum BusinessFinancingsFrequency](#schemaEnumBusinessFinancingsFrequency)      | Sim            | Frequência sobre a qual incide a Remuneração                                                                                                                                                                                                                                                                          |

@@ -331,11 +331,11 @@
 }
 ```
 
-|     Nome    |  Tipo      | Obrigatório     |    Definição                                                 |
-|:------------|:-----------|:----------------|:-------------------------------------------------------------|
-| type        | string     | Sim             | Indica os tipos: mínimo, médio e máximo do valor informado   |
-| value       | string     | Sim             | Valor da tarifa cobrada referente aos Outros Serviços        |
-| currency    | string     | Sim             | Moeda referente ao valor máximo da tarifa conforme ISO-4217  |
+|     Nome    |  Tipo                                         | Obrigatório     |    Definição                                                 |
+|:------------|:-----------------                             |:----------------|:-------------------------------------------------------------|
+| type        | string                                        | Sim             | Indica os tipos: mínimo, médio e máximo do valor informado   |
+| value       | [AmountString](#commonFieldAmountString)      | Sim             | Valor da tarifa cobrada referente aos Outros Serviços        |
+| currency    | [CurrencyString](#commonFieldCurrencyString)  | Sim             | Moeda referente ao valor máximo da tarifa conforme ISO-4217  |
 
 ## BusinessCreditCardsInterestRates
 <a id="schemaBusinessCreditCardsInterestRates"></a>
@@ -349,12 +349,12 @@
 }
 ```
 
-|     Nome        |  Tipo                                                                                       | Obrigatório     |    Definição                                                 |
-|:----------------|:--------------------------------------------------------------------------------------------|:----------------|:---------------------------------------------------------------------------------------------------------------------------------------|
-| feeRate         | string                                                                                      | Sim             | Percentual que corresponde a taxa aplicada para utilização de Crédito Rotativo                                                         |
-| instalmentRate  | string                                                                                      | Sim             | Percentual que corresponde a taxa aplicada para pagamento parcelado do saldo devedor quando não realizado pagamento integral da fatura |
-| code            | [Enum BusinessCreditCardsInterestRatesCode](#schemaEnumBusinessCreditCardsInterestRatesCode)     | Sim             | Lista de outras operações de crédito                                                                                                   |
-| additionalInfo  | string                                                                                      | Sim             | Campo Texto para descrever outras operações de crédito marcadas como 'Outros'                                                          |
+|     Nome        |  Tipo                                                                                           | Obrigatório     |    Definição                                                 |
+|:----------------|:------------------------------------------------------------------------------------------------|:----------------|:---------------------------------------------------------------------------------------------------------------------------------------|
+| feeRate         | [RateString](#commonFieldRateString)                                                            | Sim             | Percentual que corresponde a taxa aplicada para utilização de Crédito Rotativo                                                         |
+| instalmentRate  | [RateString](#commonFieldRateString)                                                            | Sim             | Percentual que corresponde a taxa aplicada para pagamento parcelado do saldo devedor quando não realizado pagamento integral da fatura |
+| code            | [Enum BusinessCreditCardsInterestRatesCode](#schemaEnumBusinessCreditCardsInterestRatesCode)    | Sim             | Lista de outras operações de crédito                                                                                                   |
+| additionalInfo  | string                                                                                          | Sim             | Campo Texto para descrever outras operações de crédito marcadas como 'Outros'                                                          |
 
 ### Enum BusinessCreditCardsInterestRatesCode
 <a id="schemaEnumBusinessCreditCardsInterestRatesCode"></a>
@@ -376,9 +376,9 @@
 }
 ```
 
-|     Nome                |  Tipo       | Obrigatório     |    Definição                                                                                                                                                          |
-|:------------------------|:------------|:----------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| minimumFeeRate          | string      | Sim             | Percentual para pagamento mínimo sobre o saldo devedor da fatura                                                                                                      |
-| additionalInfo          | string      | Sim             | Campo aberto para detalhamento de taxas de juros                                                                                                                      |
-| elegibilityCriteriaInfo | string      | Sim             | Informação sobre as condições e critérios de elegibilidade do emissor do cartão. Pode ser informada a URL referente ao endereço onde constam as condições informadas  |
-| closingProcessInfo      | string      | Sim             | Descrição dos procedimentos para encerramento da conta pós paga. Pode ser informada a URL referente ao endereço onde constam as condições informadas                  |
+|     Nome                |  Tipo                                 | Obrigatório     |    Definição                                                                                                                                                          |
+|:------------------------|:------------                          |:----------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| minimumFeeRate          | [RateString](#commonFieldRateString)  | Sim             | Percentual para pagamento mínimo sobre o saldo devedor da fatura                                                                                                      |
+| additionalInfo          | string                                | Sim             | Campo aberto para detalhamento de taxas de juros                                                                                                                      |
+| elegibilityCriteriaInfo | string                                | Sim             | Informação sobre as condições e critérios de elegibilidade do emissor do cartão. Pode ser informada a URL referente ao endereço onde constam as condições informadas  |
+| closingProcessInfo      | string                                | Sim             | Descrição dos procedimentos para encerramento da conta pós paga. Pode ser informada a URL referente ao endereço onde constam as condições informadas                  |

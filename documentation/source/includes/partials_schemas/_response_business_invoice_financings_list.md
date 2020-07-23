@@ -298,11 +298,11 @@
 }
 ```
 
-|     Nome     |  Tipo                                                                                  | Obrigatório    |                            Definição                                                                                                       |
-|:------------ |:-------------------------------------------------------------------------------------  |:-------------- |:------------------------------------------------------------------------------------------------------------------------------------------ |
+|     Nome     |  Tipo                                                                                    | Obrigatório    |                            Definição                                                                                                       |
+|:------------ |:-------------------------------------------------------------------------------------    |:-------------- |:------------------------------------------------------------------------------------------------------------------------------------------ |
 | type         | [Enum BusinessInvoiceFinancingsPriceType](#schemaEnumBusinessInvoiceFinancingsPriceType) | Sim            | Indica os tipos: mínimo, médio e máximo do valor informado. P.ex.'mínimo'                                                                  |
-| value        | string                                                                                 | Sim            | Valor para a tarifa cobrada, relativa ao serviço ofertado para a Modalidade de direitos creditórios descontados, para pessoa jurídica |
-| currency     | [Enum BusinessInvoiceFinancingsCurrency](#schemaEnumBusinessInvoiceFinancingsCurrency)   | Sim            | Moeda referente ao valor da tarifa                                                                                                  |
+| value        | [AmountString](#commonFieldAmountString)                                                 | Sim            | Valor para a tarifa cobrada, relativa ao serviço ofertado para a Modalidade de direitos creditórios descontados, para pessoa jurídica |
+| currency     | [CurrencyString](#commonFieldCurrencyString)                                             | Sim            | Moeda referente ao valor da tarifa                                                                                                  |
 
 ### Enum BusinessInvoiceFinancingsPriceType
 <a id="schemaEnumBusinessInvoiceFinancingsPriceType"></a>
@@ -312,14 +312,6 @@
 | type         | MINIMO | Mínimo      |
 | type         | MEDIO  | Médio       |
 | type         | MAXIMO | Máximo      |
-
-### Enum BusinessInvoiceFinancingsCurrency
-<a id="schemaEnumBusinessInvoiceFinancingsCurrency"></a>
-
-| Propriedade  | Código | Definição                                                                                             |
-|:------------ |:------ |:----------------------------------------------------------------------------------------------------- |
-| currency     | BRL    | Real                                                                                                  |
-| currency     | ***    | Conforme ISO_4217 (ex: <a href="https://pt.wikipedia.org/wiki/ISO_4217" target="_blank">ISO_4217</a>) |
 
 ## BusinessInvoiceFinancingsInterestRates 
 <a id="schemaBusinessInvoiceFinancingsInterestRates"></a>
@@ -337,11 +329,11 @@
 
 |     Nome                  |  Tipo                                                                                       | Obrigatório    |                            Definição                                                                                                       |
 |:------------              |:------------------------------------------------------------------------------------------- |:-------------- |:------------------------------------------------------------------------------------------------------------------------------------------ |
-| rate                      | string                                                                                      | Sim            | Percentual que incide sobre a composição da  taxa de juros remuneratórias                                                                                                                                                                                                                                             |
-| referencialRate           | string                                                                                      | Sim            | Taxa Referencial se configura como uma taxa de juros de referência, ou seja, um indicador geral da economia brasileira. Por isso, é utilizada na hora de calcular o rendimento de determinadas aplicações financeiras                                                                                                 |
-| indexer                   | [Enum BusinessInvoiceFinancingsIndexer](#schemaEnumBusinessInvoiceFinancingsIndexer)          | Sim            | Indexador é o termo utilizado para se referir aos índices usados como base para corrigir os valores monetários de um determinado ativo. No Brasil, os indexadores mais comuns são o IPCA, a taxa Selic e o CDI                                                                                                        |
-| prePostTax                | [Enum BusinessInvoiceFinancingsPrePostTax](#schemaEnumBusinessInvoiceFinancingsPrePostTax)    | Sim            | Indicador de pré ou pós. A diferença básica é que, enquanto o prefixado apresenta rentabilidade definida, o pós-fixado acompanha algum indicador. Assim, quem investe no primeiro grupo sabe como será seu rendimento previamente, enquanto quem investe no segundo, só conhecerá os resultados na data de vencimento |
-| frequency                 | [Enum BusinessInvoiceFinancingsFrequency](#schemaEnumBusinessInvoiceFinancingsFrequency)      | Sim            | Frequência sobre a qual incide a Remuneração                                                                                                                                                                                                                                                                          |
+| rate                      | [RateString](#commonFieldRateString)                                                        | Sim            | Percentual que incide sobre a composição da  taxa de juros remuneratórias                                                                                                                                                                                                                                             |
+| referencialRate           | [RateString](#commonFieldRateString)                                                        | Sim            | Taxa Referencial se configura como uma taxa de juros de referência, ou seja, um indicador geral da economia brasileira. Por isso, é utilizada na hora de calcular o rendimento de determinadas aplicações financeiras                                                                                                 |
+| indexer                   | [Enum BusinessInvoiceFinancingsIndexer](#schemaEnumBusinessInvoiceFinancingsIndexer)        | Sim            | Indexador é o termo utilizado para se referir aos índices usados como base para corrigir os valores monetários de um determinado ativo. No Brasil, os indexadores mais comuns são o IPCA, a taxa Selic e o CDI                                                                                                        |
+| prePostTax                | [Enum BusinessInvoiceFinancingsPrePostTax](#schemaEnumBusinessInvoiceFinancingsPrePostTax)  | Sim            | Indicador de pré ou pós. A diferença básica é que, enquanto o prefixado apresenta rentabilidade definida, o pós-fixado acompanha algum indicador. Assim, quem investe no primeiro grupo sabe como será seu rendimento previamente, enquanto quem investe no segundo, só conhecerá os resultados na data de vencimento |
+| frequency                 | [Enum BusinessInvoiceFinancingsFrequency](#schemaEnumBusinessInvoiceFinancingsFrequency)    | Sim            | Frequência sobre a qual incide a Remuneração                                                                                                                                                                                                                                                                          |
 | incomeRateInfo            | string                                                                                      | Não            | Descrição da Remuneração relativa as taxas de juros remuneratórias sobre a modalidade de direitos creditórios descontados infomrada, para pessoa jurídica                                                                                                                                                               |
 
 ### Enum BusinessInvoiceFinancingsIndexer

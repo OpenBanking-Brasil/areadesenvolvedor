@@ -61,12 +61,12 @@
 }
 ```
 
-|     Nome          |  Tipo                                                                | Obrigatório  |                            Definição                  |
-|:------------      |:---------------------------------                                    |:-----------  |:----------------------------------------------------  |
-| data              | object                                                               | Sim          |                                                       |
+|     Nome          |  Tipo                                                  | Obrigatório  |                            Definição                  |
+|:------------      |:---------------------------------                      |:-----------  |:----------------------------------------------------  |
+| data              | object                                                 | Sim          |                                                       |
 | » brand           | [[BankingAgentsBrand](#schemaBankingAgentsBrand)]      | Sim          | Lista das organizaçõs titulares das dependências      |
-| links             | [[LinksPaginated](#schemaLinksPaginated)]                            | Sim          |                                                       |
-| meta              | [[MetaPaginated](#schemaMetaPaginated)]                              | Sim          |                                                       |
+| links             | [[LinksPaginated](#schemaLinksPaginated)]              | Sim          |                                                       |
+| meta              | [[MetaPaginated](#schemaMetaPaginated)]                | Sim          |                                                       |
 
 ## BankingAgentsBrand
 <a id="schemaBankingAgentsBrand"></a>
@@ -114,10 +114,10 @@
 }
 ```
 
-|     Nome     |  Tipo                                                      | Obrigatório  |                            Definição                         |
-|:------------ |:---------------------------------                          |:-----------  |:----------------------------------------------------         |
+|     Nome     |  Tipo                                                      | Obrigatório  |                            Definição                     |
+|:------------ |:---------------------------------                          |:-----------  |:----------------------------------------------------     |
 | name         | string                                                     | Sim          | Nome da Marca selecionada pelas Organizações (titular).  |
-| companies    | [[BankingAgentsCompanies](#schemaBankingAgentsCompanies)]  | Sim          | Lista de instituições pertencentes à marca             |
+| companies    | [[BankingAgentsCompanies](#schemaBankingAgentsCompanies)]  | Sim          | Lista de instituições pertencentes à marca               |
 
 ## BankingAgentsCompanies 
 <a id="schemaBankingAgentsCompanies"></a>
