@@ -7,8 +7,8 @@ Os limites de tráfego serão estabelecidos utilizando as seguintes métricas:
  - Número de chamadas - o número de chamadas de end point iniciadas por uma duração especificada.
 
 Para o diretório, serão aplicados os seguintes limites de tráfego:
- - 10 TPS por IP
- - 300 TPS globalmente
+ - 10 TPS por IP.
+ - 300 TPS globalmente.
 
 Para dimensionar corretamente os sistemas, levar em consideração estes dados.
 

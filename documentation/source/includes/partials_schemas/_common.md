@@ -42,5 +42,5 @@
 
 | Nome         | Código | Definição   |
 |:------------ |:------ |:----------- |
-| prePostTax   | PRE    | Pré fixado  |
+| prePostTax   | PRE    | Prefixado   |
 | prePostTax   | POS    | Pós fixado  |
