@@ -242,7 +242,7 @@
         "referenceValue":"string",
         "referenceCurrency":"string"
       },
-      "openCloseChannels": "string",
+      "openingClosingChannels": "string",
       "additionalInfo":"string",
       "transactionMethods": "string",
       "termsConditions": {
@@ -272,8 +272,8 @@
 
 |     Nome        |  Tipo                                                         | Obrigatório  |                            Definição                                 |
 |:------------    |:---------------------------------                             |:-----------  |:----------------------------------------------------                 |
-| name            | string                                                        | Sim          | Nome do conglomerado responsável pelas contas                        |
-| cnpjNumber      | string                                                        | Sim          | Número do CNPJ do conglomerado                                       |
+| name            | string                                                        | Sim          | Nome da Instituição, pertencente à marca, responsável pela comercialização dos tipos de contas de pessoas jurídicas cosultadas                       |
+| cnpjNumber      | string                                                        | Sim          | O responsável pela comercialização das modalidades de Contas para Pessoas Jurídicas consultadas                                       |
 | businessAccounts| [[BusinessAccounts](#schemaBusinessAccounts)]                 | Sim          | Lista de contas pessoa jurídica                                      |
 
 
@@ -323,7 +323,7 @@
     "referenceValue":"string",
     "referenceCurrency":"string"
   },
-  "openCloseChannels": "string",
+  "openingClosingChannels": "string",
   "additionalInfo":"string",
   "transactionMethods": "string",
   "termsConditions": {
@@ -351,14 +351,46 @@
 
 |     Nome              |  Tipo                                          |  Obrigatório    |                            Descrição                  |
 |:----------------------|:-----------------------------------------------| :---------------|:------------------------------------------------------|
-| type                  | string                                         | Sim             | Nome do tipo da conta                                 |
+| type                  | [[Enum TypeBusinessAccount](#schemaEnumTypeBusinessAccount)] | Sim             | Tipos de contas ofertadas para pessoas jurídicas, conforme Resolução 3.919 do Bacen.                                 |
 | fees                  | [[FeesBusinessAccount](#schemaFeesBusinessAccount)] | Sim             | Lista Tarifas cobradas                             |
 | serviceBundles        | [[ServiceBundlesBusinessAccount](#schemaServiceBundlesBusinessAccount)] | Sim             | Nome dos pacotes de serviços                          |
-| openCloseChannels     | string                                         | Sim             | Canais disponiveis                                    |
-| transactionMethods    | string                                         | Sim             | Lista de formas de movimentações                      |
+| openingClosingChannels   | [[Enum BusinessAccountOpeningClosingChannels ](#schemaEnumBusinessAccountOpeningClosingChannels)] | Sim             | Canais disponíveis para abertura e encerramento de contas      |
+| additionalInfo        | string                                         | Sim             | Texto livre para complementar informação relativa ao Canal disponível    |
+| transactionMethods    | [[Enum BusinessAccountOpeningTransactionMethods ](#schemaEnumBusinessAccountOpeningTransactionMethods)]                                         | Sim             | Lista de formas de movimentação possíveis para a conta  |
 | termsConditions       | [[TermsConditionsBusinessAccount](#schemaTermsConditionsBusinessAccount)] | Sim             | Termos e condições contratuais                        |
 | incomeRates           | [[IncomeRatesBusinessAccount](#schemaIncomeRatesBusinessAccount)] | Sim             | Valores dos percentuais de taxas                      |
 
+### Enum TypeBusinessAccount
+<a id="schemaEnumTypeBusinessAccount"></a>
+
+| Propriedade  | Valor                       | Definição                   |                
+|:-------------|:----------------------------|:----------------------------|
+| type         | CONTA_CORRENTE              | Conta Corrente              |
+| type         | CONTA_POUPANCA              | Conta Poupança              |
+| type         | CONTA_PAGAMENTO_PRE_PAGA    | Conta de pagamento pré paga |
+
+### Enum BusinessAccountOpeningClosingChannels 
+<a id="schemaEnumBusinessAccountOpeningClosingChannels"></a>
+
+| Propriedade              | Valor                     | Definição                  |                     
+|:-------------------------|:--------------------------|:---------------------------|
+| openingClosingChannels   | DEPENDENCIAS_PROPRIAS     | Dependências próprias      |
+| openingClosingChannels   | CORRESPONDENTES_BANCARIOS | Correspondentes bancários  |
+| openingClosingChannels   | INTERNET_BANKING          | Internet banking           |
+| openingClosingChannels   | MOBILE_BANKING            | Mobile banking             |
+| openingClosingChannels   | CENTRAL_TELEFONICA        | Central telefônica         |
+| openingClosingChannels   | CHAT                      | Chat                       |
+| openingClosingChannels   | OUTROS                    | Outros (p.ex.:website/appps de terceiros) |
+
+### Enum BusinessAccountOpeningTransactionMethods  
+<a id="schemaEnumBusinessAccountOpeningTransactionMethods"></a>
+
+| Propriedade          | Valor                     | Definição                  |                     
+|:---------------------|:--------------------------|:---------------------------|
+| transactionMethods   | MOVIMENTACAO_ELETRONICA   | Movimentação eletrônica    |
+| transactionMethods   | MOVIMENTACAO_CHEQUE       | Movimentação com cheque    |
+| transactionMethods   | MOVIMENTACAO_CARTAO       | Movimentação com cartão    |
+| transactionMethods   | MOVIMENTACAO_PRESENCIAL   | Movimentação presencial    |
 
 ## FeesBusinessAccount
 <a id="schemaFeesBusinessAccount"></a>
@@ -386,7 +418,7 @@
 
 |     Nome         |  Tipo                              |  Obrigatório    |                            Descrição                |
 |:-----------------|:-----------------------------------|:----------------|:----------------------------------------------------|
-| otherServices    | [[OtherServicesBusinessAccount](#schemaOtherServicesBusinessAccount)] | Sim             | Lista Tarifas de outros serviços                                 |
+| otherServices    | [[OtherServicesBusinessAccount](#schemaOtherServicesBusinessAccount)] | Sim             | Lista Tarifas de outros serviços da conta                                 |
 
 ## OtherServicesBusinessAccount
 <a id="schemaOtherServicesBusinessAccount"></a>
@@ -414,9 +446,9 @@
 | code                | string | Não         | Sigla de identificação de Outros Serviços que incidem sobre os tipos de contas   |
 | chargingTriggerInfo | string | Sim         | Outros Fatores geradores de cobrança referentes aos Outros Serviços que incidem sobre as contas comercializadas.                                    |
 | price               | [[PriceOtherServicesBusinessAccount](#schemaPriceOtherServicesBusinessAccount)] | Sim      | Valor da tarifa cobrada referente aos Outros Serviços.                  |
-| referenceValue            | string | Sim         | Moeda relativa ao valor de referência                                    |
-| referenceCurrency            | string | Sim         | Moeda relativa ao valor de referência                                    |
-| additionalInfo      | string | Não         | Descrição de como é composto o valor da tarifa                                    |
+| referenceValue            | string | Sim         | Valor de referência utilizado na apuração dos percentuais informados por quartil                  |
+| referenceCurrency            | string | Sim         | Moeda relativa ao valor de referência, segundo modelo ISO-4217                  |
+| additionalInfo      | string | Não         | Descrição de como é composto o valor da tarifa.                     |
 | chargingUnit        | string | Não         | Unidade ou forma de cobrança                                    |
 
 ## PriceOtherServicesBusinessAccount
@@ -432,9 +464,9 @@
 
 |     Nome    |  Tipo                        |  Obrigatório |                            Descrição                |
 |:------------|:-----------------------------|:-------------|:----------------------------------------------------|
-| type        | string                       | Sim          | Indica o tipo de valor da tarifa                    |
-| value       | string                       | Sim          | Valor da tarifa cobrada referente aos Outros Serviços       |
-| currency    | string                       | Sim          | Moeda referente ao valor máximo da tarifa            |
+| type        | string                       | Sim          | Indica o tipo de valor da tarifa informado          |
+| value       | string                       | Sim          | Valor da tarifa cobrada referente aos Outros Serviços.       |
+| currency    | string                       | Sim          | Moeda referente ao valor máximo da tarifa, segundo modelo ISO-4217.   |
 
 
 ## ServiceBundlesBusinessAccount
@@ -466,15 +498,15 @@
 
 ```
 
-|     Nome    |  Tipo                        |  Obrigatório |                            Descrição                |
-|:------------|:-----------------------------|:-------------|:----------------------------------------------------|
-| name        | string                       | Sim          | Nome do conjunto de serviços                        |
-| services    | [[ServicesBusinessAccount](#schemaServicesBusinessAccount)]| Sim          | Lista de serviços       |
-| typesPrice        | string                       | Sim          | Nome do conjunto de serviços                        |
-| monthlyPrice        | string                       | Sim          | Nome do conjunto de serviços                        |
-| currency        | string                       | Sim          | Nome do conjunto de serviços                        |
-| referenceValue        | string                       | Sim          | Nome do conjunto de serviços                        |
-| referenceCurrency        | string                       | Sim          | Nome do conjunto de serviços                        |
+|     Nome           |  Tipo                        |  Obrigatório |                            Descrição                |
+|:-------------------|:-----------------------------|:-------------|:----------------------------------------------------|
+| name               | string                       | Sim          | Nome do conjunto de serviços                        |
+| services           | [[ServicesBusinessAccount](#schemaServicesBusinessAccount)]| Sim          | Lista de serviços       |
+| typesPrice         | string                       | Sim          | Indica o tipo de valor referente ao Pacote de serviço informado          |
+| monthlyPrice       | string                       | Sim          | Valor mensal da tarifa referente ao Pacote de Serviços         |
+| currency           | string                       | Sim          | Moeda referente ao valor do Pacote de serviços, segundo modelo ISO-4217.      |
+| referenceValue     | string                       | Sim          | Valor de referência utilizado na apuração dos percentuais informados por quartil       |
+| referenceCurrency  | string                       | Sim          | Moeda relativa ao valor de referência, segundo modelo ISO-4217.          |
 
 ## ServicesBusinessAccount
 <a id="schemaServicesBusinessAccount"></a>
@@ -496,14 +528,14 @@
 
 |     Nome           |  Tipo                        |  Obrigatório |                            Descrição                |
 |:-------------------|:-----------------------------|:-------------|:----------------------------------------------------|
-| code               | string                       | Sim          | Indica o tipo de valor da tarifa                    |
-| eventLimitQuantity | string                       | Sim          | Valor da tarifa cobrada referente                   |
-| freeEventQuantity  | string                       | Sim          | Indica o tipo de valor da tarifa                    |
-| price           |  [[PriceServicesBusinessAccount](#schemaPriceServicesBusinessAccount)]| Sim          | Valor da tarifa cobrada referente                   |
-| value           | string                       | Sim          | Indica o tipo de valor da tarifa                    |
-| currency           | string                       | Sim          | Indica o tipo de valor da tarifa                    |
-| referenceValue           | string                       | Sim          | Indica o tipo de valor da tarifa                    |
-| referenceCurrency           | string                       | Sim          | Indica o tipo de valor da tarifa                    |
+| code               | string                       | Sim          | Código que identifica o Serviço que compõe o Pacote de Serviços.   |
+| eventLimitQuantity | string                       | Sim          | Quantidade de eventos previstos no Pacote de Serviços      |
+| freeEventQuantity  | string                       | Sim          | Quantidade de eventos previstos no Pacote de Serviços com isenção de Tarifa.      |
+| price           |  [[PriceServicesBusinessAccount](#schemaPriceServicesBusinessAccount)]| Sim          | Indica o tipo de valor da tarifa do serviço que compõe o Pacote de Serviços     |
+| value           | string                       | Sim          | Valor da tarifa referente ao Serviço que compõe o Pacote de Serviços, relativo ao quantil tipo         |
+| currency           | string                       | Sim          | Moeda referente ao valor máximo da tarifa, segundo modelo ISO-4217.                |
+| referenceValue           | string                       | Sim          | Valor de referência utilizado na apuração dos percentuais informados por quartil                |
+| referenceCurrency           | string                       | Sim          | Moeda relativa ao valor de referência, segundo modelo ISO-4217            |
 
 ## PriceServicesBusinessAccount
 <a id="schemaPriceServicesBusinessAccount"></a>
@@ -516,7 +548,7 @@
 
 |     Nome           |  Tipo                        |  Obrigatório |                            Descrição                |
 |:-------------------|:-----------------------------|:-------------|:----------------------------------------------------|
-| type               | string                       | Sim          | Indica o tipo de valor da tarifa                    |
+| type               | string                       | Sim          | Indica o tipo de valor da tarifa do serviço que compõe o Pacote de Serviços     |
 
 ## TermsConditionsBusinessAccount
 <a id="schemaTermsConditionsBusinessAccount"></a>
@@ -532,10 +564,10 @@
 
 |     Nome                |  Tipo                        |  Obrigatório |                            Descrição                |
 |:------------------------|:-----------------------------|:-------------|:----------------------------------------------------|
-| minimumBalance          | string                       | Sim          | Indica o tipo de valor da tarifa                    |
-| minimumBalanceCurrency  | string                       | Sim          | Valor da tarifa cobrada referente                   |
-| elegibilityCriteriaInfo | string                       | Sim          | Indica o tipo de valor da tarifa                    |
-| closingProcessInfo      | string                       | Sim          | Valor da tarifa cobrada referente                   |
+| minimumBalance          | string                       | Sim          | Saldo mínimo exigido nos Termos e condições contratuais, que regem as contas comercializadas.     |
+| minimumBalanceCurrency  | string                       | Sim          | Moeda referente ao saldo mínimo exigido, segundo modelo ISO-4217.  |
+| elegibilityCriteriaInfo | string                       | Sim          | Critérios de elegibilidade para a aquisição do tipo de conta comercializado.      |
+| closingProcessInfo      | string                       | Sim          | Procedimentos de encerramento para o tipo de conta tratado.        |
 
 ## IncomeRatesBusinessAccount
 <a id="schemaIncomeRatesBusinessAccount"></a>
@@ -559,15 +591,15 @@
 
 |     Nome          |  Tipo                                        |  Obrigatório | Descrição                                           |
 |:------------------|:---------------------------------------------|:-------------|:----------------------------------------------------|
-| rate              | string                                       | Sim          | Indica o tipo de valor da tarifa                    |
-| referencialRate   | string                                       | Sim          | Valor da tarifa cobrada referente                   |
-| indexer           | string                                       | Sim          | Indica o tipo de valor da tarifa                    |
-| prePostTax        | [Enum BusinessAccountIncomeRatesPrePostTax](#schemaEnumBusinessAccountIncomeRatesPrePostTax) | Sim          | Valor da tarifa cobrada referente                   |
-| frequency         | [Enum BusinessAccountIncomeRatesFrequency](#schemaEnumBusinessAccountIncomeRatesFrequency)   | Sim          | Valor da tarifa cobrada referente                   |
-| additionalInfo    | string                                       | Sim          | Indica o tipo de valor da tarifa                    |
-| application       | [[ApplicationIncomeRatesBusinessAccount](#schemaApplicationIncomeRatesBusinessAccount)]                                       | Sim          | Indica o tipo de valor da tarifa                    |
-| referenceValue    | string                                       | Sim          | Indica o tipo de valor da tarifa                    |
-| referenceCurrency | string                                       | Sim          | Indica o tipo de valor da tarifa                    |
+| rate              | string                                       | Sim          | Valor do percentual que corresponde a taxa de remuneração prevista para a conta do tipo 'poupança'.      |
+| referencialRate   | string                                       | Sim          | Taxa Referencial se configura como uma taxa de juros de referência, ou seja, um indicador geral da economia brasileira.          |
+| indexer           | string                                       | Sim          | Indexador é o termo utilizado para se referir aos índices usados como base para corrigir os valores monetários de um determinado ativo.     |
+| prePostTax        | [Enum BusinessAccountIncomeRatesPrePostTax](#schemaEnumBusinessAccountIncomeRatesPrePostTax) | Sim          | Indicador de indexador pré ou pós fixado.         |
+| frequency         | [Enum BusinessAccountIncomeRatesFrequency](#schemaEnumBusinessAccountIncomeRatesFrequency)   | Sim          | Código que indica Frequência sobre a qual incide a Remuneração.             |
+| additionalInfo    | string                                       | Sim          | Descrição da Remuneração            |
+| application       | [[ApplicationIncomeRatesBusinessAccount](#schemaApplicationIncomeRatesBusinessAccount)]                                       | Sim          | Identifica o período referente ao percentual de taxa de remuneração efetivamente aplicada no intervalo informado              |
+| referenceValue    | string                                       | Sim          | Valor de referência utilizado na apuração dos percentuais informados por quartil       |
+| referenceCurrency | string                                       | Sim          | Moeda relativa ao valor de referência, segundo modelo ISO-4217.       |
 
 ## ApplicationIncomeRatesBusinessAccount
 <a id="schemaApplicationIncomeRatesBusinessAccount"></a>
@@ -581,8 +613,8 @@
 
 |     Nome          |  Tipo                                        |  Obrigatório | Descrição                                           |
 |:------------------|:---------------------------------------------|:-------------|:----------------------------------------------------|
-| types              | string                                       | Sim          | Indica o tipo de valor da tarifa                    |
-| rate   | string                                       | Sim          | Valor da tarifa cobrada referente                   |
+| types             | string                                       | Sim          | Valor do percentual que corresponde a taxa de remuneração efetivamente aplicada no intervalo informado        |
+| rate   | string                                       | Sim          | Valor do percentual que corresponde a taxa de remuneração efetivamente aplicada no intervalo informado        |
 
 ### Enum BusinessAccountIncomeRatesPrePostTax
 <a id="schemaEnumBusinessAccountIncomeRatesPrePostTax"></a>
@@ -601,3 +633,4 @@
 | frequency    | AD    | Ao dia
 | frequency    | AM    | Ao mês
 | frequency    | AA    | Ao ano
+
