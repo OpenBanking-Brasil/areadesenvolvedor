@@ -367,7 +367,7 @@
 | otherServices    | [[OtherServicesBusinessAccount](#schemaOtherServicesBusinessAccount)] | Sim             | Lista Tarifas de outros serviços                                 |
 
 ## PriorityServicesBusinessAccount
-<a id="schemaPriorityServicesBusinessAccount></a>
+<a id="schemaPriorityServicesBusinessAccount"></a>
 
 ```json
       {
@@ -391,7 +391,7 @@
 
 
 ## OtherServicesBusinessAccount
-<a id="schemaOtherServicesBusinessAccount></a>
+<a id="schemaOtherServicesBusinessAccount"></a>
 
 ```json
     {
@@ -500,7 +500,7 @@
 | elegibilityCriteriaInfo | string                       | Sim          | Indica o tipo de valor da tarifa                    |
 | closingProcessInfo      | string                       | Sim          | Valor da tarifa cobrada referente                   |
 
-## TermsIncomeRatesBusinessAccount
+## IncomeRatesBusinessAccount
 <a id="schemaIncomeRatesBusinessAccount"></a>
 
 ```json
@@ -514,17 +514,17 @@
 }
 ```
 
-|     Nome        |  Tipo                        |  Obrigatório |                            Descrição                |
-|:----------------|:-----------------------------|:-------------|:----------------------------------------------------|
-| rate            | string                       | Sim          | Indica o tipo de valor da tarifa                    |
-| referencialRate | string                       | Sim          | Valor da tarifa cobrada referente                   |
-| indexer         | string                       | Sim          | Indica o tipo de valor da tarifa                    |
-| prePostTax      | string                       | Sim          | Valor da tarifa cobrada referente                   |
-| frequency       | string                       | Sim          | Valor da tarifa cobrada referente                   |
-| additionalInfo  | string                       | Sim          | Indica o tipo de valor da tarifa                    |
+|     Nome        |  Tipo                                                                                             |  Obrigatório |                            Descrição                |
+|:----------------|:-----------------------------                                                                     |:-------------|:----------------------------------------------------|
+| rate            | string                                                                                            | Sim          | Indica o tipo de valor da tarifa                    |
+| referencialRate | string                                                                                            | Sim          | Valor da tarifa cobrada referente                   |
+| indexer         | string                                                                                            | Sim          | Indica o tipo de valor da tarifa                    |
+| prePostTax      | [Enum BusinessAccountIncomeRatesPrePostTax](#schemaEnumBusinessAccountIncomeRatesPrePostTax)      | Sim          | Valor da tarifa cobrada referente                   |
+| frequency       | [Enum BusinessAccountIncomeRatesFrequency](#schemaEnumBusinessAccountIncomeRatesFrequency)        | Sim          | Valor da tarifa cobrada referente                   |
+| additionalInfo  | string                                                                                            | Sim          | Indica o tipo de valor da tarifa                    |
 
 
-### EnumBusinessAccountIncomeRatesPrePostTax
+### Enum BusinessAccountIncomeRatesPrePostTax
 <a id="schemaEnumBusinessAccountIncomeRatesPrePostTax"></a>
 
 | Propriedade  | Valor  | Definição                                       
@@ -533,7 +533,7 @@
 | prePostTax   | POS    | Pós fixado
 
 
-### EnumBusinessAccountIncomeRatesFrequency
+### Enum BusinessAccountIncomeRatesFrequency
 <a id="schemaEnumBusinessAccountIncomeRatesFrequency"></a>
 
 | Propriedade  | Valor | Definição                                   
