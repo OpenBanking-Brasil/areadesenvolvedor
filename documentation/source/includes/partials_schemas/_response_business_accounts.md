@@ -109,64 +109,82 @@
 
 ```json
 {
-      "name": "string",
-      "companies": [
-        {
-          "name": "string",
-          "cnpjNumber": "string",
-          "businessAccounts": [
-            {
-              "type": "string",
-              "fees": {
-                "otherServices": [
-                  {
-                    "name": "string",
-                    "code": "string",
-                    "chargingTriggerInfo": "string",
-                    "price": {
-                      "type": "string",
-                      "value": "string",
-                      "currency": "string"
-                    },
-                    "currency": "string",
-                    "additionalInfo": "string",
-                    "chargingUnit": "string"
-                  }
-                ]
-              },
-              "serviceBundles": {
-                "name": "string",
-                "services": [
-                  {
-                    "code": "string",
-                    "eventLimitQuantity": "string",
-                    "freeEventQuantity": "string",
-                    "maxPrice": "string",
+    "name": "string",
+    "companies": [
+      {
+        "name": "string",
+        "cnpjNumber": "string",
+        "businessAccounts": [
+          {
+            "type": "string",
+            "fees": {
+              "otherServices": [
+                {
+                  "name": "string",
+                  "code": "string",
+                  "chargingTriggerInfo": "string",
+                  "price": {
+                    "type": "string",
+                    "value": "string",
                     "currency": "string"
-                  }
-                ]
+                  },
+                  "referenceValue": "string",
+                  "referenceCurrency": "string",
+                  "additionalInfo": "string",
+                  "chargingUnit": "string"
+                }
+              ]
+            },
+            "serviceBundles": {
+              "name":"string",
+              "services": [
+                {
+                  "code": "string",
+                  "eventLimitQuantity": "string",
+                  "freeEventQuantity": "string",
+                  "price": {
+                    "type":"string"
+                  },
+                  "value": "string",
+                  "currency": "string",
+                  "referenceValue":"string",
+                  "referenceCurrency":"string"
+                }
+              ],
+              "typesPrice":"string",
+              "monthlyPrice":"string",
+              "currency": "string",
+              "referenceValue":"string",
+              "referenceCurrency":"string"
+            },
+            "openCloseChannels": "string",
+            "additionalInfo":"string",
+            "transactionMethods": "string",
+            "termsConditions": {
+              "minimumBalance": "string",
+              "minimumBalanceCurrency": "string",
+              "elegibilityCriteriaInfo": "string",
+              "closingProcessInfo": "string"
+            },
+            "incomeRates": {
+              "rate": "string",
+              "referencialRate": "string",
+              "indexer": "string",
+              "prePostTax": "string",
+              "frequency": "string",
+              "additionalInfo": "string",
+              "application":{
+                "types":"string",
+                "rate":"string"
               },
-              "openCloseChannels": "string",
-              "transactionMethods": "string",
-              "termsConditions": {
-                "minimumBalance": "string",
-                "minimumBalanceCurrency": "string",
-                "elegibilityCriteriaInfo": "string",
-                "closingProcessInfo": "string"
-              },
-              "incomeRates": {
-                "rate": "string",
-                "referencialRate": "string",
-                "indexer": "string",
-                "prePostTax": "string",
-                "frequency": "string",
-                "additionalInfo": "string"
-              }
+              "referenceValue":"string",
+              "referenceCurrency":"string"
             }
-          ]
-        }
-      ]
-}
+          }
+        ]
+      }
+    ]
+  }
 ```
 
 |     Nome     |  Tipo                                                        | Obrigatório  |                            Definição                         |
@@ -195,25 +213,37 @@
               "value": "string",
               "currency": "string"
             },
-            "currency": "string",
+            "referenceValue": "string",
+            "referenceCurrency": "string",
             "additionalInfo": "string",
             "chargingUnit": "string"
           }
         ]
       },
       "serviceBundles": {
-        "name": "string",
+        "name":"string",
         "services": [
           {
             "code": "string",
             "eventLimitQuantity": "string",
             "freeEventQuantity": "string",
-            "maxPrice": "string",
-            "currency": "string"
+            "price": {
+              "type":"string"
+            },
+            "value": "string",
+            "currency": "string",
+            "referenceValue":"string",
+            "referenceCurrency":"string"
           }
-        ]
+        ],
+        "typesPrice":"string",
+        "monthlyPrice":"string",
+        "currency": "string",
+        "referenceValue":"string",
+        "referenceCurrency":"string"
       },
       "openCloseChannels": "string",
+      "additionalInfo":"string",
       "transactionMethods": "string",
       "termsConditions": {
         "minimumBalance": "string",
@@ -227,7 +257,13 @@
         "indexer": "string",
         "prePostTax": "string",
         "frequency": "string",
-        "additionalInfo": "string"
+        "additionalInfo": "string",
+        "application":{
+          "types":"string",
+          "rate":"string"
+        },
+        "referenceValue":"string",
+        "referenceCurrency":"string"
       }
     }
   ]
@@ -246,53 +282,71 @@
 
 ```json
 {
-              "type": "string",
-              "fees": {
-                "otherServices": [
-                  {
-                    "name": "string",
-                    "code": "string",
-                    "chargingTriggerInfo": "string",
-                    "price": {
-                      "type": "string",
-                      "value": "string",
-                      "currency": "string"
-                    },
-                    "currency": "string",
-                    "additionalInfo": "string",
-                    "chargingUnit": "string"
-                  }
-                ]
-              },
-              "serviceBundles": {
-                "name": "string",
-                "services": [
-                  {
-                    "code": "string",
-                    "eventLimitQuantity": "string",
-                    "freeEventQuantity": "string",
-                    "maxPrice": "string",
-                    "currency": "string"
-                  }
-                ]
-              },
-              "openCloseChannels": "string",
-              "transactionMethods": "string",
-              "termsConditions": {
-                "minimumBalance": "string",
-                "minimumBalanceCurrency": "string",
-                "elegibilityCriteriaInfo": "string",
-                "closingProcessInfo": "string"
-              },
-              "incomeRates": {
-                "rate": "string",
-                "referencialRate": "string",
-                "indexer": "string",
-                "prePostTax": "string",
-                "frequency": "string",
-                "additionalInfo": "string"
-              }
-            }
+  "type": "string",
+  "fees": {
+    "otherServices": [
+      {
+        "name": "string",
+        "code": "string",
+        "chargingTriggerInfo": "string",
+        "price": {
+          "type": "string",
+          "value": "string",
+          "currency": "string"
+        },
+        "referenceValue": "string",
+        "referenceCurrency": "string",
+        "additionalInfo": "string",
+        "chargingUnit": "string"
+      }
+    ]
+  },
+  "serviceBundles": {
+    "name":"string",
+    "services": [
+      {
+        "code": "string",
+        "eventLimitQuantity": "string",
+        "freeEventQuantity": "string",
+        "price": {
+          "type":"string"
+        },
+        "value": "string",
+        "currency": "string",
+        "referenceValue":"string",
+        "referenceCurrency":"string"
+      }
+    ],
+    "typesPrice":"string",
+    "monthlyPrice":"string",
+    "currency": "string",
+    "referenceValue":"string",
+    "referenceCurrency":"string"
+  },
+  "openCloseChannels": "string",
+  "additionalInfo":"string",
+  "transactionMethods": "string",
+  "termsConditions": {
+    "minimumBalance": "string",
+    "minimumBalanceCurrency": "string",
+    "elegibilityCriteriaInfo": "string",
+    "closingProcessInfo": "string"
+  },
+  "incomeRates": {
+    "rate": "string",
+    "referencialRate": "string",
+    "indexer": "string",
+    "prePostTax": "string",
+    "frequency": "string",
+    "additionalInfo": "string",
+    "application":{
+      "types":"string",
+      "rate":"string"
+    },
+    "referenceValue":"string",
+    "referenceCurrency":"string"
+  }
+}
 ```
 
 |     Nome              |  Tipo                                          |  Obrigatório    |                            Descrição                  |
@@ -311,22 +365,23 @@
 
 ```json
 {
-                "otherServices": [
-                  {
-                    "name": "string",
-                    "code": "string",
-                    "chargingTriggerInfo": "string",
-                    "price": {
-                      "type": "string",
-                      "value": "string",
-                      "currency": "string"
-                    },
-                    "currency": "string",
-                    "additionalInfo": "string",
-                    "chargingUnit": "string"
-                  }
-                ]
-              }
+  "otherServices": [
+    {
+      "name": "string",
+      "code": "string",
+      "chargingTriggerInfo": "string",
+      "price": {
+        "type": "string",
+        "value": "string",
+        "currency": "string"
+      },
+      "referenceValue": "string",
+      "referenceCurrency": "string",
+      "additionalInfo": "string",
+      "chargingUnit": "string"
+    }
+  ]
+}
 ```
 
 |     Nome         |  Tipo                              |  Obrigatório    |                            Descrição                |
@@ -337,19 +392,20 @@
 <a id="schemaOtherServicesBusinessAccount"></a>
 
 ```json
-    {
-      "name": "string",
-      "code": "string",
-      "chargingTriggerInfo": "string",
-      "price": {
-          "type": "string",
-          "value": "string",
-          "currency": "string"
-          },
-      "currency": "string",
-      "additionalInfo": "string",
-      "chargingUnit": "string"
-    }
+  {
+    "name": "string",
+    "code": "string",
+    "chargingTriggerInfo": "string",
+    "price": {
+      "type": "string",
+      "value": "string",
+      "currency": "string"
+    },
+    "referenceValue": "string",
+    "referenceCurrency": "string",
+    "additionalInfo": "string",
+    "chargingUnit": "string"
+  }
 ```
 
 | Nome                | Tipo   | Obrigatório | Descrição                                                 |
@@ -358,7 +414,8 @@
 | code                | string | Não         | Sigla de identificação de Outros Serviços que incidem sobre os tipos de contas   |
 | chargingTriggerInfo | string | Sim         | Outros Fatores geradores de cobrança referentes aos Outros Serviços que incidem sobre as contas comercializadas.                                    |
 | price               | [[PriceOtherServicesBusinessAccount](#schemaPriceOtherServicesBusinessAccount)] | Sim      | Valor da tarifa cobrada referente aos Outros Serviços.                  |
-| currency            | string | Sim         | Moeda relativa ao valor de referência                                    |
+| referenceValue            | string | Sim         | Moeda relativa ao valor de referência                                    |
+| referenceCurrency            | string | Sim         | Moeda relativa ao valor de referência                                    |
 | additionalInfo      | string | Não         | Descrição de como é composto o valor da tarifa                                    |
 | chargingUnit        | string | Não         | Unidade ou forma de cobrança                                    |
 
@@ -366,11 +423,11 @@
 <a id="schemaPriceOtherServicesBusinessAccount"></a>
 
 ```json
-    {
-      "type": "string",
-      "value": "string",
-      "currency": "string"
-    }
+  {
+    "type": "string",
+    "value": "string",
+    "currency": "string"
+  }
 ```
 
 |     Nome    |  Tipo                        |  Obrigatório |                            Descrição                |
@@ -385,23 +442,39 @@
 
 ```json
 {
-  "name": "string",
-  "services": [
-    {
-      "code": "string",
-      "eventLimitQuantity": "string",
-      "freeEventQuantity": "string",
-      "maxPrice": "string",
-      "currency": "string"
-     }
-   ]
+  "name":"string",
+		"services": [
+		  {
+			"code": "string",
+			"eventLimitQuantity": "string",
+			"freeEventQuantity": "string",
+			"price": {
+			  "type":"string"
+			},
+			"value": "string",
+			"currency": "string",
+			"referenceValue":"string",
+			"referenceCurrency":"string"
+		  }
+		],
+		"typesPrice":"string",
+		"monthlyPrice":"string",
+		"currency": "string",
+		"referenceValue":"string",
+		"referenceCurrency":"string"
 }
+
 ```
 
 |     Nome    |  Tipo                        |  Obrigatório |                            Descrição                |
 |:------------|:-----------------------------|:-------------|:----------------------------------------------------|
 | name        | string                       | Sim          | Nome do conjunto de serviços                        |
 | services    | [[ServicesBusinessAccount](#schemaServicesBusinessAccount)]| Sim          | Lista de serviços       |
+| typesPrice        | string                       | Sim          | Nome do conjunto de serviços                        |
+| monthlyPrice        | string                       | Sim          | Nome do conjunto de serviços                        |
+| currency        | string                       | Sim          | Nome do conjunto de serviços                        |
+| referenceValue        | string                       | Sim          | Nome do conjunto de serviços                        |
+| referenceCurrency        | string                       | Sim          | Nome do conjunto de serviços                        |
 
 ## ServicesBusinessAccount
 <a id="schemaServicesBusinessAccount"></a>
@@ -411,8 +484,13 @@
   "code": "string",
   "eventLimitQuantity": "string",
   "freeEventQuantity": "string",
-  "maxPrice": "string",
-  "currency": "string"
+  "price": {
+    "type":"string"
+  },
+  "value": "string",
+  "currency": "string",
+  "referenceValue":"string",
+  "referenceCurrency":"string"
 }
 ```
 
@@ -421,8 +499,24 @@
 | code               | string                       | Sim          | Indica o tipo de valor da tarifa                    |
 | eventLimitQuantity | string                       | Sim          | Valor da tarifa cobrada referente                   |
 | freeEventQuantity  | string                       | Sim          | Indica o tipo de valor da tarifa                    |
-| maxPrice           | string                       | Sim          | Valor da tarifa cobrada referente                   |
+| price           |  [[PriceServicesBusinessAccount](#schemaPriceServicesBusinessAccount)]| Sim          | Valor da tarifa cobrada referente                   |
+| value           | string                       | Sim          | Indica o tipo de valor da tarifa                    |
 | currency           | string                       | Sim          | Indica o tipo de valor da tarifa                    |
+| referenceValue           | string                       | Sim          | Indica o tipo de valor da tarifa                    |
+| referenceCurrency           | string                       | Sim          | Indica o tipo de valor da tarifa                    |
+
+## PriceServicesBusinessAccount
+<a id="schemaPriceServicesBusinessAccount"></a>
+
+```json
+{
+  "type":"string"
+}
+```
+
+|     Nome           |  Tipo                        |  Obrigatório |                            Descrição                |
+|:-------------------|:-----------------------------|:-------------|:----------------------------------------------------|
+| type               | string                       | Sim          | Indica o tipo de valor da tarifa                    |
 
 ## TermsConditionsBusinessAccount
 <a id="schemaTermsConditionsBusinessAccount"></a>
@@ -449,23 +543,46 @@
 ```json
 {
   "rate": "string",
-  "referencialRate": "string",
-  "indexer": "string",
-  "prePostTax": "string",
-  "frequency": "string",
-  "additionalInfo": "string"
+	"referencialRate": "string",
+	"indexer": "string",
+	"prePostTax": "string",
+	"frequency": "string",
+	"additionalInfo": "string",
+	"application":{
+	  "types":"string",
+	  "rate":"string"
+	},
+	"referenceValue":"string",
+	"referenceCurrency":"string"
 }
 ```
 
-|     Nome        |  Tipo                                                                                             |  Obrigatório |                            Descrição                |
-|:----------------|:-----------------------------                                                                     |:-------------|:----------------------------------------------------|
-| rate            | string                                                                                            | Sim          | Indica o tipo de valor da tarifa                    |
-| referencialRate | string                                                                                            | Sim          | Valor da tarifa cobrada referente                   |
-| indexer         | string                                                                                            | Sim          | Indica o tipo de valor da tarifa                    |
-| prePostTax      | [Enum BusinessAccountIncomeRatesPrePostTax](#schemaEnumBusinessAccountIncomeRatesPrePostTax)      | Sim          | Valor da tarifa cobrada referente                   |
-| frequency       | [Enum BusinessAccountIncomeRatesFrequency](#schemaEnumBusinessAccountIncomeRatesFrequency)        | Sim          | Valor da tarifa cobrada referente                   |
-| additionalInfo  | string                                                                                            | Sim          | Indica o tipo de valor da tarifa                    |
+|     Nome          |  Tipo                                        |  Obrigatório | Descrição                                           |
+|:------------------|:---------------------------------------------|:-------------|:----------------------------------------------------|
+| rate              | string                                       | Sim          | Indica o tipo de valor da tarifa                    |
+| referencialRate   | string                                       | Sim          | Valor da tarifa cobrada referente                   |
+| indexer           | string                                       | Sim          | Indica o tipo de valor da tarifa                    |
+| prePostTax        | [Enum BusinessAccountIncomeRatesPrePostTax](#schemaEnumBusinessAccountIncomeRatesPrePostTax) | Sim          | Valor da tarifa cobrada referente                   |
+| frequency         | [Enum BusinessAccountIncomeRatesFrequency](#schemaEnumBusinessAccountIncomeRatesFrequency)   | Sim          | Valor da tarifa cobrada referente                   |
+| additionalInfo    | string                                       | Sim          | Indica o tipo de valor da tarifa                    |
+| application       | [[ApplicationIncomeRatesBusinessAccount](#schemaApplicationIncomeRatesBusinessAccount)]                                       | Sim          | Indica o tipo de valor da tarifa                    |
+| referenceValue    | string                                       | Sim          | Indica o tipo de valor da tarifa                    |
+| referenceCurrency | string                                       | Sim          | Indica o tipo de valor da tarifa                    |
 
+## ApplicationIncomeRatesBusinessAccount
+<a id="schemaApplicationIncomeRatesBusinessAccount"></a>
+
+```json
+{
+  "types":"string",
+  "rate":"string"
+}
+```
+
+|     Nome          |  Tipo                                        |  Obrigatório | Descrição                                           |
+|:------------------|:---------------------------------------------|:-------------|:----------------------------------------------------|
+| types              | string                                       | Sim          | Indica o tipo de valor da tarifa                    |
+| rate   | string                                       | Sim          | Valor da tarifa cobrada referente                   |
 
 ### Enum BusinessAccountIncomeRatesPrePostTax
 <a id="schemaEnumBusinessAccountIncomeRatesPrePostTax"></a>
