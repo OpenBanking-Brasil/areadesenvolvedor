@@ -302,7 +302,7 @@
 <a id="schemaBusinessInvoiceFinancingsFees"></a>
 
 ```json
-{{
+{
   "serviceName": "string",
   "serviceCode": "string",
   "chargingTriggerInfo": "string",

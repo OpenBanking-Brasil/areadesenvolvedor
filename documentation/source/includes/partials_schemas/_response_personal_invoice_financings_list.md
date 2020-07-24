@@ -378,7 +378,7 @@
 | prePostTax                | [Enum PrePostTax](#schemaPrePostTax)                                                        | Sim            | Indicador de pré ou pós. A diferença básica é que, enquanto o prefixado apresenta rentabilidade definida, o pós-fixado acompanha algum indicador. Assim, quem investe no primeiro grupo sabe como será seu rendimento previamente, enquanto quem investe no segundo, só conhecerá os resultados na data de vencimento |
 | frequency                 | [Enum FrequencyType](#schemaFrequencyType)                                                  | Sim            | Frequência sobre a qual incide a Remuneração                                                                                                                                                                                                                                                                          |
 | incomeRateInfo            | string                                                                                      | Não            | Descrição da Remuneração relativa as taxas de juros remuneratórias sobre a modalidade de direitos creditórios descontados infomrada, para pessoa física                                                                                                                                                               |
-| application               | [[BusinessInvoiceApplication](#schemaBusinessInvoiceApplication)]                           | Não            | Descrição da Remuneração relativa as taxas de juros remuneratórias sobre a modalidade de direitos creditórios descontados infomrada, para pessoa física                                                                                                                                                               |
+| application               | [[PersonalInvoiceFinancingApplication](#schemaPersonalInvoiceFinancingApplication)]         | Não            | Descrição da Remuneração relativa as taxas de juros remuneratórias sobre a modalidade de direitos creditórios descontados infomrada, para pessoa física                                                                                                                                                               |
 | referenceValue            | [AmountString](#commonFieldAmountString)                                                    | Sim            | Valor de referência utilizado na apuração dos valores informados por quartil (representa um valor monetário                                |
 | referenceCurrency         | [CurrencyString](#commonFieldCurrencyString)                                                | Sim            | Moeda relativa ao valor de referência, segundo modelo ISO-4217.                                                                            |
 
@@ -391,8 +391,8 @@
 | indexer      | SELIC  | SELIC       |
 | indexer      | CDI    | CDI         |
 
-## BusinessInvoiceApplication 
-<a id="schemaBusinessInvoiceApplication"></a>
+## PersonalInvoiceFinancingApplication 
+<a id="schemaPersonalInvoiceFinancingApplication"></a>
 
 ```json
 {
