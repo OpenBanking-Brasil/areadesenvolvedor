@@ -56,7 +56,7 @@
 | data            | object                                                      | Sim          |                                                       |
 | » brand         | [[PhoneChannelsBrand](#schemaPhoneChannelsBrand)]   | Sim          | Lista das organizaçõs titulares das dependências      |
 | links           | [[LinksPaginated](#schemaLinksPaginated)]                   | Sim          |                                                       |
-| meta            | [[MetaPaginated](#schemaMetaPaginated)]                     | Sim          |                                                       |
+| meta            | [MetaPaginated](#schemaMetaPaginated)                     | Sim          |                                                       |
 
 ## PhoneChannelsBrand
 <a id="schemaPhoneChannelsBrand"></a>

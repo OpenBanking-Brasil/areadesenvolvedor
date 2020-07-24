@@ -53,7 +53,7 @@
                 "requiredWarranties": [
                   "string"
                 ],
-                "termsCondictions": "string"
+                "termsConditions": "string"
               }
             ]
           }
@@ -80,7 +80,7 @@
 | data          | object                                                                    | Sim          |                                                       |
 | » brand       | [[PersonalInvoiceFinancingsBrand](#schemaPersonalInvoiceFinancingsBrand)] | Sim          | Lista das organizaçõs titulares das dependências      |
 | links         | [[LinksPaginated](#schemaLinksPaginated)]                                 | Sim          |                                                       |
-| meta          | [[MetaPaginated](#schemaMetaPaginated)]                                   | Sim          |                                                       |
+| meta          | [MetaPaginated](#schemaMetaPaginated)                                   | Sim          |                                                       |
 
 ## PersonalInvoiceFinancingsBrand
 <a id="schemaPersonalInvoiceFinancingsBrand"></a>
@@ -134,7 +134,7 @@
           "requiredWarranties": [
             "string"
           ],
-          "termsCondictions": "string"
+          "termsConditions": "string"
         }
       ]
     }
@@ -196,7 +196,7 @@
       "requiredWarranties": [
         "string"
       ],
-      "termsCondictions": "string"
+      "termsConditions": "string"
     }
   ]
 }
@@ -253,7 +253,7 @@
   "requiredWarranties": [
     "string"
   ],
-  "termsCondictions": "string"
+  "termsConditions": "string"
 }
 ```
 
@@ -263,7 +263,7 @@
 | fees                  | [[PersonalInvoiceFinancingsFees](#schemaPersonalInvoiceFinancingsFees)]                                       | Sim         | Lista das Tarifas cobradas sobre Serviços ofertados à Modalidade de direitos creditórios descontados, para pessoa física                                                                                                                                                              |
 | interestRates         | [[PersonalInvoiceFinancingsInterestRates](#schemaPersonalInvoiceFinancingsInterestRates)]                     | Sim         | Lista de taxas de juros remuneratórias                                                                                                                                                                                                                                                |
 | requiredWarranties    | [[Enum PersonalInvoiceFinancingsRequiredWarranties](#schemaEnumPersonalInvoiceFinancingsRequiredWarranties)]  | Sim         | Relação de garantias exigidas                                                                                                                                                                                                                                                         |
-| termsCondictions      | string                                                                                                      | Não         | Campo aberto para informar as condições contratuais relativas à Modalidade de direitos creditórios descontados informada                                                                                                                                                              |
+| termsConditions      | string                                                                                                      | Não         | Campo aberto para informar as condições contratuais relativas à Modalidade de direitos creditórios descontados informada                                                                                                                                                              |
 
 
 ### Enum PersonalInvoiceFinancingsType
@@ -342,11 +342,11 @@
 }
 ```
 
-|     Nome     |  Tipo                                                   | Obrigatório    |                            Definição                                                                                                                                                                                      |
-|:------------ |:------------------------------------------------------- |:-------------- |:------------------------------------------------------------------------------------------------------------------------------------------                                                                                |
-| type         | [Enum PriceType](#schemaPriceType)                      | Sim            | Identifica o período referente ao percentual de taxa de remuneração efetivamente aplicada no intervalo informado: mínimo, 1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes |
-| value        | [AmountString](#commonFieldAmountString)                | Sim            | Valor para a tarifa cobrada, relativa ao serviço ofertado para a Modalidade de direitos creditórios descontados, para pessoa física                                                                                       |
-| currency     | [CurrencyString](#commonFieldCurrencyString)            | Sim            | Moeda referente ao valor da tarifa                                                                                                                                                                                        |
+|     Nome     |  Tipo                                                   | Obrigatório    |                            Definição                                                                                                       |
+|:------------ |:------------------------------------------------------- |:-------------- |:------------------------------------------------------------------------------------------------------------------------------------------ |
+| type         | [Enum PriceType](#schemaPriceType)                      | Sim            | Identifica o período referente ao percentual de taxa de remuneração efetivamente aplicada no intervalo informado.                          |
+| value        | [AmountString](#commonFieldAmountString)                | Sim            | Valor para a tarifa cobrada, relativa ao serviço ofertado para a Modalidade de direitos creditórios descontados, para pessoa física        |
+| currency     | [CurrencyString](#commonFieldCurrencyString)            | Sim            | Moeda referente ao valor da tarifa                                                                                                         |
 
 ## PersonalInvoiceFinancingsInterestRates 
 <a id="schemaPersonalInvoiceFinancingsInterestRates"></a>

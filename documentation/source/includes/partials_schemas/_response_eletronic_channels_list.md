@@ -49,7 +49,7 @@
 | data            | object                                                      | Sim          |                                                       |
 | » brand         | [[ElectronicChannelsBrand](#schemaElectronicChannelsBrand)]   | Sim          | Lista das organizaçõs titulares das dependências      |
 | links           | [[LinksPaginated](#schemaLinksPaginated)]                   | Sim          |                                                       |
-| meta            | [[MetaPaginated](#schemaMetaPaginated)]                     | Sim          |                                                       |
+| meta            | [MetaPaginated](#schemaMetaPaginated)                     | Sim          |                                                       |
 
 ## ElectronicChannelsBrand
 <a id="schemaElectronicChannelsBrand"></a>
