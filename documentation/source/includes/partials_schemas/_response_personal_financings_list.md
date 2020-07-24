@@ -27,6 +27,8 @@
                         "currency": "string"
                       }
                     ],
+                    "referenceValue": "string",
+                    "referenceCurrency": "string",
                     "additionalInfo": "string"
                   }
                 ],
@@ -37,13 +39,21 @@
                     "indexer": "string",
                     "prePostTax": "string",
                     "frequency": "string",
-                    "incomeRateInfo": "string"
+                    "incomeRateInfo": "string",
+                    "application": [
+                      {
+                        "type": "string",
+                        "rate": "string"
+                      }
+                    ],
+                    "referenceValue": "string",
+                    "referenceCurrency": "string"
                   }
                 ],
                 "requiredWarranties": [
                   "string"
                 ],
-                "termsCondictions": "string"
+                "termsConditions": "string"
               }
             ]
           }
@@ -70,7 +80,7 @@
 | data          | object                                                      | Sim          |                                                       |
 | » brand       | [[PersonalFinancingsBrand](#schemaPersonalFinancingsBrand)] | Sim          | Lista das organizaçõs titulares das dependências      |
 | links         | [[LinksPaginated](#schemaLinksPaginated)]                   | Sim          |                                                       |
-| meta          | [[MetaPaginated](#schemaMetaPaginated)]                     | Sim          |                                                       |
+| meta          | [MetaPaginated](#schemaMetaPaginated)                     | Sim          |                                                       |
 
 ## PersonalFinancingsBrand
 <a id="schemaPersonalFinancingsBrand"></a>
@@ -98,6 +108,8 @@
                   "currency": "string"
                 }
               ],
+              "referenceValue": "string",
+              "referenceCurrency": "string",
               "additionalInfo": "string"
             }
           ],
@@ -108,13 +120,21 @@
               "indexer": "string",
               "prePostTax": "string",
               "frequency": "string",
-              "incomeRateInfo": "string"
+              "incomeRateInfo": "string",
+              "application": [
+                {
+                  "type": "string",
+                  "rate": "string"
+                }
+              ],
+              "referenceValue": "string",
+              "referenceCurrency": "string"
             }
           ],
           "requiredWarranties": [
             "string"
           ],
-          "termsCondictions": "string"
+          "termsConditions": "string"
         }
       ]
     }
@@ -150,6 +170,8 @@
               "currency": "string"
             }
           ],
+          "referenceValue": "string",
+          "referenceCurrency": "string",
           "additionalInfo": "string"
         }
       ],
@@ -160,13 +182,21 @@
           "indexer": "string",
           "prePostTax": "string",
           "frequency": "string",
-          "incomeRateInfo": "string"
+          "incomeRateInfo": "string",
+          "application": [
+            {
+              "type": "string",
+              "rate": "string"
+            }
+          ],
+          "referenceValue": "string",
+          "referenceCurrency": "string"
         }
       ],
       "requiredWarranties": [
         "string"
       ],
-      "termsCondictions": "string"
+      "termsConditions": "string"
     }
   ]
 }
@@ -197,6 +227,8 @@
           "currency": "string"
         }
       ],
+      "referenceValue": "string",
+      "referenceCurrency": "string",
       "additionalInfo": "string"
     }
   ],
@@ -207,13 +239,21 @@
       "indexer": "string",
       "prePostTax": "string",
       "frequency": "string",
-      "incomeRateInfo": "string"
+      "incomeRateInfo": "string",
+      "application": [
+        {
+          "type": "string",
+          "rate": "string"
+        }
+      ],
+      "referenceValue": "string",
+      "referenceCurrency": "string"
     }
   ],
   "requiredWarranties": [
     "string"
   ],
-  "termsCondictions": "string"
+  "termsConditions": "string"
 }
 ```
 
@@ -223,7 +263,7 @@
 | fees                  | [[PersonalFinancingsFees](#schemaPersonalFinancingsFees)]                                       | Sim         | Lista das Tarifas cobradas sobre Serviços ofertados à Modalidade de Financiamento, para pessoa física                                                                                                                                                                                                                                   |
 | interestRates         | [[PersonalFinancingsInterestRates](#schemaPersonalFinancingsInterestRates)]                     | Sim         | Lista de taxas de juros                                                                                                                                                                                                                                                                                                                 |
 | requiredWarranties    | [[Enum PersonalFinancingsRequiredWarranties](#schemaEnumPersonalFinancingsRequiredWarranties)]  | Sim         | Relação de garantias exigidas                                                                                                                                                                                                                                                                                                           |
-| termsCondictions      | string                                                                                          | Não         | Campo aberto para informar as condições contratuais relativas à Modalidade de Financiamento para pessoa física. Pode ser informada a URL referente ao endereço onde constam as condições informadas                                                                                                                                     |
+| termsConditions      | string                                                                                          | Não         | Campo aberto para informar as condições contratuais relativas à Modalidade de Financiamento para pessoa física. Pode ser informada a URL referente ao endereço onde constam as condições informadas                                                                                                                                     |
 
 
 ### Enum PersonalFinancingsType
@@ -280,6 +320,8 @@
       "currency": "string"
     }
   ],
+  "referenceValue": "string",
+  "referenceCurrency": "string",
   "additionalInfo": "string"
 }
 ```
@@ -291,6 +333,8 @@
 | chargingTriggerInfo  | string                                                                   | Não            | Fatores geradores de cobrança que incidem sobre as Modalidades de Financiamentos, para pessoa física. Campo Livre                          |
 | chargingUnit         | string                                                                   | Não            | Unidade ou forma de cobrança                                                                                                               |
 | price                | [[PersonalFinancingsPrice](#schemaPersonalFinancingsPrice)]              | Sim            | Lista de preços possíveis                                                                                                                  |
+| referenceValue       | [AmountString](#commonFieldAmountString)                                 | Sim            | Valor de referência utilizado na apuração dos valores informados por quartil (representa um valor monetário                                |
+| referenceCurrency    | [CurrencyString](#commonFieldCurrencyString)                             | Sim            | Moeda relativa ao valor de referência, segundo modelo ISO-4217.                                                                            |
 | additionalInfo       | string                                                                   | Não            | Descrição de como é composto o valor da tarifa. p.ex. '0,25% sobre o excedente do limite acima de R$ 500,00'                               |
 
 ## PersonalFinancingsPrice
@@ -304,28 +348,11 @@
 }
 ```
 
-|     Nome     |  Tipo                                                                                  | Obrigatório    |                            Definição                                                                                                       |
-|:------------ |:-------------------------------------------------------------------------------------  |:-------------- |:------------------------------------------------------------------------------------------------------------------------------------------ |
-| type         | [Enum PersonalFinancingsPriceType](#schemaEnumPersonalFinancingsPriceType)             | Sim            | Indica os tipos: mínimo, médio e máximo do valor informado. P.ex.'mínimo'                                                                  |
-| value        | string                                                                                 | Sim            | Valor da tarifa cobrada, relativa ao serviço ofertado para a Modalidade de Empréstimo, para pessoa física                                  |
-| currency     | [Enum PersonalFinancingsCurrency](#schemaEnumPersonalFinancingsCurrency)               | Sim            | Moeda referente ao valor da tarifa                                                                                                  |
-
-### Enum PersonalFinancingsPriceType
-<a id="schemaEnumPersonalFinancingsPriceType"></a>
-
-| Propriedade  | Código | Definição   |
-|:------------ |:------ |:----------- |
-| type         | MINIMO | Mínimo      |
-| type         | MEDIO  | Médio       |
-| type         | MAXIMO | Máximo      |
-
-### Enum PersonalFinancingsCurrency
-<a id="schemaEnumPersonalFinancingsCurrency"></a>
-
-| Propriedade  | Código | Definição                                                                                             |
-|:------------ |:------ |:----------------------------------------------------------------------------------------------------- |
-| currency     | BRL    | Real                                                                                                  |
-| currency     | ***    | Conforme ISO_4217 (ex: <a href="https://pt.wikipedia.org/wiki/ISO_4217" target="_blank">ISO_4217</a>) |
+|     Nome     |  Tipo                                                     | Obrigatório    |                            Definição                                                                                                       |
+|:------------ |:--------------------------------------------------------- |:-------------- |:------------------------------------------------------------------------------------------------------------------------------------------ |
+| type         | [Enum PriceType](#schemaPriceType)                        | Sim            | Identifica o período referente ao percentual de taxa de remuneração efetivamente aplicada no intervalo informado.                          |
+| value        | [AmountString](#commonFieldAmountString)                  | Sim            | Valor da tarifa cobrada, relativa ao serviço ofertado para a Modalidade de Empréstimo, para pessoa física                                  |
+| currency     | [CurrencyString](#commonFieldCurrencyString)              | Sim            | Moeda referente ao valor da tarifa                                                                                                  |
 
 ## PersonalFinancingsInterestRates 
 <a id="schemaPersonalFinancingsInterestRates"></a>
@@ -337,18 +364,29 @@
   "indexer": "string",
   "prePostTax": "string",
   "frequency": "string",
-  "incomeRateInfo": "string"
+  "incomeRateInfo": "string",
+  "application": [
+    {
+      "type": "string",
+      "rate": "string"
+    }
+  ],
+  "referenceValue": "string",
+  "referenceCurrency": "string"
 }
 ```
 
 |     Nome                  |  Tipo                                                                           | Obrigatório    |                            Definição                                                                                                                                                                                                                                                                                  |
 |:------------              |:------------------------------------------------------------------------------- |:-------------- |:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| rate                      | string                                                                          | Sim            | Percentual que incide sobre a composição da  taxa de juros remuneratórias                                                                                                                                                                                                                                             |
-| referencialRate           | string                                                                          | Sim            | Taxa Referencial se configura como uma taxa de juros de referência, ou seja, um indicador geral da economia brasileira. Por isso, é utilizada na hora de calcular o rendimento de determinadas aplicações financeiras                                                                                                 |
+| rate                      | [RateString](#commonFieldRateString)                                            | Sim            | Percentual que incide sobre a composição da  taxa de juros remuneratórias                                                                                                                                                                                                                                             |
+| referencialRate           | [RateString](#commonFieldRateString)                                            | Sim            | Taxa Referencial se configura como uma taxa de juros de referência, ou seja, um indicador geral da economia brasileira. Por isso, é utilizada na hora de calcular o rendimento de determinadas aplicações financeiras                                                                                                 |
 | indexer                   | [Enum PersonalFinancingsIndexer](#schemaEnumPersonalFinancingsIndexer)          | Sim            | Indexador é o termo utilizado para se referir aos índices usados como base para corrigir os valores monetários de um determinado ativo. No Brasil, os indexadores mais comuns são o IPCA, a taxa Selic e o CDI                                                                                                        |
-| prePostTax                | [Enum PersonalFinancingsPrePostTax](#schemaEnumPersonalFinancingsPrePostTax)    | Sim            | Indicador de pré ou pós. A diferença básica é que, enquanto o prefixado apresenta rentabilidade definida, o pós-fixado acompanha algum indicador. Assim, quem investe no primeiro grupo sabe como será seu rendimento previamente, enquanto quem investe no segundo, só conhecerá os resultados na data de vencimento |
-| frequency                 | [Enum PersonalFinancingsFrequency](#schemaEnumPersonalFinancingsFrequency)      | Sim            | Frequência sobre a qual incide a Remuneração                                                                                                                                                                                                                                                                          |
+| prePostTax                | [Enum PrePostTax](#schemaPrePostTax)                                            | Sim            | Indicador de pré ou pós. A diferença básica é que, enquanto o prefixado apresenta rentabilidade definida, o pós-fixado acompanha algum indicador. Assim, quem investe no primeiro grupo sabe como será seu rendimento previamente, enquanto quem investe no segundo, só conhecerá os resultados na data de vencimento |
+| frequency                 | [Enum FrequencyType](#schemaFrequencyType)                                      | Sim            | Frequência sobre a qual incide a Remuneração                                                                                                                                                                                                                                                                          |
 | incomeRateInfo            | string                                                                          | Não            | Descrição da Remuneração relativa as taxas de juros remuneratórias sobre a modalidade de Financiamento informada, para pessoa física                                                                                                                                                                                  |
+| application               | [[PersonalFinancingApplication](#schemaPersonalFinancingApplication)]           | Não            | Descrição da Remuneração relativa as taxas de juros remuneratórias sobre a modalidade de direitos creditórios descontados infomrada, para pessoa física                                                                                                                                                               |
+| referenceValue            | [AmountString](#commonFieldAmountString)                                        | Sim            | Valor de referência utilizado na apuração dos valores informados por quartil (representa um valor monetário                                |
+| referenceCurrency         | [CurrencyString](#commonFieldCurrencyString)                                    | Sim            | Moeda relativa ao valor de referência, segundo modelo ISO-4217.                                                                            |
 
 ### Enum PersonalFinancingsIndexer
 <a id="schemaEnumPersonalFinancingsIndexer"></a>
@@ -359,19 +397,17 @@
 | indexer      | SELIC  | SELIC       |
 | indexer      | CDI    | CDI         |
 
-### Enum PersonalFinancingsPrePostTax
-<a id="schemaEnumPersonalFinancingsPrePostTax"></a>
+## PersonalFinancingApplication 
+<a id="schemaPersonalFinancingApplication"></a>
 
-| Propriedade  | Código | Definição   |
-|:------------ |:------ |:----------- |
-| prePostTax   | PRE    | Pré fixado  |
-| prePostTax   | POS    | Pós fixado  |
+```json
+{
+  "type": "string",
+  "rate": "string"
+}
+```
 
-### Enum PersonalFinancingsFrequency
-<a id="schemaEnumPersonalFinancingsFrequency"></a>
-
-| Propriedade  | Código | Definição   |
-|:------------ |:------ |:----------- |
-| frequency    | AD     | Ao dia      |
-| frequency    | AM     | Ao mês      |
-| frequency    | AA     | Ao ano      |
+|     Nome     |  Tipo                                             | Obrigatório    |                            Definição                                                                                                                                                                                      |
+|:------------ |:------------------------------------------------- |:-------------- |:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| type         | [Enum PriceType](#schemaPriceType)                | Sim            | Identifica o período referente ao percentual de taxa de remuneração efetivamente aplicada no intervalo informado: mínimo, 1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes |
+| rate         | [RateString](#commonFieldRateString)              | Sim            | Valor do percentual que corresponde a taxa de remuneração efetivamente aplicada no intervalo informado (representação de uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O valor 1 representa 100%))            |
