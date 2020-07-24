@@ -332,27 +332,10 @@
 | serviceCode          | string                                                                   | Sim            | Sigla de identificação do serviço relacionado à Modalidade de Financiamento informada, para pessoa física. Campo aberto                    |
 | chargingTriggerInfo  | string                                                                   | Não            | Fatores geradores de cobrança que incidem sobre as Modalidades de Financiamentos, para pessoa física. Campo Livre                          |
 | chargingUnit         | string                                                                   | Não            | Unidade ou forma de cobrança                                                                                                               |
-| price                | [[PersonalFinancingsPrice](#schemaPersonalFinancingsPrice)]              | Sim            | Lista de preços possíveis                                                                                                                  |
+| price                | [[Price](#schemaPrice)]                                                  | Sim            | Lista de preços possíveis                                                                                                                  |
 | referenceValue       | [AmountString](#commonFieldAmountString)                                 | Sim            | Valor de referência utilizado na apuração dos valores informados por quartil (representa um valor monetário                                |
 | referenceCurrency    | [CurrencyString](#commonFieldCurrencyString)                             | Sim            | Moeda relativa ao valor de referência, segundo modelo ISO-4217.                                                                            |
 | additionalInfo       | string                                                                   | Não            | Descrição de como é composto o valor da tarifa. p.ex. '0,25% sobre o excedente do limite acima de R$ 500,00'                               |
-
-## PersonalFinancingsPrice
-<a id="schemaPersonalFinancingsPrice"></a>
-
-```json
-{
-  "type": "string",
-  "value": "string",
-  "currency": "string"
-}
-```
-
-|     Nome     |  Tipo                                                     | Obrigatório    |                            Definição                                                                                                       |
-|:------------ |:--------------------------------------------------------- |:-------------- |:------------------------------------------------------------------------------------------------------------------------------------------ |
-| type         | [Enum PriceType](#schemaPriceType)                        | Sim            | Identifica o período referente ao percentual de taxa de remuneração efetivamente aplicada no intervalo informado.                          |
-| value        | [AmountString](#commonFieldAmountString)                  | Sim            | Valor da tarifa cobrada, relativa ao serviço ofertado para a Modalidade de Empréstimo, para pessoa física                                  |
-| currency     | [CurrencyString](#commonFieldCurrencyString)              | Sim            | Moeda referente ao valor da tarifa                                                                                                  |
 
 ## PersonalFinancingsInterestRates 
 <a id="schemaPersonalFinancingsInterestRates"></a>

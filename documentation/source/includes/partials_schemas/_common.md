@@ -1,5 +1,5 @@
-<a id="schemaLinksPaginated"></a>
 ## LinksPaginated
+<a id="schemaLinksPaginated"></a>
 
 |     Nome          |  Tipo                                |                            Definição                         | Mandatoriedade  | Restrição                                                |
 |:------------      |:---------------------------------    |:----------------------------------------------------         |:--------------  |:------------                                             |
@@ -9,16 +9,24 @@
 | next              | [[URIString](#commonFieldURIString)] | URI da próxima página dessa lista de resultados              | Opcional        | Obrigatório quando não for a última página da resposta   |
 | last              | [[URIString](#commonFieldURIString)] | URI da última página dessa lista de resultados               | Opcional        | Obrigatório quando não for a última página da resposta   |
 
-<a id="schemaMetaPaginated"></a>
 ## MetaPaginated
+<a id="schemaMetaPaginated"></a>
 
 |     Nome          |  Tipo         | Definição                              | Mandatoriedade  | Restrição |
 |:------------      |:--------------|:-------------------------------------- |:--------------  |:--------- |
 | totalRecords      | integer       | Número total de registros no resultado | Mandatório      |           |
 | totalPages        | integer       | Número total de páginas no resultado   | Mandatório      |           |
 
-<a id="schemaPriceType">
+## MetaPaginated
+<a id="schemaMetaPaginated"></a>
+
+|     Nome          |  Tipo         | Definição                              | Mandatoriedade  | Restrição |
+|:------------      |:--------------|:-------------------------------------- |:--------------  |:--------- |
+| totalRecords      | integer       | Número total de registros no resultado | Mandatório      |           |
+| totalPages        | integer       | Número total de páginas no resultado   | Mandatório      |           |
+
 ## Enum PriceType
+<a id="schemaPriceType">
 
 | Nome         | Código             | Definição   |
 |:------------ |:------             |:----------- |
@@ -28,8 +36,8 @@
 | type         | TERCEIRO_QUARTIL   | 3º Quartil  |
 | type         | QUARTO_QUARTIL     | 4º Quartil  |
 
-<a id="schemaFrequencyType">
 ## Enum FrequencyType
+<a id="schemaFrequencyType">
 
 | Nome         | Código | Definição   |
 |:------------ |:------ |:----------- |
@@ -37,10 +45,27 @@
 | frequency    | AM     | Ao mês      |
 | frequency    | AA     | Ao ano      |
 
-<a id="schemaPrePostTax">
 ## Enum PrePostTax
+<a id="schemaPrePostTax">
 
 | Nome         | Código | Definição   |
 |:------------ |:------ |:----------- |
 | prePostTax   | PRE    | Pré fixado  |
 | prePostTax   | POS    | Pós fixado  |
+
+## Price
+<a id="schemaPrice"></a>
+
+```json
+{
+  "type": "string",
+  "value": "string",
+  "currency": "string"
+}
+```
+
+|     Nome     |  Tipo                                                     | Obrigatório    |                            Definição                                                                 |
+|:------------ |:--------------------------------------------------------- |:-------------- |:---------------------------------------------------------------------------------------------------- |
+| type         | [Enum PriceType](#schemaPriceType)                        | Sim            | Identifica o período referente ao valor de taxa efetivamente aplicada no intervalo informado.        |
+| value        | [AmountString](#commonFieldAmountString)                  | Sim            | Valor da tarifa cobrada, relativa ao serviço ofertado                                                |
+| currency     | [CurrencyString](#commonFieldCurrencyString)              | Sim            | Moeda referente ao valor da tarifa                                                                   |
