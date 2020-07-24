@@ -17,7 +17,7 @@
 | totalRecords      | integer       | Número total de registros no resultado | Mandatório      |           |
 | totalPages        | integer       | Número total de páginas no resultado   | Mandatório      |           |
 
-<a id="schemaPriceType">
+<a id="schemaPriceType"></a>
 ## Enum PriceType
 
 | Nome         | Código             | Definição   |
@@ -28,7 +28,7 @@
 | type         | TERCEIRO_QUARTIL   | 3º Quartil  |
 | type         | QUARTO_QUARTIL     | 4º Quartil  |
 
-<a id="schemaFrequencyType">
+<a id="schemaFrequencyType"></a>
 ## Enum FrequencyType
 
 | Nome         | Código | Definição   |
@@ -37,7 +37,7 @@
 | frequency    | AM     | Ao mês      |
 | frequency    | AA     | Ao ano      |
 
-<a id="schemaPrePostTax">
+<a id="schemaPrePostTax"></a>
 ## Enum PrePostTax
 
 | Nome         | Código | Definição   |
