@@ -2,7 +2,7 @@
 
 ### Requisitos mínimos
 
-A participação no ecossistema do Open Banking dependerá do atendimento a requisitos mínimos de segurança da informação, que serão, em um primeiro momento, adotados em linha com o desenvolvido para o modelo britânico (anexo A), considerando, portanto:
+A participação no ecossistema do Open Banking dependerá do atendimento à requisitos mínimos de segurança da informação, que serão, em um primeiro momento, adotados em linha com o desenvolvido para o modelo britânico, considerando, portanto:
 
  * **Segurança da informação**,
  * **Centro de Operação de Segurança**,
