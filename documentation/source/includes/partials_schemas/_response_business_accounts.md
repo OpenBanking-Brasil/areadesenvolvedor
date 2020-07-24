@@ -92,7 +92,7 @@
 |     Nome          |  Tipo                                                  | Obrigatório  |                            Definição                  |
 |:------------      |:---------------------------------                      |:-----------  |:----------------------------------------------------  |
 | data              | object                                                 | Sim          |                                                       |
-| » brand           | [[BusinessAccountBrand](#schemaBusinessAccountBrand)]  | Sim          | Lista das organizações responáveis pelas contas |
+| » brand           | [[BusinessAccountBrand](#schemaBusinessAccountBrand)]  | Sim          | Lista das organizações responáveis pelas contas       |
 | links             | [[LinksPaginated](#schemaLinksPaginated)]              | Sim          |                                                       |
 | meta              | [[MetaPaginated](#schemaMetaPaginated)]                | Sim          |                                                       |
 
@@ -174,7 +174,7 @@
 |     Nome     |  Tipo                                                        | Obrigatório  |                            Definição                         |
 |:------------ |:---------------------------------                            |:-----------  |:----------------------------------------------------         |
 | name         | string                                                       | Sim          | Nome da Marca selecionada responsável pelas contas (banco).  |
-| companies    | [[BusinessAccountCompanies](#schemaBusinessAccountCompanies)]| Sim          | Lista de instituições pertencentes à marca             |
+| companies    | [[BusinessAccountCompanies](#schemaBusinessAccountCompanies)]| Sim          | Lista de instituições pertencentes à marca                   |
 
 ## BusinessAccountCompanies 
 <a id="schemaBusinessAccountCompanies"></a>
@@ -250,7 +250,7 @@
 |:------------    |:---------------------------------                             |:-----------  |:----------------------------------------------------                 |
 | name            | string                                                        | Sim          | Nome do conglomerado responsável pelas contas                        |
 | cnpjNumber      | string                                                        | Sim          | Número do CNPJ do conglomerado                                       |
-| businessAccounts| [[BusinessAccounts](#schemaBusinesslAccounts)]                 | Sim         | Lista de contas pessoa jurídica                                      |
+| businessAccounts| [[BusinessAccounts](#schemaBusinesslAccounts)]                | Sim          | Lista de contas pessoa jurídica                                      |
 
 
 ## BusinessAccounts
@@ -317,19 +317,19 @@
             }
 ```
 
-|     Nome              |  Tipo                                    |  Obrigatório    |                            Descrição                  |
-|:------------          |:-----------------------------            | :-------------  |:----------------------------------------------------  |
-| type                  | string                                   | Sim             | Nome do tipo da conta                                 |
-| fees                  | string                                   | Sim             | Nome das Tarifas cobradas                             |
-| serviceBundles        | string                                   | Sim             | Nome dos pacotes de serviços                          |
-| openCloseChannels     | string                                   | Sim             | Canais disponiveis                                    |
-| transactionMethods    | string                                   | Sim             | Lista de formas de movimentações                      |
-| termsConditions       | string                                   | Sim             | Termos e condições contratuais                        |
-| incomeRates           | string                                   | Sim             | Valores dos percentuais de taxas                      |
+|     Nome              |  Tipo                                          |  Obrigatório    |                            Descrição                  |
+|:----------------------|:-----------------------------------------------| :---------------|:------------------------------------------------------|
+| type                  | string                                         | Sim             | Nome do tipo da conta                                 |
+| fees                  | [[FeesBusinessAccount](#schemaFeesBusinessAccount)] | Sim             | Lista Tarifas cobradas                             |
+| serviceBundles        | [[ServiceBundlesBusinessAccount](#schemaServiceBundlesBusinessAccount)] | Sim             | Nome dos pacotes de serviços                          |
+| openCloseChannels     | string                                         | Sim             | Canais disponiveis                                    |
+| transactionMethods    | string                                         | Sim             | Lista de formas de movimentações                      |
+| termsConditions       | [[TermsConditionsBusinessAccount](#schemaTermsConditionsBusinessAccount)] | Sim             | Termos e condições contratuais                        |
+| incomeRates           | [[IncomeRatesBusinessAccount](#schemaIncomeRatesBusinessAccount)] | Sim             | Valores dos percentuais de taxas                      |
 
 
-## FeesPersonalAccount
-<a id="schemaFeesPersonalAccount"></a>
+## FeesBusinessAccount
+<a id="schemaFeesBusinessAccount"></a>
 
 ```json
 {
@@ -361,108 +361,183 @@
               }
 ```
 
-|     Nome              |  Tipo                                    |  Obrigatório    |                            Descrição                  |
-|:------------          |:-----------------------------            | :-------------  |:----------------------------------------------------  |
-| type                  | string                                   | Sim             | Nome do tipo da conta                                 |
+|     Nome         |  Tipo                              |  Obrigatório    |                            Descrição                |
+|:-----------------|:-----------------------------------|:----------------|:----------------------------------------------------|
+| priorityServices | [[PriorityServicesBusinessAccount](#schemaPriorityServicesBusinessAccount)] | Sim             | Lista Tarifas de serviços prioritários                                 |
+| otherServices    | [[OtherServicesBusinessAccount](#schemaOtherServicesBusinessAccount)] | Sim             | Lista Tarifas de outros serviços                                 |
 
-## BusinessAccountPriorityServices
-<a id="schemaBusinessAccountPriorityServices></a>
+## PriorityServicesBusinessAccount
+<a id="schemaPriorityServicesBusinessAccount></a>
 
 ```json
-{
-                    "name": "string",
-                    "code": "string",
-                    "chargingTriggerInfo": "string",
-                    "maxPrice": "string",
-                    "currency": "string",
-                    "chargingUnit": "string"
-                  }
+      {
+        "name": "string",
+        "code": "string",
+        "chargingTriggerInfo": "string",
+        "maxPrice": "string",
+        "currency": "string",
+        "chargingUnit": "string"
+      }
 ```
 
 |     Nome              |  Tipo                                    |  Obrigatório    |                            Descrição                  |
 |:------------          |:-----------------------------            | :-------------  |:----------------------------------------------------  |
-| type                  | string                                   | Sim             | Nome do tipo da conta                                 |
+| name                  | string                                   | Sim             | Nome do serviço prioritário                           |
+| code                  | string                                   | Sim             | Sigla de identificação do Serviço Prioritário         |
+| chargingTriggerInfo   | string                                   | Sim             |                                                       |
+| maxPrice              | string                                   | Sim             | Valor da tarifa do Serviço Prioritário                |
+| currency              | string                                   | Sim             | Moeda referente ao valor máximo da tarifa             |
+| chargingUnit          | string                                   | Sim             | Unidade ou forma de cobrança                          |
 
 
-## BusinessAccountOtherServices
-<a id="schemaBusinessAccountOtherServices></a>
+## OtherServicesBusinessAccount
+<a id="schemaOtherServicesBusinessAccount></a>
 
 ```json
-{
-                    "name": "string",
-                    "code": "string",
-                    "chargingTriggerInfo": "string",
-                    "price": {
-                      "type": "string",
-                      "value": "string",
-                      "currency": "string"
-                    },
-                    "currency": "string",
-                    "additionalInfo": "string",
-                    "chargingUnit": "string"
-                  }
+    {
+      "name": "string",
+      "code": "string",
+      "chargingTriggerInfo": "string",
+      "price": {
+          "type": "string",
+          "value": "string",
+          "currency": "string"
+          },
+      "currency": "string",
+      "additionalInfo": "string",
+      "chargingUnit": "string"
+    }
 ```
 
-| Nome                   | Tipo   | Obrigatório | Descrição                                                 |
-|:----------------       |:------ |:----------- |:-------------------------------                           |
-| corporationName        | string | Sim         | Nome do Correspondente Bancário                           |
-| groupName              | string | Não         | Nome do conglomerado ao qual pertence o agente bancário   |
-| cnpjNumber             | string | Sim         | CNPJ do Correspondente                                    |
+| Nome                | Tipo   | Obrigatório | Descrição                                                 |
+|:--------------------|:------ |:----------- |:----------------------------------------------------------|
+| name                | string | Sim         | Nome atribuído a Outros Serviços disponíveis para os tipos de contas                           |
+| code                | string | Não         | Sigla de identificação de Outros Serviços que incidem sobre os tipos de contas   |
+| chargingTriggerInfo | string | Sim         | Outros Fatores geradores de cobrança referentes aos Outros Serviços que incidem sobre as contas comercializadas.                                    |
+| price               | [[PriceOtherServicesBusinessAccount](#schemaPriceOtherServicesBusinessAccount)] | Sim      | Valor da tarifa cobrada referente aos Outros Serviços.                  |
+| currency            | string | Sim         | Moeda relativa ao valor de referência                                    |
+| additionalInfo      | string | Não         | Descrição de como é composto o valor da tarifa                                    |
+| chargingUnit        | string | Não         | Unidade ou forma de cobrança                                    |
 
-## BankingAgentsPostalAddress
-<a id="schemaBankingAgentsPostalAddress"></a>
+## PriceOtherServicesBusinessAccount
+<a id="schemaPriceOtherServicesBusinessAccount"></a>
+
+```json
+    {
+      "type": "string",
+      "value": "string",
+      "currency": "string"
+    }
+```
+
+|     Nome    |  Tipo                        |  Obrigatório |                            Descrição                |
+|:------------|:-----------------------------|:-------------|:----------------------------------------------------|
+| type        | string                       | Sim          | Indica o tipo de valor da tarifa                    |
+| value       | string                       | Sim          | Valor da tarifa cobrada referente aos Outros Serviços       |
+| currency    | string                       | Sim          | Moeda referente ao valor máximo da tarifa            |
+
+
+## ServiceBundlesBusinessAccount
+<a id="schemaServiceBundlesBusinessAccount"></a>
 
 ```json
 {
-  "streetType": "string",
-  "streetName": "string",
-  "buildingNumber": "string",
-  "additionalInfo": "string",
-  "districtName": "string",
-  "townName": "string",
-  "countrySubDivision": "string",
-  "postCode": "string"
+  "name": "string",
+  "services": [
+    {
+      "code": "string",
+      "eventLimitQuantity": "string",
+      "freeEventQuantity": "string",
+      "maxPrice": "string",
+      "currency": "string"
+     }
+   ]
 }
 ```
 
-|Nome|Tipo|Obrigatório|Descrição|
-|:---|:---|:---|:---|:---|
-|streetType|string|Sim|Tipo de logradouro|
-|streetName|string|Sim|Nome do logradouro|
-|buildingNumber|string|Sim|Número|
-|additionalInfo|string|Sim|Complemento|
-|districtName|string|Sim|Bairro|
-|townName|string|Sim|Cidade|
-|countrySubDivision|string|Sim|Estado|
-|postCode|string|Sim|CEP|
+|     Nome    |  Tipo                        |  Obrigatório |                            Descrição                |
+|:------------|:-----------------------------|:-------------|:----------------------------------------------------|
+| name        | string                       | Sim          | Nome do conjunto de serviços                        |
+| services    | [[ServicesBusinessAccount](#schemaServicesBusinessAccount)]| Sim          | Lista de serviços       |
 
-## BankingAgentsServices
-<a id="schemaBankingAgentsServices"></a>
+## ServicesBusinessAccount
+<a id="schemaServicesBusinessAccount"></a>
 
 ```json
 {
-  "codes": [
-    "string"
-  ],
+  "code": "string",
+  "eventLimitQuantity": "string",
+  "freeEventQuantity": "string",
+  "maxPrice": "string",
+  "currency": "string"
+}
+```
+
+|     Nome           |  Tipo                        |  Obrigatório |                            Descrição                |
+|:-------------------|:-----------------------------|:-------------|:----------------------------------------------------|
+| code               | string                       | Sim          | Indica o tipo de valor da tarifa                    |
+| eventLimitQuantity | string                       | Sim          | Valor da tarifa cobrada referente                   |
+| freeEventQuantity  | string                       | Sim          | Indica o tipo de valor da tarifa                    |
+| maxPrice           | string                       | Sim          | Valor da tarifa cobrada referente                   |
+| currency           | string                       | Sim          | Indica o tipo de valor da tarifa                    |
+
+## TermsConditionsBusinessAccount
+<a id="schemaTermsConditionsBusinessAccount"></a>
+
+```json
+{
+  "minimumBalance": "string",
+  "minimumBalanceCurrency": "string",
+  "elegibilityCriteriaInfo": "string",
+  "closingProcessInfo": "string"
+}
+```
+
+|     Nome                |  Tipo                        |  Obrigatório |                            Descrição                |
+|:------------------------|:-----------------------------|:-------------|:----------------------------------------------------|
+| minimumBalance          | string                       | Sim          | Indica o tipo de valor da tarifa                    |
+| minimumBalanceCurrency  | string                       | Sim          | Valor da tarifa cobrada referente                   |
+| elegibilityCriteriaInfo | string                       | Sim          | Indica o tipo de valor da tarifa                    |
+| closingProcessInfo      | string                       | Sim          | Valor da tarifa cobrada referente                   |
+
+## TermsIncomeRatesBusinessAccount
+<a id="schemaIncomeRatesBusinessAccount"></a>
+
+```json
+{
+  "rate": "string",
+  "referencialRate": "string",
+  "indexer": "string",
+  "prePostTax": "string",
+  "frequency": "string",
   "additionalInfo": "string"
 }
 ```
 
-|Nome|Tipo|Obrigatório|Descrição|
-|:---|:---|:---|:---|:---|
-|codes|[[Enum BankingAgentsServicesCodes](#schemaEnumBankingAgentsServicesCodes)]|Sim| Lista de serviços prestados |
-|additionalInfo|string|Não| Detalhes adicionais sobre os serviços prestados |
+|     Nome        |  Tipo                        |  Obrigatório |                            Descrição                |
+|:----------------|:-----------------------------|:-------------|:----------------------------------------------------|
+| rate            | string                       | Sim          | Indica o tipo de valor da tarifa                    |
+| referencialRate | string                       | Sim          | Valor da tarifa cobrada referente                   |
+| indexer         | string                       | Sim          | Indica o tipo de valor da tarifa                    |
+| prePostTax      | string                       | Sim          | Valor da tarifa cobrada referente                   |
+| frequency       | string                       | Sim          | Valor da tarifa cobrada referente                   |
+| additionalInfo  | string                       | Sim          | Indica o tipo de valor da tarifa                    |
 
-### Enum BankingAgentsServicesCodes
-<a id="schemaEnumBankingAgentsServicesCodes"></a>
 
-| Propriedade  | Código | Definição                                             |
-|:------------ |:------ |:----------------------------------------------------- |
-| codes        | 1      | Abertura de contas                                    |
-| codes        | 2      | Recebimentos, pagamentos e transferências eletrônicas |
-| codes        | 3      | Recebimentos e pagamentos de qualquer natureza        |
-| codes        | 4      | Operações de crédito                                  |
-| codes        | 5      | Cartão de crédito                                     |
-| codes        | 6      | Operações de câmbio                                   |
-| codes        | 7      | Investimentos                                         |
-| codes        | 8      | Seguros                                               |
+### EnumBusinessAccountIncomeRatesPrePostTax
+<a id="schemaEnumBusinessAccountIncomeRatesPrePostTax"></a>
+
+| Propriedade  | Valor  | Definição                                       
+|:------------ |:------ |:---------
+| prePostTax   | PRE    | Pré fixado
+| prePostTax   | POS    | Pós fixado
+
+
+### EnumBusinessAccountIncomeRatesFrequency
+<a id="schemaEnumBusinessAccountIncomeRatesFrequency"></a>
+
+| Propriedade  | Valor | Definição                                   
+|:------------ |:------|:---------
+| frequency    | AD    | Ao dia
+| frequency    | AM    | Ao mês
+| frequency    | AA    | Ao ano
