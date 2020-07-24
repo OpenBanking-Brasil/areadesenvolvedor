@@ -250,7 +250,7 @@
 |:------------    |:---------------------------------                             |:-----------  |:----------------------------------------------------                 |
 | name            | string                                                        | Sim          | Nome do conglomerado responsável pelas contas                        |
 | cnpjNumber      | string                                                        | Sim          | Número do CNPJ do conglomerado                                       |
-| businessAccounts| [[BusinessAccounts](#schemaBusinesslAccounts)]                | Sim          | Lista de contas pessoa jurídica                                      |
+| businessAccounts| [[BusinessAccounts](#schemaBusinessAccounts)]                | Sim          | Lista de contas pessoa jurídica                                      |
 
 
 ## BusinessAccounts
