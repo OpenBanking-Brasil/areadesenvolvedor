@@ -12,6 +12,6 @@ A participação no ecossistema do Open Banking dependerá do atendimento à req
  * **Segurança cibernética**
 
 ### Obrigatoriedade
-Os requisitos serão obrigatórios para todos os participantes do ecossistema do Open Banking (i.e. instituições transmissoras e receptoras de dados)
+Os requisitos serão obrigatórios para todos os participantes do ecossistema do Open Banking (p.ex. instituições transmissoras e receptoras de dados)
 
 
