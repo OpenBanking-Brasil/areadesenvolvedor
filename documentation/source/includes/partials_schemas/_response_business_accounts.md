@@ -15,16 +15,6 @@
             {
               "type": "string",
               "fees": {
-                "priorityServices": [
-                  {
-                    "name": "string",
-                    "code": "string",
-                    "chargingTriggerInfo": "string",
-                    "maxPrice": "string",
-                    "currency": "string",
-                    "chargingUnit": "string"
-                  }
-                ],
                 "otherServices": [
                   {
                     "name": "string",
@@ -35,25 +25,37 @@
                       "value": "string",
                       "currency": "string"
                     },
-                    "currency": "string",
+                    "referenceValue": "string",
+                    "referenceCurrency": "string",
                     "additionalInfo": "string",
                     "chargingUnit": "string"
                   }
                 ]
               },
               "serviceBundles": {
-                "type": "string",
+                "name":"string",
                 "services": [
                   {
                     "code": "string",
                     "eventLimitQuantity": "string",
                     "freeEventQuantity": "string",
-                    "maxPrice": "string",
-                    "currency": "string"
+                    "price": {
+                      "type":"string"
+                    },
+                    "value": "string",
+                    "currency": "string",
+                    "referenceValue":"string",
+                    "referenceCurrency":"string"
                   }
-                ]
+                ],
+                "typesPrice":"string",
+                "monthlyPrice":"string",
+                "currency": "string",
+                "referenceValue":"string",
+                "referenceCurrency":"string"
               },
               "openCloseChannels": "string",
+              "additionalInfo":"string",
               "transactionMethods": "string",
               "termsConditions": {
                 "minimumBalance": "string",
@@ -67,7 +69,13 @@
                 "indexer": "string",
                 "prePostTax": "string",
                 "frequency": "string",
-                "additionalInfo": "string"
+                "additionalInfo": "string",
+                "application":{
+                  "types":"string",
+                  "rate":"string"
+                },
+                "referenceValue":"string",
+                "referenceCurrency":"string"
               }
             }
           ]
@@ -110,16 +118,6 @@
             {
               "type": "string",
               "fees": {
-                "priorityServices": [
-                  {
-                    "name": "string",
-                    "code": "string",
-                    "chargingTriggerInfo": "string",
-                    "maxPrice": "string",
-                    "currency": "string",
-                    "chargingUnit": "string"
-                  }
-                ],
                 "otherServices": [
                   {
                     "name": "string",
@@ -187,16 +185,6 @@
     {
       "type": "string",
       "fees": {
-        "priorityServices": [
-          {
-            "name": "string",
-            "code": "string",
-            "chargingTriggerInfo": "string",
-            "maxPrice": "string",
-            "currency": "string",
-            "chargingUnit": "string"
-          }
-        ],
         "otherServices": [
           {
             "name": "string",
@@ -260,16 +248,6 @@
 {
               "type": "string",
               "fees": {
-                "priorityServices": [
-                  {
-                    "name": "string",
-                    "code": "string",
-                    "chargingTriggerInfo": "string",
-                    "maxPrice": "string",
-                    "currency": "string",
-                    "chargingUnit": "string"
-                  }
-                ],
                 "otherServices": [
                   {
                     "name": "string",
@@ -333,16 +311,6 @@
 
 ```json
 {
-                "priorityServices": [
-                  {
-                    "name": "string",
-                    "code": "string",
-                    "chargingTriggerInfo": "string",
-                    "maxPrice": "string",
-                    "currency": "string",
-                    "chargingUnit": "string"
-                  }
-                ],
                 "otherServices": [
                   {
                     "name": "string",
@@ -363,32 +331,7 @@
 
 |     Nome         |  Tipo                              |  Obrigatório    |                            Descrição                |
 |:-----------------|:-----------------------------------|:----------------|:----------------------------------------------------|
-| priorityServices | [[PriorityServicesBusinessAccount](#schemaPriorityServicesBusinessAccount)] | Sim             | Lista Tarifas de serviços prioritários                                 |
 | otherServices    | [[OtherServicesBusinessAccount](#schemaOtherServicesBusinessAccount)] | Sim             | Lista Tarifas de outros serviços                                 |
-
-## PriorityServicesBusinessAccount
-<a id="schemaPriorityServicesBusinessAccount"></a>
-
-```json
-      {
-        "name": "string",
-        "code": "string",
-        "chargingTriggerInfo": "string",
-        "maxPrice": "string",
-        "currency": "string",
-        "chargingUnit": "string"
-      }
-```
-
-|     Nome              |  Tipo                                    |  Obrigatório    |                            Descrição                  |
-|:------------          |:-----------------------------            | :-------------  |:----------------------------------------------------  |
-| name                  | string                                   | Sim             | Nome do serviço prioritário                           |
-| code                  | string                                   | Sim             | Sigla de identificação do Serviço Prioritário         |
-| chargingTriggerInfo   | string                                   | Sim             |                                                       |
-| maxPrice              | string                                   | Sim             | Valor da tarifa do Serviço Prioritário                |
-| currency              | string                                   | Sim             | Moeda referente ao valor máximo da tarifa             |
-| chargingUnit          | string                                   | Sim             | Unidade ou forma de cobrança                          |
-
 
 ## OtherServicesBusinessAccount
 <a id="schemaOtherServicesBusinessAccount"></a>
