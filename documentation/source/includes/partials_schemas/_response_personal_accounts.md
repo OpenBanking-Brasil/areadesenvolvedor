@@ -94,7 +94,7 @@
 | data          | object                                                    | Sim          |                                                       |
 | » brand       | [[PersonalAccountBrand](#schemaPersonalAccountBrand)]     | Sim          | Lista das organizações responáveis pelas contas |
 | links         | [[LinksPaginated](#schemaLinksPaginated)]                 | Sim          |                                                       |
-| meta          | [[MetaPaginated](#schemaMetaPaginated)]                   | Sim          |                                                       |
+| meta          | [MetaPaginated](#schemaMetaPaginated)                   | Sim          |                                                       |
 
 ## PersonalAccountBrand
 <a id="schemaPersonalAccountBrand"></a>
