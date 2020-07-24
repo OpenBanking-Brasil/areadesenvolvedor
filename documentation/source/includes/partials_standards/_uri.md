@@ -17,7 +17,7 @@ Os componentes desta estrutura de URI estão descritos abaixo:
     - eletronic-channels
 	- phone-channels
 * Será mantida a língua inglesa para desenho da estrutura de URI.
-* Não devrão ser expostos dados sensíveis através de URLs (Ex: Queries de pesquisa e parâmetros)
+* Não devrão ser expostos dados sensíveis através de URLs (P.ex. Queries de pesquisa e parâmetros)
 Como exemplo, para realizar o consumo do método `eletronic-channels` da API `channels` na versão `1`, a URI ficaria com a seguinte estrutura:  
 
 `<host>/open-banking/channels/v1/eletronic-channels`

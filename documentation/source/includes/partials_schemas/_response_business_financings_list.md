@@ -53,7 +53,7 @@
                 "requiredWarranties": [
                   "string"
                 ],
-                "termsCondictions": "string"
+                "termsConditions": "string"
               }
             ]
           }
@@ -79,8 +79,8 @@
 |:------------      |:---------------------------------                           |:-----------  |:----------------------------------------------------  |
 | data              | object                                                      | Sim          |                                                       |
 | » brand           | [[BusinessFinancingsBrand](#schemaBusinessFinancingsBrand)] | Sim          | Lista das organizaçõs titulares das dependências      |
-| links             | [[LinksPaginated](#schemaLinksPaginated)]                   | Sim          |                                                       |
-| meta              | [[MetaPaginated](#schemaMetaPaginated)]                     | Sim          |                                                       |
+| links             | [LinksPaginated](#schemaLinksPaginated)                     | Sim          |                                                       |
+| meta              | [MetaPaginated](#schemaMetaPaginated)                       | Sim          |                                                       |
 
 ## BusinessFinancingsBrand
 <a id="schemaBusinessFinancingsBrand"></a>
@@ -134,7 +134,7 @@
           "requiredWarranties": [
             "string"
           ],
-          "termsCondictions": "string"
+          "termsConditions": "string"
         }
       ]
     }
@@ -196,7 +196,7 @@
       "requiredWarranties": [
         "string"
       ],
-      "termsCondictions": "string"
+      "termsConditions": "string"
     }
   ]
 }
@@ -253,7 +253,7 @@
   "requiredWarranties": [
     "string"
   ],
-  "termsCondictions": "string"
+  "termsConditions": "string"
 }
 ```
 
@@ -263,7 +263,7 @@
 | fees                  | [[BusinessFinancingsFees](#schemaBusinessFinancingsFees)]                                       | Sim         | Lista das Tarifas cobradas sobre Serviços ofertados à Modalidade de Financiamento, para pessoa jurídica                                                                                                                                                                                                                                   |
 | interestRates         | [[BusinessFinancingsInterestRates](#schemaBusinessFinancingsInterestRates)]                     | Sim         | Lista de taxas de juros                                                                                                                                                                                                                                                                                                                   |
 | requiredWarranties    | [[Enum BusinessFinancingsRequiredWarranties](#schemaEnumBusinessFinancingsRequiredWarranties)]  | Sim         | Relação de garantias exigidas                                                                                                                                                                                                                                                                                                             |
-| termsCondictions      | string                                                                                          | Não         | Campo aberto para informar as condições contratuais relativas à Modalidade de Financiamento para pessoa jurídica. Pode ser informada a URL referente ao endereço onde constam as condições informadas                                                                                                                                     |
+| termsConditions      | string                                                                                          | Não         | Campo aberto para informar as condições contratuais relativas à Modalidade de Financiamento para pessoa jurídica. Pode ser informada a URL referente ao endereço onde constam as condições informadas                                                                                                                                     |
 
 
 ### Enum BusinessFinancingsType
@@ -280,8 +280,6 @@
 | type         | FINANCIAMENTOS_RURAIS_INDUSTRIALIZACAO | Financiamentos rurais - industrialização                         |
 | type         | FINANCIMENTO_IMOBILIARIO_SFH           | Financimento imobiliário - Sistema Financeiro da Habitação (SFH) |
 | type         | FINANCIMENTO_IMOBILIARIO_SFI           | Financimento imobiliário - Sistema Financeiro da Habitação (SFI) |
-
-
 
 ### Enum BusinessFinancingsRequiredWarranties
 <a id="schemaEnumBusinessFinancingsRequiredWarranties"></a>
@@ -347,11 +345,11 @@
 }
 ```
 
-|     Nome     |  Tipo                                                                        | Obrigatório    |                            Definição                                                                                                       |
-|:------------ |:-----------------------------------------------------------------------------|:-------------- |:------------------------------------------------------------------------------------------------------------------------------------------ |
-| type         | [Enum PriceType](#schemaPriceType)                                           | Sim            | Indica os tipos: mínimo, médio e máximo do valor informado. P.ex.'mínimo'                                                                  |
-| value        | [AmountString](#commonFieldAmountString)                                     | Sim            | Valor da tarifa cobrada, relativa ao serviço ofertado para a Modalidade de Empréstimo, para pessoa jurídica                                  |
-| currency     | [CurrencyString](#commonFieldCurrencyString)                                 | Sim            | Moeda referente ao valor da tarifa                                                                                                  |
+|     Nome     |  Tipo                                                                        | Obrigatório    |                            Definição                                                                                 |
+|:------------ |:-----------------------------------------------------------------------------|:-------------- |:-------------------------------------------------------------------------------------------------------------------- |
+| type         | [Enum PriceType](#schemaPriceType)                                           | Sim            | Identifica o período referente ao percentual de taxa de remuneração efetivamente aplicada no intervalo informado.    |
+| value        | [AmountString](#commonFieldAmountString)                                     | Sim            | Valor da tarifa cobrada, relativa ao serviço ofertado para a Modalidade de Empréstimo, para pessoa jurídica          |
+| currency     | [CurrencyString](#commonFieldCurrencyString)                                 | Sim            | Moeda referente ao valor da tarifa                                                                                   |
 
 ## BusinessFinancingsInterestRates 
 <a id="schemaBusinessFinancingsInterestRates"></a>

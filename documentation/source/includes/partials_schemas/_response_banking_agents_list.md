@@ -66,7 +66,7 @@
 | data              | object                                                 | Sim          |                                                       |
 | » brand           | [[BankingAgentsBrand](#schemaBankingAgentsBrand)]      | Sim          | Lista das organizaçõs titulares das dependências      |
 | links             | [[LinksPaginated](#schemaLinksPaginated)]              | Sim          |                                                       |
-| meta              | [[MetaPaginated](#schemaMetaPaginated)]                | Sim          |                                                       |
+| meta              | [MetaPaginated](#schemaMetaPaginated)                | Sim          |                                                       |
 
 ## BankingAgentsBrand
 <a id="schemaBankingAgentsBrand"></a>
