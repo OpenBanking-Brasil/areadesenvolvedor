@@ -1,4 +1,4 @@
-## Convenções de nomemclatura 
+## Convenções de nomenclatura 
 
 O idioma a ser utilizado é o inglês britânico. Todos os nomes devem ser auto-explicativos, sem redundância de termos e sem ambiguidade de entendimento, além de seguir o padrão Lower Camel Case (primeira letra de cada termo maiúscula, com exceção do primeiro termo, que fica todo em minúsculas e sem espaços ou pontuações entre os termos). Ex: “areaCode”.
 
@@ -22,6 +22,6 @@ Os nomes dos atributos devem:
 
 - textos explicativos = Info* (Ex: additionalInfo)
 
-`*Para textos explicativos de informações complementares, o nome completo do atributo é “additionalInfo”`
+`Para textos explicativos de informações complementares, o nome completo do atributo é “additionalInfo”`
 
 - Em atributos que sejam indicadores binários (flags), o nome deve estar formatado como pergunta, com um verbo como primeiro termo. Ex: “hasRewardProgram”
