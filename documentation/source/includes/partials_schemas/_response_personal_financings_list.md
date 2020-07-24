@@ -53,7 +53,7 @@
                 "requiredWarranties": [
                   "string"
                 ],
-                "termsCondictions": "string"
+                "termsConditions": "string"
               }
             ]
           }
@@ -80,7 +80,7 @@
 | data          | object                                                      | Sim          |                                                       |
 | » brand       | [[PersonalFinancingsBrand](#schemaPersonalFinancingsBrand)] | Sim          | Lista das organizaçõs titulares das dependências      |
 | links         | [[LinksPaginated](#schemaLinksPaginated)]                   | Sim          |                                                       |
-| meta          | [[MetaPaginated](#schemaMetaPaginated)]                     | Sim          |                                                       |
+| meta          | [MetaPaginated](#schemaMetaPaginated)                     | Sim          |                                                       |
 
 ## PersonalFinancingsBrand
 <a id="schemaPersonalFinancingsBrand"></a>
@@ -134,7 +134,7 @@
           "requiredWarranties": [
             "string"
           ],
-          "termsCondictions": "string"
+          "termsConditions": "string"
         }
       ]
     }
@@ -196,7 +196,7 @@
       "requiredWarranties": [
         "string"
       ],
-      "termsCondictions": "string"
+      "termsConditions": "string"
     }
   ]
 }
@@ -253,7 +253,7 @@
   "requiredWarranties": [
     "string"
   ],
-  "termsCondictions": "string"
+  "termsConditions": "string"
 }
 ```
 
@@ -263,7 +263,7 @@
 | fees                  | [[PersonalFinancingsFees](#schemaPersonalFinancingsFees)]                                       | Sim         | Lista das Tarifas cobradas sobre Serviços ofertados à Modalidade de Financiamento, para pessoa física                                                                                                                                                                                                                                   |
 | interestRates         | [[PersonalFinancingsInterestRates](#schemaPersonalFinancingsInterestRates)]                     | Sim         | Lista de taxas de juros                                                                                                                                                                                                                                                                                                                 |
 | requiredWarranties    | [[Enum PersonalFinancingsRequiredWarranties](#schemaEnumPersonalFinancingsRequiredWarranties)]  | Sim         | Relação de garantias exigidas                                                                                                                                                                                                                                                                                                           |
-| termsCondictions      | string                                                                                          | Não         | Campo aberto para informar as condições contratuais relativas à Modalidade de Financiamento para pessoa física. Pode ser informada a URL referente ao endereço onde constam as condições informadas                                                                                                                                     |
+| termsConditions      | string                                                                                          | Não         | Campo aberto para informar as condições contratuais relativas à Modalidade de Financiamento para pessoa física. Pode ser informada a URL referente ao endereço onde constam as condições informadas                                                                                                                                     |
 
 
 ### Enum PersonalFinancingsType
@@ -350,7 +350,7 @@
 
 |     Nome     |  Tipo                                                     | Obrigatório    |                            Definição                                                                                                       |
 |:------------ |:--------------------------------------------------------- |:-------------- |:------------------------------------------------------------------------------------------------------------------------------------------ |
-| type         | [Enum PriceType](#schemaPriceType)                        | Sim            | Indica os tipos: mínimo, médio e máximo do valor informado. P.ex.'mínimo'                                                                  |
+| type         | [Enum PriceType](#schemaPriceType)                        | Sim            | Identifica o período referente ao percentual de taxa de remuneração efetivamente aplicada no intervalo informado.                          |
 | value        | [AmountString](#commonFieldAmountString)                  | Sim            | Valor da tarifa cobrada, relativa ao serviço ofertado para a Modalidade de Empréstimo, para pessoa física                                  |
 | currency     | [CurrencyString](#commonFieldCurrencyString)              | Sim            | Moeda referente ao valor da tarifa                                                                                                  |
 

@@ -4,29 +4,32 @@
 ```json
 {
   "data": {
-    "brand": {
+    "brand": [
+      {
         "name": "string",
         "companies": [
           {
-            "cnpjNumber": "string",
             "name": "string",
+            "cnpjNumber": "string",
             "businessLoans": [
               {
-                "types": "string",
+                "type": "string",
                 "fees": [
                   {
                     "serviceName": "string",
                     "serviceCode": "string",
                     "chargingTriggerInfo": "string",
+                    "chargingUnit": "string",
                     "price": [
                       {
                         "type": "string",
                         "value": "string",
-                        "currency": "string",
-                        "priceInfo": "string",
-                        "changingUnit": "string"
+                        "currency": "string"
                       }
-                    ]
+                    ],
+                    "referenceValue": "string",
+                    "referenceCurrency": "string",
+                    "additionalInfo": "string"
                   }
                 ],
                 "interestRates": [
@@ -35,8 +38,16 @@
                     "referencialRate": "string",
                     "indexer": "string",
                     "prePostTax": "string",
-                    "frecuency": "string",
-                    "incomeRateInfo": "string"
+                    "frequency": "string",
+                    "incomeRateInfo": "string",
+                    "application": [
+                      {
+                        "type": "string",
+                        "rate": "string"
+                      }
+                    ],
+                    "referenceValue": "string",
+                    "referenceCurrency": "string"
                   }
                 ],
                 "requiredWarranties": [
@@ -64,12 +75,12 @@
 }
 ```
 
-|     Nome          |  Tipo                                                                | Obrigatório  |                            Definição                  |
-|:------------      |:---------------------------------                                    |:-----------  |:----------------------------------------------------  |
-| data              | object                                                               | Sim          |                                                       |
-| brand             | [[BusinessLoansBrand](#schemaBusinessLoansBrand)]      | Sim          | Lista das organizaçõs titulares das dependências      |
-| links             | [LinksPaginated](#schemaLinksPaginated)                            | Sim          |                                                       |
-| meta              | [MetaPaginated](#schemaMetaPaginated)                              | Sim          |                                                       |
+|     Nome          |  Tipo                                                   | Obrigatório  |                            Definição                  |
+|:------------      |:---------------------------------                       |:-----------  |:----------------------------------------------------  |
+| data              | object                                                  | Sim          |                                                       |
+| » brand           | [[BusinessLoansBrand](#schemaBusinessLoansBrand)]       | Sim          | Lista das organizaçõs titulares das dependências      |
+| links             | [LinksPaginated](#schemaLinksPaginated)                 | Sim          |                                                       |
+| meta              | [MetaPaginated](#schemaMetaPaginated)                   | Sim          |                                                       |
 
 ## BusinessLoansBrand
 <a id="schemaBusinessLoansBrand"></a>
@@ -79,25 +90,27 @@
   "name": "string",
   "companies": [
     {
-      "cnpjNumber": "string",
       "name": "string",
+      "cnpjNumber": "string",
       "businessLoans": [
         {
-          "types": "string",
+          "type": "string",
           "fees": [
             {
               "serviceName": "string",
               "serviceCode": "string",
               "chargingTriggerInfo": "string",
+              "chargingUnit": "string",
               "price": [
                 {
                   "type": "string",
                   "value": "string",
-                  "currency": "string",
-                  "priceInfo": "string",
-                  "changingUnit": "string"
+                  "currency": "string"
                 }
-              ]
+              ],
+              "referenceValue": "string",
+              "referenceCurrency": "string",
+              "additionalInfo": "string"
             }
           ],
           "interestRates": [
@@ -106,8 +119,16 @@
               "referencialRate": "string",
               "indexer": "string",
               "prePostTax": "string",
-              "frecuency": "string",
-              "incomeRateInfo": "string"
+              "frequency": "string",
+              "incomeRateInfo": "string",
+              "application": [
+                {
+                  "type": "string",
+                  "rate": "string"
+                }
+              ],
+              "referenceValue": "string",
+              "referenceCurrency": "string"
             }
           ],
           "requiredWarranties": [
@@ -131,25 +152,27 @@
 
 ```json
 {
-  "cnpjNumber": "string",
   "name": "string",
+  "cnpjNumber": "string",
   "businessLoans": [
     {
-      "types": "string",
+      "type": "string",
       "fees": [
         {
           "serviceName": "string",
           "serviceCode": "string",
           "chargingTriggerInfo": "string",
+          "chargingUnit": "string",
           "price": [
             {
               "type": "string",
               "value": "string",
-              "currency": "string",
-              "priceInfo": "string",
-              "changingUnit": "string"
+              "currency": "string"
             }
-          ]
+          ],
+          "referenceValue": "string",
+          "referenceCurrency": "string",
+          "additionalInfo": "string"
         }
       ],
       "interestRates": [
@@ -158,8 +181,16 @@
           "referencialRate": "string",
           "indexer": "string",
           "prePostTax": "string",
-          "frecuency": "string",
-          "incomeRateInfo": "string"
+          "frequency": "string",
+          "incomeRateInfo": "string",
+          "application": [
+            {
+              "type": "string",
+              "rate": "string"
+            }
+          ],
+          "referenceValue": "string",
+          "referenceCurrency": "string"
         }
       ],
       "requiredWarranties": [
@@ -167,36 +198,38 @@
       ],
       "termsConditions": "string"
     }
-  ]  
+  ]
 }
 ```
 
 |     Nome        |  Tipo                                                         | Obrigatório  |                            Definição                                 |
 |:------------    |:---------------------------------                             |:-----------  |:----------------------------------------------------                 |
-| cnpjNumber      | string                                                        | Sim          | Número do CNPJ do conglomerado                                       |
 | name            | string                                                        | Sim          | Nome da Instituição, pertencente à marca, responsável pela comercialização das modalidades de Empréstimos para Pessoas Jurídicas consultadas.  |
-| businessLoans   | [[BusinessLoans](#schemaBusinessLoans)]                       | Sim          | Empréstimos Pessoas Jurídicas                                          |
+| cnpjNumber      | string                                                        | Sim          | Número do CNPJ do conglomerado                                       |
+| businessLoans   | [[BusinessLoans](#schemaBusinessLoans)]                       | Sim          | Empréstimos Pessoas Jurídicas                                        |
 
 ## BusinessLoans
 <a id="schemaBusinessLoans"></a>
 
 ```json
 {
-  "types": "string",
+  "type": "string",
   "fees": [
     {
       "serviceName": "string",
       "serviceCode": "string",
       "chargingTriggerInfo": "string",
+      "chargingUnit": "string",
       "price": [
         {
           "type": "string",
           "value": "string",
-          "currency": "string",
-          "additionalInfo": "string",
-          "changingUnit": "string"
+          "currency": "string"
         }
-      ]
+      ],
+      "referenceValue": "string",
+      "referenceCurrency": "string",
+      "additionalInfo": "string"
     }
   ],
   "interestRates": [
@@ -205,34 +238,42 @@
       "referencialRate": "string",
       "indexer": "string",
       "prePostTax": "string",
-      "frecuency": "string",
-      "incomeRateInfo": "string"
+      "frequency": "string",
+      "incomeRateInfo": "string",
+      "application": [
+        {
+          "type": "string",
+          "rate": "string"
+        }
+      ],
+      "referenceValue": "string",
+      "referenceCurrency": "string"
     }
   ],
   "requiredWarranties": [
     "string"
   ],
   "termsConditions": "string"
-    }
+}
 ```
 
-|     Nome            |  Tipo                                                      | Obrigatório  |                            Definição                         |
-|:------------        |:---------------------------------                          |:-----------  |:----------------------------------------------------         |
-| types               | [string](#schemaEnumBusinessLoanTypes)                  | Sim          | Modalidades de empréstimos ofertados para pessoas jurídicas, conforme Circular <a href='https://www.bcb.gov.br/pre/normativos/busca/downloadNormativo.asp?arquivo=/Lists/Normativos/Attachments/51025/Circ_4015_v1_O.pdf' target="_blank">4015-Bacem</a>|
-| fees                | [[LoanFees](#schemaLoanFees)]                              | Sim          | Tarifas cobradas sobre Serviços ofertados à Modalidade de Empréstimo             |
-| interestRates       | [[LoanInterestRates](#schemaLoanInterestRates)]                    | Sim          | Taxas de juros remuneratórias             |
-| requiredWarranties  | [[string](#schemaEnumRequiredWarranties)]  | Sim          | Relação de garantias exigidas, segundo documento <a href='https://www.bcb.gov.br/estabilidadefinanceira/scrdoc3040' target="_blank">3040 do Bacem</a>       |
-| termsConditions     | string                                                     | Sim          | Condições contratuais relativas à Modalidade de Empréstimo       |
+|     Nome            |  Tipo                                                       | Obrigatório  |                            Definição                         |
+|:------------        |:---------------------------------                           |:-----------  |:----------------------------------------------------         |
+| type                | [Enum BusinessLoanTypes](#schemaEnumBusinessLoanTypes)      | Sim          | Modalidades de empréstimos ofertados para pessoas jurídicas, conforme Circular <a href='https://www.bcb.gov.br/pre/normativos/busca/downloadNormativo.asp?arquivo=/Lists/Normativos/Attachments/51025/Circ_4015_v1_O.pdf' target="_blank">4015-Bacem</a>|
+| fees                | [[LoanFees](#schemaLoanFees)]                               | Sim          | Tarifas cobradas sobre Serviços ofertados à Modalidade de Empréstimo             |
+| interestRates       | [[LoanInterestRates](#schemaLoanInterestRates)]             | Sim          | Taxas de juros remuneratórias             |
+| requiredWarranties  | [[Enum RequiredWarranties](#schemaEnumRequiredWarranties)]  | Sim          | Relação de garantias exigidas, segundo documento <a href='https://www.bcb.gov.br/estabilidadefinanceira/scrdoc3040' target="_blank">3040 do Bacem</a>       |
+| termsConditions     | string                                                      | Sim          | Condições contratuais relativas à Modalidade de Empréstimo       |
 
-### Enum BusinessLoan Types
+### Enum BusinessLoanTypes
 <a id="schemaEnumBusinessLoanTypes"></a>
 
-| Propriedade  | Valor                        | Definição
+| Propriedade  | Código                        | Definição
 |:------------ |:------                       |:------
-| types   | ADIANTAMENTO_DEPOSITANTE    | Adiantamento a depositante
-| types   | EMPRESTIMO_CHEQUE ESPECIAL  | Cheque especial
-| types   | EMPRESTIMO_CONTA_GARANTIDA  | Conta garantida
-| types   | EMPRESTIMO_CAPITAL_GIRO_VENCIMIENTO_365 | Capital de giro com prazo de vencimento até 365 dias
-| types   | EMPRESTIMO_CAPITAL_GIRO_VENCIMIENTO_SUP_365 | Capital de giro com prazo de vencimento superior a 365 dias
-| types   | EMPRESTIMO_CAPITAL_GIRO_ROTATIVO | Capital de giro rotativo
-| types   | EMPRESTIMO_MICROCREDITO_PROD_ORIENTADO  | Microcrédito produtivo orientado
+| type         | ADIANTAMENTO_DEPOSITANTE    | Adiantamento a depositante
+| type         | EMPRESTIMO_CHEQUE ESPECIAL  | Cheque especial
+| type         | EMPRESTIMO_CONTA_GARANTIDA  | Conta garantida
+| type         | EMPRESTIMO_CAPITAL_GIRO_VENCIMIENTO_365 | Capital de giro com prazo de vencimento até 365 dias
+| type         | EMPRESTIMO_CAPITAL_GIRO_VENCIMIENTO_SUP_365 | Capital de giro com prazo de vencimento superior a 365 dias
+| type         | EMPRESTIMO_CAPITAL_GIRO_ROTATIVO | Capital de giro rotativo
+| type         | EMPRESTIMO_MICROCREDITO_PROD_ORIENTADO  | Microcrédito produtivo orientado

@@ -53,7 +53,7 @@
                 "requiredWarranties": [
                   "string"
                 ],
-                "termsCondictions": "string"
+                "termsConditions": "string"
               }
             ]
           }
@@ -80,7 +80,7 @@
 | data              | object                                                                    | Sim          |                                                       |
 | » brand           | [[BusinessInvoiceFinancingsBrand](#schemaBusinessInvoiceFinancingsBrand)]   | Sim          | Lista das organizaçõs titulares das dependências      |
 | links             | [[LinksPaginated](#schemaLinksPaginated)]                                 | Sim          |                                                       |
-| meta              | [[MetaPaginated](#schemaMetaPaginated)]                                   | Sim          |                                                       |
+| meta              | [MetaPaginated](#schemaMetaPaginated)                                   | Sim          |                                                       |
 
 ## BusinessInvoiceFinancingsBrand
 <a id="schemaBusinessInvoiceFinancingsBrand"></a>
@@ -134,7 +134,7 @@
           "requiredWarranties": [
             "string"
           ],
-          "termsCondictions": "string"
+          "termsConditions": "string"
         }
       ]
     }
@@ -196,7 +196,7 @@
       "requiredWarranties": [
         "string"
       ],
-      "termsCondictions": "string"
+      "termsConditions": "string"
     }
   ]
 }
@@ -253,7 +253,7 @@
   "requiredWarranties": [
     "string"
   ],
-  "termsCondictions": "string"
+  "termsConditions": "string"
 }
 ```
 
@@ -263,7 +263,7 @@
 | fees                  | [[BusinessInvoiceFinancingsFees](#schemaBusinessInvoiceFinancingsFees)]                                       | Sim         | Lista das Tarifas cobradas sobre Serviços ofertados à Modalidade de direitos creditórios descontados, para pessoa jurídica                                                                                                                                                              |
 | interestRates         | [[BusinessInvoiceFinancingsInterestRates](#schemaBusinessInvoiceFinancingsInterestRates)]                     | Sim         | Lista de taxas de juros remuneratórias                                                                                                                                                                                                                                                |
 | requiredWarranties    | [[Enum BusinessInvoiceFinancingsRequiredWarranties](#schemaEnumBusinessInvoiceFinancingsRequiredWarranties)]  | Sim         | Relação de garantias exigidas                                                                                                                                                                                                                                                         |
-| termsCondictions      | string                                                                                                      | Não         | Campo aberto para informar as condições contratuais relativas à Modalidade de direitos creditórios descontados informada                                                                                                                                                              |
+| termsConditions      | string                                                                                                      | Não         | Campo aberto para informar as condições contratuais relativas à Modalidade de direitos creditórios descontados informada                                                                                                                                                              |
 
 
 ### Enum BusinessInvoiceFinancingsType

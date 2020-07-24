@@ -102,7 +102,7 @@
 | data              | object                                                 | Sim          |                                                       |
 | » brand           | [[BusinessAccountBrand](#schemaBusinessAccountBrand)]  | Sim          | Lista das organizações responáveis pelas contas       |
 | links             | [[LinksPaginated](#schemaLinksPaginated)]              | Sim          |                                                       |
-| meta              | [[MetaPaginated](#schemaMetaPaginated)]                | Sim          |                                                       |
+| meta              | [MetaPaginated](#schemaMetaPaginated)                | Sim          |                                                       |
 
 ## BusinessAccountBrand
 <a id="schemaBusinessAccountBrand"></a>
