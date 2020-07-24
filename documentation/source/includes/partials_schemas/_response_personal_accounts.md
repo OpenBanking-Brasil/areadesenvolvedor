@@ -11,20 +11,10 @@
         {
           "name": "string",
           "cnpjNumber": "string",
-          "personalAccounts": [
+          "PersonalAccounts": [
             {
               "type": "string",
               "fees": {
-                "priorityServices": [
-                  {
-                    "name": "string",
-                    "code": "string",
-                    "chargingTriggerInfo": "string",
-                    "maxPrice": "string",
-                    "currency": "string",
-                    "chargingUnit": "string"
-                  }
-                ],
                 "otherServices": [
                   {
                     "name": "string",
@@ -35,25 +25,37 @@
                       "value": "string",
                       "currency": "string"
                     },
-                    "currency": "string",
+                    "referenceValue": "string",
+                    "referenceCurrency": "string",
                     "additionalInfo": "string",
                     "chargingUnit": "string"
                   }
                 ]
               },
               "serviceBundles": {
-                "type": "string",
+                "name":"string",
                 "services": [
                   {
                     "code": "string",
                     "eventLimitQuantity": "string",
                     "freeEventQuantity": "string",
-                    "maxPrice": "string",
-                    "currency": "string"
+                    "price": {
+                      "type":"string"
+                    },
+                    "value": "string",
+                    "currency": "string",
+                    "referenceValue":"string",
+                    "referenceCurrency":"string"
                   }
-                ]
+                ],
+                "typesPrice":"string",
+                "monthlyPrice":"string",
+                "currency": "string",
+                "referenceValue":"string",
+                "referenceCurrency":"string"
               },
               "openCloseChannels": "string",
+              "additionalInfo":"string",
               "transactionMethods": "string",
               "termsConditions": {
                 "minimumBalance": "string",
@@ -67,7 +69,13 @@
                 "indexer": "string",
                 "prePostTax": "string",
                 "frequency": "string",
-                "additionalInfo": "string"
+                "additionalInfo": "string",
+                "application":{
+                  "types":"string",
+                  "rate":"string"
+                },
+                "referenceValue":"string",
+                "referenceCurrency":"string"
               }
             }
           ]
@@ -83,174 +91,190 @@
     "last": "string"
   },
   "meta": {
-    "totalRecords": "string",
-    "totalPages": "string"
+    "totalRecords": integer,
+    "totalPages": integer
   }
 }
 ```
 
-|     Nome      |  Tipo                                                     | Obrigatório  |                            Definição                  |
-|:------------  |:---------------------------------                         |:-----------  |:----------------------------------------------------  |
-| data          | object                                                    | Sim          |                                                       |
-| » brand       | [[PersonalAccountBrand](#schemaPersonalAccountBrand)]     | Sim          | Lista das organizações responáveis pelas contas |
-| links         | [[LinksPaginated](#schemaLinksPaginated)]                 | Sim          |                                                       |
-| meta          | [MetaPaginated](#schemaMetaPaginated)                   | Sim          |                                                       |
+|     Nome          |  Tipo                                                  | Obrigatório  |                            Definição                  |
+|:------------      |:---------------------------------                      |:-----------  |:----------------------------------------------------  |
+| data              | object                                                 | Sim          |                                                       |
+| » brand           | [[PersonalAccountBrand](#schemaPersonalAccountBrand)]  | Sim          | Lista das organizações responáveis pelas contas       |
+| links             | [[LinksPaginated](#schemaLinksPaginated)]              | Sim          |                                                       |
+| meta              | [MetaPaginated](#schemaMetaPaginated)                | Sim          |                                                       |
 
 ## PersonalAccountBrand
 <a id="schemaPersonalAccountBrand"></a>
 
 ```json
 {
-      "name": "string",
-      "companies": [
-        {
-          "name": "string",
-          "cnpjNumber": "string",
-          "personalAccounts": [
-            {
-              "type": "string",
-              "fees": {
-                "priorityServices": [
-                  {
-                    "name": "string",
-                    "code": "string",
-                    "chargingTriggerInfo": "string",
-                    "maxPrice": "string",
-                    "currency": "string",
-                    "chargingUnit": "string"
-                  }
-                ],
-                "otherServices": [
-                  {
-                    "name": "string",
-                    "code": "string",
-                    "chargingTriggerInfo": "string",
-                    "price": {
-                      "type": "string",
-                      "value": "string",
-                      "currency": "string"
-                    },
-                    "currency": "string",
-                    "additionalInfo": "string",
-                    "chargingUnit": "string"
-                  }
-                ]
-              },
-              "serviceBundles": {
-                "name": "string",
-                "services": [
-                  {
-                    "code": "string",
-                    "eventLimitQuantity": "string",
-                    "freeEventQuantity": "string",
-                    "maxPrice": "string",
+    "name": "string",
+    "companies": [
+      {
+        "name": "string",
+        "cnpjNumber": "string",
+        "PersonalAccounts": [
+          {
+            "type": "string",
+            "fees": {
+              "otherServices": [
+                {
+                  "name": "string",
+                  "code": "string",
+                  "chargingTriggerInfo": "string",
+                  "price": {
+                    "type": "string",
+                    "value": "string",
                     "currency": "string"
-                  }
-                ]
+                  },
+                  "referenceValue": "string",
+                  "referenceCurrency": "string",
+                  "additionalInfo": "string",
+                  "chargingUnit": "string"
+                }
+              ]
+            },
+            "serviceBundles": {
+              "name":"string",
+              "services": [
+                {
+                  "code": "string",
+                  "eventLimitQuantity": "string",
+                  "freeEventQuantity": "string",
+                  "price": {
+                    "type":"string"
+                  },
+                  "value": "string",
+                  "currency": "string",
+                  "referenceValue":"string",
+                  "referenceCurrency":"string"
+                }
+              ],
+              "typesPrice":"string",
+              "monthlyPrice":"string",
+              "currency": "string",
+              "referenceValue":"string",
+              "referenceCurrency":"string"
+            },
+            "openCloseChannels": "string",
+            "additionalInfo":"string",
+            "transactionMethods": "string",
+            "termsConditions": {
+              "minimumBalance": "string",
+              "minimumBalanceCurrency": "string",
+              "elegibilityCriteriaInfo": "string",
+              "closingProcessInfo": "string"
+            },
+            "incomeRates": {
+              "rate": "string",
+              "referencialRate": "string",
+              "indexer": "string",
+              "prePostTax": "string",
+              "frequency": "string",
+              "additionalInfo": "string",
+              "application":{
+                "types":"string",
+                "rate":"string"
               },
-              "openCloseChannels": "string",
-              "transactionMethods": "string",
-              "termsConditions": {
-                "minimumBalance": "string",
-                "minimumBalanceCurrency": "string",
-                "elegibilityCriteriaInfo": "string",
-                "closingProcessInfo": "string"
-              },
-              "incomeRates": {
-                "rate": "string",
-                "referencialRate": "string",
-                "indexer": "string",
-                "prePostTax": "string",
-                "frequency": "string",
-                "additionalInfo": "string"
-              }
+              "referenceValue":"string",
+              "referenceCurrency":"string"
             }
-          ]
-        }
-      ]
-}
+          }
+        ]
+      }
+    ]
+  }
 ```
 
-|     Nome     |  Tipo                                                      | Obrigatório  |                            Definição                         |
-|:------------ |:---------------------------------                          |:-----------  |:----------------------------------------------------         |
-| name         | string                                                     | Sim          | Nome da Marca responsável pelas contas (banco).  |
-| companies    | [[PersonalAccountCompanies](#schemaPersonalAccountCompanies)]  | Sim          | Lista de instituições pertencentes à marca             |
+|     Nome     |  Tipo                                                        | Obrigatório  |                            Definição                         |
+|:------------ |:---------------------------------                            |:-----------  |:----------------------------------------------------         |
+| name         | string                                                       | Sim          | Nome da Marca selecionada responsável pelas contas (banco).  |
+| companies    | [[PersonalAccountCompanies](#schemaPersonalAccountCompanies)]| Sim          | Lista de instituições pertencentes à marca                   |
 
 ## PersonalAccountCompanies 
 <a id="schemaPersonalAccountCompanies"></a>
 
 ```json
 {
-          "name": "string",
-          "cnpjNumber": "string",
-          "personalAccounts": [
-            {
+  "name": "string",
+  "cnpjNumber": "string",
+  "PersonalAccounts": [
+    {
+      "type": "string",
+      "fees": {
+        "otherServices": [
+          {
+            "name": "string",
+            "code": "string",
+            "chargingTriggerInfo": "string",
+            "price": {
               "type": "string",
-              "fees": {
-                "priorityServices": [
-                  {
-                    "name": "string",
-                    "code": "string",
-                    "chargingTriggerInfo": "string",
-                    "maxPrice": "string",
-                    "currency": "string",
-                    "chargingUnit": "string"
-                  }
-                ],
-                "otherServices": [
-                  {
-                    "name": "string",
-                    "code": "string",
-                    "chargingTriggerInfo": "string",
-                    "price": {
-                      "type": "string",
-                      "value": "string",
-                      "currency": "string"
-                    },
-                    "currency": "string",
-                    "additionalInfo": "string",
-                    "chargingUnit": "string"
-                  }
-                ]
-              },
-              "serviceBundles": {
-                "name": "string",
-                "services": [
-                  {
-                    "code": "string",
-                    "eventLimitQuantity": "string",
-                    "freeEventQuantity": "string",
-                    "maxPrice": "string",
-                    "currency": "string"
-                  }
-                ]
-              },
-              "openCloseChannels": "string",
-              "transactionMethods": "string",
-              "termsConditions": {
-                "minimumBalance": "string",
-                "minimumBalanceCurrency": "string",
-                "elegibilityCriteriaInfo": "string",
-                "closingProcessInfo": "string"
-              },
-              "incomeRates": {
-                "rate": "string",
-                "referencialRate": "string",
-                "indexer": "string",
-                "prePostTax": "string",
-                "frequency": "string",
-                "additionalInfo": "string"
-              }
-            }
-          ]
-        }
+              "value": "string",
+              "currency": "string"
+            },
+            "referenceValue": "string",
+            "referenceCurrency": "string",
+            "additionalInfo": "string",
+            "chargingUnit": "string"
+          }
+        ]
+      },
+      "serviceBundles": {
+        "name":"string",
+        "services": [
+          {
+            "code": "string",
+            "eventLimitQuantity": "string",
+            "freeEventQuantity": "string",
+            "price": {
+              "type":"string"
+            },
+            "value": "string",
+            "currency": "string",
+            "referenceValue":"string",
+            "referenceCurrency":"string"
+          }
+        ],
+        "typesPrice":"string",
+        "monthlyPrice":"string",
+        "currency": "string",
+        "referenceValue":"string",
+        "referenceCurrency":"string"
+      },
+      "openingClosingChannels": "string",
+      "additionalInfo":"string",
+      "transactionMethods": "string",
+      "termsConditions": {
+        "minimumBalance": "string",
+        "minimumBalanceCurrency": "string",
+        "elegibilityCriteriaInfo": "string",
+        "closingProcessInfo": "string"
+      },
+      "incomeRates": {
+        "rate": "string",
+        "referencialRate": "string",
+        "indexer": "string",
+        "prePostTax": "string",
+        "frequency": "string",
+        "additionalInfo": "string",
+        "application":{
+          "types":"string",
+          "rate":"string"
+        },
+        "referenceValue":"string",
+        "referenceCurrency":"string"
+      }
+    }
+  ]
+}
 ```
 
 |     Nome        |  Tipo                                                         | Obrigatório  |                            Definição                                 |
 |:------------    |:---------------------------------                             |:-----------  |:----------------------------------------------------                 |
-| name            | string                                                        | Sim          | Nome do conglomerado responsável pelas contas                        |
-| cnpjNumber      | string                                                        | Sim          | Número do CNPJ do conglomerado                                       |
-| personalAccounts| [[PersonalAccounts](#schemaPersonalAccounts)]                 | Sim          | Lista de contas pessoa fisica                                        |
+| name            | string                                                        | Sim          | Nome da Instituição, pertencente à marca, responsável pela comercialização dos tipos de contas de pessoas jurídicas cosultadas                       |
+| cnpjNumber      | string                                                        | Sim          | O responsável pela comercialização das modalidades de Contas para Pessoas Jurídicas consultadas                                       |
+| PersonalAccounts| [[PersonalAccounts](#schemaPersonalAccounts)]                 | Sim          | Lista de contas pessoa jurídica                                      |
 
 
 ## PersonalAccounts
@@ -258,211 +282,355 @@
 
 ```json
 {
-              "type": "string",
-              "fees": {
-                "priorityServices": [
-                  {
-                    "name": "string",
-                    "code": "string",
-                    "chargingTriggerInfo": "string",
-                    "maxPrice": "string",
-                    "currency": "string",
-                    "chargingUnit": "string"
-                  }
-                ],
-                "otherServices": [
-                  {
-                    "name": "string",
-                    "code": "string",
-                    "chargingTriggerInfo": "string",
-                    "price": {
-                      "type": "string",
-                      "value": "string",
-                      "currency": "string"
-                    },
-                    "currency": "string",
-                    "additionalInfo": "string",
-                    "chargingUnit": "string"
-                  }
-                ]
-              },
-              "serviceBundles": {
-                "name": "string",
-                "services": [
-                  {
-                    "code": "string",
-                    "eventLimitQuantity": "string",
-                    "freeEventQuantity": "string",
-                    "maxPrice": "string",
-                    "currency": "string"
-                  }
-                ]
-              },
-              "openCloseChannels": "string",
-              "transactionMethods": "string",
-              "termsConditions": {
-                "minimumBalance": "string",
-                "minimumBalanceCurrency": "string",
-                "elegibilityCriteriaInfo": "string",
-                "closingProcessInfo": "string"
-              },
-              "incomeRates": {
-                "rate": "string",
-                "referencialRate": "string",
-                "indexer": "string",
-                "prePostTax": "string",
-                "frequency": "string",
-                "additionalInfo": "string"
-              }
-            }
+  "type": "string",
+  "fees": {
+    "otherServices": [
+      {
+        "name": "string",
+        "code": "string",
+        "chargingTriggerInfo": "string",
+        "price": {
+          "type": "string",
+          "value": "string",
+          "currency": "string"
+        },
+        "referenceValue": "string",
+        "referenceCurrency": "string",
+        "additionalInfo": "string",
+        "chargingUnit": "string"
+      }
+    ]
+  },
+  "serviceBundles": {
+    "name":"string",
+    "services": [
+      {
+        "code": "string",
+        "eventLimitQuantity": "string",
+        "freeEventQuantity": "string",
+        "price": {
+          "type":"string"
+        },
+        "value": "string",
+        "currency": "string",
+        "referenceValue":"string",
+        "referenceCurrency":"string"
+      }
+    ],
+    "typesPrice":"string",
+    "monthlyPrice":"string",
+    "currency": "string",
+    "referenceValue":"string",
+    "referenceCurrency":"string"
+  },
+  "openingClosingChannels": "string",
+  "additionalInfo":"string",
+  "transactionMethods": "string",
+  "termsConditions": {
+    "minimumBalance": "string",
+    "minimumBalanceCurrency": "string",
+    "elegibilityCriteriaInfo": "string",
+    "closingProcessInfo": "string"
+  },
+  "incomeRates": {
+    "rate": "string",
+    "referencialRate": "string",
+    "indexer": "string",
+    "prePostTax": "string",
+    "frequency": "string",
+    "additionalInfo": "string",
+    "application":{
+      "types":"string",
+      "rate":"string"
+    },
+    "referenceValue":"string",
+    "referenceCurrency":"string"
+  }
+}
 ```
 
-|     Nome              |  Tipo                                    |  Obrigatório    |                            Descrição                  |
-|:------------          |:-----------------------------            | :-------------  |:----------------------------------------------------  |
-| type                  | string                                   | Sim             | Nome do tipo da conta                                 |
-| fees                  | string                                   | Sim             | Nome das Tarifas cobradas                             |
-| serviceBundles        | string                                   | Sim             | Nome dos pacotes de serviços                          |
-| openCloseChannels     | string                                   | Sim             | Canais disponiveis                                    |
-| transactionMethods    | string                                   | Sim             | Lista de formas de movimentações                      |
-| termsConditions       | string                                   | Sim             | Termos e condições contratuais                        |
-| incomeRates           | string                                   | Sim             | Valores dos percentuais de taxas                      |
+|     Nome              |  Tipo                                          |  Obrigatório    |                            Descrição                  |
+|:----------------------|:-----------------------------------------------| :---------------|:------------------------------------------------------|
+| type                  | [[Enum TypePersonalAccount](#schemaEnumTypePersonalAccount)] | Sim             | Tipos de contas ofertadas para pessoas jurídicas, conforme Resolução 3.919 do Bacen.                                 |
+| fees                  | [[FeesPersonalAccount](#schemaFeesPersonalAccount)] | Sim             | Lista Tarifas cobradas                             |
+| serviceBundles        | [[ServiceBundlesPersonalAccount](#schemaServiceBundlesPersonalAccount)] | Sim             | Nome dos pacotes de serviços                          |
+| openingClosingChannels   | [[Enum PersonalAccountOpeningClosingChannels ](#schemaEnumPersonalAccountOpeningClosingChannels)] | Sim             | Canais disponíveis para abertura e encerramento de contas      |
+| additionalInfo        | string                                         | Sim             | Texto livre para complementar informação relativa ao Canal disponível    |
+| transactionMethods    | [[Enum PersonalAccountOpeningTransactionMethods ](#schemaEnumPersonalAccountOpeningTransactionMethods)]                                         | Sim             | Lista de formas de movimentação possíveis para a conta  |
+| termsConditions       | [[TermsConditionsPersonalAccount](#schemaTermsConditionsPersonalAccount)] | Sim             | Termos e condições contratuais                        |
+| incomeRates           | [[IncomeRatesPersonalAccount](#schemaIncomeRatesPersonalAccount)] | Sim             | Valores dos percentuais de taxas                      |
 
+### Enum TypePersonalAccount
+<a id="schemaEnumTypePersonalAccount"></a>
+
+| Propriedade  | Valor                       | Definição                   |                
+|:-------------|:----------------------------|:----------------------------|
+| type         | CONTA_CORRENTE              | Conta Corrente              |
+| type         | CONTA_POUPANCA              | Conta Poupança              |
+| type         | CONTA_PAGAMENTO_PRE_PAGA    | Conta de pagamento pré paga |
+
+### Enum PersonalAccountOpeningClosingChannels 
+<a id="schemaEnumPersonalAccountOpeningClosingChannels"></a>
+
+| Propriedade              | Valor                     | Definição                  |                     
+|:-------------------------|:--------------------------|:---------------------------|
+| openingClosingChannels   | DEPENDENCIAS_PROPRIAS     | Dependências próprias      |
+| openingClosingChannels   | CORRESPONDENTES_BANCARIOS | Correspondentes bancários  |
+| openingClosingChannels   | INTERNET_BANKING          | Internet banking           |
+| openingClosingChannels   | MOBILE_BANKING            | Mobile banking             |
+| openingClosingChannels   | CENTRAL_TELEFONICA        | Central telefônica         |
+| openingClosingChannels   | CHAT                      | Chat                       |
+| openingClosingChannels   | OUTROS                    | Outros (p.ex.:website/appps de terceiros) |
+
+### Enum PersonalAccountOpeningTransactionMethods  
+<a id="schemaEnumPersonalAccountOpeningTransactionMethods"></a>
+
+| Propriedade          | Valor                     | Definição                  |                     
+|:---------------------|:--------------------------|:---------------------------|
+| transactionMethods   | MOVIMENTACAO_ELETRONICA   | Movimentação eletrônica    |
+| transactionMethods   | MOVIMENTACAO_CHEQUE       | Movimentação com cheque    |
+| transactionMethods   | MOVIMENTACAO_CARTAO       | Movimentação com cartão    |
+| transactionMethods   | MOVIMENTACAO_PRESENCIAL   | Movimentação presencial    |
 
 ## FeesPersonalAccount
 <a id="schemaFeesPersonalAccount"></a>
 
 ```json
 {
-                "priorityServices": [
-                  {
-                    "name": "string",
-                    "code": "string",
-                    "chargingTriggerInfo": "string",
-                    "maxPrice": "string",
-                    "currency": "string",
-                    "chargingUnit": "string"
-                  }
-                ],
-                "otherServices": [
-                  {
-                    "name": "string",
-                    "code": "string",
-                    "chargingTriggerInfo": "string",
-                    "price": {
-                      "type": "string",
-                      "value": "string",
-                      "currency": "string"
-                    },
-                    "currency": "string",
-                    "additionalInfo": "string",
-                    "chargingUnit": "string"
-                  }
-                ]
-              }
-```
-
-|     Nome              |  Tipo                                    |  Obrigatório    |                            Descrição                  |
-|:------------          |:-----------------------------            | :-------------  |:----------------------------------------------------  |
-| type                  | string                                   | Sim             | Nome do tipo da conta                                 |
-
-## PersonalAccountPriorityServices
-<a id="schemaPersonalAccountPriorityServices></a>
-
-```json
-{
-                    "name": "string",
-                    "code": "string",
-                    "chargingTriggerInfo": "string",
-                    "maxPrice": "string",
-                    "currency": "string",
-                    "chargingUnit": "string"
-                  }
-```
-
-|     Nome              |  Tipo                                    |  Obrigatório    |                            Descrição                  |
-|:------------          |:-----------------------------            | :-------------  |:----------------------------------------------------  |
-| type                  | string                                   | Sim             | Nome do tipo da conta                                 |
-
-
-## PersonalAccountOtherServices
-<a id="schemaPersonalAccountOtherServices></a>
-
-```json
-{
-                    "name": "string",
-                    "code": "string",
-                    "chargingTriggerInfo": "string",
-                    "price": {
-                      "type": "string",
-                      "value": "string",
-                      "currency": "string"
-                    },
-                    "currency": "string",
-                    "additionalInfo": "string",
-                    "chargingUnit": "string"
-                  }
-```
-
-| Nome                   | Tipo   | Obrigatório | Descrição                                                 |
-|:----------------       |:------ |:----------- |:-------------------------------                           |
-| corporationName        | string | Sim         | Nome do Correspondente Bancário                           |
-| groupName              | string | Não         | Nome do conglomerado ao qual pertence o agente bancário   |
-| cnpjNumber             | string | Sim         | CNPJ do Correspondente                                    |
-
-## BankingAgentsPostalAddress
-<a id="schemaBankingAgentsPostalAddress"></a>
-
-```json
-{
-  "streetType": "string",
-  "streetName": "string",
-  "buildingNumber": "string",
-  "additionalInfo": "string",
-  "districtName": "string",
-  "townName": "string",
-  "countrySubDivision": "string",
-  "postCode": "string"
+  "otherServices": [
+    {
+      "name": "string",
+      "code": "string",
+      "chargingTriggerInfo": "string",
+      "price": {
+        "type": "string",
+        "value": "string",
+        "currency": "string"
+      },
+      "referenceValue": "string",
+      "referenceCurrency": "string",
+      "additionalInfo": "string",
+      "chargingUnit": "string"
+    }
+  ]
 }
 ```
 
-|Nome|Tipo|Obrigatório|Descrição|
-|:---|:---|:---|:---|:---|
-|streetType|string|Sim|Tipo de logradouro|
-|streetName|string|Sim|Nome do logradouro|
-|buildingNumber|string|Sim|Número|
-|additionalInfo|string|Sim|Complemento|
-|districtName|string|Sim|Bairro|
-|townName|string|Sim|Cidade|
-|countrySubDivision|string|Sim|Estado|
-|postCode|string|Sim|CEP|
+|     Nome         |  Tipo                              |  Obrigatório    |                            Descrição                |
+|:-----------------|:-----------------------------------|:----------------|:----------------------------------------------------|
+| otherServices    | [[OtherServicesPersonalAccount](#schemaOtherServicesPersonalAccount)] | Sim             | Lista Tarifas de outros serviços da conta                                 |
 
-## BankingAgentsServices
-<a id="schemaBankingAgentsServices"></a>
+## OtherServicesPersonalAccount
+<a id="schemaOtherServicesPersonalAccount"></a>
+
+```json
+  {
+    "name": "string",
+    "code": "string",
+    "chargingTriggerInfo": "string",
+    "price": {
+      "type": "string",
+      "value": "string",
+      "currency": "string"
+    },
+    "referenceValue": "string",
+    "referenceCurrency": "string",
+    "additionalInfo": "string",
+    "chargingUnit": "string"
+  }
+```
+
+| Nome                | Tipo   | Obrigatório | Descrição                                                 |
+|:--------------------|:------ |:----------- |:----------------------------------------------------------|
+| name                | string | Sim         | Nome atribuído a Outros Serviços disponíveis para os tipos de contas                           |
+| code                | string | Não         | Sigla de identificação de Outros Serviços que incidem sobre os tipos de contas   |
+| chargingTriggerInfo | string | Sim         | Outros Fatores geradores de cobrança referentes aos Outros Serviços que incidem sobre as contas comercializadas.                                    |
+| price               | [[PriceOtherServicesPersonalAccount](#schemaPriceOtherServicesPersonalAccount)] | Sim      | Valor da tarifa cobrada referente aos Outros Serviços.                  |
+| referenceValue            | string | Sim         | Valor de referência utilizado na apuração dos percentuais informados por quartil                  |
+| referenceCurrency            | string | Sim         | Moeda relativa ao valor de referência, segundo modelo ISO-4217                  |
+| additionalInfo      | string | Não         | Descrição de como é composto o valor da tarifa.                     |
+| chargingUnit        | string | Não         | Unidade ou forma de cobrança                                    |
+
+## PriceOtherServicesPersonalAccount
+<a id="schemaPriceOtherServicesPersonalAccount"></a>
+
+```json
+  {
+    "type": "string",
+    "value": "string",
+    "currency": "string"
+  }
+```
+
+|     Nome    |  Tipo                        |  Obrigatório |                            Descrição                |
+|:------------|:-----------------------------|:-------------|:----------------------------------------------------|
+| type        | string                       | Sim          | Indica o tipo de valor da tarifa informado          |
+| value       | string                       | Sim          | Valor da tarifa cobrada referente aos Outros Serviços.       |
+| currency    | string                       | Sim          | Moeda referente ao valor máximo da tarifa, segundo modelo ISO-4217.   |
+
+
+## ServiceBundlesPersonalAccount
+<a id="schemaServiceBundlesPersonalAccount"></a>
 
 ```json
 {
-  "codes": [
-    "string"
-  ],
-  "additionalInfo": "string"
+  "name":"string",
+		"services": [
+		  {
+			"code": "string",
+			"eventLimitQuantity": "string",
+			"freeEventQuantity": "string",
+			"price": {
+			  "type":"string"
+			},
+			"value": "string",
+			"currency": "string",
+			"referenceValue":"string",
+			"referenceCurrency":"string"
+		  }
+		],
+		"typesPrice":"string",
+		"monthlyPrice":"string",
+		"currency": "string",
+		"referenceValue":"string",
+		"referenceCurrency":"string"
+}
+
+```
+
+|     Nome           |  Tipo                        |  Obrigatório |                            Descrição                |
+|:-------------------|:-----------------------------|:-------------|:----------------------------------------------------|
+| name               | string                       | Sim          | Nome do conjunto de serviços                        |
+| services           | [[ServicesPersonalAccount](#schemaServicesPersonalAccount)]| Sim          | Lista de serviços       |
+| typesPrice         | string                       | Sim          | Indica o tipo de valor referente ao Pacote de serviço informado          |
+| monthlyPrice       | string                       | Sim          | Valor mensal da tarifa referente ao Pacote de Serviços         |
+| currency           | string                       | Sim          | Moeda referente ao valor do Pacote de serviços, segundo modelo ISO-4217.      |
+| referenceValue     | string                       | Sim          | Valor de referência utilizado na apuração dos percentuais informados por quartil       |
+| referenceCurrency  | string                       | Sim          | Moeda relativa ao valor de referência, segundo modelo ISO-4217.          |
+
+## ServicesPersonalAccount
+<a id="schemaServicesPersonalAccount"></a>
+
+```json
+{
+  "code": "string",
+  "eventLimitQuantity": "string",
+  "freeEventQuantity": "string",
+  "price": {
+    "type":"string"
+  },
+  "value": "string",
+  "currency": "string",
+  "referenceValue":"string",
+  "referenceCurrency":"string"
 }
 ```
 
-|Nome|Tipo|Obrigatório|Descrição|
-|:---|:---|:---|:---|:---|
-|codes|[[Enum BankingAgentsServicesCodes](#schemaEnumBankingAgentsServicesCodes)]|Sim| Lista de serviços prestados |
-|additionalInfo|string|Não| Detalhes adicionais sobre os serviços prestados |
+|     Nome           |  Tipo                        |  Obrigatório |                            Descrição                |
+|:-------------------|:-----------------------------|:-------------|:----------------------------------------------------|
+| code               | string                       | Sim          | Código que identifica o Serviço que compõe o Pacote de Serviços.   |
+| eventLimitQuantity | string                       | Sim          | Quantidade de eventos previstos no Pacote de Serviços      |
+| freeEventQuantity  | string                       | Sim          | Quantidade de eventos previstos no Pacote de Serviços com isenção de Tarifa.      |
+| price           |  [[PriceServicesPersonalAccount](#schemaPriceServicesPersonalAccount)]| Sim          | Indica o tipo de valor da tarifa do serviço que compõe o Pacote de Serviços     |
+| value           | string                       | Sim          | Valor da tarifa referente ao Serviço que compõe o Pacote de Serviços, relativo ao quantil tipo         |
+| currency           | string                       | Sim          | Moeda referente ao valor máximo da tarifa, segundo modelo ISO-4217.                |
+| referenceValue           | string                       | Sim          | Valor de referência utilizado na apuração dos percentuais informados por quartil                |
+| referenceCurrency           | string                       | Sim          | Moeda relativa ao valor de referência, segundo modelo ISO-4217            |
 
-### Enum BankingAgentsServicesCodes
-<a id="schemaEnumBankingAgentsServicesCodes"></a>
+## PriceServicesPersonalAccount
+<a id="schemaPriceServicesPersonalAccount"></a>
 
-| Propriedade  | Código | Definição                                             |
-|:------------ |:------ |:----------------------------------------------------- |
-| codes        | 1      | Abertura de contas                                    |
-| codes        | 2      | Recebimentos, pagamentos e transferências eletrônicas |
-| codes        | 3      | Recebimentos e pagamentos de qualquer natureza        |
-| codes        | 4      | Operações de crédito                                  |
-| codes        | 5      | Cartão de crédito                                     |
-| codes        | 6      | Operações de câmbio                                   |
-| codes        | 7      | Investimentos                                         |
-| codes        | 8      | Seguros                                               |
+```json
+{
+  "type":"string"
+}
+```
+
+|     Nome           |  Tipo                        |  Obrigatório |                            Descrição                |
+|:-------------------|:-----------------------------|:-------------|:----------------------------------------------------|
+| type               | string                       | Sim          | Indica o tipo de valor da tarifa do serviço que compõe o Pacote de Serviços     |
+
+## TermsConditionsPersonalAccount
+<a id="schemaTermsConditionsPersonalAccount"></a>
+
+```json
+{
+  "minimumBalance": "string",
+  "minimumBalanceCurrency": "string",
+  "elegibilityCriteriaInfo": "string",
+  "closingProcessInfo": "string"
+}
+```
+
+|     Nome                |  Tipo                        |  Obrigatório |                            Descrição                |
+|:------------------------|:-----------------------------|:-------------|:----------------------------------------------------|
+| minimumBalance          | string                       | Sim          | Saldo mínimo exigido nos Termos e condições contratuais, que regem as contas comercializadas.     |
+| minimumBalanceCurrency  | string                       | Sim          | Moeda referente ao saldo mínimo exigido, segundo modelo ISO-4217.  |
+| elegibilityCriteriaInfo | string                       | Sim          | Critérios de elegibilidade para a aquisição do tipo de conta comercializado.      |
+| closingProcessInfo      | string                       | Sim          | Procedimentos de encerramento para o tipo de conta tratado.        |
+
+## IncomeRatesPersonalAccount
+<a id="schemaIncomeRatesPersonalAccount"></a>
+
+```json
+{
+  "rate": "string",
+	"referencialRate": "string",
+	"indexer": "string",
+	"prePostTax": "string",
+	"frequency": "string",
+	"additionalInfo": "string",
+	"application":{
+	  "types":"string",
+	  "rate":"string"
+	},
+	"referenceValue":"string",
+	"referenceCurrency":"string"
+}
+```
+
+|     Nome          |  Tipo                                        |  Obrigatório | Descrição                                           |
+|:------------------|:---------------------------------------------|:-------------|:----------------------------------------------------|
+| rate              | string                                       | Sim          | Valor do percentual que corresponde a taxa de remuneração prevista para a conta do tipo 'poupança'.      |
+| referencialRate   | string                                       | Sim          | Taxa Referencial se configura como uma taxa de juros de referência, ou seja, um indicador geral da economia brasileira.          |
+| indexer           | string                                       | Sim          | Indexador é o termo utilizado para se referir aos índices usados como base para corrigir os valores monetários de um determinado ativo.     |
+| prePostTax        | [Enum PersonalAccountIncomeRatesPrePostTax](#schemaEnumPersonalAccountIncomeRatesPrePostTax) | Sim          | Indicador de indexador pré ou pós fixado.         |
+| frequency         | [Enum PersonalAccountIncomeRatesFrequency](#schemaEnumPersonalAccountIncomeRatesFrequency)   | Sim          | Código que indica Frequência sobre a qual incide a Remuneração.             |
+| additionalInfo    | string                                       | Sim          | Descrição da Remuneração            |
+| application       | [[ApplicationIncomeRatesPersonalAccount](#schemaApplicationIncomeRatesPersonalAccount)]                                       | Sim          | Identifica o período referente ao percentual de taxa de remuneração efetivamente aplicada no intervalo informado              |
+| referenceValue    | string                                       | Sim          | Valor de referência utilizado na apuração dos percentuais informados por quartil       |
+| referenceCurrency | string                                       | Sim          | Moeda relativa ao valor de referência, segundo modelo ISO-4217.       |
+
+## ApplicationIncomeRatesPersonalAccount
+<a id="schemaApplicationIncomeRatesPersonalAccount"></a>
+
+```json
+{
+  "types":"string",
+  "rate":"string"
+}
+```
+
+|     Nome          |  Tipo                                        |  Obrigatório | Descrição                                           |
+|:------------------|:---------------------------------------------|:-------------|:----------------------------------------------------|
+| types             | string                                       | Sim          | Valor do percentual que corresponde a taxa de remuneração efetivamente aplicada no intervalo informado        |
+| rate   | string                                       | Sim          | Valor do percentual que corresponde a taxa de remuneração efetivamente aplicada no intervalo informado        |
+
+### Enum PersonalAccountIncomeRatesPrePostTax
+<a id="schemaEnumPersonalAccountIncomeRatesPrePostTax"></a>
+
+| Propriedade  | Valor  | Definição                                       
+|:------------ |:------ |:---------
+| prePostTax   | PRE    | Pré fixado
+| prePostTax   | POS    | Pós fixado
+
+
+### Enum PersonalAccountIncomeRatesFrequency
+<a id="schemaEnumPersonalAccountIncomeRatesFrequency"></a>
+
+| Propriedade  | Valor | Definição                                   
+|:------------ |:------|:---------
+| frequency    | AD    | Ao dia
+| frequency    | AM    | Ao mês
+| frequency    | AA    | Ao ano
+
