@@ -22,3 +22,5 @@ Um recurso REST deverá ter um identificador exclusivo (p.ex. uma chave primári
 
 ### Princípio 7: Categorização dos requisitos de implementação
 Quando um requisito estiver sendo implementado por um transmissor e/ou um receptor, uma categorização diferente será aplicada. As funcionalidades, endpoints e campos em cada recurso serão categorizados como 'Obrigatório', 'Condicional' ou 'Opcional'.
+
+
