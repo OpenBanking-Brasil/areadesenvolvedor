@@ -27,6 +27,8 @@
                         "currency": "string"
                       }
                     ],
+                    "referenceValue": "string",
+                    "referenceCurrency": "string",
                     "additionalInfo": "string"
                   }
                 ],
@@ -37,7 +39,15 @@
                     "indexer": "string",
                     "prePostTax": "string",
                     "frequency": "string",
-                    "incomeRateInfo": "string"
+                    "incomeRateInfo": "string",
+                    "application": [
+                      {
+                        "type": "string",
+                        "rate": "string"
+                      }
+                    ],
+                    "referenceValue": "string",
+                    "referenceCurrency": "string"
                   }
                 ],
                 "requiredWarranties": [
@@ -98,6 +108,8 @@
                   "currency": "string"
                 }
               ],
+              "referenceValue": "string",
+              "referenceCurrency": "string",
               "additionalInfo": "string"
             }
           ],
@@ -108,7 +120,15 @@
               "indexer": "string",
               "prePostTax": "string",
               "frequency": "string",
-              "incomeRateInfo": "string"
+              "incomeRateInfo": "string",
+              "application": [
+                {
+                  "type": "string",
+                  "rate": "string"
+                }
+              ],
+              "referenceValue": "string",
+              "referenceCurrency": "string"
             }
           ],
           "requiredWarranties": [
@@ -150,6 +170,8 @@
               "currency": "string"
             }
           ],
+          "referenceValue": "string",
+          "referenceCurrency": "string",
           "additionalInfo": "string"
         }
       ],
@@ -160,7 +182,15 @@
           "indexer": "string",
           "prePostTax": "string",
           "frequency": "string",
-          "incomeRateInfo": "string"
+          "incomeRateInfo": "string",
+          "application": [
+            {
+              "type": "string",
+              "rate": "string"
+            }
+          ],
+          "referenceValue": "string",
+          "referenceCurrency": "string"
         }
       ],
       "requiredWarranties": [
@@ -197,6 +227,8 @@
           "currency": "string"
         }
       ],
+      "referenceValue": "string",
+      "referenceCurrency": "string",
       "additionalInfo": "string"
     }
   ],
@@ -207,7 +239,15 @@
       "indexer": "string",
       "prePostTax": "string",
       "frequency": "string",
-      "incomeRateInfo": "string"
+      "incomeRateInfo": "string",
+      "application": [
+        {
+          "type": "string",
+          "rate": "string"
+        }
+      ],
+      "referenceValue": "string",
+      "referenceCurrency": "string"
     }
   ],
   "requiredWarranties": [
@@ -279,6 +319,8 @@
       "currency": "string"
     }
   ],
+  "referenceValue": "string",
+  "referenceCurrency": "string",
   "additionalInfo": "string"
 }
 ```
@@ -290,6 +332,8 @@
 | chargingTriggerInfo  | string                                                                   | Não            | Fatores geradores de cobrança que incidem sobre as Modalidades de Financiamentos, para pessoa jurídica. Campo Livre                          |
 | chargingUnit         | string                                                                   | Não            | Unidade ou forma de cobrança                                                                                                               |
 | price                | [[BusinessFinancingsPrice](#schemaBusinessFinancingsPrice)]              | Sim            | Lista de preços possíveis                                                                                                                  |
+| referenceValue       | [AmountString](#commonFieldAmountString)                                 | Sim            | Valor de referência utilizado na apuração dos valores informados por quartil (representa um valor monetário                                |
+| referenceCurrency    | [CurrencyString](#commonFieldCurrencyString)                             | Sim            | Moeda relativa ao valor de referência, segundo modelo ISO-4217.                                                                            |
 | additionalInfo       | string                                                                   | Não            | Descrição de como é composto o valor da tarifa. p.ex. '0,25% sobre o excedente do limite acima de R$ 500,00'                               |
 
 ## BusinessFinancingsPrice
@@ -305,18 +349,9 @@
 
 |     Nome     |  Tipo                                                                        | Obrigatório    |                            Definição                                                                                                       |
 |:------------ |:-----------------------------------------------------------------------------|:-------------- |:------------------------------------------------------------------------------------------------------------------------------------------ |
-| type         | [Enum BusinessFinancingsPriceType](#schemaEnumBusinessFinancingsPriceType)   | Sim            | Indica os tipos: mínimo, médio e máximo do valor informado. P.ex.'mínimo'                                                                  |
+| type         | [Enum PriceType](#schemaPriceType)                                           | Sim            | Indica os tipos: mínimo, médio e máximo do valor informado. P.ex.'mínimo'                                                                  |
 | value        | [AmountString](#commonFieldAmountString)                                     | Sim            | Valor da tarifa cobrada, relativa ao serviço ofertado para a Modalidade de Empréstimo, para pessoa jurídica                                  |
 | currency     | [CurrencyString](#commonFieldCurrencyString)                                 | Sim            | Moeda referente ao valor da tarifa                                                                                                  |
-
-### Enum BusinessFinancingsPriceType
-<a id="schemaEnumBusinessFinancingsPriceType"></a>
-
-| Propriedade  | Código | Definição   |
-|:------------ |:------ |:----------- |
-| type         | MINIMO | Mínimo      |
-| type         | MEDIO  | Médio       |
-| type         | MAXIMO | Máximo      |
 
 ## BusinessFinancingsInterestRates 
 <a id="schemaBusinessFinancingsInterestRates"></a>
@@ -328,7 +363,15 @@
   "indexer": "string",
   "prePostTax": "string",
   "frequency": "string",
-  "incomeRateInfo": "string"
+  "incomeRateInfo": "string",
+  "application": [
+    {
+      "type": "string",
+      "rate": "string"
+    }
+  ],
+  "referenceValue": "string",
+  "referenceCurrency": "string"
 }
 ```
 
@@ -337,9 +380,12 @@
 | rate                      | [RateString](#commonFieldRateString)                                            | Sim            | Percentual que incide sobre a composição da  taxa de juros remuneratórias                                                                                                                                                                                                                                             |
 | referencialRate           | [RateString](#commonFieldRateString)                                            | Sim            | Taxa Referencial se configura como uma taxa de juros de referência, ou seja, um indicador geral da economia brasileira. Por isso, é utilizada na hora de calcular o rendimento de determinadas aplicações financeiras                                                                                                 |
 | indexer                   | [Enum BusinessFinancingsIndexer](#schemaEnumBusinessFinancingsIndexer)          | Sim            | Indexador é o termo utilizado para se referir aos índices usados como base para corrigir os valores monetários de um determinado ativo. No Brasil, os indexadores mais comuns são o IPCA, a taxa Selic e o CDI                                                                                                        |
-| prePostTax                | [Enum BusinessFinancingsPrePostTax](#schemaEnumBusinessFinancingsPrePostTax)    | Sim            | Indicador de pré ou pós. A diferença básica é que, enquanto o prefixado apresenta rentabilidade definida, o pós-fixado acompanha algum indicador. Assim, quem investe no primeiro grupo sabe como será seu rendimento previamente, enquanto quem investe no segundo, só conhecerá os resultados na data de vencimento |
-| frequency                 | [Enum BusinessFinancingsFrequency](#schemaEnumBusinessFinancingsFrequency)      | Sim            | Frequência sobre a qual incide a Remuneração                                                                                                                                                                                                                                                                          |
+| prePostTax                | [Enum PrePostTax](#schemaPrePostTax)                                            | Sim            | Indicador de pré ou pós. A diferença básica é que, enquanto o prefixado apresenta rentabilidade definida, o pós-fixado acompanha algum indicador. Assim, quem investe no primeiro grupo sabe como será seu rendimento previamente, enquanto quem investe no segundo, só conhecerá os resultados na data de vencimento |
+| frequency                 | [Enum FrequencyType](#schemaFrequencyType)                                      | Sim            | Frequência sobre a qual incide a Remuneração                                                                                                                                                                                                                                                                          |
 | incomeRateInfo            | string                                                                          | Não            | Descrição da Remuneração relativa as taxas de juros remuneratórias sobre a modalidade de Financiamento informada, para pessoa jurídica                                                                                                                                                                                  |
+| application               | [[BusinessFinancingApplication](#schemaBusinessFinancingApplication)]           | Não            | Descrição da Remuneração relativa as taxas de juros remuneratórias sobre a modalidade de direitos creditórios descontados infomrada, para pessoa jurídica                                                                                                                                                             |
+| referenceValue            | [AmountString](#commonFieldAmountString)                                        | Sim            | Valor de referência utilizado na apuração dos valores informados por quartil (representa um valor monetário                                |
+| referenceCurrency         | [CurrencyString](#commonFieldCurrencyString)                                    | Sim            | Moeda relativa ao valor de referência, segundo modelo ISO-4217.                                                                            |
 
 ### Enum BusinessFinancingsIndexer
 <a id="schemaEnumBusinessFinancingsIndexer"></a>
@@ -350,22 +396,18 @@
 | indexer      | SELIC  | SELIC       |
 | indexer      | CDI    | CDI         |
 
-### Enum BusinessFinancingsPrePostTax
-<a id="schemaEnumBusinessFinancingsPrePostTax"></a>
 
-| Propriedade  | Código | Definição   |
-|:------------ |:------ |:----------- |
-| prePostTax   | PRE    | Pré fixado  |
-| prePostTax   | POS    | Pós fixado  |
+## BusinessFinancingApplication 
+<a id="schemaBusinessFinancingApplication"></a>
 
-### Enum BusinessFinancingsFrequency
-<a id="schemaEnumBusinessFinancingsFrequency"></a>
+```json
+{
+  "type": "string",
+  "rate": "string"
+}
+```
 
-| Propriedade  | Código | Definição   |
-|:------------ |:------ |:----------- |
-| frequency    | AD     | Ao dia      |
-| frequency    | AM     | Ao mês      |
-| frequency    | AA     | Ao ano      |
-
-
-
+|     Nome     |  Tipo                                             | Obrigatório    |                            Definição                                                                                                                                                                                      |
+|:------------ |:------------------------------------------------- |:-------------- |:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| type         | [Enum PriceType](#schemaPriceType)                | Sim            | Identifica o período referente ao percentual de taxa de remuneração efetivamente aplicada no intervalo informado: mínimo, 1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes |
+| rate         | [RateString](#commonFieldRateString)              | Sim            | Valor do percentual que corresponde a taxa de remuneração efetivamente aplicada no intervalo informado (representação de uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O valor 1 representa 100%))            |
