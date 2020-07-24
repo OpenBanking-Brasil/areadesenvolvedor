@@ -19,7 +19,7 @@
                 "additionalInfo": "string"
               },
               "rewardsProgram": {
-                "hasRewardProgram": boolean,
+                "hasRewardProgram": "boolean",
                 "rewardProgramInfo": "string"
               },
               "fees": {
@@ -72,8 +72,8 @@
     "last": "string"
   },
   "meta": {
-    "totalRecords": integer,
-    "totalPages": integer
+    "totalRecords": "integer",
+    "totalPages": "integer"
   }
 }
 ```
