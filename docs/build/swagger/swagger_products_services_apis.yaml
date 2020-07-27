@@ -1,0 +1,2581 @@
+openapi: 3.0.0
+info:
+  title: API's OpenData do Open Banking Brasil
+  description: As API's descritas neste documento são referentes as API's da fase OpenData do Open Banking Brasil.
+  version: 1.0.0
+servers:
+  - url: http://api.banco.com.br/open-banking/products-services/v1
+  
+###############
+## Endpoints ##
+###############
+paths:
+  /personal-accounts:
+    get:
+      tags:
+      - "Accounts"
+      summary: ""
+      responses:
+        '200':
+          description: ""
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/PersonalAccountsResponse'
+  
+  /business-accounts:
+    get:
+      tags:
+      - "Accounts"
+      summary: ""
+      responses:
+        '200':
+          description: ""
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/ResponseBusinessAccounts'   
+
+  /personal-loans:
+    get:
+      tags:
+      - "Loans"
+      summary: ""
+      responses:
+        '200':
+          description: ""
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/ResponsePersonalLoansList'
+                
+  /business-loans:
+    get:
+      tags:
+      - "Loans"
+      summary: ""
+      responses:
+        '200':
+          description: ""
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/ResponseBusinessLoansList'
+                
+  /personal-credit-cards:
+    get:
+      tags:
+      - "Credit Cards"
+      summary: ""
+      responses:
+        '200':
+          description: ""
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/PersonalCreditCardResponse'
+                
+  /business-credit-cards:
+    get:
+      tags:
+      - "Credit Cards"
+      summary: ""
+      responses:
+        '200':
+          description: ""
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/BusinessCreditCardResponse'
+
+  /personal-financings:
+    get:
+      tags:
+      - "Financings"
+      summary: Obtém a lista de Financiamentos de Pessoa Física.
+      responses:
+        '200':
+          description: Retorna lista de financiamentos de pessoa física.
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/ResponsePersonalFinancingsList'
+
+  /business-financings:
+    get:
+      tags:
+      - "Financings"
+      summary: Obtém a lista de Financiamentos de Pessoa Física.
+      responses:
+        '200':
+          description: Retorna lista de financiamentos de pessoa jurídica.
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/ResponseBusinessFinancingsList'
+                
+  /personal-invoice-financings:
+    get:
+      tags:
+      - "Financings"
+      summary: Obtém a lista de Adiantamento de Recebíveis de Pessoa Física.
+      responses:
+        '200':
+          description: Retorna lista de adiantamento de recebíveis de pessoa física.
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/ResponsePersonalInvoiceFinancingsList'
+                
+  /business-invoice-financings:
+    get:
+      tags:
+      - "Financings"
+      summary: Obtém a lista de Adiantamento de Recebíveis de Pessoa Física.
+      responses:
+        '200':
+          description: Retorna lista de adiantamento de recebíveis de pessoa jurídica.
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/ResponseBusinessInvoiceFinancingsList'
+components:
+  ###############
+  ##  Schemas  ##
+  ###############
+  schemas:
+  
+  ##############################
+  ##  Commons - Accounts  ##
+  ##############################
+  
+  ##### AccountsTermsConditions #####
+    AccountsTermsConditions:
+      type: object
+      required:
+        - minimumBalance
+        - minimumBalanceCurrency
+        - elegibilityCriteriaInfo
+        - closingProcessInfo
+      properties:
+        minimumBalance:
+          type: number
+          description: "Saldo mínimo exigido nos Termos e condições contratuais, que regem as contas comercializadas."
+          example: 25.5
+        minimumBalanceCurrency:
+          type: string
+          maxLength: 3
+          description: "Moeda referente ao saldo mínimo exigido, segundo modelo ISO-4217"
+          example: "BRL"
+        elegibilityCriteriaInfo:
+          type: string
+          maxLength: 1000
+          description: "Critérios de elegibilidade para a aquisição do tipo de conta comercializado."
+        closingProcessInfo:
+          type: string
+          maxLength: 2000
+          description: "Procedimentos de encerramento para o tipo de conta tratado."
+          example: "www.banco.com.br/cancelamento-conta"
+          
+  ##### AccountsIncomeRates #####
+    AccountsIncomeRates:
+      type: object
+      properties:
+        rate:
+          type: string
+          maxLength: 7
+          description: "Valor do percentual que corresponde a taxa de remuneração prevista para a conta do tipo 'poupança'."
+        referencialRate:
+          type: string
+          maxLength: 7
+          description: "Taxa Referencial se configura como uma taxa de juros de referência, ou seja, um indicador geral da economia brasileira. Por isso, é utilizada na hora de calcular o rendimento de determinadas aplicações financeiras"
+        indexer:
+          type: string
+          enum: [
+            "IPCA"
+            ,"SELIC"
+            ,"CDI"
+          ]
+          description: "Lista de Indexadores. Indexador é o termo utilizado para se referir aos índices usados como base para corrigir os valores monetários de um determinado ativo. No Brasil, os indexadores mais comuns são o IPCA, a taxa Selic e o CDI"
+          example: "CDI"
+        prePostTax:
+          type: string
+          enum: [
+            "PRE"
+            ,"POS"
+          ]
+          description: "Indicador de indexador pré ou pós fixado. A diferença básica é que, enquanto o prefixado apresenta rentabilidade definida, o pós-fixado acompanha algum indicador. Assim, quem investe no primeiro grupo sabe como será seu rendimento previamente, enquanto quem investe no segundo, só conhecerá os resultados na data de vencimento."
+          example: "PRE"
+        frequency:
+          type: string
+          enum: [
+            "A_D"
+            ,"A_M"
+            ,"A_A"
+          ]
+          description: "Código que indica Frequência sobre a qual incide a Remuneração"
+          example: "A_D"
+        additionalInfo:
+          type: string
+          maxLength: 2000
+          description: "Descrição da Remuneração"
+  
+  ##### AccountOtherServicesPrice ##### 
+    AccountOtherServicesPrice:
+      type: object
+      required: 
+        - type
+        - value
+        - currency
+      properties:
+        type:
+          type: string
+          enum: [
+            "MINIMO"
+            ,"MEDIO"
+            ,"MAXIMO"
+          ]
+          description: "Indica os tipos: mínimo, médio e máximo do valor informado"
+          example: "MEDIO"
+        value:
+          type: number
+          description: "Valor da tarifa cobrada referente aos Outros Serviços"
+          example: 45.00
+        currency:
+          type: string
+          maxLength: 3
+          pattern: ^([A-Z]{3})$
+          description: "Moeda referente ao valor máximo da tarifa conforme ISO-4217"
+          example: "BRL"
+
+  ############################
+  ##  Personal Accounts ##
+  ############################  
+  
+  ##### ResponsePersonalAccounts #####
+    PersonalAccountsResponse:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          type: object
+          required:
+            - brand
+          properties:
+            brand:
+              type: object
+              required:
+                - name
+                - companies
+              properties:
+                name:
+                  type: string
+                  maxLength: 30
+                  description: "Nome da marca selecionada pela Organização proprietária da companhia responsável pelos tipos de contas de pessoas físicas cosultadas."
+                  example: "The Big Bank Brand"
+                companies:
+                  type: array
+                  items:
+                    required: 
+                      - name
+                      - cnpjNumber
+                    properties:
+                      name:
+                        type: string
+                        maxLength: 30
+                        description: "Nome da Instituição, pertencente à marca, responsável pela comercialização dos tipos de contas de pessoas físicas cosultadas."
+                        example: "The Big Bank Company"
+                      cnpjNumber:
+                        type: string
+                        minLength: 14
+                        maxLength: 14
+                        description: "Número completo do CNPJ da instituição responsável pelos  tipos de contas de pessoas físicas cosultadas."
+                        example: "54672317000101"
+                      personalAccounts:
+                        type: array
+                        items:
+                          required:
+                            - type
+                            - fees
+                            - serviceBundles
+                            - openCloseChannels
+                            - transactionMethods
+                            - termsConditions
+                            - incomeRates
+                          properties:
+                            name:
+                              type: string
+                              enum: [
+                                  "CONTA_DEPOSITO_VISTA"
+                                  ,"CONTA_POUPANCA"
+                                  ,"CONTA_PAGAMENTO_PRE_PAGA"
+                                ]
+                              description: "Tipos de contas ofertadas para pessoas Físicas, conforme Resolução 3.919 do Bacen."
+                              example: "Conta de depósito à vista"
+                            fees:
+                              type: object
+                              required:
+                                - priorityServices
+                              properties:
+                                priorityServices:
+                                  type: array
+                                  items:
+                                    $ref: '#/components/schemas/PersonalAccountsPriorityServices'
+                                otherServices:
+                                  type: array
+                                  items:
+                                    $ref: '#/components/schemas/PersonalAccountsOtherServices'
+                            serviceBundles:
+                                type: object
+                                required: 
+                                  - name
+                                  - services
+                                properties:
+                                  name:
+                                    type: string
+                                    maxLength: 50
+                                    description: "Nome do Pacote de Serviços dado pela instituição."
+                                  services:
+                                    type: array
+                                    items:
+                                      required: 
+                                        - code
+                                        - eventLimitQuantity
+                                        - freeEventQuantity
+                                        - maxPrice
+                                        - currency
+                                      properties:
+                                        code:
+                                          type: string
+                                          maxLength: 30
+                                          description: "Código que identifica o Serviço que compõe o Pacote de Serviços, podendo ser da lista de Serviços Prioritários ou Outros Serviços"
+                                          example: "segundo Resolução 3.919 do Bacen: 'SAQUEterminal'."
+                                        eventLimitQuantity:
+                                          type: string
+                                          maxLength: 4
+                                          description: "Quantidade de eventos previstos no Pacote de Serviços (Número de eventos incluídos no mês"
+                                          example: "2"
+                                        freeEventQuantity:
+                                          type: string
+                                          maxLength: 4
+                                          description: "Quantidade de eventos previstos no Pacote de Serviços com isenção de Tarifa"
+                                          example: "1"
+                                        maxPrice:
+                                          type: string
+                                          maxLength: 4
+                                          description: "Valor máximo da tarifa referente ao Serviço que compõe o Pacote de Serviços (valor publicado e  divulgado)."
+                                        currency:
+                                          type: string
+                                          maxLength: 3
+                                          pattern: ^([A-Z]{3})$
+                                          description: "Moeda referente ao valor da tarifa conforme ISO-4217"
+                                          example: "BRL"
+                            openCloseChannels:
+                              type: string
+                              enum: [
+                                "DEPENDENCIAS_PROPRIAS",
+                                "CORRESPONDENTES_BANCARIOS",
+                                "INTERNET_BANKING",
+                                "MOBILE_BANKING",
+                                "CENTRAL_TELEFONICA",
+                                "CHAT",
+                                "OUTROS"
+                                ]
+                              description: "Canais disponíveis para abertura e encerramento de contas"
+                              example: "CENTRAL_TELEFONICA"
+                            transactionMethods:
+                              type: string
+                              enum: [
+                                "MOVIMENTACAO_ELETRONICA",
+                                "MOVIMENTACAO_CHEQUE",
+                                "MOVIMENTACAO_CARTAO",
+                                "MOVIMENTACAO_PRESENCIAL"
+                                ]
+                              description: "Lista de formas de movimentação possíveis para a conta"
+                              example: "MOVIMENTACAO_PRESENCIAL"
+                            termsConditions:
+                              $ref: '#/components/schemas/AccountsTermsConditions'
+                            incomeRates:
+                              $ref: '#/components/schemas/AccountsIncomeRates'
+        links:
+          $ref: '#/components/schemas/Links'
+        meta:
+          $ref: '#/components/schemas/Meta'
+          
+  ##### PersonalAccountsPriorityServices #####
+    PersonalAccountsPriorityServices:
+      type: object
+      required:
+        - name
+        - code
+        - chargingTriggerInfo
+        - maxPrice
+        - currency
+        - chargingUnit
+      properties:
+        name:
+          type: string
+          enum: [
+            "CONFECCAO_CADASTRO"
+            ,"CARTAO"
+            ,"FORNECIMENTO_SEG_VIA_CARTAO_DEBITO"
+            ,"FORNECIMENTO_SEG_VIA_CARTAO_CONTA_POUPANCA"
+            ,"CHEQUE"
+            ,"EXCLUSAO_CADASTRO_CHEQUE_SEM_FUNDOS"
+            ,"CONTRA_ORDEM_REVOGACAO_SUSTACAO_PAGAMENTO_CHEQUE"
+            ,"FORNECIMENTO_FOLHAS_CHEQUE"
+            ,"CHEQUE_ADMINISTRATIVO"
+            ,"CHEQUE_VISADO"
+            ,"SAQUE"
+            ,"SAQUE_CONTA_DEPOSITOS_VISTA_POUPANCA"
+            ,"DEPOSITO"
+            ,"DEPOSITO_IDENTIFICADO"
+            ,"CONSULTA"
+            ,"FORNECIMENTO_EXTRATO_MENSAL_CONTA_VISTA_POUPANCA"
+            ,"FORNECIMENTO_EXTRATO_PERIODO_CONTA_VISTA_POUPANCA"
+            ,"FONECIMENTO_COPIA_MICROFILME_MICROFICHA_ASSEMELHADO"
+            ,"TRANSFERENCIA_DOC"
+            ,"TRANSFERENCIA_TED"
+            ,"TRANSFERENCIA_AGENDADA_DOC_TED"
+            ,"TRANSFERENCIA_ENTRE_CONTAS_PROPRIA_INSTITUICAO"
+            ,"ORDEM_PAGAMENTO"
+          ]
+          description: "Nome das Tarifas cobradas sobre Serviços Prioritários para os tipos de contas comercializadas para pessoa física. A Lista corresponde às relacionadas na Resolução 3919 do Bacen."
+          example: "FORNECIMENTO_EXTRATO_MENSAL_CONTA_VISTA_POUPANCA"
+        code:
+          type: string
+          enum: [
+            "CADASTRO"
+            ,"SEGUNDA_VIA_CARTAO_DEBITO"
+            ,"SEGUNDA_VIA_CARTAO_POUPANCA"
+            ,"EXCLUSAO_CCF"
+            ,"SUSTACAO_REVOGACAO"
+            ,"FOLHA_CHEQUE"
+            ,"CHEQUE_ADMINISTRATIVO"
+            ,"CHEQUE_VISADO"
+            ,"SAQUE_PESSOAL"
+            ,"SAQUE_TERMINAL"
+            ,"SAQUE_CORRESPONDENTE"
+            ,"DEPOSITO_IDENTIFICADO"
+            ,"EXTRATO_MES_P"
+            ,"EXTRATO_MES_E"
+            ,"EXTRATO_MES_C"
+            ,"EXTRATO_MOVIMENTO_P"
+            ,"EXTRATO_MOVIMENTO_E"
+            ,"EXTRATO_MOVIMENTO_C"
+            ,"MICROFILME"
+            ,"DOC_PESSOAL"
+            ,"DOC_ELETRONICO"
+            ,"DOC_INTERNET"
+            ,"TED_PESSOAL"
+            ,"TED_ELETRONICO"
+            ,"TED_INTERNET"
+            ,"DOC_TED_AGENDADO_P"
+            ,"DOC_TED_AGENDADO_E"
+          ]
+          description: "Sigla de identificação do Serviço Prioritário, segundo Resolução 3.919 do Bacen."
+          example: "EXTRATO_MOVIMENTO_P"
+        chargingTriggerInfo:
+          type: string
+          description: "Fatores geradores de cobrança dos Serviços Prioritários que incidem sobre as contas comercializadas, conforme Resolução 3.919 do Bacen."
+          example: "CHEQUE_ADMINISTRATIVO"
+        maxPrice:
+          type: number
+          description: "Valor máximo para a tarifa cobrada, referente ao Serviço Prioritário."
+          example: 45.00
+        currency:
+          type: string
+          maxLength: 3
+          pattern: ^([A-Z]{3})$
+          description: "Moeda referente ao valor da tarifa conforme ISO-4217"
+          example: "BRL"
+        chargingUnit:
+          type: string
+          maxLength: 50
+          description: "Unidade ou forma de cobrança"
+          example: "Por depósito recebido"
+          
+  ##### PersonalAccountsOtherServices #####
+    PersonalAccountsOtherServices:
+      type: object
+      required: 
+        - name
+        - code
+        - chargingTriggerInfo
+        - chargingUnit
+        - price
+      properties:
+        name:
+          type: string
+          maxLength: 50
+          description: "Nome atribuído a Outros Serviços disponíveis para os tipos de contas informados. Outros Serviços são quaisquer serviços que a instituição ofereça para a modalidade de Contas e não estejam definidos na lista de Serviços Prioritários definidos na resolução 3.919 do Bacen."
+          example: "Evento personalizado"
+        code:
+          type: string
+          maxLength: 30
+          description: "Sigla de identificação de Outros Serviços que incidem sobre os tipos de contas informados."
+          example: "EVENTO_PERSONALIZADO"
+        chargingTriggerInfo:
+          type: string
+          maxLength: 3000
+          description: "Outros Fatores geradores de cobrança referentes aos Outros Serviços que incidem sobre as contas comercializadas."
+          example: "Cobrança devido a evento personalizado"
+        price:
+          $ref: '#/components/schemas/AccountOtherServicesPrice'
+        currency:
+          type: string
+          maxLength: 3
+          pattern: ^([A-Z]{3})$
+          description: "Moeda referente ao valor da tarifa conforme ISO-4217"
+          example: "BRL"
+        additionalInfo:
+          type: string
+          maxLength: 80
+          description: "Descrição de como é composto o valor da tarifa"
+          example: "0,5% do valor do orçamentor"
+        chargingUnit:
+          type: string
+          maxLength: 50
+          description: "Unidade ou forma de cobrança"
+          example: "Por depósito recebido"         
+ 
+  ############################
+  ##  Business Accounts ##
+  ############################  
+  
+  ##### ResponseBusinessAccounts #####
+    ResponseBusinessAccounts:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          type: object
+          required:
+            - brand
+          properties:
+            brand:
+              type: object
+              required:
+                - name
+                - companies
+              properties:
+                name:
+                  type: string
+                  maxLength: 30
+                  description: "Nome da Instituição, pertencente à marca, responsável pela comercialização dos tipos de contas de pessoas jurídicas cosultadas."
+                  example: "The Big Bank Brand"
+                companies:
+                  type: array
+                  items:
+                    required: 
+                      - name
+                      - cnpjNumber
+                    properties:
+                      name:
+                        type: string
+                        maxLength: 30
+                        description: "Nome da Instituição, pertencente à marca, responsável pela comercialização dos tipos de contas de pessoas juridicas cosultadas."
+                        example: "The Big Bank Company"
+                      cnpjNumber:
+                        type: string
+                        minLength: 14
+                        maxLength: 14
+                        description: "Número completo do CNPJ da instituição responsável pelos  tipos de contas de pessoas juridicas cosultadas."
+                        example: "54672317000101"
+                      businessAccounts:
+                        type: array
+                        items:
+                          required:
+                            - type
+                            - fees
+                            - serviceBundles
+                            - openCloseChannels
+                            - transactionMethods
+                            - termsConditions
+                            - incomeRates
+                          properties:
+                            name:
+                              type: string
+                              enum: [
+                                  "CONTA_DEPOSITO_VISTA"
+                                  ,"CONTA_POUPANCA"
+                                  ,"CONTA_PAGAMENTO_PRE_PAGA"
+                                ]
+                              description: "Tipos de contas ofertadas para pessoas Físicas, conforme Resolução 3.919 do Bacen."
+                              example: "Conta de depósito à vista"
+                            fees:
+                              type: object
+                              required:
+                                - priorityServices
+                              properties:
+                                priorityServices:
+                                  type: array
+                                  items:
+                                    $ref: '#/components/schemas/BusinessAccountsPriorityServices'
+                                otherServices:
+                                  type: array
+                                  items:
+                                    $ref: '#/components/schemas/BusinessAccountsOtherServices'
+                            serviceBundles:
+                                type: object
+                                required: 
+                                  - name
+                                  - services
+                                properties:
+                                  name:
+                                    type: string
+                                    maxLength: 50
+                                    description: "Nome do Pacote de Serviços dado pela instituição."
+                                  services:
+                                    type: array
+                                    items:
+                                      required: 
+                                        - code
+                                        - eventLimitQuantity
+                                        - freeEventQuantity
+                                        - maxPrice
+                                        - currency
+                                      properties:
+                                        code:
+                                          type: string
+                                          maxLength: 30
+                                          description: "Código que identifica o Serviço que compõe o Pacote de Serviços, podendo ser da lista de Serviços Prioritários ou Outros Serviços"
+                                          example: "segundo Resolução 3.919 do Bacen: 'SAQUEterminal'."
+                                        eventLimitQuantity:
+                                          type: string
+                                          maxLength: 4
+                                          description: "Quantidade de eventos previstos no Pacote de Serviços (Número de eventos incluídos no mês"
+                                          example: "2"
+                                        freeEventQuantity:
+                                          type: string
+                                          maxLength: 4
+                                          description: "Quantidade de eventos previstos no Pacote de Serviços com isenção de Tarifa"
+                                          example: "1"
+                                        maxPrice:
+                                          type: string
+                                          maxLength: 4
+                                          description: "Valor máximo da tarifa referente ao Serviço que compõe o Pacote de Serviços (valor publicado e  divulgado)."
+                                        currency:
+                                          type: string
+                                          maxLength: 3
+                                          pattern: ^([A-Z]{3})$
+                                          description: "Moeda referente ao valor da tarifa conforme ISO-4217"
+                                          example: "BRL"
+                            openCloseChannels:
+                              type: string
+                              enum: [
+                                "DEPENDENCIAS_PROPRIAS",
+                                "CORRESPONDENTES_BANCARIOS",
+                                "INTERNET_BANKING",
+                                "MOBILE_BANKING",
+                                "CENTRAL_TELEFONICA",
+                                "CHAT",
+                                "OUTROS"
+                                ]
+                              description: "Canais disponíveis para abertura e encerramento de contas"
+                              example: "CENTRAL_TELEFONICA"
+                            transactionMethods:
+                              type: string
+                              enum: [
+                                "MOVIMENTACAO_ELETRONICA",
+                                "MOVIMENTACAO_CHEQUE",
+                                "MOVIMENTACAO_CARTAO",
+                                "MOVIMENTACAO_PRESENCIAL"
+                                ]
+                              description: "Lista de formas de movimentação possíveis para a conta"
+                              example: "MOVIMENTACAO_PRESENCIAL"
+                            termsConditions:
+                              $ref: '#/components/schemas/AccountsTermsConditions'
+                            incomeRates:
+                              $ref: '#/components/schemas/AccountsIncomeRates'
+        links:
+          $ref: '#/components/schemas/Links'
+        meta:
+          $ref: '#/components/schemas/Meta'
+  
+  ##### BusinessAccountsPriorityServices #####
+    BusinessAccountsPriorityServices:
+      type: object
+      required:
+        - name
+        - code
+        - chargingTriggerInfo
+        - maxPrice
+        - currency
+        - chargingUnit
+      properties:
+        name:
+          type: string
+          enum: [
+            "CONFECCAO_CADASTRO"
+            ,"CARTAO"
+            ,"FORNECIMENTO_SEG_VIA_CARTAO_DEBITO"
+            ,"FORNECIMENTO_SEG_VIA_CARTAO_CONTA_POUPANCA"
+            ,"CHEQUE"
+            ,"EXCLUSAO_CADASTRO_CHEQUE_SEM_FUNDOS"
+            ,"CONTRA_ORDEM_REVOGACAO_SUSTACAO_PAGAMENTO_CHEQUE"
+            ,"FORNECIMENTO_FOLHAS_CHEQUE"
+            ,"CHEQUE_ADMINISTRATIVO"
+            ,"CHEQUE_VISADO"
+            ,"SAQUE"
+            ,"SAQUE_CONTA_DEPOSITOS_VISTA_POUPANCA"
+            ,"DEPOSITO"
+            ,"DEPOSITO_IDENTIFICADO"
+            ,"CONSULTA"
+            ,"FORNECIMENTO_EXTRATO_MENSAL_CONTA_VISTA_POUPANCA"
+            ,"FORNECIMENTO_EXTRATO_PERIODO_CONTA_VISTA_POUPANCA"
+            ,"FONECIMENTO_COPIA_MICROFILME_MICROFICHA_ASSEMELHADO"
+            ,"TRANSFERENCIA_DOC"
+            ,"TRANSFERENCIA_TED"
+            ,"TRANSFERENCIA_AGENDADA_DOC_TED"
+            ,"TRANSFERENCIA_ENTRE_CONTAS_PROPRIA_INSTITUICAO"
+            ,"ORDEM_PAGAMENTO"
+          ]
+          description: "Nome das Tarifas cobradas sobre Serviços Prioritários para os tipos de contas comercializadas para pessoa física. A Lista corresponde às relacionadas na Resolução 3919 do Bacen."
+          example: "FORNECIMENTO_EXTRATO_MENSAL_CONTA_VISTA_POUPANCA"
+        code:
+          type: string
+          enum: [
+            "CADASTRO"
+            ,"SEGUNDA_VIA_CARTAO_DEBITO"
+            ,"SEGUNDA_VIA_CARTAO_POUPANCA"
+            ,"EXCLUSAO_CCF"
+            ,"SUSTACAO_REVOGACAO"
+            ,"FOLHA_CHEQUE"
+            ,"CHEQUE_ADMINISTRATIVO"
+            ,"CHEQUE_VISADO"
+            ,"SAQUE_PESSOAL"
+            ,"SAQUE_TERMINAL"
+            ,"SAQUE_CORRESPONDENTE"
+            ,"DEPOSITO_IDENTIFICADO"
+            ,"EXTRATO_MES_P"
+            ,"EXTRATO_MES_E"
+            ,"EXTRATO_MES_C"
+            ,"EXTRATO_MOVIMENTO_P"
+            ,"EXTRATO_MOVIMENTO_E"
+            ,"EXTRATO_MOVIMENTO_C"
+            ,"MICROFILME"
+            ,"DOC_PESSOAL"
+            ,"DOC_ELETRONICO"
+            ,"DOC_INTERNET"
+            ,"TED_PESSOAL"
+            ,"TED_ELETRONICO"
+            ,"TED_INTERNET"
+            ,"DOC_TED_AGENDADO_P"
+            ,"DOC_TED_AGENDADO_E"
+          ]
+          description: "Sigla de identificação do Serviço Prioritário, segundo Resolução 3.919 do Bacen."
+          example: "EXTRATO_MOVIMENTO_P"
+        chargingTriggerInfo:
+          type: string
+          description: "Fatores geradores de cobrança dos Serviços Prioritários que incidem sobre as contas comercializadas, conforme Resolução 3.919 do Bacen."
+          example: "CHEQUE_ADMINISTRATIVO"
+        maxPrice:
+          type: number
+          description: "Valor máximo para a tarifa cobrada, referente ao Serviço Prioritário."
+          example: 45.00
+        currency:
+          type: string
+          maxLength: 3
+          pattern: ^([A-Z]{3})$
+          description: "Moeda referente ao valor da tarifa conforme ISO-4217"
+          example: "BRL"
+        chargingUnit:
+          type: string
+          maxLength: 50
+          description: "Unidade ou forma de cobrança"
+          example: "Por depósito recebido"
+  
+  ##### BusinessAccountsOtherServices #####
+    BusinessAccountsOtherServices:
+      type: object
+      required: 
+        - name
+        - code
+        - chargingTriggerInfo
+        - chargingUnit
+        - price
+      properties:
+        name:
+          type: string
+          maxLength: 50
+          description: "Nome atribuído a Outros Serviços disponíveis para os tipos de contas informados. Outros Serviços são quaisquer serviços que a instituição ofereça para a modalidade de Contas e não estejam definidos na lista de Serviços Prioritários definidos na resolução 3.919 do Bacen."
+          example: "Evento personalizado"
+        code:
+          type: string
+          maxLength: 30
+          description: "Sigla de identificação de Outros Serviços que incidem sobre os tipos de contas informados."
+          example: "EVENTO_PERSONALIZADO"
+        chargingTriggerInfo:
+          type: string
+          maxLength: 3000
+          description: "Outros Fatores geradores de cobrança referentes aos Outros Serviços que incidem sobre as contas comercializadas."
+          example: "Cobrança devido a evento personalizado"
+        price:
+          $ref: '#/components/schemas/AccountOtherServicesPrice'
+        currency:
+          type: string
+          maxLength: 3
+          pattern: ^([A-Z]{3})$
+          description: "Moeda referente ao valor da tarifa conforme ISO-4217"
+          example: "BRL"
+        additionalInfo:
+          type: string
+          maxLength: 80
+          description: "Descrição de como é composto o valor da tarifa"
+          example: "0,5% do valor do orçamentor"
+        chargingUnit:
+          type: string
+          maxLength: 50
+          description: "Unidade ou forma de cobrança"
+          example: "Por depósito recebido" 
+ 
+  ######################
+  ##  Personal Loans  ##
+  ######################
+  
+  ##### ResponsePersonalLoansList #####
+    ResponsePersonalLoansList:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          type: object
+          required:
+            - brand
+          properties:
+            brand:
+                $ref: '#/components/schemas/PersonalLoansBrand'
+        links:
+          $ref: '#/components/schemas/Links'
+        meta:
+          $ref: '#/components/schemas/Meta'
+
+  ##### PersonalLoansBrand #####
+    PersonalLoansBrand:
+      type: object
+      required:
+        - name
+        - companies
+      properties:
+        name:
+          type: string
+          pattern: '\w*\W*'
+          maxLength: 30
+          description: Nome da Marca.
+          example: "Marca A"
+        companies:
+          type: array
+          items:
+            $ref: '#/components/schemas/PersonalLoansCompanies'
+          description: Lista de instituições pertencentes à marca 
+          
+  #### PersonalLoansCompanies ####
+    PersonalLoansCompanies:
+      type: object
+      required:
+        - name
+        - cnpjNumber
+        - personalLoans
+      properties:
+        name:
+          type: string
+          pattern: '\w*\W*'
+          maxLength: 30
+          description: "Nome da Instituição, pertencente à marca, responsável pela comercialização das modalidades de Empréstimos para Pessoas Físicas consultadas."
+          example: "Empresa da Marca A"
+        personalLoans:
+          type: array
+          items:
+            $ref: '#/components/schemas/PersonalLoans'
+          description: Lista
+      allOf:
+        - $ref: '#/components/schemas/CNPJ'
+
+  ######################
+  ##  Business Loans  ##
+  ######################
+
+  #### ResponseBusinessLoansList ####
+    ResponseBusinessLoansList:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          type: object
+          required:
+            - brand
+          properties:
+            brand:
+                 $ref: '#/components/schemas/BusinessLoansBrand'
+        links:
+          $ref: '#/components/schemas/Links'
+        meta:
+          $ref: '#/components/schemas/Meta'
+
+  ##### BusinessLoansBrand #####
+    BusinessLoansBrand:
+      type: object
+      required:
+        - name
+        - companies
+      properties:
+        name:
+          type: string
+          pattern: '\w*\W*'
+          maxLength: 30
+          description: Nome do marca.
+          example: "Marca A"
+        companies:
+          type: array
+          items:
+            $ref: '#/components/schemas/BusinessLoansCompanies'
+          description: Lista de instituições pertencentes à marca
+   
+  #### BusinessLoansCompanies ####
+    BusinessLoansCompanies:
+      type: object
+      required:
+        - name
+        - cnpjNumber
+        - personalLoans
+      properties:
+        name:
+          type: string
+          pattern: '\w*\W*'
+          maxLength: 30
+          description: "Nome da Instituição, pertencente à marca, responsável pela comercialização das modalidades de Empréstimos para Pessoas Jurídicas consultadas."
+          example: "Empresa da Marca A"
+        businessLoans:
+          type: array
+          items:
+            $ref: '#/components/schemas/BusinessLoans'
+          description: Lista
+      allOf:
+        - $ref: '#/components/schemas/CNPJ'
+
+    #######################################
+    ##  Commons  Personal/Business Loans ##
+    #######################################
+
+    #### PersonalLoans ####
+    PersonalLoans:
+      type: object
+      required:
+        - types
+        - feeds
+        - interestRates
+        - requiredWarranties
+      properties:
+        types:
+          type: string
+          enum:
+            - ADIANTAMENTO_DEPOSITANTE
+            - EMPRESTIMO_CREDITO_PESSOAL_CONSIGNADO
+            - EMPRESTIMO_CREDITO_PESSOAL_NAO_CONSIGNADO
+            - EMPRESTIMO_HOME_EQUITY
+            - EMPRESTIMO_MICROCREDITO_PRODUCTIVO_ORIENTADO
+            - EMPRESTIMO_CHEQUE_ESPECIAL
+            - EMPRESTIMO_CONTA_GARANTIDA
+          description: "Modalidades de empréstimos ofertados para pessoas físicas"
+          example: "CHEQUE_ESPECIAL"
+        fees:
+          type: array
+          items:
+            $ref: '#/components/schemas/LoanFees'
+          description: Lista
+        interestRates:
+          type: array
+          items:
+            $ref: '#/components/schemas/LoanInterestRates'
+        requiredWarranties:
+          type: array
+          items:
+            $ref: '#/components/schemas/RequiredWarranties'
+        termsConditions:
+          type: string
+          pattern: '\w*\W*'
+          maxLength: 2000
+          description: "Campo aberto para informar as condições contratuais relativas à Modalidade de Empréstimo para pessoa física informada. Pode ser informada a URL referente ao endereço onde constam as condições informadas"
+          example: ""
+    #### BusinessLoans ####
+    BusinessLoans:
+      type: object
+      required:
+        - types
+        - feeds
+        - interestRates
+        - requiredWarranties
+      properties:
+        types:
+          type: string
+          enum:
+            - ADIANTAMENTO_DEPOSITANTE
+            - EMPRESTIMO_CHEQUE_ESPECIAL
+            - EMPRESTIMO_CONTA_GARANTIDA
+            - EMPRESTIMO_CAPITAL_GIRO_VENCIMIENTO_365
+            - EMPRESTIMO_CAPITAL_GIRO_VENCIMIENTO_SUP_365
+            - EMPRESTIMO_CAPITAL_GIRO_ROTATIVO
+            - EMPRESTIMO_MICROCREDITO_PRODUCTIVO_ORIENTADO
+          description: "Modalidades de empréstimos ofertados para pessoas jurídicas"
+          example: "CHEQUE_ESPECIAL"
+        fees:
+          type: array
+          items:
+            $ref: '#/components/schemas/LoanFees'
+          description: Lista
+        interestRates:
+          type: array
+          items:
+            $ref: '#/components/schemas/LoanInterestRates'
+        requiredWarranties:
+          type: array
+          items:
+            $ref: '#/components/schemas/RequiredWarranties'
+        termsConditions:
+          type: string
+          pattern: '\w*\W*'
+          maxLength: 2000
+          description: "Campo aberto para informar as condições contratuais relativas à Modalidade de Empréstimo para pessoa física informada. Pode ser informada a URL referente ao endereço onde constam as condições informadas"
+          example: ""
+
+    #### Fees ####
+    LoanFees:
+      type: object
+      required:
+        - serviceName
+        - serviceCode
+        - chargeTriggerInfo
+        - maxPrice
+        - currency
+      properties:
+        serviceName:
+          type: string
+          pattern: '\w*\W*'
+          maxLength: 50
+          description: "Nomes das Tarifas cobradas sobre Serviços relacionados à Modalidade informada do Empréstimo para pessoa física/jurídica."
+          example: "Cheque Especial"
+        serviceCode:
+          type: string
+          pattern: '\w*\W*'
+          maxLength: 30
+          description: "Sigla de identificação do serviço relacionado à Modalidade informada de Empréstimo para pessoa física/jurídica."
+          example: "Cheque Especial"
+        chargingTriggerInfo:
+          type: string
+          pattern: '\w*\W*'
+          maxLength: 2000
+          description: "Fatores geradores de cobrança que incidem sobre as Modalidades informada de Empréstimos para pessoa física/jurídica."
+          example: "(e) Tarifa válida a partir de 06.01.2020, para novas contratações de Cheque Especial e Cheque Empresarial direcionado a clientes MEI (f) Tarifa válida a partir de 01.06.2020, para contratações de Cheque Especial e Cheque Empresarial direcionado a clientes MEI realizadas até 05.01.2020"
+        price:
+          type: array
+          items:
+            $ref: '#/components/schemas/LoanFeesPrice'
+    
+  #### LoansFeesPrice ####  
+    LoanFeesPrice:
+      type: object
+      required:
+        - changingUnit
+      properties:
+        type:
+          type: string
+          pattern: '^(\d{1})$'
+          enum: 
+            - MINIMO
+            - MEDIO
+            - MAXIMO
+          description: "Indica os tipos: mínimo, médio e máximo do valor informado"
+          example: "MINIMO"
+        value:
+          type: string
+          pattern: '^(\d{1,9}\,\d{2}){1}$'
+          maxLength: 12
+          x-cds-type: AmountString
+          description: "Valor da tarifa cobrada, relativa ao serviço ofertado para a Modalidade de Empréstimo, para pessoa física/jurídica."
+          example: "45,00"
+        currency:
+          type: string
+          pattern: '^(\W{3}){1}$'
+          maxLength: 3
+          x-cds-type: CurrencyString
+          description: "Moeda referente ao valor da Tarifa, segundo modelo ISO-4217."
+          example: "BRL"
+        additionalInfo:
+          type: string
+          pattern: '\w*\W*'
+          maxLength: 80
+          description: "Descrição de como é composto o valor da tarifa. p.ex. '0,25% sobre o excedente do limite acima de R$ 500,00'"
+          example: ""
+        changingUnit:
+          type: string
+          pattern: '\w*\W*'
+          maxLength: 50
+          description: "Unidade ou forma de cobrança"
+          example: "Por mês"
+          
+  #### LoanInterestRates ####
+    LoanInterestRates:
+      type: object
+      properties:
+        rate:
+          type: string
+          pattern: '(-?[1-9]?\d{1,2}){1}(\,\d{1,2}){1}'
+          maxLength: 7
+          description: "Percentual que incide sobre a composição das taxas de juros remuneratórias"
+          example: ""
+        referencialRate:
+          type: string
+          pattern: '(-?[1-9]?\d{1,2}){1}(\,\d{1,2}){1}'
+          maxLength: 10
+          description: "Taxa Referencial se configura como uma taxa de juros de referência, ou seja, um indicador geral da economia brasileira. Por isso, é utilizada na hora de calcular o rendimento de determinadas aplicações financeiras"
+          example: ""
+        indexer:
+          type: string
+          pattern: '\w*\W*'
+          maxLength: 30
+          description: "Indexador é o termo utilizado para se referir aos índices usados como base para corrigir os valores monetários de um determinado ativo. No Brasil, os indexadores mais comuns são o IPCA, a taxa Selic e o CDI"
+          example: "IPCA"
+        prePostTax:
+          type: string
+          pattern: '^(\d{1})$'
+          enum: 
+            - PRE
+            - POS
+          description: "Indicador de pré ou pós"
+          example: "PRE"
+        frecuency:
+          type: string
+          pattern: '^(a\.[d,m,a]\.){1}$'
+          enum: 
+            - AD
+            - AM
+            - AA
+          description: "Código que indica Frequência sobre a qual incide a Remuneração"
+          example: "AD"
+        incomeRateInfo:
+          type: string
+          pattern: '\w*\W*'
+          maxLength: 2000
+          description: "Descrição da Remuneração relativa as taxas de juros remuneratóriassobre a modalidad de Empréstimo para pessoa física/jurídica"
+          example: ""
+  ####  Required Warranties  ####
+    RequiredWarranties:
+          type: array
+          items:
+            type: string
+            enum:
+              - CESSAO_DIREITOS_CREDITORIOS
+              - CAUÇAO
+              - PENHOR
+              - ANILEAÇAO_FIDUCIARIA
+              - HIPOTECA
+              - OPERAÇOES_GARANTIDAS_GOVERNO
+              - OUTRAS_GARANT_NO_FIDEJUSSORIAS
+              - SEGUROS_ASSEMELHADOS
+              - GARANTIA_FIDEJUSSORIA
+              - BENS_ARRENDADOS
+              - GARANTIAS_INTERNACIONAIS
+              - OPERAÇOES_GARAN_OUTR_ENTIDADES
+              - ACORDOS_DE_COMPENSAÇAO
+              - NAO_APLICAVEL
+            maxLength: 50
+            description: "Campo aberto para informar as condições contratuais relativas à Modalidade de direitos creditórios descontados informada"
+            example: "CESSAO_DIREITOS_CREDITORIOS"
+  ############
+  ##  CNPJ  ##
+  ############
+    CNPJ:
+      type: object
+      properties:
+        cnpjNumber:
+          type: string
+          pattern: '(\d{2})\.(\d{3})\.(\d{3})'
+          description: CNPJ
+          maxLength: 14
+          example: 50.685.362/0001-35
+      required:
+        - cnpjNumber   
+        
+  ##############################
+  ##  Commons - Credit Cards  ##
+  ##############################
+  
+  ##### CreditCardIndentification #####
+    CreditCardIndentification:
+      type: object
+      required:
+        - productType
+        - creditCardNetwork
+      properties:
+        productType:
+          type: string
+          enum: [
+            "CLASSIC_NACIONAL"
+            ,"CLASSIC_INTERNACIONAL"
+            ,"GOLD"
+            ,"PLATINUM"
+            ,"INFINITE"
+            ,"ELECTRON"
+            ,"STANDARD_NACIONAL"
+            ,"STANDARD_INTERNACIONAL"
+          ]
+          description: "Categoria atribuída a um cartão de pagamento, sob uma certa denominação, que lhe agrega um conjunto de vantagens, diferenciando-o de acordo com o perfil do portador. Essa categoria é definida pelo BACEN e está contida no documento de nome 'Elaboração e Remessa de Informações Relativas aos Cartões de Pagamento  Emissores'"
+          example: "PLATINUM"
+        creditCardNetwork:
+          type: string
+          enum: [
+            "VISA"
+            ,"MASTERCARD"
+            ,"AMERICAN_EXPRESS"
+            ,"DINERS_CLUB"
+            ,"HIPERCARD"
+            ,"BANDEIRA_PROPRIA"
+            ,"CHEQUE_ELETRONICO"
+            ,"ELO"
+            ,"OUTRAS"
+          ]
+          description: "Categoria de Bandeiras de Cartões. Bandeira é a detentora de todos os direitos e deveres da utilização da marca estampada no cartão, inclusive as bandeiras pertencentes aos emissores. Essas bandeiras estão definidas em documento do BACEN de nome 'Elaboração e Remessa de Informações Relativas aos Cartões de Pagamento  Emissores'"
+          example: "MASTERCARD"
+        additionalInfo:
+          type: string
+          maxLength: 50
+          
+  ##### CreditCardRewardsProgram #####
+    CreditCardRewardsProgram:
+      type: object
+      required: 
+        - hasRewardProgram
+      properties:
+        hasRewardProgram:
+          type: boolean
+          description: "Indicador da existência de programa de fidelidade/recompensa associado à conta"
+          example: true
+        rewardProgramInfo:
+          type: string
+          maxLength: 2000
+          description: "Informações de termos e condições do programa de fidelidade/recompensa. Pode ser informada a URL referente ao endereço onde constam as condições informadas"
+          example: "www.banco.com.br/programa-recompensas"
+  
+  ##### CreditCardTermsConditions #####
+    CreditCardTermsConditions:
+      type: object
+      required:
+        - minimumFeeRate
+        - elegibilityCriteriaInfo
+        - closingProcessInfo
+      properties:
+        minimumFeeRate:
+          type: number
+          description: "Percentual para pagamento mínimo sobre o saldo devedor da fatura"
+          example: 25.5
+        additionalInfo:
+          type: string
+          maxLength: 500
+          description: "Campo aberto para detalhamento de taxas de juros"
+        elegibilityCriteriaInfo:
+          type: string
+          maxLength: 2000
+          description: "Informação sobre as condições e critérios de elegibilidade do emissor do cartão. Pode ser informada a URL referente ao endereço onde constam as condições informadas"
+        closingProcessInfo:
+          type: string
+          maxLength: 2000
+          description: "Descrição dos procedimentos para encerramento da conta pós paga. Pode ser informada a URL referente ao endereço onde constam as condições informadas"
+          example: "www.banco.com.br/cancelamento-cartao"
+          
+  ##### CreditCardInterestRates #####
+    CreditCardInterestRates:
+      type: object
+      required:
+        - feeRate
+        - instalmentRate
+        - code
+      properties:
+        feeRate:
+          type: number
+          description: "Percentual que corresponde a taxa aplicada para utilização de Crédito Rotativo"
+          example: 9.87
+        instalmentRate:
+          type: number
+          description: "Percentual que corresponde a taxa aplicada para pagamento parcelado do saldo devedor quando não realizado pagamento integral da fatura"
+          example: 4.1
+        code:
+          type: string
+          enum: [
+            "SAQUE_CREDITO"
+            ,"OUTROS"
+          ]
+          description: "Lista de outras operações de crédito"
+          example: "SAQUE_CREDITO"
+        additionalInfo:
+          type: string
+          maxLength: 50
+          
+  ##### CreditCardServicePrice ##### 
+    CreditCardServicePrice:
+      type: object
+      required: 
+        - type
+        - value
+        - currency
+      properties:
+        type:
+          type: string
+          enum: [
+            "MINIMO"
+            ,"MEDIO"
+            ,"MAXIMO"
+          ]
+          description: "Indica os tipos: mínimo, médio e máximo do valor informado"
+          example: "MEDIO"
+        value:
+          type: number
+          description: "Valor da tarifa cobrada referente aos Outros Serviços"
+          example: 15.66
+        currency:
+          type: string
+          maxLength: 3
+          pattern: ^([A-Z]{3})$
+          description: "Moeda referente ao valor máximo da tarifa conforme ISO-4217"
+          example: "BRL"
+          
+  ############################
+  ##  Personal Credit Cards ##
+  ############################  
+  
+  ##### PersonalCreditCardResponse #####
+    PersonalCreditCardResponse:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          type: object
+          required:
+            - brand
+          properties:
+            brand:
+              type: object
+              required:
+                - name
+                - companies
+              properties:
+                name:
+                  type: string
+                  maxLength: 30
+                  description: "Nome da marca selecionada pela Organização responsável pelas contas de pagamento pós-pagas (cartão de crédito)"
+                  example: "The Big Bank Brand"
+                companies:
+                  type: array
+                  items:
+                    required: 
+                      - name
+                      - cnpjNumber
+                    properties:
+                      name:
+                        type: string
+                        maxLength: 30
+                        description: "Nome da Instituição, pertencente à marca, responsável pelas contas de pagamento pós-pagas (cartões de crédito)"
+                        example: "The Big Bank Company"
+                      cnpjNumber:
+                        type: string
+                        minLength: 14
+                        maxLength: 14
+                        description: "Número completo do CNPJ da instituição responsável pelas contas de pagamento pós-pagas (cartões de crédito)"
+                        example: "54672317000101"
+                      personalCreditCards:
+                        type: array
+                        items:
+                          required:
+                            - name
+                            - identification
+                            - rewardsProgram
+                            - fees
+                            - interestRates
+                            - termsConditions
+                          properties:
+                            name:
+                              type: string
+                              maxLength: 50
+                              description: "Denominação/Identificação do nome da conta (cartão de crédito)"
+                              example: "Cartão Univertário Bem-Vindo"
+                            identification:
+                              $ref: '#/components/schemas/CreditCardIndentification'
+                            rewardsProgram:
+                              $ref: '#/components/schemas/CreditCardRewardsProgram'
+                            fees:
+                              type: object
+                              required:
+                                - priorityServices
+                              properties:
+                                priorityServices:
+                                  type: array
+                                  items:
+                                    $ref: '#/components/schemas/PersonalCreditCardPriorityServices'
+                                otherServices:
+                                  type: array
+                                  items:
+                                    $ref: '#/components/schemas/PersonalCreditCardOtherServices'
+                            interestRates:
+                              $ref: '#/components/schemas/CreditCardInterestRates'
+                            termsConditions:
+                              $ref: '#/components/schemas/CreditCardTermsConditions'
+        links:
+          $ref: '#/components/schemas/Links'
+        meta:
+          $ref: '#/components/schemas/Meta'
+                  
+  ##### PersonalCreditCardPriorityServices #####
+    PersonalCreditCardPriorityServices:
+      type: object
+      required:
+        - code
+        - maxPrice
+        - currency
+        - chargingUnit
+      properties:
+        code:
+          type: string
+          enum: [
+            "ANUIDADE_NACIONAL"
+            ,"ANUIDADE_INTERNACIONAL"
+            ,"SEGUNDA_VIA_CARTAO_CREDITO"
+            ,"RETIRADA_PAIS"
+            ,"RETIRADA_EXTERIOR"
+            ,"PAGAMENTO_CONTAS"
+            ,"AVALIACAO_EMERGENCIAL_CREDITO"
+          ]
+          description: "Sigla de identificação do serviço relacionado à modalidade de contas de pagamento pós-pagas para pessoa física informada conforme resolução 3.919 do BACEN"
+          example: "AVALIACAO_EMERGENCIAL_CREDITO"
+        maxPrice:
+          type: number
+          description: "Valor máximo para a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa física"
+          example: 45.88
+        currency:
+          type: string
+          maxLength: 3
+          pattern: ^([A-Z]{3})$
+          description: "Moeda referente ao valor da tarifa conforme ISO-4217"
+          example: "BRL"
+        chargingUnit:
+          type: string
+          maxLength: 50
+          description: "Unidade ou forma de cobrança"
+          example: "Por depósito recebido"
+  
+  ##### PersonalCreditCardOtherServices #####
+    PersonalCreditCardOtherServices:
+      type: object
+      required: 
+        - name
+        - code
+        - chargingTriggerInfo
+        - chargingUnit
+        - price
+      properties:
+        name:
+          type: string
+          maxLength: 50
+          description: "Nomes das Tarifas cobradas sobre Serviços relacionados à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa física"
+          example: "Evento personalizado"
+        code:
+          type: string
+          maxLength: 30
+          description: "Sigla de identificação do serviço relacionado à Modalidade de Contas de Pagamento Pós-Pagas para pessoa física informada"
+          example: "EVENTO_PERSONALIZADO"
+        chargingTriggerInfo:
+          type: string
+          maxLength: 3000
+          description: "Fatores geradores de cobrança que incidem sobre as Modalidades inforrmadas de Contas de Pagamento Pós-Pagas para pessoa física"
+          example: "Cobrança devido a evento personalizado"
+        price:
+          $ref: '#/components/schemas/CreditCardServicePrice'
+        additionalInfo:
+          type: string
+          maxLength: 80
+          description: "Descrição de como é composto o valor da tarifa"
+          example: "50% do valor da anuidade do cartão titular"
+        chargingUnit:
+          type: string
+          maxLength: 50
+          description: "Unidade ou forma de cobrança"
+          example: "Anualmente"
+  ############################
+  ##  Business Credit Cards ##
+  ############################
+    
+  ##### BusinessCreditCardResponse #####
+    BusinessCreditCardResponse:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          type: object
+          required:
+            - brand
+          properties:
+            brand:
+              type: object
+              required:
+                - name
+                - companies
+              properties:
+                name:
+                  type: string
+                  maxLength: 30
+                  description: "Nome da marca selecionada pela Organização responsável pelas contas de pagamento pós-pagas (cartão de crédito)"
+                  example: "The Big Bank Brand"
+                companies:
+                  type: array
+                  items:
+                    required: 
+                      - name
+                      - cnpjNumber
+                    properties:
+                      name:
+                        type: string
+                        maxLength: 30
+                        description: "Nome da Instituição, pertencente à marca, responsável pelas contas de pagamento pós-pagas (cartões de crédito)"
+                        example: "The Big Bank Company"
+                      cnpjNumber:
+                        type: string
+                        minLength: 14
+                        maxLength: 14
+                        description: "Número completo do CNPJ da instituição responsável pelas contas de pagamento pós-pagas (cartões de crédito)"
+                        example: "54672317000101"
+                      businessCreditCards:
+                        type: array
+                        items:
+                          required:
+                            - name
+                            - identification
+                            - rewardsProgram
+                            - fees
+                            - interestRates
+                            - termsConditions
+                          properties:
+                            name:
+                              type: string
+                              maxLength: 50
+                              description: "Denominação/Identificação do nome da conta"
+                              example: "Cartão Microempreendedor Bem-Vindo"
+                            identification:
+                              $ref: '#/components/schemas/CreditCardIndentification'
+                            rewardsProgram:
+                              $ref: '#/components/schemas/CreditCardRewardsProgram'
+                            fees:
+                              type: object
+                              properties:
+                                services:
+                                  type: array
+                                  items:
+                                    $ref: '#/components/schemas/BusinessCreditCardServices'
+                            interestRates:
+                              $ref: '#/components/schemas/CreditCardInterestRates'
+                            termsConditions:
+                              $ref: '#/components/schemas/CreditCardTermsConditions'
+        links:
+          $ref: '#/components/schemas/Links'
+        meta:
+          $ref: '#/components/schemas/Meta'
+          
+    ##### PersonalCreditCardOtherServices #####
+    BusinessCreditCardServices:
+      type: object
+      required: 
+        - name
+        - code
+        - chargingTriggerInfo
+        - chargingUnit
+      properties:
+        name:
+          type: string
+          maxLength: 50
+          description: "Nomes das Tarifas cobradas sobre Serviços relacionados à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa jurídica"
+          example: "2ª via do cartão de crédito"
+        code:
+          type: string
+          maxLength: 30
+          description: "Sigla de identificação do serviço relacionado à Modalidade de Contas de Pagamento Pós-Pagas para pessoa jurídica informada"
+          example: "SEGUNDA_VIA_CARTAO_CREDITO"
+        chargingTriggerInfo:
+          type: string
+          maxLength: 3000
+          description: "Fatores geradores de cobrança que incidem sobre as Modalidades inforrmadas de Contas de Pagamento Pós-Pagas para pessoa jurídica"
+          example: "SEGUNDA_VIA_CARTAO_CREDITO"
+        price:
+          $ref: '#/components/schemas/CreditCardServicePrice'
+        additionalInfo:
+          type: string
+          maxLength: 80
+          description: "Descrição de como é composto o valor da tarifa"
+          example: "0.5% da valor do orçamento"
+        chargingUnit:
+          type: string
+          maxLength: 50
+          description: "Unidade ou forma de cobrança"
+          example: "Por evento"
+
+  ##########################
+  ##  Personal Financings ##
+  ##########################
+  
+    ##### ResponsePersonalFinancingsList #####
+    ResponsePersonalFinancingsList:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          type: object
+          required:
+            - brand
+          properties:
+            brand:
+                $ref: '#/components/schemas/PersonalFinancingsBrand'
+        links:
+          $ref: '#/components/schemas/Links'
+        meta:
+          $ref: '#/components/schemas/Meta'
+      example:
+        data:
+          brand:
+              name: The Big Bank Brand
+              companies:
+                - name: The Big Bank Company
+                  cnpjNumber: '12345678901234'
+                  personalFinancings:
+                    - type: FINANCIMENTO_IMOBILIARIO_SFI
+                      fees:
+                        - serviceName: Taxa de Cadastro
+                          serviceCode: TC
+                          chargingTriggerInfo: Fatores geradores da taxa
+                          chargingUnit: Por novo contrato
+                          price:
+                            - type: minimo
+                              value: '500'
+                              currency: BRL
+                          additionalInfo: Vamor mínimo aplicado
+                      interestRates:
+                        - rate: '9'
+                          referencialRate: null
+                          indexer: IGPM
+                          prePostTax: POS
+                          frequency: a.a.
+                          incomeRateInfo: Informações adicionais do calculo de juros
+                      requiredWarranties:
+                        - Caução
+                      termsConditions: Lista dos termos em texto livre ou URL de indicação das condições
+        links:
+          self: 'https://api.banco.com.br/open-banking/products-services/v1/personal-financings'
+          first: 'https://api.banco.com.br/open-banking/products-services/v1/personal-financings'
+          prev: null
+          next: null
+          last: 'https://api.banco.com.br/open-banking/products-services/v1/personal-financings'
+        meta:
+          totalRecords: 1
+          totalPages: 1
+        
+    ##### PersonalFinancingsBrand #####
+    PersonalFinancingsBrand:
+      type: object
+      required:
+        - name
+        - companies
+      properties:
+        name:
+          type: string
+          description: Nome da marca.
+        companies:
+          type: array
+          items:
+            $ref: '#/components/schemas/PersonalFinancingsCompanies'
+          description: Lista de instituições pertencentes à marca  
+    ##### PersonalFinancingsCompanies #####
+    PersonalFinancingsCompanies:
+      type: object
+      required:
+        - name
+        - cnpjNumber
+        - personalFinancings
+      properties:
+        name:
+          type: string
+          description: Nome do conglomerado responsável.
+        personalFinancings:
+          type: array
+          items:
+            $ref: '#/components/schemas/PersonalFinancings'
+          description: Lista de financiamentos
+      allOf:
+        - $ref: '#/components/schemas/CNPJ'
+    ##### PersonalFinancings #####
+    PersonalFinancings:
+      type: object
+      required:
+        - type
+        - fees
+        - interestRates
+        - requiredWarranties
+      properties:
+        type:
+          type: string
+          enum: ["AQUISICAO_BENS_VEICULOS_AUTOMOTORES",
+                "AQUISICAO_BENS_OUTROS_BENS",
+                "MICROCREDITO_PRODUTIVO_ORIENTADO",
+                "CARTAO_CREDITO",
+                "FINANCIAMENTOS_RURAIS_CUSTEIO",
+                "FINANCIAMENTOS_RURAIS_INVESTIMENTO",
+                "FINANCIAMENTOS_RURAIS_COMERCIALIZACAO",
+                "FINANCIAMENTOS_RURAIS_INDUSTRIALIZACAO",
+                "FINANCIMENTO_IMOBILIARIO_SFH",
+                "FINANCIMENTO_IMOBILIARIO_SFI"]
+          description: "Modalidades de financiamentos ofertados para pessoas físicas, conforme Circular 4015-Bacen. Segundo cartilha do Bacen: Financiamento é um contrato entre o cliente e uma instituição financeira, mas com, destinação específica como para a aquisição de veículo ou de bem imóvel, que funcionam como garantia para o crédito concedido"
+        fees:
+          type: array
+          items:
+            $ref: '#/components/schemas/PersonalFinancingsFees'
+        interestRates:
+          type: array
+          items:
+            $ref: '#/components/schemas/PersonalFinancingsInterestRates'
+        requiredWarranties:
+          type: string
+          enum: ["CESSAO_DIREITOS_CREDITORIOS",
+                "CAUCAO",
+                "PENHOR",
+                "ALIENACAO_FIDUCIARIA",
+                "HIPOTECA",
+                "OPERACOES_GARANTIDAS_GOVERNO",
+                "OUTRAS_GARANTIAS_NAO_FIDEJUSSORIAS",
+                "SEGUROS_ASSEMELHADOS",
+                "GARANTIA_FIDEJUSSORIA",
+                "BENS_ARRENDADOS",
+                "GARANTIAS_INTERNACIONAIS",
+                "OPERACOES_GARANTIDAS_OUTRAS_ENTIDADE",
+                "ACORDOS_COMPENSACAO",
+                "NAO_APLICAVEL"]
+          description: "Relação de garantias exigidas"
+        termsConditions:
+          type: string
+          description: "Campo aberto para informar as condições contratuais relativas à Modalidade de Financiamento para pessoa física. Pode ser informada a URL referente ao endereço onde constam as condições informadas"
+    ##### PersonalFinancingsFees #####
+    PersonalFinancingsFees:
+      type: object
+      properties:
+        serviceName:
+          type: string
+          description: "Nomes das Tarifas cobradas sobre Serviços ofertados à Modalidade de Financiamento, para pessoa física"
+        serviceCode:
+          type: string
+          description: "Sigla de identificação do serviço relacionado à Modalidade de Financiamento informada, para pessoa física. Campo aberto"
+        chargingTriggerInfo:
+          type: string
+          description: "Fatores geradores de cobrança que incidem sobre as Modalidades de Financiamentos, para pessoa física. Campo Livre"
+        chargingUnit:
+          type: string
+          description: "Unidade ou forma de cobrança"
+        price:
+          type: array
+          items:
+            $ref: '#/components/schemas/PersonalFinancingsPrice'
+          description: "Lista de preços possíveis"
+        additionalInfo:
+          type: string
+          description: "Descrição de como é composto o valor da tarifa. p.ex. '0,25% sobre o excedente do limite acima de R$ 500,00'"
+      required:
+        - serviceName
+        - serviceCode
+        - price
+    ##### PersonalFinancingsPrice #####
+    PersonalFinancingsPrice:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: ["MINIMO",
+                "MEDIO",
+                "MAXIMO"]
+          description: "Indica os tipos: mínimo, médio e máximo do valor informado."
+        value:
+          type: string
+          description: "Valor da tarifa cobrada, relativa ao serviço ofertado para a Modalidade de Empréstimo, para pessoa"
+        currency:
+          type: string
+          enum: ["BRL","... ISO_4217"]
+          description: "Moeda referente ao valor da tarifa"
+      required:
+        - type
+        - value
+        - currency
+    ##### PersonalFinancingsInterestRates #####
+    PersonalFinancingsInterestRates:
+      type: object
+      properties:
+        rate:
+          type: string
+          description: "Percentual que incide sobre a composição da  taxa de juros remuneratórias"
+        referencialRate:
+          type: string
+          description: "Taxa Referencial se configura como uma taxa de juros de referência, ou seja, um indicador geral da economia brasileira. Por isso, é utilizada na hora de calcular o rendimento de determinadas aplicações financeiras"
+        indexer:
+          type: string
+          enum: ["IPCA",
+                "SELIC",
+                "CDI"]
+          description: "Indexador é o termo utilizado para se referir aos índices usados como base para corrigir os valores monetários de um determinado ativo. No Brasil, os indexadores mais comuns são o IPCA, a taxa Selic e o CDI"
+        prePostTax:
+          type: string
+          enum: ["PRE",
+                "POS"]
+          description: "Indicador de pré ou pós. A diferença básica é que, enquanto o prefixado apresenta rentabilidade definida, o pós-fixado acompanha algum indicador. Assim, quem investe no primeiro grupo sabe como será seu rendimento previamente, enquanto quem investe no segundo, só conhecerá os resultados na data de vencimento"
+        frequency:
+          type: string
+          enum: ["AD",
+                "AM",
+                "AA"]
+          description: "Frequência sobre a qual incide a Remuneração"
+        incomeRateInfo:
+          type: string
+          description: "Descrição da Remuneração relativa as taxas de juros remuneratórias sobre a modalidade de Financiamento informada, para pessoa física"
+      required:
+        - rate
+        - referencialRate
+        - indexer
+        - prePostTax
+        - frequency
+
+  ##########################
+  ##  Business Financings ##
+  ##########################
+  
+    ##### ResponseBusinessFinancingsList #####
+    ResponseBusinessFinancingsList:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          type: object
+          required:
+            - brand
+          properties:
+            brand:
+                $ref: '#/components/schemas/BusinessFinancingsBrand'
+        links:
+          $ref: '#/components/schemas/Links'
+        meta:
+          $ref: '#/components/schemas/Meta'
+      example:
+        data:
+          brand:
+              name: The Big Bank Brand
+              companies:
+                - name: The Big Bank Company
+                  cnpjNumber: '12345678901234'
+                  businessFinancings:
+                    - type: FINANCIAMENTOS_RURAIS_INVESTIMENTO
+                      fees:
+                        - serviceName: Taxa de Cadastro
+                          serviceCode: TC
+                          chargingTriggerInfo: Fatores geradores da taxa
+                          chargingUnit: Por novo contrato
+                          price:
+                            - type: minimo
+                              value: '500'
+                              currency: BRL
+                          additionalInfo: Vamor mínimo aplicado
+                      interestRates:
+                        - rate: '9'
+                          referencialRate: null
+                          indexer: IGPM
+                          prePostTax: POS
+                          frequency: a.a.
+                          incomeRateInfo: Informações adicionais do calculo de juros
+                      requiredWarranties:
+                        - Caução
+                      termsConditions: Lista dos termos em texto livre ou URL de indicação das condições
+        links:
+          self: 'https://api.banco.com.br/open-banking/products-services/v1/business-financings'
+          first: 'https://api.banco.com.br/open-banking/products-services/v1/business-financings'
+          prev: null
+          next: null
+          last: 'https://api.banco.com.br/open-banking/products-services/v1/business-financings'
+        meta:
+          totalRecords: 1
+          totalPages: 1
+    ##### BusinessFinancingsBrand #####
+    BusinessFinancingsBrand:
+      type: object
+      required:
+        - name
+        - companies
+      properties:
+        name:
+          type: string
+          description: Nome da marca.
+        companies:
+          type: array
+          items:
+            $ref: '#/components/schemas/BusinessFinancingsCompanies'
+          description: Lista de instituições pertencentes à marga  
+    ##### BusinessFinancingsCompanies #####
+    BusinessFinancingsCompanies:
+      type: object
+      required:
+        - name
+        - cnpjNumber
+        - businessFinancings
+      properties:
+        name:
+          type: string
+          description: Nome do conglomerado responsável.
+        businessFinancings:
+          type: array
+          items:
+            $ref: '#/components/schemas/BusinessFinancings'
+          description: Lista de financiamentos
+      allOf:
+        - $ref: '#/components/schemas/CNPJ'
+    ##### BusinessFinancings #####
+    BusinessFinancings:
+      type: object
+      required:
+        - type
+        - fees
+        - interestRates
+        - requiredWarranties
+      properties:
+        type:
+          type: string
+          enum: ["AQUISICAO_BENS_VEICULOS_AUTOMOTORES",
+                "AQUISICAO_BENS_OUTROS_BENS",
+                "MICROCREDITO_PRODUTIVO_ORIENTADO",
+                "FINANCIAMENTOS_RURAIS_CUSTEIO",
+                "FINANCIAMENTOS_RURAIS_INVESTIMENTO",
+                "FINANCIAMENTOS_RURAIS_COMERCIALIZACAO",
+                "FINANCIAMENTOS_RURAIS_INDUSTRIALIZACAO",
+                "FINANCIMENTO_IMOBILIARIO_SFH",
+                "FINANCIMENTO_IMOBILIARIO_SFI"]
+          description: "Modalidades de financiamentos ofertados para pessoas jurídicas, conforme Circular 4015-Bacen. Segundo cartilha do Bacen: Financiamento é um contrato entre o cliente e uma instituição financeira, mas com, destinação específica como para a aquisição de veículo ou de bem imóvel, que funcionam como garantia para o crédito concedido"
+        fees:
+          type: array
+          items:
+            $ref: '#/components/schemas/BusinessFinancingsFees'
+        interestRates:
+          type: array
+          items:
+            $ref: '#/components/schemas/BusinessFinancingsInterestRates'
+        requiredWarranties:
+          type: string
+          enum: ["CESSAO_DIREITOS_CREDITORIOS",
+                "CAUCAO",
+                "PENHOR",
+                "ALIENACAO_FIDUCIARIA",
+                "HIPOTECA",
+                "OPERACOES_GARANTIDAS_GOVERNO",
+                "OUTRAS_GARANTIAS_NAO_FIDEJUSSORIAS",
+                "SEGUROS_ASSEMELHADOS",
+                "GARANTIA_FIDEJUSSORIA",
+                "BENS_ARRENDADOS",
+                "GARANTIAS_INTERNACIONAIS",
+                "OPERACOES_GARANTIDAS_OUTRAS_ENTIDADE",
+                "ACORDOS_COMPENSACAO",
+                "NAO_APLICAVEL"]
+          description: "Relação de garantias exigidas"
+        termsConditions:
+          type: string
+          description: "Campo aberto para informar as condições contratuais relativas à Modalidade de Financiamento para pessoa jurídica. Pode ser informada a URL referente ao endereço onde constam as condições informadas"
+    ##### BusinessFinancingsFees #####
+    BusinessFinancingsFees:
+      type: object
+      properties:
+        serviceName:
+          type: string
+          description: "Nomes das Tarifas cobradas sobre Serviços ofertados à Modalidade de Financiamento, para pessoa jurídica"
+        serviceCode:
+          type: string
+          description: "Sigla de identificação do serviço relacionado à Modalidade de Financiamento informada, para pessoa jurídica. Campo aberto"
+        chargingTriggerInfo:
+          type: string
+          description: "Fatores geradores de cobrança que incidem sobre as Modalidades de Financiamentos, para pessoa jurídica. Campo Livre"
+        chargingUnit:
+          type: string
+          description: "Unidade ou forma de cobrança"
+        price:
+          type: array
+          items:
+            $ref: '#/components/schemas/BusinessFinancingsPrice'
+          description: "Lista de preços possíveis"
+        additionalInfo:
+          type: string
+          description: "Descrição de como é composto o valor da tarifa. p.ex. '0,25% sobre o excedente do limite acima de R$ 500,00'"
+      required:
+        - serviceName
+        - serviceCode
+        - price
+    ##### BusinessFinancingsPrice #####
+    BusinessFinancingsPrice:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: ["MINIMO",
+                "MEDIO",
+                "MAXIMO"]
+          description: "Indica os tipos: mínimo, médio e máximo do valor informado."
+        value:
+          type: string
+          description: "Valor da tarifa cobrada, relativa ao serviço ofertado para a Modalidade de Empréstimo, para pessoa"
+        currency:
+          type: string
+          enum: ["BRL","... ISO_4217"]
+          description: "Moeda referente ao valor da tarifa"
+      required:
+        - type
+        - value
+        - currency
+    ##### BusinessFinancingsInterestRates #####
+    BusinessFinancingsInterestRates:
+      type: object
+      properties:
+        rate:
+          type: string
+          description: "Percentual que incide sobre a composição da  taxa de juros remuneratórias"
+        referencialRate:
+          type: string
+          description: "Taxa Referencial se configura como uma taxa de juros de referência, ou seja, um indicador geral da economia brasileira. Por isso, é utilizada na hora de calcular o rendimento de determinadas aplicações financeiras"
+        indexer:
+          type: string
+          enum: ["IPCA",
+                "SELIC",
+                "CDI"]
+          description: "Indexador é o termo utilizado para se referir aos índices usados como base para corrigir os valores monetários de um determinado ativo. No Brasil, os indexadores mais comuns são o IPCA, a taxa Selic e o CDI"
+        prePostTax:
+          type: string
+          enum: ["PRE",
+                "POS"]
+          description: "Indicador de pré ou pós. A diferença básica é que, enquanto o prefixado apresenta rentabilidade definida, o pós-fixado acompanha algum indicador. Assim, quem investe no primeiro grupo sabe como será seu rendimento previamente, enquanto quem investe no segundo, só conhecerá os resultados na data de vencimento"
+        frequency:
+          type: string
+          enum: ["AD",
+                "AM",
+                "AA"]
+          description: "Frequência sobre a qual incide a Remuneração"
+        incomeRateInfo:
+          type: string
+          description: "Descrição da Remuneração relativa as taxas de juros remuneratórias sobre a modalidade de Financiamento informada, para pessoa jurídica"
+      required:
+        - rate
+        - referencialRate
+        - indexer
+        - prePostTax
+        - frequency
+
+  ##################################
+  ##  Personal Invoice Financings ##
+  ##################################
+    ##### ResponsePersonalInvoiceFinancingsList #####
+    ResponsePersonalInvoiceFinancingsList:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          type: object
+          required:
+            - brand
+          properties:
+            brand:
+                $ref: '#/components/schemas/PersonalInvoiceFinancingsBrand'
+        links:
+          $ref: '#/components/schemas/Links'
+        meta:
+          $ref: '#/components/schemas/Meta'
+      example:
+        data:
+          brand:
+              name: The Big Bank Brand
+              companies:
+                - name: The Big Bank Company
+                  cnpjNumber: '12345678901234'
+                  personalInvoiceFinancings:
+                    - type: DESCONTO_CHEQUES
+                      fees:
+                        - serviceName: Taxa de Cadastro
+                          serviceCode: TC
+                          chargingTriggerInfo: Fatores geradores da taxa
+                          chargingUnit: Por novo contrato
+                          price:
+                            - type: minimo
+                              value: '500'
+                              currency: BRL
+                          additionalInfo: Vamor mínimo aplicado
+                      interestRates:
+                        - rate: '10'
+                          referencialRate: null
+                          indexer: CDI
+                          prePostTax: POS
+                          frequency: a.m.
+                          incomeRateInfo: Informações adicionais do calculo de juros
+                      requiredWarranties:
+                        - Caução
+                      termsConditions: Lista dos termos em texto livre ou URL de indicação das condições
+        links:
+          self: 'https://api.banco.com.br/open-banking/products-services/v1/personal-invoice-financings'
+          first: 'https://api.banco.com.br/open-banking/products-services/v1/personal-invoice-financings'
+          prev: null
+          next: null
+          last: 'https://api.banco.com.br/open-banking/products-services/v1/personal-invoice-financings'
+        meta:
+          totalRecords: 1
+          totalPages: 1
+    ##### PersonalInvoiceFinancingsBrand #####
+    PersonalInvoiceFinancingsBrand:
+      type: object
+      required:
+        - name
+        - companies
+      properties:
+        name:
+          type: string
+          description: Nome da marca.
+        companies:
+          type: array
+          items:
+            $ref: '#/components/schemas/PersonalInvoiceFinancingsCompanies'
+          description: Lista de instituições pertencentes à marga  
+    ##### PersonalInvoiceFinancingsCompanies #####
+    PersonalInvoiceFinancingsCompanies:
+      type: object
+      required:
+        - name
+        - cnpjNumber
+        - personalInvoiceFinancings
+      properties:
+        name:
+          type: string
+          description: Nome do conglomerado responsável.
+        personalInvoiceFinancings:
+          type: array
+          items:
+            $ref: '#/components/schemas/PersonalInvoiceFinancings'
+          description: Lista de adiantamento de recebíveis
+      allOf:
+        - $ref: '#/components/schemas/CNPJ'
+    ##### PersonalInvoiceFinancings #####
+    PersonalInvoiceFinancings:
+      type: object
+      required:
+        - type
+        - fees
+        - interestRates
+        - requiredWarranties
+      properties:
+        type:
+          type: string
+          enum: ["DESCONTO_DUPLICATAS",
+                "DESCONTO_CHEQUES",
+                "ANTECIPACAO_FATURA_CARTAO_CREDITO",
+                "OUTROS_DIREITOS_CREDITORIOS_DESCONTADOS",
+                "OUTROS_TÍTULOS_DESCONTADOS"]
+          description: "Modalidades de direitos creditórios descontados ofertados para pessoas Físicas, conforme Circular 4015-Bacen. Direito creditório descontado é a antecipação de créditos relativos por ex. ao: desconto de duplicatas, desconto de cheques,antecipação de fatura de cartão de crédito"
+        fees:
+          type: array
+          items:
+            $ref: '#/components/schemas/PersonalInvoiceFinancingsFees'
+        interestRates:
+          type: array
+          items:
+            $ref: '#/components/schemas/PersonalInvoiceFinancingsInterestRates'
+        requiredWarranties:
+          type: string
+          enum: ["CESSAO_DIREITOS_CREDITORIOS",
+                "CAUCAO",
+                "PENHOR",
+                "ALIENACAO_FIDUCIARIA",
+                "HIPOTECA",
+                "OPERACOES_GARANTIDAS_GOVERNO",
+                "OUTRAS_GARANTIAS_NAO_FIDEJUSSORIAS",
+                "SEGUROS_ASSEMELHADOS",
+                "GARANTIA_FIDEJUSSORIA",
+                "BENS_ARRENDADOS",
+                "GARANTIAS_INTERNACIONAIS",
+                "OPERACOES_GARANTIDAS_OUTRAS_ENTIDADE",
+                "ACORDOS_COMPENSACAO",
+                "NAO_APLICAVEL"]
+          description: "Relação de garantias exigidas"
+        termsConditions:
+          type: string
+          description: "Campo aberto para informar as condições contratuais relativas à Modalidade de direitos creditórios descontados informada"
+    ##### PersonalInvoiceFinancingsFees #####
+    PersonalInvoiceFinancingsFees:
+      type: object
+      properties:
+        serviceName:
+          type: string
+          description: "Nomes das Tarifas cobradas sobre Serviços ofertados à Modalidade de direitos creditórios descontados, para pessoa física. (Campo Livre)"
+        serviceCode:
+          type: string
+          description: "Sigla de identificação do serviço relacionado à Modalidade de direitos creditórios descontados, para pessoa física. Campo aberto"
+        chargingTriggerInfo:
+          type: string
+          description: "Fatores geradores de cobrança que incidem sobre as Modalidades de direitos creditórios descontados, para pessoa física. Campo Livre"
+        chargingUnit:
+          type: string
+          description: "Unidade ou forma de cobrança"
+        price:
+          type: array
+          items:
+            $ref: '#/components/schemas/PersonalInvoiceFinancingsPrice'
+          description: "Lista de preços possíveis"
+        additionalInfo:
+          type: string
+          description: "Descrição de como é composto o valor da tarifa. p.ex. '0,25% sobre o excedente do limite acima de R$ 500,00'"
+      required:
+        - serviceName
+        - serviceCode
+        - price
+    ##### PersonalInvoiceFinancingsPrice #####
+    PersonalInvoiceFinancingsPrice:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: ["MINIMO",
+                "MEDIO",
+                "MAXIMO"]
+          description: "Indica os tipos: mínimo, médio e máximo do valor informado."
+        value:
+          type: string
+          description: "Valor para a tarifa cobrada, relativa ao serviço ofertado para a Modalidade de direitos creditórios descontados, para pessoa física"
+        currency:
+          type: string
+          enum: ["BRL","... ISO_4217"]
+          description: "Moeda referente ao valor da tarifa"
+      required:
+        - type
+        - value
+        - currency
+    ##### PersonalInvoiceFinancingsInterestRates #####
+    PersonalInvoiceFinancingsInterestRates:
+      type: object
+      properties:
+        rate:
+          type: string
+          description: "Percentual que incide sobre a composição da  taxa de juros remuneratórias"
+        referencialRate:
+          type: string
+          description: "Taxa Referencial se configura como uma taxa de juros de referência, ou seja, um indicador geral da economia brasileira. Por isso, é utilizada na hora de calcular o rendimento de determinadas aplicações financeiras"
+        indexer:
+          type: string
+          enum: ["IPCA",
+                "SELIC",
+                "CDI"]
+          description: "Indexador é o termo utilizado para se referir aos índices usados como base para corrigir os valores monetários de um determinado ativo. No Brasil, os indexadores mais comuns são o IPCA, a taxa Selic e o CDI"
+        prePostTax:
+          type: string
+          enum: ["PRE",
+                "POS"]
+          description: "Indicador de pré ou pós. A diferença básica é que, enquanto o prefixado apresenta rentabilidade definida, o pós-fixado acompanha algum indicador. Assim, quem investe no primeiro grupo sabe como será seu rendimento previamente, enquanto quem investe no segundo, só conhecerá os resultados na data de vencimento"
+        frequency:
+          type: string
+          enum: ["AD",
+                "AM",
+                "AA"]
+          description: "Frequência sobre a qual incide a Remuneração"
+        incomeRateInfo:
+          type: string
+          description: "Descrição da Remuneração relativa as taxas de juros remuneratórias sobre a modalidade de Financiamento informada, para pessoa física"
+      required:
+        - rate
+        - referencialRate
+        - indexer
+        - prePostTax
+        - frequency
+
+  ##################################
+  ##  Business Invoice Financings ##
+  ##################################
+    ##### ResponseBusinessInvoiceFinancingsList #####
+    ResponseBusinessInvoiceFinancingsList:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          type: object
+          required:
+            - brand
+          properties:
+            brand:
+                $ref: '#/components/schemas/BusinessInvoiceFinancingsBrand'
+        links:
+          $ref: '#/components/schemas/Links'
+        meta:
+          $ref: '#/components/schemas/Meta'
+      example:
+        data:
+          brand:
+              name: The Big Bank Brand
+              companies:
+                - name: The Big Bank Company
+                  cnpjNumber: '12345678901234'
+                  businessInvoiceFinancings:
+                    - type: DESCONTO_CHEQUES
+                      fees:
+                        - serviceName: Taxa de Cadastro
+                          serviceCode: TC
+                          chargingTriggerInfo: Fatores geradores da taxa
+                          chargingUnit: Por novo contrato
+                          price:
+                            - type: minimo
+                              value: '500'
+                              currency: BRL
+                          additionalInfo: Vamor mínimo aplicado
+                      interestRates:
+                        - rate: '10'
+                          referencialRate: null
+                          indexer: CDI
+                          prePostTax: POS
+                          frequency: a.m.
+                          incomeRateInfo: Informações adicionais do calculo de juros
+                      requiredWarranties:
+                        - Caução
+                      termsConditions: Lista dos termos em texto livre ou URL de indicação das condições
+        links:
+          self: 'https://api.banco.com.br/open-banking/products-services/v1/business-invoice-financings'
+          first: 'https://api.banco.com.br/open-banking/products-services/v1/business-invoice-financings'
+          prev: null
+          next: null
+          last: 'https://api.banco.com.br/open-banking/products-services/v1/business-invoice-financings'
+        meta:
+          totalRecords: 1
+          totalPages: 1
+    ##### BusinessInvoiceFinancingsBrand #####
+    BusinessInvoiceFinancingsBrand:
+      type: object
+      required:
+        - name
+        - companies
+      properties:
+        name:
+          type: string
+          description: Nome da marca.
+        companies:
+          type: array
+          items:
+            $ref: '#/components/schemas/BusinessInvoiceFinancingsCompanies'
+          description: Lista de instituições pertencentes à marga  
+    ##### BusinessInvoiceFinancingsCompanies #####
+    BusinessInvoiceFinancingsCompanies:
+      type: object
+      required:
+        - name
+        - cnpjNumber
+        - businessInvoiceFinancings
+      properties:
+        name:
+          type: string
+          description: Nome do conglomerado responsável.
+        businessInvoiceFinancings:
+          type: array
+          items:
+            $ref: '#/components/schemas/BusinessInvoiceFinancings'
+          description: Lista de adiantamento de recebíveis
+      allOf:
+        - $ref: '#/components/schemas/CNPJ'
+    ##### BusinessInvoiceFinancings #####
+    BusinessInvoiceFinancings:
+      type: object
+      required:
+        - type
+        - fees
+        - interestRates
+        - requiredWarranties
+      properties:
+        type:
+          type: string
+          enum: ["DESCONTO_DUPLICATAS",
+                "DESCONTO_CHEQUES",
+                "ANTECIPACAO_FATURA_CARTAO_CREDITO",
+                "OUTROS_DIREITOS_CREDITORIOS_DESCONTADOS",
+                "OUTROS_TÍTULOS_DESCONTADOS"]
+          description: "Modalidades de direitos creditórios descontados ofertados para pessoas Jurídicas, conforme Circular 4015-Bacen. Direito creditório descontado é a antecipação de créditos relativos por ex. ao: desconto de duplicatas, desconto de cheques,antecipação de fatura de cartão de crédito"
+        fees:
+          type: array
+          items:
+            $ref: '#/components/schemas/BusinessInvoiceFinancingsFees'
+        interestRates:
+          type: array
+          items:
+            $ref: '#/components/schemas/BusinessInvoiceFinancingsInterestRates'
+        requiredWarranties:
+          type: string
+          enum: ["CESSAO_DIREITOS_CREDITORIOS",
+                "CAUCAO",
+                "PENHOR",
+                "ALIENACAO_FIDUCIARIA",
+                "HIPOTECA",
+                "OPERACOES_GARANTIDAS_GOVERNO",
+                "OUTRAS_GARANTIAS_NAO_FIDEJUSSORIAS",
+                "SEGUROS_ASSEMELHADOS",
+                "GARANTIA_FIDEJUSSORIA",
+                "BENS_ARRENDADOS",
+                "GARANTIAS_INTERNACIONAIS",
+                "OPERACOES_GARANTIDAS_OUTRAS_ENTIDADE",
+                "ACORDOS_COMPENSACAO",
+                "NAO_APLICAVEL"]
+          description: "Relação de garantias exigidas"
+        termsConditions:
+          type: string
+          description: "Campo aberto para informar as condições contratuais relativas à Modalidade de direitos creditórios descontados informada"
+    ##### BusinessInvoiceFinancingsFees #####
+    BusinessInvoiceFinancingsFees:
+      type: object
+      properties:
+        serviceName:
+          type: string
+          description: "Nomes das Tarifas cobradas sobre Serviços ofertados à Modalidade de direitos creditórios descontados, para pessoa jurídica. (Campo Livre)"
+        serviceCode:
+          type: string
+          description: "Sigla de identificação do serviço relacionado à Modalidade de direitos creditórios descontados, para pessoa jurídica. Campo aberto"
+        chargingTriggerInfo:
+          type: string
+          description: "Fatores geradores de cobrança que incidem sobre as Modalidades de direitos creditórios descontados, para pessoa jurídica. Campo Livre"
+        chargingUnit:
+          type: string
+          description: "Unidade ou forma de cobrança"
+        price:
+          type: array
+          items:
+            $ref: '#/components/schemas/BusinessInvoiceFinancingsPrice'
+          description: "Lista de preços possíveis"
+        additionalInfo:
+          type: string
+          description: "Descrição de como é composto o valor da tarifa. p.ex. '0,25% sobre o excedente do limite acima de R$ 500,00'"
+      required:
+        - serviceName
+        - serviceCode
+        - price
+    ##### BusinessInvoiceFinancingsPrice #####
+    BusinessInvoiceFinancingsPrice:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: ["MINIMO",
+                "MEDIO",
+                "MAXIMO"]
+          description: "Indica os tipos: mínimo, médio e máximo do valor informado."
+        value:
+          type: string
+          description: "Valor para a tarifa cobrada, relativa ao serviço ofertado para a Modalidade de direitos creditórios descontados, para pessoa jurídica"
+        currency:
+          type: string
+          enum: ["BRL","... ISO_4217"]
+          description: "Moeda referente ao valor da tarifa"
+      required:
+        - type
+        - value
+        - currency
+    ##### BusinessInvoiceFinancingsInterestRates #####
+    BusinessInvoiceFinancingsInterestRates:
+      type: object
+      properties:
+        rate:
+          type: string
+          description: "Percentual que incide sobre a composição da  taxa de juros remuneratórias"
+        referencialRate:
+          type: string
+          description: "Taxa Referencial se configura como uma taxa de juros de referência, ou seja, um indicador geral da economia brasileira. Por isso, é utilizada na hora de calcular o rendimento de determinadas aplicações financeiras"
+        indexer:
+          type: string
+          enum: ["IPCA",
+                "SELIC",
+                "CDI"]
+          description: "Indexador é o termo utilizado para se referir aos índices usados como base para corrigir os valores monetários de um determinado ativo. No Brasil, os indexadores mais comuns são o IPCA, a taxa Selic e o CDI"
+        prePostTax:
+          type: string
+          enum: ["PRE",
+                "POS"]
+          description: "Indicador de pré ou pós. A diferença básica é que, enquanto o prefixado apresenta rentabilidade definida, o pós-fixado acompanha algum indicador. Assim, quem investe no primeiro grupo sabe como será seu rendimento previamente, enquanto quem investe no segundo, só conhecerá os resultados na data de vencimento"
+        frequency:
+          type: string
+          enum: ["AD",
+                "AM",
+                "AA"]
+          description: "Frequência sobre a qual incide a Remuneração"
+        incomeRateInfo:
+          type: string
+          description: "Descrição da Remuneração relativa as taxas de juros remuneratórias sobre a modalidade de Financiamento informada, para pessoa jurídica"
+      required:
+        - rate
+        - referencialRate
+        - indexer
+        - prePostTax
+        - frequency
+  ####################
+  ##  Links & Meta  ##
+  ####################
+    Links:
+      type: object
+      properties:
+        self:
+          type: string
+          description: URL da página atualmente requisitada
+          example: "https://api.banco.com.br/open-banking/products-services/v1/<resource>"
+        first:
+          type: string
+          description: URL da primeira página de registros
+          example: "https://api.banco.com.br/open-banking/products-services/v1/<resource>"
+        prev:
+          type: string
+          description: URL da página anterior de registros
+        next:
+          type: string
+          description: URL da próxima página de registros
+        last:
+          type: string
+          description: URL da última página de registros
+          example: "https://api.banco.com.br/open-banking/products-services/v1/<resource>"
+    Meta:
+      type: object
+      properties:
+        totalRecords:
+          type: integer
+          description: Total de registros encontrados
+          example: 1
+        totalPages:
+          type: integer
+          description: Total de páginas para os registros encontrados
+          example: 1
+      required:
+        - totalRecords
+        - totalPages
+ 
