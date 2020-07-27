@@ -351,7 +351,7 @@
 
 |     Nome              |  Tipo                                          |  Obrigatório    |                            Descrição                  |
 |:----------------------|:-----------------------------------------------| :---------------|:------------------------------------------------------|
-| type                  | [[Enum TypePersonalAccount](#schemaEnumTypePersonalAccount)] | Sim             | Tipos de contas ofertadas para pessoas jurídicas, conforme Resolução 3.919 do Bacen.                                 |
+| type                  | [[Enum TypePersonalAccount](#schemaEnumTypePersonalAccount)] | Sim             | Tipos de contas ofertadas para pessoas jurídicas, conforme Resolução 3.919 do Banco Central do Brasil.                                 |
 | fees                  | [[FeesPersonalAccount](#schemaFeesPersonalAccount)] | Sim             | Lista Tarifas cobradas                             |
 | serviceBundles        | [[ServiceBundlesPersonalAccount](#schemaServiceBundlesPersonalAccount)] | Sim             | Nome dos pacotes de serviços                          |
 | openingClosingChannels   | [[Enum PersonalAccountOpeningClosingChannels ](#schemaEnumPersonalAccountOpeningClosingChannels)] | Sim             | Canais disponíveis para abertura e encerramento de contas      |
@@ -380,7 +380,7 @@
 | openingClosingChannels   | MOBILE_BANKING            | Mobile banking             |
 | openingClosingChannels   | CENTRAL_TELEFONICA        | Central telefônica         |
 | openingClosingChannels   | CHAT                      | Chat                       |
-| openingClosingChannels   | OUTROS                    | Outros (p.ex.:website/appps de terceiros) |
+| openingClosingChannels   | OUTROS                    | Outros (p.ex. website/appps de terceiros) |
 
 ### Enum PersonalAccountOpeningTransactionMethods  
 <a id="schemaEnumPersonalAccountOpeningTransactionMethods"></a>
@@ -621,7 +621,7 @@
 
 | Propriedade  | Valor  | Definição                                       
 |:------------ |:------ |:---------
-| prePostTax   | PRE    | Pré fixado
+| prePostTax   | PRE    | Prefixado
 | prePostTax   | POS    | Pós fixado
 
 

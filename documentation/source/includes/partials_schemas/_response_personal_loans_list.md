@@ -78,7 +78,7 @@
 |     Nome      |  Tipo                                                  | Obrigatório  |                            Definição                  |
 |:------------  |:---------------------------------                      |:-----------  |:----------------------------------------------------  |
 | data          | object                                                 | Sim          |                                                       |
-| » brand       | [[PersonalLoansBrand](#schemaPersonalLoansBrand)]      | Sim          | Lista das organizaçõs titulares das dependências      |
+| » brand       | [[PersonalLoansBrand](#schemaPersonalLoansBrand)]      | Sim          | Lista das organizações titulares das dependências      |
 | links         | [LinksPaginated](#schemaLinksPaginated)                | Sim          |                                                       |
 | meta          | [MetaPaginated](#schemaMetaPaginated)                  | Sim          |                                                       |
 
@@ -259,10 +259,10 @@
 
 |     Nome            |  Tipo                                                       | Obrigatório  |                            Definição                         |
 |:------------        |:---------------------------------                           |:-----------  |:----------------------------------------------------         |
-| type                | [Enum PersonalLoansTypes](#schemaEnumPersonalLoanTypes)     | Sim          | Modalidades de empréstimos ofertados para pessoas Físicas, conforme Circular <a href='https://www.bcb.gov.br/pre/normativos/busca/downloadNormativo.asp?arquivo=/Lists/Normativos/Attachments/51025/Circ_4015_v1_O.pdf' target="_blank">4015-Bacem</a>|
+| type                | [Enum PersonalLoansTypes](#schemaEnumPersonalLoanTypes)     | Sim          | Modalidades de empréstimos ofertados para pessoas Físicas, conforme Circular <a href='https://www.bcb.gov.br/pre/normativos/busca/downloadNormativo.asp?arquivo=/Lists/Normativos/Attachments/51025/Circ_4015_v1_O.pdf' target="_blank">4015- Banco Central do Brasil</a>|
 | fees                | [[LoanFees](#schemaLoanFees)]                               | Sim          | Tarifas cobradas sobre Serviços ofertados à Modalidade de Empréstimo             |
 | interestRates       | [[LoanInterestRates](#schemaLoanInterestRates)]             | Sim          | Taxas de juros remuneratórias             |
-| requiredWarranties  | [[Enum RequiredWarranties](#schemaEnumRequiredWarranties)]  | Sim          | Relação de garantias exigidas, segundo documento <a href='https://www.bcb.gov.br/estabilidadefinanceira/scrdoc3040' target="_blank">3040 do Bacem</a>       |
+| requiredWarranties  | [[Enum RequiredWarranties](#schemaEnumRequiredWarranties)]  | Sim          | Relação de garantias exigidas, segundo documento <a href='https://www.bcb.gov.br/estabilidadefinanceira/scrdoc3040' target="_blank">3040 do Banco Central do Brasil</a>       |
 | termsConditions     | string                                                      | Sim          | Condições contratuais relativas à Modalidade de Empréstimo       |
 
 ### Enum PersonalLoansTypes
@@ -323,7 +323,7 @@
 |:------------        |:---------------------------------               |:-----------  |:----------------------------------------------------         | :------
 | serviceName         | string                                          | Sim          | Nomes das Tarifas cobradas sobre Serviços relacionados à Modalidade informada do Empréstimo para pessoa física/jurídica.  | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para o item priceInfo
 | serviceCode         | string                                          | Sim          | Sigla de identificação do serviço relacionado à Modalidade informada de Empréstimo para pessoa física/jurídica.             | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para o item priceInfo
-| chargingTriggerInfo | string                                          | Sim          | Fatores geradores de cobrança que incidem sobre as Modalidades informada de Empréstimos para pessoa física/jurídica.             | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para o item priceInfo
+| chargingTriggerInfo | string                                          | Sim          | Fatores geradores de cobrança que incidem sobre as Modalidades informadas de Empréstimos para pessoa física/jurídica.             | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para o item priceInfo
 | chargingUnit        | string                                          | Não          | Unidade ou forma de cobrança                                                                                                               |
 | price               | [[LoanFeesPrice](#schemaLoanFeesPrice)]         | Sim          | Valor máximo para a tarifa cobrada, relativa ao serviço relacionado à Modalidade de Empréstimo para pessoa física/jurídica informada.       | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
 | referenceValue      | [AmountString](#commonFieldAmountString)        | Sim          | Valor de referência utilizado na apuração dos valores informados por quartil (representa um valor monetário                                |
@@ -375,7 +375,7 @@
 | indexer                | [Enum LoansIndexer](#LoansIndexer)                            | Sim         | Indexador é o termo utilizado para se referir aos índices usados como base para corrigir os valores monetários de um determinado ativo. No Brasil, os indexadores mais comuns são o IPCA, a taxa Selic e o CDI                                    |
 | prePostTax             | [Enum PrePostTax](#schemaPrePostTax)                          | Sim         | Indicador de pré ou pós. A diferença básica é que, enquanto o prefixado apresenta rentabilidade definida, o pós-fixado acompanha algum indicador. Assim, quem investe no primeiro grupo sabe como será seu rendimento previamente, enquanto quem investe no segundo, só conhecerá os resultados na data de vencimento                                  |
 | frecuency              | [Enum FrequencyType](#schemaFrequencyType)                    | Sim         | Código que indica Frequência sobre a qual incide a Remuneração.                                  |
-| incomeRateInfo         | string                                                        | Não         | Descrição da Remuneração relativa as taxas de juros remuneratóriassobre a modalidad de Empréstimo para pessoa física/jurídica                                    |
+| incomeRateInfo         | string                                                        | Não         | Descrição da Remuneração relativa às taxas de juros remuneratórias sobre a modalidade de Empréstimo para pessoa física/jurídica                                    |
 | application            | [[LoansApplication](#schemaLoansApplication)]                 | Não            | Descrição da Remuneração relativa as taxas de juros remuneratórias sobre a modalidade de direitos creditórios descontados infomrada, para pessoa jurídica                                                                                                                                                             |
 | referenceValue         | [AmountString](#commonFieldAmountString)                      | Sim            | Valor de referência utilizado na apuração dos valores informados por quartil (representa um valor monetário                                |
 | referenceCurrency      | [CurrencyString](#commonFieldCurrencyString)                  | Sim            | Moeda relativa ao valor de referência, segundo modelo ISO-4217.                                                                            |

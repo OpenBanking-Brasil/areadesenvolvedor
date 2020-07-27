@@ -111,9 +111,9 @@
 
 |     Nome     |  Tipo                                           | Obrigatório    |                            Definição                       |
 |:------------ |:---------------------------------               |:-------------- |:----------------------------------------------------       |
-| name         | string                                          | Sim            | Nome do conglomerado responsável pela contrataçao do Correspondente  |
+| name         | string                                          | Sim            | Nome do conglomerado responsável pela contratação do Correspondente  |
 | cnpjNumber   | string                                          | Sim            | CNPJ da instituição responsável pela dependência - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica |
-| channels     | [[ElectronicChannels](#schemaElectronicChannels)] | Sim            | Lista  de canais de atendimento eltrônico                  |
+| channels     | [[ElectronicChannels](#schemaElectronicChannels)] | Sim            | Lista  de canais de atendimento eletrônico                  |
 
 ## ElectronicChannels
 <a id="schemaElectronicChannels"></a>
@@ -150,7 +150,7 @@
 
 |     Nome     |  Tipo                                                          | Obrigatório |                            Definição               | Restrições                           |
 |:------------ |:---------------------------------                              |:----------- |:-------------------------------------------------- |:------------------------------------ |
-| type         | [Enum ElectronicChannelsType](#schemaElectronicChannelsType)     | Sim         | Tipo de canal de atendimento                       | O Tipo de Canal determina o Tipo de Acesso a ele relacionado:URL para acesso ao internet banking,URL para aquisição do app ,URL da central,URL do SAC,URL da ouvidoria,URL para chat                                     |
+| type         | [Enum ElectronicChannelsType](#schemaElectronicChannelsType)     | Sim         | Tipo de canal de atendimento                       | O Tipo de Canal determina o Tipo de Acesso a ele relacionado: URL para acesso ao internet banking, URL para aquisição do app, URL da central,URL do SAC, URL da ouvidoria, URL para chat                                     |
 | url          | string                                                         | Não         | Endereço eletrônico de acesso ao canal             |  |
 
 ### Enum ElectronicChannelsType
