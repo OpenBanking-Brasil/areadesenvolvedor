@@ -513,13 +513,11 @@
 }
 ```
 
-|     Nome            |  Tipo                                                                                                                             | Obrigatório     |    Definição                                                                                      |
-|:--------------------|:----------------------------------------------------------------------------------------------------------------------------------|:----------------|:--------------------------------------------------------------------------------------------------|
-<<<<<<< HEAD
+|     Nome            |  Tipo                                                                                   | Obrigatório     |    Definição                                                                                                                                    |
+|:--------------------|:----------------------------------------------------------------------------------------|:----------------|:------------------------------------------------------------------------------------------------------------------------------------------------|
 | code                | [Enum PersonalCreditCardsPriorityServicesCode](#schemaEnumPersonalCreditCardsPriorityServicesCode)                                | Sim             | Sigla de identificação do serviço relacionado à modalidade de contas de pagamento pós-pagas para pessoa física informada conforme resolução 3.919 do Banco Central do Brasil.            |
 | maxPrice            | string                                                                                                                            | Sim             | Valor máximo para a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa física.                        |
 | currency            | string                                                                                                                            | Sim             | Moeda referente ao valor da tarifa conforme ISO-4217.                                                                                                                  |
-=======
 | code                | [Enum PersonalCreditCardsPriorityServicesCode](#schemaEnumPersonalCreditCardsPriorityServicesCode)                                | Sim             | Sigla de identificação do serviço relacionado à modalidade de contas de pagamento pós-pagas para pessoa física informada conforme resolução 3.919 do BACEN.            |
 | price                | [[Price](#schemaPrice)]                                                  | Sim            | Lista de preços possíveis.                                                                                                                  |
 | referenceValue       | [AmountString](#commonFieldAmountString)                                 | Sim            | Valor de referência utilizado na apuração dos valores informados por quartil (representa um valor monetário).                                |
