@@ -3,7 +3,7 @@
 
 Dentro desses padrões, os IDs de recursos são necessários para atender ao seguinte:
 
-* O ID de um recurso deve ser especificado no end point de uma API apenas para obter detalhes do recurso ou para realizar alterações no mesmo.
+* O ID de um recurso deve ser especificado no endpoint de uma API apenas para obter detalhes do recurso ou para realizar alterações no mesmo.
 * Se o ID for especificado nos padrões do open-banking, então ele é obrigatório e deverá ser fornecido pela entidade implementadora da API de acordo com o padrão definido.
 * Se um ID for especificado, o mesmo deverá ser totalmente desconectado de significados com outras entidades. Por exemplo, um ID não deve ser uma combinação de outros campos ou uma string que possa ter conteúdo sensível que possa ser extraído.
 * Os IDs devem ser únicos, porém sua unicidade pode estar dentro de um contexto. Por exemplo, um ID de conta corrente deve ser único, porém apenas dentro do contexto de conta corrente. 

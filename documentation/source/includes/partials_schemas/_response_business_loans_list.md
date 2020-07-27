@@ -78,7 +78,7 @@
 |     Nome          |  Tipo                                                   | Obrigatório  |                            Definição                  |
 |:------------      |:---------------------------------                       |:-----------  |:----------------------------------------------------  |
 | data              | object                                                  | Sim          |                                                       |
-| » brand           | [[BusinessLoansBrand](#schemaBusinessLoansBrand)]       | Sim          | Lista das organizações titulares das dependências      |
+| » brand           | [[BusinessLoansBrand](#schemaBusinessLoansBrand)]       | Sim          | Lista das organizações titulares das dependências.      |
 | links             | [LinksPaginated](#schemaLinksPaginated)                 | Sim          |                                                       |
 | meta              | [MetaPaginated](#schemaMetaPaginated)                   | Sim          |                                                       |
 
@@ -145,7 +145,7 @@
 |     Nome     |  Tipo                                                      | Obrigatório  |                            Definição                         |
 |:------------ |:---------------------------------                          |:-----------  |:----------------------------------------------------         |
 | name         | string                                                     | Sim          | Nome da marca proprietária da dependência (titular).  |
-| companies    | [[BusinessLoansCompanies](#schemaBusinessLoansCompanies)]  | Sim          | Lista de instituições pertencentes à marca             |
+| companies    | [[BusinessLoansCompanies](#schemaBusinessLoansCompanies)]  | Sim          | Lista de instituições pertencentes à marca.             |
 
 ## BusinessLoansCompanies
 <a id="schemaBusinessLoansCompanies"></a>
@@ -205,8 +205,8 @@
 |     Nome        |  Tipo                                                         | Obrigatório  |                            Definição                                 |
 |:------------    |:---------------------------------                             |:-----------  |:----------------------------------------------------                 |
 | name            | string                                                        | Sim          | Nome da Instituição, pertencente à marca, responsável pela comercialização das modalidades de Empréstimos para Pessoas Jurídicas consultadas.  |
-| cnpjNumber      | string                                                        | Sim          | Número do CNPJ do conglomerado                                       |
-| businessLoans   | [[BusinessLoans](#schemaBusinessLoans)]                       | Sim          | Empréstimos Pessoas Jurídicas                                        |
+| cnpjNumber      | string                                                        | Sim          | Número do CNPJ do conglomerado.                                       |
+| businessLoans   | [[BusinessLoans](#schemaBusinessLoans)]                       | Sim          | Empréstimos Pessoas Jurídicas.                                        |
 
 ## BusinessLoans
 <a id="schemaBusinessLoans"></a>
@@ -259,21 +259,21 @@
 
 |     Nome            |  Tipo                                                       | Obrigatório  |                            Definição                         |
 |:------------        |:---------------------------------                           |:-----------  |:----------------------------------------------------         |
-| type                | [Enum BusinessLoanTypes](#schemaEnumBusinessLoanTypes)      | Sim          | Modalidades de empréstimos ofertados para pessoas jurídicas, conforme Circular <a href='https://www.bcb.gov.br/pre/normativos/busca/downloadNormativo.asp?arquivo=/Lists/Normativos/Attachments/51025/Circ_4015_v1_O.pdf' target="_blank">4015- Banco Central do Brasil</a>|
-| fees                | [[LoanFees](#schemaLoanFees)]                               | Sim          | Tarifas cobradas sobre Serviços ofertados à Modalidade de Empréstimo             |
-| interestRates       | [[LoanInterestRates](#schemaLoanInterestRates)]             | Sim          | Taxas de juros remuneratórias             |
-| requiredWarranties  | [[Enum RequiredWarranties](#schemaEnumRequiredWarranties)]  | Sim          | Relação de garantias exigidas, segundo documento <a href='https://www.bcb.gov.br/estabilidadefinanceira/scrdoc3040' target="_blank">3040 do Banco Central do Brasil</a>       |
-| termsConditions     | string                                                      | Sim          | Condições contratuais relativas à Modalidade de Empréstimo       |
+| type                | [Enum BusinessLoanTypes](#schemaEnumBusinessLoanTypes)      | Sim          | Modalidades de empréstimos ofertados para pessoas jurídicas, conforme Circular <a href='https://www.bcb.gov.br/pre/normativos/busca/downloadNormativo.asp?arquivo=/Lists/Normativos/Attachments/51025/Circ_4015_v1_O.pdf' target="_blank">4015- Banco Central do Brasil</a>.|
+| fees                | [[LoanFees](#schemaLoanFees)]                               | Sim          | Tarifas cobradas sobre Serviços ofertados à Modalidade de Empréstimo.             |
+| interestRates       | [[LoanInterestRates](#schemaLoanInterestRates)]             | Sim          | Taxas de juros remuneratórias.             |
+| requiredWarranties  | [[Enum RequiredWarranties](#schemaEnumRequiredWarranties)]  | Sim          | Relação de garantias exigidas, segundo documento <a href='https://www.bcb.gov.br/estabilidadefinanceira/scrdoc3040' target="_blank">3040 do Banco Central do Brasil</a>.       |
+| termsConditions     | string                                                      | Sim          | Condições contratuais relativas à Modalidade de Empréstimo.       |
 
 ### Enum BusinessLoanTypes
 <a id="schemaEnumBusinessLoanTypes"></a>
 
 | Propriedade  | Código                        | Definição
 |:------------ |:------                       |:------
-| type         | ADIANTAMENTO_DEPOSITANTE    | Adiantamento a depositante
-| type         | EMPRESTIMO_CHEQUE ESPECIAL  | Cheque especial
-| type         | EMPRESTIMO_CONTA_GARANTIDA  | Conta garantida
-| type         | EMPRESTIMO_CAPITAL_GIRO_VENCIMIENTO_365 | Capital de giro com prazo de vencimento até 365 dias
-| type         | EMPRESTIMO_CAPITAL_GIRO_VENCIMIENTO_SUP_365 | Capital de giro com prazo de vencimento superior a 365 dias
-| type         | EMPRESTIMO_CAPITAL_GIRO_ROTATIVO | Capital de giro rotativo
-| type         | EMPRESTIMO_MICROCREDITO_PROD_ORIENTADO  | Microcrédito produtivo orientado
+| type         | ADIANTAMENTO_DEPOSITANTE    | Adiantamento a depositante.
+| type         | EMPRESTIMO_CHEQUE ESPECIAL  | Cheque especial.
+| type         | EMPRESTIMO_CONTA_GARANTIDA  | Conta garantida.
+| type         | EMPRESTIMO_CAPITAL_GIRO_VENCIMIENTO_365 | Capital de giro com prazo de vencimento até 365 dias.
+| type         | EMPRESTIMO_CAPITAL_GIRO_VENCIMIENTO_SUP_365 | Capital de giro com prazo de vencimento superior a 365 dias.
+| type         | EMPRESTIMO_CAPITAL_GIRO_ROTATIVO | Capital de giro rotativo.
+| type         | EMPRESTIMO_MICROCREDITO_PROD_ORIENTADO  | Microcrédito produtivo orientado.

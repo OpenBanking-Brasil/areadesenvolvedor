@@ -95,7 +95,7 @@
 |     Nome          |  Tipo                                                       | Obrigatório  |                            Definição                                                                      |
 |:------------------|:----------------------------------------------------------- |:------------ |:--------------------------------------------------------------------------------------------------------- | 
 | data              | object                                                      | Sim          |                                                                                                           |
-| » brand           | [BusinessCreditCardsBrand](#schemaBusinessCreditCardsBrand) | Sim          | Dados da Marca selecionada que fornecem produtos e serviços de cartões de crédito para pessoa jurídica    |
+| » brand           | [BusinessCreditCardsBrand](#schemaBusinessCreditCardsBrand) | Sim          | Dados da Marca selecionada que fornecem produtos e serviços de cartões de crédito para pessoa jurídica.    |
 | links             | [LinksPaginated](#schemaLinksPaginated)                     | Sim          |                                                                                                           |
 | meta              | [MetaPaginated](#schemaMetaPaginated)                       | Sim          |                                                                                                           |
 
@@ -180,7 +180,7 @@
 
 |     Nome     |  Tipo                                                                    | Obrigatório  |                            Definição                 |
 |:-------------|:-------------------------------------------------------------------------|:-----------  |:---------------------------------------------------- |
-| name         | string                                                                   | Sim          | Nome da Marca selecionada pelas Organizações         |
+| name         | string                                                                   | Sim          | Nome da Marca selecionada pelas Organizações.         |
 | companies    | [[BusinessCreditCardsCompanies](#schemaBusinessCreditCardsCompanies)]    | Sim          | Lista de instituições pertencentes a marca           |
 
 ## BusinessCreditCardsCompanies 
@@ -259,9 +259,9 @@
 
 |     Nome             |  Tipo                                                | Obrigatório    |    Definição                       |
 |:---------------------|:-----------------------------------------------------|:-------------- |:-----------------------------------|
-| name                 | string                                               | Sim            | Nome da instituição financeira     |
-| cnpjNumber           | string                                               | Sim            | CNPJ da instituição financeira     |
-| businessCreditCards  | [[BusinessCreditCards](#schemaBusinessCreditCards)]  | Sim            | Lista  de cartões de crédito       |
+| name                 | string                                               | Sim            | Nome da instituição financeira.     |
+| cnpjNumber           | string                                               | Sim            | CNPJ da instituição financeira.     |
+| businessCreditCards  | [[BusinessCreditCards](#schemaBusinessCreditCards)]  | Sim            | Lista  de cartões de crédito.       |
 
 ## BusinessCreditCards
 <a id="schemaBusinessCreditCards"></a>
@@ -333,12 +333,12 @@
 
 |     Nome              |  Tipo                                                                             | Obrigatório |                            Definição                                      |
 |:----------------------|:----------------------------------------------------------------------------------|:------------|:--------------------------------------------------------------------------|
-| name                  | string                                                                            | Sim         | Denominação/Identificação do nome da conta (cartão de crédito)            |
-| identification        | [CreditCardsIdentification](#schemaCreditCardsIdentification)                     | Sim         | Informações de identificação do cartão de crédito                         |
-| rewardsProgram        | [BusinessCreditCardsRewardsProgram](#schemaBusinessCreditCardsRewardsProgram)     | Sim         | Informações sobre programas de recompensa presentes no cartão de crédito  |
-| fees                  | [BusinessCreditCardsFees](#schemaBusinessCreditCardsFees)                         | Sim         | Informações sobre tarifas cobradas sobre o produto e serviços             |
-| interestRates         | [BusinessCreditCardsInterestRates](#schemaBusinessCreditCardsInterestRates)       | Sim         | Informações sobre taxas de juros                                          |
-| termsConditions       | [BusinessCreditCardsTermsConditions](#schemaBusinessCreditCardsTermsConditions)   | Sim         | Informações sobre termos e condições para aquisição e cancelamento        |
+| name                  | string                                                                            | Sim         | Denominação/Identificação do nome da conta (cartão de crédito).            |
+| identification        | [CreditCardsIdentification](#schemaCreditCardsIdentification)                     | Sim         | Informações de identificação do cartão de crédito.                         |
+| rewardsProgram        | [BusinessCreditCardsRewardsProgram](#schemaBusinessCreditCardsRewardsProgram)     | Sim         | Informações sobre programas de recompensa presentes no cartão de crédito.  |
+| fees                  | [BusinessCreditCardsFees](#schemaBusinessCreditCardsFees)                         | Sim         | Informações sobre tarifas cobradas sobre o produto e serviços.             |
+| interestRates         | [BusinessCreditCardsInterestRates](#schemaBusinessCreditCardsInterestRates)       | Sim         | Informações sobre taxas de juros.                                          |
+| termsConditions       | [BusinessCreditCardsTermsConditions](#schemaBusinessCreditCardsTermsConditions)   | Sim         | Informações sobre termos e condições para aquisição e cancelamento.        |
 
 ## BusinessCreditCardsRewardsProgram
 <a id="schemaBusinessCreditCardsRewardsProgram"></a>
@@ -352,8 +352,8 @@
 
 |     Nome            |  Tipo           | Obrigatório     |    Definição                                                                                                                                                  |
 |:--------------------|:--------------- |:--------------  |:------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| hasRewardProgram    | boolean         | Sim             | Indicador da existência de programa de fidelidade/recompensa associado à conta                                                                                |
-| rewardProgramInfo   | string          | Não             | Informações de termos e condições do programa de fidelidade/recompensa. Pode ser informada a URL referente ao endereço onde constam as condições informadas   |
+| hasRewardProgram    | boolean         | Sim             | Indicador da existência de programa de fidelidade/recompensa associado à conta.                                                                                |
+| rewardProgramInfo   | string          | Não             | Informações de termos e condições do programa de fidelidade/recompensa. Pode ser informada a URL referente ao endereço onde constam as condições informadas.   |
 
 ## BusinessCreditCardsFees
 <a id="schemaBusinessCreditCardsFees"></a>
@@ -383,7 +383,7 @@
 
 |     Nome    |  Tipo                                                               | Obrigatório     |    Definição                                                                                      |
 |:------------|:--------------------------------------------------------------------|:----------------|:--------------------------------------------------------------------------------------------------|
-| services    | [[BusinessCreditCardsServices](#schemaBusinessCreditCardsServices)] | Sim             | Informações de tarifas sobre serviços  |
+| services    | [[BusinessCreditCardsServices](#schemaBusinessCreditCardsServices)] | Sim             | Informações de tarifas sobre serviços.  |
 
 ## BusinessCreditCardsServices
 <a id="schemaBusinessCreditCardsServices"></a>
@@ -409,12 +409,12 @@
 
 |     Nome            |  Tipo                                                                                   | Obrigatório     |    Definição                                                                                                                                      |
 |:--------------------|:----------------------------------------------------------------------------------------|:----------------|:--------------------------------------------------------------------------------------------------------------------------------------------------|
-| name                | string                                                                                  | Sim             | Nomes das Tarifas cobradas sobre Serviços relacionados à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa jurídica               |
-| code                | string                                                                                  | Sim             | Sigla de identificação do serviço relacionado à Modalidade de Contas de Pagamento Pós-Pagas para pessoa jurídica informada                        |
-| chargingTriggerInfo | string                                                                                  | Sim             | Fatores geradores de cobrança que incidem sobre as Modalidades inforrmadas de Contas de Pagamento Pós-Pagas para pessoa jurídica                  |
-| price               | [[Price](#schemaPrice)]                                                                 | Sim             | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa jurídica  |
-| additionalInfo      | string                                                                                  | Sim             | Descrição de como é composto o valor da tarifa                                                                                                    |
-| chargingUnit        | string                                                                                  | Sim             | Unidade ou forma de cobrança                                                                                                                      |
+| name                | string                                                                                  | Sim             | Nomes das Tarifas cobradas sobre Serviços relacionados à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa jurídica.               |
+| code                | string                                                                                  | Sim             | Sigla de identificação do serviço relacionado à Modalidade de Contas de Pagamento Pós-Pagas para pessoa jurídica informada.                        |
+| chargingTriggerInfo | string                                                                                  | Sim             | Fatores geradores de cobrança que incidem sobre as Modalidades inforrmadas de Contas de Pagamento Pós-Pagas para pessoa jurídica.                  |
+| price               | [[Price](#schemaPrice)]                                                                 | Sim             | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa jurídica.  |
+| additionalInfo      | string                                                                                  | Sim             | Descrição de como é composto o valor da tarifa.                                                                                                    |
+| chargingUnit        | string                                                                                  | Sim             | Unidade ou forma de cobrança.                                                                                                                      |
 
 ## BusinessCreditCardsInterestRates
 <a id="schemaBusinessCreditCardsInterestRates"></a>
@@ -448,18 +448,18 @@
 
 |     Nome        |  Tipo                                                                                       | Obrigatório     |    Definição                                                 |
 |:----------------|:--------------------------------------------------------------------------------------------|:----------------|:---------------------------------------------------------------------------------------------------------------------------------------|
-| feeRate         | [BusinessCreditCardsFeeRate](#schemaBusinessCreditCardsFeeRate)                             | Sim             | Percentual que corresponde a taxa aplicada para utilização de Crédito Rotativo                                                         |
-| instalmentRate  | [BusinessCreditCardsInstalmentRate](#schemaBusinessCreditCardsInstalmentRate)               | Sim             | Percentual que corresponde a taxa aplicada para pagamento parcelado do saldo devedor quando não realizado pagamento integral da fatura |
-| code            | [Enum BusinessCreditCardsInterestRatesCode](#schemaEnumBusinessCreditCardsInterestRatesCode)| Sim             | Lista de outras operações de crédito                                                                                                   |
-| additionalInfo  | string                                                                                      | Sim             | Campo Texto para descrever outras operações de crédito marcadas como 'Outros'                                                          |
+| feeRate         | [BusinessCreditCardsFeeRate](#schemaBusinessCreditCardsFeeRate)                             | Sim             | Percentual que corresponde a taxa aplicada para utilização de Crédito Rotativo.                                                         |
+| instalmentRate  | [BusinessCreditCardsInstalmentRate](#schemaBusinessCreditCardsInstalmentRate)               | Sim             | Percentual que corresponde a taxa aplicada para pagamento parcelado do saldo devedor quando não realizado pagamento integral da fatura. |
+| code            | [Enum BusinessCreditCardsInterestRatesCode](#schemaEnumBusinessCreditCardsInterestRatesCode)| Sim             | Lista de outras operações de crédito.                                                                                                   |
+| additionalInfo  | string                                                                                      | Sim             | Campo Texto para descrever outras operações de crédito marcadas como 'Outros'.                                                          |
 
 ### Enum BusinessCreditCardsInterestRatesCode
 <a id="schemaEnumBusinessCreditCardsInterestRatesCode"></a>
 
 | Propriedade                 | Código               | Definição        |
 |:----------------------------|:---------------------|:---------------- |
-| code                        | SAQUE_CREDITO        | Saque a crédito  |
-| code                        | OUTROS               | Outros           |
+| code                        | SAQUE_CREDITO        | Saque a crédito.  |
+| code                        | OUTROS               | Outros.           |
 
 
 ## BusinessCreditCardsFeeRate
@@ -480,8 +480,8 @@
 
 |     Nome                |  Tipo       | Obrigatório     |    Definição                                                                                                                                                          |
 |:------------------------|:------------|:----------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| price                 [[Price](#schemaPrice)]                                                                 | Sim             | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa física  |
-| referenceValue       | [AmountString](#commonFieldAmountString)                                 | Sim            | Valor de referência utilizado na apuração dos valores informados por quartil (representa um valor monetário                                |
+| price                 [[Price](#schemaPrice)]                                                                 | Sim             | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa física.  |
+| referenceValue       | [AmountString](#commonFieldAmountString)                                 | Sim            | Valor de referência utilizado na apuração dos valores informados por quartil (representa um valor monetário.                                |
 | referenceCurrency    | [CurrencyString](#commonFieldCurrencyString)                             | Sim            | Moeda relativa ao valor de referência, segundo modelo ISO-4217.                                                                            |
 
 ## BusinessCreditCardsInstalmentRate
@@ -502,8 +502,8 @@
 
 |     Nome                |  Tipo       | Obrigatório     |    Definição                                                                                                                                                          |
 |:------------------------|:------------|:----------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| price                 [[Price](#schemaPrice)]                                                                 | Sim             | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa física  |
-| referenceValue       | [AmountString](#commonFieldAmountString)                                 | Sim            | Valor de referência utilizado na apuração dos valores informados por quartil (representa um valor monetário                                |
+| price                 [[Price](#schemaPrice)]                                                                 | Sim             | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa física.  |
+| referenceValue       | [AmountString](#commonFieldAmountString)                                 | Sim            | Valor de referência utilizado na apuração dos valores informados por quartil (representa um valor monetário.                               |
 | referenceCurrency    | [CurrencyString](#commonFieldCurrencyString)                             | Sim            | Moeda relativa ao valor de referência, segundo modelo ISO-4217.                                                                            |
 
 ## BusinessCreditCardsTermsConditions
@@ -520,7 +520,7 @@
 
 |     Nome                |  Tipo                                 | Obrigatório     |    Definição                                                                                                                                                          |
 |:------------------------|:------------                          |:----------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| minimumFeeRate          | [RateString](#commonFieldRateString)  | Sim             | Percentual para pagamento mínimo sobre o saldo devedor da fatura                                                                                                      |
-| additionalInfo          | string                                | Sim             | Campo aberto para detalhamento de taxas de juros                                                                                                                      |
-| elegibilityCriteriaInfo | string                                | Sim             | Informação sobre as condições e critérios de elegibilidade do emissor do cartão. Pode ser informada a URL referente ao endereço onde constam as condições informadas  |
-| closingProcessInfo      | string                                | Sim             | Descrição dos procedimentos para encerramento da conta pós paga. Pode ser informada a URL referente ao endereço onde constam as condições informadas                  |
+| minimumFeeRate          | [RateString](#commonFieldRateString)  | Sim             | Percentual para pagamento mínimo sobre o saldo devedor da fatura.                                                                                                     |
+| additionalInfo          | string                                | Sim             | Campo aberto para detalhamento de taxas de juros.                                                                                                                      |
+| elegibilityCriteriaInfo | string                                | Sim             | Informação sobre as condições e critérios de elegibilidade do emissor do cartão. Pode ser informada a URL referente ao endereço onde constam as condições informadas.  |
+| closingProcessInfo      | string                                | Sim             | Descrição dos procedimentos para encerramento da conta pós paga. Pode ser informada a URL referente ao endereço onde constam as condições informadas.                  |
