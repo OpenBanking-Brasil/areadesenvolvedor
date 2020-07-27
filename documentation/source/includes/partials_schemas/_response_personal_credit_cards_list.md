@@ -19,15 +19,22 @@
                 "additionalInfo": "string"
               },
               "rewardsProgram": {
-                "hasRewardProgram": boolean,
+                "hasRewardProgram": "boolean",
                 "rewardProgramInfo": "string"
               },
               "fees": {
                 "priorityServices": [
                   {
                     "code": "string",
-                    "maxPrice": "string",
-                    "currency": "string",
+                    "price": [
+                      {
+                        "type": "string",
+                        "value": "string",
+                        "currency": "string"
+                      }
+                    ],
+                    "referenceValue": "string",
+                    "referenceCurrency": "string",
                     "chargingUnit": "string"
                   }
                 ],
@@ -41,16 +48,35 @@
                       "value": "string",
                       "currency": "string"
                     },
+                    "referenceValue": "string",
+                    "referenceCurrency": "string",
                     "additionalInfo": "string",
                     "chargingUnit": "string"
                   }
                 ]
               },
               "interestRates": {
-                "feeRate": "string",
-                "instalmentRate": "string",
-                "code": "string",
-                "additionalInfo": "string"
+                "feeRate": {
+                  "price": [
+                    {
+                      "type": "string",
+                      "rate": "string"
+                    }
+                  ],
+                  "referenceValue": "string",
+                  "referenceCurrency": "string"
+                },
+                "instalmentRate": {
+                  "price": [
+                    {
+                      "type": "string",
+                      "rate": "string"
+                    }
+                  ],
+                  "referenceValue": "string",
+                  "referenceCurrency": "string"
+                },
+                "code": "string"
               },
               "termsConditions": {
                 "minimumFeeRate": "string",
@@ -72,8 +98,8 @@
     "last": "string"
   },
   "meta": {
-    "totalRecords": integer,
-    "totalPages": integer
+    "totalRecords": "integer",
+    "totalPages": "integer"
   }
 }
 ```
@@ -104,15 +130,22 @@
             "additionalInfo": "string"
           },
           "rewardsProgram": {
-            "hasRewardProgram": boolean,
+            "hasRewardProgram": "boolean",
             "rewardProgramInfo": "string"
           },
           "fees": {
             "priorityServices": [
               {
                 "code": "string",
-                "maxPrice": "string",
-                "currency": "string",
+                "price": [
+                  {
+                    "type": "string",
+                    "value": "string",
+                    "currency": "string"
+                  }
+                ],
+                "referenceValue": "string",
+                "referenceCurrency": "string",
                 "chargingUnit": "string"
               }
             ],
@@ -126,16 +159,35 @@
                   "value": "string",
                   "currency": "string"
                 },
+                "referenceValue": "string",
+                "referenceCurrency": "string",
                 "additionalInfo": "string",
                 "chargingUnit": "string"
               }
             ]
           },
           "interestRates": {
-            "feeRate": "string",
-            "instalmentRate": "string",
-            "code": "string",
-            "additionalInfo": "string"
+            "feeRate": {
+              "price": [
+                {
+                  "type": "string",
+                  "rate": "string"
+                }
+              ],
+              "referenceValue": "string",
+              "referenceCurrency": "string"
+            },
+            "instalmentRate": {
+              "price": [
+                {
+                  "type": "string",
+                  "rate": "string"
+                }
+              ],
+              "referenceValue": "string",
+              "referenceCurrency": "string"
+            },
+            "code": "string"
           },
           "termsConditions": {
             "minimumFeeRate": "string",
@@ -171,15 +223,22 @@
         "additionalInfo": "string"
       },
       "rewardsProgram": {
-        "hasRewardProgram": boolean,
+        "hasRewardProgram": "boolean",
         "rewardProgramInfo": "string"
       },
       "fees": {
         "priorityServices": [
           {
             "code": "string",
-            "maxPrice": "string",
-            "currency": "string",
+            "price": [
+              {
+                "type": "string",
+                "value": "string",
+                "currency": "string"
+              }
+            ],
+            "referenceValue": "string",
+            "referenceCurrency": "string",
             "chargingUnit": "string"
           }
         ],
@@ -193,16 +252,35 @@
               "value": "string",
               "currency": "string"
             },
+            "referenceValue": "string",
+            "referenceCurrency": "string",
             "additionalInfo": "string",
             "chargingUnit": "string"
           }
         ]
       },
       "interestRates": {
-        "feeRate": "string",
-        "instalmentRate": "string",
-        "code": "string",
-        "additionalInfo": "string"
+        "feeRate": {
+          "price": [
+            {
+              "type": "string",
+              "rate": "string"
+            }
+          ],
+          "referenceValue": "string",
+          "referenceCurrency": "string"
+        },
+        "instalmentRate": {
+          "price": [
+            {
+              "type": "string",
+              "rate": "string"
+            }
+          ],
+          "referenceValue": "string",
+          "referenceCurrency": "string"
+        },
+        "code": "string"
       },
       "termsConditions": {
         "minimumFeeRate": "string",
@@ -233,15 +311,22 @@
     "additionalInfo": "string"
   },
   "rewardsProgram": {
-    "hasRewardProgram": boolean,
+    "hasRewardProgram": "boolean",
     "rewardProgramInfo": "string"
   },
   "fees": {
     "priorityServices": [
       {
         "code": "string",
-        "maxPrice": "string",
-        "currency": "string",
+        "price": [
+          {
+            "type": "string",
+            "value": "string",
+            "currency": "string"
+          }
+        ],
+        "referenceValue": "string",
+        "referenceCurrency": "string",
         "chargingUnit": "string"
       }
     ],
@@ -255,16 +340,35 @@
           "value": "string",
           "currency": "string"
         },
+        "referenceValue": "string",
+        "referenceCurrency": "string",
         "additionalInfo": "string",
         "chargingUnit": "string"
       }
     ]
   },
   "interestRates": {
-    "feeRate": "string",
-    "instalmentRate": "string",
-    "code": "string",
-    "additionalInfo": "string"
+    "feeRate": {
+      "price": [
+        {
+          "type": "string",
+          "rate": "string"
+        }
+      ],
+      "referenceValue": "string",
+      "referenceCurrency": "string"
+    },
+    "instalmentRate": {
+      "price": [
+        {
+          "type": "string",
+          "rate": "string"
+        }
+      ],
+      "referenceValue": "string",
+      "referenceCurrency": "string"
+    },
+    "code": "string"
   },
   "termsConditions": {
     "minimumFeeRate": "string",
@@ -321,22 +425,22 @@
 
 | Propriedade       | Código            | Definição           |
 |:------------------|:------------------|:------------------- |
-| brandCode         | VISA              | Visa                |
-| brandCode         | MASTERCARD        | MasterCard          |
-| brandCode         | AMERICAN_EXPRESS  | American Express    |
-| brandCode         | DINERS_CLUB       | Diners Club         |
-| brandCode         | HIPERCARD         | Hipercard           |
-| brandCode         | BANDEIRA_PROPRIA  | Bandeira própria    |
-| brandCode         | CHEQUE_ELETRONICO | Cheque Eletrônico   |
-| brandCode         | ELO               | Elo                 |
-| brandCode         | OUTRAS            | Outras              |
+| creditCardNetwork | VISA              | Visa                |
+| creditCardNetwork | MASTERCARD        | MasterCard          |
+| creditCardNetwork | AMERICAN_EXPRESS  | American Express    |
+| creditCardNetwork | DINERS_CLUB       | Diners Club         |
+| creditCardNetwork | HIPERCARD         | Hipercard           |
+| creditCardNetwork | BANDEIRA_PROPRIA  | Bandeira própria    |
+| creditCardNetwork | CHEQUE_ELETRONICO | Cheque Eletrônico   |
+| creditCardNetwork | ELO               | Elo                 |
+| creditCardNetwork | OUTRAS            | Outras              |
 
 ## PersonalCreditCardsRewardsProgram
 <a id="schemaPersonalCreditCardsRewardsProgram"></a>
 
 ```json
 {
-  "hasRewardProgram": boolean,
+  "hasRewardProgram": "boolean",
   "rewardProgramInfo": "string"
 }
 ```
@@ -354,8 +458,15 @@
   "priorityServices": [
     {
       "code": "string",
-      "maxPrice": "string",
-      "currency": "string",
+      "price": [
+        {
+          "type": "string",
+          "value": "string",
+          "currency": "string"
+        }
+      ],
+      "referenceValue": "string",
+      "referenceCurrency": "string",
       "chargingUnit": "string"
     }
   ],
@@ -369,6 +480,8 @@
         "value": "string",
         "currency": "string"
       },
+      "referenceValue": "string",
+      "referenceCurrency": "string",
       "additionalInfo": "string",
       "chargingUnit": "string"
     }
@@ -387,17 +500,31 @@
 ```json
 {
   "code": "string",
-  "maxPrice": "string",
-  "currency": "string",
+  "price": [
+    {
+      "type": "string",
+      "value": "string",
+      "currency": "string"
+    }
+  ],
+  "referenceValue": "string",
+  "referenceCurrency": "string",
   "chargingUnit": "string"
 }
 ```
 
 |     Nome            |  Tipo                                                                                                                             | Obrigatório     |    Definição                                                                                      |
 |:--------------------|:----------------------------------------------------------------------------------------------------------------------------------|:----------------|:--------------------------------------------------------------------------------------------------|
+<<<<<<< HEAD
 | code                | [Enum PersonalCreditCardsPriorityServicesCode](#schemaEnumPersonalCreditCardsPriorityServicesCode)                                | Sim             | Sigla de identificação do serviço relacionado à modalidade de contas de pagamento pós-pagas para pessoa física informada conforme resolução 3.919 do Banco Central do Brasil            |
 | maxPrice            | string                                                                                                                            | Sim             | Valor máximo para a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa física                        |
 | currency            | string                                                                                                                            | Sim             | Moeda referente ao valor da tarifa conforme ISO-4217                                                                                                                  |
+=======
+| code                | [Enum PersonalCreditCardsPriorityServicesCode](#schemaEnumPersonalCreditCardsPriorityServicesCode)                                | Sim             | Sigla de identificação do serviço relacionado à modalidade de contas de pagamento pós-pagas para pessoa física informada conforme resolução 3.919 do BACEN            |
+| price                | [[Price](#schemaPrice)]                                                  | Sim            | Lista de preços possíveis                                                                                                                  |
+| referenceValue       | [AmountString](#commonFieldAmountString)                                 | Sim            | Valor de referência utilizado na apuração dos valores informados por quartil (representa um valor monetário                                |
+| referenceCurrency    | [CurrencyString](#commonFieldCurrencyString)                             | Sim            | Moeda relativa ao valor de referência, segundo modelo ISO-4217.                                                                            |
+>>>>>>> 06dcb9d55d58fe1165843e0fa1ee29a2fdda0c13
 | chargingUnit        | string                                                                                                                            | Sim             | Unidade ou forma de cobrança                                                                                                                                          |
 
 ### Enum PersonalCreditCardsPriorityServicesCode
@@ -426,6 +553,8 @@
     "value": "string",
     "currency": "string"
   },
+  "referenceValue": "string",
+  "referenceCurrency": "string",
   "additionalInfo": "string",
   "chargingUnit": "string"
 }
@@ -436,44 +565,46 @@
 | name                | string                                                                                  | Sim             | Nomes das Tarifas cobradas sobre Serviços relacionados à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa física               |
 | code                | string                                                                                  | Sim             | Sigla de identificação do serviço relacionado à Modalidade de Contas de Pagamento Pós-Pagas para pessoa física informada                        |
 | chargingTriggerInfo | string                                                                                  | Sim             | Fatores geradores de cobrança que incidem sobre as Modalidades inforrmadas de Contas de Pagamento Pós-Pagas para pessoa física                  |
-| price               | [PersonalCreditCardsOtherServicesPrice](#schemaPersonalCreditCardsOtherServicesPrice)   | Sim             | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa física  |
+| price               | [[Price](#schemaPrice)]                                                                 | Sim             | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa física  |
+| referenceValue       | [AmountString](#commonFieldAmountString)                                 | Sim            | Valor de referência utilizado na apuração dos valores informados por quartil (representa um valor monetário                                |
+| referenceCurrency    | [CurrencyString](#commonFieldCurrencyString)                             | Sim            | Moeda relativa ao valor de referência, segundo modelo ISO-4217.                                                                            |
 | additionalInfo      | string                                                                                  | Sim             | Descrição de como é composto o valor da tarifa                                                                                                  |
 | chargingUnit        | string                                                                                  | Sim             | Unidade ou forma de cobrança                                                                                                                    |
-
-## PersonalCreditCardsOtherServicesPrice
-<a id="schemaPersonalCreditCardsOtherServicesPrice"></a>
-
-```json
-{
-  "type": "string",
-  "value": "string",
-  "currency": "string"
-}
-```
-
-|     Nome    |  Tipo      | Obrigatório     |    Definição                                                 |
-|:------------|:-----------|:----------------|:-------------------------------------------------------------|
-| type        | string     | Sim             | Indica os tipos: mínimo, médio e máximo do valor informado   |
-| value       | string     | Sim             | Valor da tarifa cobrada referente aos Outros Serviços        |
-| currency    | string     | Sim             | Moeda referente ao valor máximo da tarifa conforme ISO-4217  |
 
 ## PersonalCreditCardsInterestRates
 <a id="schemaPersonalCreditCardsInterestRates"></a>
 
 ```json
 {
-  "feeRate": "string",
-  "instalmentRate": "string",
-  "code": "string",
-  "additionalInfo": "string"
+  "feeRate": {
+    "price": [
+      {
+        "type": "string",
+        "rate": "string"
+      }
+    ],
+    "referenceValue": "string",
+    "referenceCurrency": "string"
+  },
+  "instalmentRate": {
+    "price": [
+      {
+        "type": "string",
+        "rate": "string"
+      }
+    ],
+    "referenceValue": "string",
+    "referenceCurrency": "string"
+  },
+  "code": "string"
 }
 ```
 
 |     Nome        |  Tipo                                                                                       | Obrigatório     |    Definição                                                 |
 |:----------------|:--------------------------------------------------------------------------------------------|:----------------|:---------------------------------------------------------------------------------------------------------------------------------------|
-| feeRate         | string                                                                                      | Sim             | Percentual que corresponde a taxa aplicada para utilização de Crédito Rotativo                                                         |
-| instalmentRate  | string                                                                                      | Sim             | Percentual que corresponde a taxa aplicada para pagamento parcelado do saldo devedor quando não realizado pagamento integral da fatura |
-| code            | [Enum PersonalCreditCardsInterestRatesCode](#schemaEnumPersonalCreditCardsInterestRatesCode)     | Sim             | Lista de outras operações de crédito                                                                                                   |
+| feeRate         | [PersonalCreditCardsFeeRate](#schemaPersonalCreditCardsFeeRate)                             | Sim             | Percentual que corresponde a taxa aplicada para utilização de Crédito Rotativo                                                         |
+| instalmentRate  | [PersonalCreditCardsInstalmentRate](#schemaPersonalCreditCardsInstalmentRate)               | Sim             | Percentual que corresponde a taxa aplicada para pagamento parcelado do saldo devedor quando não realizado pagamento integral da fatura |
+| code            | [Enum PersonalCreditCardsInterestRatesCode](#schemaEnumPersonalCreditCardsInterestRatesCode)| Sim             | Lista de outras operações de crédito                                                                                                   |
 | additionalInfo  | string                                                                                      | Sim             | Campo Texto para descrever outras operações de crédito marcadas como 'Outros'                                                          |
 
 ### Enum PersonalCreditCardsInterestRatesCode
@@ -483,6 +614,52 @@
 |:----------------------------|:---------------------|:---------------- |
 | code                        | SAQUE_CREDITO        | Saque a crédito  |
 | code                        | OUTROS               | Outros           |
+
+
+## PersonalCreditCardsFeeRate
+<a id="schemaPersonalCreditCardsFeeRate"></a>
+
+```json
+{
+  "price": [
+    {
+      "type": "string",
+      "rate": "string"
+    }
+  ],
+  "referenceValue": "string",
+  "referenceCurrency": "string"
+}
+```
+
+|     Nome                |  Tipo       | Obrigatório     |    Definição                                                                                                                                                          |
+|:------------------------|:------------|:----------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| price                 [[Price](#schemaPrice)]                                                                 | Sim             | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa física  |
+| referenceValue       | [AmountString](#commonFieldAmountString)                                 | Sim            | Valor de referência utilizado na apuração dos valores informados por quartil (representa um valor monetário                                |
+| referenceCurrency    | [CurrencyString](#commonFieldCurrencyString)                             | Sim            | Moeda relativa ao valor de referência, segundo modelo ISO-4217.                                                                            |
+
+## PersonalCreditCardsInstalmentRate
+<a id="schemaPersonalCreditCardsInstalmentRate"></a>
+
+```json
+{
+  "price": [
+    {
+      "type": "string",
+      "rate": "string"
+    }
+  ],
+  "referenceValue": "string",
+  "referenceCurrency": "string"
+}
+```
+
+|     Nome                |  Tipo       | Obrigatório     |    Definição                                                                                                                                                          |
+|:------------------------|:------------|:----------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| price                 [[Price](#schemaPrice)]                                                                 | Sim             | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa física  |
+| referenceValue       | [AmountString](#commonFieldAmountString)                                 | Sim            | Valor de referência utilizado na apuração dos valores informados por quartil (representa um valor monetário                                |
+| referenceCurrency    | [CurrencyString](#commonFieldCurrencyString)                             | Sim            | Moeda relativa ao valor de referência, segundo modelo ISO-4217.                                                                            |
+
 
 ## PersonalCreditCardsTermsConditions
 <a id="schemaPersonalCreditCardsTermsConditions"></a>

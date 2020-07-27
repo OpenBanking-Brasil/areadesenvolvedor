@@ -19,7 +19,7 @@
                 "additionalInfo": "string"
               },
               "rewardsProgram": {
-                "hasRewardProgram": boolean,
+                "hasRewardProgram": "boolean",
                 "rewardProgramInfo": "string"
               },
               "fees": {
@@ -28,19 +28,41 @@
                     "name": "string",
                     "code": "string",
                     "chargingTriggerInfo": "string",
-                    "price": {
-                      "type": "string",
-                      "value": "string",
-                      "currency": "string"
-                    },
+                    "price": [
+                      {
+                        "type": "string",
+                        "value": "string",
+                        "currency": "string"
+                      }
+                    ],
+                    "referenceValue": "string",
+                    "referenceCurrency": "string",
                     "additionalInfo": "string",
                     "chargingUnit": "string"
                   }
                 ]
               },
               "interestRates": {
-                "feeRate": "string",
-                "instalmentRate": "string",
+                "feeRate": {
+                  "price": [
+                    {
+                      "type": "string",
+                      "rate": "string"
+                    }
+                  ],
+                  "referenceValue": "string",
+                  "referenceCurrency": "string"
+                },
+                "instalmentRate": {
+                  "price": [
+                    {
+                      "type": "string",
+                      "rate": "string"
+                    }
+                  ],
+                  "referenceValue": "string",
+                  "referenceCurrency": "string"
+                },
                 "code": "string",
                 "additionalInfo": "string"
               },
@@ -64,8 +86,8 @@
     "last": "string"
   },
   "meta": {
-    "totalRecords": integer,
-    "totalPages": integer
+    "totalRecords": "integer",
+    "totalPages": "integer"
   }
 }
 ```
@@ -96,7 +118,7 @@
             "additionalInfo": "string"
           },
           "rewardsProgram": {
-            "hasRewardProgram": boolean,
+            "hasRewardProgram": "boolean",
             "rewardProgramInfo": "string"
           },
           "fees": {
@@ -105,19 +127,41 @@
                 "name": "string",
                 "code": "string",
                 "chargingTriggerInfo": "string",
-                "price": {
-                  "type": "string",
-                  "value": "string",
-                  "currency": "string"
-                },
+                "price": [
+                  {
+                    "type": "string",
+                    "value": "string",
+                    "currency": "string"
+                  }
+                ],
+                "referenceValue": "string",
+                "referenceCurrency": "string",
                 "additionalInfo": "string",
                 "chargingUnit": "string"
               }
             ]
           },
           "interestRates": {
-            "feeRate": "string",
-            "instalmentRate": "string",
+            "feeRate": {
+              "price": [
+                {
+                  "type": "string",
+                  "rate": "string"
+                }
+              ],
+              "referenceValue": "string",
+              "referenceCurrency": "string"
+            },
+            "instalmentRate": {
+              "price": [
+                {
+                  "type": "string",
+                  "rate": "string"
+                }
+              ],
+              "referenceValue": "string",
+              "referenceCurrency": "string"
+            },
             "code": "string",
             "additionalInfo": "string"
           },
@@ -155,7 +199,7 @@
         "additionalInfo": "string"
       },
       "rewardsProgram": {
-        "hasRewardProgram": boolean,
+        "hasRewardProgram": "boolean",
         "rewardProgramInfo": "string"
       },
       "fees": {
@@ -164,19 +208,41 @@
             "name": "string",
             "code": "string",
             "chargingTriggerInfo": "string",
-            "price": {
-              "type": "string",
-              "value": "string",
-              "currency": "string"
-            },
+            "price": [
+              {
+                "type": "string",
+                "value": "string",
+                "currency": "string"
+              }
+            ],
+            "referenceValue": "string",
+            "referenceCurrency": "string",
             "additionalInfo": "string",
             "chargingUnit": "string"
           }
         ]
       },
       "interestRates": {
-        "feeRate": "string",
-        "instalmentRate": "string",
+        "feeRate": {
+          "price": [
+            {
+              "type": "string",
+              "rate": "string"
+            }
+          ],
+          "referenceValue": "string",
+          "referenceCurrency": "string"
+        },
+        "instalmentRate": {
+          "price": [
+            {
+              "type": "string",
+              "rate": "string"
+            }
+          ],
+          "referenceValue": "string",
+          "referenceCurrency": "string"
+        },
         "code": "string",
         "additionalInfo": "string"
       },
@@ -209,7 +275,7 @@
     "additionalInfo": "string"
   },
   "rewardsProgram": {
-    "hasRewardProgram": boolean,
+    "hasRewardProgram": "boolean",
     "rewardProgramInfo": "string"
   },
   "fees": {
@@ -218,19 +284,41 @@
         "name": "string",
         "code": "string",
         "chargingTriggerInfo": "string",
-        "price": {
-          "type": "string",
-          "value": "string",
-          "currency": "string"
-        },
+        "price": [
+          {
+            "type": "string",
+            "value": "string",
+            "currency": "string"
+          }
+        ],
+        "referenceValue": "string",
+        "referenceCurrency": "string",
         "additionalInfo": "string",
         "chargingUnit": "string"
       }
     ]
   },
   "interestRates": {
-    "feeRate": "string",
-    "instalmentRate": "string",
+    "feeRate": {
+      "price": [
+        {
+          "type": "string",
+          "rate": "string"
+        }
+      ],
+      "referenceValue": "string",
+      "referenceCurrency": "string"
+    },
+    "instalmentRate": {
+      "price": [
+        {
+          "type": "string",
+          "rate": "string"
+        }
+      ],
+      "referenceValue": "string",
+      "referenceCurrency": "string"
+    },
     "code": "string",
     "additionalInfo": "string"
   },
@@ -271,17 +359,21 @@
 <a id="schemaBusinessCreditCardsFees"></a>
 
 ```json
-{  
+{
   "services": [
     {
       "name": "string",
       "code": "string",
       "chargingTriggerInfo": "string",
-      "price": {
-        "type": "string",
-        "value": "string",
-        "currency": "string"
-      },
+      "price": [
+        {
+          "type": "string",
+          "value": "string",
+          "currency": "string"
+        }
+      ],
+      "referenceValue": "string",
+      "referenceCurrency": "string",
       "additionalInfo": "string",
       "chargingUnit": "string"
     }
@@ -301,11 +393,15 @@
   "name": "string",
   "code": "string",
   "chargingTriggerInfo": "string",
-  "price": {
-    "type": "string",
-    "value": "string",
-    "currency": "string"
-  },
+  "price": [
+    {
+      "type": "string",
+      "value": "string",
+      "currency": "string"
+    }
+  ],
+  "referenceValue": "string",
+  "referenceCurrency": "string",
   "additionalInfo": "string",
   "chargingUnit": "string"
 }
@@ -316,45 +412,46 @@
 | name                | string                                                                                  | Sim             | Nomes das Tarifas cobradas sobre Serviços relacionados à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa jurídica               |
 | code                | string                                                                                  | Sim             | Sigla de identificação do serviço relacionado à Modalidade de Contas de Pagamento Pós-Pagas para pessoa jurídica informada                        |
 | chargingTriggerInfo | string                                                                                  | Sim             | Fatores geradores de cobrança que incidem sobre as Modalidades inforrmadas de Contas de Pagamento Pós-Pagas para pessoa jurídica                  |
-| price               | [BusinessCreditCardsServicesPrice](#schemaBusinessCreditCardsServicesPrice)             | Sim             | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa jurídica  |
+| price               | [[Price](#schemaPrice)]                                                                 | Sim             | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa jurídica  |
 | additionalInfo      | string                                                                                  | Sim             | Descrição de como é composto o valor da tarifa                                                                                                    |
 | chargingUnit        | string                                                                                  | Sim             | Unidade ou forma de cobrança                                                                                                                      |
-
-## BusinessCreditCardsServicesPrice
-<a id="schemaBusinessCreditCardsServicesPrice"></a>
-
-```json
-{
-  "type": "string",
-  "value": "string",
-  "currency": "string"
-}
-```
-
-|     Nome    |  Tipo                                         | Obrigatório     |    Definição                                                 |
-|:------------|:-----------------                             |:----------------|:-------------------------------------------------------------|
-| type        | string                                        | Sim             | Indica os tipos: mínimo, médio e máximo do valor informado   |
-| value       | [AmountString](#commonFieldAmountString)      | Sim             | Valor da tarifa cobrada referente aos Outros Serviços        |
-| currency    | [CurrencyString](#commonFieldCurrencyString)  | Sim             | Moeda referente ao valor máximo da tarifa conforme ISO-4217  |
 
 ## BusinessCreditCardsInterestRates
 <a id="schemaBusinessCreditCardsInterestRates"></a>
 
 ```json
 {
-  "feeRate": "string",
-  "instalmentRate": "string",
+  "feeRate": {
+    "price": [
+      {
+        "type": "string",
+        "rate": "string"
+      }
+    ],
+    "referenceValue": "string",
+    "referenceCurrency": "string"
+  },
+  "instalmentRate": {
+    "price": [
+      {
+        "type": "string",
+        "rate": "string"
+      }
+    ],
+    "referenceValue": "string",
+    "referenceCurrency": "string"
+  },
   "code": "string",
   "additionalInfo": "string"
 }
 ```
 
-|     Nome        |  Tipo                                                                                           | Obrigatório     |    Definição                                                 |
-|:----------------|:------------------------------------------------------------------------------------------------|:----------------|:---------------------------------------------------------------------------------------------------------------------------------------|
-| feeRate         | [RateString](#commonFieldRateString)                                                            | Sim             | Percentual que corresponde a taxa aplicada para utilização de Crédito Rotativo                                                         |
-| instalmentRate  | [RateString](#commonFieldRateString)                                                            | Sim             | Percentual que corresponde a taxa aplicada para pagamento parcelado do saldo devedor quando não realizado pagamento integral da fatura |
-| code            | [Enum BusinessCreditCardsInterestRatesCode](#schemaEnumBusinessCreditCardsInterestRatesCode)    | Sim             | Lista de outras operações de crédito                                                                                                   |
-| additionalInfo  | string                                                                                          | Sim             | Campo Texto para descrever outras operações de crédito marcadas como 'Outros'                                                          |
+|     Nome        |  Tipo                                                                                       | Obrigatório     |    Definição                                                 |
+|:----------------|:--------------------------------------------------------------------------------------------|:----------------|:---------------------------------------------------------------------------------------------------------------------------------------|
+| feeRate         | [BusinessCreditCardsFeeRate](#schemaBusinessCreditCardsFeeRate)                             | Sim             | Percentual que corresponde a taxa aplicada para utilização de Crédito Rotativo                                                         |
+| instalmentRate  | [BusinessCreditCardsInstalmentRate](#schemaBusinessCreditCardsInstalmentRate)               | Sim             | Percentual que corresponde a taxa aplicada para pagamento parcelado do saldo devedor quando não realizado pagamento integral da fatura |
+| code            | [Enum BusinessCreditCardsInterestRatesCode](#schemaEnumBusinessCreditCardsInterestRatesCode)| Sim             | Lista de outras operações de crédito                                                                                                   |
+| additionalInfo  | string                                                                                      | Sim             | Campo Texto para descrever outras operações de crédito marcadas como 'Outros'                                                          |
 
 ### Enum BusinessCreditCardsInterestRatesCode
 <a id="schemaEnumBusinessCreditCardsInterestRatesCode"></a>
@@ -363,6 +460,51 @@
 |:----------------------------|:---------------------|:---------------- |
 | code                        | SAQUE_CREDITO        | Saque a crédito  |
 | code                        | OUTROS               | Outros           |
+
+
+## BusinessCreditCardsFeeRate
+<a id="schemaBusinessCreditCardsFeeRate"></a>
+
+```json
+{
+  "price": [
+    {
+      "type": "string",
+      "rate": "string"
+    }
+  ],
+  "referenceValue": "string",
+  "referenceCurrency": "string"
+}
+```
+
+|     Nome                |  Tipo       | Obrigatório     |    Definição                                                                                                                                                          |
+|:------------------------|:------------|:----------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| price                 [[Price](#schemaPrice)]                                                                 | Sim             | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa física  |
+| referenceValue       | [AmountString](#commonFieldAmountString)                                 | Sim            | Valor de referência utilizado na apuração dos valores informados por quartil (representa um valor monetário                                |
+| referenceCurrency    | [CurrencyString](#commonFieldCurrencyString)                             | Sim            | Moeda relativa ao valor de referência, segundo modelo ISO-4217.                                                                            |
+
+## BusinessCreditCardsInstalmentRate
+<a id="schemaBusinessCreditCardsInstalmentRate"></a>
+
+```json
+{
+  "price": [
+    {
+      "type": "string",
+      "rate": "string"
+    }
+  ],
+  "referenceValue": "string",
+  "referenceCurrency": "string"
+}
+```
+
+|     Nome                |  Tipo       | Obrigatório     |    Definição                                                                                                                                                          |
+|:------------------------|:------------|:----------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| price                 [[Price](#schemaPrice)]                                                                 | Sim             | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa física  |
+| referenceValue       | [AmountString](#commonFieldAmountString)                                 | Sim            | Valor de referência utilizado na apuração dos valores informados por quartil (representa um valor monetário                                |
+| referenceCurrency    | [CurrencyString](#commonFieldCurrencyString)                             | Sim            | Moeda relativa ao valor de referência, segundo modelo ISO-4217.                                                                            |
 
 ## BusinessCreditCardsTermsConditions
 <a id="schemaBusinessCreditCardsTermsConditions"></a>
