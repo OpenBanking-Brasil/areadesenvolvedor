@@ -1,6 +1,7 @@
-## API de Status
 
-`GET /discovery/status`
+## API de Status 
+
+<a id="apiStatus">`GET /discovery/status`</a>
 
 > Exemplo de código
 

@@ -1,47 +1,47 @@
 ## Nível de serviço (SLA)
-O suporte eficaz da disponibilidade do Open Banking mantém níveis consistentes de serviços do sistema. 
+O suporte eficaz da disponibilidade do *Open Banking* mantém níveis consistentes de serviços do sistema. 
 Níveis de Serviço definidos:  
 
-•	Cada endpoint da API deve estar disponível 95% do tempo durante cada período de 24 horas.  
-•	Cada endpoint da API deve estar disponível 99.5% do tempo durante cada período de 3 meses.  
-•	Cada endpoint da API deve retornar o primeiro byte de resposta dentro de 1000ms por 95% das chamadas.  
-•	O tempo de resposta será medido por um cliente externo com uma latência de rede máxima de 50 ms (tempo para o primeiro byte).  
+ - Cada *endpoint* da API deve estar disponível 95% do tempo durante cada período de 24 horas.  
+ - Cada *endpoint* da API deve estar disponível 99.5% do tempo durante cada período de 3 meses.  
+ - Cada *endpoint* da API deve retornar o primeiro byte de resposta dentro de 1000ms por 95% das requisiçãos.  
+ - O tempo de resposta será medido por um cliente externo com uma latência de rede máxima de 50 ms (tempo para o primeiro byte).  
 
-Informativamente, esse nível de serviço representa aproximadamente um downtime máximo de 0,5% por trimestre, ou:  
+Informativamente, esse nível de serviço representa aproximadamente um *downtime* máximo de 0,5% por trimestre, o que corresponde a 18s por hora, 7,2min (432s) por dia, 3,6h (216m) por mês e 10,8h (648m) por trimestre.  
 
-•	18s por hora  
-•	7,2min (432s) por dia  
-•	3,6h (216m) por mês  
-•	10,8h (648m) por trimestre  
-
-A definição de um período de indisponibilidade é qualquer período de tempo em que qualquer um dos endpoints do API definidos na norma é incapaz de fornecer uma resposta confiável a uma solicitação construída de forma apropriada. 
+A definição de um período de indisponibilidade é qualquer período de tempo em que qualquer um dos *endpoints* do API definidos na norma é incapaz de fornecer uma resposta confiável a uma solicitação construída de forma apropriada. 
 
 ### Checagem de disponibilidade: 
 
-    GET channels/v1/status  
-    GET products-services/v1/status  
+    A disponibilidade é checada no *endpoint* `GET /discovery/status`, conforme documentada no item [API de Status](#apiStatus).
 
- - A cada 30 segundos, a API de status é chamada com timeout de 1s.
-	 - Se a chamada receber um OK: não contar downtime. 
-	 - Se a chamada receber um SCHEDULED_OUTAGE: 
-		 - Se a chamada for feita entre 23h e 05h, o contador de SCHEDULED_OUTAGE é iniciado com 30 segundos acrescidos. 
-		 - Cada nova chamada vai adicionando 30 segundos mais ao contador de SCHEDULED_OUTAGE, até que uma chamada volte outro valor ou a chamada for feita depois das 05h.
-	 - Se a chamada receber um:
-		 - PARTIAL_FAILURE ou
-		 - UNAVAILABLE, ou 
-		 - SCHEDULED_OUTAGE fora do período de 23h e 05h, 
-		 - Ou o serviço não responder a chamada:  
-		    - O contador de downtime é iniciado com 30 segundos acrescidos.  
-			- Cada nova chamada vai adicionando 30 segundos a mais ao contador de downtime, até que uma chamada volte OK.  
+A cada 30 segundos, a API de status é requisitada com *timeout* de 1s.	
 
+* Será considerado *uptime*, se o retorno for:
+	* OK.
+* Será considerado *downtime*, se o retorno for:
+	* *PARTIAL_FAILURE*;	
+	* *UNAVAILABLE*;
+	* *SCHEDULED_OUTAGE*:
+		* Se a requisição for realizada entre o período  de 23h e 05h, o contador de SCHEDULED_OUTAGE é iniciado com 30 segundos acrescidos; 	
+		* Cada nova requisição vai adicionando 30 segundos mais ao contador de SCHEDULED_OUTAGE, até que uma requisição volte outro valor ou a requisição for feita depois das 05h. 	
+	* *SCHEDULED_OUTAGE*:
+		* Se a requisição for realizada entre o período de 05h e 23h;		 
+		* Se serviço não responder a requisição;	
+		* O contador de *downtime* é iniciado com 30 segundos acrescidos;	  
+		* Cada nova requisição adicionará 30 segundos a mais ao contador de *downtime*, até que uma requisição retorne OK.	
+ 
 <img class='lazy' src='images/loading.gif' data-src='images/extras/fluxo_checagem_disponibilidade.png' alt='Figura 1: Fluxo control downtime'/>
 
-O downtime deve ser calculado como o número total de segundos simultâneos por chamada da API, por período de 24 horas, começando e terminando à meia-noite, que qualquer endpoint da API não esteja disponível, dividido por 86.400 (total de segundos em 24 horas) e expresso como uma porcentagem.
+O *downtime* deve ser calculado como o número total de segundos simultâneos por requisição da API, por período de 24 horas, começando e terminando à meia-noite, que qualquer *endpoint* da API não esteja disponível, dividido por 86.400 (total de segundos em 24 horas) e expresso como uma porcentagem.
 
-**A disponibilidade é calculada como 100% - % de Indisponibilidade.**
+**A disponibilidade é calculada sendo 100% menos a quantidade em percentual da indisponibilidade.**
 
-Não conta como downtime:
+ - A taxa de resposta deve ser calculada sobre o número total de 5XX HTTP *status code* de todos os *endpoints* por dia, dividido pelo número total de solicitações recebidas nesse dia, expresso como porcentagem;
+ - De modo geral, consideram-se os erros 5XX HTTP *status codes* como erros do servidor, e portanto, atribuíveis ao servidor das APIs;
+ - Erros baseados em 4XX HTTP *status code* são, em grande parte, atribuídos à ações ou falhas dos receptores, e dessa forma, não devem ser incluídos no cálculo.
+ 
+Não será considerado como *downtime*:
 
- - Uma indisponibilidade por mês, por 3h entre 23h e 05h, desde que reportado com uma semana de antecedência ao diretório.
- - Indisponibilidade para correção emergencial, desde que aprovado pelo diretório.
-
+ - Uma indisponibilidade por mês, por 3h entre 23h e 05h, desde que reportado com uma semana de antecedência ao diretório;
+ - Por tempo não definido, a qualquer momento e sem notificação em caso de resolução de problemas de segurança, desde que aprovado pelo Diretório. Neste caso, as instituições devem garantir o emprego dos melhores esforços para a resolução do problema

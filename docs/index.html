@@ -826,7 +826,7 @@
                     <a href="#schemas-nivel-de-desempenho" class="toc-h2 toc-link" data-title="Nível de desempenho">Nível de desempenho</a>
                   </li>
                   <li>
-                    <a href="#schemas-limites-de-requisicoes" class="toc-h2 toc-link" data-title="Limites de requisições">Limites de requisições</a>
+                    <a href="#schemas-limites-trafego-de-requisicoes" class="toc-h2 toc-link" data-title="Limites Tráfego de requisições">Limites Tráfego de requisições</a>
                   </li>
               </ul>
           </li>
@@ -1919,7 +1919,7 @@ provocam mudanças nos recursos. Destes dois, somente o GET e OPTIONS serão uti
 <h1 id='apis-comuns'>APIs Comuns</h1>
 <h2 id='seguranca-api-de-status'>API de Status</h2>
 
-<p><code>GET /discovery/status</code></p>
+<p><a id="apiStatus"><code>GET /discovery/status</code></a></p>
 
 <blockquote>
 <p>Exemplo de código</p>
@@ -16702,101 +16702,106 @@ provocam mudanças nos recursos. Destes dois, somente o GET e OPTIONS serão uti
 <h1 id='requisitos-nao-funcionais'>Requisitos não funcionais</h1>
 <h2 id='schemas-nivel-de-servico-sla'>Nível de serviço (SLA)</h2>
 
-<p>O suporte eficaz da disponibilidade do Open Banking mantém níveis consistentes de serviços do sistema. 
+<p>O suporte eficaz da disponibilidade do <em>Open Banking</em> mantém níveis consistentes de serviços do sistema. 
 Níveis de Serviço definidos:  </p>
 
-<p>• Cada endpoint da API deve estar disponível 95% do tempo durante cada período de 24 horas.<br>
-• Cada endpoint da API deve estar disponível 99.5% do tempo durante cada período de 3 meses.<br>
-• Cada endpoint da API deve retornar o primeiro byte de resposta dentro de 1000ms por 95% das chamadas.<br>
-• O tempo de resposta será medido por um cliente externo com uma latência de rede máxima de 50 ms (tempo para o primeiro byte).  </p>
+<ul>
+<li>Cada <em>endpoint</em> da API deve estar disponível 95% do tempo durante cada período de 24 horas.<br></li>
+<li>Cada <em>endpoint</em> da API deve estar disponível 99.5% do tempo durante cada período de 3 meses.<br></li>
+<li>Cada <em>endpoint</em> da API deve retornar o primeiro byte de resposta dentro de 1000ms por 95% das requisiçãos.<br></li>
+<li>O tempo de resposta será medido por um cliente externo com uma latência de rede máxima de 50 ms (tempo para o primeiro byte).<br></li>
+</ul>
 
-<p>Informativamente, esse nível de serviço representa aproximadamente um downtime máximo de 0,5% por trimestre, ou:  </p>
+<p>Informativamente, esse nível de serviço representa aproximadamente um <em>downtime</em> máximo de 0,5% por trimestre, o que corresponde a 18s por hora, 7,2min (432s) por dia, 3,6h (216m) por mês e 10,8h (648m) por trimestre.  </p>
 
-<p>• 18s por hora<br>
-• 7,2min (432s) por dia<br>
-• 3,6h (216m) por mês<br>
-• 10,8h (648m) por trimestre  </p>
-
-<p>A definição de um período de indisponibilidade é qualquer período de tempo em que qualquer um dos endpoints do API definidos na norma é incapaz de fornecer uma resposta confiável a uma solicitação construída de forma apropriada. </p>
+<p>A definição de um período de indisponibilidade é qualquer período de tempo em que qualquer um dos <em>endpoints</em> do API definidos na norma é incapaz de fornecer uma resposta confiável a uma solicitação construída de forma apropriada. </p>
 
 <h3 id='schemas-nivel-de-servico-sla-checagem-de-disponibilidade'>Checagem de disponibilidade:</h3>
 
-<p>GET channels/v1/status<br>
-    GET products-services/v1/status  </p>
+<p>A disponibilidade é checada no <em>endpoint</em> <code>GET /discovery/status</code>, conforme documentada no item <a href="#apiStatus">API de Status</a>.</p>
+
+<p>A cada 30 segundos, a API de status é requisitada com <em>timeout</em> de 1s. </p>
 
 <ul>
-<li>A cada 30 segundos, a API de status é chamada com timeout de 1s.
+<li>Será considerado <em>uptime</em>, se o retorno for:
 
 <ul>
-<li>Se a chamada receber um OK: não contar downtime. </li>
-<li>Se a chamada receber um SCHEDULED_OUTAGE: 
-
-<ul>
-<li>Se a chamada for feita entre 23h e 05h, o contador de SCHEDULED_OUTAGE é iniciado com 30 segundos acrescidos. </li>
-<li>Cada nova chamada vai adicionando 30 segundos mais ao contador de SCHEDULED_OUTAGE, até que uma chamada volte outro valor ou a chamada for feita depois das 05h.</li>
+<li>OK.</li>
 </ul></li>
-<li>Se a chamada receber um:
+<li>Será considerado <em>downtime</em>, se o retorno for:
 
 <ul>
-<li>PARTIAL_FAILURE ou</li>
-<li>UNAVAILABLE, ou </li>
-<li>SCHEDULED_OUTAGE fora do período de 23h e 05h, </li>
-<li>Ou o serviço não responder a chamada:<br>
+<li><em>PARTIAL_FAILURE</em>;<br></li>
+<li><em>UNAVAILABLE</em>;</li>
+<li><em>SCHEDULED_OUTAGE</em>:
 
 <ul>
-<li>O contador de downtime é iniciado com 30 segundos acrescidos.<br></li>
-<li>Cada nova chamada vai adicionando 30 segundos a mais ao contador de downtime, até que uma chamada volte OK.<br></li>
+<li>Se a requisição for realizada entre o período  de 23h e 05h, o contador de SCHEDULED_OUTAGE é iniciado com 30 segundos acrescidos;<br></li>
+<li>Cada nova requisição vai adicionando 30 segundos mais ao contador de SCHEDULED_OUTAGE, até que uma requisição volte outro valor ou a requisição for feita depois das 05h.<br></li>
 </ul></li>
+<li><em>SCHEDULED_OUTAGE</em>:
+
+<ul>
+<li>Se a requisição for realizada entre o período de 05h e 23h;<br></li>
+<li>Se serviço não responder a requisição;<br></li>
+<li>O contador de <em>downtime</em> é iniciado com 30 segundos acrescidos;<br></li>
+<li>Cada nova requisição adicionará 30 segundos a mais ao contador de <em>downtime</em>, até que uma requisição retorne OK.<br></li>
 </ul></li>
 </ul></li>
 </ul>
 
 <p><img class='lazy' src='images/loading-e35b35a4.gif' data-src='images/extras/fluxo_checagem_disponibilidade-766fd629.png' alt='Figura 1: Fluxo control downtime'/></p>
 
-<p>O downtime deve ser calculado como o número total de segundos simultâneos por chamada da API, por período de 24 horas, começando e terminando à meia-noite, que qualquer endpoint da API não esteja disponível, dividido por 86.400 (total de segundos em 24 horas) e expresso como uma porcentagem.</p>
+<p>O <em>downtime</em> deve ser calculado como o número total de segundos simultâneos por requisição da API, por período de 24 horas, começando e terminando à meia-noite, que qualquer <em>endpoint</em> da API não esteja disponível, dividido por 86.400 (total de segundos em 24 horas) e expresso como uma porcentagem.</p>
 
-<p><strong>A disponibilidade é calculada como 100% - % de Indisponibilidade.</strong></p>
-
-<p>Não conta como downtime:</p>
+<p><strong>A disponibilidade é calculada sendo 100% menos a quantidade em percentual da indisponibilidade.</strong></p>
 
 <ul>
-<li>Uma indisponibilidade por mês, por 3h entre 23h e 05h, desde que reportado com uma semana de antecedência ao diretório.</li>
-<li>Indisponibilidade para correção emergencial, desde que aprovado pelo diretório.</li>
+<li>A taxa de resposta deve ser calculada sobre o número total de 5XX HTTP <em>status code</em> de todos os <em>endpoints</em> por dia, dividido pelo número total de solicitações recebidas nesse dia, expresso como porcentagem;</li>
+<li>De modo geral, consideram-se os erros 5XX HTTP <em>status codes</em> como erros do servidor, e portanto, atribuíveis ao servidor das APIs;</li>
+<li>Erros baseados em 4XX HTTP <em>status code</em> são, em grande parte, atribuídos à ações ou falhas dos receptores, e dessa forma, não devem ser incluídos no cálculo.</li>
+</ul>
+
+<p>Não será considerado como <em>downtime</em>:</p>
+
+<ul>
+<li>Uma indisponibilidade por mês, por 3h entre 23h e 05h, desde que reportado com uma semana de antecedência ao diretório;</li>
+<li>Por tempo não definido, a qualquer momento e sem notificação em caso de resolução de problemas de segurança, desde que aprovado pelo Diretório. Neste caso, as instituições devem garantir o emprego dos melhores esforços para a resolução do problema</li>
 </ul>
 
 <h2 id='schemas-nivel-de-desempenho'>Nível de desempenho</h2>
 
-<p>O suporte eficaz da disponibilidade do Open Banking mantém níveis consistentes de serviços do sistema.<br>
-O desempenho do endpoint da API será medido no tempo de resposta de cada solicitação, desde o recebimento da solicitação até a entrega da resposta.<br>
+<p>O desempenho do <em>endpoint</em> da API será medido no tempo de resposta de cada solicitação, desde o recebimento da solicitação até a entrega da resposta.<br>
 Espera-se que o detentor dos dados garanta que a medição do tempo de resposta ocorra o mais próximo possível do receptor dos dados, embora algumas camadas técnicas não estejam no controle do detentor dos dados.<br>
 À luz destas considerações, a exigência de desempenho para os detentores dos dados é:  </p>
 
-<p>• APIs de alta prioridade (status/outages) devem manter percentil 95 em no máximo 1000ms .
-• APIs de média prioridade (channels/products-services) devem manter percentil 95 em no máximo 1500ms.<br>
-• APIs Admin (ex. metrics) devem manter percentil 95 em no máximo 4000ms.  </p>
-
-<p>Por exemplo: caso que num dia a API de products-services receba 10.000 chamadas, pelo menos 9.500 delas deveriam ter sido respondidas dentro de um prazo inferior a 1500ms.<br>
-Todas as APIs devem obedecer aos critérios abaixo, definidos pelo GT. </p>
-
-<p><img class='lazy' src='images/loading-e35b35a4.gif' data-src='images/extras/taxa_erro-c4b7825b.png' alt='Figura 2: Critérios desempenho - Taxa de erro'/></p>
-
-<p>De modo geral, consideram-se os erros 5XX HTTP Status codes como erros do servidor, e portanto, atribuíveis ao servidor das APIs. Esses erros não devem superar 0.5% (5 por mil chamadas).</p>
-
-<p>Os códigos de erros HTTP 4XX não são atribuíveis ao servidor das APIs.</p>
-
-<h2 id='schemas-limites-de-requisicoes'>Limites de requisições</h2>
-
-<p>As chamadas que excedam os seguintes limites de tráfego poderão ser enfileiradas ou rejeitadas por um detentor de dados sem impacto em seu desempenho ou requisitos de disponibilidade.
-Os limites de tráfego serão estabelecidos utilizando as seguintes métricas:</p>
-
 <ul>
-<li>Transações por Segundo (TPS) - o número de transações simultâneas a cada segundo.</li>
-<li>Número de chamadas - o número de chamadas de endpoint iniciadas por uma duração especificada.</li>
+<li>APIs de alta prioridade (<em>status/outages</em>) devem manter percentil 95 em no máximo 1000ms.</li>
+<li>APIs de média prioridade (<em>channels/products-services</em>) devem manter percentil 95 em no máximo 1500ms.<br></li>
+<li>APIs Admin (ex. <em>metrics</em>) devem manter percentil 95 em no máximo 4000ms.</li>
 </ul>
 
-<p>Para o diretório, serão aplicados os seguintes limites de tráfego:
- - 10 TPS por IP.
- - 300 TPS globalmente.</p>
+<p>P. ex. Em um dia que a API Produtos e Serviços receba 10.000 chamadas, pelo menos 9.500 delas deveriam ter sido respondidas dentro de um prazo inferior a 1500ms. </p>
+
+<h2 id='schemas-limites-trafego-de-requisicoes'>Limites Tráfego de requisições</h2>
+
+<p>As chamadas que excedam os seguintes limites de tráfego poderão ser enfileiradas ou rejeitadas por um detentor de dados sem impacto em seu desempenho ou requisitos de disponibilidade.</p>
+
+<p>Os limites de tráfego serão estabelecidos utilizando as seguintes métricas:</p>
+
+<ul>
+<li>Transações por Segundo (TPS) - o número de transações simultâneas a cada segundo;</li>
+<li>Número de chamadas - o número de chamadas de <em>endpoint</em> iniciadas por uma duração especificada.</li>
+</ul>
+
+<p>Serão aplicados os seguintes limites mínimos de tráfego:</p>
+
+<ul>
+<li>500 Requisições por minuto por receptora;</li>
+<li>300 TPS globalmente.</li>
+</ul>
+
+<p>Requisições que ultrapassem os limites estabelecidos poderão ser rejeitadas utilizando o HTTP <em>status code</em> <code>429 Too Many Requests</code>.</p>
 <h1 id='guia-operacional'>Guia Operacional</h1>
 <p>O Guia Operacional dá suporte a doadores e receptores, trazendo informações sobre Desempenho, Disponibilidade, Processo de Registro e Revogação, Estrutura do Repositório de Informações, Resolução de Problemas, Comunicação de Mudanças, CheckList, Glossário e Referências.</p>
 
