@@ -75,4 +75,5 @@ Para cada um desses atributos o tamanho da página especificado na requisição 
 
 * Não é esperado que os provedores implementem paginação com isolamento de transação. Os dados que serão retornados podem mudar entre requisições subsequentes. Isto pode causar situações onde um mesmo registro pode ser retornado em mais de uma página.
 * O tamanho máximo da página é `1000` registros para qualquer endpoint (a menos que na documentação desse esteja informando outros valores).
-* Se for requisitado uma quantidade de registros maior que o suportado o retorno será o código HTTP `422 Unprocessable Entity`.
+* Se for requisitado uma quantidade de registros maior que o suportado, o retorno será o código HTTP *status code* `422 `
+` Unprocessable Entity`, indicando que o servidor entendeu a requisição, mas não é possível processa-la conforme foi solicitado.
