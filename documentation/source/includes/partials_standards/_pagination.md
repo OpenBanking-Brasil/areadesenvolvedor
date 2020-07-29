@@ -1,7 +1,7 @@
 ## Paginação
 
 Cada recurso de cada API pode possuir ou não paginação, caso a quantidade de registros retornados justifique a mesma. 
-A paginação estará disponível e deverá funcionar independente se o recurso permite filtros por query ou POST. Isso é, filtros e paginação são aplicados de forma independente.
+A paginação estará disponível e deverá funcionar independente se o recurso permite filtros por *query* ou POST. Isso é, filtros e paginação são aplicados de forma independente.
 
 ### Parâmetros de Requisição
 

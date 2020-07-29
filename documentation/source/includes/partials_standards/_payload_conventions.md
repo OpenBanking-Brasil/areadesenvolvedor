@@ -1,6 +1,6 @@
 ## Convenções de payload 
 
-Esta seção do padrão descreve as estruturas padrões de requisição e resposta para todos os endpoints das APIs, assim como as convenções de nomenclatura para os atributos.
+Esta seção do padrão descreve as estruturas padrões de requisição e resposta para todos os *endpoints* das APIs, assim como as convenções de nomenclatura para os atributos.
 
 ### Estrutura de requisição
 
@@ -15,10 +15,10 @@ Esta seção do padrão descreve as estruturas padrões de requisição e respos
 ```
 Cada requisição deve ser um objeto JSON contendo um objeto `data` para armazenar os dados primários da requisição.
 
-No mesmo nível do objeto `data`, poderá existir um objeto `meta` se assim for especificado pelo endpoint.
-O objeto `meta`  é usado para fornecer informações adicionais ao endpoint, como parâmetros de paginação, contagens de paginação ou outros propósitos complementares ao funcionamento da API.
+No mesmo nível do objeto `data`, poderá existir um objeto `meta` se assim for especificado pelo *endpoint*.
+O objeto `meta`  é usado para fornecer informações adicionais ao *endpoint*, como parâmetros de paginação, contagens de paginação ou outros propósitos complementares ao funcionamento da API.
 
-A definição do conteúdo para o objeto `data` será definida separadamente para cada endpoint.
+A definição do conteúdo para o objeto `data` será definida separadamente para cada *endpoint*.
 
 ### Estrutura de resposta
 
@@ -71,10 +71,10 @@ O objeto de `links` sempre irá conter o atributo `self` que irá apontar para a
 ```
 
 * O objeto `errors` será um array de zero ou mais objetos. Os atributos deste objeto serão os descritos abaixo:
-    - obrigatóriamente o atributo `code` contendo um código de erro específico do endpoint
-    - obrigatóriamente o atributo `title` contendo um título legível por humanos do erro deste erro específico
-    - obrigatóriamente o atributo `detail` contendo uma descrição legível por humanos deste erro específico
-    - opcionalmente o objeto `meta` contendo dados adicionais sobre o endpoint que sejam relevantes para o erro
+    - obrigatoriamente o atributo `code` contendo um código de erro específico do *endpoint*;
+    - obrigatoriamente o atributo `title` contendo um título legível por humanos do erro deste erro específico;
+    - obrigatoriamente o atributo `detail` contendo uma descrição legível por humanos deste erro específico;
+    - opcionalmente o objeto `meta` contendo dados adicionais sobre o *endpoint* que sejam relevantes para o erro.
 
 ### Convenções de nomenclatura de atributos
 
@@ -89,7 +89,7 @@ Qualquer outro caractere não deve ser usado nos nomes dos objetos e atributos, 
 Os nomes dos objetos e atributos devem ser nomes significativos e em língua inglesa. Quando houver diferença entre inglês americano e inglês britânico no termo a ser utilizado, deverá ser utilizado o termo em inglês britânico.
 P.ex. Utilizar o termo Post Code (Reino Unido) ao invés de Zip Code (Estados Unidos).
 
-Arrays devem ser nomeados no plural. Demais atributos deverão ser nomeados no singular.
+*Arrays* devem ser nomeados no plural. Demais atributos deverão ser nomeados no singular.
 
 ### Convenções de propriedade dos atributos
 
