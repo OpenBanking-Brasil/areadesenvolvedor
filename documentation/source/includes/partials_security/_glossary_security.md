@@ -1,7 +1,6 @@
-## Glossário
+## Glossário de Segurança
 
 * **API**: Application Programming Interface.
-* **CA**: Certificate Authority.
 * **JSON**: JavaScript Object Notation.
 * **JWA**: JSON Web Algorithms.
 * **JWE**: JSON Web Encryption.
@@ -9,10 +8,6 @@
 * **JWKS**: JSON Web Key Set.
 * **JWS**: JSON Web Signature.
 * **JWT**: JSON Web Token.
-* **MTLS**: Mutually Authenticated Transport Layer Security.
-* **OIDC**: Open ID Connect.
-* **PI**: Personal Information.
-* **PKI**: Public Key Infrastructure.
 * **PPID**: Pairwise Pseudonymous Identifier.
 * **REST**: Representational State Transfer.
 * **TDIF**: Trusted Digital Identity Framework.

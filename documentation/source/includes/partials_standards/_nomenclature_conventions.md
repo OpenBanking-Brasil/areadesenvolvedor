@@ -24,4 +24,4 @@ Os nomes dos atributos devem:
 
 	  `*Para textos explicativos de informações complementares, o nome completo do atributo é “additionalInfo”`
 
-* Em atributos que sejam indicadores binários (flags), o nome deve estar formatado como pergunta, com um verbo como primeiro termo. Ex: “hasRewardProgram”
+* Em atributos que sejam indicadores binários (*flags*), o nome deve estar formatado como pergunta, com um verbo como primeiro termo. Ex: “hasRewardProgram”

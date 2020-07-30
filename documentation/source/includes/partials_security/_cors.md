@@ -1,7 +1,7 @@
 ## CORS
 
 ### Contexto Open-Data
-O Cross-Origin Resource Sharing (CORS) para todas as origens (valor " * ") será permitido nos seguintes endpoints:
+O *Cross-Origin Resource Sharing* (CORS) para todas as origens (valor " * ") será permitido nos seguintes *endpoints*:
 
  * Open Data APIS
    * Canais de Atendimento
