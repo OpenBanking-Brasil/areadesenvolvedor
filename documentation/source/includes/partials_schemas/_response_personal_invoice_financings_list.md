@@ -78,7 +78,7 @@
 |     Nome      |  Tipo                                                                     | Obrigatório  |                            Definição                  |
 |:------------  |:---------------------------------                                         |:-----------  |:----------------------------------------------------  |
 | data          | object                                                                    | Sim          |                                                       |
-| » brand       | [[PersonalInvoiceFinancingsBrand](#schemaPersonalInvoiceFinancingsBrand)] | Sim          | Lista das organizações titulares das dependências.      |
+| brand       | [[PersonalInvoiceFinancingsBrand](#schemaPersonalInvoiceFinancingsBrand)] | Sim          | Lista das organizações titulares das dependências.      |
 | links         | [[LinksPaginated](#schemaLinksPaginated)]                                 | Sim          |                                                       |
 | meta          | [MetaPaginated](#schemaMetaPaginated)                                   | Sim          |                                                       |
 

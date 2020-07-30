@@ -51,12 +51,6 @@
           0
         ]
       },
-      "largePayload": {
-        "currentDay": 0,
-        "previousDays": [
-          0
-        ]
-      }
     },
     "averageResponse": {
       "unauthenticated": {
@@ -83,12 +77,6 @@
           0
         ]
       },
-      "largePayload": {
-        "currentDay": 0,
-        "previousDays": [
-          0
-        ]
-      }
     },
     "averageTps": {
       "currentDay": 0,
@@ -235,12 +223,6 @@
       0
     ]
   },
-  "largePayload": {
-    "currentDay": 0,
-    "previousDays": [
-      0
-    ]
-  }
 }
 
 ```
@@ -259,10 +241,6 @@
 |unattended|object|Sim|Número de chamadas para o nível não acompanhado.|
 |» currentDay|number|Sim|Número de chamadas no dia atual.|
 |» previousDays|[number]|Sim|Número de chamadas nos dias anteriores. O primeiro item do array é referente a ontem, e assim por diante. Devem ser retornados no máximo sete dias caso estejam disponíveis.|
-|largePayload|object|Sim|API call counts for the large payload tier.|
-|» currentDay|number|Sim|Número de chamadas no dia atual.|
-|» previousDays|[number]|Sim|Número de chamadas nos dias anteriores. O primeiro item do array é referente a ontem, e assim por diante. Devem ser retornados no máximo sete dias caso estejam disponíveis.|
-
 
 ## AverageMetrics
 <a id="schemaAverageMetrics"></a>
@@ -293,12 +271,6 @@
       0
     ]
   },
-  "largePayload": {
-    "currentDay": 0,
-    "previousDays": [
-      0
-    ]
-  }
 }
 
 ```
@@ -315,9 +287,6 @@
 |» currentDay|number|Sim|Número de chamadas no dia atual|
 |» previousDays|[number]|Sim|Número de chamadas nos dias anteriores. O primeiro item do array é referente a ontem, e assim por diante. Devem ser retornados no máximo sete dias caso estejam disponíveis.|
 |unattended|object|Sim|Número de chamadas para o nível não acompanhado.|
-|» currentDay|number|Sim|Número de chamadas no dia atual.|
-|» previousDays|[number]|Sim|Número de chamadas nos dias anteriores. O primeiro item do array é referente a ontem, e assim por diante. Devem ser retornados no máximo sete dias caso estejam disponíveis.|
-|largePayload|object|Sim|API call counts for the large payload tier.|
 |» currentDay|number|Sim|Número de chamadas no dia atual.|
 |» previousDays|[number]|Sim|Número de chamadas nos dias anteriores. O primeiro item do array é referente a ontem, e assim por diante. Devem ser retornados no máximo sete dias caso estejam disponíveis.|
 

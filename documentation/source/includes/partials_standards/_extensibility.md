@@ -19,7 +19,7 @@ Para atender tanto as demandas de quem deseja estender as API (participantes) qu
 <ul>
 <li>BBR - Banco do Brasil</li>
 <li>BDC - Bradesco</li>
-<li>BTB - BTG Pactual</li>
+<li>BTG - BTG Pactual</li>
 <li>CEF - Caixa Econônica Federal</li>
 <li>ITA - Itau</li>
 <li>STD - Santander</li>
@@ -77,7 +77,7 @@ Se o participante deseja adicionar um novo *endpoint* que resume as transações
     </ul>
 </aside>
 
-### Campo de retorno adicionais em um endpoint existente
+### Campos de retorno adicionais em um endpoint existente
 
 Quando o participante desejar adicionar um novo campo ao *payload* de resposta, o atributo deverá receber o prefixo do participante seguido por um hífen `<PID>-`.
 

@@ -107,7 +107,7 @@
 |     Nome   |  Tipo                                                                     | Obrigatório  |                            Definição                                                                                     |
 |:-----------|:--------------------------------------------------------------------------|:-------------|:-------------------------------------------------------------------------------------------------------------------------|
 | data       | object                                                                    | Sim          |                                                                                                                          |
-| » brand    | [PersonalCreditCardsBrand](#schemaPersonalCreditCardsBrand) | Sim         | Dados da Marca selecionada pelas Organizações que fornecem produtos e serviços de cartões de crédito para pessoa física.      |
+| brand    | [PersonalCreditCardsBrand](#schemaPersonalCreditCardsBrand) | Sim         | Dados da Marca selecionada pelas Organizações que fornecem produtos e serviços de cartões de crédito para pessoa física.      |
 | links      | [LinksPaginated](#schemaLinksPaginated)                                   | Sim          |                                                                                                                          |
 | meta       | [MetaPaginated](#schemaMetaPaginated)                                     | Sim          |                                                                                                                          |
 
@@ -297,7 +297,7 @@
 |:---------------------|:-----------------------------------------------------|:-------------- |:-----------------------------------|
 | name                 | string                                               | Sim            | Nome da instituição financeira.     |
 | cnpjNumber           | string                                               | Sim            | CNPJ da instituição financeira.     |
-| personalCreditCards  | [[PersonalCreditCards](#schemaPersonalCreditCards)]  | Sim            | Lista  de cartões de crédito.       |
+| personalCreditCards  | [[PersonalCreditCards](#schemaPersonalCreditCards)]  | Sim            | Lista de cartões de crédito.       |
 
 ## PersonalCreditCards
 <a id="schemaPersonalCreditCards"></a>

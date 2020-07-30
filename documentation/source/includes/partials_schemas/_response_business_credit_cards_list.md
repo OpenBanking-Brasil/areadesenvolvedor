@@ -95,7 +95,7 @@
 |     Nome          |  Tipo                                                       | Obrigatório  |                            Definição                                                                      |
 |:------------------|:----------------------------------------------------------- |:------------ |:--------------------------------------------------------------------------------------------------------- | 
 | data              | object                                                      | Sim          |                                                                                                           |
-| » brand           | [BusinessCreditCardsBrand](#schemaBusinessCreditCardsBrand) | Sim          | Dados da Marca selecionada que fornecem produtos e serviços de cartões de crédito para pessoa jurídica.    |
+| brand           | [BusinessCreditCardsBrand](#schemaBusinessCreditCardsBrand) | Sim          | Dados da Marca selecionada que fornecem produtos e serviços de cartões de crédito para pessoa jurídica.    |
 | links             | [LinksPaginated](#schemaLinksPaginated)                     | Sim          |                                                                                                           |
 | meta              | [MetaPaginated](#schemaMetaPaginated)                       | Sim          |                                                                                                           |
 
@@ -181,7 +181,7 @@
 |     Nome     |  Tipo                                                                    | Obrigatório  |                            Definição                 |
 |:-------------|:-------------------------------------------------------------------------|:-----------  |:---------------------------------------------------- |
 | name         | string                                                                   | Sim          | Nome da Marca selecionada pelas Organizações.         |
-| companies    | [[BusinessCreditCardsCompanies](#schemaBusinessCreditCardsCompanies)]    | Sim          | Lista de instituições pertencentes a marca           |
+| companies    | [[BusinessCreditCardsCompanies](#schemaBusinessCreditCardsCompanies)]    | Sim          | Lista de instituições pertencentes a marca.           |
 
 ## BusinessCreditCardsCompanies 
 <a id="schemaBusinessCreditCardsCompanies"></a>
@@ -261,7 +261,7 @@
 |:---------------------|:-----------------------------------------------------|:-------------- |:-----------------------------------|
 | name                 | string                                               | Sim            | Nome da instituição financeira.     |
 | cnpjNumber           | string                                               | Sim            | CNPJ da instituição financeira.     |
-| businessCreditCards  | [[BusinessCreditCards](#schemaBusinessCreditCards)]  | Sim            | Lista  de cartões de crédito.       |
+| businessCreditCards  | [[BusinessCreditCards](#schemaBusinessCreditCards)]  | Sim            | Lista de cartões de crédito.       |
 
 ## BusinessCreditCards
 <a id="schemaBusinessCreditCards"></a>
@@ -480,7 +480,7 @@
 
 |     Nome                |  Tipo       | Obrigatório     |    Definição                                                                                                                                                          |
 |:------------------------|:------------|:----------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| price                 [[Price](#schemaPrice)]                                                                 | Sim             | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa física.  |
+| price                 [[Price](#schemaPrice)]                                                                 | Sim             | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa jurídica.  |
 | referenceValue       | [AmountString](#commonFieldAmountString)                                 | Sim            | Valor de referência utilizado na apuração dos valores informados por quartil (representa um valor monetário.                                |
 | referenceCurrency    | [CurrencyString](#commonFieldCurrencyString)                             | Sim            | Moeda relativa ao valor de referência, segundo modelo ISO-4217.                                                                            |
 
@@ -502,7 +502,7 @@
 
 |     Nome                |  Tipo       | Obrigatório     |    Definição                                                                                                                                                          |
 |:------------------------|:------------|:----------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| price                 [[Price](#schemaPrice)]                                                                 | Sim             | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa física.  |
+| price                 [[Price](#schemaPrice)]                                                                 | Sim             | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa jurídica.  |
 | referenceValue       | [AmountString](#commonFieldAmountString)                                 | Sim            | Valor de referência utilizado na apuração dos valores informados por quartil (representa um valor monetário.                               |
 | referenceCurrency    | [CurrencyString](#commonFieldCurrencyString)                             | Sim            | Moeda relativa ao valor de referência, segundo modelo ISO-4217.                                                                            |
 

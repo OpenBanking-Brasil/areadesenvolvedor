@@ -78,7 +78,7 @@
 |     Nome      |  Tipo                                                  | Obrigatório  |                            Definição                  |
 |:------------  |:---------------------------------                      |:-----------  |:----------------------------------------------------  |
 | data          | object                                                 | Sim          |                                                       |
-| » brand       | [[PersonalLoansBrand](#schemaPersonalLoansBrand)]      | Sim          | Lista das organizações titulares das dependências.      |
+| brand       | [[PersonalLoansBrand](#schemaPersonalLoansBrand)]      | Sim          | Lista das organizações titulares das dependências.      |
 | links         | [LinksPaginated](#schemaLinksPaginated)                | Sim          |                                                       |
 | meta          | [MetaPaginated](#schemaMetaPaginated)                  | Sim          |                                                       |
 
@@ -144,7 +144,7 @@
 
 |     Nome     |  Tipo                                                      | Obrigatório  |                            Definição                         |
 |:------------ |:---------------------------------                          |:-----------  |:----------------------------------------------------         |
-| name         | string                                                     | Sim          | Nome da marca proprietária da dependência (titular).  |
+| name         | string                                                     | Sim          | Nome da marca selecionada responsável pelos empréstimos.  |
 | companies    | [[PersonalLoansCompanies](#schemaPersonalLoansCompanies)]  | Sim          | Lista de instituições pertencentes à marca.             |
 
 ## PersonalLoansCompanies
@@ -376,7 +376,7 @@
 | prePostTax             | [Enum PrePostTax](#schemaPrePostTax)                          | Sim         | Indicador de pré ou pós. A diferença básica é que, enquanto o prefixado apresenta rentabilidade definida, o pós-fixado acompanha algum indicador. Assim, quem investe no primeiro grupo sabe como será seu rendimento previamente, enquanto quem investe no segundo, só conhecerá os resultados na data de vencimento.                                  |
 | frecuency              | [Enum FrequencyType](#schemaFrequencyType)                    | Sim         | Código que indica Frequência sobre a qual incide a Remuneração.                                  |
 | incomeRateInfo         | string                                                        | Não         | Descrição da Remuneração relativa às taxas de juros remuneratórias sobre a modalidade de Empréstimo para pessoa física/jurídica.                                    |
-| application            | [[LoansApplication](#schemaLoansApplication)]                 | Não            | Descrição da Remuneração relativa as taxas de juros remuneratórias sobre a modalidade de direitos creditórios descontados infomrada, para pessoa jurídica.                                                                                                                                                             |
+| application            | [[LoansApplication](#schemaLoansApplication)]                 | Não            | Descrição da Remuneração relativa as taxas de juros remuneratórias sobre a modalidade de direitos creditórios descontados informada, para pessoa jurídica.                                                                                                                                                             |
 | referenceValue         | [AmountString](#commonFieldAmountString)                      | Sim            | Valor de referência utilizado na apuração dos valores informados por quartil (representa um valor monetário.                                |
 | referenceCurrency      | [CurrencyString](#commonFieldCurrencyString)                  | Sim            | Moeda relativa ao valor de referência, segundo modelo ISO-4217.                                                                            |
 

@@ -47,7 +47,7 @@
 |     Nome        |  Tipo                                                       | Obrigatório  |                            Definição                  |
 |:------------    |:---------------------------------                           |:-----------  |:----------------------------------------------------  |
 | data            | object                                                      | Sim          |                                                       |
-| » brand         | [[ElectronicChannelsBrand](#schemaElectronicChannelsBrand)]   | Sim          | Lista das organizações titulares das dependências.      |
+| brand         | [[ElectronicChannelsBrand](#schemaElectronicChannelsBrand)]   | Sim          | Lista das organizações titulares das dependências.      |
 | links           | [[LinksPaginated](#schemaLinksPaginated)]                   | Sim          |                                                       |
 | meta            | [MetaPaginated](#schemaMetaPaginated)                     | Sim          |                                                       |
 
@@ -111,8 +111,8 @@
 
 |     Nome     |  Tipo                                           | Obrigatório    |                            Definição                       |
 |:------------ |:---------------------------------               |:-------------- |:----------------------------------------------------       |
-| name         | string                                          | Sim            | Nome do conglomerado responsável pela contratação do Correspondente.  |
-| cnpjNumber   | string                                          | Sim            | CNPJ da instituição responsável pela dependência - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. |
+| name         | string                                          | Sim            | Nome do conglomerado responsável pelo canal de atendimento eletrônico.  |
+| cnpjNumber   | string                                          | Sim            | CNPJ da instituição responsável pelo canal de atendimento - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. |
 | channels     | [[ElectronicChannels](#schemaElectronicChannels)] | Sim            | Lista  de canais de atendimento eletrônico.                  |
 
 ## ElectronicChannels

@@ -54,7 +54,7 @@
 |     Nome        |  Tipo                                                       | Obrigatório  |                            Definição                  |
 |:------------    |:---------------------------------                           |:-----------  |:----------------------------------------------------  |
 | data            | object                                                      | Sim          |                                                       |
-| » brand         | [[PhoneChannelsBrand](#schemaPhoneChannelsBrand)]   | Sim          | Lista das organizaçõs titulares das dependências.      |
+| brand         | [[PhoneChannelsBrand](#schemaPhoneChannelsBrand)]   | Sim          | Lista das organizações titulares das dependências.      |
 | links           | [[LinksPaginated](#schemaLinksPaginated)]                   | Sim          |                                                       |
 | meta            | [MetaPaginated](#schemaMetaPaginated)                     | Sim          |                                                       |
 
@@ -96,7 +96,7 @@
 
 |     Nome     |  Tipo                                                              | Obrigatório  |                            Definição                         |
 |:------------ |:---------------------------------                                  |:-----------  |:----------------------------------------------------         |
-| name         | string                                                             | Sim          | Nome da marca proprietária da dependência (titular).  |
+| name         | string                                                             | Sim          | Nome da marca proprietária do canal (titular).  |
 | companies    | [[PhoneChannelsCompanies](#schemaPhoneChannelsCompanies)]  | Sim          | Lista de instituições pertencentes à marca.             |
 
 ## PhoneChannelsCompanies
@@ -132,9 +132,9 @@
 
 |     Nome     |  Tipo                                           | Obrigatório    |                            Definição                       |
 |:------------ |:---------------------------------               |:-------------- |:----------------------------------------------------       |
-| name         | string                                          | Sim            | Nome do conglomerado responsável pela contrataçao do Correspondente. |
-| cnpjNumber   | string                                          | Sim            | CNPJ da instituição responsável pela dependência - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica.|
-| channels     | [[PhoneChannels](#schemaPhoneChannels)] | Sim            | Lista  de canais de atendimento telefônico.                  |
+| name         | string                                          | Sim            | Nome do conglomerado responsável pelo canal de atendimento telefônico. |
+| cnpjNumber   | string                                          | Sim            | CNPJ da instituição  responsável pelo canal de atendimento telefônico - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica.|
+| channels     | [[PhoneChannels](#schemaPhoneChannels)] | Sim            | Lista de canais de atendimento telefônico.                  |
 
 ## PhoneChannels
 <a id="schemaPhoneChannels"></a>
@@ -185,7 +185,7 @@
 
 |     Nome     |  Tipo                                                          | Obrigatório |                            Definição               | Restrições                           |
 |:------------ |:---------------------------------                              |:----------- |:-------------------------------------------------- |:------------------------------------ |
-| type         | [Enum PhoneChannelsType](#schemaPhoneChannelsType)     | Sim         | Tipo de canal telefônico de atendimento.                       |  O Tipo de Canal determina o Tipo de Acesso a ele relacionado:  telefone da central,  telefone do SAC, s telefone da ouvidoria. |
+| type         | [Enum PhoneChannelsType](#schemaPhoneChannelsType)     | Sim         | Tipo de canal telefônico de atendimento.                       |  O Tipo de Canal determina o Tipo de Acesso a ele relacionado:  telefone da central, telefone do SAC, telefone da ouvidoria. |
 | phones       | [[PhoneChannelsPhones](#schemaPhoneChannelsPhones)]]   | Não         | Telefones de contato com o canal de atendimento.    |  |
 
 ### Enum PhoneChannelsType
