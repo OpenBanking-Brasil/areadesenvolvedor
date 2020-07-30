@@ -11,7 +11,7 @@ Para atender tanto as demandas de quem deseja estender as API (participantes) qu
 
 * O participante pode oferecer **uma API** completamente nova que não está coberta nos padrões definidos
 * O participante pode oferecer **novos endpoints** em uma API que já foi definida no padrão
-* O participante pode oferecer **campos de retorno adicionais** para um endpoint que já foi definido no padrão
+* O participante pode oferecer **campos de entrada e retorno opcionais** para um endpoint que já foi definido no padrão
 
 ### ID dos participantes
 
