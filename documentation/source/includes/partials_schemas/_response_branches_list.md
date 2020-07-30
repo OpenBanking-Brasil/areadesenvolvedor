@@ -144,7 +144,7 @@
 
 |     Nome     |  Tipo                                            | Obrigatório  |                            Definição                     |
 |:------------ |:---------------------------------                |:-----------  |:----------------------------------------------------     |
-| name         | string                                           | Sim          | Nome da Marca selecionada pelas Organizações (titular).  |
+| name         | string                                           | Sim          | Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a 'marca' utilizada está em definição pelos participantes.  |
 | companies    | [[BranchesCompanies](#schemaBranchesCompanies)]  | Sim          | Lista de instituições pertencentes à marca.         |
 
 ## BranchesCompanies 

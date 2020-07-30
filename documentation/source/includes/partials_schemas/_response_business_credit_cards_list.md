@@ -180,7 +180,7 @@
 
 |     Nome     |  Tipo                                                                    | Obrigatório  |                            Definição                 |
 |:-------------|:-------------------------------------------------------------------------|:-----------  |:---------------------------------------------------- |
-| name         | string                                                                   | Sim          | Nome da Marca selecionada pelas Organizações.         |
+| name         | string                                                                   | Sim          | Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a 'marca' utilizada está em definição pelos participantes.         |
 | companies    | [[BusinessCreditCardsCompanies](#schemaBusinessCreditCardsCompanies)]    | Sim          | Lista de instituições pertencentes a marca.           |
 
 ## BusinessCreditCardsCompanies 

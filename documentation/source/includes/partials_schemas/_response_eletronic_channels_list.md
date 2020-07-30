@@ -82,7 +82,7 @@
 
 |     Nome     |  Tipo                                                              | Obrigatório  |                            Definição                         |
 |:------------ |:---------------------------------                                  |:-----------  |:----------------------------------------------------         |
-| name         | string                                                             | Sim          | Nome da marca proprietária da dependência (titular).  |
+| name         | string                                                             | Sim          | Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a 'marca' utilizada está em definição pelos participantes.  |
 | companies    | [[ElectronicChannelsCompanies](#schemaElectronicChannelsCompanies)]  | Sim          | Lista de instituições pertencentes à marca.             |
 
 ## ElectronicChannelsCompanies

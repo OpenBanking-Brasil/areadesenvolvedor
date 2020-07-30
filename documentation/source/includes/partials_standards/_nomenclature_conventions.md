@@ -14,7 +14,7 @@ Os nomes dos atributos devem:
 
 	- nomes = Name (Ex: streetName)
 
-	- datas = Date (Ex: PaymentDate)
+	- datas = Date (Ex: paymentDate)
 
 	- horários = Time (Ex: openingTime)
 

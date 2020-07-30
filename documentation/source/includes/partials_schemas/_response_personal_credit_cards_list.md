@@ -204,7 +204,7 @@
 
 |     Nome     |  Tipo                                                                    | Obrigatório  |                            Definição                                         |
 |:-------------|:-------------------------------------------------------------------------|:-----------  |:-----------------------------------------------------------------------------|
-| name         | string                                                                   | Sim          | Nome da Marca ao qual as instituições financeiras estão subordinadas.  |
+| name         | string                                                                   | Sim          | Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a 'marca' utilizada está em definição pelos participantes.  |
 | companies    | [[PersonalCreditCardsCompanies](#schemaPersonalCreditCardsCompanies)]    | Sim          | Lista de instituições pertencentes à marca.                           |
 
 ## PersonalCreditCardsCompanies 
