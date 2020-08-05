@@ -22,9 +22,10 @@
                     "chargingUnit": "string",
                     "price": [
                       {
-                        "type": "string",
+                        "interval": "string",
                         "value": "string",
-                        "currency": "string"
+                        "currency": "string",
+                        "frequency": "string"
                       }
                     ],
                     "referenceValue": "string",
@@ -38,16 +39,16 @@
                     "referencialRate": "string",
                     "indexer": "string",
                     "prePostTax": "string",
-                    "frequency": "string",
+                    "occurrence": "string",
                     "incomeRateInfo": "string",
                     "application": [
                       {
-                        "type": "string",
-                        "rate": "string"
+                        "interval": "string",
+                        "value": "string",
+                        "currency": "string",
+                        "frequency": "string"
                       }
-                    ],
-                    "referenceValue": "string",
-                    "referenceCurrency": "string"
+                    ]
                   }
                 ],
                 "requiredWarranties": [
@@ -103,9 +104,10 @@
               "chargingUnit": "string",
               "price": [
                 {
-                  "type": "string",
+                  "interval": "string",
                   "value": "string",
-                  "currency": "string"
+                  "currency": "string",
+                  "frequency": "string"
                 }
               ],
               "referenceValue": "string",
@@ -119,16 +121,16 @@
               "referencialRate": "string",
               "indexer": "string",
               "prePostTax": "string",
-              "frequency": "string",
+              "occurrence": "string",
               "incomeRateInfo": "string",
               "application": [
                 {
-                  "type": "string",
-                  "rate": "string"
+                  "interval": "string",
+                  "value": "string",
+                  "currency": "string",
+                  "frequency": "string"
                 }
-              ],
-              "referenceValue": "string",
-              "referenceCurrency": "string"
+              ]
             }
           ],
           "requiredWarranties": [
@@ -165,9 +167,10 @@
           "chargingUnit": "string",
           "price": [
             {
-              "type": "string",
+              "interval": "string",
               "value": "string",
-              "currency": "string"
+              "currency": "string",
+              "frequency": "string"
             }
           ],
           "referenceValue": "string",
@@ -181,16 +184,16 @@
           "referencialRate": "string",
           "indexer": "string",
           "prePostTax": "string",
-          "frequency": "string",
+          "occurrence": "string",
           "incomeRateInfo": "string",
           "application": [
             {
-              "type": "string",
-              "rate": "string"
+              "interval": "string",
+              "value": "string",
+              "currency": "string",
+              "frequency": "string"
             }
-          ],
-          "referenceValue": "string",
-          "referenceCurrency": "string"
+          ]
         }
       ],
       "requiredWarranties": [
@@ -222,9 +225,10 @@
       "chargingUnit": "string",
       "price": [
         {
-          "type": "string",
+          "interval": "string",
           "value": "string",
-          "currency": "string"
+          "currency": "string",
+          "frequency": "string"
         }
       ],
       "referenceValue": "string",
@@ -238,16 +242,16 @@
       "referencialRate": "string",
       "indexer": "string",
       "prePostTax": "string",
-      "frequency": "string",
+      "occurrence": "string",
       "incomeRateInfo": "string",
       "application": [
         {
-          "type": "string",
-          "rate": "string"
+          "interval": "string",
+          "value": "string",
+          "currency": "string",
+          "frequency": "string"
         }
-      ],
-      "referenceValue": "string",
-      "referenceCurrency": "string"
+      ]
     }
   ],
   "requiredWarranties": [
@@ -315,9 +319,10 @@
   "chargingUnit": "string",
   "price": [
     {
-      "type": "string",
+      "interval": "string",
       "value": "string",
-      "currency": "string"
+      "currency": "string",
+      "frequency": "string"
     }
   ],
   "referenceValue": "string",
@@ -346,16 +351,16 @@
   "referencialRate": "string",
   "indexer": "string",
   "prePostTax": "string",
-  "frequency": "string",
+  "occurrence": "string",
   "incomeRateInfo": "string",
   "application": [
     {
-      "type": "string",
-      "rate": "string"
+      "interval": "string",
+      "value": "string",
+      "currency": "string",
+      "frequency": "string"
     }
-  ],
-  "referenceValue": "string",
-  "referenceCurrency": "string"
+  ]
 }
 ```
 
@@ -385,12 +390,27 @@
 
 ```json
 {
-  "type": "string",
-  "rate": "string"
+  "interval": "string",
+  "value": "string",
+  "currency": "string",
+  "frequency": "string"
 }
 ```
 
 |     Nome     |  Tipo                                             | Obrigatório    |                            Definição                                                                                                                                                                                      |
 |:------------ |:------------------------------------------------- |:-------------- |:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| type         | [Enum PriceType](#schemaPriceType)                | Sim            | Identifica o período referente ao percentual de taxa de remuneração efetivamente aplicada no intervalo informado: mínimo, 1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes. |
-| rate         | [RateString](#commonFieldRateString)              | Sim            | Valor do percentual que corresponde a taxa de remuneração efetivamente aplicada no intervalo informado (representação de uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O valor 1 representa 100%)).            |
+| interval     | [Enum PersonalFinancingsInterval](#schemaEnumPersonalFinancingsInterval)                | Sim            | Faixas para cobrança de valores de tarifas por produto/serviço informado: 1ª Faixa de valores, 2ª Faixa de valores, 3ª Faixa de valores, 4ª Faixa de valores |
+| value         | [RateString](#commonFieldRateString)              | Sim            | Valor médio da tarifa, relativa ao serviço ofertado, para pessoa física informado no período. p.ex. '45.00'            |
+| currency         | [RateString](#commonFieldRateString)              | Sim            | Moeda referente ao valor da Tarifa, segundo modelo ISO-4217. p. ex. 'BRL'            |
+| frequency         | [RateString](#commonFieldRateString)              | Sim            | Frequência de clientes em cada faixa de valor. Representa uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O Valor 1 representa 100%)         |
+
+
+### Enum PersonalFinancingsInterval
+<a id="schemaEnumPersonalFinancingsInterval"></a>
+
+| Propriedade  | Código    | Definição            |
+|:------------ |:--------- |:-------------------- |
+| interval     | 1_FAIXA   | 1ª Faixa de valores  |
+| interval     | 2_FAIXA   | 2ª Faixa de valores  |
+| interval     | 3_FAIXA   | 3ª Faixa de valores  |
+| interval     | 4_FAIXA   | 4ª Faixa de valores  |
