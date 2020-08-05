@@ -306,7 +306,7 @@ components:
                             - termsConditions
                             - incomeRates
                           properties:
-                            type:
+                            name:
                               type: string
                               enum: [
                                   "CONTA_DEPOSITO_VISTA"
@@ -600,7 +600,7 @@ components:
                             - termsConditions
                             - incomeRates
                           properties:
-                            type:
+                            name:
                               type: string
                               enum: [
                                   "CONTA_DEPOSITO_VISTA"
@@ -1089,16 +1089,20 @@ components:
       type: object
       required:
         - changingUnit
+        - interval
+        - value
+        - currency
+        - frequency
       properties:
-        type:
+        interval:
           type: string
           pattern: '^(\d{1})$'
-          enum: 
-            - MINIMO
-            - MEDIO
-            - MAXIMO
-          description: "Indica os tipos: mínimo, médio e máximo do valor informado"
-          example: "MINIMO"
+          enum: ["1ª faixa de valores",
+                "2ª faixa de valores",
+                "3ª faixa de valores",
+                "4ª faixa de valores"]
+          description: "Faixas para cobrança de valores de tarifas por produto/serviço informado."
+          example: "1ª faixa de valores"
         value:
           type: string
           pattern: '^(\d{1,9}\,\d{2}){1}$'
@@ -1125,6 +1129,9 @@ components:
           maxLength: 50
           description: "Unidade ou forma de cobrança"
           example: "Por mês"
+        frequency:
+          type: string
+          description: "Frequência de clientes em cada faixa de valor. Representa uma porcentagem"
           
   #### LoanInterestRates ####
     LoanInterestRates:
@@ -1156,7 +1163,7 @@ components:
             - POS
           description: "Indicador de pré ou pós"
           example: "PRE"
-        frecuency:
+        occurrence:
           type: string
           pattern: '^(a\.[d,m,a]\.){1}$'
           enum: 
@@ -1171,6 +1178,32 @@ components:
           maxLength: 2000
           description: "Descrição da Remuneração relativa as taxas de juros remuneratóriassobre a modalidad de Empréstimo para pessoa física/jurídica"
           example: ""
+        application:
+          type: object
+              required:
+                - interval
+                - value
+                - currency
+                - frequency
+          properties:
+                interval:
+                  type: string
+                  enum: ["1ª faixa de valores",
+                        "2ª faixa de valores",
+                        "3ª faixa de valores",
+                        "4ª faixa de valores"]
+                  description: "Faixas para cobrança de valores de tarifas por produto/serviço informado."
+                value:
+                  type: string
+                  description: "Valor para a tarifa cobrada, relativa ao serviço ofertado para a Modalidade de direitos creditórios descontados, para pessoa física"
+                currency: 
+                  type: string
+                  enum: ["BRL","... ISO_4217"]
+                  description: "Moeda referente ao valor da tarifa"
+                frequency:
+                  type: string
+                  description: "Frequência de clientes em cada faixa de valor. Representa uma porcentagem"
+          
   ####  Required Warranties  ####
     RequiredWarranties:
           type: array
@@ -1304,13 +1337,45 @@ components:
         - code
       properties:
         feeRate:
-          type: number
-          description: "Percentual que corresponde a taxa aplicada para utilização de Crédito Rotativo"
-          example: 9.87
+          type: object
+          required:
+            - interval
+            - rate
+            - frequency
+          properties:
+            interval:
+              type: string
+              enum: ["1ª faixa de valores",
+                    "2ª faixa de valores",
+                    "3ª faixa de valores",
+                    "4ª faixa de valores"]
+              description: "Faixas para cobrança de valores de tarifas por produto/serviço informado."
+            rate:
+              type: string
+              description: "Percentual que corresponde a taxa média aplicada para utilização de Crédito Rotativo, no intervalo informado."
+            frequency:
+              type: string
+              description: "Frequência de clientes em cada faixa de valor. Representa uma porcentagem"
         instalmentRate:
-          type: number
-          description: "Percentual que corresponde a taxa aplicada para pagamento parcelado do saldo devedor quando não realizado pagamento integral da fatura"
-          example: 4.1
+         type: object
+          required:
+            - interval
+            - rate
+            - frequency
+          properties:
+            interval:
+              type: string
+              enum: ["1ª faixa de valores",
+                    "2ª faixa de valores",
+                    "3ª faixa de valores",
+                    "4ª faixa de valores"]
+              description: "Faixas para cobrança de valores de tarifas por produto/serviço informado."
+            rate:
+              type: string
+              description: "Percentual que corresponde a taxa média aplicada para utilização de Crédito Rotativo, no intervalo informado."
+            frequency:
+              type: string
+              description: "Frequência de clientes em cada faixa de valor. Representa uma porcentagem"
         code:
           type: string
           enum: [
@@ -1327,19 +1392,19 @@ components:
     CreditCardServicePrice:
       type: object
       required: 
-        - type
+        - interval
         - value
         - currency
+        - frequency
       properties:
         type:
           type: string
-          enum: [
-            "MINIMO"
-            ,"MEDIO"
-            ,"MAXIMO"
-          ]
-          description: "Indica os tipos: mínimo, médio e máximo do valor informado"
-          example: "MEDIO"
+          enum: ["1ª faixa de valores",
+                "2ª faixa de valores",
+                "3ª faixa de valores",
+                "4ª faixa de valores"]
+          description: "Faixas para cobrança de valores de tarifas por produto/serviço informado."
+          example: "1ª faixa de valores"
         value:
           type: number
           description: "Valor da tarifa cobrada referente aos Outros Serviços"
@@ -1350,6 +1415,9 @@ components:
           pattern: ^([A-Z]{3})$
           description: "Moeda referente ao valor máximo da tarifa conforme ISO-4217"
           example: "BRL"
+        frequency:
+          type: string
+          description: "Frequência de clientes em cada faixa de valor. Representa uma porcentagem"
           
   ############################
   ##  Personal Credit Cards ##
@@ -2263,12 +2331,13 @@ components:
     PersonalInvoiceFinancingsPrice:
       type: object
       properties:
-        type:
+        interval:
           type: string
-          enum: ["MINIMO",
-                "MEDIO",
-                "MAXIMO"]
-          description: "Indica os tipos: mínimo, médio e máximo do valor informado."
+          enum: ["1ª faixa de valores",
+                "2ª faixa de valores",
+                "3ª faixa de valores",
+                "4ª faixa de valores"]
+          description: "Faixas para cobrança de valores de tarifas por produto/serviço informado."
         value:
           type: string
           description: "Valor para a tarifa cobrada, relativa ao serviço ofertado para a Modalidade de direitos creditórios descontados, para pessoa física"
@@ -2276,10 +2345,14 @@ components:
           type: string
           enum: ["BRL","... ISO_4217"]
           description: "Moeda referente ao valor da tarifa"
+        frequency:
+          type: string
+          description: "Frequência de clientes em cada faixa de valor. Representa uma porcentagem"
       required:
-        - type
+        - interval
         - value
         - currency
+        - frequency
     ##### PersonalInvoiceFinancingsInterestRates #####
     PersonalInvoiceFinancingsInterestRates:
       type: object
@@ -2301,7 +2374,7 @@ components:
           enum: ["PRE",
                 "POS"]
           description: "Indicador de pré ou pós. A diferença básica é que, enquanto o prefixado apresenta rentabilidade definida, o pós-fixado acompanha algum indicador. Assim, quem investe no primeiro grupo sabe como será seu rendimento previamente, enquanto quem investe no segundo, só conhecerá os resultados na data de vencimento"
-        frequency:
+        ocurrence:
           type: string
           enum: ["AD",
                 "AM",
@@ -2310,12 +2383,38 @@ components:
         incomeRateInfo:
           type: string
           description: "Descrição da Remuneração relativa as taxas de juros remuneratórias sobre a modalidade de Financiamento informada, para pessoa física"
+        application:
+              type: object
+              required:
+                - interval
+                - value
+                - currency
+                - frequency
+              properties:
+                interval:
+                  type: string
+                  enum: ["1ª faixa de valores",
+                        "2ª faixa de valores",
+                        "3ª faixa de valores",
+                        "4ª faixa de valores"]
+                  description: "Faixas para cobrança de valores de tarifas por produto/serviço informado."
+                value:
+                  type: string
+                  description: "Valor para a tarifa cobrada, relativa ao serviço ofertado para a Modalidade de direitos creditórios descontados, para pessoa física"
+                currency: 
+                  type: string
+                  enum: ["BRL","... ISO_4217"]
+                  description: "Moeda referente ao valor da tarifa"
+                frequency:
+                  type: string
+                  description: "Frequência de clientes em cada faixa de valor. Representa uma porcentagem"
       required:
         - rate
         - referencialRate
         - indexer
         - prePostTax
-        - frequency
+        - ocurrence
+        - application
 
   ##################################
   ##  Business Invoice Financings ##
@@ -2487,11 +2586,12 @@ components:
     BusinessInvoiceFinancingsPrice:
       type: object
       properties:
-        type:
+        interval:
           type: string
-          enum: ["MINIMO",
-                "MEDIO",
-                "MAXIMO"]
+          enum: ["1ª faixa de valores",
+                "2ª faixa de valores",
+                "3ª faixa de valores",
+                "4ª faixa de valores"]
           description: "Indica os tipos: mínimo, médio e máximo do valor informado."
         value:
           type: string
@@ -2500,10 +2600,14 @@ components:
           type: string
           enum: ["BRL","... ISO_4217"]
           description: "Moeda referente ao valor da tarifa"
+        frequency:
+          type: string
+          description: "Frequência de clientes em cada faixa de valor. Representa uma porcentagem"
       required:
-        - type
+        - interval
         - value
         - currency
+        - frequency
     ##### BusinessInvoiceFinancingsInterestRates #####
     BusinessInvoiceFinancingsInterestRates:
       type: object
@@ -2534,12 +2638,38 @@ components:
         incomeRateInfo:
           type: string
           description: "Descrição da Remuneração relativa as taxas de juros remuneratórias sobre a modalidade de Financiamento informada, para pessoa jurídica"
+        application: 
+          type: object
+          required:
+            - interval
+            - value
+            - currency
+            - frequency
+          properties:
+                interval:
+                  type: string
+                  enum: ["1ª faixa de valores",
+                        "2ª faixa de valores",
+                        "3ª faixa de valores",
+                        "4ª faixa de valores"]
+                  description: "Faixas para cobrança de valores de tarifas por produto/serviço informado."
+                value:
+                  type: string
+                  description: "Valor para a tarifa cobrada, relativa ao serviço ofertado para a Modalidade de direitos creditórios descontados, para pessoa física"
+                currency: 
+                  type: string
+                  enum: ["BRL","... ISO_4217"]
+                  description: "Moeda referente ao valor da tarifa"
+                frequency:
+                  type: string
+                  description: "Frequência de clientes em cada faixa de valor. Representa uma porcentagem"
       required:
         - rate
         - referencialRate
         - indexer
         - prePostTax
-        - frequency
+        - occurrence
+        - application
   ####################
   ##  Links & Meta  ##
   ####################
@@ -2578,4 +2708,3 @@ components:
       required:
         - totalRecords
         - totalPages
- 
