@@ -22,9 +22,10 @@
                     "chargingUnit": "string",
                     "price": [
                       {
-                        "type": "string",
+                         "interval": "string",
                         "value": "string",
-                        "currency": "string"
+                        "currency": "string",
+                        "frequency": "string"
                       }
                     ],
                     "referenceValue": "string",
@@ -103,9 +104,10 @@
               "chargingUnit": "string",
               "price": [
                 {
-                  "type": "string",
+                  "interval": "string",
                   "value": "string",
-                  "currency": "string"
+                  "currency": "string",
+                  "frequency": "string"
                 }
               ],
               "referenceValue": "string",
@@ -165,12 +167,16 @@
           "chargingUnit": "string",
           "price": [
             {
-              "type": "string",
+              "interval": "string",
               "value": "string",
-              "currency": "string"
+              "currency": "string",
+              "frequency": "string"
             }
           ],
-          "referenceValue": "string",
+          "referenceValue": "string","interval": "string",
+              "value": "string",
+              "currency": "string",
+              "frequency": "string"
           "referenceCurrency": "string",
           "additionalInfo": "string"
         }
@@ -222,9 +228,10 @@
       "chargingUnit": "string",
       "price": [
         {
-          "type": "string",
+          "interval": "string",
           "value": "string",
-          "currency": "string"
+          "currency": "string",
+          "frequency": "string"
         }
       ],
       "referenceValue": "string",
@@ -309,9 +316,10 @@
   "chargingUnit": "string",
   "price": [
     {
-      "type": "string",
-      "value": "string",
-      "currency": "string"
+      "interval": "string",
+              "value": "string",
+              "currency": "string",
+              "frequency": "string"
     }
   ],
   "referenceValue": "string",
@@ -336,9 +344,10 @@
 
 ```json
 {
-  "type": "string",
-  "value": "string",
-  "currency": "string"
+  "interval": "string",
+              "value": "string",
+              "currency": "string",
+              "frequency": "string"
 }
 ```
 
@@ -405,4 +414,3 @@
 |:------------ |:------------------------------------------------- |:-------------- |:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | type         | [Enum PriceType](#schemaPriceType)                | Sim            | Identifica o período referente ao percentual de taxa de remuneração efetivamente aplicada no intervalo informado: mínimo, 1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes |
 | rate         | [RateString](#commonFieldRateString)              | Sim            | Valor do percentual que corresponde a taxa de remuneração efetivamente aplicada no intervalo informado (representação de uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O valor 1 representa 100%))            |
-

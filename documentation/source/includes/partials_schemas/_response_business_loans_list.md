@@ -22,9 +22,10 @@
                     "chargingUnit": "string",
                     "price": [
                       {
-                        "type": "string",
-                        "value": "string",
-                        "currency": "string"
+                        "interval": "string",
+              "value": "string",
+              "currency": "string",
+              "frequency": "string"
                       }
                     ],
                     "referenceValue": "string",
@@ -103,9 +104,10 @@
               "chargingUnit": "string",
               "price": [
                 {
-                  "type": "string",
-                  "value": "string",
-                  "currency": "string"
+                  "interval": "string",
+              "value": "string",
+              "currency": "string",
+              "frequency": "string"
                 }
               ],
               "referenceValue": "string",
@@ -165,9 +167,10 @@
           "chargingUnit": "string",
           "price": [
             {
-              "type": "string",
+              "interval": "string",
               "value": "string",
-              "currency": "string"
+              "currency": "string",
+              "frequency": "string"
             }
           ],
           "referenceValue": "string",
@@ -222,9 +225,10 @@
       "chargingUnit": "string",
       "price": [
         {
-          "type": "string",
-          "value": "string",
-          "currency": "string"
+          "interval": "string",
+              "value": "string",
+              "currency": "string",
+              "frequency": "string"
         }
       ],
       "referenceValue": "string",

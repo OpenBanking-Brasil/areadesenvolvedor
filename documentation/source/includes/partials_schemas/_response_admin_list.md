@@ -51,12 +51,6 @@
           0
         ]
       },
-      "largePayload": {
-        "currentDay": 0,
-        "previousDays": [
-          0
-        ]
-      }
     },
     "averageResponse": {
       "unauthenticated": {
@@ -83,12 +77,6 @@
           0
         ]
       },
-      "largePayload": {
-        "currentDay": 0,
-        "previousDays": [
-          0
-        ]
-      }
     },
     "averageTps": {
       "currentDay": 0,
@@ -125,14 +113,14 @@
 |Nome|Tipo|Obrigatório|Definição|
 |---|---|---|---|
 |data|object|Sim||
-|» requestTime|[DateTimeString](#common-field-types)|Sim|Data e hora que as métricas foram requisitadas|
-|» availability|[AvailabilityMetrics](#schemaAvailabilityMetrics)|Sim|Índices de disponibilidades das APIs|
-|» invocations|[InvocationMetrics](#schemaInvocationMetrics)|Sim|Número de chamadas em cada em cada nível e prioridade|
-|» averageResponse|[AverageMetrics](#schemaAverageMetrics)|Sim|Tempo médio de reposta em segundos em cada nível e prioridade|
-|» averageTps|[AverageTPSMetrics](#schemaAverageTPSMetrics)|Sim|Transações em média por segundo|
-|» peakTps|[PeakTPSMetrics](#schemaPeakTPSMetrics)|Sim|Número máximo de transações por segundo|
-|» errors|[ErrorMetrics](#schemaErrorMetrics)|Sim|Número de chamadas que resultaram em erro devido ao servidor|
-|» rejections|[RejectionMetrics](#schemaRejectionMetrics)|Sim|Número de chamadas rejeitadas devido aos limites|
+|» requestTime|[DateTimeString](#common-field-types)|Sim|Data e hora que as métricas foram requisitadas.|
+|» availability|[AvailabilityMetrics](#schemaAvailabilityMetrics)|Sim|Índices de disponibilidades das APIs.|
+|» invocations|[InvocationMetrics](#schemaInvocationMetrics)|Sim|Número de chamadas em cada em cada nível e prioridade.|
+|» averageResponse|[AverageMetrics](#schemaAverageMetrics)|Sim|Tempo médio de reposta em segundos em cada nível e prioridade.|
+|» averageTps|[AverageTPSMetrics](#schemaAverageTPSMetrics)|Sim|Transações em média por segundo.|
+|» peakTps|[PeakTPSMetrics](#schemaPeakTPSMetrics)|Sim|Número máximo de transações por segundo.|
+|» errors|[ErrorMetrics](#schemaErrorMetrics)|Sim|Número de chamadas que resultaram em erro devido ao servidor.|
+|» rejections|[RejectionMetrics](#schemaRejectionMetrics)|Sim|Número de chamadas rejeitadas devido aos limites.|
 |links|[Links](#schemalinks)|Sim||
 |meta|[Meta](#schemameta)|Não||
 
@@ -167,12 +155,12 @@
 |Nome|Tipo|Obrigatório|Definição|
 |---|---|---|---|
 |uptime|object|Sim|Tempos de uptime por endpoint|
-|» generalUptimeRate|[RateString](#introducao-tipos-de-dados-comuns)|Sim|Taxa de disponibilidade (considerando todos os serviços ativos ao mesmo tempo)|
-|» endpoints|[[EndpointUptime](#schemaEndpointUptime)]|Sim|Tempos de uptime por endpoint|
-|downtime|object|Sim|Tempos de downtime por endpoint|
-|» generalDowntime|number|Sim|Quantidade de segundos de downtime (considerando qualquer api em downtime)|
-|» scheduledOutage|number|Sim|Quantidade de segundos de indisponibilidade agendada|
-|» endpoints|[[EndpointDowntime](#schemaEndpointDowntime)]|Sim|Tempos de downtime por endpoint|
+|» generalUptimeRate|[RateString](#introducao-tipos-de-dados-comuns)|Sim|Taxa de disponibilidade (considerando todos os serviços ativos ao mesmo tempo).|
+|» endpoints|[[EndpointUptime](#schemaEndpointUptime)]|Sim|Tempos de uptime por endpoint.|
+|downtime|object|Sim|Tempos de downtime por endpoint.|
+|» generalDowntime|number|Sim|Quantidade de segundos de downtime (considerando qualquer api em downtime).|
+|» scheduledOutage|number|Sim|Quantidade de segundos de indisponibilidade agendada.|
+|» endpoints|[[EndpointDowntime](#schemaEndpointDowntime)]|Sim|Tempos de downtime por endpoint.|
 
 
 ## EndpointUptime
@@ -188,7 +176,7 @@
 |Nome|Tipo|Obrigatório|Definição|
 |---|---|---|---|
 |url|string|Sim|URL do endpoint|
-|uptimeRate|[RateString](#introducao-tipos-de-dados-comuns)|Sim|Taxa de disponibilidade do endpoint|
+|uptimeRate|[RateString](#introducao-tipos-de-dados-comuns)|Sim|Taxa de disponibilidade do endpoint.|
 
 
 ## EndpointDowntime
@@ -204,7 +192,7 @@
 |Nome|Tipo|Obrigatório|Definição|
 |---|---|---|---|
 |url|string|Sim|URL do endpoint|
-|partialDowntime|number|Sim|Quantidade de segundos de indisponibilidade do endpoint|
+|partialDowntime|number|Sim|Quantidade de segundos de indisponibilidade do endpoint.|
 
 ## InvocationMetrics
 <a id="schemaInvocationMetrics"></a>
@@ -235,34 +223,24 @@
       0
     ]
   },
-  "largePayload": {
-    "currentDay": 0,
-    "previousDays": [
-      0
-    ]
-  }
 }
 
 ```
 
 |Nome|Tipo|Obrigatório|Definição|
 |---|---|---|---|
-|unauthenticated|object|Sim|Número de chamadas não autenticadas|
-|» currentDay|number|Sim|Número de chamadas no dia atual|
+|unauthenticated|object|Sim|Número de chamadas não autenticadas.|
+|» currentDay|number|Sim|Número de chamadas no dia atual.|
 |» previousDays|[number]|Sim|Número de chamadas nos dias anteriores. O primeiro item do array é referente a ontem, e assim por diante. Devem ser retornados no máximo sete dias caso estejam disponíveis.|
-|highPriority|object|Sim|Número de chamadas para o nível de alta prioridade|
-|» currentDay|number|Sim|Número de chamadas no dia atual|
+|highPriority|object|Sim|Número de chamadas para o nível de alta prioridade.|
+|» currentDay|number|Sim|Número de chamadas no dia atual.|
 |» previousDays|[number]|Sim|Número de chamadas nos dias anteriores. O primeiro item do array é referente a ontem, e assim por diante. Devem ser retornados no máximo sete dias caso estejam disponíveis.|
-|lowPriority|object|Sim|Número de chamadas para o nível de baixa prioridade|
-|» currentDay|number|Sim|Número de chamadas no dia atual|
+|lowPriority|object|Sim|Número de chamadas para o nível de baixa prioridade.|
+|» currentDay|number|Sim|Número de chamadas no dia atual.|
 |» previousDays|[number]|Sim|Número de chamadas nos dias anteriores. O primeiro item do array é referente a ontem, e assim por diante. Devem ser retornados no máximo sete dias caso estejam disponíveis.|
-|unattended|object|Sim|Número de chamadas para o nível não acompanhado|
-|» currentDay|number|Sim|Número de chamadas no dia atual|
+|unattended|object|Sim|Número de chamadas para o nível não acompanhado.|
+|» currentDay|number|Sim|Número de chamadas no dia atual.|
 |» previousDays|[number]|Sim|Número de chamadas nos dias anteriores. O primeiro item do array é referente a ontem, e assim por diante. Devem ser retornados no máximo sete dias caso estejam disponíveis.|
-|largePayload|object|Sim|API call counts for the large payload tier|
-|» currentDay|number|Sim|Número de chamadas no dia atual|
-|» previousDays|[number]|Sim|Número de chamadas nos dias anteriores. O primeiro item do array é referente a ontem, e assim por diante. Devem ser retornados no máximo sete dias caso estejam disponíveis.|
-
 
 ## AverageMetrics
 <a id="schemaAverageMetrics"></a>
@@ -293,32 +271,23 @@
       0
     ]
   },
-  "largePayload": {
-    "currentDay": 0,
-    "previousDays": [
-      0
-    ]
-  }
 }
 
 ```
 
 |Nome|Tipo|Obrigatório|Definição|
 |---|---|---|---|
-|unauthenticated|object|Sim|Número de chamadas não autenticadas|
+|unauthenticated|object|Sim|Número de chamadas não autenticadas.|
+|» currentDay|number|Sim|Número de chamadas no dia atual.|
+|» previousDays|[number]|Sim|Número de chamadas nos dias anteriores. O primeiro item do array é referente a ontem, e assim por diante. Devem ser retornados no máximo sete dias caso estejam disponíveis.|
+|highPriority|object|Sim|Número de chamadas para o nível de alta prioridade.|
+|» currentDay|number|Sim|Número de chamadas no dia atual.|
+|» previousDays|[number]|Sim|Número de chamadas nos dias anteriores. O primeiro item do array é referente a ontem, e assim por diante. Devem ser retornados no máximo sete dias caso estejam disponíveis.|
+|lowPriority|object|Sim|Número de chamadas para o nível de baixa prioridade.|
 |» currentDay|number|Sim|Número de chamadas no dia atual|
 |» previousDays|[number]|Sim|Número de chamadas nos dias anteriores. O primeiro item do array é referente a ontem, e assim por diante. Devem ser retornados no máximo sete dias caso estejam disponíveis.|
-|highPriority|object|Sim|Número de chamadas para o nível de alta prioridade|
-|» currentDay|number|Sim|Número de chamadas no dia atual|
-|» previousDays|[number]|Sim|Número de chamadas nos dias anteriores. O primeiro item do array é referente a ontem, e assim por diante. Devem ser retornados no máximo sete dias caso estejam disponíveis.|
-|lowPriority|object|Sim|Número de chamadas para o nível de baixa prioridade|
-|» currentDay|number|Sim|Número de chamadas no dia atual|
-|» previousDays|[number]|Sim|Número de chamadas nos dias anteriores. O primeiro item do array é referente a ontem, e assim por diante. Devem ser retornados no máximo sete dias caso estejam disponíveis.|
-|unattended|object|Sim|Número de chamadas para o nível não acompanhado|
-|» currentDay|number|Sim|Número de chamadas no dia atual|
-|» previousDays|[number]|Sim|Número de chamadas nos dias anteriores. O primeiro item do array é referente a ontem, e assim por diante. Devem ser retornados no máximo sete dias caso estejam disponíveis.|
-|largePayload|object|Sim|API call counts for the large payload tier|
-|» currentDay|number|Sim|Número de chamadas no dia atual|
+|unattended|object|Sim|Número de chamadas para o nível não acompanhado.|
+|» currentDay|number|Sim|Número de chamadas no dia atual.|
 |» previousDays|[number]|Sim|Número de chamadas nos dias anteriores. O primeiro item do array é referente a ontem, e assim por diante. Devem ser retornados no máximo sete dias caso estejam disponíveis.|
 
 ## AverageTPSMetrics
@@ -335,7 +304,7 @@
 
 |Nome|Tipo|Obrigatório|Definição|
 |---|---|---|---|
-|currentDay|number|Sim|Número médio de chamadas por segundo no dia|
+|currentDay|number|Sim|Número médio de chamadas por segundo no dia.|
 |previousDays|[number]|Sim|Número médio de chamadas por segundo nos dias anteriores. O primeiro item do array é referente a ontem, e assim por diante. Devem ser retornados no máximo sete dias caso estejam disponíveis.|
 
 ## PeakTPSMetrics
@@ -369,7 +338,7 @@
 
 |Nome|Tipo|Obrigatório|Definição|
 |---|---|---|---|
-|currentDay|number|Sim|Número de chamadas com erro no dia atual|
+|currentDay|number|Sim|Número de chamadas com erro no dia atual.|
 |previousDays|[number]|Sim|Número de chamadas com erro nos dias anteriores. O primeiro item do array é referente a ontem, e assim por diante. Devem ser retornados no máximo sete dias caso estejam disponíveis.|
 
 
@@ -387,5 +356,5 @@
 
 |Nome|Tipo|Obrigatório|Definição|
 |---|---|---|---|
-|currentDay|number|Sim|Número de chamadas rejeitadas no dia atual|
+|currentDay|number|Sim|Número de chamadas rejeitadas no dia atual.|
 |previousDays|[number]|Sim|Número de chamadas rejeitadas nos dias anteriores. O primeiro item do array é referente a ontem, e assim por diante. Devem ser retornados no máximo sete dias caso estejam disponíveis.|

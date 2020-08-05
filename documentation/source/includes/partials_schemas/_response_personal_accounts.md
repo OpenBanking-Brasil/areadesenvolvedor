@@ -114,7 +114,7 @@
 |     Nome          |  Tipo                                                  | Obrigatório  |                            Definição                  |
 |:------------      |:---------------------------------                      |:-----------  |:----------------------------------------------------  |
 | data              | object                                                 | Sim          |                                                       |
-| » brand           | [[PersonalAccountBrand](#schemaPersonalAccountBrand)]  | Sim          | Lista das organizações responáveis pelas contas       |
+| brand           | [[PersonalAccountBrand](#schemaPersonalAccountBrand)]  | Sim          | Lista das organizações responsáveis pelas contas.       |
 | links             | [[LinksPaginated](#schemaLinksPaginated)]              | Sim          |                                                       |
 | meta              | [MetaPaginated](#schemaMetaPaginated)                  | Sim          |                                                       |
 
@@ -218,8 +218,8 @@
 
 |     Nome     |  Tipo                                                        | Obrigatório  |                            Definição                         |
 |:------------ |:---------------------------------                            |:-----------  |:----------------------------------------------------         |
-| name         | string                                                       | Sim          | Nome da Marca selecionada responsável pelas contas (banco).  |
-| companies    | [[PersonalAccountCompanies](#schemaPersonalAccountCompanies)]| Sim          | Lista de instituições pertencentes à marca                   |
+| name         | string                                                       | Sim          | Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a 'marca' utilizada está em definição pelos participantes.  |
+| companies    | [[PersonalAccountCompanies](#schemaPersonalAccountCompanies)]| Sim          | Lista de instituições pertencentes à marca.                   |
 
 ## PersonalAccountCompanies 
 <a id="schemaPersonalAccountCompanies"></a>
@@ -314,11 +314,11 @@
   }
 ```
 
-|     Nome        |  Tipo                            | Obrigatório |                            Definição                                 |
-|:------------    |:---------------------------------|:------------|:---------------------------------------------------------------------|
-| name            | string                                                        | Sim          | Nome da Instituição, pertencente à Marca, responsável pela comercialização dos tipos de contas de pessoas físicas cosultadas             |
-| cnpjNumber      | string                                                        | Sim          | O responsável pela comercialização das modalidades de Contas para Pessoas Físicas consultadas - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica.     |
-| PersonalAccounts| [[PersonalAccounts](#schemaPersonalAccounts)]                 | Sim          | Lista de contas pessoa física                                      |
+|     Nome        |  Tipo                                                         | Obrigatório  |                            Definição                                 |
+|:------------    |:---------------------------------                             |:-----------  |:----------------------------------------------------                 |
+| name            | string                                                        | Sim          | Nome da Instituição, pertencente à marca, responsável pela comercialização dos tipos de contas de pessoas física consultadas.                       |
+| cnpjNumber      | string                                                        | Sim          | O responsável pela comercialização das modalidades de Contas para Pessoas Física consultadas.                                       |
+| PersonalAccounts| [[PersonalAccounts](#schemaPersonalAccounts)]                 | Sim          | Lista de contas pessoa física.                                      |
 
 
 ## PersonalAccounts
@@ -410,46 +410,46 @@
 
 |     Nome              |  Tipo                                          |  Obrigatório    |                            Descrição                  |
 |:----------------------|:-----------------------------------------------| :---------------|:------------------------------------------------------|
-| type                  | [[Enum TypePersonalAccount](#schemaEnumTypePersonalAccount)] | Sim             | Tipos de contas ofertadas para pessoas Físicas, conforme Resolução 3.919 do Bacen.                        |
-| fees                  | [[FeesPersonalAccount](#schemaFeesPersonalAccount)] | Sim             | Lista Tarifas cobradas na conta                    |
-| serviceBundles        | [[ServiceBundlesPersonalAccount](#schemaServiceBundlesPersonalAccount)] | Sim             | Nome dos pacotes de serviços                          |
-| openingClosingChannels   | [[Enum PersonalAccountOpeningClosingChannels ](#schemaEnumPersonalAccountOpeningClosingChannels)] | Sim             | Canais disponíveis para abertura e encerramento de contas      |
-| additionalInfo        | string                                         | Sim             | Texto livre para complementar informação relativa ao Canal disponível    |
-| transactionMethods    | [[Enum PersonalAccountOpeningTransactionMethods ](#schemaEnumPersonalAccountOpeningTransactionMethods)]                                         | Sim             | Lista de formas de movimentação possíveis para a conta  |
-| termsConditions       | [[TermsConditionsPersonalAccount](#schemaTermsConditionsPersonalAccount)] | Sim             | Termos e condições contratuais                        |
-| incomeRates           | [[IncomeRatesPersonalAccount](#schemaIncomeRatesPersonalAccount)] | Sim             | Valores dos percentuais de taxas                      |
+| type                  | [[Enum TypePersonalAccount](#schemaEnumTypePersonalAccount)] | Sim             | Tipos de contas ofertadas para pessoas físicas, conforme Resolução 3.919 do Banco Central do Brasil.                                 |
+| fees                  | [[FeesPersonalAccount](#schemaFeesPersonalAccount)] | Sim             | Lista Tarifas cobradas.                             |
+| serviceBundles        | [[ServiceBundlesPersonalAccount](#schemaServiceBundlesPersonalAccount)] | Sim             | Nome dos pacotes de serviços.                          |
+| openingClosingChannels   | [[Enum PersonalAccountOpeningClosingChannels ](#schemaEnumPersonalAccountOpeningClosingChannels)] | Sim             | Canais disponíveis para abertura e encerramento de contas.      |
+| additionalInfo        | string                                         | Sim             | Texto livre para complementar informação relativa ao Canal disponível.    |
+| transactionMethods    | [[Enum PersonalAccountOpeningTransactionMethods ](#schemaEnumPersonalAccountOpeningTransactionMethods)]                                         | Sim             | Lista de formas de movimentação possíveis para a conta.  |
+| termsConditions       | [[TermsConditionsPersonalAccount](#schemaTermsConditionsPersonalAccount)] | Sim             | Termos e condições contratuais.                        |
+| incomeRates           | [[IncomeRatesPersonalAccount](#schemaIncomeRatesPersonalAccount)] | Sim             | Valores dos percentuais de taxas.                      |
 
 ### Enum TypePersonalAccount
 <a id="schemaEnumTypePersonalAccount"></a>
 
 | Propriedade  | Valor                       | Definição                   |                
 |:-------------|:----------------------------|:----------------------------|
-| type         | CONTA_CORRENTE              | Conta Corrente              |
-| type         | CONTA_POUPANCA              | Conta Poupança              |
-| type         | CONTA_PAGAMENTO_PRE_PAGA    | Conta de pagamento pré paga |
+| type         | CONTA_CORRENTE              | Conta Corrente.              |
+| type         | CONTA_POUPANCA              | Conta Poupança.              |
+| type         | CONTA_PAGAMENTO_PRE_PAGA    | Conta de pagamento pré paga. |
 
 ### Enum PersonalAccountOpeningClosingChannels 
 <a id="schemaEnumPersonalAccountOpeningClosingChannels"></a>
 
 | Propriedade              | Valor                     | Definição                  |                     
 |:-------------------------|:--------------------------|:---------------------------|
-| openingClosingChannels   | DEPENDENCIAS_PROPRIAS     | Dependências próprias      |
-| openingClosingChannels   | CORRESPONDENTES_BANCARIOS | Correspondentes bancários  |
-| openingClosingChannels   | INTERNET_BANKING          | Internet banking           |
-| openingClosingChannels   | MOBILE_BANKING            | Mobile banking             |
-| openingClosingChannels   | CENTRAL_TELEFONICA        | Central telefônica         |
-| openingClosingChannels   | CHAT                      | Chat                       |
-| openingClosingChannels   | OUTROS                    | Outros (p.ex.:website/appps de terceiros) |
+| openingClosingChannels   | DEPENDENCIAS_PROPRIAS     | Dependências próprias.      |
+| openingClosingChannels   | CORRESPONDENTES_BANCARIOS | Correspondentes bancários.  |
+| openingClosingChannels   | INTERNET_BANKING          | Internet banking.           |
+| openingClosingChannels   | MOBILE_BANKING            | Mobile banking.             |
+| openingClosingChannels   | CENTRAL_TELEFONICA        | Central telefônica.         |
+| openingClosingChannels   | CHAT                      | Chat.                       |
+| openingClosingChannels   | OUTROS                    | Outros (p.ex. website/appps de terceiros). |
 
 ### Enum PersonalAccountOpeningTransactionMethods  
 <a id="schemaEnumPersonalAccountOpeningTransactionMethods"></a>
 
 | Propriedade          | Valor                     | Definição                  |                     
 |:---------------------|:--------------------------|:---------------------------|
-| transactionMethods   | MOVIMENTACAO_ELETRONICA   | Movimentação eletrônica    |
-| transactionMethods   | MOVIMENTACAO_CHEQUE       | Movimentação com cheque    |
-| transactionMethods   | MOVIMENTACAO_CARTAO       | Movimentação com cartão    |
-| transactionMethods   | MOVIMENTACAO_PRESENCIAL   | Movimentação presencial    |
+| transactionMethods   | MOVIMENTACAO_ELETRONICA   | Movimentação eletrônica.    |
+| transactionMethods   | MOVIMENTACAO_CHEQUE       | Movimentação com cheque.    |
+| transactionMethods   | MOVIMENTACAO_CARTAO       | Movimentação com cartão.    |
+| transactionMethods   | MOVIMENTACAO_PRESENCIAL   | Movimentação presencial.    |
 
 ## FeesPersonalAccount
 <a id="schemaFeesPersonalAccount"></a>
@@ -492,6 +492,7 @@
 |:-----------------|:-----------------------------------|:----------------|:----------------------------------------------------|
 | priorityServices | [[PriorityServicesPersonalAccount](#schemaPriorityServicesPersonalAccount)] | Sim             | Lista Tarifas de serviços prioritários da conta                                 |
 | otherServices    | [[OtherServicesPersonalAccount](#schemaOtherServicesPersonalAccount)] | Sim             | Lista Tarifas de outros serviços da conta                                 |
+
 
 ## PriorityServicesPersonalAccount
 <a id="schemaPriorityServicesPersonalAccount"></a>
@@ -570,14 +571,14 @@
 
 | Nome                | Tipo   | Obrigatório | Descrição                                                 |
 |:--------------------|:------ |:----------- |:----------------------------------------------------------|
-| name                | string | Sim         | Nome atribuído a Outros Serviços disponíveis para os tipos de contas                           |
-| code                | string | Não         | Sigla de identificação de Outros Serviços que incidem sobre os tipos de contas   |
+| name                | string | Sim         | Nome atribuído a Outros Serviços disponíveis para os tipos de contas.                           |
+| code                | string | Não         | Sigla de identificação de Outros Serviços que incidem sobre os tipos de contas.   |
 | chargingTriggerInfo | string | Sim         | Outros Fatores geradores de cobrança referentes aos Outros Serviços que incidem sobre as contas comercializadas.                                    |
 | price               | [[PriceOtherServicesPersonalAccount](#schemaPriceOtherServicesPersonalAccount)] | Sim      | Valor da tarifa cobrada referente aos Outros Serviços.                  |
-| referenceValue            | string | Sim         | Valor de referência utilizado na apuração dos percentuais informados por quartil                  |
-| referenceCurrency            | string | Sim         | Moeda relativa ao valor de referência, segundo modelo ISO-4217                  |
+| referenceValue            | string | Sim         | Valor de referência utilizado na apuração dos percentuais informados por quartil.                  |
+| referenceCurrency            | string | Sim         | Moeda relativa ao valor de referência, segundo modelo ISO-4217.                  |
 | additionalInfo      | string | Não         | Descrição de como é composto o valor da tarifa.                     |
-| chargingUnit        | string | Não         | Unidade ou forma de cobrança                                    |
+| chargingUnit        | string | Não         | Unidade ou forma de cobrança.                                    |
 
 ## PriceOtherServicesPersonalAccount
 <a id="schemaPriceOtherServicesPersonalAccount"></a>
@@ -657,13 +658,13 @@
 |     Nome           |  Tipo                        |  Obrigatório |                            Descrição                |
 |:-------------------|:-----------------------------|:-------------|:----------------------------------------------------|
 | code               | string                       | Sim          | Código que identifica o Serviço que compõe o Pacote de Serviços.   |
-| eventLimitQuantity | string                       | Sim          | Quantidade de eventos previstos no Pacote de Serviços      |
+| eventLimitQuantity | string                       | Sim          | Quantidade de eventos previstos no Pacote de Serviços.      |
 | freeEventQuantity  | string                       | Sim          | Quantidade de eventos previstos no Pacote de Serviços com isenção de Tarifa.      |
-| price           |  [[PriceServicesPersonalAccount](#schemaPriceServicesPersonalAccount)]| Sim          | Indica o tipo de valor da tarifa do serviço que compõe o Pacote de Serviços     |
-| value           | string                       | Sim          | Valor da tarifa referente ao Serviço que compõe o Pacote de Serviços, relativo ao quantil tipo         |
+| price           |  [[PriceServicesPersonalAccount](#schemaPriceServicesPersonalAccount)]| Sim          | Indica o tipo de valor da tarifa do serviço que compõe o Pacote de Serviços.     |
+| value           | string                       | Sim          | Valor da tarifa referente ao Serviço que compõe o Pacote de Serviços, relativo ao quantil tipo.         |
 | currency           | string                       | Sim          | Moeda referente ao valor máximo da tarifa, segundo modelo ISO-4217.                |
-| referenceValue           | string                       | Sim          | Valor de referência utilizado na apuração dos percentuais informados por quartil                |
-| referenceCurrency           | string                       | Sim          | Moeda relativa ao valor de referência, segundo modelo ISO-4217            |
+| referenceValue           | string                       | Sim          | Valor de referência utilizado na apuração dos percentuais informados por quartil.                |
+| referenceCurrency           | string                       | Sim          | Moeda relativa ao valor de referência, segundo modelo ISO-4217.            |
 
 ## PriceServicesPersonalAccount
 <a id="schemaPriceServicesPersonalAccount"></a>
@@ -676,7 +677,7 @@
 
 |     Nome           |  Tipo                        |  Obrigatório |                            Descrição                |
 |:-------------------|:-----------------------------|:-------------|:----------------------------------------------------|
-| type               | string                       | Sim          | Indica o tipo de valor da tarifa do serviço que compõe o Pacote de Serviços     |
+| type               | string                       | Sim          | Indica o tipo de valor da tarifa do serviço que compõe o Pacote de Serviços.     |
 
 ## TermsConditionsPersonalAccount
 <a id="schemaTermsConditionsPersonalAccount"></a>
@@ -724,9 +725,9 @@
 | indexer           | string                                       | Sim          | Indexador é o termo utilizado para se referir aos índices usados como base para corrigir os valores monetários de um determinado ativo.     |
 | prePostTax        | [Enum PersonalAccountIncomeRatesPrePostTax](#schemaEnumPersonalAccountIncomeRatesPrePostTax) | Sim          | Indicador de indexador pré ou pós fixado.         |
 | frequency         | [Enum PersonalAccountIncomeRatesFrequency](#schemaEnumPersonalAccountIncomeRatesFrequency)   | Sim          | Código que indica Frequência sobre a qual incide a Remuneração.             |
-| additionalInfo    | string                                       | Sim          | Descrição da Remuneração            |
-| application       | [[ApplicationIncomeRatesPersonalAccount](#schemaApplicationIncomeRatesPersonalAccount)]                                       | Sim          | Identifica o período referente ao percentual de taxa de remuneração efetivamente aplicada no intervalo informado              |
-| referenceValue    | string                                       | Sim          | Valor de referência utilizado na apuração dos percentuais informados por quartil       |
+| additionalInfo    | string                                       | Sim          | Descrição da Remuneração.            |
+| application       | [[ApplicationIncomeRatesPersonalAccount](#schemaApplicationIncomeRatesPersonalAccount)]                                       | Sim          | Identifica o período referente ao percentual de taxa de remuneração efetivamente aplicada no intervalo informado.              |
+| referenceValue    | string                                       | Sim          | Valor de referência utilizado na apuração dos percentuais informados por quartil.       |
 | referenceCurrency | string                                       | Sim          | Moeda relativa ao valor de referência, segundo modelo ISO-4217.       |
 
 ## ApplicationIncomeRatesPersonalAccount
@@ -741,16 +742,16 @@
 
 |     Nome          |  Tipo                                        |  Obrigatório | Descrição                                           |
 |:------------------|:---------------------------------------------|:-------------|:----------------------------------------------------|
-| types             | string                                       | Sim          | Valor do percentual que corresponde a taxa de remuneração efetivamente aplicada no intervalo informado        |
-| rate   | string                                       | Sim          | Valor do percentual que corresponde a taxa de remuneração efetivamente aplicada no intervalo informado        |
+| types             | string                                       | Sim          | Valor do percentual que corresponde a taxa de remuneração efetivamente aplicada no intervalo informado.        |
+| rate   | string                                       | Sim          | Valor do percentual que corresponde a taxa de remuneração efetivamente aplicada no intervalo informado.        |
 
 ### Enum PersonalAccountIncomeRatesPrePostTax
 <a id="schemaEnumPersonalAccountIncomeRatesPrePostTax"></a>
 
 | Propriedade  | Valor  | Definição                                       
 |:------------ |:------ |:---------
-| prePostTax   | PRE    | Pré fixado
-| prePostTax   | POS    | Pós fixado
+| prePostTax   | PRE    | Prefixado.
+| prePostTax   | POS    | Pós fixado.
 
 
 ### Enum PersonalAccountIncomeRatesFrequency
@@ -758,7 +759,7 @@
 
 | Propriedade  | Valor | Definição                                   
 |:------------ |:------|:---------
-| frequency    | AD    | Ao dia
-| frequency    | AM    | Ao mês
-| frequency    | AA    | Ao ano
+| frequency    | AD    | Ao dia.
+| frequency    | AM    | Ao mês.
+| frequency    | AA    | Ao ano.
 

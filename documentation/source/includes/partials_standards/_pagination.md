@@ -1,7 +1,7 @@
 ## Paginação
 
 Cada recurso de cada API pode possuir ou não paginação, caso a quantidade de registros retornados justifique a mesma. 
-A paginação estará disponível e deverá funcionar independente se o recurso permite filtros por query ou POST. Isso é, filtros e paginação são aplicados de forma independente.
+A paginação estará disponível e deverá funcionar independente se o recurso permite filtros por *query* ou POST. Isso é, filtros e paginação são aplicados de forma independente.
 
 ### Parâmetros de Requisição
 
@@ -16,8 +16,8 @@ Quando existir paginação para o recurso deverão ser utilizados os parâmetros
 
 | Parâmetro | Descrição                                                                    | Valor Padrão |
 |:--------- |:---------------------------------------------------------------------------- |:------------ |
-| page      | Número da página que está sendo requisitada (o valor da primeira página é 1) | 1            |
-| page-size | Quantidade total de registros por páginas                                    | 25           |
+| page      | Número da página que está sendo requisitada (o valor da primeira página é 1). | 1            |
+| page-size | Quantidade total de registros por páginas.                                    | 25           |
 
 <aside class="notice">
 O valor padrão será assumido sempre que o parâmetro não estiver preenchido ou estiver nulo
@@ -50,7 +50,7 @@ O valor padrão será assumido sempre que o parâmetro não estiver preenchido o
 Além dos dados requisitados, as respostas paginadas também terão em sua estrutura dois objetos adicionais que incluirão parâmetros para facilitar a nagevação das páginas:
 
 ### Links
-No objeto `links`, serão retornadas as URI's de paginação conforme parâmetros abaixo:
+No objeto `links`, serão retornadas as URIs de paginação conforme parâmetros abaixo:
 
 | Parâmetro | Descrição                                                                  | Restrição                                             |
 |:--------- |:-------------------------------------------------------------------------- |:----------------------------------------------------- |
@@ -75,4 +75,5 @@ Para cada um desses atributos o tamanho da página especificado na requisição 
 
 * Não é esperado que os provedores implementem paginação com isolamento de transação. Os dados que serão retornados podem mudar entre requisições subsequentes. Isto pode causar situações onde um mesmo registro pode ser retornado em mais de uma página.
 * O tamanho máximo da página é `1000` registros para qualquer endpoint (a menos que na documentação desse esteja informando outros valores).
-* Se for requisitado uma quantidade de registros maior que o suportado o retorno será o código HTTP `422 Unprocessable Entity`.
+* Se for requisitado uma quantidade de registros maior que o suportado, o retorno será o código HTTP *status code* `422 `
+` Unprocessable Entity`, indicando que o servidor entendeu a requisição, mas não é possível processá-la conforme foi solicitado.

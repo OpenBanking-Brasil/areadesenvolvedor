@@ -28,9 +28,10 @@
                     "code": "string",
                     "price": [
                       {
-                        "type": "string",
-                        "value": "string",
-                        "currency": "string"
+                        "interval": "string",
+              "value": "string",
+              "currency": "string",
+              "frequency": "string"
                       }
                     ],
                     "referenceValue": "string",
@@ -44,9 +45,10 @@
                     "code": "string",
                     "chargingTriggerInfo": "string",
                     "price": {
-                      "type": "string",
-                      "value": "string",
-                      "currency": "string"
+                     "interval": "string",
+              "value": "string",
+              "currency": "string",
+              "frequency": "string"
                     },
                     "referenceValue": "string",
                     "referenceCurrency": "string",
@@ -59,8 +61,10 @@
                 "feeRate": {
                   "price": [
                     {
-                      "type": "string",
-                      "rate": "string"
+                      "interval": "string",
+              "value": "string",
+              "currency": "string",
+              "frequency": "string"
                     }
                   ],
                   "referenceValue": "string",
@@ -69,8 +73,10 @@
                 "instalmentRate": {
                   "price": [
                     {
-                      "type": "string",
-                      "rate": "string"
+                      "interval": "string",
+              "value": "string",
+              "currency": "string",
+              "frequency": "string"
                     }
                   ],
                   "referenceValue": "string",
@@ -232,9 +238,10 @@
             "code": "string",
             "price": [
               {
-                "type": "string",
-                "value": "string",
-                "currency": "string"
+                "interval": "string",
+              "value": "string",
+              "currency": "string",
+              "frequency": "string"
               }
             ],
             "referenceValue": "string",
@@ -248,9 +255,10 @@
             "code": "string",
             "chargingTriggerInfo": "string",
             "price": {
-              "type": "string",
+              "interval": "string",
               "value": "string",
-              "currency": "string"
+              "currency": "string",
+              "frequency": "string"
             },
             "referenceValue": "string",
             "referenceCurrency": "string",
@@ -263,8 +271,10 @@
         "feeRate": {
           "price": [
             {
-              "type": "string",
-              "rate": "string"
+              "interval": "string",
+              "value": "string",
+              "currency": "string",
+              "frequency": "string"
             }
           ],
           "referenceValue": "string",
@@ -273,8 +283,10 @@
         "instalmentRate": {
           "price": [
             {
-              "type": "string",
-              "rate": "string"
+              "interval": "string",
+              "value": "string",
+              "currency": "string",
+              "frequency": "string"
             }
           ],
           "referenceValue": "string",
@@ -320,9 +332,10 @@
         "code": "string",
         "price": [
           {
-            "type": "string",
-            "value": "string",
-            "currency": "string"
+            "interval": "string",
+              "value": "string",
+              "currency": "string",
+              "frequency": "string"
           }
         ],
         "referenceValue": "string",
@@ -336,9 +349,10 @@
         "code": "string",
         "chargingTriggerInfo": "string",
         "price": {
-          "type": "string",
-          "value": "string",
-          "currency": "string"
+         "interval": "string",
+              "value": "string",
+              "currency": "string",
+              "frequency": "string"
         },
         "referenceValue": "string",
         "referenceCurrency": "string",
@@ -351,8 +365,10 @@
     "feeRate": {
       "price": [
         {
-          "type": "string",
-          "rate": "string"
+          "interval": "string",
+              "value": "string",
+              "currency": "string",
+              "frequency": "string"
         }
       ],
       "referenceValue": "string",
@@ -361,8 +377,10 @@
     "instalmentRate": {
       "price": [
         {
-          "type": "string",
-          "rate": "string"
+          "interval": "string",
+              "value": "string",
+              "currency": "string",
+              "frequency": "string"
         }
       ],
       "referenceValue": "string",
@@ -460,9 +478,10 @@
       "code": "string",
       "price": [
         {
-          "type": "string",
-          "value": "string",
-          "currency": "string"
+          "interval": "string",
+              "value": "string",
+              "currency": "string",
+              "frequency": "string"
         }
       ],
       "referenceValue": "string",
@@ -476,9 +495,10 @@
       "code": "string",
       "chargingTriggerInfo": "string",
       "price": {
-        "type": "string",
-        "value": "string",
-        "currency": "string"
+        "interval": "string",
+              "value": "string",
+              "currency": "string",
+              "frequency": "string"
       },
       "referenceValue": "string",
       "referenceCurrency": "string",
@@ -502,9 +522,10 @@
   "code": "string",
   "price": [
     {
-      "type": "string",
-      "value": "string",
-      "currency": "string"
+      "interval": "string",
+              "value": "string",
+              "currency": "string",
+              "frequency": "string"
     }
   ],
   "referenceValue": "string",
@@ -543,9 +564,10 @@
   "code": "string",
   "chargingTriggerInfo": "string",
   "price": {
-    "type": "string",
-    "value": "string",
-    "currency": "string"
+    "interval": "string",
+              "value": "string",
+              "currency": "string",
+              "frequency": "string"
   },
   "referenceValue": "string",
   "referenceCurrency": "string",
@@ -573,8 +595,10 @@
   "feeRate": {
     "price": [
       {
-        "type": "string",
-        "rate": "string"
+        "interval": "string",
+              "value": "string",
+              "currency": "string",
+              "frequency": "string"
       }
     ],
     "referenceValue": "string",
@@ -583,8 +607,10 @@
   "instalmentRate": {
     "price": [
       {
-        "type": "string",
-        "rate": "string"
+        "interval": "string",
+              "value": "string",
+              "currency": "string",
+              "frequency": "string"
       }
     ],
     "referenceValue": "string",
@@ -617,8 +643,10 @@
 {
   "price": [
     {
-      "type": "string",
-      "rate": "string"
+      "interval": "string",
+              "value": "string",
+              "currency": "string",
+              "frequency": "string"
     }
   ],
   "referenceValue": "string",
@@ -639,8 +667,10 @@
 {
   "price": [
     {
-      "type": "string",
-      "rate": "string"
+      "interval": "string",
+              "value": "string",
+              "currency": "string",
+              "frequency": "string"
     }
   ],
   "referenceValue": "string",
