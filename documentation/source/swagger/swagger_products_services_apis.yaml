@@ -1180,7 +1180,7 @@ components:
           example: ""
         application:
           type: object
-              required:
+          required:
                 - interval
                 - value
                 - currency
@@ -1357,7 +1357,7 @@ components:
               type: string
               description: "Frequência de clientes em cada faixa de valor. Representa uma porcentagem"
         instalmentRate:
-         type: object
+          type: object
           required:
             - interval
             - rate
@@ -1739,16 +1739,17 @@ components:
                           chargingTriggerInfo: Fatores geradores da taxa
                           chargingUnit: Por novo contrato
                           price:
-                            - type: minimo
+                            - interval: minimo
                               value: '500'
                               currency: BRL
+                              frequency: '0.15'
                           additionalInfo: Vamor mínimo aplicado
                       interestRates:
                         - rate: '9'
                           referencialRate: null
                           indexer: IGPM
                           prePostTax: POS
-                          frequency: a.a.
+                          ocurrence: a.a.
                           incomeRateInfo: Informações adicionais do calculo de juros
                       requiredWarranties:
                         - Caução
@@ -1878,12 +1879,13 @@ components:
     PersonalFinancingsPrice:
       type: object
       properties:
-        type:
+        interval:
           type: string
-          enum: ["MINIMO",
-                "MEDIO",
-                "MAXIMO"]
-          description: "Indica os tipos: mínimo, médio e máximo do valor informado."
+          enum: ["1_FAIXA",
+                "2_FAIXA",
+                "3_FAIXA",
+                "4_FAIXA"]
+          description: "Faixas para cobrança de valores de tarifas por produto/serviço informado: 1ª Faixa de valores, 2ª Faixa de valores, 3ª Faixa de valores, 4ª Faixa de valores"
         value:
           type: string
           description: "Valor da tarifa cobrada, relativa ao serviço ofertado para a Modalidade de Empréstimo, para pessoa"
@@ -1891,10 +1893,14 @@ components:
           type: string
           enum: ["BRL","... ISO_4217"]
           description: "Moeda referente ao valor da tarifa"
+        frequency:
+          type: string
+          description: "Frequência de clientes em cada faixa de valor. Representa uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O Valor 1 representa 100%)"
       required:
-        - type
+        - interval
         - value
         - currency
+        - frequency
     ##### PersonalFinancingsInterestRates #####
     PersonalFinancingsInterestRates:
       type: object
@@ -1916,7 +1922,7 @@ components:
           enum: ["PRE",
                 "POS"]
           description: "Indicador de pré ou pós. A diferença básica é que, enquanto o prefixado apresenta rentabilidade definida, o pós-fixado acompanha algum indicador. Assim, quem investe no primeiro grupo sabe como será seu rendimento previamente, enquanto quem investe no segundo, só conhecerá os resultados na data de vencimento"
-        frequency:
+        occurrence:
           type: string
           enum: ["AD",
                 "AM",
@@ -1925,12 +1931,36 @@ components:
         incomeRateInfo:
           type: string
           description: "Descrição da Remuneração relativa as taxas de juros remuneratórias sobre a modalidade de Financiamento informada, para pessoa física"
+        application:
+          type: object
+          required:
+            - interval
+            - value
+            - currency
+            - frequency
+          properties:
+            interval:
+              type: string
+              enum: ["1_FAIXA",
+                    "2_FAIXA",
+                    "3_FAIXA",
+                    "4_FAIXA"]
+            value:
+              type: string
+              description: "Valor médio da taxa de remuneração relativa ao serviço ofertado, para pessoa fisica informado no período. p.ex. '45.00'"
+            currency:
+              type: string
+              description: "Moeda referente ao valor da taxa de remuneração segundo modelo ISO-4217. p. ex. 'BRL' "
+            frequency:
+              type: string
+              description: "Frequência de clientes em cada faixa de valor. Representa uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O Valor 1 representa 100%)"
       required:
         - rate
         - referencialRate
         - indexer
         - prePostTax
-        - frequency
+        - occurrence
+        - application
 
   ##########################
   ##  Business Financings ##
@@ -2107,12 +2137,13 @@ components:
     BusinessFinancingsPrice:
       type: object
       properties:
-        type:
+        interval:
           type: string
-          enum: ["MINIMO",
-                "MEDIO",
-                "MAXIMO"]
-          description: "Indica os tipos: mínimo, médio e máximo do valor informado."
+          enum: ["1_FAIXA",
+                "2_FAIXA",
+                "3_FAIXA",
+                "4_FAIXA"]
+          description: "Faixas para cobrança de valores de tarifas por produto/serviço informado: 1ª Faixa de valores, 2ª Faixa de valores, 3ª Faixa de valores, 4ª Faixa de valores"
         value:
           type: string
           description: "Valor da tarifa cobrada, relativa ao serviço ofertado para a Modalidade de Empréstimo, para pessoa"
@@ -2120,10 +2151,14 @@ components:
           type: string
           enum: ["BRL","... ISO_4217"]
           description: "Moeda referente ao valor da tarifa"
+        frequency:
+          type: string
+          description: "Frequência de clientes em cada faixa de valor. Representa uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O Valor 1 representa 100%)"
       required:
-        - type
+        - interval
         - value
         - currency
+        - frequency
     ##### BusinessFinancingsInterestRates #####
     BusinessFinancingsInterestRates:
       type: object
@@ -2145,7 +2180,7 @@ components:
           enum: ["PRE",
                 "POS"]
           description: "Indicador de pré ou pós. A diferença básica é que, enquanto o prefixado apresenta rentabilidade definida, o pós-fixado acompanha algum indicador. Assim, quem investe no primeiro grupo sabe como será seu rendimento previamente, enquanto quem investe no segundo, só conhecerá os resultados na data de vencimento"
-        frequency:
+        occurrence:
           type: string
           enum: ["AD",
                 "AM",
@@ -2154,12 +2189,35 @@ components:
         incomeRateInfo:
           type: string
           description: "Descrição da Remuneração relativa as taxas de juros remuneratórias sobre a modalidade de Financiamento informada, para pessoa jurídica"
+        application:
+          type: object
+          required:
+            - interval
+            - value
+            - currency
+            - frequency
+          properties:
+            interval:
+              type: string
+              enum: ["1_FAIXA",
+                    "2_FAIXA",
+                    "3_FAIXA",
+                    "4_FAIXA"]
+            value:
+              type: string
+              description: "Valor médio da taxa de remuneração relativa ao serviço ofertado, para pessoa fisica informado no período. p.ex. '45.00'"
+            currency:
+              type: string
+              description: "Moeda referente ao valor da taxa de remuneração segundo modelo ISO-4217. p. ex. 'BRL' "
+            frequency:
+              type: string
+              description: "Frequência de clientes em cada faixa de valor. Representa uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O Valor 1 representa 100%)"
       required:
         - rate
         - referencialRate
         - indexer
         - prePostTax
-        - frequency
+        - occurrence
 
   ##################################
   ##  Personal Invoice Financings ##
