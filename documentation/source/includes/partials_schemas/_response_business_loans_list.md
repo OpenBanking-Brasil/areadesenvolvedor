@@ -23,13 +23,11 @@
                     "price": [
                       {
                         "interval": "string",
-              "value": "string",
-              "currency": "string",
-              "frequency": "string"
+                        "value": "string",
+                        "currency": "string",
+                        "frequency": "string"
                       }
                     ],
-                    "referenceValue": "string",
-                    "referenceCurrency": "string",
                     "additionalInfo": "string"
                   }
                 ],
@@ -39,16 +37,16 @@
                     "referencialRate": "string",
                     "indexer": "string",
                     "prePostTax": "string",
-                    "frequency": "string",
+                    "occurrence": "string",
                     "incomeRateInfo": "string",
                     "application": [
                       {
-                        "type": "string",
-                        "rate": "string"
+                        "interval": "string",
+                        "value": "string",
+                        "currency": "string",
+                        "frequency": "string"
                       }
-                    ],
-                    "referenceValue": "string",
-                    "referenceCurrency": "string"
+                    ]
                   }
                 ],
                 "requiredWarranties": [
@@ -70,8 +68,8 @@
     "last": "string"
   },
   "meta": {
-    "totalRecords": integer,
-    "totalPages": integer
+    "totalRecords": "integer",
+    "totalPages": "integer"
   }
 }
 ```
@@ -105,13 +103,11 @@
               "price": [
                 {
                   "interval": "string",
-              "value": "string",
-              "currency": "string",
-              "frequency": "string"
+                  "value": "string",
+                  "currency": "string",
+                  "frequency": "string"
                 }
               ],
-              "referenceValue": "string",
-              "referenceCurrency": "string",
               "additionalInfo": "string"
             }
           ],
@@ -121,16 +117,16 @@
               "referencialRate": "string",
               "indexer": "string",
               "prePostTax": "string",
-              "frequency": "string",
+              "occurrence": "string",
               "incomeRateInfo": "string",
               "application": [
                 {
-                  "type": "string",
-                  "rate": "string"
+                  "interval": "string",
+                  "value": "string",
+                  "currency": "string",
+                  "frequency": "string"
                 }
-              ],
-              "referenceValue": "string",
-              "referenceCurrency": "string"
+              ]
             }
           ],
           "requiredWarranties": [
@@ -173,8 +169,6 @@
               "frequency": "string"
             }
           ],
-          "referenceValue": "string",
-          "referenceCurrency": "string",
           "additionalInfo": "string"
         }
       ],
@@ -184,16 +178,16 @@
           "referencialRate": "string",
           "indexer": "string",
           "prePostTax": "string",
-          "frequency": "string",
+          "occurrence": "string",
           "incomeRateInfo": "string",
           "application": [
             {
-              "type": "string",
-              "rate": "string"
+              "interval": "string",
+              "value": "string",
+              "currency": "string",
+              "frequency": "string"
             }
-          ],
-          "referenceValue": "string",
-          "referenceCurrency": "string"
+          ]
         }
       ],
       "requiredWarranties": [
@@ -226,13 +220,11 @@
       "price": [
         {
           "interval": "string",
-              "value": "string",
-              "currency": "string",
-              "frequency": "string"
+          "value": "string",
+          "currency": "string",
+          "frequency": "string"
         }
       ],
-      "referenceValue": "string",
-      "referenceCurrency": "string",
       "additionalInfo": "string"
     }
   ],
@@ -242,16 +234,16 @@
       "referencialRate": "string",
       "indexer": "string",
       "prePostTax": "string",
-      "frequency": "string",
+      "occurrence": "string",
       "incomeRateInfo": "string",
       "application": [
         {
-          "type": "string",
-          "rate": "string"
+          "interval": "string",
+          "value": "string",
+          "currency": "string",
+          "frequency": "string"
         }
-      ],
-      "referenceValue": "string",
-      "referenceCurrency": "string"
+      ]
     }
   ],
   "requiredWarranties": [

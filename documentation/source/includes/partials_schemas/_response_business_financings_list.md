@@ -324,27 +324,8 @@
 | serviceCode          | string                                                                   | Sim            | Sigla de identificação do serviço relacionado à Modalidade de Financiamento informada, para pessoa jurídica. Campo aberto.                   |
 | chargingTriggerInfo  | string                                                                   | Não            | Fatores geradores de cobrança que incidem sobre as Modalidades de Financiamentos, para pessoa jurídica. Campo Aberto.                          |
 | chargingUnit         | string                                                                   | Não            | Unidade ou forma de cobrança.                                                                                                               |
-| price                | [[BusinessFinancingsPrice](#schemaBusinessFinancingsPrice)]              | Sim            | Lista de preços possíveis.                                                                                                                  |
-| referenceValue       | [AmountString](#commonFieldAmountString)                                 | Sim            | Valor de referência utilizado na apuração dos valores informados por quartil (representa um valor monetário).                                |
-| referenceCurrency    | [CurrencyString](#commonFieldCurrencyString)                             | Sim            | Moeda relativa ao valor de referência, segundo modelo ISO-4217.                                                                            |
+| price                | [[Price](#schemaPrice)]                                                  | Sim            | Lista de preços possíveis.                                                                                                                  |
 | additionalInfo       | string                                                                   | Não            | Descrição de como é composto o valor da tarifa. p.ex. '0,25% sobre o excedente do limite acima de R$ 500,00'.                           |
-
-## BusinessFinancingsPrice
-<a id="schemaBusinessFinancingsPrice"></a>
-
-```json
-{
-  "type": "string",
-  "value": "string",
-  "currency": "string"
-}
-```
-
-|     Nome     |  Tipo                                                                        | Obrigatório    |                            Definição                                                                                 |
-|:------------ |:-----------------------------------------------------------------------------|:-------------- |:-------------------------------------------------------------------------------------------------------------------- |
-| type         | [Enum PriceType](#schemaPriceType)                                           | Sim            | Identifica o período referente ao percentual de taxa de remuneração efetivamente aplicada no intervalo informado.    |
-| value        | [AmountString](#commonFieldAmountString)                                     | Sim            | Valor da tarifa cobrada, relativa ao serviço ofertado para a Modalidade de Empréstimo, para pessoa jurídica.          |
-| currency     | [CurrencyString](#commonFieldCurrencyString)                                 | Sim            | Moeda referente ao valor da tarifa.                                                                                   |
 
 ## BusinessFinancingsInterestRates 
 <a id="schemaBusinessFinancingsInterestRates"></a>
@@ -374,11 +355,9 @@
 | referencialRate           | [RateString](#commonFieldRateString)                                            | Sim            | Taxa Referencial se configura como uma taxa de juros de referência, ou seja, um indicador geral da economia brasileira. Por isso, é utilizada na hora de calcular o rendimento de determinadas aplicações financeiras.                                                                                                 |
 | indexer                   | [Enum BusinessFinancingsIndexer](#schemaEnumBusinessFinancingsIndexer)          | Sim            | Indexador é o termo utilizado para se referir aos índices usados como base para corrigir os valores monetários de um determinado ativo. No Brasil, os indexadores mais comuns são o IPCA, a taxa Selic e o CDI.                                                                                                        |
 | prePostTax                | [Enum PrePostTax](#schemaPrePostTax)                                            | Sim            | Indicador de pré ou pós. A diferença básica é que, enquanto o prefixado apresenta rentabilidade definida, o pós-fixado acompanha algum indicador. Assim, quem investe no primeiro grupo sabe como será seu rendimento previamente, enquanto quem investe no segundo, só conhecerá os resultados na data de vencimento. |
-| frequency                 | [Enum FrequencyType](#schemaFrequencyType)                                      | Sim            | Frequência sobre a qual incide a Remuneração.                                                                                                                                                                                                                                                                          |
+| occurrence                | [Enum OccurrenceType](#schemaOccurrenceType)                                      | Sim            | Frequência sobre a qual incide a Remuneração.                                                                                                                                                                                                                                                                          |
 | incomeRateInfo            | string                                                                          | Não            | Descrição da Remuneração relativa as taxas de juros remuneratórias sobre a modalidade de Financiamento informada, para pessoa jurídica.                                                                                                                                                                                  |
-| application               | [[BusinessFinancingApplication](#schemaBusinessFinancingApplication)]           | Não            | Descrição da Remuneração relativa as taxas de juros remuneratórias sobre a modalidade de direitos creditórios descontados informada, para pessoa jurídica.                                                                                                                                                             |
-| referenceValue            | [AmountString](#commonFieldAmountString)                                        | Sim            | Valor de referência utilizado na apuração dos valores informados por quartil (representa um valor monetário.                                |
-| referenceCurrency         | [CurrencyString](#commonFieldCurrencyString)                                    | Sim            | Moeda relativa ao valor de referência, segundo modelo ISO-4217.                                                                            |
+| application               | [[Price](#schemaPrice)]                                                        | Não            | Descrição da Remuneração relativa as taxas de juros remuneratórias sobre a modalidade de direitos creditórios descontados informada, para pessoa jurídica.                                                                                                                                                             |
 
 ### Enum BusinessFinancingsIndexer
 <a id="schemaEnumBusinessFinancingsIndexer"></a>
@@ -388,34 +367,3 @@
 | indexer      | IPCA   | IPCA        |
 | indexer      | SELIC  | SELIC       |
 | indexer      | CDI    | CDI         |
-
-
-## BusinessFinancingApplication 
-<a id="schemaBusinessFinancingApplication"></a>
-
-```json
-{
-  "interval": "string",
-  "value": "string",
-  "currency": "string",
-  "frequency": "string"
-}
-```
-
-|     Nome     |  Tipo                                             | Obrigatório    |                            Definição                                                                                                                                                                                      |
-|:------------ |:------------------------------------------------- |:-------------- |:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| interval     | [Enum PersonalFinancingsInterval](#schemaEnumPersonalFinancingsInterval)                | Sim            | Faixas para cobrança de valores de tarifas por produto/serviço informado: 1ª Faixa de valores, 2ª Faixa de valores, 3ª Faixa de valores, 4ª Faixa de valores |
-| value         | [RateString](#commonFieldRateString)              | Sim            | Valor médio da tarifa, relativa ao serviço ofertado, para pessoa física informado no período. p.ex. '45.00'            |
-| currency         | [RateString](#commonFieldRateString)              | Sim            | Moeda referente ao valor da Tarifa, segundo modelo ISO-4217. p. ex. 'BRL'            |
-| frequency         | [RateString](#commonFieldRateString)              | Sim            | Frequência de clientes em cada faixa de valor. Representa uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O Valor 1 representa 100%)         |
-
-
-### Enum PersonalFinancingsInterval
-<a id="schemaEnumPersonalFinancingsInterval"></a>
-
-| Propriedade  | Código    | Definição            |
-|:------------ |:--------- |:-------------------- |
-| interval     | 1_FAIXA   | 1ª Faixa de valores  |
-| interval     | 2_FAIXA   | 2ª Faixa de valores  |
-| interval     | 3_FAIXA   | 3ª Faixa de valores  |
-| interval     | 4_FAIXA   | 4ª Faixa de valores  |

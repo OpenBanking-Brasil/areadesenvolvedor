@@ -31,13 +31,10 @@
                     "price": [
                       {
                         "interval": "string",
-                        "value": "string",
-                        "currency": "string",
+                        "rate": "string",
                         "frequency": "string"
                       }
                     ],
-                    "referenceValue": "string",
-                    "referenceCurrency": "string",
                     "additionalInfo": "string",
                     "chargingUnit": "string"
                   }
@@ -48,25 +45,19 @@
                   "price": [
                     {
                       "interval": "string",
-                      "value": "string",
-                      "currency": "string",
+                      "rate": "string",
                       "frequency": "string"
                     }
-                  ],
-                  "referenceValue": "string",
-                  "referenceCurrency": "string"
+                  ]
                 },
                 "instalmentRate": {
                   "price": [
                     {
                       "interval": "string",
-                      "value": "string",
-                      "currency": "string",
+                      "rate": "string",
                       "frequency": "string"
                     }
-                  ],
-                  "referenceValue": "string",
-                  "referenceCurrency": "string"
+                  ]
                 },
                 "code": "string",
                 "additionalInfo": "string"
@@ -134,14 +125,11 @@
                 "chargingTriggerInfo": "string",
                 "price": [
                   {
-                   "interval": "string",
-                    "value": "string",
-                    "currency": "string",
+                    "interval": "string",
+                    "rate": "string",
                     "frequency": "string"
                   }
                 ],
-                "referenceValue": "string",
-                "referenceCurrency": "string",
                 "additionalInfo": "string",
                 "chargingUnit": "string"
               }
@@ -152,25 +140,19 @@
               "price": [
                 {
                   "interval": "string",
-                  "value": "string",
-                  "currency": "string",
+                  "rate": "string",
                   "frequency": "string"
                 }
-              ],
-              "referenceValue": "string",
-              "referenceCurrency": "string"
+              ]
             },
             "instalmentRate": {
               "price": [
                 {
                   "interval": "string",
-                  "value": "string",
-                  "currency": "string",
+                  "rate": "string",
                   "frequency": "string"
                 }
-              ],
-              "referenceValue": "string",
-              "referenceCurrency": "string"
+              ]
             },
             "code": "string",
             "additionalInfo": "string"
@@ -221,13 +203,10 @@
             "price": [
               {
                 "interval": "string",
-              "value": "string",
-              "currency": "string",
-              "frequency": "string"
+                "rate": "string",
+                "frequency": "string"
               }
             ],
-            "referenceValue": "string",
-            "referenceCurrency": "string",
             "additionalInfo": "string",
             "chargingUnit": "string"
           }
@@ -238,25 +217,19 @@
           "price": [
             {
               "interval": "string",
-              "value": "string",
-              "currency": "string",
+              "rate": "string",
               "frequency": "string"
             }
-          ],
-          "referenceValue": "string",
-          "referenceCurrency": "string"
+          ]
         },
         "instalmentRate": {
           "price": [
             {
               "interval": "string",
-              "value": "string",
-              "currency": "string",
+              "rate": "string",
               "frequency": "string"
             }
-          ],
-          "referenceValue": "string",
-          "referenceCurrency": "string"
+          ]
         },
         "code": "string",
         "additionalInfo": "string"
@@ -302,13 +275,10 @@
         "price": [
           {
             "interval": "string",
-              "value": "string",
-              "currency": "string",
-              "frequency": "string"
+            "rate": "string",
+            "frequency": "string"
           }
         ],
-        "referenceValue": "string",
-        "referenceCurrency": "string",
         "additionalInfo": "string",
         "chargingUnit": "string"
       }
@@ -319,25 +289,19 @@
       "price": [
         {
           "interval": "string",
-              "value": "string",
-              "currency": "string",
-              "frequency": "string"
+          "rate": "string",
+          "frequency": "string"
         }
-      ],
-      "referenceValue": "string",
-      "referenceCurrency": "string"
+      ]
     },
     "instalmentRate": {
       "price": [
         {
-         "interval": "string",
-              "value": "string",
-              "currency": "string",
-              "frequency": "string"
+          "interval": "string",
+          "rate": "string",
+          "frequency": "string"
         }
-      ],
-      "referenceValue": "string",
-      "referenceCurrency": "string"
+      ]
     },
     "code": "string",
     "additionalInfo": "string"
@@ -388,13 +352,10 @@
       "price": [
         {
           "interval": "string",
-              "value": "string",
-              "currency": "string",
-              "frequency": "string"
+          "rate": "string",
+          "frequency": "string"
         }
       ],
-      "referenceValue": "string",
-      "referenceCurrency": "string",
       "additionalInfo": "string",
       "chargingUnit": "string"
     }
@@ -417,13 +378,10 @@
   "price": [
     {
       "interval": "string",
-              "value": "string",
-              "currency": "string",
-              "frequency": "string"
+      "rate": "string",
+      "frequency": "string"
     }
   ],
-  "referenceValue": "string",
-  "referenceCurrency": "string",
   "additionalInfo": "string",
   "chargingUnit": "string"
 }
@@ -446,26 +404,20 @@
   "feeRate": {
     "price": [
       {
-       "interval": "string",
-              "value": "string",
-              "currency": "string",
-              "frequency": "string"
+        "interval": "string",
+        "rate": "string",
+        "frequency": "string"
       }
-    ],
-    "referenceValue": "string",
-    "referenceCurrency": "string"
+    ]
   },
   "instalmentRate": {
     "price": [
       {
         "interval": "string",
-              "value": "string",
-              "currency": "string",
-              "frequency": "string"
+        "rate": "string",
+        "frequency": "string"
       }
-    ],
-    "referenceValue": "string",
-    "referenceCurrency": "string"
+    ]
   },
   "code": "string",
   "additionalInfo": "string"
@@ -496,21 +448,16 @@
   "price": [
     {
       "interval": "string",
-              "value": "string",
-              "currency": "string",
-              "frequency": "string"
+      "rate": "string",
+      "frequency": "string"
     }
-  ],
-  "referenceValue": "string",
-  "referenceCurrency": "string"
+  ]
 }
 ```
 
 |     Nome                |  Tipo       | Obrigatório     |    Definição                                                                                                                                                          |
 |:------------------------|:------------|:----------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| price                 [[Price](#schemaPrice)]                                                                 | Sim             | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa física  |
-| referenceValue       | [AmountString](#commonFieldAmountString)                                 | Sim            | Valor de referência utilizado na apuração dos valores informados por quartil (representa um valor monetário                                |
-| referenceCurrency    | [CurrencyString](#commonFieldCurrencyString)                             | Sim            | Moeda relativa ao valor de referência, segundo modelo ISO-4217.                                                                            |
+| price                 [[Rate](#schemaRate)]                                                                 | Sim             | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa física  |
 
 ## BusinessCreditCardsInstalmentRate
 <a id="schemaBusinessCreditCardsInstalmentRate"></a>
@@ -520,21 +467,16 @@
   "price": [
     {
       "interval": "string",
-              "value": "string",
-              "currency": "string",
-              "frequency": "string"
+      "rate": "string",
+      "frequency": "string"
     }
-  ],
-  "referenceValue": "string",
-  "referenceCurrency": "string"
+  ]
 }
 ```
 
 |     Nome                |  Tipo       | Obrigatório     |    Definição                                                                                                                                                          |
 |:------------------------|:------------|:----------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| price                 [[Price](#schemaPrice)]                                                                 | Sim             | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa física  |
-| referenceValue       | [AmountString](#commonFieldAmountString)                                 | Sim            | Valor de referência utilizado na apuração dos valores informados por quartil (representa um valor monetário                                |
-| referenceCurrency    | [CurrencyString](#commonFieldCurrencyString)                             | Sim            | Moeda relativa ao valor de referência, segundo modelo ISO-4217.                                                                            |
+| price                 [[Rate](#schemaRate)]                                                                 | Sim             | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa física  |
 
 ## BusinessCreditCardsTermsConditions
 <a id="schemaBusinessCreditCardsTermsConditions"></a>

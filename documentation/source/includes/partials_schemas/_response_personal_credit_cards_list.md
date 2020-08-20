@@ -42,12 +42,14 @@
                     "name": "string",
                     "code": "string",
                     "chargingTriggerInfo": "string",
-                    "price": {
-                      "interval": "string",
-                      "value": "string",
-                      "currency": "string",
-                      "frequency": "string"
-                    },
+                    "price": [
+                      {
+                        "interval": "string",
+                        "value": "string",
+                        "currency": "string",
+                        "frequency": "string"
+                      }
+                    ],
                     "additionalInfo": "string",
                     "chargingUnit": "string"
                   }
@@ -73,7 +75,7 @@
                   ]
                 },
                 "code": "string",
-                "additionalInfo":"string"
+                "additionalInfo": "string"
               },
               "termsConditions": {
                 "minimumFeeRate": "string",
@@ -150,12 +152,14 @@
                 "name": "string",
                 "code": "string",
                 "chargingTriggerInfo": "string",
-                "price": {
-                  "interval": "string",
-                  "value": "string",
-                  "currency": "string",
-                  "frequency": "string"
-                },
+                "price": [
+                  {
+                    "interval": "string",
+                    "value": "string",
+                    "currency": "string",
+                    "frequency": "string"
+                  }
+                ],
                 "additionalInfo": "string",
                 "chargingUnit": "string"
               }
@@ -240,12 +244,14 @@
             "name": "string",
             "code": "string",
             "chargingTriggerInfo": "string",
-            "price": {
-              "interval": "string",
-              "value": "string",
-              "currency": "string",
-              "frequency": "string"
-            },
+            "price": [
+              {
+                "interval": "string",
+                "value": "string",
+                "currency": "string",
+                "frequency": "string"
+              }
+            ],
             "additionalInfo": "string",
             "chargingUnit": "string"
           }
@@ -325,12 +331,14 @@
         "name": "string",
         "code": "string",
         "chargingTriggerInfo": "string",
-        "price": {
-          "interval": "string",
-          "value": "string",
-          "currency": "string",
-          "frequency": "string"
-        },
+        "price": [
+          {
+            "interval": "string",
+            "value": "string",
+            "currency": "string",
+            "frequency": "string"
+          }
+        ],
         "additionalInfo": "string",
         "chargingUnit": "string"
       }
@@ -462,12 +470,14 @@
       "name": "string",
       "code": "string",
       "chargingTriggerInfo": "string",
-      "price": {
-        "interval": "string",
-        "value": "string",
-        "currency": "string",
-        "frequency": "string"
-      },
+      "price": [
+        {
+          "interval": "string",
+          "value": "string",
+          "currency": "string",
+          "frequency": "string"
+        }
+      ],
       "additionalInfo": "string",
       "chargingUnit": "string"
     }
@@ -525,12 +535,14 @@
   "name": "string",
   "code": "string",
   "chargingTriggerInfo": "string",
-  "price": {
-    "interval": "string",
-    "value": "string",
-    "currency": "string",
-    "frequency": "string"
-  },
+  "price": [
+    {
+      "interval": "string",
+      "value": "string",
+      "currency": "string",
+      "frequency": "string"
+    }
+  ],
   "additionalInfo": "string",
   "chargingUnit": "string"
 }
@@ -626,7 +638,6 @@
 |     Nome                |  Tipo       | Obrigatório     |    Definição                                                                                                                                                          |
 |:------------------------|:------------|:----------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | price                 [[Rate](#schemaRate)]                                                                 | Sim             | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa física  |
-| referenceCurrency    | [CurrencyString](#commonFieldCurrencyString)                             | Sim            | Moeda relativa ao valor de referência, segundo modelo ISO-4217.                                                                            |
 
 
 ## PersonalCreditCardsTermsConditions

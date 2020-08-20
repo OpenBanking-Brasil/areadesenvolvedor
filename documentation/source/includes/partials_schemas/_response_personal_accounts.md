@@ -78,7 +78,7 @@
                 "referencialRate": "string",
                 "indexer": "string",
                 "prePostTax": "string",
-                "frequency": "string",
+                "occurrence": "string",
                 "additionalInfo": "string",
                 "application":{
                   "interval":"string",
@@ -191,7 +191,7 @@
             "referencialRate": "string",
             "indexer": "string",
             "prePostTax": "string",
-            "frequency": "string",
+            "occurrence": "string",
             "additionalInfo": "string",
             "application": {
               "interval": "string",
@@ -286,7 +286,7 @@
         "referencialRate": "string",
         "indexer": "string",
         "prePostTax": "string",
-        "frequency": "string",
+        "occurrence": "string",
         "additionalInfo": "string",
         "application": {
           "interval": "string",
@@ -377,7 +377,7 @@
     "referencialRate": "string",
     "indexer": "string",
     "prePostTax": "string",
-    "frequency": "string",
+    "occurrence": "string",
     "additionalInfo": "string",
     "application": {
       "interval": "string",
@@ -612,7 +612,6 @@
 | freeEventQuantity  | string                       | Sim          | Quantidade de eventos previstos no Pacote de Serviços com isenção de Tarifa.      |
 | price           |  [[PriceServicesPersonalAccount](#schemaPriceServicesPersonalAccount)]| Sim          | Indica o tipo de valor da tarifa do serviço que compõe o Pacote de Serviços.     |
 
-
 ## PriceServicesPersonalAccount
 <a id="schemaPriceServicesPersonalAccount"></a>
 
@@ -674,7 +673,7 @@
   "referencialRate": "string",
   "indexer": "string",
   "prePostTax": "string",
-  "frequency": "string",
+  "occurrence": "string",
   "additionalInfo": "string",
   "application": {
     "interval": "string",
@@ -690,6 +689,6 @@
 | referencialRate   | string                                       | Sim          | Taxa Referencial se configura como uma taxa de juros de referência, ou seja, um indicador geral da economia brasileira.          |
 | indexer           | string                                       | Sim          | Indexador é o termo utilizado para se referir aos índices usados como base para corrigir os valores monetários de um determinado ativo.     |
 | prePostTax        | [Enum PrePostTax](#schemaPrePostTax)         | Sim          | Indicador de indexador pré ou pós fixado.         |
-| frequency         | [Enum FrequencyType](#schemaFrequencyType)   | Sim          | Código que indica Frequência sobre a qual incide a Remuneração.             |
+| occurrence        | [Enum OccurrenceType](#schemaOccurrenceType) | Sim          | Código que indica Frequência sobre a qual incide a Remuneração.             |
 | additionalInfo    | string                                       | Sim          | Descrição da Remuneração.            |
 | application       | [[Rate](#schemaRate)]                        | Sim          | Identifica o período referente ao percentual de taxa de remuneração efetivamente aplicada no intervalo informado.              |

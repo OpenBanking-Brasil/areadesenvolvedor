@@ -22,14 +22,12 @@
                     "chargingUnit": "string",
                     "price": [
                       {
-                         "interval": "string",
+                        "interval": "string",
                         "value": "string",
                         "currency": "string",
                         "frequency": "string"
                       }
                     ],
-                    "referenceValue": "string",
-                    "referenceCurrency": "string",
                     "additionalInfo": "string"
                   }
                 ],
@@ -39,16 +37,16 @@
                     "referencialRate": "string",
                     "indexer": "string",
                     "prePostTax": "string",
-                    "frequency": "string",
+                    "occurrence": "string",
                     "incomeRateInfo": "string",
                     "application": [
                       {
-                        "type": "string",
-                        "rate": "string"
+                        "interval": "string",
+                        "value": "string",
+                        "currency": "string",
+                        "frequency": "string"
                       }
-                    ],
-                    "referenceValue": "string",
-                    "referenceCurrency": "string"
+                    ]
                   }
                 ],
                 "requiredWarranties": [
@@ -110,8 +108,6 @@
                   "frequency": "string"
                 }
               ],
-              "referenceValue": "string",
-              "referenceCurrency": "string",
               "additionalInfo": "string"
             }
           ],
@@ -121,16 +117,16 @@
               "referencialRate": "string",
               "indexer": "string",
               "prePostTax": "string",
-              "frequency": "string",
+              "occurrence": "string",
               "incomeRateInfo": "string",
               "application": [
                 {
-                  "type": "string",
-                  "rate": "string"
+                  "interval": "string",
+                  "value": "string",
+                  "currency": "string",
+                  "frequency": "string"
                 }
-              ],
-              "referenceValue": "string",
-              "referenceCurrency": "string"
+              ]
             }
           ],
           "requiredWarranties": [
@@ -173,11 +169,6 @@
               "frequency": "string"
             }
           ],
-          "referenceValue": "string","interval": "string",
-              "value": "string",
-              "currency": "string",
-              "frequency": "string"
-          "referenceCurrency": "string",
           "additionalInfo": "string"
         }
       ],
@@ -187,16 +178,16 @@
           "referencialRate": "string",
           "indexer": "string",
           "prePostTax": "string",
-          "frequency": "string",
+          "occurrence": "string",
           "incomeRateInfo": "string",
           "application": [
             {
-              "type": "string",
-              "rate": "string"
+              "interval": "string",
+              "value": "string",
+              "currency": "string",
+              "frequency": "string"
             }
-          ],
-          "referenceValue": "string",
-          "referenceCurrency": "string"
+          ]
         }
       ],
       "requiredWarranties": [
@@ -234,8 +225,6 @@
           "frequency": "string"
         }
       ],
-      "referenceValue": "string",
-      "referenceCurrency": "string",
       "additionalInfo": "string"
     }
   ],
@@ -245,16 +234,16 @@
       "referencialRate": "string",
       "indexer": "string",
       "prePostTax": "string",
-      "frequency": "string",
+      "occurrence": "string",
       "incomeRateInfo": "string",
       "application": [
         {
-          "type": "string",
-          "rate": "string"
+          "interval": "string",
+          "value": "string",
+          "currency": "string",
+          "frequency": "string"
         }
-      ],
-      "referenceValue": "string",
-      "referenceCurrency": "string"
+      ]
     }
   ],
   "requiredWarranties": [
@@ -317,45 +306,23 @@
   "price": [
     {
       "interval": "string",
-              "value": "string",
-              "currency": "string",
-              "frequency": "string"
+      "value": "string",
+      "currency": "string",
+      "frequency": "string"
     }
   ],
-  "referenceValue": "string",
-  "referenceCurrency": "string",
   "additionalInfo": "string"
 }
 ```
 
-|     Nome             |  Tipo                                                                                    | Obrigatório    |                            Definição                                                                                                       |
-|:------------         |:------------------------------------------------------------------------                 |:-------------- |:------------------------------------------------------------------------------------------------------------------------------------------ |
-| serviceName          | string                                                                                   | Sim            | Nomes das Tarifas cobradas sobre Serviços ofertados à Modalidade de direitos creditórios descontados, para pessoa jurídica. (Campo Livre)    |
-| serviceCode          | string                                                                                   | Sim            | Sigla de identificação do serviço relacionado à Modalidade de direitos creditórios descontados, para pessoa jurídica. Campo aberto           |
-| chargingTriggerInfo  | string                                                                                   | Não            | Fatores geradores de cobrança que incidem sobre as Modalidades de direitos creditórios descontados, para pessoa jurídica. Campo Livre        |
-| chargingUnit         | string                                                                                   | Não            | Unidade ou forma de cobrança                                                                                                               |
-| price                | [[BusinessInvoiceFinancingsPrice](#schemaBusinessInvoiceFinancingsPrice)]                | Sim            | Lista de preços possíveis                                                                                                                  |
-| referenceValue       | [AmountString](#commonFieldAmountString)                                                 | Sim            | Valor de referência utilizado na apuração dos valores informados por quartil (representa um valor monetário                                |
-| referenceCurrency    | [CurrencyString](#commonFieldCurrencyString)                                             | Sim            | Moeda relativa ao valor de referência, segundo modelo ISO-4217.                                                                            |
-| additionalInfo       | string                                                                                   | Não            | Descrição de como é composto o valor da tarifa. p.ex. '0,25% sobre o excedente do limite acima de R$ 500,00'                               |
-
-## BusinessInvoiceFinancingsPrice
-<a id="schemaBusinessInvoiceFinancingsPrice"></a>
-
-```json
-{
-  "interval": "string",
-              "value": "string",
-              "currency": "string",
-              "frequency": "string"
-}
-```
-
-|     Nome     |  Tipo                                           | Obrigatório    |                            Definição                                                                                                       |
-|:------------ |:----------------------------------------------- |:-------------- |:------------------------------------------------------------------------------------------------------------------------------------------ |
-| type         | [Enum PriceType](#schemaPriceType)              | Sim            | Indica os tipos: mínimo, médio e máximo do valor informado. P.ex.'mínimo'                                                                  |
-| value        | [AmountString](#commonFieldAmountString)        | Sim            | Valor para a tarifa cobrada, relativa ao serviço ofertado para a Modalidade de direitos creditórios descontados, para pessoa jurídica |
-| currency     | [CurrencyString](#commonFieldCurrencyString)    | Sim            | Moeda referente ao valor da tarifa                                                                                                  |
+|     Nome             |  Tipo                                                                    | Obrigatório    |                            Definição                                                                                                       |
+|:------------         |:------------------------------------------------------------------------ |:-------------- |:------------------------------------------------------------------------------------------------------------------------------------------ |
+| serviceName          | string                                                                   | Sim            | Nomes das Tarifas cobradas sobre Serviços ofertados à Modalidade de direitos creditórios descontados, para pessoa jurídica. (Campo Livre)    |
+| serviceCode          | string                                                                   | Sim            | Sigla de identificação do serviço relacionado à Modalidade de direitos creditórios descontados, para pessoa jurídica. Campo aberto           |
+| chargingTriggerInfo  | string                                                                   | Não            | Fatores geradores de cobrança que incidem sobre as Modalidades de direitos creditórios descontados, para pessoa jurídica. Campo Livre        |
+| chargingUnit         | string                                                                   | Não            | Unidade ou forma de cobrança                                                                                                               |
+| price                | [[Price](#schemaPrice)]                                                  | Sim            | Lista de preços possíveis                                                                                                                  |
+| additionalInfo       | string                                                                   | Não            | Descrição de como é composto o valor da tarifa. p.ex. '0,25% sobre o excedente do limite acima de R$ 500,00'                               |
 
 ## BusinessInvoiceFinancingsInterestRates 
 <a id="schemaBusinessInvoiceFinancingsInterestRates"></a>
@@ -366,16 +333,16 @@
   "referencialRate": "string",
   "indexer": "string",
   "prePostTax": "string",
-  "frequency": "string",
+  "occurrence": "string",
   "incomeRateInfo": "string",
   "application": [
     {
-      "type": "string",
-      "rate": "string"
+      "interval": "string",
+      "value": "string",
+      "currency": "string",
+      "frequency": "string"
     }
-  ],
-  "referenceValue": "string",
-  "referenceCurrency": "string"
+  ]
 }
 ```
 
@@ -385,11 +352,9 @@
 | referencialRate           | [RateString](#commonFieldRateString)                                                        | Sim            | Taxa Referencial se configura como uma taxa de juros de referência, ou seja, um indicador geral da economia brasileira. Por isso, é utilizada na hora de calcular o rendimento de determinadas aplicações financeiras                                                                                                 |
 | indexer                   | [Enum BusinessInvoiceFinancingsIndexer](#schemaEnumBusinessInvoiceFinancingsIndexer)        | Sim            | Indexador é o termo utilizado para se referir aos índices usados como base para corrigir os valores monetários de um determinado ativo. No Brasil, os indexadores mais comuns são o IPCA, a taxa Selic e o CDI                                                                                                        |
 | prePostTax                | [Enum PrePostTax](#schemaPrePostTax)                                                        | Sim            | Indicador de pré ou pós. A diferença básica é que, enquanto o prefixado apresenta rentabilidade definida, o pós-fixado acompanha algum indicador. Assim, quem investe no primeiro grupo sabe como será seu rendimento previamente, enquanto quem investe no segundo, só conhecerá os resultados na data de vencimento |
-| frequency                 | [Enum FrequencyType](#schemaFrequencyType)                                                  | Sim            | Frequência sobre a qual incide a Remuneração                                                                                                                                                                                                                                                                          |
+| occurrence                | [Enum OccurrenceType](#schemaOccurrenceType)                                                | Sim            | Frequência sobre a qual incide a Remuneração                                                                                                                                                                                                                                                                          |
 | incomeRateInfo            | string                                                                                      | Não            | Descrição da Remuneração relativa as taxas de juros remuneratórias sobre a modalidade de direitos creditórios descontados infomrada, para pessoa jurídica                                                                                                                                                             |
-| application               | [[BusinessInvoiceApplication](#schemaBusinessInvoiceApplication)]                           | Não            | Descrição da Remuneração relativa as taxas de juros remuneratórias sobre a modalidade de direitos creditórios descontados infomrada, para pessoa jurídica                                                                                                                                                             |
-| referenceValue            | [AmountString](#commonFieldAmountString)                                                    | Sim            | Valor de referência utilizado na apuração dos valores informados por quartil (representa um valor monetário                                |
-| referenceCurrency         | [CurrencyString](#commonFieldCurrencyString)                                                | Sim            | Moeda relativa ao valor de referência, segundo modelo ISO-4217.                                                                            |
+| application               | [[Price](#schemaPrice)]                                                                     | Não            | Descrição da Remuneração relativa as taxas de juros remuneratórias sobre a modalidade de direitos creditórios descontados infomrada, para pessoa jurídica                                                                                                                                                             |
 
 ### Enum BusinessInvoiceFinancingsIndexer
 <a id="schemaEnumBusinessInvoiceFinancingsIndexer"></a>
@@ -399,18 +364,3 @@
 | indexer      | IPCA   | IPCA        |
 | indexer      | SELIC  | SELIC       |
 | indexer      | CDI    | CDI         |
-
-## BusinessInvoiceApplication 
-<a id="schemaBusinessInvoiceApplication"></a>
-
-```json
-{
-  "type": "string",
-  "rate": "string"
-}
-```
-
-|     Nome     |  Tipo                                             | Obrigatório    |                            Definição                                                                                                                                                                                      |
-|:------------ |:------------------------------------------------- |:-------------- |:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| type         | [Enum PriceType](#schemaPriceType)                | Sim            | Identifica o período referente ao percentual de taxa de remuneração efetivamente aplicada no intervalo informado: mínimo, 1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes |
-| rate         | [RateString](#commonFieldRateString)              | Sim            | Valor do percentual que corresponde a taxa de remuneração efetivamente aplicada no intervalo informado (representação de uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O valor 1 representa 100%))            |
