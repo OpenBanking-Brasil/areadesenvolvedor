@@ -224,19 +224,15 @@ components:
     AccountOtherServicesPrice:
       type: object
       required: 
-        - type
+        - interval
         - value
         - currency
+        - frequency
       properties:
-        type:
+        interval:
           type: string
-          enum: [
-            "MINIMO"
-            ,"MEDIO"
-            ,"MAXIMO"
-          ]
-          description: "Indica os tipos: mínimo, médio e máximo do valor informado"
-          example: "MEDIO"
+          description: "Faixas de valor referente a tarifa informado: mínimo, 1ª faixa de valores, 2ª faixa de valores, 3ª faixa de valores e 4ª faixa de valores"
+          example: "1ª faixa de valores"
         value:
           type: number
           description: "Valor da tarifa cobrada referente aos Outros Serviços"
@@ -247,6 +243,10 @@ components:
           pattern: ^([A-Z]{3})$
           description: "Moeda referente ao valor máximo da tarifa conforme ISO-4217"
           example: "BRL"
+        frequency:
+          type: string
+          description: "Frequência de clientes em cada faixa de valor. Representa uma porcentagem"
+          example: "0.15 (O valor ao lado representa 15%. O valor 1 representa 100%)"
 
   ############################
   ##  Personal Accounts ##
@@ -412,7 +412,7 @@ components:
         - name
         - code
         - chargingTriggerInfo
-        - maxPrice
+        - price
         - currency
         - chargingUnit
       properties:
@@ -482,10 +482,32 @@ components:
           type: string
           description: "Fatores geradores de cobrança dos Serviços Prioritários que incidem sobre as contas comercializadas, conforme Resolução 3.919 do Bacen."
           example: "CHEQUE_ADMINISTRATIVO"
-        maxPrice:
-          type: number
-          description: "Valor máximo para a tarifa cobrada, referente ao Serviço Prioritário."
-          example: 45.00
+        price:
+          type: object
+          required:
+            - interval
+            - value
+            - currency
+            - frequency
+          properties:
+            interval:
+              type: string
+              description: "Faixas de valor referente a tarifa do serviço prioritário informado: mínimo, 1ª faixa de valores, 2ª faixa de valores, 3ª faixa de valores e 4ª faixa de valores"
+              example: "1ª faixa de valores"
+            value:
+              type: string
+              description: "Valor médio da tarifa cobrada, relativa ao serviço prioritário, para o tipo de faixa informada."
+              example: "45.00"
+            currency:
+              type: string
+              maxLength: 3
+              pattern: ^([A-Z]{3})$
+              description: "Moeda referente ao valor da tarifa conforme ISO-4217"
+              example: "BRL"
+            frequency:
+              type: string
+              description: "Frequência de clientes em cada faixa de valor. Representa uma porcentagem"
+              example: "0.15 (O valor ao lado representa 15%. O valor 1 representa 100%)"
         currency:
           type: string
           maxLength: 3
@@ -611,13 +633,7 @@ components:
                               example: "Conta de depósito à vista"
                             fees:
                               type: object
-                              required:
-                                - priorityServices
                               properties:
-                                priorityServices:
-                                  type: array
-                                  items:
-                                    $ref: '#/components/schemas/BusinessAccountsPriorityServices'
                                 otherServices:
                                   type: array
                                   items:
@@ -639,7 +655,7 @@ components:
                                         - code
                                         - eventLimitQuantity
                                         - freeEventQuantity
-                                        - maxPrice
+                                        - price
                                         - currency
                                       properties:
                                         code:
@@ -657,10 +673,22 @@ components:
                                           maxLength: 4
                                           description: "Quantidade de eventos previstos no Pacote de Serviços com isenção de Tarifa"
                                           example: "1"
-                                        maxPrice:
-                                          type: string
-                                          maxLength: 4
-                                          description: "Valor máximo da tarifa referente ao Serviço que compõe o Pacote de Serviços (valor publicado e  divulgado)."
+                                        price:
+                                          type: object
+                                          required:
+                                            - price
+                                            - currency
+                                          properties:
+                                            value:
+                                              type: string
+                                              description: "Valor da tarifa referente ao Serviço que compõe o Pacote de Serviços, relativo ao quantil tipo"
+                                              example: "70.00"
+                                            currency:
+                                              type: string
+                                              maxLength: 3
+                                              pattern: ^([A-Z]{3})$
+                                              description: "Moeda referente ao valor da tarifa conforme ISO-4217"
+                                              example: "BRL"
                                         currency:
                                           type: string
                                           maxLength: 3
@@ -698,99 +726,6 @@ components:
           $ref: '#/components/schemas/Links'
         meta:
           $ref: '#/components/schemas/Meta'
-  
-  ##### BusinessAccountsPriorityServices #####
-    BusinessAccountsPriorityServices:
-      type: object
-      required:
-        - name
-        - code
-        - chargingTriggerInfo
-        - maxPrice
-        - currency
-        - chargingUnit
-      properties:
-        name:
-          type: string
-          enum: [
-            "CONFECCAO_CADASTRO"
-            ,"CARTAO"
-            ,"FORNECIMENTO_SEG_VIA_CARTAO_DEBITO"
-            ,"FORNECIMENTO_SEG_VIA_CARTAO_CONTA_POUPANCA"
-            ,"CHEQUE"
-            ,"EXCLUSAO_CADASTRO_CHEQUE_SEM_FUNDOS"
-            ,"CONTRA_ORDEM_REVOGACAO_SUSTACAO_PAGAMENTO_CHEQUE"
-            ,"FORNECIMENTO_FOLHAS_CHEQUE"
-            ,"CHEQUE_ADMINISTRATIVO"
-            ,"CHEQUE_VISADO"
-            ,"SAQUE"
-            ,"SAQUE_CONTA_DEPOSITOS_VISTA_POUPANCA"
-            ,"DEPOSITO"
-            ,"DEPOSITO_IDENTIFICADO"
-            ,"CONSULTA"
-            ,"FORNECIMENTO_EXTRATO_MENSAL_CONTA_VISTA_POUPANCA"
-            ,"FORNECIMENTO_EXTRATO_PERIODO_CONTA_VISTA_POUPANCA"
-            ,"FONECIMENTO_COPIA_MICROFILME_MICROFICHA_ASSEMELHADO"
-            ,"TRANSFERENCIA_DOC"
-            ,"TRANSFERENCIA_TED"
-            ,"TRANSFERENCIA_AGENDADA_DOC_TED"
-            ,"TRANSFERENCIA_ENTRE_CONTAS_PROPRIA_INSTITUICAO"
-            ,"ORDEM_PAGAMENTO"
-          ]
-          description: "Nome das Tarifas cobradas sobre Serviços Prioritários para os tipos de contas comercializadas para pessoa física. A Lista corresponde às relacionadas na Resolução 3919 do Bacen."
-          example: "FORNECIMENTO_EXTRATO_MENSAL_CONTA_VISTA_POUPANCA"
-        code:
-          type: string
-          enum: [
-            "CADASTRO"
-            ,"SEGUNDA_VIA_CARTAO_DEBITO"
-            ,"SEGUNDA_VIA_CARTAO_POUPANCA"
-            ,"EXCLUSAO_CCF"
-            ,"SUSTACAO_REVOGACAO"
-            ,"FOLHA_CHEQUE"
-            ,"CHEQUE_ADMINISTRATIVO"
-            ,"CHEQUE_VISADO"
-            ,"SAQUE_PESSOAL"
-            ,"SAQUE_TERMINAL"
-            ,"SAQUE_CORRESPONDENTE"
-            ,"DEPOSITO_IDENTIFICADO"
-            ,"EXTRATO_MES_P"
-            ,"EXTRATO_MES_E"
-            ,"EXTRATO_MES_C"
-            ,"EXTRATO_MOVIMENTO_P"
-            ,"EXTRATO_MOVIMENTO_E"
-            ,"EXTRATO_MOVIMENTO_C"
-            ,"MICROFILME"
-            ,"DOC_PESSOAL"
-            ,"DOC_ELETRONICO"
-            ,"DOC_INTERNET"
-            ,"TED_PESSOAL"
-            ,"TED_ELETRONICO"
-            ,"TED_INTERNET"
-            ,"DOC_TED_AGENDADO_P"
-            ,"DOC_TED_AGENDADO_E"
-          ]
-          description: "Sigla de identificação do Serviço Prioritário, segundo Resolução 3.919 do Bacen."
-          example: "EXTRATO_MOVIMENTO_P"
-        chargingTriggerInfo:
-          type: string
-          description: "Fatores geradores de cobrança dos Serviços Prioritários que incidem sobre as contas comercializadas, conforme Resolução 3.919 do Bacen."
-          example: "CHEQUE_ADMINISTRATIVO"
-        maxPrice:
-          type: number
-          description: "Valor máximo para a tarifa cobrada, referente ao Serviço Prioritário."
-          example: 45.00
-        currency:
-          type: string
-          maxLength: 3
-          pattern: ^([A-Z]{3})$
-          description: "Moeda referente ao valor da tarifa conforme ISO-4217"
-          example: "BRL"
-        chargingUnit:
-          type: string
-          maxLength: 50
-          description: "Unidade ou forma de cobrança"
-          example: "Por depósito recebido"
   
   ##### BusinessAccountsOtherServices #####
     BusinessAccountsOtherServices:
@@ -1088,7 +1023,6 @@ components:
     LoanFeesPrice:
       type: object
       required:
-        - changingUnit
         - interval
         - value
         - currency
@@ -1117,18 +1051,6 @@ components:
           x-cds-type: CurrencyString
           description: "Moeda referente ao valor da Tarifa, segundo modelo ISO-4217."
           example: "BRL"
-        additionalInfo:
-          type: string
-          pattern: '\w*\W*'
-          maxLength: 80
-          description: "Descrição de como é composto o valor da tarifa. p.ex. '0,25% sobre o excedente do limite acima de R$ 500,00'"
-          example: ""
-        changingUnit:
-          type: string
-          pattern: '\w*\W*'
-          maxLength: 50
-          description: "Unidade ou forma de cobrança"
-          example: "Por mês"
         frequency:
           type: string
           description: "Frequência de clientes em cada faixa de valor. Representa uma porcentagem"
@@ -1339,43 +1261,53 @@ components:
         feeRate:
           type: object
           required:
-            - interval
-            - rate
-            - frequency
+            - price
           properties:
-            interval:
-              type: string
-              enum: ["1ª faixa de valores",
-                    "2ª faixa de valores",
-                    "3ª faixa de valores",
-                    "4ª faixa de valores"]
-              description: "Faixas para cobrança de valores de tarifas por produto/serviço informado."
-            rate:
-              type: string
-              description: "Percentual que corresponde a taxa média aplicada para utilização de Crédito Rotativo, no intervalo informado."
-            frequency:
-              type: string
-              description: "Frequência de clientes em cada faixa de valor. Representa uma porcentagem"
+            price:
+              type: object
+              required:
+                - interval
+                - rate
+                - frequency
+              properties:
+                interval:
+                  type: string
+                  enum: ["1ª faixa de valores",
+                        "2ª faixa de valores",
+                        "3ª faixa de valores",
+                        "4ª faixa de valores"]
+                  description: "Faixas para cobrança de valores de tarifas por produto/serviço informado."
+                rate:
+                  type: string
+                  description: "Percentual que corresponde a taxa média aplicada para utilização de Crédito Rotativo, no intervalo informado."
+                frequency:
+                  type: string
+                  description: "Frequência de clientes em cada faixa de valor. Representa uma porcentagem"
         instalmentRate:
           type: object
           required:
-            - interval
-            - rate
-            - frequency
+            - price
           properties:
-            interval:
-              type: string
-              enum: ["1ª faixa de valores",
-                    "2ª faixa de valores",
-                    "3ª faixa de valores",
-                    "4ª faixa de valores"]
-              description: "Faixas para cobrança de valores de tarifas por produto/serviço informado."
-            rate:
-              type: string
-              description: "Percentual que corresponde a taxa média aplicada para utilização de Crédito Rotativo, no intervalo informado."
-            frequency:
-              type: string
-              description: "Frequência de clientes em cada faixa de valor. Representa uma porcentagem"
+            price:
+              type: object
+              required:
+                - interval
+                - rate
+                - frequency
+              properties:
+                interval:
+                  type: string
+                  enum: ["1ª faixa de valores",
+                        "2ª faixa de valores",
+                        "3ª faixa de valores",
+                        "4ª faixa de valores"]
+                  description: "Faixas para cobrança de valores de tarifas por produto/serviço informado."
+                rate:
+                  type: string
+                  description: "Percentual que corresponde a taxa média aplicada para utilização de Crédito Rotativo, no intervalo informado."
+                frequency:
+                  type: string
+                  description: "Frequência de clientes em cada faixa de valor. Representa uma porcentagem"
         code:
           type: string
           enum: [
@@ -1512,8 +1444,7 @@ components:
       type: object
       required:
         - code
-        - maxPrice
-        - currency
+        - price
         - chargingUnit
       properties:
         code:
@@ -1529,16 +1460,32 @@ components:
           ]
           description: "Sigla de identificação do serviço relacionado à modalidade de contas de pagamento pós-pagas para pessoa física informada conforme resolução 3.919 do BACEN"
           example: "AVALIACAO_EMERGENCIAL_CREDITO"
-        maxPrice:
-          type: number
-          description: "Valor máximo para a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa física"
-          example: 45.88
-        currency:
-          type: string
-          maxLength: 3
-          pattern: ^([A-Z]{3})$
-          description: "Moeda referente ao valor da tarifa conforme ISO-4217"
-          example: "BRL"
+        price:
+          type: object
+          required:
+            - interval
+            - value
+            - currency
+            - frequency
+          properties:
+            interval:
+              type: string
+              description: "Faixas para cobrança de valores de tarifas por serviço prioritário informado: 1ª Faixa de valores, 2ª faixa de valores, 3ª faixa de valores, 4ª faixa de valores"
+              example: "1ª Faixa de valores"
+            value:
+              type: number
+              description: "Valor médio da tarifa cobrada, relativa ao serviço prioritário, para o tipo de faixa informada."
+              example: 45.00
+            currency:
+              type: string
+              maxLength: 3
+              pattern: ^([A-Z]{3})$
+              description: "Moeda referente ao valor da tarifa conforme ISO-4217"
+              example: "BRL"
+            frequency:
+              type: string
+              description: "Frequência de clientes em cada faixa de valor. Representa uma porcentagem"
+              example: " 0.15 (O valor ao lado representa 15%. O valor 1 representa 100%)"
         chargingUnit:
           type: string
           maxLength: 50
@@ -1881,11 +1828,8 @@ components:
       properties:
         interval:
           type: string
-          enum: ["1_FAIXA",
-                "2_FAIXA",
-                "3_FAIXA",
-                "4_FAIXA"]
           description: "Faixas para cobrança de valores de tarifas por produto/serviço informado: 1ª Faixa de valores, 2ª Faixa de valores, 3ª Faixa de valores, 4ª Faixa de valores"
+          example: "3ª Faixa de valores"
         value:
           type: string
           description: "Valor da tarifa cobrada, relativa ao serviço ofertado para a Modalidade de Empréstimo, para pessoa"
@@ -1941,10 +1885,8 @@ components:
           properties:
             interval:
               type: string
-              enum: ["1_FAIXA",
-                    "2_FAIXA",
-                    "3_FAIXA",
-                    "4_FAIXA"]
+              description: "Faixas para cobrança de valores de tarifas para Outros Serviços informados: 1ª Faixa de valores, 2ª faixa de valores, 3ª faixa de valores, 4ª faixa de valores"
+              example: "3ª Faixa de valores"
             value:
               type: string
               description: "Valor médio da taxa de remuneração relativa ao serviço ofertado, para pessoa fisica informado no período. p.ex. '45.00'"
@@ -2139,11 +2081,8 @@ components:
       properties:
         interval:
           type: string
-          enum: ["1_FAIXA",
-                "2_FAIXA",
-                "3_FAIXA",
-                "4_FAIXA"]
           description: "Faixas para cobrança de valores de tarifas por produto/serviço informado: 1ª Faixa de valores, 2ª Faixa de valores, 3ª Faixa de valores, 4ª Faixa de valores"
+          example: "3ª Faixa de valores"
         value:
           type: string
           description: "Valor da tarifa cobrada, relativa ao serviço ofertado para a Modalidade de Empréstimo, para pessoa"
@@ -2199,10 +2138,8 @@ components:
           properties:
             interval:
               type: string
-              enum: ["1_FAIXA",
-                    "2_FAIXA",
-                    "3_FAIXA",
-                    "4_FAIXA"]
+              description: "Faixas para cobrança de valores de tarifas para Outros Serviços informados: 1ª Faixa de valores, 2ª faixa de valores, 3ª faixa de valores, 4ª faixa de valores"
+              example: "3ª Faixa de valores"
             value:
               type: string
               description: "Valor médio da taxa de remuneração relativa ao serviço ofertado, para pessoa fisica informado no período. p.ex. '45.00'"
