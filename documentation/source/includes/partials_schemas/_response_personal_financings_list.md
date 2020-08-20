@@ -28,8 +28,6 @@
                         "frequency": "string"
                       }
                     ],
-                    "referenceValue": "string",
-                    "referenceCurrency": "string",
                     "additionalInfo": "string"
                   }
                 ],
@@ -79,7 +77,7 @@
 |     Nome      |  Tipo                                                       | Obrigatório  |                            Definição                  |
 |:------------  |:---------------------------------                           |:-----------  |:----------------------------------------------------  |
 | data          | object                                                      | Sim          |                                                       |
-| brand       | [[PersonalFinancingsBrand](#schemaPersonalFinancingsBrand)] | Sim          | Lista das organizações titulares das dependências.      |
+| brand         | [[PersonalFinancingsBrand](#schemaPersonalFinancingsBrand)] | Sim          | Lista das organizações titulares das dependências.      |
 | links         | [[LinksPaginated](#schemaLinksPaginated)]                   | Sim          |                                                       |
 | meta          | [MetaPaginated](#schemaMetaPaginated)                     | Sim          |                                                       |
 
@@ -110,8 +108,6 @@
                   "frequency": "string"
                 }
               ],
-              "referenceValue": "string",
-              "referenceCurrency": "string",
               "additionalInfo": "string"
             }
           ],
@@ -173,8 +169,6 @@
               "frequency": "string"
             }
           ],
-          "referenceValue": "string",
-          "referenceCurrency": "string",
           "additionalInfo": "string"
         }
       ],
@@ -231,8 +225,6 @@
           "frequency": "string"
         }
       ],
-      "referenceValue": "string",
-      "referenceCurrency": "string",
       "additionalInfo": "string"
     }
   ],
@@ -325,8 +317,6 @@
       "frequency": "string"
     }
   ],
-  "referenceValue": "string",
-  "referenceCurrency": "string",
   "additionalInfo": "string"
 }
 ```
@@ -338,8 +328,6 @@
 | chargingTriggerInfo  | string                                                                   | Não            | Fatores geradores de cobrança que incidem sobre as Modalidades de Financiamentos, para pessoa física. Campo Aberto.                          |
 | chargingUnit         | string                                                                   | Não            | Unidade ou forma de cobrança.                                                                                                               |
 | price                | [[Price](#schemaPrice)]                                                  | Sim            | Lista de preços possíveis.                                                                                                                  |
-| referenceValue       | [AmountString](#commonFieldAmountString)                                 | Sim            | Valor de referência utilizado na apuração dos valores informados por quartil (representa um valor monetário).                                |
-| referenceCurrency    | [CurrencyString](#commonFieldCurrencyString)                             | Sim            | Moeda relativa ao valor de referência, segundo modelo ISO-4217.                                                                            |
 | additionalInfo       | string                                                                   | Não            | Descrição de como é composto o valor da tarifa. p.ex. '0,25% sobre o excedente do limite acima de R$ 500,00'.                               |
 
 ## PersonalFinancingsInterestRates 
@@ -372,45 +360,13 @@
 | prePostTax                | [Enum PrePostTax](#schemaPrePostTax)                                            | Sim            | Indicador de pré ou pós. A diferença básica é que, enquanto o prefixado apresenta rentabilidade definida, o pós-fixado acompanha algum indicador. Assim, quem investe no primeiro grupo sabe como será seu rendimento previamente, enquanto quem investe no segundo, só conhecerá os resultados na data de vencimento. |
 | frequency                 | [Enum FrequencyType](#schemaFrequencyType)                                      | Sim            | Frequência sobre a qual incide a Remuneração.                                                                                                                                                                                                                                                                          |
 | incomeRateInfo            | string                                                                          | Não            | Descrição da Remuneração relativa as taxas de juros remuneratórias sobre a modalidade de Financiamento informada, para pessoa física.                                                                                                                                                                                  |
-| application               | [[PersonalFinancingApplication](#schemaPersonalFinancingApplication)]           | Não            | Descrição da Remuneração relativa as taxas de juros remuneratórias sobre a modalidade de direitos creditórios descontados informada, para pessoa física.                                                                                                                                                               |
-| referenceValue            | [AmountString](#commonFieldAmountString)                                        | Sim            | Valor de referência utilizado na apuração dos valores informados por quartil (representa um valor monetário).                                |
-| referenceCurrency         | [CurrencyString](#commonFieldCurrencyString)                                    | Sim            | Moeda relativa ao valor de referência, segundo modelo ISO-4217.                                                                            |
+| application               | [[Price](#schemaPrice)]                                                         | Não            | Descrição da Remuneração relativa as taxas de juros remuneratórias sobre a modalidade de direitos creditórios descontados informada, para pessoa física.                                                                                                                                                               |
 
 ### Enum PersonalFinancingsIndexer
 <a id="schemaEnumPersonalFinancingsIndexer"></a>
 
 | Propriedade  | Código | Definição   |
 |:------------ |:------ |:----------- |
-| indexer      | IPCA   | IPCA.        |
-| indexer      | SELIC  | SELIC.       |
-| indexer      | CDI    | CDI.         |
-
-## PersonalFinancingApplication 
-<a id="schemaPersonalFinancingApplication"></a>
-
-```json
-{
-  "interval": "string",
-  "value": "string",
-  "currency": "string",
-  "frequency": "string"
-}
-```
-
-|     Nome     |  Tipo                                             | Obrigatório    |                            Definição                                                                                                                                                                                      |
-|:------------ |:------------------------------------------------- |:-------------- |:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| interval     | [Enum PersonalFinancingsInterval](#schemaEnumPersonalFinancingsInterval)                | Sim            | Faixas para cobrança de valores de tarifas por produto/serviço informado: 1ª Faixa de valores, 2ª Faixa de valores, 3ª Faixa de valores, 4ª Faixa de valores |
-| value         | [RateString](#commonFieldRateString)              | Sim            | Valor médio da tarifa, relativa ao serviço ofertado, para pessoa física informado no período. p.ex. '45.00'            |
-| currency         | [RateString](#commonFieldRateString)              | Sim            | Moeda referente ao valor da Tarifa, segundo modelo ISO-4217. p. ex. 'BRL'            |
-| frequency         | [RateString](#commonFieldRateString)              | Sim            | Frequência de clientes em cada faixa de valor. Representa uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O Valor 1 representa 100%)         |
-
-
-### Enum PersonalFinancingsInterval
-<a id="schemaEnumPersonalFinancingsInterval"></a>
-
-| Propriedade  | Código    | Definição            |
-|:------------ |:--------- |:-------------------- |
-| interval     | 1_FAIXA   | 1ª Faixa de valores  |
-| interval     | 2_FAIXA   | 2ª Faixa de valores  |
-| interval     | 3_FAIXA   | 3ª Faixa de valores  |
-| interval     | 4_FAIXA   | 4ª Faixa de valores  |
+| indexer      | IPCA   | IPCA.       |
+| indexer      | SELIC  | SELIC.      |
+| indexer      | CDI    | CDI.        |

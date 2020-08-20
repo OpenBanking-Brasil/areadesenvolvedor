@@ -25,16 +25,15 @@
 | totalRecords      | integer       | Número total de registros no resultado. | Mandatório      |           |
 | totalPages        | integer       | Número total de páginas no resultado.   | Mandatório      |           |
 
-## Enum PriceType
-<a id="schemaPriceType"></a>
+## Enum PriceInterval
+<a id="schemaPriceInterval"></a>
 
-| Nome         | Código             | Definição   |
-|:------------ |:------             |:----------- |
-| type         | MINIMO             | Mínimo      |
-| type         | PRIMEIRO_QUARTIL   | 1º Quartil  |
-| type         | SEGUNDO_QUARTIL    | 2º Quartil  |
-| type         | TERCEIRO_QUARTIL   | 3º Quartil  |
-| type         | QUARTO_QUARTIL     | 4º Quartil  |
+| Nome         | Código             | Definição           |
+|:------------ |:------------------ |:------------------- |
+| interval     | 1_FAIXA_VALORES    | 1ª Faixa de valores |
+| interval     | 2_FAIXA_VALORES    | 2ª Faixa de valores |
+| interval     | 3_FAIXA_VALORES    | 3ª Faixa de valores |
+| interval     | 4_FAIXA_VALORES    | 4ª Faixa de valores |
 
 ## Enum FrequencyType
 <a id="schemaFrequencyType"></a>
@@ -44,6 +43,15 @@
 | frequency    | AD     | Ao dia      |
 | frequency    | AM     | Ao mês      |
 | frequency    | AA     | Ao ano      |
+
+## Enum OccurrenceType
+<a id="schemaOccurrenceType"></a>
+
+| Nome         | Código | Definição   |
+|:------------ |:------ |:----------- |
+| occurrence   | AD     | Ao dia      |
+| occurrence   | AM     | Ao mês      |
+| occurrence   | AA     | Ao ano      |
 
 ## Enum PrePostTax
 <a id="schemaPrePostTax"></a>
@@ -58,14 +66,33 @@
 
 ```json
 {
-  "type": "string",
+  "interval": "string",
   "value": "string",
-  "currency": "string"
+  "currency": "string",
+  "frequency": "string"
 }
 ```
 
-|     Nome     |  Tipo                                                     | Obrigatório    |                            Definição                                                                 |
-|:------------ |:--------------------------------------------------------- |:-------------- |:---------------------------------------------------------------------------------------------------- |
-| type         | [Enum PriceType](#schemaPriceType)                        | Sim            | Identifica o período referente ao valor de taxa efetivamente aplicada no intervalo informado.        |
-| value        | [AmountString](#commonFieldAmountString)                  | Sim            | Valor da tarifa cobrada, relativa ao serviço ofertado                                                |
-| currency     | [CurrencyString](#commonFieldCurrencyString)              | Sim            | Moeda referente ao valor da tarifa                                                                   |
+|     Nome     |  Tipo                                            | Obrigatório    |                            Definição                                                |
+|:------------ |:------------------------------------------------ |:-------------- |:-----------------------------------------------------------------------------       |
+| interval     | [Enum PriceInterval](#schemaPriceInterval)       | Sim            | Faixas para cobrança de valores de tarifas por produto/serviço informado.           |
+| value        | [AmountString](#commonFieldAmountString)         | Sim            | Valor para a tarifa cobrada, relativa ao serviço ofertado                           |
+| currency     | [CurrencyString](#commonFieldCurrencyString)     | Sim            | Moeda referente ao valor da tarifa                                                  |
+| frequency    | [RateString](#commonFieldRateString)             | Sim            | Frequência de clientes em cada faixa de valor. Representa uma porcentagem Ex: 0.15  |
+
+## Rate
+<a id="schemaRate"></a>
+
+```json
+{
+  "interval": "string",
+  "rate": "string",
+  "frequency": "string"
+}
+```
+
+|     Nome     |  Tipo                                            | Obrigatório    |                            Definição                                                |
+|:------------ |:------------------------------------------------ |:-------------- |:-----------------------------------------------------------------------------       |
+| interval     | [Enum PriceInterval](#schemaPriceInterval)       | Sim            | Faixas para cobrança de valores de tarifas por produto/serviço informado.           |
+| rate         | [RateString](#commonFieldRateString)             | Sim            | Percentual correspondente, relativa ao serviço ofertado                           |
+| frequency    | [RateString](#commonFieldRateString)             | Sim            | Frequência de clientes em cada faixa de valor. Representa uma porcentagem Ex: 0.15  |
