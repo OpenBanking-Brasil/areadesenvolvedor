@@ -17,13 +17,14 @@
                 "priorityServices": [
                   {
                     "code": "string",
-                    "price": {
-                      "type": "string",
-                      "value": "string",
-                      "currency": "string"
-                    },
-                    "referenceValue": "string",
-                    "referenceCurrency": "string",
+                    "price": [
+                      {
+                        "interval": "string",
+                        "value": "string",
+                        "currency": "string",
+                        "frequency": "string"
+                      }
+                    ],
                     "chargingUnit": "string"
                   }
                 ],
@@ -32,13 +33,14 @@
                     "name": "string",
                     "code": "string",
                     "chargingTriggerInfo": "string",
-                    "price": {
-                      "type": "string",
-                      "value": "string",
-                      "currency": "string"
-                    },
-                    "referenceValue": "string",
-                    "referenceCurrency": "string",
+                    "price": [
+                      {
+                        "interval": "string",
+                        "value": "string",
+                        "currency": "string",
+                        "frequency": "string"
+                      }
+                    ],
                     "additionalInfo": "string",
                     "chargingUnit": "string"
                   }
@@ -52,21 +54,15 @@
                     "eventLimitQuantity": "string",
                     "freeEventQuantity": "string",
                     "price": {
-                      "type":"string",
                       "value": "string",
                       "currency": "string"
-                    },
-                    "referenceValue":"string",
-                    "referenceCurrency":"string"
+                    }
                   }
                 ],
                 "price":{
-                  "types":"string",
-                  "monthly":"string",
+                  "monthlyFee":"string",
                   "currency":"string"
-                },
-                "referenceValue":"string",
-                "referenceCurrency":"string"
+                }
               },
               "openCloseChannels": "string",
               "additionalInfo":"string",
@@ -85,11 +81,10 @@
                 "frequency": "string",
                 "additionalInfo": "string",
                 "application":{
-                  "types":"string",
-                  "rate":"string"
-                },
-                "referenceValue":"string",
-                "referenceCurrency":"string"
+                  "interval":"string",
+                  "rate":"string",
+                  "frequency":"string"
+                }
               }
             }
           ]
@@ -114,7 +109,7 @@
 |     Nome          |  Tipo                                                  | Obrigatório  |                            Definição                  |
 |:------------      |:---------------------------------                      |:-----------  |:----------------------------------------------------  |
 | data              | object                                                 | Sim          |                                                       |
-| brand           | [[PersonalAccountBrand](#schemaPersonalAccountBrand)]  | Sim          | Lista das organizações responsáveis pelas contas.       |
+| » brand           | [[PersonalAccountBrand](#schemaPersonalAccountBrand)]  | Sim          | Lista das organizações responsáveis pelas contas.       |
 | links             | [[LinksPaginated](#schemaLinksPaginated)]              | Sim          |                                                       |
 | meta              | [MetaPaginated](#schemaMetaPaginated)                  | Sim          |                                                       |
 
@@ -135,13 +130,14 @@
             "priorityServices": [
               {
                 "code": "string",
-                "price": {
-                  "type": "string",
-                  "value": "string",
-                  "currency": "string"
-                },
-                "referenceValue": "string",
-                "referenceCurrency": "string",
+                "price": [
+                  {
+                    "interval": "string",
+                    "value": "string",
+                    "currency": "string",
+                    "frequency": "string"
+                  }
+                ],
                 "chargingUnit": "string"
               }
             ],
@@ -150,44 +146,39 @@
                 "name": "string",
                 "code": "string",
                 "chargingTriggerInfo": "string",
-                "price": {
-                  "type": "string",
-                  "value": "string",
-                  "currency": "string"
-                },
-                "referenceValue": "string",
-                "referenceCurrency": "string",
+                "price": [
+                  {
+                    "interval": "string",
+                    "value": "string",
+                    "currency": "string",
+                    "frequency": "string"
+                  }
+                ],
                 "additionalInfo": "string",
                 "chargingUnit": "string"
               }
             ]
           },
           "serviceBundles": {
-            "name":"string",
+            "name": "string",
             "services": [
               {
                 "code": "string",
                 "eventLimitQuantity": "string",
                 "freeEventQuantity": "string",
                 "price": {
-                  "type":"string",
                   "value": "string",
                   "currency": "string"
-                },
-                "referenceValue":"string",
-                "referenceCurrency":"string"
+                }
               }
             ],
-            "price":{
-              "types":"string",
-              "monthly":"string",
-              "currency":"string"
-            },
-            "referenceValue":"string",
-            "referenceCurrency":"string"
+            "price": {
+              "monthlyFee": "string",
+              "currency": "string"
+            }
           },
           "openCloseChannels": "string",
-          "additionalInfo":"string",
+          "additionalInfo": "string",
           "transactionMethods": "string",
           "termsConditions": {
             "minimumBalance": "string",
@@ -202,12 +193,11 @@
             "prePostTax": "string",
             "frequency": "string",
             "additionalInfo": "string",
-            "application":{
-              "types":"string",
-              "rate":"string"
-            },
-            "referenceValue":"string",
-            "referenceCurrency":"string"
+            "application": {
+              "interval": "string",
+              "rate": "string",
+              "frequency": "string"
+            }
           }
         }
       ]
@@ -225,93 +215,88 @@
 <a id="schemaPersonalAccountCompanies"></a>
 
 ```json
-  {
-    "name": "string",
-    "cnpjNumber": "string",
-    "PersonalAccounts": [
-      {
-        "type": "string",
-        "fees": {
-          "priorityServices": [
-            {
-              "code": "string",
-              "price": {
-                "type": "string",
+{
+  "name": "string",
+  "cnpjNumber": "string",
+  "PersonalAccounts": [
+    {
+      "type": "string",
+      "fees": {
+        "priorityServices": [
+          {
+            "code": "string",
+            "price": [
+              {
+                "interval": "string",
                 "value": "string",
-                "currency": "string"
-              },
-              "referenceValue": "string",
-              "referenceCurrency": "string",
-              "chargingUnit": "string"
-            }
-          ],
-          "otherServices": [
-            {
-              "name": "string",
-              "code": "string",
-              "chargingTriggerInfo": "string",
-              "price": {
-                "type": "string",
+                "currency": "string",
+                "frequency": "string"
+              }
+            ],
+            "chargingUnit": "string"
+          }
+        ],
+        "otherServices": [
+          {
+            "name": "string",
+            "code": "string",
+            "chargingTriggerInfo": "string",
+            "price": [
+              {
+                "interval": "string",
                 "value": "string",
-                "currency": "string"
-              },
-              "referenceValue": "string",
-              "referenceCurrency": "string",
-              "additionalInfo": "string",
-              "chargingUnit": "string"
+                "currency": "string",
+                "frequency": "string"
+              }
+            ],
+            "additionalInfo": "string",
+            "chargingUnit": "string"
+          }
+        ]
+      },
+      "serviceBundles": {
+        "name": "string",
+        "services": [
+          {
+            "code": "string",
+            "eventLimitQuantity": "string",
+            "freeEventQuantity": "string",
+            "price": {
+              "value": "string",
+              "currency": "string"
             }
-          ]
-        },
-        "serviceBundles": {
-          "name":"string",
-          "services": [
-            {
-              "code": "string",
-              "eventLimitQuantity": "string",
-              "freeEventQuantity": "string",
-              "price": {
-                "type":"string",
-                "value": "string",
-                "currency": "string"
-              },
-              "referenceValue":"string",
-              "referenceCurrency":"string"
-            }
-          ],
-          "price":{
-            "types":"string",
-            "monthly":"string",
-            "currency":"string"
-          },
-          "referenceValue":"string",
-          "referenceCurrency":"string"
-        },
-        "openCloseChannels": "string",
-        "additionalInfo":"string",
-        "transactionMethods": "string",
-        "termsConditions": {
-          "minimumBalance": "string",
-          "minimumBalanceCurrency": "string",
-          "elegibilityCriteriaInfo": "string",
-          "closingProcessInfo": "string"
-        },
-        "incomeRates": {
+          }
+        ],
+        "price": {
+          "monthlyFee": "string",
+          "currency": "string"
+        }
+      },
+      "openCloseChannels": "string",
+      "additionalInfo": "string",
+      "transactionMethods": "string",
+      "termsConditions": {
+        "minimumBalance": "string",
+        "minimumBalanceCurrency": "string",
+        "elegibilityCriteriaInfo": "string",
+        "closingProcessInfo": "string"
+      },
+      "incomeRates": {
+        "rate": "string",
+        "referencialRate": "string",
+        "indexer": "string",
+        "prePostTax": "string",
+        "frequency": "string",
+        "additionalInfo": "string",
+        "application": {
+          "interval": "string",
           "rate": "string",
-          "referencialRate": "string",
-          "indexer": "string",
-          "prePostTax": "string",
-          "frequency": "string",
-          "additionalInfo": "string",
-          "application":{
-            "types":"string",
-            "rate":"string"
-          },
-          "referenceValue":"string",
-          "referenceCurrency":"string"
+          "frequency": "string"
         }
       }
-    ]
-  }
+    }
+  ]
+}
 ```
 
 |     Nome        |  Tipo                                                         | Obrigatório  |                            Definição                                 |
@@ -325,87 +310,82 @@
 <a id="schemaPersonalAccounts"></a>
 
 ```json
-  {
-    "type": "string",
-    "fees": {
-      "priorityServices": [
-        {
-          "code": "string",
-          "price": {
-            "type": "string",
+{
+  "type": "string",
+  "fees": {
+    "priorityServices": [
+      {
+        "code": "string",
+        "price": [
+          {
+            "interval": "string",
             "value": "string",
-            "currency": "string"
-          },
-          "referenceValue": "string",
-          "referenceCurrency": "string",
-          "chargingUnit": "string"
-        }
-      ],
-      "otherServices": [
-        {
-          "name": "string",
-          "code": "string",
-          "chargingTriggerInfo": "string",
-          "price": {
-            "type": "string",
+            "currency": "string",
+            "frequency": "string"
+          }
+        ],
+        "chargingUnit": "string"
+      }
+    ],
+    "otherServices": [
+      {
+        "name": "string",
+        "code": "string",
+        "chargingTriggerInfo": "string",
+        "price": [
+          {
+            "interval": "string",
             "value": "string",
-            "currency": "string"
-          },
-          "referenceValue": "string",
-          "referenceCurrency": "string",
-          "additionalInfo": "string",
-          "chargingUnit": "string"
+            "currency": "string",
+            "frequency": "string"
+          }
+        ],
+        "additionalInfo": "string",
+        "chargingUnit": "string"
+      }
+    ]
+  },
+  "serviceBundles": {
+    "name": "string",
+    "services": [
+      {
+        "code": "string",
+        "eventLimitQuantity": "string",
+        "freeEventQuantity": "string",
+        "price": {
+          "value": "string",
+          "currency": "string"
         }
-      ]
-    },
-    "serviceBundles": {
-      "name":"string",
-      "services": [
-        {
-          "code": "string",
-          "eventLimitQuantity": "string",
-          "freeEventQuantity": "string",
-          "price": {
-            "type":"string",
-            "value": "string",
-            "currency": "string"
-          },
-          "referenceValue":"string",
-          "referenceCurrency":"string"
-        }
-      ],
-      "price":{
-        "types":"string",
-        "monthly":"string",
-        "currency":"string"
-      },
-      "referenceValue":"string",
-      "referenceCurrency":"string"
-    },
-    "openCloseChannels": "string",
-    "additionalInfo":"string",
-    "transactionMethods": "string",
-    "termsConditions": {
-      "minimumBalance": "string",
-      "minimumBalanceCurrency": "string",
-      "elegibilityCriteriaInfo": "string",
-      "closingProcessInfo": "string"
-    },
-    "incomeRates": {
+      }
+    ],
+    "price": {
+      "monthlyFee": "string",
+      "currency": "string"
+    }
+  },
+  "openCloseChannels": "string",
+  "additionalInfo": "string",
+  "transactionMethods": "string",
+  "termsConditions": {
+    "minimumBalance": "string",
+    "minimumBalanceCurrency": "string",
+    "elegibilityCriteriaInfo": "string",
+    "closingProcessInfo": "string"
+  },
+  "incomeRates": {
+    "rate": "string",
+    "referencialRate": "string",
+    "indexer": "string",
+    "prePostTax": "string",
+    "frequency": "string",
+    "additionalInfo": "string",
+    "application": {
+      "interval": "string",
       "rate": "string",
-      "referencialRate": "string",
-      "indexer": "string",
-      "prePostTax": "string",
-      "frequency": "string",
-      "additionalInfo": "string",
-      "application":{
-        "types":"string",
-        "rate":"string"
-      },
-      "referenceValue":"string",
-      "referenceCurrency":"string"
+      "frequency": "string"
     }
   }
+}
 ```
 
 |     Nome              |  Tipo                                          |  Obrigatório    |                            Descrição                  |
@@ -455,37 +435,39 @@
 <a id="schemaFeesPersonalAccount"></a>
 
 ```json
-  {
-    "priorityServices": [
-      {
-        "code": "string",
-        "price": {
-          "type": "string",
+{
+  "priorityServices": [
+    {
+      "code": "string",
+      "price": [
+        {
+          "interval": "string",
           "value": "string",
-          "currency": "string"
-        },
-        "referenceValue": "string",
-        "referenceCurrency": "string",
-        "chargingUnit": "string"
-      }
-    ],
-    "otherServices": [
-      {
-        "name": "string",
-        "code": "string",
-        "chargingTriggerInfo": "string",
-        "price": {
-          "type": "string",
+          "currency": "string",
+          "frequency": "string"
+        }
+      ],
+      "chargingUnit": "string"
+    }
+  ],
+  "otherServices": [
+    {
+      "name": "string",
+      "code": "string",
+      "chargingTriggerInfo": "string",
+      "price": [
+        {
+          "interval": "string",
           "value": "string",
-          "currency": "string"
-        },
-        "referenceValue": "string",
-        "referenceCurrency": "string",
-        "additionalInfo": "string",
-        "chargingUnit": "string"
-      }
-    ]
-  }
+          "currency": "string",
+          "frequency": "string"
+        }
+      ],
+      "additionalInfo": "string",
+      "chargingUnit": "string"
+    }
+  ]
+}
 ```
 
 |     Nome         |  Tipo                              |  Obrigatório    |                       Descrição                     |
@@ -498,25 +480,24 @@
 <a id="schemaPriorityServicesPersonalAccount"></a>
 
 ```json
-  {
-    "code": "string",
-    "price": {
-      "type": "string",
+{
+  "code": "string",
+  "price": [
+    {
+      "interval": "string",
       "value": "string",
-      "currency": "string"
-    },
-    "referenceValue": "string",
-    "referenceCurrency": "string",
-    "chargingUnit": "string"
-  }
+      "currency": "string",
+      "frequency": "string"
+    }
+  ],
+  "chargingUnit": "string"
+}
 ```
 
 |     Nome          |  Tipo                              |  Obrigatório    |                            Descrição                |
 |:------------------|:-----------------------------------|:----------------|:----------------------------------------------------|
-| code              |  [[Enum CodePriorityServicesPersonalAccount ](#schemaEnumCodePriorityServicesPersonalAccount)]                             | Sim             | Sigla de identificação do Serviço Prioritário, segundo Resolução 3.919 do Bacen  |
-| price     | [[PricePriorityServicesPersonalAccount](#schemaOPricePriorityServicesPersonalAccount)] | Sim             | Lista Tarifas de outros serviços da conta                                 |
-| referenceValue    | string                             | Sim             | Valor de referência utilizado na apuração dos percentuais informados por quartil |
-| referenceCurrency | string                             | Sim             | Moeda relativa ao valor de referência, segundo modelo ISO-4217 |
+| code              | [[Enum CodePriorityServicesPersonalAccount ](#schemaEnumCodePriorityServicesPersonalAccount)]                             | Sim             | Sigla de identificação do Serviço Prioritário, segundo Resolução 3.919 do Bacen  |
+| price             | [[Price](#schemaPrice)] | Sim             | Lista Tarifas de outros serviços da conta                                 |
 | chargingUnit      | string                             | Sim             | Unidade ou forma de cobrança, relativa a cada tarifa de serviço prioritário informada. |
 
 ### Enum CodePriorityServicesPersonalAccount  
@@ -534,39 +515,40 @@
 | code                 | FORNECIMENTO_FOLHAS_CHEQUE   | Movimentação presencial    |
 | code                 | CHEQUE_ADMINISTRATIVO   | Movimentação eletrônica    |
 | code                 | CHEQUE_VISADO       | Movimentação com cheque    |
-| code   | SAQUE       | Movimentação com cartão    |
-| code   | SAQUE_CONTA_DEPOSITOS_VISTA_POUPANCA   | Movimentação presencial    |
-| code   | DEPOSITO   | Movimentação eletrônica    |
-| code   | DEPOSITO_IDENTIFICADO       | Movimentação com cheque    |
-| code   | CONSULTA       | Movimentação com cartão    |
-| code   | FORNECIMENTO_EXTRATO_MENSAL_CONTA_VISTA_POUPANCA   | Movimentação presencial    |
-| code   | FORNECIMENTO_EXTRATO_PERIODO_CONTA_VISTA_POUPANCA   | Movimentação eletrônica    |
-| code   | FONECIMENTO_COPIA_MICROFILME_MICROFICHA_ASSEMELHADO       | Movimentação com cheque    |
-| code   | TRANSFERENCIA_DOC       | Movimentação com cartão    |
-| code   | TRANSFERENCIA_TED   | Movimentação presencial    |
-| code   | TRANSFERENCIA_AGENDADA_DOC_TED   | Movimentação eletrônica    |
-| code   | TRANSFERENCIA_ENTRE_CONTAS_PROPRIA_INSTITUICAO       | Movimentação com cheque    |
-| code   | ORDEM_PAGAMENTO       | Movimentação com cartão    |
+| code                 | SAQUE       | Movimentação com cartão    |
+| code                 | SAQUE_CONTA_DEPOSITOS_VISTA_POUPANCA   | Movimentação presencial    |
+| code                 | DEPOSITO   | Movimentação eletrônica    |
+| code                 | DEPOSITO_IDENTIFICADO       | Movimentação com cheque    |
+| code                 | CONSULTA       | Movimentação com cartão    |
+| code                 | FORNECIMENTO_EXTRATO_MENSAL_CONTA_VISTA_POUPANCA   | Movimentação presencial    |
+| code                 | FORNECIMENTO_EXTRATO_PERIODO_CONTA_VISTA_POUPANCA   | Movimentação eletrônica    |
+| code                 | FONECIMENTO_COPIA_MICROFILME_MICROFICHA_ASSEMELHADO       | Movimentação com cheque    |
+| code                 | TRANSFERENCIA_DOC       | Movimentação com cartão    |
+| code                 | TRANSFERENCIA_TED   | Movimentação presencial    |
+| code                 | TRANSFERENCIA_AGENDADA_DOC_TED   | Movimentação eletrônica    |
+| code                 | TRANSFERENCIA_ENTRE_CONTAS_PROPRIA_INSTITUICAO       | Movimentação com cheque    |
+| code                 | ORDEM_PAGAMENTO       | Movimentação com cartão    |
 
 
 ## OtherServicesPersonalAccount
 <a id="schemaOtherServicesPersonalAccount"></a>
 
 ```json
-  {
-    "name": "string",
-    "code": "string",
-    "chargingTriggerInfo": "string",
-    "price": {
-      "type": "string",
+{
+  "name": "string",
+  "code": "string",
+  "chargingTriggerInfo": "string",
+  "price": [
+    {
+      "interval": "string",
       "value": "string",
-      "currency": "string"
-    },
-    "referenceValue": "string",
-    "referenceCurrency": "string",
-    "additionalInfo": "string",
-    "chargingUnit": "string"
-  }
+      "currency": "string",
+      "frequency": "string"
+    }
+  ],
+  "additionalInfo": "string",
+  "chargingUnit": "string"
+}
 ```
 
 | Nome                | Tipo   | Obrigatório | Descrição                                                 |
@@ -574,68 +556,39 @@
 | name                | string | Sim         | Nome atribuído a Outros Serviços disponíveis para os tipos de contas.                           |
 | code                | string | Não         | Sigla de identificação de Outros Serviços que incidem sobre os tipos de contas.   |
 | chargingTriggerInfo | string | Sim         | Outros Fatores geradores de cobrança referentes aos Outros Serviços que incidem sobre as contas comercializadas.                                    |
-| price               | [[PriceOtherServicesPersonalAccount](#schemaPriceOtherServicesPersonalAccount)] | Sim      | Valor da tarifa cobrada referente aos Outros Serviços.                  |
-| referenceValue            | string | Sim         | Valor de referência utilizado na apuração dos percentuais informados por quartil.                  |
-| referenceCurrency            | string | Sim         | Moeda relativa ao valor de referência, segundo modelo ISO-4217.                  |
+| price               | [[Price](#schemaPrice)] | Sim      | Valor da tarifa cobrada referente aos Outros Serviços.                  |
 | additionalInfo      | string | Não         | Descrição de como é composto o valor da tarifa.                     |
 | chargingUnit        | string | Não         | Unidade ou forma de cobrança.                                    |
-
-## PriceOtherServicesPersonalAccount
-<a id="schemaPriceOtherServicesPersonalAccount"></a>
-
-```json
-  {
-    "type": "string",
-    "value": "string",
-    "currency": "string"
-  }
-```
-
-|     Nome    |  Tipo                        |  Obrigatório |                            Descrição                |
-|:------------|:-----------------------------|:-------------|:----------------------------------------------------|
-| type        | string                       | Sim          | Indica o tipo de valor da tarifa informado          |
-| value       | string                       | Sim          | Valor da tarifa cobrada referente aos Outros Serviços.       |
-| currency    | string                       | Sim          | Moeda referente ao valor máximo da tarifa, segundo modelo ISO-4217.   |
-
 
 ## ServiceBundlesPersonalAccount
 <a id="schemaServiceBundlesPersonalAccount"></a>
 
 ```json
 {
-  "name":"string",
-		"services": [
-		  {
-			"code": "string",
-			"eventLimitQuantity": "string",
-			"freeEventQuantity": "string",
-			"price": {
-			  "type":"string"
-			},
-			"value": "string",
-			"currency": "string",
-			"referenceValue":"string",
-			"referenceCurrency":"string"
-		  }
-		],
-		"typesPrice":"string",
-		"monthlyPrice":"string",
-		"currency": "string",
-		"referenceValue":"string",
-		"referenceCurrency":"string"
+  "name": "string",
+  "services": [
+    {
+      "code": "string",
+      "eventLimitQuantity": "string",
+      "freeEventQuantity": "string",
+      "price": {
+        "value": "string",
+        "currency": "string"
+      }
+    }
+  ],
+  "price": {
+    "monthlyFee": "string",
+    "currency": "string"
+  }
 }
-
 ```
 
-|     Nome           |  Tipo                        |  Obrigatório |                            Descrição                |
-|:-------------------|:-----------------------------|:-------------|:----------------------------------------------------|
-| name               | string                       | Sim          | Nome do conjunto de serviços                        |
-| services           | [[ServicesPersonalAccount](#schemaServicesPersonalAccount)]| Sim          | Lista de serviços       |
-| typesPrice         | string                       | Sim          | Indica o tipo de valor referente ao Pacote de serviço informado          |
-| monthlyPrice       | string                       | Sim          | Valor mensal da tarifa referente ao Pacote de Serviços         |
-| currency           | string                       | Sim          | Moeda referente ao valor do Pacote de serviços, segundo modelo ISO-4217.      |
-| referenceValue     | string                       | Sim          | Valor de referência utilizado na apuração dos percentuais informados por quartil       |
-| referenceCurrency  | string                       | Sim          | Moeda relativa ao valor de referência, segundo modelo ISO-4217.          |
+|     Nome           |  Tipo                                                               |  Obrigatório |                            Descrição                |
+|:-------------------|:-----------------------------                                       |:-------------|:----------------------------------------------------|
+| name               | string                                                              | Sim          | Nome do conjunto de serviços                        |
+| services           | [[ServicesPersonalAccount](#schemaServicesPersonalAccount)]         | Sim          | Lista de serviços       |
+| price              | [ServiceBundlesPersonalAccountPrice](#schemaServiceBundlesPersonalAccountPrice) | Sim          | Valor mensal da tarifa referente ao Pacote de Serviços |
 
 ## ServicesPersonalAccount
 <a id="schemaServicesPersonalAccount"></a>
@@ -646,12 +599,9 @@
   "eventLimitQuantity": "string",
   "freeEventQuantity": "string",
   "price": {
-    "type":"string"
-  },
-  "value": "string",
-  "currency": "string",
-  "referenceValue":"string",
-  "referenceCurrency":"string"
+    "value": "string",
+    "currency": "string"
+  }
 }
 ```
 
@@ -661,23 +611,40 @@
 | eventLimitQuantity | string                       | Sim          | Quantidade de eventos previstos no Pacote de Serviços.      |
 | freeEventQuantity  | string                       | Sim          | Quantidade de eventos previstos no Pacote de Serviços com isenção de Tarifa.      |
 | price           |  [[PriceServicesPersonalAccount](#schemaPriceServicesPersonalAccount)]| Sim          | Indica o tipo de valor da tarifa do serviço que compõe o Pacote de Serviços.     |
-| value           | string                       | Sim          | Valor da tarifa referente ao Serviço que compõe o Pacote de Serviços, relativo ao quantil tipo.         |
-| currency           | string                       | Sim          | Moeda referente ao valor máximo da tarifa, segundo modelo ISO-4217.                |
-| referenceValue           | string                       | Sim          | Valor de referência utilizado na apuração dos percentuais informados por quartil.                |
-| referenceCurrency           | string                       | Sim          | Moeda relativa ao valor de referência, segundo modelo ISO-4217.            |
+
 
 ## PriceServicesPersonalAccount
 <a id="schemaPriceServicesPersonalAccount"></a>
 
 ```json
 {
-  "type":"string"
+  "value": "string",
+  "currency": "string"
 }
 ```
 
 |     Nome           |  Tipo                        |  Obrigatório |                            Descrição                |
 |:-------------------|:-----------------------------|:-------------|:----------------------------------------------------|
-| type               | string                       | Sim          | Indica o tipo de valor da tarifa do serviço que compõe o Pacote de Serviços.     |
+| value           | string                       | Sim          | Valor da tarifa referente ao Serviço que compõe o Pacote de Serviços, relativo ao quantil tipo.         |
+| currency           | string                       | Sim          | Moeda referente ao valor máximo da tarifa, segundo modelo ISO-4217.                |
+
+
+## ServiceBundlesPersonalAccountPrice
+<a id="schemaServiceBundlesPersonalAccountPrice"></a>
+
+```json
+{
+  "monthlyFee": "string",
+  "currency": "string"
+}
+```
+
+|     Nome           |  Tipo                        |  Obrigatório |                            Descrição                |
+|:-------------------|:-----------------------------|:-------------|:----------------------------------------------------|
+| monthlyFee         | string                       | Sim          | Valor mensal da tarifa referente ao Pacote de Serviços |
+| currency           | string                       | Sim          | Moeda referente ao valor do Pacote de serviços, segundo modelo ISO-4217.      |
+
+
 
 ## TermsConditionsPersonalAccount
 <a id="schemaTermsConditionsPersonalAccount"></a>
@@ -704,17 +671,16 @@
 ```json
 {
   "rate": "string",
-	"referencialRate": "string",
-	"indexer": "string",
-	"prePostTax": "string",
-	"frequency": "string",
-	"additionalInfo": "string",
-	"application":{
-	  "types":"string",
-	  "rate":"string"
-	},
-	"referenceValue":"string",
-	"referenceCurrency":"string"
+  "referencialRate": "string",
+  "indexer": "string",
+  "prePostTax": "string",
+  "frequency": "string",
+  "additionalInfo": "string",
+  "application": {
+    "interval": "string",
+    "rate": "string",
+    "frequency": "string"
+  }
 }
 ```
 
@@ -723,43 +689,7 @@
 | rate              | string                                       | Sim          | Valor do percentual que corresponde a taxa de remuneração prevista para a conta do tipo 'poupança'.      |
 | referencialRate   | string                                       | Sim          | Taxa Referencial se configura como uma taxa de juros de referência, ou seja, um indicador geral da economia brasileira.          |
 | indexer           | string                                       | Sim          | Indexador é o termo utilizado para se referir aos índices usados como base para corrigir os valores monetários de um determinado ativo.     |
-| prePostTax        | [Enum PersonalAccountIncomeRatesPrePostTax](#schemaEnumPersonalAccountIncomeRatesPrePostTax) | Sim          | Indicador de indexador pré ou pós fixado.         |
-| frequency         | [Enum PersonalAccountIncomeRatesFrequency](#schemaEnumPersonalAccountIncomeRatesFrequency)   | Sim          | Código que indica Frequência sobre a qual incide a Remuneração.             |
+| prePostTax        | [Enum PrePostTax](#schemaPrePostTax)         | Sim          | Indicador de indexador pré ou pós fixado.         |
+| frequency         | [Enum FrequencyType](#schemaFrequencyType)   | Sim          | Código que indica Frequência sobre a qual incide a Remuneração.             |
 | additionalInfo    | string                                       | Sim          | Descrição da Remuneração.            |
-| application       | [[ApplicationIncomeRatesPersonalAccount](#schemaApplicationIncomeRatesPersonalAccount)]                                       | Sim          | Identifica o período referente ao percentual de taxa de remuneração efetivamente aplicada no intervalo informado.              |
-| referenceValue    | string                                       | Sim          | Valor de referência utilizado na apuração dos percentuais informados por quartil.       |
-| referenceCurrency | string                                       | Sim          | Moeda relativa ao valor de referência, segundo modelo ISO-4217.       |
-
-## ApplicationIncomeRatesPersonalAccount
-<a id="schemaApplicationIncomeRatesPersonalAccount"></a>
-
-```json
-{
-  "types":"string",
-  "rate":"string"
-}
-```
-
-|     Nome          |  Tipo                                        |  Obrigatório | Descrição                                           |
-|:------------------|:---------------------------------------------|:-------------|:----------------------------------------------------|
-| types             | string                                       | Sim          | Valor do percentual que corresponde a taxa de remuneração efetivamente aplicada no intervalo informado.        |
-| rate   | string                                       | Sim          | Valor do percentual que corresponde a taxa de remuneração efetivamente aplicada no intervalo informado.        |
-
-### Enum PersonalAccountIncomeRatesPrePostTax
-<a id="schemaEnumPersonalAccountIncomeRatesPrePostTax"></a>
-
-| Propriedade  | Valor  | Definição                                       
-|:------------ |:------ |:---------
-| prePostTax   | PRE    | Prefixado.
-| prePostTax   | POS    | Pós fixado.
-
-
-### Enum PersonalAccountIncomeRatesFrequency
-<a id="schemaEnumPersonalAccountIncomeRatesFrequency"></a>
-
-| Propriedade  | Valor | Definição                                   
-|:------------ |:------|:---------
-| frequency    | AD    | Ao dia.
-| frequency    | AM    | Ao mês.
-| frequency    | AA    | Ao ano.
-
+| application       | [[Rate](#schemaRate)]                        | Sim          | Identifica o período referente ao percentual de taxa de remuneração efetivamente aplicada no intervalo informado.              |
