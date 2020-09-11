@@ -1,6 +1,6 @@
 ## Convenções de nomenclatura 
 
-Todos os nomes devem ser auto-explicativos, sem redundância de termos e sem ambiguidade de entendimento, além de seguir o padrão *Lower Camel Case* (primeira letra de cada termo maiúscula, com exceção do primeiro termo, que fica todo em minúsculas e sem espaços ou pontuações entre os termos). Ex: “areaCode”.
+Todos os nomes devem ser autoexplicativos, sem redundância de termos e sem ambiguidade de entendimento, além de seguir o padrão *Lower Camel Case* (primeira letra de cada termo maiúscula, com exceção do primeiro termo, que fica todo em minúsculas e sem espaços ou pontuações entre os termos). Ex: “areaCode”.
 
 Os nomes das estruturas (composição de atributos sobre um assunto) que podem ter mais de uma ocorrência devem sempre estar no plural.
 

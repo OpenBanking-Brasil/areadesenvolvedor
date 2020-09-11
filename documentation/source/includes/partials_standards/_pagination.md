@@ -50,7 +50,7 @@ O valor padrão será assumido sempre que o parâmetro não estiver preenchido o
 Além dos dados requisitados, as respostas paginadas também terão em sua estrutura dois objetos adicionais que incluirão parâmetros para facilitar a nagevação das páginas:
 
 ### Links
-No objeto `links`, serão retornadas as URIs de paginação conforme parâmetros abaixo:
+O objeto `links` passará por revisão subsequente de modo a atender as próximas Fases do Open Banking, em especial a partir da Fase 2. No objeto `links`, serão retornadas hypermedia (referências para os recursos relacionados) de paginação conforme parâmetros abaixo:
 
 | Parâmetro | Descrição                                                                  | Restrição                                             |
 |:--------- |:-------------------------------------------------------------------------- |:----------------------------------------------------- |
