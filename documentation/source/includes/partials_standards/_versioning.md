@@ -3,12 +3,14 @@
 O controle de versão contemplará 4 tipos de lançamento (p.ex. *major*, *minor*, *patch* e *release candidate*) e terá
 prazos definidos para lançamento e implementação de novas versões *major*, bem como suporte de versões anteriores.
 
+No link Anexo: Guia de Versionamento, integrante desta documentação, estão documentados os casos previstos em que uma nova versão de API poderá vir a quebrar o contrato estabelecido
+
 > O versionamento terá o seguinte formato contemplando 4 tipos de lançamentos de versões:
 `1.12.2.rc1 - significando versão major 1, versão minor 12 , aplicação de patchs versão 2 e release candidate 1 `
 
-* **Major**: inclui novas características da implementação, mudanças e correções a serem incorporadas.
+* **Major**: inclui novas características da implementação, mudanças, correções a serem incorporadas e que poderão vir a quebrar o contrato.
 	- P.ex. v1.0.0, v2.0.0.
-* **Minor**: pequenas mudanças nos elementos já existentes.
+* **Minor**: pequenas mudanças nos elementos já existentes, com manutenção da compatibilidade e sem quebra de contrato.
     - P.ex. v1.1.0, v1.2.0
 * **Patch**: esclarecimentos às especificações publicadas pelo diretório, não incluem alterações funcionais.
     - P.ex. v1.1.1, v1.1.2

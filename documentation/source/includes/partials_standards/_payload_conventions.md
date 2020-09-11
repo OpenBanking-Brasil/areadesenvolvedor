@@ -48,7 +48,7 @@ Cada endpoint retornará um objeto JSON contendo os atributos abaixo:
     
 A definição do conteúdo para os objetos `data` e `meta` será definida separadamente para cada endpoint.
 
-O objeto `links` irá conter URIs para *endpoints* da API requisitada, apontando para pontos específicos relacionados ao recurso de paginação.
+O objeto `links` irá conter hypermedia (referências para recursos relacionados) para outros recursos da API requisitada.
 
 O objeto de `links` sempre irá conter o atributo `self` que irá apontar para a URI da solicitação atual.
 
@@ -112,3 +112,5 @@ Um atributo omitido (ou seja, um atributo que não está presente no *payload*) 
 Uma *string* vazia (`“”`) não será considerada equivalente a `null`.
 
 O valor booleano `false` não será considerado equivalente a `null`. Os atributos booleanos opcionais, por definição, possuirão três valores possíveis: verdadeiro (`true`), falso (`false`) e indeterminado (`null`).
+
+Na situação onde o campo a ser informado no payload seja obrigatório e a Instituição, seja consumidora no envio ou transmissora no retorno, não a possuir, deve-se implementar o valor padronizado: “NA” - Não se Aplica.
