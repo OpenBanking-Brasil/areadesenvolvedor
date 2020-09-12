@@ -5,7 +5,7 @@ Os limites de tráfego serão estabelecidos utilizando as seguintes métricas:
 * Transações por Segundo (TPS) - o número de transações simultâneas a cada segundo;
 * Número de chamadas - o número de chamadas de *endpoint* iniciadas por uma duração especificada.
 
-Cada instituição transmissora, deverá garantir os seguintes limites mínimos de tráfego:
+Cada instituição transmissora, deverá garantir os seguintes limites mínimos de tráfego abaixo especificados para as APIs de Dados Públicos – Fase 1, os quais serão revisados e ajustados em decorrência dos indicadores de uso das APIs, com revisão prevista imediatamente antes da entrada da Fase 2:
 
 * 500 Requisições por minuto por receptora (via endereço IP);
 * 300 TPS globalmente.

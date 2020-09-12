@@ -345,8 +345,8 @@
 |:------------               |:------------------                 |:----------  |:----------------------------                                    |
 | standard                   | Array                              | Sim         | Lista com os dias da semana.                                     |
 | » weekday                  | string                             | Sim         | Dia da semana.                                                   |
-| » openingTime              | [[UTCHour](#commonFieldUTCHour)]   | Sim         | Horário de abertura na dependência.                              |
-| » closingTime              | [[UTCHour](#commonFieldUTCHour)]   | Sim         | Horário de encerramento na dependência.                         |
+| » openingTime              | [[TimeString](#commonFieldTimeString)]   | Sim         | Horário de abertura na dependência.                              |
+| » closingTime              | [[TimeString](#commonFieldTimeString)]   | Sim         | Horário de encerramento na dependência.                         |
 | exceptionAvailability      | string                             | Não         | Informações sobre as exceções de abertura.                       |
 | allowPublicAccess          | string                             | Sim         | Define se a dependência possui acesso ao público. True ou False. |
 | phones                     | [[BranchPhone(#schemaBranchPhone)]]| Não         | Lista de telefones para contato com a dependência.               | 
