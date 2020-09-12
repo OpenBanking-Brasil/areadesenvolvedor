@@ -5,7 +5,7 @@ Os participantes podem ter o desejo de realizar inovações sobre os padrões de
 
 No entanto, é importante que um participante que esteja querendo estender as APIs não impeça um consumidor que foi projetado para consumir apenas o *endpoint* padrão funcione corretamente.
 
-Para atender tanto as demandas de quem deseja estender as API (participantes) quanto as demandas de quem irá realizar o consumo (consumidor da APIs), foram definidos os critérios abaixo.
+Para atender tanto as demandas de quem deseja estender as APIs (participantes) quanto as demandas de quem irá realizar o consumo (consumidor das APIs), foram definidos os critérios abaixo.
 
 É possível estender os padrões nos seguintes aspectos:
 
@@ -33,7 +33,7 @@ Para atender tanto as demandas de quem deseja estender as API (participantes) qu
 </ul>
 
 Participantes que desejam estender os padrões devem adicionar seu prefixo para identificar todas as extensões.
-Campos adicionais no retorno de *endpoints* existentes ou em novos *endpoints* devem usar o prefixo do participante. O prefixo deve ser no formato exposto ao lado (3 letras) e não devem haver prefixos duplicados entre os participantes.
+Campos adicionais no retorno de *endpoints* existentes ou em novos *endpoints* devem usar o prefixo do participante. O prefixo deve ser no formato exposto ao lado (4 letras) e não devem haver prefixos duplicados entre os participantes.
 
 Nesta documentação, quando tivermos que nos referir ao prefixo do participante, o termo `<PID>` será utilizado.
 

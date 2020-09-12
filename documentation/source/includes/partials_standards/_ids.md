@@ -1,10 +1,10 @@
 ## Estabilidade do ID
 
 
-Dentro desses padrões, os IDs de recursos são necessários para atender ao seguinte:
+Dentro desses padrões, a serem melhor especificados a partir da Fase 2 do Open Banking no Brasil, os IDs de recursos são necessários para atender ao seguinte:
 
 * O ID de um recurso deve ser especificado no *endpoint* de uma API apenas para obter detalhes do recurso ou para realizar alterações no mesmo.
 * Se o ID for especificado nos padrões do Open Banking, então ele é obrigatório e deverá ser fornecido pela entidade implementadora da API de acordo com o padrão definido.
 * Se um ID for especificado, o mesmo deverá ser totalmente desconectado de significados com outras entidades. Por exemplo, um ID não deve ser uma combinação de outros campos ou uma *string* que possa ter conteúdo sensível que possa ser extraído.
-* Os IDs devem ser únicos, porém sua unicidade pode estar dentro de um contexto. Por exemplo, um ID de conta corrente deve ser único, porém apenas dentro do contexto de conta corrente. 
+* Os IDs devem ser únicos, e sua padronização será detalhada a partir da Fase 2 do Open Banking no Brasil, porém sua unicidade pode estar dentro de um contexto. Por exemplo, um ID de conta corrente deve ser único, porém apenas dentro do contexto de conta corrente. 
 * Nos *payloads* o nome de campo "id" nunca deverá ser utilizado. Cada campo ID deverá ter um nome significativo, dessa forma independentemente de onde o ID for utilizado entre múltiplos *endpoints*, ele sempre irá se referir ao seu objeto principal. Por exemplo, IDs para conta deverão ser representados no JSON como "accountId".

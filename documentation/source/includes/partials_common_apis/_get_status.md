@@ -19,7 +19,7 @@ req.open("GET", "https://api.banco.com.br/open-banking/discovery/v1/status", tru
 req.send();
 ```
 
-> O comando acima retorna uma estrutura json como essa:
+> O comando acima retorna uma estrutura json como exemplificada abaixo, e no caso em que o status devolvido seja PARTIAL_FAILURE, o array unavailableEndpoints deve conter a lista de endpoints indisponíveis:
 
 ```json
 {
@@ -28,7 +28,8 @@ req.send();
     "explanation": "Retorno com Sucesso",
     "detectionTime": "2020-01-01T01:00:00+00:00",
     "expectedResolutionTime": "2020-01-01T01:00:00+00:00",
-    "updateTime": "2020-01-02T01:00:00+00:00"
+    "updateTime": "2020-01-02T01:00:00+00:00",
+    "unavailableEndpoints": []
   },
   "links": {
     "self": "https://api.banco.com.br/open-banking/discovery/v1/status"
@@ -40,7 +41,7 @@ req.send();
 }
 ```
 
-Obtém a descrição referente ao código de status retornado pelas APIs 
+Obtém a descrição referente ao código de status retornado pelas APIs. 
 
 Versão |
 ------ |
