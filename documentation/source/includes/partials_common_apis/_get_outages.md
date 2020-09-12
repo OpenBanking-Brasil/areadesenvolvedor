@@ -18,7 +18,7 @@ req.open("GET", "https://api.banco.com.br/open-banking/discovery/v1/outages", tr
 req.send();
 ```
 
-> O comando acima retorna uma estrutura json como essa:
+> Na estrutura de retorno exemplificada abaixo, no caso em que o parâmetro isPartial devolvido seja true, o array unavailableEndpoints deve conter a lista de endpoints indisponíveis:
 
 ```json
 {
@@ -28,7 +28,8 @@ req.send();
         "outageTime": "2020-01-01T01:00:00+00:00",
         "duration": "PT2H30M",
         "isPartial": false,
-        "explanation": "Atualização do API Gateway"
+        "explanation": "Atualização do API Gateway",
+        "unavailableEndpoints": []
       }
     ]
   },
