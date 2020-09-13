@@ -11,10 +11,12 @@
           {
             "name": "string",
             "cnpjNumber": "string",
+            "urlComplementaryList": "string",
             "channels": [
               {
                 "identification": {
                   "type": "string",
+                  "additionalInfo": "string",
                   "url": "string"
                 },
                 "services": {
@@ -61,10 +63,12 @@
     {
       "name": "string",
       "cnpjNumber": "string",
+      "urlComplementaryList": "string",
       "channels": [
         {
           "identification": {
             "type": "string",
+            "additionalInfo": "string",
             "url": "string"
           },
           "services": {
@@ -92,10 +96,12 @@
 {
   "name": "string",
   "cnpjNumber": "string",
+  "urlComplementaryList": "string",
   "channels": [
     {
       "identification": {
         "type": "string",
+        "additionalInfo": "string",
         "url": "string"
       },
       "services": {
@@ -109,11 +115,12 @@
 }
 ```
 
-|     Nome     |  Tipo                                           | Obrigatório    |                            Definição                       |
-|:------------ |:---------------------------------               |:-------------- |:----------------------------------------------------       |
-| name         | string                                          | Sim            | Nome do conglomerado responsável pelo canal de atendimento eletrônico.  |
-| cnpjNumber   | string                                          | Sim            | CNPJ da instituição responsável pelo canal de atendimento - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. |
-| channels     | [[ElectronicChannels](#schemaElectronicChannels)] | Sim            | Lista  de canais de atendimento eletrônico.                  |
+|     Nome                |  Tipo                                             | Obrigatório    |                            Definição                       |
+|:------------            |:---------------------------------                 |:-------------- |:----------------------------------------------------       |
+| name                    | string                                            | Sim            | Nome do conglomerado responsável pelo canal de atendimento eletrônico.  |
+| cnpjNumber              | string                                            | Sim            | CNPJ da instituição responsável pelo canal de atendimento - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. |
+| urlComplementaryList    | string                                            | Não            | URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber |
+| channels                | [[ElectronicChannels](#schemaElectronicChannels)] | Sim            | Lista  de canais de atendimento eletrônico.                  |
 
 ## ElectronicChannels
 <a id="schemaElectronicChannels"></a>
@@ -122,6 +129,7 @@
 {
   "identification": {
     "type": "string",
+    "additionalInfo": "string",
     "url": "string"
   },
   "services": {
@@ -144,14 +152,16 @@
 ```json
 {
   "type": "string",
+  "additionalInfo": "string",
   "url": "string"
 }
 ```
 
-|     Nome     |  Tipo                                                          | Obrigatório |                            Definição               | Restrições                           |
-|:------------ |:---------------------------------                              |:----------- |:-------------------------------------------------- |:------------------------------------ |
-| type         | [Enum ElectronicChannelsType](#schemaElectronicChannelsType)     | Sim         | Tipo de canal de atendimento.                       | O Tipo de Canal determina o Tipo de Acesso a ele relacionado: URL para acesso ao internet banking, URL para aquisição do app, URL da central,URL do SAC, URL da ouvidoria, URL para chat.                                     |
-| url          | string                                                         | Não         | Endereço eletrônico de acesso ao canal.             |  |
+|     Nome        |  Tipo                                                             | Obrigatório |                            Definição                                                  | Restrições                           |
+|:------------    |:---------------------------------                                 |:----------- |:--------------------------------------------------                                    |:------------------------------------ |
+| type            | [Enum ElectronicChannelsType](#schemaElectronicChannelsType)      | Sim         | Tipo de canal de atendimento.                                                         | O Tipo de Canal determina o Tipo de Acesso a ele relacionado: URL para acesso ao internet banking, URL para aquisição do app, URL da central,URL do SAC, URL da ouvidoria, URL para chat.    |
+| additionalInfo  | string                                                            | Não         | Campo de texto livre para descrever quando o tipo de canal de atendimento for Outros  | Só será preenchido quando o tipo de canal de atendimento for Outros                                                                                                                          |
+| url             | string                                                            | Não         | Endereço eletrônico de acesso ao canal.                                               |                                                                                                                                                                                              |
 
 ### Enum ElectronicChannelsType
 <a id="schemaElectronicChannelsType"></a>
@@ -163,6 +173,7 @@
 | type             | SAC                         | SAC.                                                             |
 | type             | OUVIDORIA                   | Ouvidoria.                                                       |
 | type             | CHAT                        | Chat.                                                            |
+| type             | OUTROS                      | Outros.                                                          |
 
 
 
@@ -187,4 +198,5 @@
 | codes        | OPERACOES_CAMBIO                                     | Operações de câmbio.                                   |
 | codes        | INVESTIMENTOS                                        | Investimentos.                                         |
 | codes        | SEGUROS                                              | Seguros.                                               |
+| codes        | OUTROS                                               | Outros.                                                |
 | codes        | ATENDIMENTO_DEMANDAS_CLIENTE                         | Atendimento as demandas de cliente.                    |
