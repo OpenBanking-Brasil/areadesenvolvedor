@@ -11,6 +11,7 @@
           {
             "name": "string",
             "cnpjNumber": "string",
+            "urlComplementaryList" : "string",
             "businessLoans": [
               {
                 "type": "string",
@@ -24,10 +25,17 @@
                       {
                         "interval": "string",
                         "value": "string",
-                        "currency": "string",
-                        "frequency": "string"
+                        "currency": "string"
                       }
                     ],
+                    "minimum": {
+                      "value": "string",
+                      "currency": "string"
+                    },
+                    "maximum": {
+                      "value": "string",
+                      "currency": "string"
+                    },
                     "additionalInfo": "string"
                   }
                 ],
@@ -43,10 +51,17 @@
                       {
                         "interval": "string",
                         "value": "string",
-                        "currency": "string",
-                        "frequency": "string"
+                        "currency": "string"
                       }
-                    ]
+                    ],
+                    "minimum": {
+                      "value": "string",
+                      "currency": "string"
+                    },
+                    "maximum": {
+                      "value": "string",
+                      "currency": "string"
+                    }
                   }
                 ],
                 "requiredWarranties": [
@@ -91,6 +106,7 @@
     {
       "name": "string",
       "cnpjNumber": "string",
+      "urlComplementaryList": "string",
       "businessLoans": [
         {
           "type": "string",
@@ -104,10 +120,17 @@
                 {
                   "interval": "string",
                   "value": "string",
-                  "currency": "string",
-                  "frequency": "string"
+                  "currency": "string"
                 }
               ],
+              "minimum": {
+                "value": "string",
+                "currency": "string"
+              },
+              "maximum": {
+                "value": "string",
+                "currency": "string"
+              },
               "additionalInfo": "string"
             }
           ],
@@ -123,10 +146,17 @@
                 {
                   "interval": "string",
                   "value": "string",
-                  "currency": "string",
-                  "frequency": "string"
+                  "currency": "string"
                 }
-              ]
+              ],
+              "minimum": {
+                "value": "string",
+                "currency": "string"
+              },
+              "maximum": {
+                "value": "string",
+                "currency": "string"
+              }
             }
           ],
           "requiredWarranties": [
@@ -152,6 +182,7 @@
 {
   "name": "string",
   "cnpjNumber": "string",
+  "urlComplementaryList": "string",
   "businessLoans": [
     {
       "type": "string",
@@ -165,10 +196,17 @@
             {
               "interval": "string",
               "value": "string",
-              "currency": "string",
-              "frequency": "string"
+              "currency": "string"
             }
           ],
+          "minimum": {
+            "value": "string",
+            "currency": "string"
+          },
+          "maximum": {
+            "value": "string",
+            "currency": "string"
+          },
           "additionalInfo": "string"
         }
       ],
@@ -184,10 +222,17 @@
             {
               "interval": "string",
               "value": "string",
-              "currency": "string",
-              "frequency": "string"
+              "currency": "string"
             }
-          ]
+          ],
+          "minimum": {
+            "value": "string",
+            "currency": "string"
+          },
+          "maximum": {
+            "value": "string",
+            "currency": "string"
+          }
         }
       ],
       "requiredWarranties": [
@@ -203,6 +248,7 @@
 |:------------    |:---------------------------------                             |:-----------  |:----------------------------------------------------                 |
 | name            | string                                                        | Sim          | Nome da Instituição, pertencente à marca, responsável pela comercialização das modalidades de Empréstimos para Pessoas Jurídicas consultadas.  |
 | cnpjNumber      | string                                                        | Sim          | Número do CNPJ do conglomerado                                       |
+| urlComplementaryList  | [[URIString](#commonFieldURIString)]                          | Sim          | URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. |
 | businessLoans   | [[BusinessLoans](#schemaBusinessLoans)]                       | Sim          | Empréstimos Pessoas Jurídicas                                        |
 
 ## BusinessLoans
@@ -221,10 +267,17 @@
         {
           "interval": "string",
           "value": "string",
-          "currency": "string",
-          "frequency": "string"
+          "currency": "string"
         }
       ],
+      "minimum": {
+        "value": "string",
+        "currency": "string"
+      },
+      "maximum": {
+        "value": "string",
+        "currency": "string"
+      },
       "additionalInfo": "string"
     }
   ],
@@ -240,10 +293,17 @@
         {
           "interval": "string",
           "value": "string",
-          "currency": "string",
-          "frequency": "string"
+          "currency": "string"
         }
-      ]
+      ],
+      "minimum": {
+        "value": "string",
+        "currency": "string"
+      },
+      "maximum": {
+        "value": "string",
+        "currency": "string"
+      }
     }
   ],
   "requiredWarranties": [
@@ -259,7 +319,7 @@
 | fees                | [[LoanFees](#schemaLoanFees)]                               | Sim          | Tarifas cobradas sobre Serviços ofertados à Modalidade de Empréstimo             |
 | interestRates       | [[LoanInterestRates](#schemaLoanInterestRates)]             | Sim          | Taxas de juros remuneratórias             |
 | requiredWarranties  | [[Enum RequiredWarranties](#schemaEnumRequiredWarranties)]  | Sim          | Relação de garantias exigidas, segundo documento <a href='https://www.bcb.gov.br/estabilidadefinanceira/scrdoc3040' target="_blank">3040 do Bacem</a>       |
-| termsConditions     | string                                                      | Sim          | Condições contratuais relativas à Modalidade de Empréstimo       |
+| termsConditions     | string                                                      | Sim          | Campo aberto para informar as condições contratuais relativas à Modalidade de Empréstimo para pessoa física informada. Pode ser informada a URL ~([[URIString](#commonFieldURIString)]) referente ao endereço onde constam as condições informadas.   |
 
 ### Enum BusinessLoanTypes
 <a id="schemaEnumBusinessLoanTypes"></a>
