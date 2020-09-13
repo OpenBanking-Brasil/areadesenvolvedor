@@ -11,6 +11,7 @@
           {
             "name": "string",
             "cnpjNumber": "string",
+            "urlComplementaryList" : "string",
             "personalLoans": [
               {
                 "type": "string",
@@ -24,10 +25,17 @@
                       {
                         "interval": "string",
                         "value": "string",
-                        "currency": "string",
-                        "frequency": "string"
+                        "currency": "string"
                       }
                     ],
+                    "minimum": {
+                      "value": "string",
+                      "currency": "string"
+                    },
+                    "maximum": {
+                      "value": "string",
+                      "currency": "string"
+                    },
                     "additionalInfo": "string"
                   }
                 ],
@@ -43,10 +51,17 @@
                       {
                         "interval": "string",
                         "value": "string",
-                        "currency": "string",
-                        "frequency": "string"
+                        "currency": "string"
                       }
-                    ]
+                    ],
+                    "minimum": {
+                      "value": "string",
+                      "currency": "string"
+                    },
+                    "maximum": {
+                      "value": "string",
+                      "currency": "string"
+                    }
                   }
                 ],
                 "requiredWarranties": [
@@ -91,6 +106,7 @@
     {
       "name": "string",
       "cnpjNumber": "string",
+      "urlComplementaryList": "string",
       "personalLoans": [
         {
           "type": "string",
@@ -104,10 +120,17 @@
                 {
                   "interval": "string",
                   "value": "string",
-                  "currency": "string",
-                  "frequency": "string"
+                  "currency": "string"
                 }
               ],
+              "minimum": {
+                "value": "string",
+                "currency": "string"
+              },
+              "maximum": {
+                "value": "string",
+                "currency": "string"
+              },
               "additionalInfo": "string"
             }
           ],
@@ -123,10 +146,17 @@
                 {
                   "interval": "string",
                   "value": "string",
-                  "currency": "string",
-                  "frequency": "string"
+                  "currency": "string"
                 }
-              ]
+              ],
+              "minimum": {
+                "value": "string",
+                "currency": "string"
+              },
+              "maximum": {
+                "value": "string",
+                "currency": "string"
+              }
             }
           ],
           "requiredWarranties": [
@@ -152,6 +182,7 @@
 {
   "name": "string",
   "cnpjNumber": "string",
+  "urlComplementaryList": "string",
   "personalLoans": [
     {
       "type": "string",
@@ -165,10 +196,17 @@
             {
               "interval": "string",
               "value": "string",
-              "currency": "string",
-              "frequency": "string"
+              "currency": "string"
             }
           ],
+          "minimum": {
+            "value": "string",
+            "currency": "string"
+          },
+          "maximum": {
+            "value": "string",
+            "currency": "string"
+          },
           "additionalInfo": "string"
         }
       ],
@@ -184,10 +222,17 @@
             {
               "interval": "string",
               "value": "string",
-              "currency": "string",
-              "frequency": "string"
+              "currency": "string"
             }
-          ]
+          ],
+          "minimum": {
+            "value": "string",
+            "currency": "string"
+          },
+          "maximum": {
+            "value": "string",
+            "currency": "string"
+          }
         }
       ],
       "requiredWarranties": [
@@ -199,11 +244,12 @@
 }
 ```
 
-|     Nome        |  Tipo                                                         | Obrigatório  |                            Definição                                 |
-|:------------    |:---------------------------------                             |:-----------  |:----------------------------------------------------                 |
-| name            | string                                                        | Sim          | Nome da Instituição, pertencente à marca, responsável pela comercialização das modalidades de Empréstimos para Pessoas Físicas consultadas.  |
-| cnpjNumber      | string                                                        | Sim          | Número do CNPJ do conglomerado                                       |
-| personalLoans   | [[PersonalLoans](#schemaPersonalLoans)]                       | Sim          | Empréstimos Pessoas Físicas                                          |
+|     Nome              |  Tipo                                                         | Obrigatório  |                            Definição                                 |
+|:------------          |:---------------------------------                             |:-----------  |:----------------------------------------------------                 |
+| name                  | string                                                        | Sim          | Nome da Instituição, pertencente à marca, responsável pela comercialização das modalidades de Empréstimos para Pessoas Físicas consultadas.                                             |
+| cnpjNumber            | string                                                        | Sim          | Número do CNPJ do conglomerado                                                                                                                                                          |
+| urlComplementaryList  | URIString                                                     | Sim          | URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. |
+| personalLoans         | [[PersonalLoans](#schemaPersonalLoans)]                       | Sim          | Empréstimos Pessoas Físicas                                                                                                                                                             |
 
 ## PersonalLoans
 <a id="schemaPersonalLoans"></a>
@@ -221,10 +267,17 @@
         {
           "interval": "string",
           "value": "string",
-          "currency": "string",
-          "frequency": "string"
+          "currency": "string"
         }
       ],
+      "minimum": {
+        "value": "string",
+        "currency": "string"
+      },
+      "maximum": {
+        "value": "string",
+        "currency": "string"
+      },
       "additionalInfo": "string"
     }
   ],
@@ -240,10 +293,17 @@
         {
           "interval": "string",
           "value": "string",
-          "currency": "string",
-          "frequency": "string"
+          "currency": "string"
         }
-      ]
+      ],
+      "minimum": {
+        "value": "string",
+        "currency": "string"
+      },
+      "maximum": {
+        "value": "string",
+        "currency": "string"
+      }
     }
   ],
   "requiredWarranties": [
@@ -307,10 +367,17 @@
     {
       "interval": "string",
       "value": "string",
-      "currency": "string",
-      "frequency": "string"
+      "currency": "string"
     }
   ],
+  "minimum": {
+    "value": "string",
+    "currency": "string"
+  },
+  "maximum": {
+    "value": "string",
+    "currency": "string"
+  },
   "additionalInfo": "string"
 }
 ```
@@ -338,10 +405,17 @@
     {
       "interval": "string",
       "value": "string",
-      "currency": "string",
-      "frequency": "string"
+      "currency": "string"
     }
-  ]
+  ],
+  "minimum": {
+    "value": "string",
+    "currency": "string"
+  },
+  "maximum": {
+    "value": "string",
+    "currency": "string"
+  }
 }
 ```
 

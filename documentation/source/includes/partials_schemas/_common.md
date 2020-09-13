@@ -28,12 +28,12 @@
 ## Enum PriceInterval
 <a id="schemaPriceInterval"></a>
 
-| Nome         | Código             | Definição           |
-|:------------ |:------------------ |:------------------- |
-| interval     | 1_FAIXA_VALORES    | 1ª Faixa de valores |
-| interval     | 2_FAIXA_VALORES    | 2ª Faixa de valores |
-| interval     | 3_FAIXA_VALORES    | 3ª Faixa de valores |
-| interval     | 4_FAIXA_VALORES    | 4ª Faixa de valores |
+| Nome         | Código                | Definição              |
+|:------------ |:------------------    |:-------------------    |
+| interval     | 1_QUARTIL_CLIENTES    | 1ª Quartil de clientes |
+| interval     | 2_QUARTIL_CLIENTES    | 2ª Quartil de clientes |
+| interval     | 3_QUARTIL_CLIENTES    | 3ª Quartil de clientes |
+| interval     | 4_QUARTIL_CLIENTES    | 4ª Quartil de clientes |
 
 ## Enum FrequencyType
 <a id="schemaFrequencyType"></a>
@@ -68,17 +68,45 @@
 {
   "interval": "string",
   "value": "string",
-  "currency": "string",
-  "frequency": "string"
+  "currency": "string"
 }
 ```
 
-|     Nome     |  Tipo                                            | Obrigatório    |                            Definição                                                |
-|:------------ |:------------------------------------------------ |:-------------- |:-----------------------------------------------------------------------------       |
-| interval     | [Enum PriceInterval](#schemaPriceInterval)       | Sim            | Faixas para cobrança de valores de tarifas por produto/serviço informado.           |
-| value        | [AmountString](#commonFieldAmountString)         | Sim            | Valor para a tarifa cobrada, relativa ao serviço ofertado                           |
-| currency     | [CurrencyString](#commonFieldCurrencyString)     | Sim            | Moeda referente ao valor da tarifa                                                  |
-| frequency    | [RateString](#commonFieldRateString)             | Sim            | Frequência de clientes em cada faixa de valor. Representa uma porcentagem Ex: 0.15  |
+|     Nome     |  Tipo                                            | Obrigatório    |                            Definição                                                                                                                                                                                                                                                                                                                            |
+|:------------ |:------------------------------------------------ |:-------------- |:-----------------------------------------------------------------------------                                                                                                                                                                                                                                                                                   |
+| interval     | [Enum PriceInterval](#schemaPriceInterval)       | Sim            | Faixas para cobrança de valores de tarifas por produto/serviço informado.                                                                                                                                                                                                                                                                                       |
+| value        | [AmountString](#commonFieldAmountString)         | Sim            | Valor da mediana da tarifa, relativa ao serviço ofertado, para pessoa física, informado no período. p.ex. '45.00' (representa um valor monetário, p.ex.1547368.92. Este valor, considerando que a moeda seja BRL, significa R$ 1.547.368,92. O único separador presente deve ser o '.' (ponto) para indicar a casa decimal. Não deve haver separador de milhar) |
+| currency     | [CurrencyString](#commonFieldCurrencyString)     | Sim            | Moeda referente ao valor da Tarifa, segundo modelo ISO-4217. p.ex. 'BRL'                                                                                                                                                                                                                                                                                        |
+
+## MinimumPrice
+<a id="schemaMinimumPrice"></a>
+
+```json
+{
+  "value": "string",
+  "currency": "string"
+}
+```
+
+|     Nome     |  Tipo                                            | Obrigatório    |                            Definição                                                           |
+|:------------ |:------------------------------------------------ |:-------------- |:-----------------------------------------------------------------------------                  |
+| value        | [AmountString](#commonFieldAmountString)         | Sim            | Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência   |
+| currency     | [CurrencyString](#commonFieldCurrencyString)     | Sim            | Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217. p.ex.'BRL'                 |
+
+## MaximumPrice
+<a id="schemaMaximumPrice"></a>
+
+```json
+{
+  "value": "string",
+  "currency": "string"
+}
+```
+
+|     Nome     |  Tipo                                            | Obrigatório    |                            Definição                                                           |
+|:------------ |:------------------------------------------------ |:-------------- |:-----------------------------------------------------------------------------                  |
+| value        | [AmountString](#commonFieldAmountString)         | Sim            | Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência   |
+| currency     | [CurrencyString](#commonFieldCurrencyString)     | Sim            | Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217. p.ex.'BRL'                 |
 
 ## Rate
 <a id="schemaRate"></a>
