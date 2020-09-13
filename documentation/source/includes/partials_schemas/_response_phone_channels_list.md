@@ -11,10 +11,12 @@
           {
             "name": "string",
             "cnpjNumber": "string",
+            "urlComplementaryList": "string",
             "channels": [
               {
                 "identification": {
                   "type": "string",
+                  "additionalInfo": "string",
                   "phones": [
                     {
                       "countryCode": "string",
@@ -68,10 +70,12 @@
     {
       "name": "string",
       "cnpjNumber": "string",
+      "urlComplementaryList": "string",
       "channels": [
         {
           "identification": {
             "type": "string",
+            "additionalInfo": "string",
             "phones": [
               {
                 "countryCode": "string",
@@ -106,10 +110,12 @@
 {
   "name": "string",
   "cnpjNumber": "string",
+  "urlComplementaryList": "string",
   "channels": [
     {
       "identification": {
         "type": "string",
+        "additionalInfo": "string",
         "phones": [
           {
             "countryCode": "string",
@@ -130,11 +136,12 @@
 }
 ```
 
-|     Nome     |  Tipo                                           | Obrigatório    |                            Definição                       |
-|:------------ |:---------------------------------               |:-------------- |:----------------------------------------------------       |
-| name         | string                                          | Sim            | Nome do conglomerado responsável pelo canal de atendimento telefônico. |
-| cnpjNumber   | string                                          | Sim            | CNPJ da instituição  responsável pelo canal de atendimento telefônico - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica.|
-| channels     | [[PhoneChannels](#schemaPhoneChannels)] | Sim            | Lista de canais de atendimento telefônico.                  |
+|     Nome                |  Tipo                                           | Obrigatório    |                            Definição                       |
+|:------------            |:---------------------------------               |:-------------- |:----------------------------------------------------       |
+| name                    | string                                          | Sim            | Nome do conglomerado responsável pelo canal de atendimento telefônico. |
+| cnpjNumber              | string                                          | Sim            | CNPJ da instituição  responsável pelo canal de atendimento telefônico - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica.|
+| urlComplementaryList    | string                                          | Não            | URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber |
+| channels                | [[PhoneChannels](#schemaPhoneChannels)]         | Sim            | Lista de canais de atendimento telefônico.                  |
 
 ## PhoneChannels
 <a id="schemaPhoneChannels"></a>
@@ -143,6 +150,7 @@
 {
   "identification": {
     "type": "string",
+    "additionalInfo": "string",
     "phones": [
       {
         "countryCode": "string",
@@ -172,6 +180,7 @@
 ```json
 {
   "type": "string",
+  "additionalInfo": "string",
   "phones": [
     {
       "countryCode": "string",
@@ -183,10 +192,11 @@
 }
 ```
 
-|     Nome     |  Tipo                                                          | Obrigatório |                            Definição               | Restrições                           |
-|:------------ |:---------------------------------                              |:----------- |:-------------------------------------------------- |:------------------------------------ |
-| type         | [Enum PhoneChannelsType](#schemaPhoneChannelsType)     | Sim         | Tipo de canal telefônico de atendimento.                       |  O Tipo de Canal determina o Tipo de Acesso a ele relacionado:  telefone da central, telefone do SAC, telefone da ouvidoria. |
-| phones       | [[PhoneChannelsPhones](#schemaPhoneChannelsPhones)]]   | Não         | Telefones de contato com o canal de atendimento.    |  |
+|     Nome        |  Tipo                                                   | Obrigatório |                            Definição                                                  | Restrições                           |
+|:------------    |:---------------------------------                       |:----------- |:--------------------------------------------------                                    |:------------------------------------ |
+| type            | [Enum PhoneChannelsType](#schemaPhoneChannelsType)      | Sim         | Tipo de canal telefônico de atendimento.                                              |  O Tipo de Canal determina o Tipo de Acesso a ele relacionado:  telefone da central, telefone do SAC, telefone da ouvidoria. |
+| additionalInfo  | string                                                  | Não         | Campo de texto livre para descrever quando o tipo de canal de atendimento for Outros  | Só será preenchido quando o tipo de canal de atendimento for Outros |
+| phones          | [[PhoneChannelsPhones](#schemaPhoneChannelsPhones)]]    | Não         | Telefones de contato com o canal de atendimento.                                      |   |
 
 ### Enum PhoneChannelsType
 <a id="schemaPhoneChannelsType"></a>
@@ -197,15 +207,16 @@
 | type             | SAC                         | SAC.                                                             |
 | type             | OUVIDORIA                   | Ouvidoria.                                                       |
 | type             | CHAT                        | Chat.                                                            |
+| type             | OUTROS                      | Outros.                                                          |
 
 ## PhoneChannelsPhones
 <a id="schemaPhoneChannelsPhones"></a>
 
-|     Nome        |  Tipo  | Obrigatório |     Definição                                                                                                                |
-|:---------       |:------ |:----------- |:-------------------------                                                                                                    |
-| countryCode     | string | Não         | DDI.                                                                                                                          |
-| areaCode        | string | Não         | DDD.                                                                                                                          |
-| number          | string | Sim         | Telefone para contato com o canal.                                                                                            |
+|     Nome        |  Tipo  | Obrigatório |     Definição                                                                     |
+|:---------       |:------ |:----------- |:-------------------------                                                         |
+| countryCode     | string | Não         | DDI.                                                                              |
+| areaCode        | string | Não         | DDD.                                                                              |
+| number          | string | Sim         | Telefone para contato com o canal.                                                |
 | additionalInfo  | string | Não         | Mensagem complementar necessária para o agrupamento da identificação do telefone. |
 
 
@@ -214,7 +225,7 @@
 
 |     Nome         |  Tipo                                                                              | Obrigatório |                            Definição               |
 |:------------     |:---------------------------------------------------------------------------------  |:----------- |:-------------------------------------------------- |
-| codes            | [[Enum PhoneChannelsServicesCodes](#schemaEnumPhoneChannelsServicesCodes)] | Sim         | Lista com a lista de serviços prestados pelo canal. |
+| codes            | [[Enum PhoneChannelsServicesCodes](#schemaEnumPhoneChannelsServicesCodes)]         | Sim         | Lista com a lista de serviços prestados pelo canal. |
 | additionalInfo   | string                                                                             | Não         | Descrição adicional sobre os serviços prestados.    |
 
 ### Enum PhoneChannelsServicesCodes
@@ -230,4 +241,8 @@
 | codes        | OPERACOES_CAMBIO                                     | Operações de câmbio.                                   |
 | codes        | INVESTIMENTOS                                        | Investimentos.                                         |
 | codes        | SEGUROS                                              | Seguros.                                               |
-| codes        | ATENDIMENTO_DEMANDAS_CLIENTE                         | Atendimento as demandas de cliente.                    |
+| codes        | RECLAMACAO                                           | Reclamações.                                           |
+| codes        | CANCELAMENTO                                         | Cancelamento.                                          |
+| codes        | INFORMACOES                                          | Informacões.                                           |
+| codes        | FALAR_ATENDENTE                                      | Falar com atendente.                                   |
+| codes        | OUTROS                                               | Outros                                                 |

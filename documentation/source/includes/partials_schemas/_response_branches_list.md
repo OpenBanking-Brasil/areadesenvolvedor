@@ -11,6 +11,7 @@
           {
             "name": "string",
             "cnpjNumber": "string",
+            "urlComplementaryList": "string",
             "branches": [
               {
                 "identification": {
@@ -42,6 +43,7 @@
                   "phones": [
                     {
                       "type": "string",
+                      "countryCode" : "string",
                       "areaCode": "string",
                       "number": "string"
                     }
@@ -93,6 +95,7 @@
     {
       "name": "string",
       "cnpjNumber": "string",
+      "urlComplementaryList": "string",
       "branches": [
         {
           "identification": {
@@ -124,6 +127,7 @@
             "phones": [
               {
                 "type": "string",
+                "countryCode" : "string",
                 "areaCode": "string",
                 "number": "string"
               }
@@ -154,6 +158,7 @@
 {
   "name": "string",
   "cnpjNumber": "string",
+  "urlComplementaryList": "string",
   "branches": [
     {
       "identification": {
@@ -185,6 +190,7 @@
         "phones": [
           {
             "type": "string",
+            "countryCode" : "string",
             "areaCode": "string",
             "number": "string"
           }
@@ -205,6 +211,7 @@
 |:------------           |:----------------------------- |:-------------  |:----------------------------------------------------                                                                        |
 | name                   | string                        | Sim            | Nome da Instituição, pertencente à marca, responsável pela Dependência.                                                |
 | cnpjNumber             | string                        | Sim            | CNPJ da instituição responsável pela dependência - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. |
+| urlComplementaryList   | string                        | Não            | URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber |
 | branches               | [[Branch](#schemaBranch)]     | Sim            | Lista de dependências próprias da instituição.                                                                               |
 
 ## Branch 
@@ -241,6 +248,7 @@
     "phones": [
       {
         "type": "string",
+        "countryCode" : "string",
         "areaCode": "string",
         "number": "string"
       }
@@ -334,6 +342,7 @@
   "phones": [
     {
       "type": "string",
+      "countryCode" : "string",
       "areaCode": "string",
       "number": "string"
     }
@@ -357,15 +366,17 @@
 ```json
 {
   "type": "string",
+  "countryCode" : "string",
   "areaCode": "string",
   "number": "string"
 }
 ```
-| Nome       | Tipo                                               | Obrigatório | Descrição           |
-|:---------- |:-------------------------------------------------- |:----------- |:---------------     |
-| type       | [Enum BranchPhoneType](#schemaEnumBranchPhoneType) | Sim         | Tipo de telefone.    |
-| areaCode   | string                                             | Sim         | DDD.                 |
-| number     | string                                             | Sim         | Número do telefone.  |
+| Nome        | Tipo                                               | Obrigatório | Descrição           |
+|:----------  |:-------------------------------------------------- |:----------- |:---------------     |
+| type        | [Enum BranchPhoneType](#schemaEnumBranchPhoneType) | Sim         | Tipo de telefone.    |
+| countryCode | string                                             | Sim         | DDI.                 |
+| areaCode    | string                                             | Sim         | DDD.                 |
+| number      | string                                             | Sim         | Número do telefone.  |
 
 ## Enum BranchPhoneType 
 <a id="schemaEnumBranchPhoneType"></a>
@@ -406,3 +417,8 @@
 | codes        | OPERACOES_CAMBIO                                     | Operações de câmbio.                                   |
 | codes        | INVESTIMENTOS                                        | Investimentos.                                         |
 | codes        | SEGUROS                                              | Seguros.                                               |
+| codes        | RECLAMACAO                                           | Reclamação                                             |
+| codes        | CANCELAMENTO                                         | Cancelamento.                                          |
+| codes        | INFORMACOES                                          | Informações.                                           |
+| codes        | FALAR_ATENDENTE                                      | Falar com atendente.                                   |
+| codes        | OUTROS                                               | Outros.                                                |

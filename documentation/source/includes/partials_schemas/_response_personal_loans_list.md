@@ -4,76 +4,74 @@
 ```json
 {
   "data": {
-    "brand": [
-      {
-        "name": "string",
-        "companies": [
-          {
-            "name": "string",
-            "cnpjNumber": "string",
-            "urlComplementaryList" : "string",
-            "personalLoans": [
-              {
-                "type": "string",
-                "fees": [
-                  {
-                    "serviceName": "string",
-                    "serviceCode": "string",
-                    "chargingTriggerInfo": "string",
-                    "chargingUnit": "string",
-                    "price": [
-                      {
-                        "interval": "string",
-                        "value": "string",
-                        "currency": "string"
-                      }
-                    ],
-                    "minimum": {
-                      "value": "string",
-                      "currency": "string"
-                    },
-                    "maximum": {
-                      "value": "string",
-                      "currency": "string"
-                    },
-                    "additionalInfo": "string"
-                  }
-                ],
-                "interestRates": [
-                  {
-                    "rate": "string",
-                    "referencialRate": "string",
-                    "indexer": "string",
-                    "prePostTax": "string",
-                    "occurrence": "string",
-                    "incomeRateInfo": "string",
-                    "application":  [
-                      {
-                        "interval": "string",
-                        "value": "string",
-                        "currency": "string"
-                      }
-                    ],
-                    "minimum": {
-                      "value": "string",
-                      "currency": "string"
-                    },
-                    "maximum": {
+    "brand": {
+      "name": "string",
+      "companies": [
+        {
+          "name": "string",
+          "cnpjNumber": "string",
+          "urlComplementaryList": "string",
+          "personalLoans": [
+            {
+              "type": "string",
+              "fees": [
+                {
+                  "serviceName": "string",
+                  "serviceCode": "string",
+                  "chargingTriggerInfo": "string",
+                  "chargingUnit": "string",
+                  "price": [
+                    {
+                      "interval": "string",
                       "value": "string",
                       "currency": "string"
                     }
+                  ],
+                  "minimum": {
+                    "value": "string",
+                    "currency": "string"
+                  },
+                  "maximum": {
+                    "value": "string",
+                    "currency": "string"
+                  },
+                  "additionalInfo": "string"
+                }
+              ],
+              "interestRates": [
+                {
+                  "rate": "string",
+                  "referencialRate": "string",
+                  "indexer": "string",
+                  "prePostTax": "string",
+                  "occurrence": "string",
+                  "incomeRateInfo": "string",
+                  "application": [
+                    {
+                      "interval": "string",
+                      "value": "string",
+                      "currency": "string"
+                    }
+                  ],
+                  "minimum": {
+                    "value": "string",
+                    "currency": "string"
+                  },
+                  "maximum": {
+                    "value": "string",
+                    "currency": "string"
                   }
-                ],
-                "requiredWarranties": [
-                  "string"
-                ],
-                "termsConditions": "string"
-              }
-            ]
-          }
-        ]
-      }
-    ]
+                }
+              ],
+              "requiredWarranties": [
+                "string"
+              ],
+              "termsConditions": "string"
+            }
+          ]
+        }
+      ]
+    }
   },
   "links": {
     "self": "string",
@@ -92,8 +90,8 @@
 |     Nome      |  Tipo                                                  | Obrigatório  |                            Definição                  |
 |:------------  |:---------------------------------                      |:-----------  |:----------------------------------------------------  |
 | data          | object                                                 | Sim          |                                                       |
-| » brand       | [[PersonalLoansBrand](#schemaPersonalLoansBrand)]      | Sim          | Lista das organizaçõs titulares das dependências      |
-| links         | [LinksPaginated](#schemaLinksPaginated)                | Sim          |                                                       |
+| » brand       | [[PersonalLoansBrand](#schemaPersonalLoansBrand)]      | Sim          | Organização titular das dependências                  |
+| links         | [[LinksPaginated](#schemaLinksPaginated)]              | Sim          |                                                       |
 | meta          | [MetaPaginated](#schemaMetaPaginated)                  | Sim          |                                                       |
 
 ## PersonalLoansBrand
@@ -319,7 +317,7 @@
 | fees                | [[LoanFees](#schemaLoanFees)]                               | Sim          | Tarifas cobradas sobre Serviços ofertados à Modalidade de Empréstimo                                                                                                                                                                                  |
 | interestRates       | [[LoanInterestRates](#schemaLoanInterestRates)]             | Sim          | Taxas de juros remuneratórias                                                                                                                                                                                                                         |
 | requiredWarranties  | [[Enum RequiredWarranties](#schemaEnumRequiredWarranties)]  | Sim          | Relação de garantias exigidas, segundo documento <a href='https://www.bcb.gov.br/estabilidadefinanceira/scrdoc3040' target="_blank">3040 do Bacem</a>                                                                                                 |
-| termsConditions     | string                                                      | Sim          | Campo aberto para informar as condições contratuais relativas à Modalidade de Empréstimo para pessoa física informada. Pode ser informada a URL ~([[URIString](#commonFieldURIString)]) referente ao endereço onde constam as condições informadas.   |
+| termsConditions     | string                                                      | Não          | Campo aberto para informar as condições contratuais relativas ao produto ou serviço informado. Pode ser informada a URL ([[URIString](#commonFieldURIString)]) referente ao endereço onde constam as condições informadas.   |
 
 ### Enum PersonalLoansTypes
 <a id="schemaEnumPersonalLoanTypes"></a>
@@ -387,9 +385,9 @@
 | serviceCode         | string                                          | Sim          | Sigla de identificação do serviço relacionado à Modalidade informada de Empréstimo para pessoa física/jurídica.             | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para o item priceInfo
 | chargingTriggerInfo | string                                          | Sim          | Fatores geradores de cobrança que incidem sobre as Modalidades informada de Empréstimos para pessoa física/jurídica.        | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para o item priceInfo
 | chargingUnit        | string                                          | Não          | Unidade ou forma de cobrança                                                                                                | 
-| price               | [[Price](#schemaPrice)]                         | Sim          | Valor da mediana da taxa de remuneração relativa ao serviço ofertado.                                                       | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
-| minimum             | [[MinimumPrice](#schemaMinimumPrice)]           | Sim          | Valor mínimo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
-| maximum             | [[MaximumPrice](#schemaMaximumPrice)]           | Sim          | Valor máximo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
+| price               | [[Price](#schemaPrice)]                         | Sim          | Valor da mediana da tarifa, relativa ao serviço ofertado, informado no período.                                                       | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
+| minimum             | [[MinimumPrice](#schemaMinimumPrice)]           | Sim          | Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
+| maximum             | [[MaximumPrice](#schemaMaximumPrice)]           | Sim          | Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
 | additionalInfo      | string                                          | Não          | Descrição de como é composto o valor da tarifa. p.ex. '0,25% sobre o excedente do limite acima de R$ 500,00'.               |
 
 ## LoanInterestRates
