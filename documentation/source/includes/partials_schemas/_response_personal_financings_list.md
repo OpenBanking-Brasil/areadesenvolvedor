@@ -386,16 +386,16 @@
 }
 ```
 
-|     Nome             |  Tipo                                                                    | Obrigatório    |                            Definição                                                                                                       |
-|:------------         |:------------------------------------------------------------------------ |:-------------- |:------------------------------------------------------------------------------------------------------------------------------------------ |
-| serviceName          | string                                                                   | Sim            | Nomes das Tarifas cobradas sobre Serviços ofertados à Modalidade de Financiamento, para pessoa física.                                      |
-| serviceCode          | string                                                                   | Sim            | Sigla de identificação do serviço relacionado à Modalidade de Financiamento informada, para pessoa física. Campo Aberto.                    |
-| chargingTriggerInfo  | string                                                                   | Não            | Fatores geradores de cobrança que incidem sobre as Modalidades de Financiamentos, para pessoa física. Campo Aberto.                          |
-| chargingUnit         | string                                                                   | Não            | Unidade ou forma de cobrança.                                                                                                               |
-| price                | [[Price](#schemaPrice)]                                                  | Sim            | Valor médio da tarifa, relativa ao serviço ofertado, informado no período.                                                                       |
-| minimum              | [[MinimumPrice](#schemaMinimumPrice)]                                     | Sim           | Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
-| maximum              | [[MaximumPrice](#schemaMaximumPrice)]                                     | Sim           | Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
-| additionalInfo       | string                                                                   | Não            | Descrição de como é composto o valor da tarifa. p.ex. '0,25% sobre o excedente do limite acima de R$ 500,00'.                               |
+|     Nome             |  Tipo                                             | Obrigatório    |                            Definição                                                                                                       |
+|:------------         |:------------------------------------------------- |:-------------- |:------------------------------------------------------------------------------------------------------------------------------------------ |
+| serviceName          | string                                            | Sim            | Nomes das Tarifas cobradas sobre Serviços ofertados à Modalidade de Financiamento, para pessoa física.                                      |
+| serviceCode          | string                                            | Sim            | Sigla de identificação do serviço relacionado à Modalidade de Financiamento informada, para pessoa física. Campo Aberto.                    |
+| chargingTriggerInfo  | string                                            | Não            | Fatores geradores de cobrança que incidem sobre as Modalidades de Financiamentos, para pessoa física. Campo Aberto.                          |
+| chargingUnit         | string                                            | Não            | Unidade ou forma de cobrança.                                                                                                               |
+| price                | [[Price](#schemaPrice)]                           | Sim            | Valor médio da tarifa, relativa ao serviço ofertado, informado no período.                                                                       |
+| minimum              | [[MinimumPrice](#schemaMinimumPrice)]             | Sim           | Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
+| maximum              | [[MaximumPrice](#schemaMaximumPrice)]             | Sim           | Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
+| additionalInfo       | string                                            | Não            | Descrição de como é composto o valor da tarifa. p.ex. '0,25% sobre o excedente do limite acima de R$ 500,00'.                               |
 
 ## PersonalFinancingsInterestRates 
 <a id="schemaPersonalFinancingsInterestRates"></a>
