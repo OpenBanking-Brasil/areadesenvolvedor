@@ -248,7 +248,7 @@
 |:------------          |:---------------------------------                             |:-----------  |:----------------------------------------------------                 |
 | name                  | string                                                        | Sim          | Nome da Instituição, pertencente à marca, responsável pela comercialização das modalidades de Empréstimos para Pessoas Físicas consultadas.                                             |
 | cnpjNumber            | string                                                        | Sim          | Número do CNPJ do conglomerado                                                                                                                                                          |
-| urlComplementaryList  | URIString                                                     | Sim          | URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. |
+| urlComplementaryList  | [[URIString](#commonFieldURIString)]                          | Sim          | URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. |
 | personalLoans         | [[PersonalLoans](#schemaPersonalLoans)]                       | Sim          | Empréstimos Pessoas Físicas                                                                                                                                                             |
 
 ## PersonalLoans
@@ -316,10 +316,10 @@
 |     Nome            |  Tipo                                                       | Obrigatório  |                            Definição                         |
 |:------------        |:---------------------------------                           |:-----------  |:----------------------------------------------------         |
 | type                | [Enum PersonalLoansTypes](#schemaEnumPersonalLoanTypes)     | Sim          | Modalidades de empréstimos ofertados para pessoas Físicas, conforme Circular <a href='https://www.bcb.gov.br/pre/normativos/busca/downloadNormativo.asp?arquivo=/Lists/Normativos/Attachments/51025/Circ_4015_v1_O.pdf' target="_blank">4015-Bacem</a>|
-| fees                | [[LoanFees](#schemaLoanFees)]                               | Sim          | Tarifas cobradas sobre Serviços ofertados à Modalidade de Empréstimo             |
-| interestRates       | [[LoanInterestRates](#schemaLoanInterestRates)]             | Sim          | Taxas de juros remuneratórias             |
-| requiredWarranties  | [[Enum RequiredWarranties](#schemaEnumRequiredWarranties)]  | Sim          | Relação de garantias exigidas, segundo documento <a href='https://www.bcb.gov.br/estabilidadefinanceira/scrdoc3040' target="_blank">3040 do Bacem</a>       |
-| termsConditions     | string                                                      | Sim          | Condições contratuais relativas à Modalidade de Empréstimo       |
+| fees                | [[LoanFees](#schemaLoanFees)]                               | Sim          | Tarifas cobradas sobre Serviços ofertados à Modalidade de Empréstimo                                                                                                                                                                                  |
+| interestRates       | [[LoanInterestRates](#schemaLoanInterestRates)]             | Sim          | Taxas de juros remuneratórias                                                                                                                                                                                                                         |
+| requiredWarranties  | [[Enum RequiredWarranties](#schemaEnumRequiredWarranties)]  | Sim          | Relação de garantias exigidas, segundo documento <a href='https://www.bcb.gov.br/estabilidadefinanceira/scrdoc3040' target="_blank">3040 do Bacem</a>                                                                                                 |
+| termsConditions     | string                                                      | Sim          | Campo aberto para informar as condições contratuais relativas à Modalidade de Empréstimo para pessoa física informada. Pode ser informada a URL ~([[URIString](#commonFieldURIString)]) referente ao endereço onde constam as condições informadas.   |
 
 ### Enum PersonalLoansTypes
 <a id="schemaEnumPersonalLoanTypes"></a>
@@ -383,12 +383,14 @@
 ```
 |     Nome            |  Tipo                                           | Obrigatório  |                            Definição                         | Restrições
 |:------------        |:---------------------------------               |:-----------  |:----------------------------------------------------         | :------
-| serviceName         | string                                          | Sim          | Nomes das Tarifas cobradas sobre Serviços relacionados à Modalidade informada do Empréstimo para pessoa física/jurídica.  | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para o item priceInfo
+| serviceName         | string                                          | Sim          | Nomes das Tarifas cobradas sobre Serviços relacionados à Modalidade informada do Empréstimo para pessoa física/jurídica.    | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para o item priceInfo
 | serviceCode         | string                                          | Sim          | Sigla de identificação do serviço relacionado à Modalidade informada de Empréstimo para pessoa física/jurídica.             | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para o item priceInfo
-| chargingTriggerInfo | string                                          | Sim          | Fatores geradores de cobrança que incidem sobre as Modalidades informada de Empréstimos para pessoa física/jurídica.             | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para o item priceInfo
-| chargingUnit        | string                                          | Não          | Unidade ou forma de cobrança                                                                                                               |
-| price               | [[Price](#schemaPrice)]                         | Sim          | Valor máximo para a tarifa cobrada, relativa ao serviço relacionado à Modalidade de Empréstimo para pessoa física/jurídica informada.       | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
-| additionalInfo      | string                                          | Não          | Descrição de como é composto o valor da tarifa. p.ex. '0,25% sobre o excedente do limite acima de R$ 500,00'                               |
+| chargingTriggerInfo | string                                          | Sim          | Fatores geradores de cobrança que incidem sobre as Modalidades informada de Empréstimos para pessoa física/jurídica.        | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para o item priceInfo
+| chargingUnit        | string                                          | Não          | Unidade ou forma de cobrança                                                                                                | 
+| price               | [[Price](#schemaPrice)]                         | Sim          | Valor da mediana da taxa de remuneração relativa ao serviço ofertado.                                                       | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
+| minimum             | [[MinimumPrice](#schemaMinimumPrice)]           | Sim          | Valor mínimo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
+| maximum             | [[MaximumPrice](#schemaMaximumPrice)]           | Sim          | Valor máximo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
+| additionalInfo      | string                                          | Não          | Descrição de como é composto o valor da tarifa. p.ex. '0,25% sobre o excedente do limite acima de R$ 500,00'.               |
 
 ## LoanInterestRates
 <a id="schemaLoanInterestRates"></a>
@@ -419,15 +421,17 @@
 }
 ```
 
-| Nome                   | Tipo                                                          | Obrigatório | Definição                                                 |
-|:----------------       |:------                                                        |:----------- |:-------------------------------                           |
-| rate                   | [RateString](#commonFieldRateString)                          | Sim         | Percentual que incide sobre a composição das taxas de juros remuneratórias                          |
-| referencialRate        | [RateString](#commonFieldRateString)                          | Sim         | Taxa Referencial se configura como uma taxa de juros de referência, ou seja, um indicador geral da economia brasileira. Por isso, é utilizada na hora de calcular o rendimento de determinadas aplicações financeiras   |
-| indexer                | [Enum LoansIndexer](#LoansIndexer)                            | Sim         | Indexador é o termo utilizado para se referir aos índices usados como base para corrigir os valores monetários de um determinado ativo. No Brasil, os indexadores mais comuns são o IPCA, a taxa Selic e o CDI                                    |
-| prePostTax             | [Enum PrePostTax](#schemaPrePostTax)                          | Sim         | Indicador de pré ou pós. A diferença básica é que, enquanto o prefixado apresenta rentabilidade definida, o pós-fixado acompanha algum indicador. Assim, quem investe no primeiro grupo sabe como será seu rendimento previamente, enquanto quem investe no segundo, só conhecerá os resultados na data de vencimento                                  |
-| occurrence             | [Enum OccurrenceType](#schemaOccurrenceType)                  | Sim         | Código que indica Frequência sobre a qual incide a Remuneração.                                  |
-| incomeRateInfo         | string                                                        | Não         | Descrição da Remuneração relativa as taxas de juros remuneratóriassobre a modalidad de Empréstimo para pessoa física/jurídica                                    |
-| application            | [[Price](#schemaPrice)]                                       | Não            | Descrição da Remuneração relativa as taxas de juros remuneratórias sobre a modalidade de direitos creditórios descontados infomrada, para pessoa jurídica                                                                                                                                                             |
+| Nome                | Tipo                                            | Obrigatório | Definição                                                 |
+|:----------------    |:------                                          |:----------- |:-------------------------------                           |
+| rate                | [RateString](#commonFieldRateString)            | Sim         | Percentual que incide sobre a composição das taxas de juros remuneratórias                          |
+| referencialRate     | [RateString](#commonFieldRateString)            | Sim         | Taxa Referencial se configura como uma taxa de juros de referência, ou seja, um indicador geral da economia brasileira. Por isso, é utilizada na hora de calcular o rendimento de determinadas aplicações financeiras   |
+| indexer             | [Enum LoansIndexer](#LoansIndexer)              | Sim         | Indexador é o termo utilizado para se referir aos índices usados como base para corrigir os valores monetários de um determinado ativo. No Brasil, os indexadores mais comuns são o IPCA, a taxa Selic e o CDI                                    |
+| prePostTax          | [Enum PrePostTax](#schemaPrePostTax)            | Sim         | Indicador de pré ou pós. A diferença básica é que, enquanto o prefixado apresenta rentabilidade definida, o pós-fixado acompanha algum indicador. Assim, quem investe no primeiro grupo sabe como será seu rendimento previamente, enquanto quem investe no segundo, só conhecerá os resultados na data de vencimento                                  |
+| occurrence          | [Enum OccurrenceType](#schemaOccurrenceType)    | Sim         | Código que indica Frequência sobre a qual incide a Remuneração.                                  |
+| incomeRateInfo      | string                                          | Não         | Descrição da Remuneração relativa as taxas de juros remuneratóriassobre a modalidad de Empréstimo para pessoa física/jurídica                                    |
+| application         | [[Price](#schemaPrice)]                         | Sim          | Valor da mediana da taxa de remuneração relativa ao serviço ofertado.                                                       | 
+| minimum             | [[MinimumPrice](#schemaMinimumPrice)]           | Sim          | Valor mínimo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | 
+| maximum             | [[MaximumPrice](#schemaMaximumPrice)]           | Sim          | Valor máximo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | 
 
 ### Enum LoansIndexer
 <a id="LoansIndexer"></a>
