@@ -231,8 +231,8 @@ components:
       properties:
         interval:
           type: string
-          description: "Faixas de valor referente a tarifa informado: mínimo, 1ª faixa de valores, 2ª faixa de valores, 3ª faixa de valores e 4ª faixa de valores"
-          example: "1ª faixa de valores"
+          description: "Faixas de valor referente a tarifa informado: mínimo, 1ª quartil de clientes, 2ª quartil de clientes, 3ª quartil de clientes e 4ª quartil de clientes"
+          example: "1ª quartil de clientes"
         value:
           type: number
           description: "Valor da tarifa cobrada referente aos Outros Serviços"
@@ -492,8 +492,8 @@ components:
           properties:
             interval:
               type: string
-              description: "Faixas de valor referente a tarifa do serviço prioritário informado: mínimo, 1ª faixa de valores, 2ª faixa de valores, 3ª faixa de valores e 4ª faixa de valores"
-              example: "1ª faixa de valores"
+              description: "Faixas de valor referente a tarifa do serviço prioritário informado: mínimo, 1ª quartil de clientes, 2ª quartil de clientes, 3ª quartil de clientes e 4ª quartil de clientes"
+              example: "1ª quartil de clientes"
             value:
               type: string
               description: "Valor médio da tarifa cobrada, relativa ao serviço prioritário, para o tipo de faixa informada."
@@ -828,6 +828,11 @@ components:
           maxLength: 30
           description: "Nome da Instituição, pertencente à marca, responsável pela comercialização das modalidades de Empréstimos para Pessoas Físicas consultadas."
           example: "Empresa da Marca A"
+        urlComplementaryList:
+          type: string
+          pattern: '\w*\W*'
+          maxLength: 1024
+          description: "URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. Endereço eletrônico de acesso ao canal. Ex. 'https://example.com/mobile-banking'" 
         personalLoans:
           type: array
           items:
@@ -885,7 +890,7 @@ components:
       required:
         - name
         - cnpjNumber
-        - personalLoans
+        - businessLoans
       properties:
         name:
           type: string
@@ -893,6 +898,11 @@ components:
           maxLength: 30
           description: "Nome da Instituição, pertencente à marca, responsável pela comercialização das modalidades de Empréstimos para Pessoas Jurídicas consultadas."
           example: "Empresa da Marca A"
+        urlComplementaryList:
+          type: string
+          pattern: '\w*\W*'
+          maxLength: 1024
+          description: "URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. Endereço eletrônico de acesso ao canal. Ex. 'https://example.com/mobile-banking'" 
         businessLoans:
           type: array
           items:
@@ -910,7 +920,7 @@ components:
       type: object
       required:
         - types
-        - feeds
+        - fees
         - interestRates
         - requiredWarranties
       properties:
@@ -943,14 +953,14 @@ components:
           type: string
           pattern: '\w*\W*'
           maxLength: 2000
-          description: "Campo aberto para informar as condições contratuais relativas à Modalidade de Empréstimo para pessoa física informada. Pode ser informada a URL referente ao endereço onde constam as condições informadas"
+          description: "Campo aberto para informar as condições contratuais relativas à Modalidade de Empréstimo para pessoa física informada. Pode ser informada a URL referente ao endereço onde constam as condições informadas."
           example: ""
     #### BusinessLoans ####
     BusinessLoans:
       type: object
       required:
         - types
-        - feeds
+        - fees
         - interestRates
         - requiredWarranties
       properties:
@@ -983,7 +993,7 @@ components:
           type: string
           pattern: '\w*\W*'
           maxLength: 2000
-          description: "Campo aberto para informar as condições contratuais relativas à Modalidade de Empréstimo para pessoa física informada. Pode ser informada a URL referente ao endereço onde constam as condições informadas"
+          description: "Campo aberto para informar as condições contratuais relativas à Modalidade de Empréstimo para pessoa física informada. Pode ser informada a URL referente ao endereço onde constam as condições informadas."
           example: ""
 
     #### Fees ####
@@ -993,8 +1003,9 @@ components:
         - serviceName
         - serviceCode
         - chargeTriggerInfo
-        - maxPrice
-        - currency
+        - price
+        - minimum
+        - maximum
       properties:
         serviceName:
           type: string
@@ -1017,43 +1028,15 @@ components:
         price:
           type: array
           items:
-            $ref: '#/components/schemas/LoanFeesPrice'
-    
-  #### LoansFeesPrice ####  
-    LoanFeesPrice:
-      type: object
-      required:
-        - interval
-        - value
-        - currency
-        - frequency
-      properties:
-        interval:
-          type: string
-          pattern: '^(\d{1})$'
-          enum: ["1ª faixa de valores",
-                "2ª faixa de valores",
-                "3ª faixa de valores",
-                "4ª faixa de valores"]
-          description: "Faixas para cobrança de valores de tarifas por produto/serviço informado."
-          example: "1ª faixa de valores"
-        value:
-          type: string
-          pattern: '^(\d{1,9}\,\d{2}){1}$'
-          maxLength: 12
-          x-cds-type: AmountString
-          description: "Valor da tarifa cobrada, relativa ao serviço ofertado para a Modalidade de Empréstimo, para pessoa física/jurídica."
-          example: "45,00"
-        currency:
-          type: string
-          pattern: '^(\W{3}){1}$'
-          maxLength: 3
-          x-cds-type: CurrencyString
-          description: "Moeda referente ao valor da Tarifa, segundo modelo ISO-4217."
-          example: "BRL"
-        frequency:
-          type: string
-          description: "Frequência de clientes em cada faixa de valor. Representa uma porcentagem"
+            $ref: '#/components/schemas/Price'
+        minimum:
+          type: object
+          items:
+            $ref: '#/components/schemas/MinimumPrice'
+        maximum:
+          type: object
+          items:
+            $ref: '#/components/schemas/MaximumPrice'
           
   #### LoanInterestRates ####
     LoanInterestRates:
@@ -1101,30 +1084,17 @@ components:
           description: "Descrição da Remuneração relativa as taxas de juros remuneratóriassobre a modalidad de Empréstimo para pessoa física/jurídica"
           example: ""
         application:
+          type: array
+          items:
+            $ref: '#/components/schemas/Price'
+        minimum:
           type: object
-          required:
-                - interval
-                - value
-                - currency
-                - frequency
-          properties:
-                interval:
-                  type: string
-                  enum: ["1ª faixa de valores",
-                        "2ª faixa de valores",
-                        "3ª faixa de valores",
-                        "4ª faixa de valores"]
-                  description: "Faixas para cobrança de valores de tarifas por produto/serviço informado."
-                value:
-                  type: string
-                  description: "Valor para a tarifa cobrada, relativa ao serviço ofertado para a Modalidade de direitos creditórios descontados, para pessoa física"
-                currency: 
-                  type: string
-                  enum: ["BRL","... ISO_4217"]
-                  description: "Moeda referente ao valor da tarifa"
-                frequency:
-                  type: string
-                  description: "Frequência de clientes em cada faixa de valor. Representa uma porcentagem"
+          items:
+            $ref: '#/components/schemas/MinimumPrice'
+        maximum:
+          type: object
+          items:
+            $ref: '#/components/schemas/MaximumPrice'
           
   ####  Required Warranties  ####
     RequiredWarranties:
@@ -1272,10 +1242,10 @@ components:
               properties:
                 interval:
                   type: string
-                  enum: ["1ª faixa de valores",
-                        "2ª faixa de valores",
-                        "3ª faixa de valores",
-                        "4ª faixa de valores"]
+                  enum: ["1ª quartil de clientes",
+                        "2ª quartil de clientes",
+                        "3ª quartil de clientes",
+                        "4ª quartil de clientes"]
                   description: "Faixas para cobrança de valores de tarifas por produto/serviço informado."
                 rate:
                   type: string
@@ -1297,10 +1267,10 @@ components:
               properties:
                 interval:
                   type: string
-                  enum: ["1ª faixa de valores",
-                        "2ª faixa de valores",
-                        "3ª faixa de valores",
-                        "4ª faixa de valores"]
+                  enum: ["1ª quartil de clientes",
+                        "2ª quartil de clientes",
+                        "3ª quartil de clientes",
+                        "4ª quartil de clientes"]
                   description: "Faixas para cobrança de valores de tarifas por produto/serviço informado."
                 rate:
                   type: string
@@ -1331,12 +1301,12 @@ components:
       properties:
         type:
           type: string
-          enum: ["1ª faixa de valores",
-                "2ª faixa de valores",
-                "3ª faixa de valores",
-                "4ª faixa de valores"]
+          enum: ["1ª quartil de clientes",
+                "2ª quartil de clientes",
+                "3ª quartil de clientes",
+                "4ª quartil de clientes"]
           description: "Faixas para cobrança de valores de tarifas por produto/serviço informado."
-          example: "1ª faixa de valores"
+          example: "1ª quartil de clientes"
         value:
           type: number
           description: "Valor da tarifa cobrada referente aos Outros Serviços"
@@ -1470,8 +1440,8 @@ components:
           properties:
             interval:
               type: string
-              description: "Faixas para cobrança de valores de tarifas por serviço prioritário informado: 1ª Faixa de valores, 2ª faixa de valores, 3ª faixa de valores, 4ª faixa de valores"
-              example: "1ª Faixa de valores"
+              description: "Faixas para cobrança de valores de tarifas por serviço prioritário informado: 1ª quartil de clientes, 2ª quartil de clientes, 3ª quartil de clientes, 4ª quartil de clientes"
+              example: "1ª quartil de clientes"
             value:
               type: number
               description: "Valor médio da tarifa cobrada, relativa ao serviço prioritário, para o tipo de faixa informada."
@@ -1828,8 +1798,8 @@ components:
       properties:
         interval:
           type: string
-          description: "Faixas para cobrança de valores de tarifas por produto/serviço informado: 1ª Faixa de valores, 2ª Faixa de valores, 3ª Faixa de valores, 4ª Faixa de valores"
-          example: "3ª Faixa de valores"
+          description: "Faixas para cobrança de valores de tarifas por produto/serviço informado: 1ª quartil de clientes, 2ª quartil de clientes, 3ª quartil de clientes, 4ª quartil de clientes"
+          example: "3ª quartil de clientes"
         value:
           type: string
           description: "Valor da tarifa cobrada, relativa ao serviço ofertado para a Modalidade de Empréstimo, para pessoa"
@@ -1885,8 +1855,8 @@ components:
           properties:
             interval:
               type: string
-              description: "Faixas para cobrança de valores de tarifas para Outros Serviços informados: 1ª Faixa de valores, 2ª faixa de valores, 3ª faixa de valores, 4ª faixa de valores"
-              example: "3ª Faixa de valores"
+              description: "Faixas para cobrança de valores de tarifas para Outros Serviços informados: 1ª quartil de clientes, 2ª quartil de clientes, 3ª quartil de clientes, 4ª quartil de clientes"
+              example: "3ª quartil de clientes"
             value:
               type: string
               description: "Valor médio da taxa de remuneração relativa ao serviço ofertado, para pessoa fisica informado no período. p.ex. '45.00'"
@@ -2081,8 +2051,8 @@ components:
       properties:
         interval:
           type: string
-          description: "Faixas para cobrança de valores de tarifas por produto/serviço informado: 1ª Faixa de valores, 2ª Faixa de valores, 3ª Faixa de valores, 4ª Faixa de valores"
-          example: "3ª Faixa de valores"
+          description: "Faixas para cobrança de valores de tarifas por produto/serviço informado: 1ª quartil de clientes, 2ª quartil de clientes, 3ª quartil de clientes, 4ª quartil de clientes"
+          example: "3ª quartil de clientes"
         value:
           type: string
           description: "Valor da tarifa cobrada, relativa ao serviço ofertado para a Modalidade de Empréstimo, para pessoa"
@@ -2138,8 +2108,8 @@ components:
           properties:
             interval:
               type: string
-              description: "Faixas para cobrança de valores de tarifas para Outros Serviços informados: 1ª Faixa de valores, 2ª faixa de valores, 3ª faixa de valores, 4ª faixa de valores"
-              example: "3ª Faixa de valores"
+              description: "Faixas para cobrança de valores de tarifas para Outros Serviços informados: 1ª quartil de clientes, 2ª quartil de clientes, 3ª quartil de clientes, 4ª quartil de clientes"
+              example: "3ª quartil de clientes"
             value:
               type: string
               description: "Valor médio da taxa de remuneração relativa ao serviço ofertado, para pessoa fisica informado no período. p.ex. '45.00'"
@@ -2328,10 +2298,10 @@ components:
       properties:
         interval:
           type: string
-          enum: ["1ª faixa de valores",
-                "2ª faixa de valores",
-                "3ª faixa de valores",
-                "4ª faixa de valores"]
+          enum: ["1ª quartil de clientes",
+                "2ª quartil de clientes",
+                "3ª quartil de clientes",
+                "4ª quartil de clientes"]
           description: "Faixas para cobrança de valores de tarifas por produto/serviço informado."
         value:
           type: string
@@ -2388,10 +2358,10 @@ components:
               properties:
                 interval:
                   type: string
-                  enum: ["1ª faixa de valores",
-                        "2ª faixa de valores",
-                        "3ª faixa de valores",
-                        "4ª faixa de valores"]
+                  enum: ["1ª quartil de clientes",
+                        "2ª quartil de clientes",
+                        "3ª quartil de clientes",
+                        "4ª quartil de clientes"]
                   description: "Faixas para cobrança de valores de tarifas por produto/serviço informado."
                 value:
                   type: string
@@ -2583,10 +2553,10 @@ components:
       properties:
         interval:
           type: string
-          enum: ["1ª faixa de valores",
-                "2ª faixa de valores",
-                "3ª faixa de valores",
-                "4ª faixa de valores"]
+          enum: ["1ª quartil de clientes",
+                "2ª quartil de clientes",
+                "3ª quartil de clientes",
+                "4ª quartil de clientes"]
           description: "Indica os tipos: mínimo, médio e máximo do valor informado."
         value:
           type: string
@@ -2643,10 +2613,10 @@ components:
           properties:
                 interval:
                   type: string
-                  enum: ["1ª faixa de valores",
-                        "2ª faixa de valores",
-                        "3ª faixa de valores",
-                        "4ª faixa de valores"]
+                  enum: ["1ª quartil de clientes",
+                        "2ª quartil de clientes",
+                        "3ª quartil de clientes",
+                        "4ª quartil de clientes"]
                   description: "Faixas para cobrança de valores de tarifas por produto/serviço informado."
                 value:
                   type: string
@@ -2665,6 +2635,80 @@ components:
         - prePostTax
         - occurrence
         - application
+
+  ####################
+  ##  Commons       ##
+  ####################
+    Price:
+      type: object
+      required:
+        - interval
+        - value
+        - currency
+      properties:
+        interval:
+          type: string
+          pattern: '^(\d{1})$'
+          enum: ["1ª quartil de clientes",
+                "2ª quartil de clientes",
+                "3ª quartil de clientes",
+                "4ª quartil de clientes"]
+          description: "Faixas para cobrança de valores de tarifas por produto/serviço informado."
+          example: "1ª quartil de clientes"
+        value:
+          type: string
+          pattern: '^(\d{1,9}\,\d{2}){1}$'
+          maxLength: 12
+          x-cds-type: AmountString
+          description: "Valor da mediana da tarifa, relativa ao serviço ofertado, informado no período."
+          example: "45,00"
+        currency:
+          type: string
+          pattern: '^(\W{3}){1}$'
+          maxLength: 3
+          x-cds-type: CurrencyString
+          description: "Moeda referente ao valor da Tarifa, segundo modelo ISO-4217."
+          example: "BRL"
+    MinimumPrice:
+      type: object
+      required:
+        - value
+        - currency
+      properties:
+        value:
+          type: string
+          pattern: '^(\d{1,9}\,\d{2}){1}$'
+          maxLength: 12
+          x-cds-type: AmountString
+          description: "Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência"
+          example: "45,00"
+        currency:
+          type: string
+          pattern: '^(\W{3}){1}$'
+          maxLength: 3
+          x-cds-type: CurrencyString
+          description: "Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217"
+          example: "BRL"
+    MaximumPrice:
+      type: object
+      required:
+        - value
+        - currency
+      properties:
+        value:
+          type: string
+          pattern: '^(\d{1,9}\,\d{2}){1}$'
+          maxLength: 12
+          x-cds-type: AmountString
+          description: "Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência"
+          example: "45,00"
+        currency:
+          type: string
+          pattern: '^(\W{3}){1}$'
+          maxLength: 3
+          x-cds-type: CurrencyString
+          description: "Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217"
+          example: "BRL"
   ####################
   ##  Links & Meta  ##
   ####################
