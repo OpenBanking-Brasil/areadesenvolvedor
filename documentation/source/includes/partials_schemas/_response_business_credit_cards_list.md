@@ -10,6 +10,7 @@
         {
           "name": "string",
           "cnpjNumber": "string",
+          "urlComplementaryList": "string",
           "businessCreditCards": [
             {
               "name": "string",
@@ -31,10 +32,18 @@
                     "price": [
                       {
                         "interval": "string",
-                        "rate": "string",
-                        "frequency": "string"
+                        "value": "string",
+                        "currency": "string"
                       }
                     ],
+                    "minimum": {
+                      "value": "string",
+                      "currency": "string"
+                    },
+                    "maximum": {
+                      "value": "string",
+                      "currency": "string"
+                    },
                     "additionalInfo": "string",
                     "chargingUnit": "string"
                   }
@@ -48,7 +57,9 @@
                       "rate": "string",
                       "frequency": "string"
                     }
-                  ]
+                  ],
+                  "minimumRate" : "string",
+                  "maximumRate" : "string"
                 },
                 "instalmentRate": {
                   "price": [
@@ -57,7 +68,9 @@
                       "rate": "string",
                       "frequency": "string"
                     }
-                  ]
+                  ],
+                  "minimumRate" : "string",
+                  "maximumRate" : "string"
                 },
                 "code": "string",
                 "additionalInfo": "string"
@@ -105,6 +118,7 @@
     {
       "name": "string",
       "cnpjNumber": "string",
+      "urlComplementaryList": "string",
       "businessCreditCards": [
         {
           "name": "string",
@@ -124,12 +138,20 @@
                 "code": "string",
                 "chargingTriggerInfo": "string",
                 "price": [
-                  {
-                    "interval": "string",
-                    "rate": "string",
-                    "frequency": "string"
-                  }
-                ],
+                      {
+                        "interval": "string",
+                        "value": "string",
+                        "currency": "string"
+                      }
+                    ],
+                    "minimum": {
+                      "value": "string",
+                      "currency": "string"
+                    },
+                    "maximum": {
+                      "value": "string",
+                      "currency": "string"
+                    },
                 "additionalInfo": "string",
                 "chargingUnit": "string"
               }
@@ -143,7 +165,9 @@
                   "rate": "string",
                   "frequency": "string"
                 }
-              ]
+              ],
+              "minimumRate" : "string",
+              "maximumRate" : "string"
             },
             "instalmentRate": {
               "price": [
@@ -152,7 +176,9 @@
                   "rate": "string",
                   "frequency": "string"
                 }
-              ]
+              ],
+              "minimumRate" : "string",
+              "maximumRate" : "string"
             },
             "code": "string",
             "additionalInfo": "string"
@@ -182,6 +208,7 @@
 {
   "name": "string",
   "cnpjNumber": "string",
+  "urlComplementaryList": "string",
   "businessCreditCards": [
     {
       "name": "string",
@@ -201,12 +228,20 @@
             "code": "string",
             "chargingTriggerInfo": "string",
             "price": [
-              {
-                "interval": "string",
-                "rate": "string",
-                "frequency": "string"
-              }
-            ],
+                {
+                  "interval": "string",
+                  "value": "string",
+                  "currency": "string"
+                }
+              ],
+              "minimum": {
+                "value": "string",
+                "currency": "string"
+              },
+              "maximum": {
+                "value": "string",
+                "currency": "string"
+              },
             "additionalInfo": "string",
             "chargingUnit": "string"
           }
@@ -220,7 +255,9 @@
               "rate": "string",
               "frequency": "string"
             }
-          ]
+          ],
+          "minimumRate" : "string",
+          "maximumRate" : "string"
         },
         "instalmentRate": {
           "price": [
@@ -229,7 +266,9 @@
               "rate": "string",
               "frequency": "string"
             }
-          ]
+          ],
+          "minimumRate" : "string",
+          "maximumRate" : "string"
         },
         "code": "string",
         "additionalInfo": "string"
@@ -249,6 +288,7 @@
 |:---------------------|:-----------------------------------------------------|:-------------- |:-----------------------------------|
 | name                 | string                                               | Sim            | Nome da instituição financeira     |
 | cnpjNumber           | string                                               | Sim            | CNPJ da instituição financeira     |
+| urlComplementaryList | string                                               | Não            | URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber |
 | businessCreditCards  | [[BusinessCreditCards](#schemaBusinessCreditCards)]  | Sim            | Lista  de cartões de crédito       |
 
 ## BusinessCreditCards
@@ -275,10 +315,18 @@
         "price": [
           {
             "interval": "string",
-            "rate": "string",
-            "frequency": "string"
+            "value": "string",
+            "currency": "string"
           }
         ],
+        "minimum": {
+          "value": "string",
+          "currency": "string"
+        },
+        "maximum": {
+          "value": "string",
+          "currency": "string"
+        },
         "additionalInfo": "string",
         "chargingUnit": "string"
       }
@@ -292,7 +340,9 @@
           "rate": "string",
           "frequency": "string"
         }
-      ]
+      ],
+      "minimumRate" : "string",
+      "maximumRate" : "string"
     },
     "instalmentRate": {
       "price": [
@@ -301,7 +351,9 @@
           "rate": "string",
           "frequency": "string"
         }
-      ]
+      ],
+      "minimumRate" : "string",
+      "maximumRate" : "string"
     },
     "code": "string",
     "additionalInfo": "string"
@@ -350,12 +402,20 @@
       "code": "string",
       "chargingTriggerInfo": "string",
       "price": [
-        {
-          "interval": "string",
-          "rate": "string",
-          "frequency": "string"
-        }
-      ],
+          {
+            "interval": "string",
+            "value": "string",
+            "currency": "string"
+          }
+        ],
+        "minimum": {
+          "value": "string",
+          "currency": "string"
+        },
+        "maximum": {
+          "value": "string",
+          "currency": "string"
+        },
       "additionalInfo": "string",
       "chargingUnit": "string"
     }
@@ -378,10 +438,18 @@
   "price": [
     {
       "interval": "string",
-      "rate": "string",
-      "frequency": "string"
+      "value": "string",
+      "currency": "string"
     }
   ],
+  "minimum": {
+    "value": "string",
+    "currency": "string"
+  },
+  "maximum": {
+    "value": "string",
+    "currency": "string"
+  },
   "additionalInfo": "string",
   "chargingUnit": "string"
 }
@@ -393,6 +461,8 @@
 | code                | string                                                                                  | Sim             | Sigla de identificação do serviço relacionado à Modalidade de Contas de Pagamento Pós-Pagas para pessoa jurídica informada                        |
 | chargingTriggerInfo | string                                                                                  | Sim             | Fatores geradores de cobrança que incidem sobre as Modalidades inforrmadas de Contas de Pagamento Pós-Pagas para pessoa jurídica                  |
 | price               | [[Price](#schemaPrice)]                                                                 | Sim             | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa jurídica  |
+| minimum             | [[MinimumPrice](#schemaMinimumPrice)]           | Sim          | Valor mínimo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
+| maximum             | [[MaximumPrice](#schemaMaximumPrice)]           | Sim          | Valor máximo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
 | additionalInfo      | string                                                                                  | Sim             | Descrição de como é composto o valor da tarifa                                                                                                    |
 | chargingUnit        | string                                                                                  | Sim             | Unidade ou forma de cobrança                                                                                                                      |
 
@@ -408,7 +478,9 @@
         "rate": "string",
         "frequency": "string"
       }
-    ]
+    ],
+    "minimumRate" : "string",
+    "maximumRate" : "string"
   },
   "instalmentRate": {
     "price": [
@@ -417,7 +489,9 @@
         "rate": "string",
         "frequency": "string"
       }
-    ]
+    ],
+    "minimumRate" : "string",
+    "maximumRate" : "string"
   },
   "code": "string",
   "additionalInfo": "string"
@@ -437,6 +511,7 @@
 | Propriedade                 | Código               | Definição        |
 |:----------------------------|:---------------------|:---------------- |
 | code                        | SAQUE_CREDITO        | Saque a crédito  |
+| code                        | PAGAMENTO_CONTA      | Pagamento de contas  |
 | code                        | OUTROS               | Outros           |
 
 
@@ -451,13 +526,17 @@
       "rate": "string",
       "frequency": "string"
     }
-  ]
+  ],
+  "minimumRate" : "string",
+  "maximumRate" : "string"
 }
 ```
 
 |     Nome                |  Tipo       | Obrigatório     |    Definição                                                                                                                                                          |
 |:------------------------|:------------|:----------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | price                 [[Rate](#schemaRate)]                                                                 | Sim             | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa física  |
+| minimumRate     | String                                                                                      | Sim             | Percentual mínimo cobrado para a taxa do crédito rotativo no mês de referência                                                                |
+| maximumRate     | String                                                                                      | Sim             | Percentual máximo cobrado para o pagamento parcelado do saldo devedor na fatura do mês de referência.                                                                   |
 
 ## BusinessCreditCardsInstalmentRate
 <a id="schemaBusinessCreditCardsInstalmentRate"></a>
@@ -470,13 +549,17 @@
       "rate": "string",
       "frequency": "string"
     }
-  ]
+  ],
+  "minimumRate" : "string",
+  "maximumRate" : "string"
 }
 ```
 
 |     Nome                |  Tipo       | Obrigatório     |    Definição                                                                                                                                                          |
 |:------------------------|:------------|:----------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | price                 [[Rate](#schemaRate)]                                                                 | Sim             | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa física  |
+| minimumRate     | String                                                                                      | Sim             | Percentual mínimo cobrado para a taxa do crédito rotativo no mês de referência                                                                |
+| maximumRate     | String                                                                                      | Sim             | Percentual máximo cobrado para o pagamento parcelado do saldo devedor na fatura do mês de referência.                                                                   |
 
 ## BusinessCreditCardsTermsConditions
 <a id="schemaBusinessCreditCardsTermsConditions"></a>

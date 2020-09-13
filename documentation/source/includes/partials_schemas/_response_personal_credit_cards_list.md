@@ -10,6 +10,7 @@
         {
           "name": "string",
           "cnpjNumber": "string",
+          "urlComplementaryList":"string",
           "personalCreditCards": [
             {
               "name": "string",
@@ -30,10 +31,17 @@
                       {
                         "interval": "string",
                         "value": "string",
-                        "currency": "string",
-                        "frequency": "string"
+                        "currency": "string"
                       }
                     ],
+                    "minimum": {
+                      "value": "string",
+                      "currency": "string"
+                    },
+                    "maximum": {
+                      "value": "string",
+                      "currency": "string"
+                    },
                     "chargingUnit": "string"
                   }
                 ],
@@ -46,10 +54,17 @@
                       {
                         "interval": "string",
                         "value": "string",
-                        "currency": "string",
-                        "frequency": "string"
+                        "currency": "string"
                       }
                     ],
+                    "minimum": {
+                      "value": "string",
+                      "currency": "string"
+                    },
+                    "maximum": {
+                      "value": "string",
+                      "currency": "string"
+                    },
                     "additionalInfo": "string",
                     "chargingUnit": "string"
                   }
@@ -63,7 +78,9 @@
                       "rate": "string",
                       "frequency": "string"
                     }
-                  ]
+                  ],
+                  "minimumRate" : "string",
+                  "maximumRate" : "string",
                 },
                 "instalmentRate": {
                   "price": [
@@ -72,7 +89,9 @@
                       "rate": "string",
                       "frequency": "string"
                     }
-                  ]
+                  ],
+                  "minimumRate" : "string",
+                  "maximumRate" : "string"
                 },
                 "code": "string",
                 "additionalInfo": "string"
@@ -120,6 +139,7 @@
     {
       "name": "string",
       "cnpjNumber": "string",
+      "urlComplementaryList": "string",
       "personalCreditCards": [
         {
           "name": "string",
@@ -133,38 +153,52 @@
             "rewardProgramInfo": "string"
           },
           "fees": {
-            "priorityServices": [
-              {
-                "code": "string",
-                "price": [
+                "priorityServices": [
                   {
-                    "interval": "string",
-                    "value": "string",
-                    "currency": "string",
-                    "frequency": "string"
+                    "code": "string",
+                    "price": [
+                      {
+                        "interval": "string",
+                        "value": "string",
+                        "currency": "string"
+                      }
+                    ],
+                    "minimum": {
+                      "value": "string",
+                      "currency": "string"
+                    },
+                    "maximum": {
+                      "value": "string",
+                      "currency": "string"
+                    },
+                    "chargingUnit": "string"
                   }
                 ],
-                "chargingUnit": "string"
-              }
-            ],
-            "otherServices": [
-              {
-                "name": "string",
-                "code": "string",
-                "chargingTriggerInfo": "string",
-                "price": [
+                "otherServices": [
                   {
-                    "interval": "string",
-                    "value": "string",
-                    "currency": "string",
-                    "frequency": "string"
+                    "name": "string",
+                    "code": "string",
+                    "chargingTriggerInfo": "string",
+                    "price": [
+                      {
+                        "interval": "string",
+                        "value": "string",
+                        "currency": "string"
+                      }
+                    ],
+                    "minimum": {
+                      "value": "string",
+                      "currency": "string"
+                    },
+                    "maximum": {
+                      "value": "string",
+                      "currency": "string"
+                    },
+                    "additionalInfo": "string",
+                    "chargingUnit": "string"
                   }
-                ],
-                "additionalInfo": "string",
-                "chargingUnit": "string"
-              }
-            ]
-          },
+                ]
+              },
           "interestRates": {
             "feeRate": {
               "price": [
@@ -173,7 +207,9 @@
                   "rate": "string",
                   "frequency": "string"
                 }
-              ]
+              ],
+              "minimumRate" : "string",
+              "maximumRate" : "string"
             },
             "instalmentRate": {
               "price": [
@@ -182,7 +218,9 @@
                   "rate": "string",
                   "frequency": "string"
                 }
-              ]
+              ],
+              "minimumRate" : "string",
+              "maximumRate" : "string"
             },
             "code": "string",
             "additionalInfo":"string"
@@ -212,6 +250,7 @@
 {
   "name": "string",
   "cnpjNumber": "string",
+  "urlComplementaryList": "string",
   "personalCreditCards": [
     {
       "name": "string",
@@ -225,38 +264,52 @@
         "rewardProgramInfo": "string"
       },
       "fees": {
-        "priorityServices": [
-          {
-            "code": "string",
-            "price": [
-              {
-                "interval": "string",
-                "value": "string",
-                "currency": "string",
-                "frequency": "string"
-              }
-            ],
-            "chargingUnit": "string"
-          }
-        ],
-        "otherServices": [
-          {
-            "name": "string",
-            "code": "string",
-            "chargingTriggerInfo": "string",
-            "price": [
-              {
-                "interval": "string",
-                "value": "string",
-                "currency": "string",
-                "frequency": "string"
-              }
-            ],
-            "additionalInfo": "string",
-            "chargingUnit": "string"
-          }
-        ]
-      },
+                "priorityServices": [
+                  {
+                    "code": "string",
+                    "price": [
+                      {
+                        "interval": "string",
+                        "value": "string",
+                        "currency": "string"
+                      }
+                    ],
+                    "minimum": {
+                      "value": "string",
+                      "currency": "string"
+                    },
+                    "maximum": {
+                      "value": "string",
+                      "currency": "string"
+                    },
+                    "chargingUnit": "string"
+                  }
+                ],
+                "otherServices": [
+                  {
+                    "name": "string",
+                    "code": "string",
+                    "chargingTriggerInfo": "string",
+                    "price": [
+                      {
+                        "interval": "string",
+                        "value": "string",
+                        "currency": "string"
+                      }
+                    ],
+                    "minimum": {
+                      "value": "string",
+                      "currency": "string"
+                    },
+                    "maximum": {
+                      "value": "string",
+                      "currency": "string"
+                    },
+                    "additionalInfo": "string",
+                    "chargingUnit": "string"
+                  }
+                ]
+              },
       "interestRates": {
         "feeRate": {
           "price": [
@@ -265,7 +318,9 @@
               "rate": "string",
               "frequency": "string"
             }
-          ]
+          ],
+          "minimumRate" : "string",
+          "maximumRate" : "string"
         },
         "instalmentRate": {
           "price": [
@@ -274,7 +329,9 @@
               "rate": "string",
               "frequency": "string"
             }
-          ]
+          ],
+          "minimumRate" : "string",
+          "maximumRate" : "string"
         },
         "code": "string",
         "additionalInfo":"string"
@@ -294,8 +351,10 @@
 |:---------------------|:-----------------------------------------------------|:-------------- |:-----------------------------------|
 | name                 | string                                               | Sim            | Nome da instituição financeira     |
 | cnpjNumber           | string                                               | Sim            | CNPJ da instituição financeira     |
+| urlComplementaryList | string                                               | Não            | URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber |
 | personalCreditCards  | [[PersonalCreditCards](#schemaPersonalCreditCards)]  | Sim            | Lista  de cartões de crédito       |
 
+urlComplementaryList
 ## PersonalCreditCards
 <a id="schemaPersonalCreditCards"></a>
 
@@ -311,39 +370,53 @@
     "hasRewardProgram": "boolean",
     "rewardProgramInfo": "string"
   },
-  "fees": {
-    "priorityServices": [
-      {
-        "code": "string",
-        "price": [
-          {
-            "interval": "string",
-            "value": "string",
-            "currency": "string",
-            "frequency": "string"
-          }
-        ],
-        "chargingUnit": "string"
-      }
-    ],
-    "otherServices": [
-      {
-        "name": "string",
-        "code": "string",
-        "chargingTriggerInfo": "string",
-        "price": [
-          {
-            "interval": "string",
-            "value": "string",
-            "currency": "string",
-            "frequency": "string"
-          }
-        ],
-        "additionalInfo": "string",
-        "chargingUnit": "string"
-      }
-    ]
-  },
+        "fees": {
+                "priorityServices": [
+                  {
+                    "code": "string",
+                    "price": [
+                      {
+                        "interval": "string",
+                        "value": "string",
+                        "currency": "string"
+                      }
+                    ],
+                    "minimum": {
+                      "value": "string",
+                      "currency": "string"
+                    },
+                    "maximum": {
+                      "value": "string",
+                      "currency": "string"
+                    },
+                    "chargingUnit": "string"
+                  }
+                ],
+                "otherServices": [
+                  {
+                    "name": "string",
+                    "code": "string",
+                    "chargingTriggerInfo": "string",
+                    "price": [
+                      {
+                        "interval": "string",
+                        "value": "string",
+                        "currency": "string"
+                      }
+                    ],
+                    "minimum": {
+                      "value": "string",
+                      "currency": "string"
+                    },
+                    "maximum": {
+                      "value": "string",
+                      "currency": "string"
+                    },
+                    "additionalInfo": "string",
+                    "chargingUnit": "string"
+                  }
+                ]
+              },
   "interestRates": {
     "feeRate": {
       "price": [
@@ -352,7 +425,9 @@
           "rate": "string",
           "frequency": "string"
         }
-      ]
+      ],
+      "minimumRate" : "string",
+      "maximumRate" : "string"
     },
     "instalmentRate": {
       "price": [
@@ -361,7 +436,9 @@
           "rate": "string",
           "frequency": "string"
         }
-      ]
+      ],
+      "minimumRate" : "string",
+      "maximumRate" : "string"
     },
     "code": "string",
     "additionalInfo":"string"
@@ -458,10 +535,17 @@
         {
           "interval": "string",
           "value": "string",
-          "currency": "string",
-          "frequency": "string"
+          "currency": "string"
         }
       ],
+      "minimum": {
+        "value": "string",
+        "currency": "string"
+      },
+      "maximum": {
+        "value": "string",
+        "currency": "string"
+      },
       "chargingUnit": "string"
     }
   ],
@@ -474,10 +558,17 @@
         {
           "interval": "string",
           "value": "string",
-          "currency": "string",
-          "frequency": "string"
+          "currency": "string"
         }
       ],
+      "minimum": {
+        "value": "string",
+        "currency": "string"
+      },
+      "maximum": {
+        "value": "string",
+        "currency": "string"
+      },
       "additionalInfo": "string",
       "chargingUnit": "string"
     }
@@ -500,10 +591,17 @@
     {
       "interval": "string",
       "value": "string",
-      "currency": "string",
-      "frequency": "string"
+      "currency": "string"
     }
   ],
+  "minimum": {
+    "value": "string",
+    "currency": "string"
+  },
+  "maximum": {
+    "value": "string",
+    "currency": "string"
+  },
   "chargingUnit": "string"
 }
 ```
@@ -512,6 +610,8 @@
 |:--------------------|:----------------------------------------------------------------------------------------------------------------------------------|:----------------|:--------------------------------------------------------------------------------------------------|
 | code                | [Enum PersonalCreditCardsPriorityServicesCode](#schemaEnumPersonalCreditCardsPriorityServicesCode)                                | Sim             | Sigla de identificação do serviço relacionado à modalidade de contas de pagamento pós-pagas para pessoa física informada conforme resolução 3.919 do BACEN            |
 | price               | [[Price](#schemaPrice)]                                                  | Sim            | Lista de preços possíveis                                                                                                                  |
+| minimum             | [[MinimumPrice](#schemaMinimumPrice)]           | Sim          | Valor mínimo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
+| maximum             | [[MaximumPrice](#schemaMaximumPrice)]           | Sim          | Valor máximo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
 | chargingUnit        | string                                                                                                                            | Sim             | Unidade ou forma de cobrança                                                                                                                                          |
 
 ### Enum PersonalCreditCardsPriorityServicesCode
@@ -526,6 +626,7 @@
 | code         | RETIRADA_EXTERIOR              | Utilização de canais de atendimento para retirada em espécie no exterior    |
 | code         | PAGAMENTO_CONTAS               | Pagamento de contas utilizando a função crédito                             |
 | code         | AVALIACAO_EMERGENCIAL_CREDITO  | Avaliação emergencial de crédito                                            |
+| code         | SMS                            | Serviço de envio de SMS                                                     |
 
 ## PersonalCreditCardsOtherServices
 <a id="schemaPersonalCreditCardsOtherServices"></a>
@@ -539,10 +640,17 @@
     {
       "interval": "string",
       "value": "string",
-      "currency": "string",
-      "frequency": "string"
+      "currency": "string"
     }
   ],
+  "minimum": {
+    "value": "string",
+    "currency": "string"
+  },
+  "maximum": {
+    "value": "string",
+    "currency": "string"
+  },
   "additionalInfo": "string",
   "chargingUnit": "string"
 }
@@ -554,6 +662,8 @@
 | code                | string                                                                                  | Sim             | Sigla de identificação do serviço relacionado à Modalidade de Contas de Pagamento Pós-Pagas para pessoa física informada                        |
 | chargingTriggerInfo | string                                                                                  | Sim             | Fatores geradores de cobrança que incidem sobre as Modalidades inforrmadas de Contas de Pagamento Pós-Pagas para pessoa física                  |
 | price               | [[Price](#schemaPrice)]                                                                 | Sim             | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa física  |
+| minimum             | [[MinimumPrice](#schemaMinimumPrice)]           | Sim          | Valor mínimo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
+| maximum             | [[MaximumPrice](#schemaMaximumPrice)]           | Sim          | Valor máximo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
 | additionalInfo      | string                                                                                  | Sim             | Descrição de como é composto o valor da tarifa                                                                                                  |
 | chargingUnit        | string                                                                                  | Sim             | Unidade ou forma de cobrança                                                                                                                    |
 
@@ -567,21 +677,24 @@
       {
         "interval": "string",
         "rate": "string",
-        "frequency": "string"
       }
-    ]
+    ],
+    "minimumRate" : "string",
+    "maximumRate" : "string"
   },
   "instalmentRate": {
     "price": [
       {
         "interval": "string",
         "rate": "string",
-        "frequency": "string"
       }
-    ]
+    ],
+    "minimumRate" : "string",
+    "maximumRate" : "string"
   },
   "code": "string",
   "additionalInfo":"string"
+
 }
 ```
 
@@ -598,6 +711,7 @@
 | Propriedade                 | Código               | Definição        |
 |:----------------------------|:---------------------|:---------------- |
 | code                        | SAQUE_CREDITO        | Saque a crédito  |
+| code                        | PAGAMENTO_CONTAS     | Pagamento de contas  |
 | code                        | OUTROS               | Outros           |
 
 
@@ -609,16 +723,19 @@
   "price": [
     {
       "interval": "string",
-      "rate": "string",
-      "frequency": "string"
+      "rate": "string"
     }
-  ]
+  ],
+  "minimumRate" : "string",
+  "maximumRate" : "string"
 }
 ```
 
 |     Nome                |  Tipo       | Obrigatório     |    Definição                                                                                                                                                          |
 |:------------------------|:------------|:----------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | price                 [[Rate](#schemaRate)]                                                                 | Sim             | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa física  |
+| minimumRate     | String                                                                                      | Sim             | Percentual mínimo cobrado para a taxa do crédito rotativo no mês de referência                                                                |
+| maximumRate     | String                                                                                      | Sim             | Percentual máximo cobrado para o pagamento parcelado do saldo devedor na fatura do mês de referência.                                                                   |
 
 ## PersonalCreditCardsInstalmentRate
 <a id="schemaPersonalCreditCardsInstalmentRate"></a>
@@ -629,15 +746,18 @@
     {
       "interval": "string",
       "rate": "string",
-      "frequency": "string"
     }
-  ]
+  ],
+  "minimumRate" : "string",
+  "maximumRate" : "string"
 }
 ```
 
 |     Nome                |  Tipo       | Obrigatório     |    Definição                                                                                                                                                          |
 |:------------------------|:------------|:----------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | price                 [[Rate](#schemaRate)]                                                                 | Sim             | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa física  |
+| minimumRate     | String                                                                                      | Sim             | Percentual mínimo cobrado para a taxa do crédito rotativo no mês de referência                                                                |
+| maximumRate     | String                                                                                      | Sim             | Percentual máximo cobrado para o pagamento parcelado do saldo devedor na fatura do mês de referência.                                                                   |
 
 
 ## PersonalCreditCardsTermsConditions

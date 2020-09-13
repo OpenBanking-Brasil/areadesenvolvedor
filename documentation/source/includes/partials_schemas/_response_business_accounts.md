@@ -10,6 +10,7 @@
         {
           "name": "string",
           "cnpjNumber": "string",
+          "urlComplementaryList": "string",
           "businessAccounts": [
             {
               "type": "string",
@@ -23,10 +24,17 @@
                       {
                         "interval": "string",
                         "value": "string",
-                        "currency": "string",
-                        "frequency": "string"
+                        "currency": "string"
                       }
                     ],
+                    "minimum": {
+                        "value": "string",
+                        "currency": "string"
+                      },
+                    "maximum": {
+                        "value": "string",
+                        "currency": "string"
+                      },
                     "additionalInfo": "string",
                     "chargingUnit": "string"
                   }
@@ -41,14 +49,32 @@
                     "freeEventQuantity": "string",
                     "price": {
                       "value": "string",
-                      "currency": "string"
-                    }
+                      "currency": "string",
+                      "interval": "string"
+                    },
+                    "minimum": {
+                        "value": "string",
+                        "currency": "string"
+                      },
+                    "maximum": {
+                        "value": "string",
+                        "currency": "string"
+                      },
                   }
                 ],
                 "price": {
                   "monthlyFee": "string",
-                  "currency": "string"
-                }
+                  "currency": "string",
+                  "interval": "string"
+                },
+                "minimum": {
+                        "value": "string",
+                        "currency": "string"
+                      },
+                    "maximum": {
+                        "value": "string",
+                        "currency": "string"
+                      },
               },
               "openCloseChannels": "string",
               "additionalInfo": "string",
@@ -68,9 +94,10 @@
                 "additionalInfo": "string",
                 "application": {
                   "interval": "string",
-                  "rate": "string",
-                  "frequency": "string"
-                }
+                  "rate": "string"
+                },
+                "minumumRate": "string",
+                "maxiumRate": "string"
               }
             }
           ]
@@ -109,6 +136,7 @@
     {
       "name": "string",
       "cnpjNumber": "string",
+      "urlComplementaryList": "string",
       "businessAccounts": [
         {
           "type": "string",
@@ -122,10 +150,17 @@
                   {
                     "interval": "string",
                     "value": "string",
-                    "currency": "string",
-                    "frequency": "string"
+                    "currency": "string"
                   }
                 ],
+                "minimum": {
+                    "value": "string",
+                    "currency": "string"
+                  },
+                "maximum": {
+                    "value": "string",
+                    "currency": "string"
+                  },
                 "additionalInfo": "string",
                 "chargingUnit": "string"
               }
@@ -140,14 +175,32 @@
                 "freeEventQuantity": "string",
                 "price": {
                   "value": "string",
-                  "currency": "string"
-                }
+                  "currency": "string",
+                  "interval": "string"
+                },
+                "minimum": {
+                    "value": "string",
+                    "currency": "string"
+                  },
+                "maximum": {
+                    "value": "string",
+                    "currency": "string"
+                },
               }
             ],
             "price": {
               "monthlyFee": "string",
-              "currency": "string"
-            }
+              "currency": "string",
+              "interval": "string"
+            },
+            "minimum": {
+                "value": "string",
+                "currency": "string"
+              },
+            "maximum": {
+                "value": "string",
+                "currency": "string"
+              },
           },
           "openCloseChannels": "string",
           "additionalInfo": "string",
@@ -167,9 +220,10 @@
             "additionalInfo": "string",
             "application": {
               "interval": "string",
-              "rate": "string",
-              "frequency": "string"
-            }
+              "rate": "string"
+            },
+            "minumumRate": "string",
+            "maxiumRate": "string"
           }
         }
       ]
@@ -190,6 +244,7 @@
 {
   "name": "string",
   "cnpjNumber": "string",
+  "urlComplementaryList": "string",
   "businessAccounts": [
     {
       "type": "string",
@@ -203,10 +258,17 @@
               {
                 "interval": "string",
                 "value": "string",
-                "currency": "string",
-                "frequency": "string"
+                "currency": "string"
               }
             ],
+            "minimum": {
+                "value": "string",
+                "currency": "string"
+              },
+            "maximum": {
+                "value": "string",
+                "currency": "string"
+              },
             "additionalInfo": "string",
             "chargingUnit": "string"
           }
@@ -221,14 +283,32 @@
             "freeEventQuantity": "string",
             "price": {
               "value": "string",
+              "currency": "string",
+              "interval": "string"
+            },
+            "minimum": {
+              "value": "string",
               "currency": "string"
-            }
+            },
+          "maximum": {
+              "value": "string",
+              "currency": "string"
+            },
           }
         ],
         "price": {
           "monthlyFee": "string",
-          "currency": "string"
-        }
+          "currency": "string",
+          "interval": "string"
+        },
+        "minimum": {
+            "value": "string",
+            "currency": "string"
+          },
+        "maximum": {
+            "value": "string",
+            "currency": "string"
+          },
       },
       "openCloseChannels": "string",
       "additionalInfo": "string",
@@ -248,9 +328,10 @@
         "additionalInfo": "string",
         "application": {
           "interval": "string",
-          "rate": "string",
-          "frequency": "string"
-        }
+          "rate": "string"
+        },
+        "minumumRate": "string",
+        "maxiumRate": "string"
       }
     }
   ]
@@ -261,6 +342,7 @@
 |:------------    |:---------------------------------                             |:-----------  |:----------------------------------------------------                 |
 | name            | string                                                        | Sim          | Nome da Instituição, pertencente à marca, responsável pela comercialização dos tipos de contas de pessoas jurídicas consultadas.                      |
 | cnpjNumber      | string                                                        | Sim          | O responsável pela comercialização das modalidades de Contas para Pessoas Jurídicas consultadas.                                       |
+| urlComplementaryList | string                                                        | Sim          | URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. |
 | businessAccounts| [[BusinessAccounts](#schemaBusinessAccounts)]                 | Sim          | Lista de contas pessoa jurídica.                                      |
 
 
@@ -280,10 +362,17 @@
           {
             "interval": "string",
             "value": "string",
-            "currency": "string",
-            "frequency": "string"
+            "currency": "string"
           }
         ],
+        "minimum": {
+          "value": "string",
+          "currency": "string"
+        },
+      "maximum": {
+          "value": "string",
+          "currency": "string"
+        },
         "additionalInfo": "string",
         "chargingUnit": "string"
       }
@@ -298,14 +387,32 @@
         "freeEventQuantity": "string",
         "price": {
           "value": "string",
+          "currency": "string",
+          "interval": "string"
+        },
+        "minimum": {
+          "value": "string",
           "currency": "string"
-        }
+        },
+      "maximum": {
+          "value": "string",
+          "currency": "string"
+        },
       }
     ],
     "price": {
       "monthlyFee": "string",
-      "currency": "string"
-    }
+      "currency": "string",
+      "interval": "string"
+    },
+    "minimum": {
+        "value": "string",
+        "currency": "string"
+      },
+    "maximum": {
+        "value": "string",
+        "currency": "string"
+      },
   },
   "openCloseChannels": "string",
   "additionalInfo": "string",
@@ -325,9 +432,10 @@
     "additionalInfo": "string",
     "application": {
       "interval": "string",
-      "rate": "string",
-      "frequency": "string"
-    }
+      "rate": "string"
+    },
+    "minumumRate": "string",
+    "maxiumRate": "string"
   }
 }
 ```
@@ -389,10 +497,17 @@
         {
           "interval": "string",
           "value": "string",
-          "currency": "string",
-          "frequency": "string"
+          "currency": "string"
         }
       ],
+      "minimum": {
+          "value": "string",
+          "currency": "string"
+        },
+      "maximum": {
+          "value": "string",
+          "currency": "string"
+        },
       "additionalInfo": "string",
       "chargingUnit": "string"
     }
@@ -416,10 +531,17 @@
     {
       "interval": "string",
       "value": "string",
-      "currency": "string",
-      "frequency": "string"
+      "currency": "string"
     }
   ],
+  "minimum": {
+      "value": "string",
+      "currency": "string"
+    },
+  "maximum": {
+      "value": "string",
+      "currency": "string"
+    },
   "additionalInfo": "string",
   "chargingUnit": "string"
 }
@@ -447,14 +569,32 @@
       "freeEventQuantity": "string",
       "price": {
         "value": "string",
-        "currency": "string"
-      }
+        "currency": "string",
+        "interval": "string"
+      },
+      "minimum": {
+            "value": "string",
+            "currency": "string"
+          },
+        "maximum": {
+            "value": "string",
+            "currency": "string"
+          },
     }
   ],
   "price": {
     "monthlyFee": "string",
-    "currency": "string"
-  }
+    "currency": "string",
+    "interval": "string"
+  },
+  "minimum": {
+        "value": "string",
+        "currency": "string"
+      },
+    "maximum": {
+        "value": "string",
+        "currency": "string"
+      },
 }
 ```
 
@@ -463,6 +603,8 @@
 | name               | string                       | Sim          | Nome do conjunto de serviços.                        |
 | services           | [[ServicesBusinessAccount](#schemaServicesBusinessAccount)]| Sim          | Lista de serviços.       |
 | price              | [ServiceBundlesBusinessAccountPrice](#schemaServiceBundlesBusinessAccountPrice) | Sim          | Valor mensal da tarifa referente ao Pacote de Serviços |
+| minimum             | [[MinimumPrice](#schemaMinimumPrice)]           | Sim          | Valor mínimo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
+| maximum             | [[MaximumPrice](#schemaMaximumPrice)]           | Sim          | Valor máximo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
 
 ## ServicesBusinessAccount
 <a id="schemaServicesBusinessAccount"></a>
@@ -474,8 +616,17 @@
   "freeEventQuantity": "string",
   "price": {
     "value": "string",
-    "currency": "string"
-  }
+    "currency": "string",
+    "interval": "string"
+  },
+  "minimum": {
+        "value": "string",
+        "currency": "string"
+      },
+    "maximum": {
+        "value": "string",
+        "currency": "string"
+      },
 }
 ```
 
@@ -485,6 +636,9 @@
 | eventLimitQuantity | string                       | Sim          | Quantidade de eventos previstos no Pacote de Serviços.      |
 | freeEventQuantity  | string                       | Sim          | Quantidade de eventos previstos no Pacote de Serviços com isenção de Tarifa.      |
 | price           |  [[PriceServicesBusinessAccount](#schemaPriceServicesBusinessAccount)]| Sim          | Indica o tipo de valor da tarifa do serviço que compõe o Pacote de Serviços.     |
+| minimum             | [[MinimumPrice](#schemaMinimumPrice)]           | Sim          | Valor mínimo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
+| maximum             | [[MaximumPrice](#schemaMaximumPrice)]           | Sim          | Valor máximo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
+
 
 ## PriceServicesBusinessAccount
 <a id="schemaPriceServicesBusinessAccount"></a>
@@ -492,7 +646,8 @@
 ```json
 {
   "value": "string",
-  "currency": "string"
+  "currency": "string",
+  "interval": "string"
 }
 ```
 
@@ -500,6 +655,7 @@
 |:-------------------|:-----------------------------|:-------------|:----------------------------------------------------|
 | value              | string                       | Sim          | Valor da tarifa referente ao Serviço que compõe o Pacote de Serviços, relativo ao quantil tipo.         |
 | currency           | string                       | Sim          | Moeda referente ao valor máximo da tarifa, segundo modelo ISO-4217.                |
+| interval           | string                       | Sim          | Faixas de valor referentes ao pagamento mensal do Pacote de Serviços informado |
 
 ## ServiceBundlesBusinessAccountPrice
 <a id="schemaServiceBundlesBusinessAccountPrice"></a>
@@ -507,7 +663,8 @@
 ```json
 {
   "monthlyFee": "string",
-  "currency": "string"
+  "currency": "string",
+  "interval": "string"
 }
 ```
 
@@ -515,6 +672,7 @@
 |:-------------------|:-----------------------------|:-------------|:----------------------------------------------------|
 | monthlyFee         | string                       | Sim          | Valor mensal da tarifa referente ao Pacote de Serviços |
 | currency           | string                       | Sim          | Moeda referente ao valor do Pacote de serviços, segundo modelo ISO-4217.      |
+| interval           | string                       | Sim          | Faixas de valor referentes ao pagamento mensal do Pacote de Serviços informado |
 
 
 
@@ -550,9 +708,10 @@
   "additionalInfo": "string",
   "application": {
     "interval": "string",
-    "rate": "string",
-    "frequency": "string"
-  }
+    "rate": "string"
+  },
+  "minumumRate": "string",
+  "maxiumRate": "string"
 }
 ```
 
@@ -565,3 +724,5 @@
 | occurrence        | [Enum OccurrenceType](#schemaOccurrenceType)   | Sim          | Código que indica Frequência sobre a qual incide a Remuneração.             |
 | additionalInfo    | string                                       | Sim          | Descrição da Remuneração            |
 | application       | [[Price](#schemaPrice)]                      | Sim          | Identifica o período referente ao percentual de taxa de remuneração efetivamente aplicada no intervalo informado.              |
+| minimumRate     | String                                                                                      | Sim             | Percentual mínimo cobrado para a taxa do crédito rotativo no mês de referência                                                                |
+| maximumRate     | String                                                                                      | Sim             | Percentual máximo cobrado para o pagamento parcelado do saldo devedor na fatura do mês de referência.                                                                   |
