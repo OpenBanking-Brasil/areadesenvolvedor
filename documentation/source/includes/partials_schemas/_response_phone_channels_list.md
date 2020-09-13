@@ -212,11 +212,11 @@
 ## PhoneChannelsPhones
 <a id="schemaPhoneChannelsPhones"></a>
 
-|     Nome        |  Tipo  | Obrigatório |     Definição                                                                                                                |
-|:---------       |:------ |:----------- |:-------------------------                                                                                                    |
-| countryCode     | string | Não         | DDI.                                                                                                                          |
-| areaCode        | string | Não         | DDD.                                                                                                                          |
-| number          | string | Sim         | Telefone para contato com o canal.                                                                                            |
+|     Nome        |  Tipo  | Obrigatório |     Definição                                                                     |
+|:---------       |:------ |:----------- |:-------------------------                                                         |
+| countryCode     | string | Não         | DDI.                                                                              |
+| areaCode        | string | Não         | DDD.                                                                              |
+| number          | string | Sim         | Telefone para contato com o canal.                                                |
 | additionalInfo  | string | Não         | Mensagem complementar necessária para o agrupamento da identificação do telefone. |
 
 
@@ -225,7 +225,7 @@
 
 |     Nome         |  Tipo                                                                              | Obrigatório |                            Definição               |
 |:------------     |:---------------------------------------------------------------------------------  |:----------- |:-------------------------------------------------- |
-| codes            | [[Enum PhoneChannelsServicesCodes](#schemaEnumPhoneChannelsServicesCodes)] | Sim         | Lista com a lista de serviços prestados pelo canal. |
+| codes            | [[Enum PhoneChannelsServicesCodes](#schemaEnumPhoneChannelsServicesCodes)]         | Sim         | Lista com a lista de serviços prestados pelo canal. |
 | additionalInfo   | string                                                                             | Não         | Descrição adicional sobre os serviços prestados.    |
 
 ### Enum PhoneChannelsServicesCodes
@@ -241,5 +241,8 @@
 | codes        | OPERACOES_CAMBIO                                     | Operações de câmbio.                                   |
 | codes        | INVESTIMENTOS                                        | Investimentos.                                         |
 | codes        | SEGUROS                                              | Seguros.                                               |
-| codes        | ATENDIMENTO_DEMANDAS_CLIENTE                         | Atendimento as demandas de cliente.                    |
+| codes        | RECLAMACAO                                           | Reclamações.                                           |
+| codes        | CANCELAMENTO                                         | Cancelamento.                                          |
+| codes        | INFORMACOES                                          | Informacões.                                           |
+| codes        | FALAR_ATENDENTE                                      | Falar com atendente.                                   |
 | codes        | OUTROS                                               | Outros                                                 |
