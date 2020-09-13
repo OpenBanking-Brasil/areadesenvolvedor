@@ -4,76 +4,74 @@
 ```json
 {
   "data": {
-    "brand": [
-      {
-        "name": "string",
-        "companies": [
-          {
-            "name": "string",
-            "cnpjNumber": "string",
-            "urlComplementaryList" : "string",
-            "businessLoans": [
-              {
-                "type": "string",
-                "fees": [
-                  {
-                    "serviceName": "string",
-                    "serviceCode": "string",
-                    "chargingTriggerInfo": "string",
-                    "chargingUnit": "string",
-                    "price": [
-                      {
-                        "interval": "string",
-                        "value": "string",
-                        "currency": "string"
-                      }
-                    ],
-                    "minimum": {
-                      "value": "string",
-                      "currency": "string"
-                    },
-                    "maximum": {
-                      "value": "string",
-                      "currency": "string"
-                    },
-                    "additionalInfo": "string"
-                  }
-                ],
-                "interestRates": [
-                  {
-                    "rate": "string",
-                    "referencialRate": "string",
-                    "indexer": "string",
-                    "prePostTax": "string",
-                    "occurrence": "string",
-                    "incomeRateInfo": "string",
-                    "application": [
-                      {
-                        "interval": "string",
-                        "value": "string",
-                        "currency": "string"
-                      }
-                    ],
-                    "minimum": {
-                      "value": "string",
-                      "currency": "string"
-                    },
-                    "maximum": {
+    "brand": {
+      "name": "string",
+      "companies": [
+        {
+          "name": "string",
+          "cnpjNumber": "string",
+          "urlComplementaryList": "string",
+          "businessLoans": [
+            {
+              "type": "string",
+              "fees": [
+                {
+                  "serviceName": "string",
+                  "serviceCode": "string",
+                  "chargingTriggerInfo": "string",
+                  "chargingUnit": "string",
+                  "price": [
+                    {
+                      "interval": "string",
                       "value": "string",
                       "currency": "string"
                     }
+                  ],
+                  "minimum": {
+                    "value": "string",
+                    "currency": "string"
+                  },
+                  "maximum": {
+                    "value": "string",
+                    "currency": "string"
+                  },
+                  "additionalInfo": "string"
+                }
+              ],
+              "interestRates": [
+                {
+                  "rate": "string",
+                  "referencialRate": "string",
+                  "indexer": "string",
+                  "prePostTax": "string",
+                  "occurrence": "string",
+                  "incomeRateInfo": "string",
+                  "application": [
+                    {
+                      "interval": "string",
+                      "value": "string",
+                      "currency": "string"
+                    }
+                  ],
+                  "minimum": {
+                    "value": "string",
+                    "currency": "string"
+                  },
+                  "maximum": {
+                    "value": "string",
+                    "currency": "string"
                   }
-                ],
-                "requiredWarranties": [
-                  "string"
-                ],
-                "termsConditions": "string"
-              }
-            ]
-          }
-        ]
-      }
-    ]
+                }
+              ],
+              "requiredWarranties": [
+                "string"
+              ],
+              "termsConditions": "string"
+            }
+          ]
+        }
+      ]
+    }
   },
   "links": {
     "self": "string",
@@ -92,7 +90,7 @@
 |     Nome          |  Tipo                                                   | Obrigatório  |                            Definição                  |
 |:------------      |:---------------------------------                       |:-----------  |:----------------------------------------------------  |
 | data              | object                                                  | Sim          |                                                       |
-| » brand           | [[BusinessLoansBrand](#schemaBusinessLoansBrand)]       | Sim          | Lista das organizaçõs titulares das dependências      |
+| » brand           | [[BusinessLoansBrand](#schemaBusinessLoansBrand)]       | Sim          | organizaçãs titular das dependências                  |
 | links             | [LinksPaginated](#schemaLinksPaginated)                 | Sim          |                                                       |
 | meta              | [MetaPaginated](#schemaMetaPaginated)                   | Sim          |                                                       |
 
@@ -319,7 +317,7 @@
 | fees                | [[LoanFees](#schemaLoanFees)]                               | Sim          | Tarifas cobradas sobre Serviços ofertados à Modalidade de Empréstimo             |
 | interestRates       | [[LoanInterestRates](#schemaLoanInterestRates)]             | Sim          | Taxas de juros remuneratórias             |
 | requiredWarranties  | [[Enum RequiredWarranties](#schemaEnumRequiredWarranties)]  | Sim          | Relação de garantias exigidas, segundo documento <a href='https://www.bcb.gov.br/estabilidadefinanceira/scrdoc3040' target="_blank">3040 do Bacem</a>       |
-| termsConditions     | string                                                      | Sim          | Campo aberto para informar as condições contratuais relativas à Modalidade de Empréstimo para pessoa física informada. Pode ser informada a URL ~([[URIString](#commonFieldURIString)]) referente ao endereço onde constam as condições informadas.   |
+| termsConditions     | string                                                      | Não          | Campo aberto para informar as condições contratuais relativas ao produto ou serviço informado. Pode ser informada a URL ([[URIString](#commonFieldURIString)]) referente ao endereço onde constam as condições informadas.   |
 
 ### Enum BusinessLoanTypes
 <a id="schemaEnumBusinessLoanTypes"></a>

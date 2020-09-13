@@ -955,7 +955,7 @@ components:
           type: string
           pattern: '\w*\W*'
           maxLength: 2000
-          description: "Campo aberto para informar as condições contratuais relativas à Modalidade de Empréstimo para pessoa física informada. Pode ser informada a URL referente ao endereço onde constam as condições informadas."
+          description: "Campo aberto para informar as condições contratuais relativas ao produto ou serviço informado. Pode ser informada a URL referente ao endereço onde constam as condições informadas."
           example: ""
     #### BusinessLoans ####
     BusinessLoans:
@@ -995,7 +995,7 @@ components:
           type: string
           pattern: '\w*\W*'
           maxLength: 2000
-          description: "Campo aberto para informar as condições contratuais relativas à Modalidade de Empréstimo para pessoa física informada. Pode ser informada a URL referente ao endereço onde constam as condições informadas."
+          description: "Campo aberto para informar as condições contratuais relativas ao produto ou serviço informado. Pode ser informada a URL referente ao endereço onde constam as condições informadas."
           example: ""
 
     #### Fees ####
@@ -1643,45 +1643,6 @@ components:
           $ref: '#/components/schemas/Links'
         meta:
           $ref: '#/components/schemas/Meta'
-      example:
-        data:
-          brand:
-              name: The Big Bank Brand
-              companies:
-                - name: The Big Bank Company
-                  cnpjNumber: '12345678901234'
-                  personalFinancings:
-                    - type: FINANCIMENTO_IMOBILIARIO_SFI
-                      fees:
-                        - serviceName: Taxa de Cadastro
-                          serviceCode: TC
-                          chargingTriggerInfo: Fatores geradores da taxa
-                          chargingUnit: Por novo contrato
-                          price:
-                            - interval: minimo
-                              value: '500'
-                              currency: BRL
-                              frequency: '0.15'
-                          additionalInfo: Vamor mínimo aplicado
-                      interestRates:
-                        - rate: '9'
-                          referencialRate: null
-                          indexer: IGPM
-                          prePostTax: POS
-                          ocurrence: a.a.
-                          incomeRateInfo: Informações adicionais do calculo de juros
-                      requiredWarranties:
-                        - Caução
-                      termsConditions: Lista dos termos em texto livre ou URL de indicação das condições
-        links:
-          self: 'https://api.banco.com.br/open-banking/products-services/v1/personal-financings'
-          first: 'https://api.banco.com.br/open-banking/products-services/v1/personal-financings'
-          prev: null
-          next: null
-          last: 'https://api.banco.com.br/open-banking/products-services/v1/personal-financings'
-        meta:
-          totalRecords: 1
-          totalPages: 1
         
     ##### PersonalFinancingsBrand #####
     PersonalFinancingsBrand:
@@ -1692,7 +1653,10 @@ components:
       properties:
         name:
           type: string
+          pattern: '\w*\W*'
+          maxLength: 30
           description: Nome da marca.
+          example: "Marca A"
         companies:
           type: array
           items:
@@ -1708,7 +1672,16 @@ components:
       properties:
         name:
           type: string
-          description: Nome do conglomerado responsável.
+          pattern: '\w*\W*'
+          maxLength: 30
+          description: "Nome da Instituição, pertencente à marca, responsável pela comercialização das modalidades de Empréstimos para Pessoas Físicas consultadas."
+          example: "Empresa da Marca A"
+        urlComplementaryList:
+          type: string
+          pattern: '\w*\W*'
+          maxLength: 1024
+          description: "URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. Endereço eletrônico de acesso ao canal." 
+          example: "https://example.com/mobile-banking"
         personalFinancings:
           type: array
           items:
@@ -1765,7 +1738,10 @@ components:
           description: "Relação de garantias exigidas"
         termsConditions:
           type: string
-          description: "Campo aberto para informar as condições contratuais relativas à Modalidade de Financiamento para pessoa física. Pode ser informada a URL referente ao endereço onde constam as condições informadas"
+          pattern: '\w*\W*'
+          maxLength: 2000
+          description: "Campo aberto para informar as condições contratuais relativas ao produto ou serviço informado. Pode ser informada a URL referente ao endereço onde constam as condições informadas."
+          example: ""
     ##### PersonalFinancingsFees #####
     PersonalFinancingsFees:
       type: object
@@ -1785,8 +1761,15 @@ components:
         price:
           type: array
           items:
-            $ref: '#/components/schemas/PersonalFinancingsPrice'
-          description: "Lista de preços possíveis"
+            $ref: '#/components/schemas/Price'
+        minimum:
+          type: object
+          items:
+            $ref: '#/components/schemas/MinimumPrice'
+        maximum:
+          type: object
+          items:
+            $ref: '#/components/schemas/MaximumPrice'
         additionalInfo:
           type: string
           description: "Descrição de como é composto o valor da tarifa. p.ex. '0,25% sobre o excedente do limite acima de R$ 500,00'"
@@ -1794,29 +1777,8 @@ components:
         - serviceName
         - serviceCode
         - price
-    ##### PersonalFinancingsPrice #####
-    PersonalFinancingsPrice:
-      type: object
-      properties:
-        interval:
-          type: string
-          description: "Faixas para cobrança de valores de tarifas por produto/serviço informado: 1ª quartil de clientes, 2ª quartil de clientes, 3ª quartil de clientes, 4ª quartil de clientes"
-          example: "3ª quartil de clientes"
-        value:
-          type: string
-          description: "Valor da tarifa cobrada, relativa ao serviço ofertado para a Modalidade de Empréstimo, para pessoa"
-        currency:
-          type: string
-          enum: ["BRL","... ISO_4217"]
-          description: "Moeda referente ao valor da tarifa"
-        frequency:
-          type: string
-          description: "Frequência de clientes em cada faixa de valor. Representa uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O Valor 1 representa 100%)"
-      required:
-        - interval
-        - value
-        - currency
-        - frequency
+        - minimum
+        - maximum
     ##### PersonalFinancingsInterestRates #####
     PersonalFinancingsInterestRates:
       type: object
@@ -1848,26 +1810,17 @@ components:
           type: string
           description: "Descrição da Remuneração relativa as taxas de juros remuneratórias sobre a modalidade de Financiamento informada, para pessoa física"
         application:
+          type: array
+          items:
+            $ref: '#/components/schemas/Price'
+        minimum:
           type: object
-          required:
-            - interval
-            - value
-            - currency
-            - frequency
-          properties:
-            interval:
-              type: string
-              description: "Faixas para cobrança de valores de tarifas para Outros Serviços informados: 1ª quartil de clientes, 2ª quartil de clientes, 3ª quartil de clientes, 4ª quartil de clientes"
-              example: "3ª quartil de clientes"
-            value:
-              type: string
-              description: "Valor médio da taxa de remuneração relativa ao serviço ofertado, para pessoa fisica informado no período. p.ex. '45.00'"
-            currency:
-              type: string
-              description: "Moeda referente ao valor da taxa de remuneração segundo modelo ISO-4217. p. ex. 'BRL' "
-            frequency:
-              type: string
-              description: "Frequência de clientes em cada faixa de valor. Representa uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O Valor 1 representa 100%)"
+          items:
+            $ref: '#/components/schemas/MinimumPrice'
+        maximum:
+          type: object
+          items:
+            $ref: '#/components/schemas/MaximumPrice'
       required:
         - rate
         - referencialRate
@@ -1875,6 +1828,8 @@ components:
         - prePostTax
         - occurrence
         - application
+        - minimum
+        - maximum
 
   ##########################
   ##  Business Financings ##
@@ -1899,44 +1854,6 @@ components:
           $ref: '#/components/schemas/Links'
         meta:
           $ref: '#/components/schemas/Meta'
-      example:
-        data:
-          brand:
-              name: The Big Bank Brand
-              companies:
-                - name: The Big Bank Company
-                  cnpjNumber: '12345678901234'
-                  businessFinancings:
-                    - type: FINANCIAMENTOS_RURAIS_INVESTIMENTO
-                      fees:
-                        - serviceName: Taxa de Cadastro
-                          serviceCode: TC
-                          chargingTriggerInfo: Fatores geradores da taxa
-                          chargingUnit: Por novo contrato
-                          price:
-                            - type: minimo
-                              value: '500'
-                              currency: BRL
-                          additionalInfo: Vamor mínimo aplicado
-                      interestRates:
-                        - rate: '9'
-                          referencialRate: null
-                          indexer: IGPM
-                          prePostTax: POS
-                          frequency: a.a.
-                          incomeRateInfo: Informações adicionais do calculo de juros
-                      requiredWarranties:
-                        - Caução
-                      termsConditions: Lista dos termos em texto livre ou URL de indicação das condições
-        links:
-          self: 'https://api.banco.com.br/open-banking/products-services/v1/business-financings'
-          first: 'https://api.banco.com.br/open-banking/products-services/v1/business-financings'
-          prev: null
-          next: null
-          last: 'https://api.banco.com.br/open-banking/products-services/v1/business-financings'
-        meta:
-          totalRecords: 1
-          totalPages: 1
     ##### BusinessFinancingsBrand #####
     BusinessFinancingsBrand:
       type: object
@@ -1946,7 +1863,10 @@ components:
       properties:
         name:
           type: string
+          pattern: '\w*\W*'
+          maxLength: 30
           description: Nome da marca.
+          example: "Marca A"
         companies:
           type: array
           items:
@@ -1962,7 +1882,16 @@ components:
       properties:
         name:
           type: string
-          description: Nome do conglomerado responsável.
+          pattern: '\w*\W*'
+          maxLength: 30
+          description: "Nome da Instituição, pertencente à marca, responsável pela comercialização das modalidades de Empréstimos para Pessoas Físicas consultadas."
+          example: "Empresa da Marca A"
+        urlComplementaryList:
+          type: string
+          pattern: '\w*\W*'
+          maxLength: 1024
+          description: "URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. Endereço eletrônico de acesso ao canal." 
+          example: "https://example.com/mobile-banking"
         businessFinancings:
           type: array
           items:
@@ -2018,7 +1947,10 @@ components:
           description: "Relação de garantias exigidas"
         termsConditions:
           type: string
-          description: "Campo aberto para informar as condições contratuais relativas à Modalidade de Financiamento para pessoa jurídica. Pode ser informada a URL referente ao endereço onde constam as condições informadas"
+          pattern: '\w*\W*'
+          maxLength: 2000
+          description: "Campo aberto para informar as condições contratuais relativas ao produto ou serviço informado. Pode ser informada a URL referente ao endereço onde constam as condições informadas."
+          example: ""
     ##### BusinessFinancingsFees #####
     BusinessFinancingsFees:
       type: object
@@ -2038,8 +1970,15 @@ components:
         price:
           type: array
           items:
-            $ref: '#/components/schemas/BusinessFinancingsPrice'
-          description: "Lista de preços possíveis"
+            $ref: '#/components/schemas/Price'
+        minimum:
+          type: object
+          items:
+            $ref: '#/components/schemas/MinimumPrice'
+        maximum:
+          type: object
+          items:
+            $ref: '#/components/schemas/MaximumPrice'
         additionalInfo:
           type: string
           description: "Descrição de como é composto o valor da tarifa. p.ex. '0,25% sobre o excedente do limite acima de R$ 500,00'"
@@ -2047,29 +1986,8 @@ components:
         - serviceName
         - serviceCode
         - price
-    ##### BusinessFinancingsPrice #####
-    BusinessFinancingsPrice:
-      type: object
-      properties:
-        interval:
-          type: string
-          description: "Faixas para cobrança de valores de tarifas por produto/serviço informado: 1ª quartil de clientes, 2ª quartil de clientes, 3ª quartil de clientes, 4ª quartil de clientes"
-          example: "3ª quartil de clientes"
-        value:
-          type: string
-          description: "Valor da tarifa cobrada, relativa ao serviço ofertado para a Modalidade de Empréstimo, para pessoa"
-        currency:
-          type: string
-          enum: ["BRL","... ISO_4217"]
-          description: "Moeda referente ao valor da tarifa"
-        frequency:
-          type: string
-          description: "Frequência de clientes em cada faixa de valor. Representa uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O Valor 1 representa 100%)"
-      required:
-        - interval
-        - value
-        - currency
-        - frequency
+        - minimum
+        - maximum
     ##### BusinessFinancingsInterestRates #####
     BusinessFinancingsInterestRates:
       type: object
@@ -2101,32 +2019,26 @@ components:
           type: string
           description: "Descrição da Remuneração relativa as taxas de juros remuneratórias sobre a modalidade de Financiamento informada, para pessoa jurídica"
         application:
+          type: array
+          items:
+            $ref: '#/components/schemas/Price'
+        minimum:
           type: object
-          required:
-            - interval
-            - value
-            - currency
-            - frequency
-          properties:
-            interval:
-              type: string
-              description: "Faixas para cobrança de valores de tarifas para Outros Serviços informados: 1ª quartil de clientes, 2ª quartil de clientes, 3ª quartil de clientes, 4ª quartil de clientes"
-              example: "3ª quartil de clientes"
-            value:
-              type: string
-              description: "Valor médio da taxa de remuneração relativa ao serviço ofertado, para pessoa fisica informado no período. p.ex. '45.00'"
-            currency:
-              type: string
-              description: "Moeda referente ao valor da taxa de remuneração segundo modelo ISO-4217. p. ex. 'BRL' "
-            frequency:
-              type: string
-              description: "Frequência de clientes em cada faixa de valor. Representa uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O Valor 1 representa 100%)"
+          items:
+            $ref: '#/components/schemas/MinimumPrice'
+        maximum:
+          type: object
+          items:
+            $ref: '#/components/schemas/MaximumPrice'
       required:
         - rate
         - referencialRate
         - indexer
         - prePostTax
         - occurrence
+        - application
+        - minimum
+        - maximum
 
   ##################################
   ##  Personal Invoice Financings ##
