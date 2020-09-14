@@ -660,7 +660,7 @@
 |     Nome          |  Tipo                              |  Obrigatório    |                            Descrição                |
 |:------------------|:-----------------------------------|:----------------|:----------------------------------------------------|
 | code              | [[Enum CodePriorityServicesPersonalAccount ](#schemaEnumCodePriorityServicesPersonalAccount)]                             | Sim             | Sigla de identificação do Serviço Prioritário, segundo Resolução 3.919 do Bacen  |
-| price             | [[Price](#schemaPrice)] | Sim             | Lista Tarifas de outros serviços da conta                                 |
+| price             | [[Price](#schemaPrice)] | Sim             | Lista Tarifas de serviços prioritários da conta                                 |
 | minimum             | [[MinimumPrice](#schemaMinimumPrice)]           | Sim          | Valor mínimo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
 | maximum             | [[MaximumPrice](#schemaMaximumPrice)]           | Sim          | Valor máximo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
 | chargingUnit      | string                             | Sim             | Unidade ou forma de cobrança, relativa a cada tarifa de serviço prioritário informada. |
@@ -822,8 +822,8 @@
 
 |     Nome           |  Tipo                        |  Obrigatório |                            Descrição                |
 |:-------------------|:-----------------------------|:-------------|:----------------------------------------------------|
-| interval           | string                       | Sim          | Faixas de valor referentes ao pagamento mensal do Pacote de Serviços informado |
-| value              | string                       | Sim          | Valor da tarifa referente ao Serviço que compõe o Pacote de Serviços, relativo ao quantil tipo.         |
+| interval           | string                       | Sim          | Faixas de valor referentes ao Serviço que compõe o Pacote de Serviços informado:: 1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes. |
+| value              | string                       | Sim          | Valor da mediana da tarifa cobrada, relativa ao Serviço Prioritário, para o tipo de faixa informada.    |
 | currency           | string                       | Sim          | Moeda referente ao valor máximo da tarifa, segundo modelo ISO-4217.                |
 
 
@@ -842,8 +842,8 @@
 
 |     Nome           |  Tipo                        |  Obrigatório |                            Descrição                |
 |:-------------------|:-----------------------------|:-------------|:----------------------------------------------------|
-| interval           | string                       | Sim          | Faixas de valor referentes ao pagamento mensal do Pacote de Serviços informado |
-| monthlyFee         | string                       | Sim          | Valor mensal da tarifa referente ao Pacote de Serviços |
+| interval           | string                       | Sim          | Faixas de valor referentes ao Serviço que compõe o Pacote de Serviços informado:: 1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes. |
+| monthlyFee         | string                       | Sim          | Valor da mediana da tarifa mensal referente ao Pacote de Serviços. |
 | currency           | string                       | Sim          | Moeda referente ao valor do Pacote de serviços, segundo modelo ISO-4217.      |
 
 
@@ -891,12 +891,12 @@
 
 |     Nome          |  Tipo                                        |  Obrigatório | Descrição                                           |
 |:------------------|:---------------------------------------------|:-------------|:----------------------------------------------------|
-| rate              | string                                       | Sim          | Valor do percentual que corresponde a taxa de remuneração prevista para a conta do tipo 'poupança'.      |
+| rate              | string                                       | Sim          | Percentual que corresponde a mediana da remuneração efetivamente aplicada no intervalo informado.      |
 | referencialRate   | string                                       | Sim          | Taxa Referencial se configura como uma taxa de juros de referência, ou seja, um indicador geral da economia brasileira.          |
 | indexer           | string                                       | Sim          | Indexador é o termo utilizado para se referir aos índices usados como base para corrigir os valores monetários de um determinado ativo.     |
 | prePostTax        | [Enum PrePostTax](#schemaPrePostTax)         | Sim          | Indicador de indexador pré ou pós fixado.         |
 | occurrence        | [Enum OccurrenceType](#schemaOccurrenceType) | Sim          | Código que indica Frequência sobre a qual incide a Remuneração.             |
 | additionalInfo    | string                                       | Sim          | Descrição da Remuneração.            |
 | application       | [[Rate](#schemaRate)]                        | Sim          | Identifica o período referente ao percentual de taxa de remuneração efetivamente aplicada no intervalo informado.              |
-| minimumRate     | String                                                                                      | Sim             | Percentual mínimo cobrado para a taxa do crédito rotativo no mês de referência                                                                |
-| maximumRate     | String                                                                                      | Sim             | Percentual máximo cobrado para o pagamento parcelado do saldo devedor na fatura do mês de referência.                                                                   |
+| minimumRate     | String                                                                                      | Sim             | Percentual mínimo referente à taxa de remuneração efetivamente aplicada no mês de referência.                                                                |
+| maximumRate     | String                                                                                      | Sim             | Percentual máximo referente à taxa de remuneração efetivamente aplicada no mês de referência.                                                                   |

@@ -121,6 +121,6 @@
 
 |     Nome     |  Tipo                                            | Obrigatório    |                            Definição                                                |
 |:------------ |:------------------------------------------------ |:-------------- |:-----------------------------------------------------------------------------       |
-| interval     | [Enum PriceInterval](#schemaPriceInterval)       | Sim            | Faixas para cobrança de valores de tarifas por produto/serviço informado.           |
-| rate         | [RateString](#commonFieldRateString)             | Sim            | Percentual correspondente, relativa ao serviço ofertado                           |
+| interval     | [Enum PriceInterval](#schemaPriceInterval)       | Sim            | Faixas para a cobrança da taxa de utilização do crédito rotativo, no intervalo informado: 1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes.           |
+| rate         | [RateString](#commonFieldRateString)             | Sim            | Percentual que corresponde a taxa mediana aplicada para pagamento parcelado do saldo devedor quando não realizado pagamento integral da fatura, no período informado.  |
 | frequency    | [RateString](#commonFieldRateString)             | Sim            | Frequência de clientes em cada faixa de valor. Representa uma porcentagem Ex: 0.15  |
