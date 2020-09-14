@@ -48,9 +48,9 @@
                     "eventLimitQuantity": "string",
                     "freeEventQuantity": "string",
                     "price": {
+                      "interval": "string",
                       "value": "string",
-                      "currency": "string",
-                      "interval": "string"
+                      "currency": "string"
                     },
                     "minimum": {
                         "value": "string",
@@ -63,9 +63,9 @@
                   }
                 ],
                 "price": {
+                  "interval": "string",
                   "monthlyFee": "string",
-                  "currency": "string",
-                  "interval": "string"
+                  "currency": "string"
                 },
                 "minimum": {
                         "value": "string",
@@ -174,9 +174,9 @@
                 "eventLimitQuantity": "string",
                 "freeEventQuantity": "string",
                 "price": {
+                  "interval": "string",
                   "value": "string",
-                  "currency": "string",
-                  "interval": "string"
+                  "currency": "string"
                 },
                 "minimum": {
                     "value": "string",
@@ -189,9 +189,9 @@
               }
             ],
             "price": {
+              "interval": "string",
               "monthlyFee": "string",
-              "currency": "string",
-              "interval": "string"
+              "currency": "string"
             },
             "minimum": {
                 "value": "string",
@@ -282,9 +282,9 @@
             "eventLimitQuantity": "string",
             "freeEventQuantity": "string",
             "price": {
+              "interval": "string",
               "value": "string",
-              "currency": "string",
-              "interval": "string"
+              "currency": "string"   
             },
             "minimum": {
               "value": "string",
@@ -297,9 +297,9 @@
           }
         ],
         "price": {
+          "interval": "string",
           "monthlyFee": "string",
-          "currency": "string",
-          "interval": "string"
+          "currency": "string"
         },
         "minimum": {
             "value": "string",
@@ -386,9 +386,9 @@
         "eventLimitQuantity": "string",
         "freeEventQuantity": "string",
         "price": {
+          "interval": "string",
           "value": "string",
-          "currency": "string",
-          "interval": "string"
+          "currency": "string"
         },
         "minimum": {
           "value": "string",
@@ -401,9 +401,9 @@
       }
     ],
     "price": {
+      "interval": "string",
       "monthlyFee": "string",
-      "currency": "string",
-      "interval": "string"
+      "currency": "string"
     },
     "minimum": {
         "value": "string",
@@ -553,6 +553,8 @@
 | code                | string | Não         | Sigla de identificação de Outros Serviços que incidem sobre os tipos de contas.   |
 | chargingTriggerInfo | string | Sim         | Outros Fatores geradores de cobrança referentes aos Outros Serviços que incidem sobre as contas comercializadas.                                    |
 | price               | [[Price](#schemaPrice)] | Sim      | Valor da tarifa cobrada referente aos Outros Serviços.                  |
+| minimum             | [[MinimumPrice](#schemaMinimumPrice)]           | Sim          | Valor mínimo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
+| maximum             | [[MaximumPrice](#schemaMaximumPrice)]           | Sim          | Valor máximo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
 | additionalInfo      | string | Não         | Descrição de como é composto o valor da tarifa.                     |
 | chargingUnit        | string | Não         | Unidade ou forma de cobrança.                                    |
 
@@ -568,9 +570,9 @@
       "eventLimitQuantity": "string",
       "freeEventQuantity": "string",
       "price": {
+        "interval": "string",
         "value": "string",
-        "currency": "string",
-        "interval": "string"
+        "currency": "string"
       },
       "minimum": {
             "value": "string",
@@ -583,9 +585,9 @@
     }
   ],
   "price": {
+    "interval": "string",
     "monthlyFee": "string",
-    "currency": "string",
-    "interval": "string"
+    "currency": "string"
   },
   "minimum": {
         "value": "string",
@@ -615,9 +617,9 @@
   "eventLimitQuantity": "string",
   "freeEventQuantity": "string",
   "price": {
+    "interval": "string",
     "value": "string",
-    "currency": "string",
-    "interval": "string"
+    "currency": "string"
   },
   "minimum": {
         "value": "string",
@@ -645,34 +647,36 @@
 
 ```json
 {
+  "interval": "string",
   "value": "string",
-  "currency": "string",
-  "interval": "string"
+  "currency": "string"
 }
 ```
 
 |     Nome           |  Tipo                        |  Obrigatório |                            Descrição                |
 |:-------------------|:-----------------------------|:-------------|:----------------------------------------------------|
+| interval           | string                       | Sim          | Faixas de valor referentes ao pagamento mensal do Pacote de Serviços informado |
 | value              | string                       | Sim          | Valor da tarifa referente ao Serviço que compõe o Pacote de Serviços, relativo ao quantil tipo.         |
 | currency           | string                       | Sim          | Moeda referente ao valor máximo da tarifa, segundo modelo ISO-4217.                |
-| interval           | string                       | Sim          | Faixas de valor referentes ao pagamento mensal do Pacote de Serviços informado |
+
 
 ## ServiceBundlesBusinessAccountPrice
 <a id="schemaServiceBundlesBusinessAccountPrice"></a>
 
 ```json
 {
+  "interval": "string",
   "monthlyFee": "string",
-  "currency": "string",
-  "interval": "string"
+  "currency": "string"
 }
 ```
 
 |     Nome           |  Tipo                        |  Obrigatório |                            Descrição                |
 |:-------------------|:-----------------------------|:-------------|:----------------------------------------------------|
+| interval           | string                       | Sim          | Faixas de valor referentes ao pagamento mensal do Pacote de Serviços informado |
 | monthlyFee         | string                       | Sim          | Valor mensal da tarifa referente ao Pacote de Serviços |
 | currency           | string                       | Sim          | Moeda referente ao valor do Pacote de serviços, segundo modelo ISO-4217.      |
-| interval           | string                       | Sim          | Faixas de valor referentes ao pagamento mensal do Pacote de Serviços informado |
+
 
 
 

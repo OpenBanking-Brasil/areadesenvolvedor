@@ -69,9 +69,10 @@
                     "eventLimitQuantity": "string",
                     "freeEventQuantity": "string",
                     "price": {
+                      "interval": "string",
                       "value": "string",
-                      "currency": "string",
-                      "interval": "string"
+                      "currency": "string"
+                      
                     },
                     "minimum": {
                         "value": "string",
@@ -92,9 +93,10 @@
                         "currency": "string"
                       },
                 "price":{
+                  "interval": "string",
                   "monthlyFee":"string",
-                  "currency":"string",
-                  "interval": "string"
+                  "currency":"string"
+                  
                 }
               },
               "openCloseChannels": "string",
@@ -218,9 +220,9 @@
                 "eventLimitQuantity": "string",
                 "freeEventQuantity": "string",
                 "price": {
+                  "interval": "string",
                   "value": "string",
-                  "currency": "string",
-                  "interval": "string"
+                  "currency": "string"
                 },
                 "minimum": {
                         "value": "string",
@@ -233,9 +235,9 @@
               }
             ],
             "price": {
+              "interval": "string",
               "monthlyFee": "string",
-              "currency": "string",
-              "interval": "string"
+              "currency": "string"
             },
             "minimum": {
                         "value": "string",
@@ -348,9 +350,9 @@
             "eventLimitQuantity": "string",
             "freeEventQuantity": "string",
             "price": {
+              "interval": "string",
               "value": "string",
-              "currency": "string",
-              "interval": "string"
+              "currency": "string"
             },
             "minimum": {
                         "value": "string",
@@ -363,9 +365,9 @@
           }
         ],
         "price": {
+          "interval": "string",
           "monthlyFee": "string",
-          "currency": "string",
-          "interval": "string"
+          "currency": "string"
         },
         "minimum": {
                         "value": "string",
@@ -473,9 +475,9 @@
         "eventLimitQuantity": "string",
         "freeEventQuantity": "string",
         "price": {
+          "interval": "string",
           "value": "string",
-          "currency": "string",
-          "interval": "string"
+          "currency": "string"
         }
       },
       "minimum": {
@@ -488,9 +490,9 @@
             },
     ],
     "price": {
+      "interval": "string",
       "monthlyFee": "string",
-      "currency": "string",
-      "interval": "string"
+      "currency": "string"
     },
     "minimum": {
             "value": "string",
@@ -659,6 +661,8 @@
 |:------------------|:-----------------------------------|:----------------|:----------------------------------------------------|
 | code              | [[Enum CodePriorityServicesPersonalAccount ](#schemaEnumCodePriorityServicesPersonalAccount)]                             | Sim             | Sigla de identificação do Serviço Prioritário, segundo Resolução 3.919 do Bacen  |
 | price             | [[Price](#schemaPrice)] | Sim             | Lista Tarifas de outros serviços da conta                                 |
+| minimum             | [[MinimumPrice](#schemaMinimumPrice)]           | Sim          | Valor mínimo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
+| maximum             | [[MaximumPrice](#schemaMaximumPrice)]           | Sim          | Valor máximo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
 | chargingUnit      | string                             | Sim             | Unidade ou forma de cobrança, relativa a cada tarifa de serviço prioritário informada. |
 
 ### Enum CodePriorityServicesPersonalAccount  
@@ -725,6 +729,8 @@
 | code                | string | Não         | Sigla de identificação de Outros Serviços que incidem sobre os tipos de contas.   |
 | chargingTriggerInfo | string | Sim         | Outros Fatores geradores de cobrança referentes aos Outros Serviços que incidem sobre as contas comercializadas.                                    |
 | price               | [[Price](#schemaPrice)] | Sim      | Valor da tarifa cobrada referente aos Outros Serviços.                  |
+| minimum             | [[MinimumPrice](#schemaMinimumPrice)]           | Sim          | Valor mínimo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
+| maximum             | [[MaximumPrice](#schemaMaximumPrice)]           | Sim          | Valor máximo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
 | additionalInfo      | string | Não         | Descrição de como é composto o valor da tarifa.                     |
 | chargingUnit        | string | Não         | Unidade ou forma de cobrança.                                    |
 
@@ -740,16 +746,16 @@
       "eventLimitQuantity": "string",
       "freeEventQuantity": "string",
       "price": {
+        "interval": "string",
         "value": "string",
-        "currency": "string",
-        "interval": "string"
+        "currency": "string"
       }
     }
   ],
   "price": {
+    "interval": "string",
     "monthlyFee": "string",
-    "currency": "string",
-    "interval": "string"
+    "currency": "string"
   },
   "minimum": {
               "value": "string",
@@ -767,6 +773,8 @@
 | name               | string                                                              | Sim          | Nome do conjunto de serviços                        |
 | services           | [[ServicesPersonalAccount](#schemaServicesPersonalAccount)]         | Sim          | Lista de serviços       |
 | price              | [ServiceBundlesPersonalAccountPrice](#schemaServiceBundlesPersonalAccountPrice) | Sim          | Valor mensal da tarifa referente ao Pacote de Serviços |
+| minimum             | [[MinimumPrice](#schemaMinimumPrice)]           | Sim          | Valor mínimo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
+| maximum             | [[MaximumPrice](#schemaMaximumPrice)]           | Sim          | Valor máximo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
 
 ## ServicesPersonalAccount
 <a id="schemaServicesPersonalAccount"></a>
@@ -777,9 +785,10 @@
   "eventLimitQuantity": "string",
   "freeEventQuantity": "string",
   "price": {
+    "interval": "string",
     "value": "string",
-    "currency": "string",
-    "interval": "string"
+    "currency": "string"
+    
   },
   "minimum": {
               "value": "string",
@@ -804,17 +813,19 @@
 
 ```json
 {
+  "interval": "string",
   "value": "string",
-  "currency": "string",
-  "interval": "string"
+  "currency": "string"
+  
 }
 ```
 
 |     Nome           |  Tipo                        |  Obrigatório |                            Descrição                |
 |:-------------------|:-----------------------------|:-------------|:----------------------------------------------------|
-| value           | string                       | Sim          | Valor da tarifa referente ao Serviço que compõe o Pacote de Serviços, relativo ao quantil tipo.         |
-| currency           | string                       | Sim          | Moeda referente ao valor máximo da tarifa, segundo modelo ISO-4217.                |
 | interval           | string                       | Sim          | Faixas de valor referentes ao pagamento mensal do Pacote de Serviços informado |
+| value              | string                       | Sim          | Valor da tarifa referente ao Serviço que compõe o Pacote de Serviços, relativo ao quantil tipo.         |
+| currency           | string                       | Sim          | Moeda referente ao valor máximo da tarifa, segundo modelo ISO-4217.                |
+
 
 
 ## ServiceBundlesPersonalAccountPrice
@@ -822,17 +833,19 @@
 
 ```json
 {
+  "interval": "string",
   "monthlyFee": "string",
-  "currency": "string",
-  "interval": "string"
+  "currency": "string"
+  
 }
 ```
 
 |     Nome           |  Tipo                        |  Obrigatório |                            Descrição                |
 |:-------------------|:-----------------------------|:-------------|:----------------------------------------------------|
+| interval           | string                       | Sim          | Faixas de valor referentes ao pagamento mensal do Pacote de Serviços informado |
 | monthlyFee         | string                       | Sim          | Valor mensal da tarifa referente ao Pacote de Serviços |
 | currency           | string                       | Sim          | Moeda referente ao valor do Pacote de serviços, segundo modelo ISO-4217.      |
-| interval           | string                       | Sim          | Faixas de valor referentes ao pagamento mensal do Pacote de Serviços informado |
+
 
 
 
