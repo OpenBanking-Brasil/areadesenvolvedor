@@ -245,4 +245,4 @@
 | codes        | CANCELAMENTO                                         | Cancelamento.                                          |
 | codes        | INFORMACOES                                          | Informacões.                                           |
 | codes        | FALAR_ATENDENTE                                      | Falar com atendente.                                   |
-| codes        | OUTROS                                               | Outros                                                 |
+| codes        | OUTROS                                               | Outros.                                                 |

@@ -119,7 +119,7 @@
 |:------------            |:---------------------------------                 |:-------------- |:----------------------------------------------------       |
 | name                    | string                                            | Sim            | Nome do conglomerado responsável pelo canal de atendimento eletrônico.  |
 | cnpjNumber              | string                                            | Sim            | CNPJ da instituição responsável pelo canal de atendimento - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. |
-| urlComplementaryList    | string                                            | Não            | URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber |
+| urlComplementaryList    | string                                            | Não            | URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. |
 | channels                | [[ElectronicChannels](#schemaElectronicChannels)] | Sim            | Lista  de canais de atendimento eletrônico.                  |
 
 ## ElectronicChannels
@@ -160,7 +160,7 @@
 |     Nome        |  Tipo                                                             | Obrigatório |                            Definição                                                  | Restrições                           |
 |:------------    |:---------------------------------                                 |:----------- |:--------------------------------------------------                                    |:------------------------------------ |
 | type            | [Enum ElectronicChannelsType](#schemaElectronicChannelsType)      | Sim         | Tipo de canal de atendimento.                                                         | O Tipo de Canal determina o Tipo de Acesso a ele relacionado: URL para acesso ao internet banking, URL para aquisição do app, URL da central,URL do SAC, URL da ouvidoria, URL para chat.    |
-| additionalInfo  | string                                                            | Não         | Campo de texto livre para descrever quando o tipo de canal de atendimento for Outros  | Só será preenchido quando o tipo de canal de atendimento for Outros                                                                                                                          |
+| additionalInfo  | string                                                            | Não         | Campo de texto livre para descrever quando o tipo de canal de atendimento for Outros  | Só será preenchido quando o tipo de canal de atendimento for Outros .                                                                                                                         |
 | url             | string                                                            | Não         | Endereço eletrônico de acesso ao canal.                                               |                                                                                                                                                                                              |
 
 ### Enum ElectronicChannelsType
