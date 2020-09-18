@@ -8,7 +8,8 @@
       "explanation": "string",
       "detectionTime": "string",
       "expectedResolutionTime": "string",
-      "updateTime": "string"
+      "updateTime": "string",
+      "unavailableEndpoints": object
   },
   "links": {
     "self": "string"
@@ -32,7 +33,8 @@
   "explanation": "string",
   "detectionTime": "string",
   "expectedResolutionTime": "string",
-  "updateTime": "string"
+  "updateTime": "string",
+  "unavailableEndpoints": object
 }
 ```
 
@@ -43,6 +45,7 @@
 |» detectionTime         |[DateTimeString](#introducao-tipos-de-dados-comuns)  |Não         |A data e hora em que a interrupção atual foi detectada. Só deve estar presente se a propriedade status for PARTIAL_FAILURE ou UNAVAILABLE. |
 | » expectedResolutionTime|[DateTimeString](#introducao-tipos-de-dados-comuns)  |Não         |A data e hora em que o serviço completo deve continuar (se conhecido). Não deve estar presente se a propriedade status tiver um valor OK.   |
 | » updateTime            |[DateTimeString](#introducao-tipos-de-dados-comuns)  |Não         |A data e hora em que esse status foi atualizado pela última vez pelo titular dos dados.  |
+|unavailableEndpoints | object                                        |Não         |Endpoints com indisponibilidade             |
 
 
 ## Valores do Enum

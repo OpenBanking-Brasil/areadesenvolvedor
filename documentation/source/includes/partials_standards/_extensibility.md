@@ -23,7 +23,7 @@ Para atender tanto as demandas de quem deseja estender as APIs (participantes) q
 <li>CEF - Caixa Econônica Federal</li>
 <li>ITA - Itau</li>
 <li>STD - Santander</li>
-<li>BRS - Banrisul</li>
+<li>BRGS - Banrisul</li>
 <li>BNB - Banco do Nordeste do Brasil</li>
 <li>BND - BNDES</li>
 <li>CTB - Citibank</li>

@@ -43,7 +43,7 @@ req.send();
 }
 ```
 
-Obtêm a lista de indisponibilidade agendada para os serviços
+Obtêm a lista de indisponibilidade agendada para os serviços.
 
 Versão |
 ------ |
