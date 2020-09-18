@@ -6,7 +6,7 @@ prazos definidos para lançamento e implementação de novas versões *major*, b
 No link Anexo: [Guia de Versionamento](#guia-de-versionamento), integrante desta documentação, estão documentados os casos previstos em que uma nova versão de API poderá vir a quebrar o contrato estabelecido
 
 > O versionamento terá o seguinte formato contemplando 4 tipos de lançamentos de versões:
-`1.12.2.rc1 - significando versão major 1, versão minor 12 , aplicação de patchs versão 2 e release candidate 1 `
+`1.12.2.rc1 - significando  versão major 1,  versão minor 12 , aplicação de patchs  versão 2 e release candidate 1 `
 
 * **Major**: inclui novas características da implementação, mudanças, correções a serem incorporadas e que poderão vir a quebrar o contrato.
 	- P.ex. v1.0.0, v2.0.0.
