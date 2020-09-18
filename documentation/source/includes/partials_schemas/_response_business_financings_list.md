@@ -332,8 +332,8 @@
 | type         | FINANCIAMENTOS_RURAIS_INVESTIMENTO     | Financiamentos rurais - investimento.                             |
 | type         | FINANCIAMENTOS_RURAIS_COMERCIALIZACAO  | Financiamentos rurais - comercialização.                          |
 | type         | FINANCIAMENTOS_RURAIS_INDUSTRIALIZACAO | Financiamentos rurais - industrialização.                         |
-| type         | FINANCIMENTO_IMOBILIARIO_SFH           | Financimento imobiliário - Sistema Financeiro da Habitação (SFH. |
-| type         | FINANCIMENTO_IMOBILIARIO_SFI           | Financimento imobiliário - Sistema Financeiro da Imobiliário (SFI). |
+| type         | FINANCIAMENTO_IMOBILIARIO_SFH          | Financimento imobiliário - Sistema Financeiro da Habitação (SFH. |
+| type         | FINANCIAMENTO_IMOBILIARIO_SFI          | Financimento imobiliário - Sistema Financeiro da Imobiliário (SFI). |
 
 ### Enum BusinessFinancingsRequiredWarranties
 <a id="schemaEnumBusinessFinancingsRequiredWarranties"></a>
