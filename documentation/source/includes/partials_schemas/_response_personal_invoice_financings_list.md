@@ -384,7 +384,7 @@
 |:------------         |:-------------------------------------- |:-------------- |:------------------------------------------------------------------------------------------------------------------------------------------ |
 | serviceName          | string                                 | Sim            | Nomes das Tarifas cobradas sobre Serviços ofertados à Modalidade de direitos creditórios descontados, para pessoa física. (Campo Livre)    |
 | serviceCode          | string                                 | Sim            | Sigla de identificação do serviço relacionado à Modalidade de direitos creditórios descontados, para pessoa física. Campo aberto           |
-| chargingTriggerInfo  | string                                 | Não            | Fatores geradores de cobrança que incidem sobre as Modalidades de direitos creditórios descontados, para pessoa física. Campo Livre        |
+| chargingTriggerInfo  | string                                 | Não            | Fatos geradores de cobrança que incidem sobre as Modalidades de direitos creditórios descontados, para pessoa física. Campo Livre        |
 | chargingUnit         | string                                 | Não            | Unidade ou forma de cobrança                                                                                                               |
 | price                | [[Price](#schemaPrice)]                | Sim            | Valor médio da tarifa, relativa ao serviço ofertado, informado no período.                                                                       |
 | minimum              | [[MinimumPrice](#schemaMinimumPrice)]  | Sim            | Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. | 
