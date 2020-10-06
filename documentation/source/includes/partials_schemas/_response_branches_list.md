@@ -21,10 +21,7 @@
                   "name": "string"
                 },
                 "postalAddress": {
-                  "streetType": "string",
-                  "streetName": "string",
-                  "buildingNumber": "string",
-                  "additionalInfo": "string",
+                  "adress": "string",
                   "districtName": "string",
                   "townName": "string",
                   "countrySubDivision": "string",
@@ -80,7 +77,7 @@
 |     Nome          |  Tipo                                                     | Obrigatório  |                            Definição                  |
 |:------------      |:---------------------------------                         |:-----------  |:----------------------------------------------------  |
 | data              | object                                                    | Sim          |                                                       |
-| brand           | [[BranchesBrand](#schemaBranchesBrand)]     | Sim          | Lista das organizações titulares das dependências.      |
+| brand             | [[BranchesBrand](#schemaBranchesBrand)]     | Sim          | Lista das organizações titulares das dependências.      |
 | links             | [[LinksPaginated](#schemaLinksPaginated)]                 | Sim          |                                                       |
 | meta              | [MetaPaginated](#schemaMetaPaginated)                   | Sim          |                                                       |
 
@@ -105,10 +102,7 @@
             "name": "string"
           },
           "postalAddress": {
-            "streetType": "string",
-            "streetName": "string",
-            "buildingNumber": "string",
-            "additionalInfo": "string",
+            "adress": "string",
             "districtName": "string",
             "townName": "string",
             "countrySubDivision": "string",
@@ -168,10 +162,7 @@
         "name": "string"
       },
       "postalAddress": {
-        "streetType": "string",
-        "streetName": "string",
-        "buildingNumber": "string",
-        "additionalInfo": "string",
+        "adress": "string",
         "districtName": "string",
         "townName": "string",
         "countrySubDivision": "string",
@@ -226,10 +217,7 @@
     "name": "string"
   },
   "postalAddress": {
-    "streetType": "string",
-    "streetName": "string",
-    "buildingNumber": "string",
-    "additionalInfo": "string",
+    "adress": "string",
     "districtName": "string",
     "townName": "string",
     "countrySubDivision": "string",
@@ -303,10 +291,7 @@
 
 ```json
 {
-  "streetType": "string",
-  "streetName": "string",
-  "buildingNumber": "string",
-  "additionalInfo": "string",
+  "adress": "string",
   "districtName": "string",
   "townName": "string",
   "countrySubDivision": "string",
@@ -316,10 +301,7 @@
 
 |Nome|Tipo|Obrigatório|Descrição|
 |:---|:---|:---|:---|:---|
-|streetType|string|Sim|Tipo de logradouro.|
-|streetName|string|Sim|Nome do logradouro.|
-|buildingNumber|string|Sim|Número.|
-|additionalInfo|string|Sim|Complemento.|
+|adress|string|Sim|informação referente ao endereço da dependência informada.|
 |districtName|string|Sim|Bairro.|
 |townName|string|Sim|Cidade.|
 |countrySubDivision|string|Sim|Estado.|
@@ -353,12 +335,25 @@
 | Nome                       | Tipo                               | Obrigatório | Descrição                                                       |
 |:------------               |:------------------                 |:----------  |:----------------------------                                    |
 | standard                   | Array                              | Sim         | Lista com os dias da semana.                                     |
-| » weekday                  | string                             | Sim         | Dia da semana.                                                   |
-| » openingTime              | [[TimeString](#commonFieldTimeString)]   | Sim         | Horário de abertura na dependência.                              |
-| » closingTime              | [[TimeString](#commonFieldTimeString)]   | Sim         | Horário de encerramento na dependência.                         |
+| » weekday                  | [[Enum WeekDay](#schemaWeekDay)]                             | Sim         | Dia da semana.                                                   |
+| » openingTime              | [[TimeString](#commonFieldTimeString)]   | Sim         | Horário padrão de início de atendimento da Dependência.                              |
+| » closingTime              | [[TimeString](#commonFieldTimeString)]   | Sim         | Horário padrão de encerramento de atendimento da Dependência.                         |
 | exceptionAvailability      | string                             | Não         | Informações sobre as exceções de abertura.                       |
 | allowPublicAccess          | string                             | Sim         | Define se a dependência possui acesso ao público. True ou False. |
 | phones                     | [[BranchPhone(#schemaBranchPhone)]]| Não         | Lista de telefones para contato com a dependência.               | 
+
+## Enum WeekDay
+<a id="schemaWeekDay"></a>
+
+| Dia         | Código | 
+|:------------ |:------ |
+| Domingo   | DOMINGO        | 
+| Segunda Feira   | SEGUNDA_FEIRA  | 
+| Terça Feira   | TERCA_FEIRA    | 
+| Quarta Feira   | QUARTA_FEIRA   | 
+| Quinta Feira   | QUINTA_FEIRA   | 
+| Sexta Feira   | SEXTA_FEIRA    |
+| Sábado   | SABADO         | 
 
 ## BranchPhone 
 <a id="schemaBranchPhone"></a>
@@ -417,8 +412,5 @@
 | codes        | OPERACOES_CAMBIO                                     | Operações de câmbio.                                   |
 | codes        | INVESTIMENTOS                                        | Investimentos.                                         |
 | codes        | SEGUROS                                              | Seguros.                                               |
-| codes        | RECLAMACAO                                           | Reclamação                                             |
-| codes        | CANCELAMENTO                                         | Cancelamento.                                          |
-| codes        | INFORMACOES                                          | Informações.                                           |
 | codes        | FALAR_ATENDENTE                                      | Falar com atendente.                                   |
 | codes        | OUTROS                                               | Outros.                                                |

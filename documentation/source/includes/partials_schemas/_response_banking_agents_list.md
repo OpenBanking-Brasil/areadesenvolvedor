@@ -23,10 +23,7 @@
                       "cnpjNumber": "string"
                     },
                     "postalAddress": {
-                      "streetType": "string",
-                      "streetName": "string",
-                      "buildingNumber": "string",
-                      "additionalInfo": "string",
+                      "adress": "string",
                       "districtName": "string",
                       "townName": "string",
                       "countrySubDivision": "string",
@@ -90,10 +87,7 @@
                 "cnpjNumber": "string"
               },
               "postalAddress": {
-                "streetType": "string",
-                "streetName": "string",
-                "buildingNumber": "string",
-                "additionalInfo": "string",
+                "adress": "string",
                 "districtName": "string",
                 "townName": "string",
                 "countrySubDivision": "string",
@@ -138,10 +132,7 @@
             "cnpjNumber": "string"
           },
           "postalAddress": {
-            "streetType": "string",
-            "streetName": "string",
-            "buildingNumber": "string",
-            "additionalInfo": "string",
+            "adress": "string",
             "districtName": "string",
             "townName": "string",
             "countrySubDivision": "string",
@@ -182,10 +173,7 @@
         "cnpjNumber": "string"
       },
       "postalAddress": {
-        "streetType": "string",
-        "streetName": "string",
-        "buildingNumber": "string",
-        "additionalInfo": "string",
+        "adress": "string",
         "districtName": "string",
         "townName": "string",
         "countrySubDivision": "string",
@@ -219,10 +207,7 @@
     "cnpjNumber": "string"
   },
   "postalAddress": {
-    "streetType": "string",
-    "streetName": "string",
-    "buildingNumber": "string",
-    "additionalInfo": "string",
+    "adress": "string",
     "districtName": "string",
     "townName": "string",
     "countrySubDivision": "string",
@@ -265,10 +250,7 @@
 
 ```json
 {
-  "streetType": "string",
-  "streetName": "string",
-  "buildingNumber": "string",
-  "additionalInfo": "string",
+  "adress": "string",
   "districtName": "string",
   "townName": "string",
   "countrySubDivision": "string",
@@ -278,10 +260,7 @@
 
 |Nome|Tipo|Obrigatório|Descrição|
 |:---|:---|:---|:---|:---|
-|streetType|string|Sim|Tipo de logradouro.|
-|streetName|string|Sim|Nome do logradouro.|
-|buildingNumber|string|Sim|Número.|
-|additionalInfo|string|Sim|Complemento.|
+|adress|string|Sim|Informações referente ao endereço do correspondente bancário.|
 |districtName|string|Sim|Bairro.|
 |townName|string|Sim|Cidade.|
 |countrySubDivision|string|Sim|Estado.|
@@ -309,11 +288,11 @@
 
 | Propriedade  | Código                                               | Definição                                                                                   |
 |:------------ |:---------------------------------------------------- |:------------------------------------------------------------------------------------------- |
-| codes        | ABERTURA_CONTAS                                      | Recepção e encaminhamento de propostas de abertura de contas.                                |
-| codes        | RECEBIMENTOS_PAGAMENTOS_TRANSFERENCIAS_ELETRONICAS   | Realização de recebimentos, pagamentos e transferências eletrônicas.                         |
-| codes        | RECEBIMENTOS_PAGAMENTOS_QUALQUER_NATUREZA            | Recebimentos e pagamentos de qualquer natureza.                                              |
-| codes        | ORDEM_PAGAMENTO                                      | Execução ativa e passiva de ordens de pagamento.                                             |
-| codes        | OPERACOES_CREDITO                                    | Recepção e encaminhamento de propostas de operações de crédito e de arrendamento mercantil.  |
-| codes        | RECEBIMENTOS_PAGAMENTOS_LETRAS_CAMBIO                | Recebimento e pagamentos relacionados a letras de câmbio de aceite da instituição.           |
-| codes        | CARTAO_CREDITO                                       | Recepção e encaminhamento de propostas de fornecimento de cartões de crédito.                |
-| codes        | OPERACOES_CAMBIO                                     | Realização de operações de câmbio.                                                           |
+| codes        | RECEPCAO_ENCAMINHAMENTO_PROPOSTAS_ABERTURA_CONTAS    | Recepção e encaminhamento de propostas de abertura de contas.                                |
+| codes        | REALIZACAO_RECEBIMENTOS_PAGAMENTOS_TRANSFERENCIA_ELETRONICAS   | Realização de recebimentos, pagamentos e transferências eletrônicas.                         |
+| codes        | RECEBIMENTOS_PAGAMENTOS_QUALQUER_NATUREZA   | Recebimentos e pagamentos de qualquer natureza.                                              |
+| codes        | EXECUCAO_ATIVA_PASSIVA_ORDENS_PAGAMENTO      | Execução ativa e passiva de ordens de pagamento.                                             |
+| codes        | RECEPCAO_ENCAMINHAMENTO_PROPOSTAS_CREDITO_ARRENDAMENTO_MERCANTIL  | Recepção e encaminhamento de propostas de operações de crédito e de arrendamento mercantil.  |
+| codes        | RECEBIMENTO_PAGAMENTOS_RELACIONADOS_LETRAS_CAMBIO_ACEITE_INSTITUICAO | Recebimento e pagamentos relacionados a letras de câmbio de aceite da instituição.           |
+| codes        | RECEPCAO_ENCAMINHAMENTO_PROPOSTAS_FORNECEIMENTO_CARTAO_CREDITO | Recepção e encaminhamento de propostas de fornecimento de cartões de crédito.                |
+| codes        | REALIZACAO_OPERACOES_CAMBIO                 | Realização de operações de câmbio.                                                           |

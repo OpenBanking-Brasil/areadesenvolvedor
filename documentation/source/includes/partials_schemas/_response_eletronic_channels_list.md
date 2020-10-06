@@ -15,7 +15,7 @@
             "channels": [
               {
                 "identification": {
-                  "type": "string",
+                  "type": ["string"],
                   "additionalInfo": "string",
                   "url": "string"
                 },
@@ -67,7 +67,7 @@
       "channels": [
         {
           "identification": {
-            "type": "string",
+            "type": ["string"],
             "additionalInfo": "string",
             "url": "string"
           },
@@ -100,7 +100,7 @@
   "channels": [
     {
       "identification": {
-        "type": "string",
+        "type": ["string"],
         "additionalInfo": "string",
         "url": "string"
       },
@@ -128,7 +128,7 @@
 ```json
 {
   "identification": {
-    "type": "string",
+    "type": ["string"],
     "additionalInfo": "string",
     "url": "string"
   },
@@ -151,7 +151,7 @@
 
 ```json
 {
-  "type": "string",
+  "type": ["string"],
   "additionalInfo": "string",
   "url": "string"
 }
@@ -168,12 +168,10 @@
 
 |     Propriedade  | Código                      |                            Definição                            |
 |:------------     |:--------------------------- |:--------------------------------------------------------------  |
-| type             | INTERNET_BANKING            | Internet banking.                                                |
-| type             | MOBILE_BANKING              | Mobile banking.                                                  |
-| type             | SAC                         | SAC.                                                             |
-| type             | OUVIDORIA                   | Ouvidoria.                                                       |
-| type             | CHAT                        | Chat.                                                            |
-| type             | OUTROS                      | Outros.                                                          |
+| type             | INTERNET_BANKING            | Internet banking.                                               |
+| type             | MOBILE_BANKING              | Mobile banking.                                                 |
+| type             | CHAT                        | Chat.                                                           |
+| type             | OUTROS                      | Outros.                                                         |
 
 
 
@@ -190,17 +188,13 @@
 
 | Propriedade  | Código                                               | Definição                                             |
 |:------------ |:---------------------------------------------------- |:----------------------------------------------------- |
-| codes        | ABERTURA_CONTAS                                      | Abertura de contas.                                    |
-| codes        | RECEBIMENTOS_PAGAMENTOS_TRANSFERENCIAS_ELETRONICAS   | Recebimentos, pagamentos e transferências eletrônicas. |
-| codes        | RECEBIMENTOS_PAGAMENTOS_QUALQUER_NATUREZA            | Recebimentos e pagamentos de qualquer natureza.        |
-| codes        | OPERACOES_CREDITO                                    | Operações de crédito.                                  |
-| codes        | CARTAO_CREDITO                                       | Cartão de crédito.                                     |
-| codes        | OPERACOES_CAMBIO                                     | Operações de câmbio.                                   |
-| codes        | INVESTIMENTOS                                        | Investimentos.                                         |
-| codes        | SEGUROS                                              | Seguros.                                               |
-| codes        | RECLAMACAO                                           | Reclamações.                                           |
-| codes        | CANCELAMENTO                                         | Cancelamento.                                          |
-| codes        | INFORMACOES                                          | Informacões.                                           |
-| codes        | FALAR_ATENDENTE                                      | Falar com atendente.                                   |
-| codes        | OUTROS                                               | Outros.                                                |
+| codes        | ABERTURA_CONTAS                                      | Abertura de contas.                                   |
+| codes        | RECEBIMENTOS_PAGAMENTOS_TRANSFERENCIAS_ELETRONICAS   | Recebimentos, pagamentos e transferências eletrônicas.|
+| codes        | OPERACOES_CREDITO                                    | Operações de crédito.                                 |
+| codes        | CARTAO_CREDITO                                       | Cartão de crédito.                                    |
+| codes        | OPERACOES_CAMBIO                                     | Operações de câmbio.                                  |
+| codes        | INVESTIMENTOS                                        | Investimentos.                                        |
+| codes        | SEGUROS                                              | Seguros.                                              |
+| codes        | ATENDIMENTO_DEMANDAS_CLIENTES                        | Atendimento de demandas a clientes.                   |
+| codes        | OUTROS                                               | Outros.                                               |
 

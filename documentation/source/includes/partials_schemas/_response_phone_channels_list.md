@@ -12,10 +12,10 @@
             "name": "string",
             "cnpjNumber": "string",
             "urlComplementaryList": "string",
-            "channels": [
+            "phoneChannels": [
               {
                 "identification": {
-                  "type": "string",
+                  "type": ["string"],
                   "additionalInfo": "string",
                   "phones": [
                     {
@@ -71,10 +71,10 @@
       "name": "string",
       "cnpjNumber": "string",
       "urlComplementaryList": "string",
-      "channels": [
+      "phoneChannels": [
         {
           "identification": {
-            "type": "string",
+            "type": ["string"],
             "additionalInfo": "string",
             "phones": [
               {
@@ -111,10 +111,10 @@
   "name": "string",
   "cnpjNumber": "string",
   "urlComplementaryList": "string",
-  "channels": [
+  "phoneChannels": [
     {
       "identification": {
-        "type": "string",
+        "type": ["string"],
         "additionalInfo": "string",
         "phones": [
           {
@@ -141,7 +141,7 @@
 | name                    | string                                          | Sim            | Nome do conglomerado responsável pelo canal de atendimento telefônico. |
 | cnpjNumber              | string                                          | Sim            | CNPJ da instituição  responsável pelo canal de atendimento telefônico - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica.|
 | urlComplementaryList    | string                                          | Não            | URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber |
-| channels                | [[PhoneChannels](#schemaPhoneChannels)]         | Sim            | Lista de canais de atendimento telefônico.                  |
+| phoneChannels            | [[PhoneChannels](#schemaPhoneChannels)]         | Sim            | Lista de canais de atendimento telefônico.                  |
 
 ## PhoneChannels
 <a id="schemaPhoneChannels"></a>
@@ -149,7 +149,7 @@
 ```json
 {
   "identification": {
-    "type": "string",
+    "type": ["string"],
     "additionalInfo": "string",
     "phones": [
       {
@@ -179,7 +179,7 @@
 
 ```json
 {
-  "type": "string",
+  "type": ["string"],
   "additionalInfo": "string",
   "phones": [
     {
@@ -203,11 +203,10 @@
 
 |     Propriedade  | Código                      |                            Definição                            |
 |:------------     |:--------------------------- |:--------------------------------------------------------------  |
-| type             | CENTRAL_TELEFONICA_BANKING  | Central telefônica banking.                                      |
-| type             | SAC                         | SAC.                                                             |
-| type             | OUVIDORIA                   | Ouvidoria.                                                       |
-| type             | CHAT                        | Chat.                                                            |
-| type             | OUTROS                      | Outros.                                                          |
+| type             | CENTRAL_TELEFONICA_BANKING  | Central telefônica banking.                                     |
+| type             | SAC                         | SAC.                                                            |
+| type             | OUVIDORIA                   | Ouvidoria.                                                      |
+| type             | OUTROS                      | Outros.                                                         |
 
 ## PhoneChannelsPhones
 <a id="schemaPhoneChannelsPhones"></a>
@@ -233,16 +232,14 @@
 
 | Propriedade  | Código                                               | Definição                                             |
 |:------------ |:---------------------------------------------------- |:----------------------------------------------------- |
-| codes        | ABERTURA_CONTAS                                      | Abertura de contas.                                    |
-| codes        | RECEBIMENTOS_PAGAMENTOS_TRANSFERENCIAS_ELETRONICAS   | Recebimentos, pagamentos e transferências eletrônicas. |
-| codes        | RECEBIMENTOS_PAGAMENTOS_QUALQUER_NATUREZA            | Recebimentos e pagamentos de qualquer natureza.        |
-| codes        | OPERACOES_CREDITO                                    | Operações de crédito.                                  |
-| codes        | CARTAO_CREDITO                                       | Cartão de crédito.                                     |
-| codes        | OPERACOES_CAMBIO                                     | Operações de câmbio.                                   |
-| codes        | INVESTIMENTOS                                        | Investimentos.                                         |
-| codes        | SEGUROS                                              | Seguros.                                               |
-| codes        | RECLAMACAO                                           | Reclamações.                                           |
-| codes        | CANCELAMENTO                                         | Cancelamento.                                          |
-| codes        | INFORMACOES                                          | Informacões.                                           |
-| codes        | FALAR_ATENDENTE                                      | Falar com atendente.                                   |
-| codes        | OUTROS                                               | Outros.                                                 |
+| codes        | ABERTURA_CONTAS                                      | Abertura de contas.                                   |
+| codes        | RECEBIMENTOS_PAGAMENTOS_TRANSFERENCIAS_ELETRONICAS   | Recebimentos, pagamentos e transferências eletrônicas.|
+| codes        | OPERACOES_CREDITO                                    | Operações de crédito.                                 |
+| codes        | CARTAO_CREDITO                                       | Cartão de crédito.                                    |
+| codes        | OPERACOES_CAMBIO                                     | Operações de câmbio.                                  |
+| codes        | INVESTIMENTOS                                        | Investimentos.                                        |
+| codes        | SEGUROS                                              | Seguros.                                              |
+| codes        | RECLAMACOES                                          | Reclamações.                                          |
+| codes        | CANCELAMENTO                                         | Cancelamento.                                         |
+| codes        | INFORMACOES                                          | Informacões.                                          |
+| codes        | OUTROS                                               | Outros.                                               |
