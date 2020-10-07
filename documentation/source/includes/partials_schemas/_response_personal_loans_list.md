@@ -16,8 +16,8 @@
               "type": "string",
               "fees": [
                 {
-                  "serviceName": "string",
-                  "serviceCode": "string",
+                  "name": "string",
+                  "code": "string",
                   "chargingTriggerInfo": "string",
                   "chargingUnit": "string",
                   "price": [
@@ -40,27 +40,14 @@
               ],
               "interestRates": [
                 {
-                  "rate": "string",
-                  "referencialRate": "string",
-                  "indexer": "string",
-                  "prePostTax": "string",
-                  "occurrence": "string",
-                  "incomeRateInfo": "string",
                   "application": [
                     {
-                      "interval": "string",
-                      "value": "string",
-                      "currency": "string"
+                      "interval": ["string"],
+                      "rate": "string",
                     }
                   ],
-                  "minimum": {
-                    "value": "string",
-                    "currency": "string"
-                  },
-                  "maximum": {
-                    "value": "string",
-                    "currency": "string"
-                  }
+                  "minimumRate": "string",
+                  "maximumRate": "string"
                 }
               ],
               "requiredWarranties": [
@@ -134,27 +121,14 @@
           ],
           "interestRates": [
             {
-              "rate": "string",
-              "referencialRate": "string",
-              "indexer": "string",
-              "prePostTax": "string",
-              "occurrence": "string",
-              "incomeRateInfo": "string",
               "application": [
                 {
-                  "interval": "string",
-                  "value": "string",
-                  "currency": "string"
+                  "interval": ["string"],
+                  "rate": "string"
                 }
               ],
-              "minimum": {
-                "value": "string",
-                "currency": "string"
-              },
-              "maximum": {
-                "value": "string",
-                "currency": "string"
-              }
+              "minimumRate": "string",
+              "maximumRate": "string"
             }
           ],
           "requiredWarranties": [
@@ -210,27 +184,14 @@
       ],
       "interestRates": [
         {
-          "rate": "string",
-          "referencialRate": "string",
-          "indexer": "string",
-          "prePostTax": "string",
-          "occurrence": "string",
-          "incomeRateInfo": "string",
           "application": [
             {
-              "interval": "string",
-              "value": "string",
-              "currency": "string"
+              "interval": ["string"],
+              "rate": "string"
             }
           ],
-          "minimum": {
-            "value": "string",
-            "currency": "string"
-          },
-          "maximum": {
-            "value": "string",
-            "currency": "string"
-          }
+          "minimumRate": "string",
+          "maximumRate": "string"
         }
       ],
       "requiredWarranties": [
@@ -281,27 +242,14 @@
   ],
   "interestRates": [
     {
-      "rate": "string",
-      "referencialRate": "string",
-      "indexer": "string",
-      "prePostTax": "string",
-      "occurrence": "string",
-      "incomeRateInfo": "string",
       "application": [
         {
           "interval": "string",
-          "value": "string",
-          "currency": "string"
+          "rate": "string",
         }
       ],
-      "minimum": {
-        "value": "string",
-        "currency": "string"
-      },
-      "maximum": {
-        "value": "string",
-        "currency": "string"
-      }
+      "minimumRate": "string",
+      "maximumRate": "string"
     }
   ],
   "requiredWarranties": [
@@ -327,10 +275,10 @@
 | type         | ADIANTAMENTO_DEPOSITANTE    | Adiantamento a depositante
 | type         | EMPRESTIMO_CREDITO_PESSOAL_CONSIGNADO  | Crédito pessoal consignado
 | type         | EMPRESTIMO_CREDITO_PESSOAL_NAO_CONSIGNADO  | Crédito pessoal não consignado
-| type         | EMPRESTIMO_CHEQUE_ESPECIAL | Cheque especial
-| type         | EMPRESTIMO_CONTA_GARANTIDA | Conta garantida
 | type         | EMPRESTIMO_HOME_EQUITY | Home equity
-| type         | EMPRESTIMO_MICROCREDITO_PRODUCTIVO_ORIENTADO  | Microcrédito produtivo orientado
+| type         | EMPRESTIMO_MICROCREDITO_PRODUTIVO_ORIENTADO | Microcrédito produtivo orientado
+| type         | EMPRESTIMO_CHEQUE_ESPECIAL | Cheque especial
+| type         | EMPRESTIMO_CONTA_GARANTIDA  | Conta garantida
 
 ### Enum RequiredWarranties
 <a id="schemaEnumRequiredWarranties"></a>
@@ -342,13 +290,14 @@
 | requiredWarranties        | PENHOR                          | Penhor
 | requiredWarranties        | ANILEAÇAO_FIDUCIARIA            | Alienação fiduciária
 | requiredWarranties        | HIPOTECA                        | Hipoteca
-| requiredWarranties        | OPERAÇOES_GARANTIDAS_GOVERNO    |  Operações garantidas pelo governo
-| requiredWarranties        | OUTRAS_GARANT_NO_FIDEJUSSORIAS  | Outras garantias não fidejussórias
+| requiredWarranties        | OPERAÇOES_GARANTIDAS_GOVERNO    | Operações garantidas pelo governo
+| requiredWarranties        | OUTRAS_GARANTIAS_NAO_FIDEJUSSORIAS  | Outras garantias não fidejussórias
 | requiredWarranties        | SEGUROS_ASSEMELHADOS            | Seguros e assemelhados
 | requiredWarranties        | GARANTIA_FIDEJUSSORIA           | Garantia fidejussória
 | requiredWarranties        | BENS_ARRENDADOS                 | Bens arrendados
 | requiredWarranties        | GARANTIAS_INTERNACIONAIS        | Garantias internacionais
-| requiredWarranties        | OPERAÇOES_GARAN_OUTR_ENTIDADES  | Operações garantidas por outras entidades
+| requiredWarranties        | OPERACOES_GARANTIDAS_OUTRAS_ENTIDADES
+  | Operações garantidas por outras entidades
 | requiredWarranties        | ACORDOS_DE_COMPENSAÇAO          | Acordos de compensação
 | requiredWarranties        | NAO_APLICAVEL                   | Não aplicável
 
@@ -395,47 +344,20 @@
 
 ```json
 {
-  "rate": "string",
-  "referencialRate": "string",
-  "indexer": "string",
-  "prePostTax": "string",
-  "occurrence": "string",
-  "incomeRateInfo": "string",
   "application": [
     {
       "interval": "string",
-      "value": "string",
-      "currency": "string"
+      "rate": "string"
     }
   ],
-  "minimum": {
-    "value": "string",
-    "currency": "string"
-  },
-  "maximum": {
-    "value": "string",
-    "currency": "string"
-  }
+  "minimumRate": "string",
+  "maximumRate": "string"
 }
 ```
 
 | Nome                | Tipo                                            | Obrigatório | Definição                                                 |
 |:----------------    |:------                                          |:----------- |:-------------------------------                           |
-| rate                | [RateString](#commonFieldRateString)            | Sim         | Percentual que incide sobre a composição das taxas de juros remuneratórias                          |
-| referencialRate     | [RateString](#commonFieldRateString)            | Sim         | Taxa Referencial se configura como uma taxa de juros de referência, ou seja, um indicador geral da economia brasileira. Por isso, é utilizada na hora de calcular o rendimento de determinadas aplicações financeiras   |
-| indexer             | [Enum LoansIndexer](#LoansIndexer)              | Sim         | Indexador é o termo utilizado para se referir aos índices usados como base para corrigir os valores monetários de um determinado ativo. No Brasil, os indexadores mais comuns são o IPCA, a taxa Selic e o CDI                                    |
-| prePostTax          | [Enum PrePostTax](#schemaPrePostTax)            | Sim         | Indicador de pré ou pós. A diferença básica é que, enquanto o prefixado apresenta rentabilidade definida, o pós-fixado acompanha algum indicador. Assim, quem investe no primeiro grupo sabe como será seu rendimento previamente, enquanto quem investe no segundo, só conhecerá os resultados na data de vencimento                                  |
-| occurrence          | [Enum OccurrenceType](#schemaOccurrenceType)    | Sim         | Código que indica Frequência sobre a qual incide a Remuneração.                                  |
-| incomeRateInfo      | string                                          | Não         | Descrição da Remuneração relativa as taxas de juros remuneratóriassobre a modalidad de Empréstimo para pessoa física/jurídica                                    |
 | application         | [[Price](#schemaPrice)]                         | Sim          | Valor da mediana da taxa de remuneração relativa ao serviço ofertado.                                                       | 
-| minimum             | [[MinimumPrice](#schemaMinimumPrice)]           | Sim          | Valor mínimo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | 
-| maximum             | [[MaximumPrice](#schemaMaximumPrice)]           | Sim          | Valor máximo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | 
+| minimumRate         | [[MinimumRate](#schemaMinimumRate)]           | Sim          | Valor mínimo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | 
+| maximumRate          | [[MaximumRate](#schemaMaximumRate)]           | Sim          | Valor máximo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | 
 
-### Enum LoansIndexer
-<a id="LoansIndexer"></a>
-
-| Propriedade  | Código | Definição   |
-|:------------ |:------ |:----------- |
-| indexer      | IPCA   | IPCA        |
-| indexer      | SELIC  | SELIC       |
-| indexer      | CDI    | CDI         |

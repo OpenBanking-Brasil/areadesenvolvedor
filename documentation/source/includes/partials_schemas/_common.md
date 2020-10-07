@@ -48,7 +48,7 @@
 <a id="schemaOccurrenceType"></a>
 
 | Nome         | Código | Definição   |
-|:------------ |:------ |:----------- |
+|:------------ |:------ |:----------- |MaximumRate
 | occurrence   | AD     | Ao dia      |
 | occurrence   | AM     | Ao mês      |
 | occurrence   | AA     | Ao ano      |
@@ -71,6 +71,8 @@
   "currency": "string"
 }
 ```
+
+
 
 |     Nome     |  Tipo                                            | Obrigatório    |                            Definição                                                                                                                                                                                                                                                                                                                            |
 |:------------ |:------------------------------------------------ |:-------------- |:-----------------------------------------------------------------------------                                                                                                                                                                                                                                                                                   |
@@ -107,6 +109,32 @@
 |:------------ |:------------------------------------------------ |:-------------- |:-----------------------------------------------------------------------------                  |
 | value        | [AmountString](#commonFieldAmountString)         | Sim            | Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência   |
 | currency     | [CurrencyString](#commonFieldCurrencyString)     | Sim            | Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217. p.ex.'BRL'                 |
+
+## MinimumRate
+<a id="schemaMinimumRate"></a>
+
+```json
+{
+"minimumRate": "string"
+}
+```
+
+|     Nome     |  Tipo                                            | Obrigatório    |                            Definição                                                           |
+|:------------ |:------------------------------------------------ |:-------------- |:-----------------------------------------------------------------------------                  |
+| minimumRate        | string         | Sim            | Percentual mínimo cobrado (taxa efetiva) no mês de referência, para o Empréstimo contratado   |
+
+## MaximumRate
+<a id="schemaMaximumRate"></a>
+
+```json
+{
+"maximumRate": "string"
+}
+```
+
+|     Nome     |  Tipo                                            | Obrigatório    |                            Definição                                                           |
+|:------------ |:------------------------------------------------ |:-------------- |:-----------------------------------------------------------------------------                  |
+| maximumRate        | string        | Sim            | Percentual máximo cobrado (taxa efetiva) no mês de referência, para o Empréstimo contratado    |
 
 ## Rate
 <a id="schemaRate"></a>

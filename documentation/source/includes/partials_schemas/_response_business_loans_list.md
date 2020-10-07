@@ -16,8 +16,8 @@
               "type": "string",
               "fees": [
                 {
-                  "serviceName": "string",
-                  "serviceCode": "string",
+                  "name": "string",
+                  "code": "string",
                   "chargingTriggerInfo": "string",
                   "chargingUnit": "string",
                   "price": [
@@ -40,27 +40,14 @@
               ],
               "interestRates": [
                 {
-                  "rate": "string",
-                  "referencialRate": "string",
-                  "indexer": "string",
-                  "prePostTax": "string",
-                  "occurrence": "string",
-                  "incomeRateInfo": "string",
                   "application": [
                     {
-                      "interval": "string",
-                      "value": "string",
-                      "currency": "string"
+                      "interval": ["string"],
+                      "rate": "string",
                     }
                   ],
-                  "minimum": {
-                    "value": "string",
-                    "currency": "string"
-                  },
-                  "maximum": {
-                    "value": "string",
-                    "currency": "string"
-                  }
+                  "minimumRate": "string",
+                  "maximumRate": "string"
                 }
               ],
               "requiredWarranties": [
@@ -133,29 +120,16 @@
             }
           ],
           "interestRates": [
-            {
-              "rate": "string",
-              "referencialRate": "string",
-              "indexer": "string",
-              "prePostTax": "string",
-              "occurrence": "string",
-              "incomeRateInfo": "string",
-              "application": [
                 {
-                  "interval": "string",
-                  "value": "string",
-                  "currency": "string"
+                  "application": [
+                    {
+                      "interval": ["string"],
+                      "rate": "string",
+                    }
+                  ],
+                  "minimumRate": "string",
+                  "maximumRate": "string"
                 }
-              ],
-              "minimum": {
-                "value": "string",
-                "currency": "string"
-              },
-              "maximum": {
-                "value": "string",
-                "currency": "string"
-              }
-            }
           ],
           "requiredWarranties": [
             "string"
@@ -210,27 +184,14 @@
       ],
       "interestRates": [
         {
-          "rate": "string",
-          "referencialRate": "string",
-          "indexer": "string",
-          "prePostTax": "string",
-          "occurrence": "string",
-          "incomeRateInfo": "string",
           "application": [
             {
-              "interval": "string",
-              "value": "string",
-              "currency": "string"
+              "interval": ["string"],
+              "rate": "string",
             }
           ],
-          "minimum": {
-            "value": "string",
-            "currency": "string"
-          },
-          "maximum": {
-            "value": "string",
-            "currency": "string"
-          }
+          "minimumRate": "string",
+          "maximumRate": "string"
         }
       ],
       "requiredWarranties": [
@@ -280,30 +241,17 @@
     }
   ],
   "interestRates": [
-    {
-      "rate": "string",
-      "referencialRate": "string",
-      "indexer": "string",
-      "prePostTax": "string",
-      "occurrence": "string",
-      "incomeRateInfo": "string",
-      "application": [
         {
-          "interval": "string",
-          "value": "string",
-          "currency": "string"
+          "application": [
+            {
+              "interval": ["string"],
+              "rate": "string",
+            }
+          ],
+          "minimumRate": "string",
+          "maximumRate": "string"
         }
       ],
-      "minimum": {
-        "value": "string",
-        "currency": "string"
-      },
-      "maximum": {
-        "value": "string",
-        "currency": "string"
-      }
-    }
-  ],
   "requiredWarranties": [
     "string"
   ],
@@ -325,9 +273,9 @@
 | Propriedade  | Código                        | Definição
 |:------------ |:------                       |:------
 | type         | ADIANTAMENTO_DEPOSITANTE    | Adiantamento a depositante
+| type         | EMPRESTIMO_MICROCREDITO_PRODUTIVO_ORIENTADO  | Microcrédito produtivo orientado
 | type         | EMPRESTIMO_CHEQUE ESPECIAL  | Cheque especial
 | type         | EMPRESTIMO_CONTA_GARANTIDA  | Conta garantida
-| type         | EMPRESTIMO_CAPITAL_GIRO_VENCIMIENTO_365 | Capital de giro com prazo de vencimento até 365 dias
-| type         | EMPRESTIMO_CAPITAL_GIRO_VENCIMIENTO_SUP_365 | Capital de giro com prazo de vencimento superior a 365 dias
+| type         | EMPRESTIMO_CAPITAL_GIRO_PRAZO_VENCIMENTO_ATE_365_DIAS | Capital de giro com prazo de vencimento até 365 dias
+| type         | EMPRESTIMO_CAPITAL_GIRO_PRAZO_VENCIMENTO_SUPERIOR_365_DIAS | Capital de giro com prazo de vencimento superior a 365 dias
 | type         | EMPRESTIMO_CAPITAL_GIRO_ROTATIVO | Capital de giro rotativo
-| type         | EMPRESTIMO_MICROCREDITO_PROD_ORIENTADO  | Microcrédito produtivo orientado
