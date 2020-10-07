@@ -1079,7 +1079,7 @@ components:
         name:
           type: string
           pattern: '\w*\W*'
-          maxLength: 30
+          maxLength: 80
           description: "Nome da Instituição, pertencente à marca, responsável pela comercialização dos produtos e serviços"
           example: "Empresa da Marca A"
         urlComplementaryList:
@@ -1457,9 +1457,11 @@ components:
         - closingProcessInfo
       properties:
         minimumFeeRate:
-          type: number
+          pattern: '(-?[1-9]?\d{1,4}){1}(\,\d{1,4}){1'
+          type: string
+          maxLength: 9
           description: "Percentual para pagamento mínimo sobre o saldo devedor da fatura"
-          example: 25.5
+          example: "25.5"
         additionalInfo:
           type: string
           maxLength: 500
@@ -1486,6 +1488,8 @@ components:
           type: object
           required:
             - price
+            - minimumRate
+            - maximumRate
           properties:
             price:
               type: object
@@ -1503,10 +1507,26 @@ components:
                   description: "Faixas para cobrança de valores de tarifas por produto/serviço informado."
                 rate:
                   type: string
+                  maxLength: 9
+                  pattern: '(-?[1-9]?\d{1,4}){1}(\,\d{1,4}){1'
                   description: "Percentual que corresponde a taxa média aplicada para utilização de Crédito Rotativo, no intervalo informado."
                 frequency:
                   type: string
                   description: "Frequência de clientes em cada faixa de valor. Representa uma porcentagem"
+            minimumRate:
+              type: string
+              maxLength: 9
+              pattern: '(-?[1-9]?\d{1,4}){1}(\,\d{1,4}){1'
+              description: |
+                Percentual mínimo cobrado (taxa efetiva) no mês de referência, pela utilização do crédito rotativo
+                (A apuração deve pode ser feita com até 4 casas decimais. A representação de porcentagem p.ex: do 0.1500 representa 15%. Desta forma, o valor 1 representa 100%)
+            maximumRate:
+              type: string
+              maxLength: 9
+              pattern: '(-?[1-9]?\d{1,4}){1}(\,\d{1,4}){1'
+              description: |
+                Percentual máximo cobrado (taxa efetiva) no mês de referência, pela utilização do crédito rotativo
+                (A apuração deve pode ser feita com até 4 casas decimais. A representação de porcentagem p.ex: do 0.1500 representa 15%. Desta forma, o valor 1 representa 100%)
         instalmentRate:
           type: object
           required:
@@ -1543,7 +1563,52 @@ components:
         additionalInfo:
           type: string
           maxLength: 50
-          
+        price:
+          type: object
+          required:
+              - interval
+              - rate
+              - minimum
+              - maximum
+          properties:
+            interval:
+              enum: [
+                , "1_QUARTIL_CLIENTES"
+                , "2_QUARTIL_CLIENTES"
+                , "3_QUARTIL_CLIENTES"
+                , "4_QUARTIL_CLIENTES"
+              ]  
+              type: string
+              description: "Faixas para cobrança da taxa efetiva outras operações de crédito, no intervalo informado: 1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes"
+            rate:
+              pattern: '(-?[1-9]?\d{1,4}){1}(\,\d{1,4}){1'
+              maxLength: 9
+              description: |
+                Percentual que corresponde a mediana (taxa efetiva) aplicada para  outras operações de crédito, no período informado. p.ex. '4,1000%'.
+                (A apuração deve pode ser feita com até 4 casas decimais. A representação de porcentagem p.ex: do 0.1500 representa 15%. Desta forma, o valor 1 representa 100%)
+        minimum:
+          type: object
+          required:
+              - rate
+          properties:
+            rate:
+              pattern: '(-?[1-9]?\d{1,4}){1}(\,\d{1,4}){1'
+              maxLength: 9
+              description: |
+                Percentual mínimo cobrado (taxa efetiva) para  outras operações de crédito do mês de referência.
+                (A apuração deve pode ser feita com até 4 casas decimais. A representação de porcentagem p.ex: do 0.1500 representa 15%. Desta forma, o valor 1 representa 100%)
+        maximum:
+          type: object
+          required:
+              - rate
+          properties:
+            rate:
+              pattern: '(-?[1-9]?\d{1,4}){1}(\,\d{1,4}){1'
+              maxLength: 9
+              description: |
+                Percentual máximo cobrado (taxa efetiva) para  outras operações de crédito do mês de referência.
+                (A apuração deve pode ser feita com até 4 casas decimais. A representação de porcentagem p.ex: do 0.1500 representa 15%. Desta forma, o valor 1 representa 100%)
+        
   ##### CreditCardServicePrice ##### 
     CreditCardServicePrice:
       type: object
@@ -1600,7 +1665,7 @@ components:
               properties:
                 name:
                   type: string
-                  maxLength: 30
+                  maxLength: 80
                   description: "Nome da marca selecionada pela Organização responsável pelas contas de pagamento pós-pagas (cartão de crédito)"
                   example: "The Big Bank Brand"
                 companies:
@@ -1625,7 +1690,6 @@ components:
                         type: array
                         items:
                           required:
-                            - name
                             - identification
                             - rewardsProgram
                             - fees
@@ -1645,15 +1709,12 @@ components:
                               type: object
                               required:
                                 - priorityServices
+                                - name
                               properties:
-                                priorityServices:
+                                services:
                                   type: array
                                   items:
-                                    $ref: '#/components/schemas/PersonalCreditCardPriorityServices'
-                                otherServices:
-                                  type: array
-                                  items:
-                                    $ref: '#/components/schemas/PersonalCreditCardOtherServices'
+                                    $ref: '#/components/schemas/PersonalCreditCardServices'
                             interestRates:
                               $ref: '#/components/schemas/CreditCardInterestRates'
                             termsConditions:
@@ -1662,27 +1723,35 @@ components:
           $ref: '#/components/schemas/Links'
         meta:
           $ref: '#/components/schemas/Meta'
-                  
-  ##### PersonalCreditCardPriorityServices #####
-    PersonalCreditCardPriorityServices:
+  ##### PersonalCreditCardServices #####
+    PersonalCreditCardServices:
       type: object
       required:
+        - name
         - code
         - price
         - chargingUnit
+        - chargingTriggerInfo
       properties:
+        name:
+          type: array
+          description: "Lista de denominação de Serviços relacionados à Modalidade de Contas de Pagmento Pós-Pagas, para pessoa física (Vide Enum)"
+          maxItems: 7
+          enum: [
+            "ANUIDADE"
+            ,"SAQUE_CARTAO_BRASIL"
+            ,"SAQUE_CARTAO_EXTERIOR"
+            ,"AVALIACAO_EMERGENCIAL_CREDITO"
+            ,"EMISSAO_SEGUNDA_VIA"
+            ,"TARIFA_PAGAMENTO_CONTAS"
+            ,"SMS"]
+          example: "SMS"
         code:
           type: string
-          enum: [
-            "ANUIDADE_NACIONAL"
-            ,"ANUIDADE_INTERNACIONAL"
-            ,"SEGUNDA_VIA_CARTAO_CREDITO"
-            ,"RETIRADA_PAIS"
-            ,"RETIRADA_EXTERIOR"
-            ,"PAGAMENTO_CONTAS"
-            ,"AVALIACAO_EMERGENCIAL_CREDITO"
-          ]
-          description: "Sigla de identificação do serviço relacionado à modalidade de contas de pagamento pós-pagas para pessoa física informada conforme resolução 3.919 do BACEN"
+          maxLength: 30
+          description: |
+            Sigla de identificação do Serviço relacionado à Modalidade de Contas de Pagamento Pós-Pagas para pessoa física informada.
+            Estas siglas são previstas na resolução 3.919 do BACEN
           example: "AVALIACAO_EMERGENCIAL_CREDITO"
         price:
           type: object
@@ -1694,11 +1763,12 @@ components:
           properties:
             interval:
               type: string
-              description: "Faixas para cobrança de valores de tarifas por serviço prioritário informado: 1ª quartil de clientes, 2ª quartil de clientes, 3ª quartil de clientes, 4ª quartil de clientes"
+              description: "Faixas para cobrança de valores de tarifas por Serviço informado, sobre a base de clientes, no mês de referência: 1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes"
               example: "1ª quartil de clientes"
             value:
               type: string
-              description: "Valor médio da tarifa cobrada, relativa ao serviço prioritário, para o tipo de faixa informada."
+              description: "Valor da mediana da tarifa cobrada, relativa ao Serviço, para o tipo de faixa informada. p.ex. 45.00
+(representa um valor monetário. p.ex: 1547368.92. Este valor, considerando que a moeda seja BRL, significa R$ 1.547.368,92. O único separador presente deve ser o ' '. (ponto) para indicar a casa decimal. Não deve haver separador de milhar)"
               example: 45,00
             currency:
               type: string
@@ -1714,6 +1784,13 @@ components:
           type: string
           maxLength: 50
           description: "Unidade ou forma de cobrança"
+          example: "Por depósito recebido"
+        chargingTriggerInfo:
+          type: string
+          pattern: '\w*\W*'
+          maxLength: 2000
+          description: |
+            Fatos geradores de cobrança que incidem sobre as Modalidades de de Contas de Pagamento Pós-Pagas informada, para pessoa física. Conforme serviços prioritários previstos na resolução 3919. 
           example: "Por depósito recebido"
   
   ##### PersonalCreditCardOtherServices #####
