@@ -15,11 +15,11 @@
             "channels": [
               {
                 "identification": {
-                  "type": ["string"],
+                  "types": ["string"],
                   "additionalInfo": "string",
                   "url": "string"
                 },
-                "services": {
+                "service": {
                   "codes": [
                     "string"
                   ],
@@ -49,9 +49,9 @@
 |     Nome        |  Tipo                                                       | Obrigatório  |                            Definição                  |
 |:------------    |:---------------------------------                           |:-----------  |:----------------------------------------------------  |
 | data            | object                                                      | Sim          |                                                       |
-| brand         | [[ElectronicChannelsBrand](#schemaElectronicChannelsBrand)]   | Sim          | Lista das organizações titulares das dependências.      |
+| brand           | [[ElectronicChannelsBrand](#schemaElectronicChannelsBrand)]   | Sim          | Lista das organizações titulares das dependências.  |
 | links           | [[LinksPaginated](#schemaLinksPaginated)]                   | Sim          |                                                       |
-| meta            | [MetaPaginated](#schemaMetaPaginated)                     | Sim          |                                                       |
+| meta            | [MetaPaginated](#schemaMetaPaginated)                     | Sim          |                                                         |
 
 ## ElectronicChannelsBrand
 <a id="schemaElectronicChannelsBrand"></a>
