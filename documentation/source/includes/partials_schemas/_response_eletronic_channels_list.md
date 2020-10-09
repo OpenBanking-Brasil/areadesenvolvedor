@@ -67,7 +67,7 @@
       "channels": [
         {
           "identification": {
-            "types": ["string"],
+            "type": "string",
             "additionalInfo": "string",
             "url": "string"
           },
@@ -100,7 +100,7 @@
   "channels": [
     {
       "identification": {
-        "types": ["string"],
+        "type": "string",
         "additionalInfo": "string",
         "url": "string"
       },
@@ -128,7 +128,7 @@
 ```json
 {
   "identification": {
-    "types": ["string"],
+    "type": "string",
     "additionalInfo": "string",
     "url": "string"
   },
@@ -151,7 +151,7 @@
 
 ```json
 {
-  "type": ["string"],
+  "type": "string",
   "additionalInfo": "string",
   "url": "string"
 }
