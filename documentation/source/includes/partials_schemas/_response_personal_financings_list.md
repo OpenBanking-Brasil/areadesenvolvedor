@@ -40,27 +40,13 @@
               ],
               "interestRates": [
                 {
-                  "rate": "string",
-                  "referencialRate": "string",
-                  "indexer": "string",
-                  "prePostTax": "string",
-                  "occurrence": "string",
-                  "incomeRateInfo": "string",
                   "application": [
                     {
-                      "interval": "string",
-                      "value": "string",
-                      "currency": "string"
+                      "rate": "string"
                     }
                   ],
-                  "minimum": {
-                    "value": "string",
-                    "currency": "string"
-                  },
-                  "maximum": {
-                    "value": "string",
-                    "currency": "string"
-                  }
+                  "minimumRate": "string",
+                  "maximumRate": "string",
                 }
               ],
               "requiredWarranties": [
