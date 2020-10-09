@@ -15,7 +15,7 @@
             "phoneChannels": [
               {
                 "identification": {
-                  "type": ["string"],
+                  "type": "string",
                   "additionalInfo": "string",
                   "phones": [
                     {
@@ -74,7 +74,7 @@
       "phoneChannels": [
         {
           "identification": {
-            "type": ["string"],
+            "type": "string",
             "additionalInfo": "string",
             "phones": [
               {
@@ -114,7 +114,7 @@
   "phoneChannels": [
     {
       "identification": {
-        "type": ["string"],
+        "type": "string",
         "additionalInfo": "string",
         "phones": [
           {
@@ -149,7 +149,7 @@
 ```json
 {
   "identification": {
-    "type": ["string"],
+    "type": "string",
     "additionalInfo": "string",
     "phones": [
       {
@@ -179,7 +179,7 @@
 
 ```json
 {
-  "type": ["string"],
+  "type": "string",
   "additionalInfo": "string",
   "phones": [
     {
