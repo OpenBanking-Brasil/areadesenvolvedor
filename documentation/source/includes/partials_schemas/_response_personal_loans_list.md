@@ -16,10 +16,9 @@
               "type": "string",
               "fees": [
                 {
-                  "name": "string",
-                  "code": "string",
+                  "serviceName": "string",
+                  "serviceCode": "string",
                   "chargingTriggerInfo": "string",
-                  "chargingUnit": "string",
                   "price": [
                     {
                       "interval": "string",
@@ -34,15 +33,14 @@
                   "maximum": {
                     "value": "string",
                     "currency": "string"
-                  },
-                  "additionalInfo": "string"
+                  }
                 }
               ],
               "interestRates": [
                 {
                   "application": [
                     {
-                      "interval": ["string"],
+                      "interval": "string",
                       "rate": "string",
                     }
                   ],
