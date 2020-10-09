@@ -42,6 +42,7 @@
                 {
                   "application": [
                     {
+                      "interval": "string",
                       "rate": "string"
                     }
                   ],
@@ -120,12 +121,6 @@
           ],
           "interestRates": [
             {
-              "rate": "string",
-              "referencialRate": "string",
-              "indexer": "string",
-              "prePostTax": "string",
-              "occurrence": "string",
-              "incomeRateInfo": "string",
               "application": [
                 {
                   "interval": "string",
