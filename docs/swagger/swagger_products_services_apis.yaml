@@ -1488,8 +1488,8 @@ components:
           type: object
           required:
             - price
-            - minimumRate
-            - maximumRate
+            - minimum
+            - maximum
           properties:
             price:
               type: object
@@ -1504,7 +1504,7 @@ components:
                         "2ª quartil de clientes",
                         "3ª quartil de clientes",
                         "4ª quartil de clientes"]
-                  description: "Faixas para cobrança de valores de tarifas por produto/serviço informado."
+                  description: "Faixas para cobrança da taxa efetiva outras operações de crédito, no intervalo informado: 1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes"
                 rate:
                   type: string
                   maxLength: 9
@@ -1513,20 +1513,30 @@ components:
                 frequency:
                   type: string
                   description: "Frequência de clientes em cada faixa de valor. Representa uma porcentagem"
-            minimumRate:
-              type: string
-              maxLength: 9
-              pattern: '(-?[1-9]?\d{1,4}){1}(\,\d{1,4}){1'
-              description: |
-                Percentual mínimo cobrado (taxa efetiva) no mês de referência, pela utilização do crédito rotativo
-                (A apuração deve pode ser feita com até 4 casas decimais. A representação de porcentagem p.ex: do 0.1500 representa 15%. Desta forma, o valor 1 representa 100%)
-            maximumRate:
-              type: string
-              maxLength: 9
-              pattern: '(-?[1-9]?\d{1,4}){1}(\,\d{1,4}){1'
-              description: |
-                Percentual máximo cobrado (taxa efetiva) no mês de referência, pela utilização do crédito rotativo
-                (A apuração deve pode ser feita com até 4 casas decimais. A representação de porcentagem p.ex: do 0.1500 representa 15%. Desta forma, o valor 1 representa 100%)
+            minimum:
+              type: object
+              required:
+                  - rate
+              properties:
+                  rate:
+                    type: string
+                    maxLength: 9
+                    pattern: '(-?[1-9]?\d{1,4}){1}(\,\d{1,4}){1'
+                    description: |
+                      Percentual mínimo cobrado (taxa efetiva) para  outras operações de crédito do mês de referência.
+                      (A apuração deve pode ser feita com até 4 casas decimais. A representação de porcentagem p.ex: do 0.1500 representa 15%. Desta forma, o valor 1 representa 100%)
+            maximum:
+              type: object
+              required:
+                  - rate
+              properties:
+                  rate:
+                    type: string
+                    maxLength: 9
+                    pattern: '(-?[1-9]?\d{1,4}){1}(\,\d{1,4}){1'
+                    description: |
+                      Percentual máximo cobrado (taxa efetiva) para  outras operações de crédito do mês de referência.
+                      (A apuração deve pode ser feita com até 4 casas decimais. A representação de porcentagem p.ex: do 0.1500 representa 15%. Desta forma, o valor 1 representa 100%)
         instalmentRate:
           type: object
           required:
@@ -1867,7 +1877,7 @@ components:
                     properties:
                       name:
                         type: string
-                        maxLength: 30
+                        maxLength: 80
                         description: "Nome da Instituição, pertencente à marca, responsável pela comercialização dos produtos e serviços"
                         example: "The Big Bank Company"
                       cnpjNumber:
@@ -1923,18 +1933,19 @@ components:
       properties:
         name:
           type: string
-          maxLength: 50
-          description: "Nomes das Tarifas cobradas sobre Serviços relacionados à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa jurídica"
+          maxLength: 80
+          description: "Sigla de identificação do Serviço relacionado à Modalidade de Contas de Pagamento Pós-Pagas para pessoa jurídica informada (Campo Livre)"
           example: "2ª via do cartão de crédito"
         code:
           type: string
           maxLength: 30
-          description: "Sigla de identificação do serviço relacionado à Modalidade de Contas de Pagamento Pós-Pagas para pessoa jurídica informada"
+          description: "Sigla de identificação do Serviço relacionado à Modalidade de Contas de Pagamento Pós-Pagas para pessoa jurídica informada (Campo Livre)"
           example: "SEGUNDA_VIA_CARTAO_CREDITO"
         chargingTriggerInfo:
           type: string
-          maxLength: 3000
-          description: "Fatores geradores de cobrança que incidem sobre as Modalidades inforrmadas de Contas de Pagamento Pós-Pagas para pessoa jurídica"
+          pattern: '\w*\W*'
+          maxLength: 2000
+          description: "Fatos geradores de cobrança que incidem sobre as Modalidades de Contas de Pagamento Pós-Pagas informada, para pessoa jurídica. (Campo Livre)"
           example: "SEGUNDA_VIA_CARTAO_CREDITO"
         price:
           $ref: '#/components/schemas/CreditCardServicePrice'
