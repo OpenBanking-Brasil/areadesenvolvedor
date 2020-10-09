@@ -193,54 +193,52 @@ components:
       example:
         data:
           brand:
-              name: The Big Bank Company
+              name: Organização A
               companies:
-                - name: RSR Bank
-                  cnpjNumber: '12345678901234'
+                - name: Empresa A1
+                  cnpjNumber: '45086338000178'
+                  urlComplementaryList: 'https://empresaa1.com/branches-banking'
                   branches:
-                    - identification:
-                        type: AGENCIA
-                        code: '7055'
-                        checkDigit: '0'
-                        name: Agência Alameda Santos
-                      postalAddress:
-                        streetType: Alameda
-                        streetName: Santos
-                        buildingNumber: '1041'
-                        additionalInfo: "null"
-                        districtName: Cerqueira César
-                        townName: São Paulo
-                        countrySubDivision: SP
-                        postCode: 01419-002
+                  - identification:
+                      type: 'AGENCIA'
+                      code: '0001'
+                      checkDigit: '9'
+                      name: 'Marília'
+                    postalAddress:
+                      address: 'Av Naburo Ykesaki, 1270'
+                      districtName: 'Centro'
+                      townName: 'Marília'
+                      countrySubDivision: 'SP'
+                      postCode: '17500001'
                       availability:
-                        standard:
+                        standards:
                           - weekday: Segunda-feira
-                            openingTime: '13:00:00+0000'
-                            closingTime: '19:00:00+0000'
+                            openingTime: '10:00:57Z'
+                            closingTime: '16:00:57Z'
                           - weekday: Terça-feira
-                            openingTime: '13:00:00+0000'
-                            closingTime: '19:00:00+0000'
+                            openingTime: '10:00:57Z'
+                            closingTime: '16:00:57Z'
                           - weekday: Quarta-feira
-                            openingTime: '13:00:00+0000'
-                            closingTime: '19:00:00+0000'
+                            openingTime: '10:00:57Z'
+                            closingTime: '16:00:57Z'
                           - weekday: Quinta-feira
-                            openingTime: '13:00:00+0000'
-                            closingTime: '19:00:00+0000'
+                            openingTime: '10:00:57Z'
+                            closingTime: '16:00:57Z'
                           - weekday: Sexta-feira
-                            openingTime: '13:00:00+0000'
-                            closingTime: '19:00:00+0000'
-                        exceptionAvailability: 'Exceto feriados municipais, estaduais e nacionais'
+                            openingTime: '10:00:57Z'
+                            closingTime: '16:00:57Z'
+                        exception: 'Exceto feriados municipais, estaduais e nacionais'
                         allowPublicAccess: true
-                        phones:
-                          - type: FIXO
-                            countryCode: '55'
-                            areaCode: '11'
-                            number: 4444-5555
-                          - type: MOVEL
-                            countryCode: '55'
-                            areaCode: '11'
-                            number: 99999-8888
-                      services:
+                      phones:
+                        - type: FIXO
+                          countryCode: '55'
+                          areaCode: '14'
+                          number: '35721199'
+                        - type: MOVEL
+                          countryCode: '55'
+                          areaCode: '14'
+                          number: '997865532'
+                      service:
                         codes:
                           - ABERTURA_CONTAS
                           - RECEBIMENTOS_PAGAMENTOS_TRANSFERENCIAS_ELETRONICAS
@@ -250,7 +248,8 @@ components:
                           - OPERACOES_CAMBIO
                           - INVESTIMENTOS
                           - SEGUROS
-                        additionalInfo: "null"
+                          - OUTROS
+                        additionalInfo: "Renegociação, Previdência Privada" 
         links:
           self: 'https://api.banco.com.br/open-banking/channels/v1/branches'
           first: 'https://api.banco.com.br/open-banking/channels/v1/branches'
@@ -281,6 +280,15 @@ components:
       properties:
         name:
           type: string
+        cnpjNumber:
+          type: string
+          minLength: 14
+          maxLength: 14
+          pattern: '^(\d{14})$'         
+          description: |
+            Número completo do CNPJ da instituição responsável pela dependência - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. 
+            Deve-se ter apenas os números do CNPJ, sem máscara
+          example: '45086338000178'
         urlComplementaryList:
           type: string
           maxLength: 1024
@@ -309,6 +317,30 @@ components:
           $ref: '#/components/schemas/Links'
         meta:
           $ref: '#/components/schemas/Meta'
+      example:
+        data: 
+          brand:
+            name: 'Organização A'
+            companies:
+            - name: 'Empresa A1'
+              cnpjNumber: '45086338000178'
+              urlComplementaryList: 'https://empresaa1.com/branches-banking'
+              channels:
+              - identification:
+                  type: 'INTERNET_BANKING'
+                  additionalInfo: 'NA'
+                  url: 'https://empresaa1.com/internet-banking'
+                service:
+                  codes:
+                    - 'ABERTURA_CONTA'
+                    - 'RECEBIMENTOS_PAGAMENTOS_TRANSFERENCIAS_ELETRONICAS'
+                    - 'OPERACOES_CREDITO'
+                    - 'CARTAO_CREDITO'
+                    - 'OPERACOES_CAMBIO'
+                    - 'INVESTIMENTOS'
+                    - 'SEGUROS'
+                    - 'OUTROS'
+                  additionalInfo: 'Previdência Complementar'
     ElectronicChannelsBrand:
       type: object
       required:
@@ -413,12 +445,16 @@ components:
         - availability
       properties:
         identification:
-            $ref: '#/components/schemas/BranchIdentification'
+          $ref: '#/components/schemas/BranchIdentification'
         postalAddress:
-            $ref: '#/components/schemas/PostalAddress'
+          $ref: '#/components/schemas/PostalAddress'
         availability:
-            $ref: '#/components/schemas/BranchAvailability'
-        services:
+          $ref: '#/components/schemas/BranchAvailability'
+        phones:
+          type: array
+          items:
+            $ref: '#/components/schemas/Phone'
+        service:
             $ref: '#/components/schemas/BranchServices'
     BranchIdentification:
       type: object
@@ -430,10 +466,11 @@ components:
                 "POSTO_ATENDIMENTO_ELETRONICO"]
           maxLength: 20
           description: > 
-            Tipo de dependência física
-            * `AGENCIA` - Agências
-            * `POSTO_ATENDIMENTO` - Postos de atendimento
-            * `POSTO_ATENDIMENTO_ELETRONICO` - Postos de atendimento eletrônico
+            Tipo da dependência, segundo a regulamentação do Bacen,  na Resolução Nº 4072, de 26 de abril de 2012:
+            Agência é a dependência destinada ao atendimento aos clientes e ao público em geral no exercício de atividades da instituição, não podendo ser móvel ou transitória;
+              Dependência de instituições financeiras e demais instituições, autorizadas a funcionar pelo Banco Central do Brasil, destinada à prática das atividades para as quais a instituição esteja regularmente habilitada.
+            Posto de Atendimento é a dependência subordinada a agência  ou à sede da instituição financeira, destinada ao atendimento ao público no exercício de uma ou mais de suas atividades, podendo ser fixo ou móvel. Segundo Art.15. Os Postos de Atendimento Bancário (PAB), Postos Avançados de Atendimento (PAA), Postos de Atendimento Transitórios (PAT), Postos de Compra de Ouro (PCO), Postos de Atendimento Cooperativo (PAC), Postos de Atendimento de Microcrédito (PAM), Postos Bancários de Arrecadação e Pagamento (PAP) e os Postos de Câmbio atualmente em funcionamento serão considerados PA.
+            Posto de Atendimento Eletrônico é a dependência constituída por um ou mais terminais de autoatendimento, subordinada a agência ou à sede da instituição, destinada à prestação de serviços por meio eletrônico, podendo ser fixo ou móvel, permanente ou transitório
         code:
           type: string
           maxLength: 4
@@ -453,7 +490,7 @@ components:
     BranchAvailability:
       type: object
       properties:
-        standard:
+        standards:
           type: array
           items:
             properties:
@@ -476,12 +513,11 @@ components:
               - weekday
               - openingTime
               - closingTime
-        exceptionAvailability:
+        exception:
           type: string
           maxLength: 2000
         allowPublicAccess:
           type: boolean
-          enum: [true,false]
         phones:
           type: array
           items:
@@ -523,37 +559,31 @@ components:
           type: array
           items:
             type: string
-            enum: ["ABERTURA_CONTAS",
-                  "RECEBIMENTOS_PAGAMENTOS_TRANSFERENCIAS_ELETRONICAS",
-                  "RECEBIMENTOS_PAGAMENTOS_QUALQUER_NATUREZA",
-                  "OPERACOES_CREDITO",
-                  "CARTAO_CREDITO",
-                  "OPERACOES_CAMBIO",
-                  "INVESTIMENTOS",
-                  "SEGUROS",
-                  "RECLAMACAO",
-                  "CANCELAMENTO",
-                  "INFORMACOES",
-                  "FALAR_ATENDENTE",
-                  "OUTROS"]
+            enum: [
+              "ABERTURA_CONTAS",
+              "RECEBIMENTOS_PAGAMENTOS_TRANSFERENCIAS_ELETRONICAS",
+              "RECEBIMENTOS_PAGAMENTOS_QUALQUER_NATUREZA",
+              "OPERACOES_CREDITO",
+              "CARTAO_CREDITO",
+              "OPERACOES_CAMBIO",
+              "INVESTIMENTOS",
+              "SEGUROS",
+              "OUTROS"
+            ]
           description: > 
-            Serviços oferecidos pela dependência própria
-            * ´ABERTURA_CONTAS´ - Abertura de contas
-            * ´RECEBIMENTOS_PAGAMENTOS_TRANSFERENCIAS_ELETRONICAS´ - Recebimentos, pagamentos e transferências eletrônicas
-            * ´RECEBIMENTOS_PAGAMENTOS_QUALQUER_NATUREZA´ - Recebimentos e pagamentos de qualquer natureza
-            * ´OPERACOES_CREDITO´ - Operações de crédito
-            * ´CARTAO_CREDITO´ - Cartão de crédito
-            * ´OPERACOES_CAMBIO´ - Operações de câmbio
-            * ´INVESTIMENTOS´ - Investimentos
-            * ´SEGUROS´ - Seguros
-            * ´RECLAMACAO´ - Reclamação
-            * ´CANCELAMENTO´ - Cancelamento
-            * ´INFORMACOES´ - Informações
-            * ´FALAR_ATENDENTE´ - Falar com atendente
-            * ´OUTROS´ - Outros
+            Serviços prestados pela dependência consultada:
+            * Abertura de contas
+            * Recebimentos, pagamentos e transferências eletrônicas
+            * Recebimentos e pagamentos de qualquer natureza
+            * Operações de crédito
+            * Cartão de crédito
+            * Operações de câmbio
+            * Investimentos
+            * Seguros
+            * Outros
         additionalInfo:
           type: string
-          description: Campo aberto para detalhamento
+          description: Campo de texto livre para descrever mais sobre os serviços
           maxLength: 2000
       required:
         - codes
@@ -562,11 +592,11 @@ components:
       properties:
         identification:
           $ref: '#/components/schemas/ElectronicChannelIdentification'
-        services:
+        service:
           $ref: '#/components/schemas/ElectronicChannelServices'
       required:
         - identification
-        - services
+        - service
     ElectronicChannelIdentification:
       type: object
       required:
@@ -620,52 +650,71 @@ components:
           maxLength: 2000
           description: Campo aberto para detalhamento
           example: ""
+    Phone:
+      type: object
+      required:
+        - countryCode
+        - areaCode
+        - number
+      properties:
+        type:
+          type: string
+          enum: [ "FIXO", "MOVEL" ]
+          example: "FIXO"
+          description: "Identificação do Tipo de telefone da dependência. p.ex.FIXO, MOVEL."
+        countryCode:
+          type: string
+          maxLength: 2
+          pattern: ^\d{2}$
+          example: "55"
+          description: "Número de DDI (Discagem Direta Internacional) para  telefone de acesso ao Canal - se houver. p.ex. '55'"
+        areaCode:
+          type: string
+          maxLength: 2
+          pattern: ^\d{2}$
+          example: "19"
+          description: "Número de DDD (Discagem Direta à Distância) do telefone da dependência - se houver. p.ex. '19'"
+        number:
+          type: string
+          maxLength: 11
+          pattern: '^([0-9]{8,11})$'
+          example: "35721199"
+          description: "Número de telefone da dependência - se houver"
     PostalAddress:
       type: object
       properties:
-        streetType:
+        address:
           type: string
-          description: Tipo de logradouro
-          maxLength: 10
-          enum: ["Aeroporto", "Alameda", "Área", "Avenida", "Campo", "Chácara", "Colônia", "Condomínio", "Conjunto", "Distrito", "Esplanada", "Estação", "Estrada", "Fazenda", "Feira", "Jardim", "Ladeira", "Lago", "Lagoa", "Largo", "Loteamento", "Núcleo", "Parque", "Passarela", "Pátio", "Praça", "Quadra", "Recanto", "Residencial", "Rodovia", "Rua", "Setor", "Sítio", "Travessa", "Trecho", "Trevo", "Vale", "Vereda", "Via", "Viaduto", "Viela", "Vila"]
-        streetName:
-          type: string
-          description: Nome do logradouro
-          maxLength: 50
-        buildingNumber:
-          type: string
-          description: Número
-          maxLength: 6
-        additionalInfo:
-          type: string
-          description: Complemento
-          maxLength: 30
+          description: |
+            Deverá trazer toda a informação referente ao endereço da dependência informada:
+            Tipo de logradouro + Nome do logradouro + Número do Logradouro (se não existir usar ' s/n') + complemento (se houver), como, p.ex.:
+            'R Diamatina, 59, bloco 35, fundos'
+            'Praça da Boa Vontade s/n'
+          maxLength: 150
         districtName:
           type: string
-          description: Bairro
+          description: "Bairro é uma comunidade ou região localizada em uma cidade ou município de acordo com as suas subdivisões geográficas. p.ex: 'Paraíso'"
           maxLength: 50
         townName:
           type: string
-          description: Cidade
+          description: "Localidade: O nome da localidade corresponde à designação da cidade ou município no qual o endereço está localizado. p.ex. 'São Paulo'"
           maxLength: 50
         countrySubDivision:
           type: string
-          description: Estado
+          description: "Enumeração referente a cada sigla da unidade da federação que identifica o estado ou o distrito federal, no qual o endereço está localizado. p.ex. 'AC'. São consideradas apenas as siglas para os estados brasileiros"
           enum: [AC,AL,AP,AM,BA,CE,DF,ES,GO,MA,MT,MS,MG,PA,PB,PR,PE,PI,RJ,RN,RS,RO,RR,SC,SP,SE,TO]
           maxLength: 2
         postCode:
           type: string
-          description: CEP
+          description: "Código de Endereçamento Postal: Composto por um conjunto numérico de oito dígitos, o objetivo principal do CEP é orientar e acelerar o encaminhamento, o tratamento e a entrega de objetos postados nos Correios, por meio da sua atribuição a localidades, logradouros, unidades dos Correios, serviços, órgãos públicos, empresas e edifícios. p.ex. '01311-000'"
           pattern: ^\d{5}-\d{3}$
           maxLength: 9
       required: 
-        - streetType
-        - streetName
-        - buildingNumber
         - districtName
         - townName
         - countrySubDivision
         - postCode
+        - address
   ####################
   ## Phone Channels ##
   ####################

@@ -15,7 +15,7 @@
             "channels": [
               {
                 "identification": {
-                  "types": ["string"],
+                  "type": "string",
                   "additionalInfo": "string",
                   "url": "string"
                 },
