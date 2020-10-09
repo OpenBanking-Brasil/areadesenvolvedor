@@ -214,87 +214,65 @@ components:
     AccountOtherServicesPrice:
       type: object
       required:
-        - name
-        - code
-        - chargingTriggerInfo
-        - price
+        - intervals
+        - values
+        - currencies
+        - minimum
+        - maximum
       properties:
-        name:
+        intervals:
           type: string
-          maxLength: 80
-          pattern: \w*\W*
-          description: "Nome de Outro Serviço para pessoa física (Campo Livre)"
-        code:
+          enum: ["1_QUARTIL_CLIENTES",
+                 "2_QUARTIL_CLIENTES",
+                 "3_QUARTIL_CLIENTES",
+                 "4_QUARTIL_CLIENTES"
+            ]
+          description: "Faixas de valor referentes a tarifa de outro Serviços informada: 1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes"
+          example: "1_QUARTIL_CLIENTES"
+        values:
           type: string
-          description: "Siglas de identificação de Outro Serviço (Campo Livre)"
-          maxLength: 60
-        chargingTriggerInfo:
+          description: "Valor da mediana da tarifa cobrada referente a Outros Serviços, para o tipo de faixa informada"
+          example: "45,00"
+          maxLength: 12
+          pattern: ^(\d{1,9}\,\d{2}){1}$
+        currencies:
           type: string
-          pattern: \w*\W*
-          description: "Fatos geradores de cobrança que incidem sobre outros serviços para pessoa física. (Campo Livre)"
-          maxLength: 200
-        price:
+          maxLength: 3
+          pattern: ^(\w{3}){1}$
+          description: "Moeda referente ao valor da mediana da tarifa de Outros Serviços no quartil informado, segundo modelo ISO-4217."
+          example: "BRL"
+        minimum:
           type: object
           required:
-            - intervals
-            - values
-            - currencies
-            - minimum
-            - maximum
+            - value
+            - currency
           properties:
-            intervals:
+            value:
               type: string
-              enum: ["1_QUARTIL_CLIENTES",
-                     "2_QUARTIL_CLIENTES",
-                     "3_QUARTIL_CLIENTES",
-                     "4_QUARTIL_CLIENTES"
-                ]
-              description: "Faixas de valor referentes a tarifa de outro Serviços informada: 1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes"
-              example: "1_QUARTIL_CLIENTES"
-            values:
-              type: string
-              description: "Valor da mediana da tarifa cobrada referente a Outros Serviços, para o tipo de faixa informada"
+              maxLength: 12
+              description: "Valor mínimo cobrado para a tarifa de Outros Serviços no mês de referência"
+              pattern: ^(\d{1,9}\,\d{2}){1}$
               example: "45,00"
+            currency:
+              type: string
+              description: "Moeda referente ao valor mínimo da tarifa de Outros Serviços, segundo modelo ISO-4217."
+              example: "BRL"
+        maximum:
+          type: object
+          required:
+            - value
+            - currency
+          properties:
+            value:
+              type: string
               maxLength: 12
               pattern: ^(\d{1,9}\,\d{2}){1}$
-            currencies:
+              description: "Valor máximo cobrado para a tarifa de Outros Serviços no mês de referência."
+              example: "45,00"
+            currency:
               type: string
-              maxLength: 3
-              pattern: ^(\w{3}){1}$
-              description: "Moeda referente ao valor da mediana da tarifa de Outros Serviços no quartil informado, segundo modelo ISO-4217."
+              description: "Moeda referente ao valor máximo da tarifa de outros serviços, segundo modelo ISO-4217."
               example: "BRL"
-            minimum:
-              type: object
-              required:
-                - value
-                - currency
-              properties:
-                value:
-                  type: string
-                  maxLength: 12
-                  description: "Valor mínimo cobrado para a tarifa de Outros Serviços no mês de referência"
-                  pattern: ^(\d{1,9}\,\d{2}){1}$
-                  example: "45,00"
-                currency:
-                  type: string
-                  description: "Moeda referente ao valor mínimo da tarifa de Outros Serviços, segundo modelo ISO-4217."
-                  example: "BRL"
-            maximum:
-              type: object
-              required:
-                - value
-                - currency
-              properties:
-                value:
-                  type: string
-                  maxLength: 12
-                  pattern: ^(\d{1,9}\,\d{2}){1}$
-                  description: "Valor máximo cobrado para a tarifa de Outros Serviços no mês de referência."
-                  example: "45,00"
-                currency:
-                  type: string
-                  description: "Moeda referente ao valor máximo da tarifa de outros serviços, segundo modelo ISO-4217."
-                  example: "BRL"
         
   ############################
   ##  Personal Accounts ##
@@ -329,15 +307,15 @@ components:
                   type: array
                   items:
                     required: 
-                      - name
-                      - cnpjNumber
+                      - names
+                      - cnpjNumbers
                     properties:
-                      name:
+                      names:
                         type: string
                         maxLength: 30
                         description: "Nome da Instituição, pertencente à marca, responsável pela comercialização dos produtos e serviços"
                         example: "Empresa A1"
-                      cnpjNumber:
+                      cnpjNumbers:
                         type: string
                         minLength: 14
                         maxLength: 14
@@ -355,7 +333,7 @@ components:
                         type: array
                         items:
                           required:
-                            - type
+                            - types
                             - fees
                             - serviceBundles
                             - openCloseChannels
@@ -363,7 +341,7 @@ components:
                             - termsConditions
                             - incomeRates
                           properties:
-                            name:
+                            types:
                               type: string
                               enum: [
                                   "CONTA_DEPOSITO_A_VISTA"
@@ -390,6 +368,9 @@ components:
                                 required: 
                                   - names
                                   - services
+                                  - price
+                                  - minimum
+                                  - maximum
                                 properties:
                                   names:
                                     type: string
@@ -403,13 +384,11 @@ components:
                                         - code
                                         - eventLimitQuantity
                                         - freeEventQuantity
-                                        - maxPrice
-                                        - currency
                                       properties:
                                         code:
                                           type: string
                                           maxLength: 30
-                                          description: "Código que identifica o Serviço que compõe o Pacote de Serviços, podendo ser da lista de Serviços Prioritários ou Outros Serviços"
+                                          description: "Código que identifica o Serviço que compõe o Pacote de Serviços, podendo ser da lista de Serviços Prioritários ou Outros Serviços."
                                           example: "SAQUEterminal"
                                         eventLimitQuantity:
                                           type: string
@@ -421,68 +400,68 @@ components:
                                           maxLength: 60
                                           description: "Quantidade de eventos previstos no Pacote de Serviços com isenção de Tarifa"
                                           example: "1"
-                                        price:
-                                          type: object
-                                          required:
-                                            - intervals
-                                            - monthlyFees
-                                            - currencies
-                                            - minimum
-                                            - maximum
-                                          properties:
-                                            intervals:
-                                              type: string
-                                              enum: ["1_QUARTIL_CLIENTES",
-                                                     "2_QUARTIL_CLIENTES",
-                                                     "3_QUARTIL_CLIENTES",
-                                                     "4_QUARTIL_CLIENTES"
-                                                ]
-                                              description: "Faixas de valor referentes a tarifa de Pacote de Serviços informada: 1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes"
-                                              example: "1_QUARTIL_CLIENTES"
-                                            monthlyFees:
-                                              type: string
-                                              description: "Valor da mediana da tarifa mensal referente ao Pacote de Serviços."
-                                              example: "130,00"
-                                              maxLength: 12
-                                              pattern: ^(\d{1,9}\,\d{2}){1}$
-                                            currencies:
-                                              type: string
-                                              maxLength: 3
-                                              pattern: ^(\w{3}){1}$
-                                              description: "Moeda referente ao valor da mediana da tarifa mensal do Pacote de Serviços, segundo modelo ISO-4217. "
-                                              example: "BRL"
-                                            minimum:
-                                              type: object
-                                              required:
-                                                - value
-                                                - currency
-                                              properties:
-                                                value:
-                                                  type: string
-                                                  maxLength: 12
-                                                  description: "Valor  mensal mínimo cobrado referente ao Pacote de Serviços no mês de referência"
-                                                  pattern: ^(\d{1,9}\,\d{2}){1}$
-                                                  example: "45,00"
-                                                currency:
-                                                  type: string
-                                                  description: "Moeda referente ao valor mínimo da tarifa de Pacote de Serviços, segundo modelo ISO-4217."
-                                                  example: "BRL"
-                                            maximum:
-                                              type: object
-                                              required:
-                                                - value
-                                                - currency
-                                              properties:
-                                                value:
-                                                  type: string
-                                                  maxLength: 12
-                                                  pattern: ^(\d{1,9}\,\d{2}){1}$
-                                                  description: "Valor mensal máximo cobrado referente ao Pacote de Serviços no mês de referência."
-                                                  example: "45,00"
-                                                currency:
-                                                  type: string
-                                                  description: "Moeda referente ao valor máximo da tarifa do Pacote de Serviços, segundo modelo ISO-4217."
-                                                  example: "BRL"
+                                  price:
+                                    type: object
+                                    required:
+                                      - intervals
+                                      - monthlyFees
+                                      - currencies
+                                      - minimum
+                                      - maximum
+                                    properties:
+                                      intervals:
+                                        type: string
+                                        enum: ["1_QUARTIL_CLIENTES",
+                                               "2_QUARTIL_CLIENTES",
+                                               "3_QUARTIL_CLIENTES",
+                                               "4_QUARTIL_CLIENTES"
+                                          ]
+                                        description: "Faixas de valor referentes a tarifa de Pacote de Serviços informada: 1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes"
+                                        example: "1_QUARTIL_CLIENTES"
+                                      monthlyFees:
+                                        type: string
+                                        description: "Valor da mediana da tarifa mensal referente ao Pacote de Serviços."
+                                        example: "130,00"
+                                        maxLength: 12
+                                        pattern: ^(\d{1,9}\,\d{2}){1}$
+                                      currencies:
+                                        type: string
+                                        maxLength: 3
+                                        pattern: ^(\w{3}){1}$
+                                        description: "Moeda referente ao valor da mediana da tarifa mensal do Pacote de Serviços, segundo modelo ISO-4217. "
+                                        example: "BRL"
+                                  minimum:
+                                    type: object
+                                    required:
+                                      - value
+                                      - currency
+                                    properties:
+                                      value:
+                                        type: string
+                                        maxLength: 12
+                                        description: "Valor  mensal mínimo cobrado referente ao Pacote de Serviços no mês de referência"
+                                        pattern: ^(\d{1,9}\,\d{2}){1}$
+                                        example: "45,00"
+                                      currency:
+                                        type: string
+                                        description: "Moeda referente ao valor mínimo da tarifa de Pacote de Serviços, segundo modelo ISO-4217."
+                                        example: "BRL"
+                                  maximum:
+                                    type: object
+                                    required:
+                                      - value
+                                      - currency
+                                    properties:
+                                      value:
+                                        type: string
+                                        maxLength: 12
+                                        pattern: ^(\d{1,9}\,\d{2}){1}$
+                                        description: "Valor mensal máximo cobrado referente ao Pacote de Serviços no mês de referência."
+                                        example: "45,00"
+                                      currency:
+                                        type: string
+                                        description: "Moeda referente ao valor máximo da tarifa do Pacote de Serviços, segundo modelo ISO-4217."
+                                        example: "BRL"
                             openCloseChannels:
                               type: string
                               enum: [
@@ -505,9 +484,17 @@ components:
                                 "MOVIMENTACAO_PRESENCIAL"
                                 ]
                               description: "Lista de formas de movimentação possíveis para a conta"
-                              example: "MOVIMENTACAO_PRESENCIAL"
+                              example: "MOVIMENTACAO_CARTAO"
+                            additionalInfo:
+                              type: string
+                              maxLength: 100
+                              pattern: \w*\W*
+                              description: "Texto livre para complementar informação relativa ao Canal disponível, quando no campo 'openingClosingChannels' estiver preenchida a opção 'Outros'"
+                              example: "Texto livre"
                             termsConditions:
                               $ref: '#/components/schemas/AccountsTermsConditions'
+                            incomeRates:
+                              $ref: '#/components/schemas/PersonalAccountsIncomeRates'
         links:
           $ref: '#/components/schemas/Links'
         meta:
@@ -517,20 +504,20 @@ components:
     PersonalAccountsPriorityServices:
       type: object
       required:
-        - name
-        - code
+        - names
+        - codes
         - chargingTriggerInfo
         - price
         - minimum
         - maximum
       properties:
-        name:
+        names:
           type: string
           maxLength: 80
           pattern: \w*\W*
-          description: "Nome das Tarifas cobradas sobre Serviços Prioritários para os tipos de contas comercializadas para pessoa física. A Lista corresponde às relacionadas na Resolução 3919 do Bacen."
-          example: "FORNECIMENTO_EXTRATO_MENSAL_CONTA_VISTA_POUPANCA"
-        code:
+          description: "Nome dos Serviços prioritários, segundo Resolução 3.919 do Bacen, para pessoa física."
+          example: "Fornecimento de extrato de um período de conta de depósitos à vista e de poupança"
+        codes:
           type: string
           enum: [
             "CADASTRO",
@@ -665,6 +652,57 @@ components:
           example: "Cobrança devido a evento personalizado"
         price:
           $ref: '#/components/schemas/AccountOtherServicesPrice'
+  
+  ##### PersonalAccountsIncomeRates #####
+    PersonalAccountsIncomeRates:
+      type: object
+      required: 
+        - savingAccount
+        - prepaidPaymentAccount
+      properties:
+        savingAccount:
+          type: string
+          maxLength: 2000
+          pattern: \w*\W*
+          description: "Descrição da Remuneração especificamente para Conta de Poupança. Deve ser preenchido com a determinação legal vigente."
+          example: "70% da Taxa Selic (6,5%) = 4,55%, que é o atual rendimento anual da poupança. O rendimento mensal é de 0,3715"
+        prepaidPaymentAccount:
+          type: object
+          required:
+            - intervals
+            - rates
+            - minimumRate
+            - maximumRate
+          properties:
+            intervals:
+              type: string
+              enum: [
+                    "1_QUARTIL_CLIENTES",
+                    "2_QUARTIL_CLIENTES",
+                    "3_QUARTIL_CLIENTES",
+                    "4_QUARTIL_CLIENTES"
+                ]
+              description: "Faixas do percentual de taxa de remuneração efetivamente aplicada no intervalo informado para Contas do Tipo CONTA_PAGAMENTO_PRE_PAGA :1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes"
+              example: "1_QUARTIL_CLIENTES"
+            rates:
+              type: string
+              pattern: (-?[1-9]?\d{1,4}){1}(\,\d{1,4}){1
+              maxLength: 9
+              description: "Percentual que corresponde a taxa mediana de remuneração efetivamente aplicada no intervalo informado para CONTA_PAGAMENTO_PRE_PAGA. A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, emso que venham preenchidas com zeros"
+              example: "0.1500"
+            mininumRate:
+              type: string
+              pattern: (-?[1-9]?\d{1,4}){1}(\,\d{1,4}){1
+              maxLength: 9
+              description: "Percentual mínimo referente à taxa de remuneração efetivamente aplicada no mês de referência para CONTA_PAGAMENTO_PRE_PAGA. A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, emso que venham preenchidas com zeros"
+              example: "0.1500"
+            maximumRate:
+              type: string
+              pattern: (-?[1-9]?\d{1,4}){1}(\,\d{1,4}){1
+              maxLength: 9
+              description: "Percentual máximo referente à taxa de remuneração efetivamente aplicada no mês de referência para VCONTA_PAGAMENTO_PRE_PAGA. A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, emso que venham preenchidas com zeros"
+              example: "0.1500"
+
  
   ############################
   ##  Business Accounts ##
@@ -699,22 +737,27 @@ components:
                   type: array
                   items:
                     required: 
-                      - name
-                      - cnpjNumber
+                      - names
+                      - cnpjNumbers
                     properties:
-                      name:
+                      names:
                         type: string
                         maxLength: 80
                         pattern: \w*\W*
                         description: "Nome da Instituição, pertencente à marca, responsável pela comercialização dos produtos e serviços"
                         example: "The Big Bank Company"
-                      cnpjNumber:
+                      cnpjNumbers:
                         type: string
                         minLength: 14
                         maxLength: 14
                         pattern: ^(\d{14})$
                         description: "Número completo do CNPJ da instituição responsável pelos  tipos de contas de pessoas juridicas cosultadas."
                         example: "54672317000101"
+                      urlComplementaryList:
+                        type: string
+                        description: "URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber."
+                        pattern: \w*\W*
+                        example: "https://example.com/mobile-banking"
                       businessAccounts:
                         type: array
                         items:
@@ -722,7 +765,7 @@ components:
                             - types
                             - fees
                             - serviceBundles
-                            - openCloseChannels
+                            - openingClosingChannels
                             - transactionMethods
                             - termsConditions
                             - incomeRates
@@ -763,9 +806,6 @@ components:
                                         - code
                                         - eventLimitQuantity
                                         - freeEventQuantity
-                                        - price
-                                        - minimum
-                                        - maximum
                                       properties:
                                         code:
                                           type: string
@@ -774,81 +814,37 @@ components:
                                           example: "SAQUEterminal"
                                         eventLimitQuantity:
                                           type: string
-                                          maxLength: 4
-                                          description: "Quantidade de eventos previstos no Pacote de Serviços (Número de eventos incluídos no mês"
+                                          maxLength: 6
+                                          pattern: ^(\d{1,6}){1}$
+                                          description: "Quantidade de eventos previstos no Pacote de Serviços (Número de eventos incluídos no mês)"
                                           example: "2"
                                         freeEventQuantity:
                                           type: string
-                                          maxLength: 4
+                                          maxLength: 6
+                                          pattern: ^(\d{1,6}){1}$
                                           description: "Quantidade de eventos previstos no Pacote de Serviços com isenção de Tarifa"
                                           example: "1"
-                                        price:
-                                          type: object
-                                          required:
-                                            - interval
-                                            - value
-                                            - currency
-                                          properties:
-                                            interval:
-                                              type: string
-                                              description: "Faixas de valor referentes a tarifa de Outros Serviços informada: 1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes"
-                                              example: "1_QUARTIL_CLIENTES"
-                                            value:
-                                              type: string
-                                              description: "Valor da mediana da tarifa cobrada referente a Outros Serviços, para o tipo de faixa informada"
-                                              example: "45,00"
-                                            currency:
-                                              type: string
-                                              maxLength: 3
-                                              pattern: ^(\w{3}){1}$
-                                              description: "Moeda referente ao valor da mediana da tarifa de Outros Serviços no quartil informado, segundo modelo ISO-4217."
-                                              example: "BRL"
-                                        minimum:
-                                          type: object
-                                          required:
-                                            - value
-                                            - currency
-                                          properties:
-                                            value:
-                                              type: string
-                                              maxLength: 12
-                                              description: "Valor mínimo cobrado para a tarifa de Outros Serviços no mês de referência"
-                                              pattern: ^(\d{1,9}\,\d{2}){1}$
-                                              example: "45,00"
-                                            currency:
-                                              type: string
-                                              maxLength: 3
-                                              pattern: ^([A-Z]{3})$
-                                              description: "Moeda referente ao valor mínimo da tarifa de Outros Serviços, segundo modelo ISO-4217."
-                                              example: "BRL"
-                                        maximum:
-                                          type: object
-                                          required:
-                                            - value
-                                            - currency
-                                          properties:
-                                            value:
-                                              type: string
-                                              maxLength: 12
-                                              pattern: ^(\d{1,9}\,\d{2}){1}$
-                                              description: "Valor máximo cobrado para a tarifa de Outros Serviços no mês de referência."
-                                              example: "45,00"
-                                            currency:
-                                              type: string
-                                              maxLength: 3
-                                              pattern: ^([A-Z]{3})$
-                                              description: "Moeda referente ao valor máximo da tarifa de outros serviços, segundo modelo ISO-4217."
-                                              example: "BRL"
                                   price:
                                     type: object
                                     required:
-                                      - monthlyFee
-                                      - currency
+                                      - intervals
+                                      - monthlyFees
+                                      - currencies
                                     properties:
-                                      monthlyFee:
+                                      intervals:
+                                        type: string
+                                        enum: [
+                                              "1_QUARTIL_CLIENTES",
+                                              "2_QUARTIL_CLIENTES",
+                                              "3_QUARTIL_CLIENTES",
+                                              "4_QUARTIL_CLIENTES",
+                                          ]
+                                        description: "Faixas de valor referentes ao pagamento mensal do Pacote de Serviços informado: 1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes"
+                                        example: "1_QUARTIL_CLIENTES"
+                                      monthlyFees:
                                         type: string
                                         description: "Valor da mediana da tarifa mensal referente ao Pacote de Serviços."
-                                      currency:
+                                      currencies:
                                         type: string
                                         maxLength: 3
                                         pattern: ^(\w{3}){1}$
@@ -890,7 +886,7 @@ components:
                                         pattern: ^([A-Z]{3})$
                                         description: "Moeda referente ao valor máximo da tarifa do Pacote de Serviços, segundo modelo ISO-4217."
                                         example: "BRL"            
-                            openCloseChannels:
+                            openingClosingChannels:
                               type: string
                               enum: [
                                 "DEPENDENCIAS_PROPRIAS",
