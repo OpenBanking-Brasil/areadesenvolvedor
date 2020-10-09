@@ -28,14 +28,14 @@
                   "postCode": "string"
                 },
                 "availability": {
-                  "standard": [
+                  "standards": [
                     {
                       "weekday": "string",
                       "openingTime": "string",
                       "closingTime": "string"
                     }
                   ],
-                  "exceptionAvailability": "string",
+                  "exception": "string",
                   "allowPublicAccess": "string",
                   "phones": [
                     {
