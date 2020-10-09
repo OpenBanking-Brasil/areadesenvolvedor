@@ -42,7 +42,6 @@
                 {
                   "application": [
                     {
-                      "interval": "string",
                       "rate": "string"
                     }
                   ],
@@ -123,9 +122,7 @@
             {
               "application": [
                 {
-                  "interval": "string",
-                  "value": "string",
-                  "currency": "string"
+                  "rate": "string"
                 }
               ],
               "minimum": {
