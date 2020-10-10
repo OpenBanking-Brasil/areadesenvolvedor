@@ -1094,7 +1094,7 @@ components:
         name:
           type: string
           pattern: '\w*\W*'
-          maxLength: 30
+          maxLength: 80
           description: "Nome da Instituição, pertencente à marca, responsável pela comercialização dos produtos e serviços"
           example: "Empresa da Marca A"
         urlComplementaryList:
@@ -1147,7 +1147,7 @@ components:
           pattern: '\w*\W*'
           maxLength: 30
           description: Nome do marca.
-          example: "Marca A"
+          example: "Organização A"
         companies:
           type: array
           items:
@@ -1165,9 +1165,9 @@ components:
         name:
           type: string
           pattern: '\w*\W*'
-          maxLength: 30
+          maxLength: 80
           description: "Nome da Instituição, pertencente à marca, responsável pela comercialização dos produtos e serviços"
-          example: "Empresa da Marca A"
+          example: "Empresa A1"
         urlComplementaryList:
           type: string
           pattern: '\w*\W*'
@@ -1239,12 +1239,12 @@ components:
           type: string
           enum:
             - ADIANTAMENTO_DEPOSITANTE
+            - EMPRESTIMO_MICROCREDITO_PRODUTIVO_ORIENTADO
             - EMPRESTIMO_CHEQUE_ESPECIAL
             - EMPRESTIMO_CONTA_GARANTIDA
-            - EMPRESTIMO_CAPITAL_GIRO_VENCIMENTO_365
-            - EMPRESTIMO_CAPITAL_GIRO_VENCIMENTO_SUP_365
+            - EMPRESTIMO_CAPITAL_GIRO_PRAZO_VENCIMENTO_ATE_365_DIAS
+            - EMPRESTIMO_CAPITAL_GIRO_PRAZO_VENCIMENTO_SUPERIOR_365_DIAS
             - EMPRESTIMO_CAPITAL_GIRO_ROTATIVO
-            - EMPRESTIMO_MICROCREDITO_PRODUTIVO_ORIENTADO
           description: "Modalidades de empréstimos ofertados para pessoas jurídicas"
           example: "ADIANTAMENTO_DEPOSITANTE"
         fees:
@@ -1271,100 +1271,88 @@ components:
     LoanFees:
       type: object
       required:
-        - serviceName
-        - serviceCode
+        - name
+        - code
         - chargeTriggerInfo
         - price
         - minimum
         - maximum
       properties:
-        serviceName:
+        name:
           type: string
           pattern: '\w*\W*'
           maxLength: 50
           description: "Nomes das Tarifas cobradas sobre Serviços relacionados à Modalidade informada do Empréstimo para pessoa física/jurídica."
-          example: "Cheque Especial"
-        serviceCode:
+          example: "Adiantamento a Depositantes / Excesso Limite"
+        code:
           type: string
           pattern: '\w*\W*'
           maxLength: 30
           description: "Sigla de identificação do serviço relacionado à Modalidade informada de Empréstimo para pessoa física/jurídica."
-          example: "Cheque Especial"
+          example: "ADIANT. DEPOSITANTE DD/MM"
         chargingTriggerInfo:
           type: string
           pattern: '\w*\W*'
           maxLength: 2000
           description: "Fatores geradores de cobrança que incidem sobre as Modalidades informada de Empréstimos para pessoa física/jurídica."
-          example: "(e) Tarifa válida a partir de 06.01.2020, para novas contratações de Cheque Especial e Cheque Empresarial direcionado a clientes MEI (f) Tarifa válida a partir de 01.06.2020, para contratações de Cheque Especial e Cheque Empresarial direcionado a clientes MEI realizadas até 05.01.2020"
+          example: "Tarifa cobrada sobre saldo a descoberto em conta corrente a cada ocorrencia"
         price:
           type: array
           items:
             $ref: '#/components/schemas/Price'
         minimum:
-          type: object
-          items:
-            $ref: '#/components/schemas/MinimumPrice'
+          $ref: '#/components/schemas/MinimumPrice'
         maximum:
-          type: object
-          items:
-            $ref: '#/components/schemas/MaximumPrice'
+          $ref: '#/components/schemas/MaximumPrice'
           
   #### LoanInterestRates ####
     LoanInterestRates:
       type: object
       properties:
-        rate:
-          type: string
-          pattern: '(-?[1-9]?\d{1,2}){1}(\,\d{1,2}){1}'
-          maxLength: 7
-          description: "Percentual que incide sobre a composição das taxas de juros remuneratórias"
-          example: ""
-        referencialRate:
-          type: string
-          pattern: '(-?[1-9]?\d{1,2}){1}(\,\d{1,2}){1}'
-          maxLength: 10
-          description: "Taxa Referencial se configura como uma taxa de juros de referência, ou seja, um indicador geral da economia brasileira. Por isso, é utilizada na hora de calcular o rendimento de determinadas aplicações financeiras"
-          example: ""
-        indexer:
-          type: string
-          pattern: '\w*\W*'
-          maxLength: 30
-          description: "Indexador é o termo utilizado para se referir aos índices usados como base para corrigir os valores monetários de um determinado ativo. No Brasil, os indexadores mais comuns são o IPCA, a taxa Selic e o CDI"
-          example: "IPCA"
-        prePostTax:
-          type: string
-          enum: 
-            - PRE
-            - POS
-          description: "Indicador de pré ou pós"
-          example: "PRE"
-        occurrence:
-          type: string
-          enum: 
-            - AD
-            - AM
-            - AA
-          description: "Código que indica Frequência sobre a qual incide a Remuneração"
-          example: "AD"
-        incomeRateInfo:
-          type: string
-          pattern: '\w*\W*'
-          maxLength: 2000
-          description: "Descrição da Remuneração relativa as taxas de juros remuneratóriassobre a modalidad de Empréstimo para pessoa física/jurídica"
-          example: ""
         application:
           type: array
           items:
-            $ref: '#/components/schemas/Price'
-        minimum:
-          type: object
-          items:
-            $ref: '#/components/schemas/MinimumPrice'
-        maximum:
-          type: object
-          items:
-            $ref: '#/components/schemas/MaximumPrice'
-          
+            $ref: '#/components/schemas/ApplicationRates'
+        minimumRate:
+          type: string
+          format: (-?[1-9]?\d{1,4}){1}(\,\d{1,4}){1}
+          description: "Percentual mínimo cobrado (taxa efetiva) no mês de referência, para o Empréstimo contratado 
+A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros
+(representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)"
+          example: '0.0456'
+        maximumRate:
+          type: string
+          format: (-?[1-9]?\d{1,4}){1}(\,\d{1,4}){1}
+          description: "Percentual máximo cobrado (taxa efetiva) no mês de referência, para o Empréstimo contratado 
+A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros
+(representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)"
+          example: '0.6865'
+
+  #### ApplicationRates ####
+    ApplicationRates:
+      type: object
+      properties:
+          intervals:
+            $ref: '#/components/schemas/Intervals'
+            example: 1_QUARTIL_CLIENTES
+          rates:
+            type: string
+            format: (-?[1-9]?\d{1,4}){1}(\,\d{1,4}){1}
+            description: "Percentual que corresponde a mediana da taxa efetiva cobrada do cliente pela contratação do Empréstimo, no intervalo informado. p.ex. '9,8700%'
+A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros
+(representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)"
+            example: "0.0987"
+
+  #### Intervals ####          
+    Intervals:
+      type: string
+      enum:
+        - 1_QUARTIL_CLIENTES
+        - 2_QUARTIL_CLIENTES
+        - 3_QUARTIL_CLIENTES
+        - 4_QUARTIL_CLIENTES
+      description: 'Faixas para cobrança da taxa efetiva aplicada pela contratação do Empréstimo, no intervalo informado: 1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes'
+
   ####  Required Warranties  ####
     RequiredWarranties:
           type: array
@@ -1372,18 +1360,18 @@ components:
             type: string
             enum:
               - CESSAO_DIREITOS_CREDITORIOS
-              - CAUÇAO
+              - CAUCAO
               - PENHOR
-              - ALIENCACAO_FIDUCIARIA
+              - ALIENACAO_FIDUCIARIA
               - HIPOTECA
-              - OPERAÇOES_GARANTIDAS_GOVERNO
-              - OUTRAS_GARANT_NO_FIDEJUSSORIAS
+              - OPERCAOES_GARANTIDAS_PELO_GOVERNO
+              - OUTRAS_GARANTIAS_NAO_FIDEJUSSORIAS 
               - SEGUROS_ASSEMELHADOS
               - GARANTIA_FIDEJUSSORIA
               - BENS_ARRENDADOS
               - GARANTIAS_INTERNACIONAIS
-              - OPERAÇOES_GARAN_OUTR_ENTIDADES
-              - ACORDOS_DE_COMPENSAÇAO
+              - OPERACOES_GARANTIDAS_OUTRAS_ENTIDADES
+              - ACORDOS_COMPENSACAO
               - NAO_APLICAVEL
             maxLength: 50
             description: "Campo aberto para informar as condições contratuais relativas à Modalidade de direitos creditórios descontados informada"
@@ -2727,19 +2715,20 @@ components:
       properties:
         interval:
           type: string
-          enum: ["1ª quartil de clientes",
-                "2ª quartil de clientes",
-                "3ª quartil de clientes",
-                "4ª quartil de clientes"]
-          description: "Faixas para cobrança de valores de tarifas por produto/serviço informado."
-          example: "1ª quartil de clientes"
-        value:
+          enum: 
+            - 1_QUARTIL_CLIENTES
+            - 2_QUARTIL_CLIENTES
+            - 3_QUARTIL_CLIENTES
+            - 4_QUARTIL_CLIENTES
+          description: "Faixas para cobrança da taxa efetiva aplicada pela contratação do Empréstimo, no intervalo informado: 1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes"
+          example: "1_QUARTIL_CLIENTES"
+        values:
           type: string
           pattern: '^(\d{1,9}\,\d{2}){1}$'
           maxLength: 12
           x-cds-type: AmountString
           description: "Valor da mediana da tarifa, relativa ao serviço ofertado, informado no período."
-          example: "45,00"
+          example: "45,40"
         currency:
           type: string
           pattern: '^(\w{3}){1}$'
@@ -2759,7 +2748,7 @@ components:
           maxLength: 12
           x-cds-type: AmountString
           description: "Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência"
-          example: "45,00"
+          example: "39,90"
         currency:
           type: string
           pattern: '^(\w{3}){1}$'
@@ -2779,7 +2768,7 @@ components:
           maxLength: 12
           x-cds-type: AmountString
           description: "Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência"
-          example: "45,00"
+          example: "71,00"
         currency:
           type: string
           pattern: '^(\w{3}){1}$'
