@@ -1417,6 +1417,19 @@ A apuração pode acontecer com até 4 casas decimais. O preenchimento deve resp
             ,"ELECTRON"
             ,"STANDARD_NACIONAL"
             ,"STANDARD_INTERNACIONAL"
+            ,"ELETRONIC"
+            ,"BLACK"
+            ,"REDESHOP"
+            ,"MAESTRO_MASTERCARD_MAESTRO"
+            ,"GREEN"
+            ,"BLUE"
+            ,"BLUEBOX"
+            ,"PROFISSIONAL_LIBERAL"
+            ,"CHEQUE_ELETRONICO"
+            ,"CORPORATIVO",
+            "EMPRESARIAL",
+            "COMPRAS",
+            "OUTROS"
           ]
           description: "Categoria atribuída a um cartão de pagamento, sob uma certa denominação, que lhe agrega um conjunto de vantagens, diferenciando-o de acordo com o perfil do portador. Essa categoria é definida pelo BACEN e está contida no documento de nome 'Elaboração e Remessa de Informações Relativas aos Cartões de Pagamento  Emissores'"
           example: "PLATINUM"
@@ -1438,6 +1451,8 @@ A apuração pode acontecer com até 4 casas decimais. O preenchimento deve resp
         additionalInfo:
           type: string
           maxLength: 50
+          pattern: \w*\W*
+          description: "Informações complementares se tipo de Cartão 'OUTROS'"
           
   ##### CreditCardRewardsProgram #####
     CreditCardRewardsProgram:
@@ -1448,12 +1463,13 @@ A apuração pode acontecer com até 4 casas decimais. O preenchimento deve resp
         hasRewardProgram:
           type: boolean
           description: "Indicador da existência de programa de fidelidade/recompensa associado à conta"
-          example: true
+          example: Falso
         rewardProgramInfo:
           type: string
           maxLength: 2000
+          pattern: \w*\W*
           description: "Informações de termos e condições do programa de fidelidade/recompensa. Pode ser informada a URL referente ao endereço onde constam as condições informadas"
-          example: "www.banco.com.br/programa-recompensas"
+          example: "https://example.com/mobile-banking"
   
   ##### CreditCardTermsConditions #####
     CreditCardTermsConditions:
@@ -1464,22 +1480,27 @@ A apuração pode acontecer com até 4 casas decimais. O preenchimento deve resp
         - closingProcessInfo
       properties:
         minimumFeeRate:
-          type: number
-          description: "Percentual para pagamento mínimo sobre o saldo devedor da fatura"
-          example: 25.5
+          type: string
+          pattern: (-?[1-9]?\d{1,4}){1}(\,\d{1,4}){1
+          description: "Percentual para pagamento mínimo sobre o saldo devedor da fatura."
+          example: "25,00%"
         additionalInfo:
           type: string
           maxLength: 500
+          pattern: \w*\W*
           description: "Campo aberto para detalhamento de taxas de juros"
         elegibilityCriteriaInfo:
           type: string
           maxLength: 2000
-          description: "Informação sobre as condições e critérios de elegibilidade do emissor do cartão. Pode ser informada a URL referente ao endereço onde constam as condições informadas"
+          pattern: \w*\W*
+          description: "Informação sobre as condições e critérios de elegibilidade do emissor do cartão. Pode ser informada a URL referente ao endereço onde constam as condições informadas. URLs são limitadas a 2048 caracteres mas, para o contexto do Sistema Financeiro aberto, será adotado a metade deste tamanho."
+          example: "https://example.com/mobile-banking"
         closingProcessInfo:
           type: string
           maxLength: 2000
-          description: "Descrição dos procedimentos para encerramento da conta pós paga. Pode ser informada a URL referente ao endereço onde constam as condições informadas"
-          example: "www.banco.com.br/cancelamento-cartao"
+          pattern: \w*\W*
+          description: "Descrição dos procedimentos para encerramento da conta pós paga. Pode ser informada a URL referente ao endereço onde constam as condições informadas. URLs são limitadas a 2048 caracteres mas, para o contexto do Sistema Financeiro aberto, será adotado a metade deste tamanho."
+          example: "https://example.com/mobile-banking"
           
   ##### CreditCardInterestRates #####
     CreditCardInterestRates:
@@ -1487,33 +1508,53 @@ A apuração pode acontecer com até 4 casas decimais. O preenchimento deve resp
       required:
         - feeRate
         - instalmentRate
-        - code
+        - codes
+        - prices
+        - mininumRate
+        - maximumRate
       properties:
         feeRate:
           type: object
           required:
-            - price
+            - prices
+            - mininumRate
+            - maximumRate
           properties:
             price:
               type: object
               required:
                 - interval
                 - rate
-                - frequency
               properties:
                 interval:
                   type: string
-                  enum: ["1ª quartil de clientes",
-                        "2ª quartil de clientes",
-                        "3ª quartil de clientes",
-                        "4ª quartil de clientes"]
-                  description: "Faixas para cobrança de valores de tarifas por produto/serviço informado."
+                  enum: 
+                    - 1_QUARTIL_CLIENTES
+                    - 2_QUARTIL_CLIENTES
+                    - 3_QUARTIL_CLIENTES
+                    - 4_QUARTIL_CLIENTES
+                  description: "Faixas para cobrança da taxa efetiva pela utilização do crédito rotativo, no intervalo informado: 1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes."
+                  example: "1_QUARTIL_CLIENTES"
                 rate:
                   type: string
-                  description: "Percentual que corresponde a taxa média aplicada para utilização de Crédito Rotativo, no intervalo informado."
-                frequency:
-                  type: string
-                  description: "Frequência de clientes em cada faixa de valor. Representa uma porcentagem"
+                  description: "Percentual que corresponde a mediana (taxa efetiva) cobrada do cliente pela utilização do crédito rotativo, no intervalo informado."
+                  pattern: (-?[1-9]?\d{1,4}){1}(\,\d{1,4}){1
+                  maxLength: 9
+                  examples: "9,8700%"
+            minimumRate:
+              type: string
+              pattern: (-?[1-9]?\d{1,4}){1}(\,\d{1,4}){1
+              maxLength: 9
+              description: "Percentual mínimo cobrado (taxa efetiva) no mês de referência, pela utilização do crédito rotativo
+(A apuração deve pode ser feita com até 4 casas decimais."
+              example: "15%"
+            maximumRate:
+              type: string
+              pattern: (-?[1-9]?\d{1,4}){1}(\,\d{1,4}){1
+              maxLength: 9
+              description: "Percentual máximo cobrado (taxa efetiva) no mês de referência, pela utilização do crédito rotativo
+(A apuração deve pode ser feita com até 4 casas decimais. "
+              example: "15%"
         instalmentRate:
           type: object
           required:
@@ -1528,10 +1569,11 @@ A apuração pode acontecer com até 4 casas decimais. O preenchimento deve resp
               properties:
                 interval:
                   type: string
-                  enum: ["1ª quartil de clientes",
-                        "2ª quartil de clientes",
-                        "3ª quartil de clientes",
-                        "4ª quartil de clientes"]
+                  enum: 
+                    - 1_QUARTIL_CLIENTES
+                    - 2_QUARTIL_CLIENTES
+                    - 3_QUARTIL_CLIENTES
+                    - 4_QUARTIL_CLIENTES
                   description: "Faixas para cobrança de valores de tarifas por produto/serviço informado."
                 rate:
                   type: string
@@ -1539,17 +1581,62 @@ A apuração pode acontecer com até 4 casas decimais. O preenchimento deve resp
                 frequency:
                   type: string
                   description: "Frequência de clientes em cada faixa de valor. Representa uma porcentagem"
-        code:
+        codes:
           type: string
           enum: [
-            "SAQUE_CREDITO"
+            "SAQUE_A_CREDITO"
+            ,"PAGAMENTO_CONTAS"
             ,"OUTROS"
           ]
           description: "Lista de outras operações de crédito"
-          example: "SAQUE_CREDITO"
+          example: "SAQUE_A_CREDITO"
+        prices:
+          type: array
+          properties:
+            interval:
+              type: string
+              enum:
+                - 1_QUARTIL_CLIENTES
+                - 2_QUARTIL_CLIENTES
+                - 3_QUARTIL_CLIENTES
+                - 4_QUARTIL_CLIENTES
+              description: "Faixas para cobrança da taxa efetiva outras operações de crédito, no intervalo informado: 1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes"
+              example: "1_QUARTIL_CLIENTES"
+            rate:
+              type: string
+              pattern: (-?[1-9]?\d{1,4}){1}(\,\d{1,4}){1
+              maxLength:
+              description:
+              example:
+        minimum:
+          type: object
+          required:
+            - rate
+          properties:
+            rate:
+              type: string
+              pattern: (-?[1-9]?\d{1,4}){1}(\,\d{1,4}){1
+              maxLength: 9
+              description: "Percentual mínimo cobrado (taxa efetiva) para  outras operações de crédito do mês de referência."
+              example: "15%"
+        maximum:
+          type: object
+          required:
+            - rate
+          properties:
+            rate:
+              type: string
+              pattern: (-?[1-9]?\d{1,4}){1}(\,\d{1,4}){1
+              maxLength: 9
+              description: "Percentual máximo cobrado (taxa efetiva) para  outras operações de crédito do mês de referência."
+              example: "15%"
         additionalInfo:
           type: string
           maxLength: 50
+          pattern:
+          description: "Campo Texto para descrever outras operações de crédito marcadas como 'Outros'"
+          example:
+
           
   ##### CreditCardServicePrice ##### 
     CreditCardServicePrice:
