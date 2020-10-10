@@ -245,7 +245,7 @@
 
 |     Nome              |  Tipo                                                                                                       | Obrigatório |                            Definição                                                                                                                                                                                                                                                  |
 |:------------          |:---------------------------------------------------------------------------                                 |:----------- |:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------         |
-| type                  | [Enum PersonalInvoiceFinancingsType](#schemaEnumPersonalInvoiceFinancingsType)                                | Sim         | Modalidades de direitos creditórios descontados ofertados para pessoas Físicas, conforme Circular 4015-Bacen. Direito creditório descontado é a antecipação de créditos relativos por ex. ao: desconto de duplicatas, desconto de cheques,antecipação de fatura de cartão de crédito  |
+| type                  | [Enum PersonalInvoiceFinancingsType](#schemaEnumPersonalInvoiceFinancingsType)                                | Sim         | Modalidades de direitos creditórios descontados ofertados para pessoas Físicas, conforme Circular 4015-Bacen. Direito creditório descontado é a antecipação de créditos relativos p.ex.: desconto de duplicatas, desconto de cheques, antecipação de fatura de cartão de crédito  |
 | fees                  | [[PersonalInvoiceFinancingsFees](#schemaPersonalInvoiceFinancingsFees)]                                       | Sim         | Lista das Tarifas cobradas sobre Serviços ofertados à Modalidade de direitos creditórios descontados, para pessoa física                                                                                                                                                              |
 | interestRate         | [[PersonalInvoiceFinancingsInterestRates](#schemaPersonalInvoiceFinancingsInterestRates)]                     | Sim         | Lista de taxas de juros remuneratórias                                                                                                                                                                                                                                                |
 | requiredWarranties    | [[Enum PersonalInvoiceFinancingsRequiredWarranties](#schemaEnumPersonalInvoiceFinancingsRequiredWarranties)]  | Sim         | Relação de garantias exigidas                                                                                                                                                                                                                                                         |
@@ -261,7 +261,7 @@
 | type         | DESCONTO_CHEQUES                          | Desconto de cheques                                   |
 | type         | ANTECIPACAO_FATURA_CARTAO_CREDITO         | Antecipação de fatura de cartão de crédito            |
 | type         | OUTROS_DIREITOS_CREDITORIOS_DESCONTADOS   | Outros direitos creditórios descontados               |
-| type         | OUTROS_TÍTULOS_DESCONTADOS                | Outros títulos descontados                            |
+| type         | OUTROS_TITULOS_DESCONTADOS                | Outros títulos descontados                            |
 
 
 ### Enum PersonalInvoiceFinancingsRequiredWarranties
@@ -347,7 +347,7 @@
 | name                 | string                                 | Sim            | Nomes das Tarifas cobradas sobre Serviços ofertados à Modalidade de direitos creditórios descontados, para pessoa física. (Campo Livre)    |
 | code                 | string                                 | Sim            | Sigla de identificação do serviço relacionado à Modalidade de direitos creditórios descontados, para pessoa física. Campo aberto           |
 | chargingTriggerInfo  | string                                 | Não            | Fatos geradores de cobrança que incidem sobre as Modalidades de direitos creditórios descontados, para pessoa física. Campo Livre          |
-| prices               | [[Price](#schemaPrice)]                | Sim            | Valor médio da tarifa, relativa ao serviço ofertado, informado no período.                                                                 |
+| prices               | [[Price](#schemaPrice)]                | Sim            | Valor da mediana, relativa ao serviço ofertado, informado no período.                                                                      |
 | minimum              | [[MinimumPrice](#schemaMinimumPrice)]  | Sim            | Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência.                                              | 
 | maximum              | [[MaximumPrice](#schemaMaximumPrice)]  | Sim            | Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência.                                              | 
 

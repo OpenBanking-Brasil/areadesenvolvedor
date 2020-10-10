@@ -74,11 +74,11 @@
 
 
 
-|     Nome     |  Tipo                                            | Obrigatório    |                            Definição                                                                                                                                                                                                                                                                                                                            |
-|:------------ |:------------------------------------------------ |:-------------- |:-----------------------------------------------------------------------------                                                                                                                                                                                                                                                                                   |
-| interval     | [Enum PriceInterval](#schemaPriceInterval)       | Sim            | Faixas de valor referentes a tarifa do Serviço Prioritário informada: 1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes                                                                                                                                                                                            |
-| value        | [AmountString](#commonFieldAmountString)         | Sim            | Valor da mediana da tarifa cobrada, relativa ao Serviço Prioritário, para o tipo de faixa informada. |
-| currency     | [CurrencyString](#commonFieldCurrencyString)     | Sim            | Moeda referente ao valor da Tarifa, segundo modelo ISO-4217. p.ex. 'BRL'                                                                                                                                                                                                                                                                                        |
+|     Nome     |  Tipo                                        | Obrigatório |Definição                                                                      |
+|:------------ |:-------------------------------------------- |:----------- |:----------------------------------------------------------------------------- |
+| interval     | [Enum PriceInterval](#schemaPriceInterval)   | Sim         | Faixas de valor referentes a tarifa do Serviço informada: 1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes |
+| value        | [AmountString](#commonFieldAmountString)     | Sim         | Valor da mediana da tarifa cobrada, relativa ao Serviço, para o tipo de faixa informada. |
+| currency     | [CurrencyString](#commonFieldCurrencyString) | Sim         | Moeda referente ao valor da Tarifa, segundo modelo ISO-4217. p.ex. 'BRL'                 |
 
 ## MinimumPrice
 <a id="schemaMinimumPrice"></a>
