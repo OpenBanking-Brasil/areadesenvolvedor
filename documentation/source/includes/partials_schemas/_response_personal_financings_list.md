@@ -267,18 +267,15 @@
 
 | Propriedade  | Código                                 | Definição                                                        |
 |:------------ |:-------------------------------------- |:---------------------------------------------------------------- |
-| type         | AQUISICAO_BENS_VEICULOS_AUTOMOTORES    | Aquisição de bens – veículos automotores.                         |
-| type         | AQUISICAO_BENS_OUTROS_BENS             | Aquisição de bens – outros bens.                                  |
-| type         | MICROCREDITO_PRODUTIVO_ORIENTADO       | Microcrédito Produtivo Orientado.                                 |
-| type         | CARTAO_CREDITO                         | Cartão de crédito.                                                |
-| type         | FINANCIAMENTOS_RURAIS_CUSTEIO          | Financiamentos rurais - custeio.                                  |
-| type         | FINANCIAMENTOS_RURAIS_INVESTIMENTO     | Financiamentos rurais - investimento.                             |
-| type         | FINANCIAMENTOS_RURAIS_COMERCIALIZACAO  | Financiamentos rurais - comercialização.                          |
-| type         | FINANCIAMENTOS_RURAIS_INDUSTRIALIZACAO | Financiamentos rurais - industrialização.                         |
-| type         | FINANCIMENTO_IMOBILIARIO_SFH           | Financimento imobiliário - Sistema Financeiro da Habitação (SFH). |
-| type         | FINANCIMENTO_IMOBILIARIO_SFI           | Financimento imobiliário - Sistema Financeiro da Imobiliário (SFI). |
-
-
+| type         | FINANCIAMENTO_AQUISICAO_BENS_VEICULOS_AUTOMOTORES    | Aquisição de bens – veículos automotores.                         |
+| type         | FINANCIAMENTO_AQUISICAO_BENS_OUTROS_BENS             | Aquisição de bens – outros bens.                                  |
+| type         | FINANCIAMENTO_MICROCREDITO                           | operação de crédito realizada para financiamento de atividades produtivas de pessoas naturais ou jurídicas, organizadas de forma individual ou coletiva, com renda ou receita bruta anual de até R$200.000,00 (duzentos mil reais) |
+| type         | FINANCIAMENTO_RURAL_CUSTEIO                                    | Financiamentos rurais - custeio.                                  |
+| type         | FINANCIAMENTO_RURAL_INVESTIMENTO                               | Financiamentos rurais - investimento.                             |
+| type         | FINANCIAMENTO_RURAL_COMERCIALIZACAO                            | Financiamentos rurais - comercialização.                          |
+| type         | FINANCIAMENTO_RURAL_INDUSTRIALIZACAO                           | Financiamentos rurais - industrialização.                         |
+| type         | FINANCIAMENTO_IMOBILIARIO_SISTEMA_FINANCIERO_HABILITACAO_SFH   | Financimento imobiliário - Sistema Financeiro da Habitação (SFH). |
+| type         | FINANCIAMENTO_IMOBILIARIO_SISTEMA_FINANCIERO_HABILITACAO_SFI   | Financimento imobiliário - Sistema Financeiro da Imobiliário (SFI). |
 
 ### Enum PersonalFinancingsRequiredWarranties
 <a id="schemaEnumPersonalFinancingsRequiredWarranties"></a>
@@ -290,13 +287,13 @@
 | requiredWarranties | PENHOR                                     | Penhor.                                                |
 | requiredWarranties | ALIENACAO_FIDUCIARIA                       | Alienação fiduciária.                                  |
 | requiredWarranties | HIPOTECA                                   | Hipoteca.                                              |
-| requiredWarranties | OPERACOES_GARANTIDAS_GOVERNO               | Operações garantidas pelo governo.                     |
+| requiredWarranties | OPERCAOES_GARANTIDAS_PELO_GOVERNO          | Operações garantidas pelo governo.                     |
 | requiredWarranties | OUTRAS_GARANTIAS_NAO_FIDEJUSSORIAS         | Outras garantias não fidejussórias.                    |
 | requiredWarranties | SEGUROS_ASSEMELHADOS                       | Seguros e assemelhados.                                |
 | requiredWarranties | GARANTIA_FIDEJUSSORIA                      | Garantia fidejussória.                                 |
 | requiredWarranties | BENS_ARRENDADOS                            | Bens arrendados.                                       |
 | requiredWarranties | GARANTIAS_INTERNACIONAIS                   | Garantias internacionais.                              |
-| requiredWarranties | OPERACOES_GARANTIDAS_OUTRAS_ENTIDADE       | Operações garantidas por outras entidades.             |
+| requiredWarranties | OPERACOES_GARANTIDAS_OUTRAS_ENTIDADES      | Operações garantidas por outras entidades.             |
 | requiredWarranties | ACORDOS_COMPENSACAO                        | Acordos de compensação.                                |
 | requiredWarranties | NAO_APLICAVEL                              | Não aplicável.                                         |
 
@@ -342,47 +339,23 @@
 
 ```json
 {
-  "rate": "string",
-  "referencialRate": "string",
-  "indexer": "string",
-  "prePostTax": "string",
-  "occurrence": "string",
-  "incomeRateInfo": "string",
-  "application": [
+  "applications": [
     {
       "interval": "string",
-      "value": "string",
-      "currency": "string"
+      "rate": "string"
     }
   ],
-  "minimum": {
-    "value": "string",
-    "currency": "string"
-  },
-  "maximum": {
-    "value": "string",
-    "currency": "string"
-  }
+  "minimumRate": "string",
+  "maximumRate": "string"
 }
 ```
 
 |     Nome                  |  Tipo                                                                           | Obrigatório    |                            Definição                                                                                                                                                                                                                                                                                  |
 |:------------              |:------------------------------------------------------------------------------- |:-------------- |:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| rate                      | [RateString](#commonFieldRateString)                                            | Sim            | Percentual que incide sobre a composição da  taxa de juros remuneratórias.                                                                                                                                                                                                                                             |
-| referencialRate           | [RateString](#commonFieldRateString)                                            | Sim            | Taxa Referencial se configura como uma taxa de juros de referência, ou seja, um indicador geral da economia brasileira. Por isso, é utilizada na hora de calcular o rendimento de determinadas aplicações financeiras.                                                                                                 |
-| indexer                   | [Enum PersonalFinancingsIndexer](#schemaEnumPersonalFinancingsIndexer)          | Sim            | Indexador é o termo utilizado para se referir aos índices usados como base para corrigir os valores monetários de um determinado ativo. No Brasil, os indexadores mais comuns são o IPCA, a taxa Selic e o CDI.                                                                                                        |
-| prePostTax                | [Enum PrePostTax](#schemaPrePostTax)                                            | Sim            | Indicador de pré ou pós. A diferença básica é que, enquanto o prefixado apresenta rentabilidade definida, o pós-fixado acompanha algum indicador. Assim, quem investe no primeiro grupo sabe como será seu rendimento previamente, enquanto quem investe no segundo, só conhecerá os resultados na data de vencimento. |
-| occurrence                | [Enum OccurrenceType](#schemaOccurrenceType)                                      | Sim          | Frequência sobre a qual incide a Remuneração.                                                                                                                                                                                                                                                                          |
-| incomeRateInfo            | string                                                                          | Não            | Descrição da Remuneração relativa as taxas de juros remuneratórias sobre a modalidade de Financiamento informada, para pessoa física.                                                                                                                                                                                  |
-| application               | [[Price](#schemaPrice)]                                                         | Sim            | Valor da mediana da taxa de remuneração relativa ao serviço ofertado, para pessoa física informado no período.                                                                                                                                                                                                         |
-| minimum                   | [[MinimumPrice](#schemaMinimumPrice)]                                           | Sim            | Valor mínimo cobrado para a taxa de remuneração relativa ao serviço ofertado, sobre a base de clientes,  no mês de referência | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
-| maximum                   | [[MaximumPrice](#schemaMaximumPrice)]                                           | Sim            | Valor máximo cobrado para a taxa de remuneração relativa ao serviço ofertado, sobre a base de clientes,  no mês de referência | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
-
-### Enum PersonalFinancingsIndexer
-<a id="schemaEnumPersonalFinancingsIndexer"></a>
-
-| Propriedade  | Código | Definição   |
-|:------------ |:------ |:----------- |
-| indexer      | IPCA   | IPCA        |
-| indexer      | SELIC  | SELIC       |
-| indexer      | CDI    | CDI         |
+| applications               | [[Price](#schemaApplication)]    | Sim            | Valor da mediana da taxa de remuneração relativa ao serviço ofertado, para pessoa física informado no período.                                                                                                                                                                                                         |
+| minimumRate                   | string | Sim            | Percentual mínimo cobrado (taxa efetiva) no mês de referência, para o Financiamento contratado 
+A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros
+(representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%) | 
+| maximumRate                   | string | Sim            |  Percentual máximo cobrado (taxa efetiva) no mês de referência, para o Financiamento contratado 
+A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros
+(representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%) | 

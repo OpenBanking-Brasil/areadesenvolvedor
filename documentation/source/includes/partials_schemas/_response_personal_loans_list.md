@@ -355,7 +355,11 @@
 
 | Nome                | Tipo                                            | Obrigatório | Definição                                                 |
 |:----------------    |:------                                          |:----------- |:-------------------------------                           |
-| applications         | [[Application](#schemaApplication)]                         | Sim          | Valor da mediana da taxa de remuneração relativa ao serviço ofertado.                                                       | 
-| minimumRate         | [[MinimumRate](#schemaMinimumRate)]           | Sim          | Valor mínimo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | 
-| maximumRate          | [[MaximumRate](#schemaMaximumRate)]           | Sim          | Valor máximo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | 
+| applications        | [[Application](#schemaApplication)]                         | Sim          | Valor da mediana da taxa de remuneração relativa ao serviço ofertado.                                                       | 
+| minimumRate         | string     | Sim          | Percentual mínimo cobrado (taxa efetiva) no mês de referência, para o Empréstimo contratado 
+A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros
+(representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%) | 
+| maximumRate         | string     | Sim          | Percentual máximo cobrado (taxa efetiva) no mês de referência, para o Empréstimo contratado 
+A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros
+(representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%) | 
 
