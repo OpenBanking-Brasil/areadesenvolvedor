@@ -516,7 +516,7 @@ components:
           pattern: \w*\W*
           description: "Nome dos Serviços prioritários, segundo Resolução 3.919 do Bacen, para pessoa física."
           example: "Fornecimento de extrato de um período de conta de depósitos à vista e de poupança"
-        codes:
+        code:
           type: string
           enum: [
             "CADASTRO",
@@ -552,11 +552,11 @@ components:
             "ORDEM_PAGAMENTO"
           ]
           description: "Sigla de identificação do Serviço Prioritário, segundo Resolução 3.919 do Bacen."
-          example: "EXTRATO_MOVIMENTO_P"
+          example: "TED_PESSOAL"
         chargingTriggerInfo:
           type: string
           maxLength: 2000
-          pattern: \w*\W*
+          pattern: '\w*\W*'
           description: "Fatos geradores de cobrança que incidem sobre os serviços prioritários, segundo Resolução 3.919 do Bacen, para pessoa física."
           example: "Fornecimento de extrato com a movimentação de um período em guichê de caixa ou por outras formas de atendimento pessoal, tal como atendimento telefônico realizado por atendente."
         prices:
@@ -584,7 +584,7 @@ components:
               example: "45.00"
             currency:
               type: string
-              pattern: ^([A-Z]{3})$
+              pattern: '^([A-Z]{3})$'
               description: "Moeda referente ao valor da mediana da tarifa do Serviço Prioritário no quartil informado, segundo modelo ISO-4217."
               example: "BRL"
         minimum:
@@ -597,7 +597,7 @@ components:
               type: string
               maxLength: 12
               description: "Valor mínimo cobrado para a tarifa de Serviço Prioritário no mês de referência"
-              pattern: ^(\d{1,9}\,\d{2}){1}$
+              pattern: '^(\d{1,9}\,\d{2}){1}$'
               example: "45.00"
             currency:
               type: string
@@ -620,8 +620,7 @@ components:
               type: string
               pattern: ^([A-Z]{3})$
               description: "Moeda referente ao valor da tarifa conforme ISO-4217"
-              example: "BRL"
-          
+              example: "BRL"          
   ##### PersonalAccountsOtherServices #####
     PersonalAccountsOtherServices:
       type: object
@@ -734,21 +733,21 @@ components:
                   maxLength: 30
                   pattern: \w*\W*
                   description: "Nome da Instituição, pertencente à marca, responsável pela comercialização dos produtos e serviços"
-                  example: "The Big Bank Brand"
+                  example:  'Organização A'
                 companies:
                   type: array
                   items:
                     required: 
-                      - names
-                      - cnpjNumbers
+                      - name
+                      - cnpjNumber
                     properties:
-                      names:
+                      name:
                         type: string
                         maxLength: 80
                         pattern: \w*\W*
                         description: "Nome da Instituição, pertencente à marca, responsável pela comercialização dos produtos e serviços"
                         example: "The Big Bank Company"
-                      cnpjNumbers:
+                      cnpjNumber:
                         type: string
                         minLength: 14
                         maxLength: 14
@@ -759,7 +758,7 @@ components:
                         type: string
                         description: "URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber."
                         pattern: \w*\W*
-                        example: "https://example.com/mobile-banking"
+                        example: 'https://empresaa1.com/branches-banking'
                       businessAccounts:
                         type: array
                         items:
@@ -772,7 +771,7 @@ components:
                             - termsConditions
                             - incomeRates
                           properties:
-                            types:
+                            type:
                               type: string
                               enum: [
                                   "CONTA_DEPOSITO_A_VISTA"
@@ -780,7 +779,7 @@ components:
                                   ,"CONTA_PAGAMENTO_PRE_PAGA"
                                 ]
                               description: "Tipos de contas ofertadas para pessoas jurídicas, conforme Resolução 3.919 do Bacen."
-                              example: "CONTA_POUPANCA"
+                              example: "CONTA_DEPOSITO_A_VISTA"
                             fees:
                               type: object
                               properties:
@@ -914,58 +913,59 @@ components:
                             termsConditions:
                               $ref: '#/components/schemas/AccountsTermsConditions'
                             incomeRates:
-                              type: object
-                              required:
-                                - savingAccount
-                                - prepaidPaymentAccount
-                              properties:
-                                savingAccount:
-                                  type: string
-                                  maxLength: 2000
-                                  pattern: \w*\W*
-                                  description: "Descrição da Remuneração especificamente para Conta de Poupança. Deve ser preenchido com a determinação legal vigente."
-                                  example: "'70% da Taxa Selic (6,5%) = 4,55%, que é o atual rendimento anual da poupança. O rendimento mensal é de 0,3715"
-                                prepaidPaymentAccount:
-                                  type: object
-                                  required:
-                                    - application
-                                    - minimumRate
-                                    - maximumRate
-                                  properties:
-                                    applications:
-                                      type: object
-                                      required:
-                                        - interval
-                                        - rate
-                                      properties:
-                                        interval:
-                                          type: string
-                                          enum: [
-                                                "1_QUARTIL_CLIENTES",
-                                                "2_QUARTIL_CLIENTES",
-                                                "3_QUARTIL_CLIENTES",
-                                                "4_QUARTIL_CLIENTES"
-                                            ]
-                                          description: "Faixas do percentual de taxa de remuneração efetivamente aplicada no intervalo informado para Contas do Tipo CONTA_PAGAMENTO_PRE_PAGA :1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes"
-                                          example: "1_QUARTIL_CLIENTES"
-                                        rate:
-                                          type: string
-                                          pattern: (-?[1-9]?\d{1,4}){1}(\,\d{1,4}){1
-                                          maxLength: 9
-                                          description: "Percentual que corresponde a taxa mediana de remuneração efetivamente aplicada no intervalo informado para CONTA_PAGAMENTO_PRE_PAGA. A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, emso que venham preenchidas com zeros"
-                                          example: "0.1500"
-                                    mininumRate:
-                                      type: string
-                                      pattern: (-?[1-9]?\d{1,4}){1}(\,\d{1,4}){1
-                                      maxLength: 9
-                                      description: "Percentual mínimo referente à taxa de remuneração efetivamente aplicada no mês de referência para CONTA_PAGAMENTO_PRE_PAGA. A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, emso que venham preenchidas com zeros"
-                                      example: "0.1500"
-                                    maximumRate:
-                                      type: string
-                                      pattern: (-?[1-9]?\d{1,4}){1}(\,\d{1,4}){1
-                                      maxLength: 9
-                                      description: "Percentual máximo referente à taxa de remuneração efetivamente aplicada no mês de referência para VCONTA_PAGAMENTO_PRE_PAGA. A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, emso que venham preenchidas com zeros"
-                                      example: "0.1500"
+                              type: array
+                              items:
+                                required:
+                                  - savingAccount
+                                  - prepaidPaymentAccount
+                                properties:
+                                  savingAccount:
+                                    type: string
+                                    maxLength: 2000
+                                    pattern: \w*\W*
+                                    description: "Descrição da Remuneração especificamente para Conta de Poupança. Deve ser preenchido com a determinação legal vigente."
+                                    example: "'70% da Taxa Selic (6,5%) = 4,55%, que é o atual rendimento anual da poupança. O rendimento mensal é de 0,3715"
+                                  prepaidPaymentAccount:
+                                    type: object
+                                    required:
+                                      - application
+                                      - minimumRate
+                                      - maximumRate
+                                    properties:
+                                      applications:
+                                        type: object
+                                        required:
+                                          - interval
+                                          - rate
+                                        properties:
+                                          interval:
+                                            type: string
+                                            enum: [
+                                              "1_QUARTIL_CLIENTES",
+                                              "2_QUARTIL_CLIENTES",
+                                              "3_QUARTIL_CLIENTES",
+                                              "4_QUARTIL_CLIENTES"
+                                              ]
+                                            description: "Faixas do percentual de taxa de remuneração efetivamente aplicada no intervalo informado para Contas do Tipo CONTA_PAGAMENTO_PRE_PAGA :1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes"
+                                            example: "1_QUARTIL_CLIENTES"
+                                          rate:
+                                            type: string
+                                            pattern: (-?[1-9]?\d{1,4}){1}(\,\d{1,4}){1
+                                            maxLength: 9
+                                            description: "Percentual que corresponde a taxa mediana de remuneração efetivamente aplicada no intervalo informado para CONTA_PAGAMENTO_PRE_PAGA. A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, emso que venham preenchidas com zeros"
+                                            example: "0.1500"
+                                      mininumRate:
+                                        type: string
+                                        pattern: (-?[1-9]?\d{1,4}){1}(\,\d{1,4}){1
+                                        maxLength: 9
+                                        description: "Percentual mínimo referente à taxa de remuneração efetivamente aplicada no mês de referência para CONTA_PAGAMENTO_PRE_PAGA. A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, emso que venham preenchidas com zeros"
+                                        example: "0.1500"
+                                      maximumRate:
+                                        type: string
+                                        pattern: (-?[1-9]?\d{1,4}){1}(\,\d{1,4}){1
+                                        maxLength: 9
+                                        description: "Percentual máximo referente à taxa de remuneração efetivamente aplicada no mês de referência para VCONTA_PAGAMENTO_PRE_PAGA. A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, emso que venham preenchidas com zeros"
+                                        example: "0.1500"
       
         links:
           $ref: '#/components/schemas/Links'
@@ -2308,21 +2308,21 @@ A apuração pode acontecer com até 4 casas decimais. O preenchimento deve resp
               - type: 'DESCONTO_DUPLICATAS'
                 fee:
                  services:
-                  - name: 'Informar Serviço para PJ'
+                  - name: 'Informar Serviço para PF'
                     code: 'NA'
                     chargingTriggerInfo: '3% do valor do contrato'
                     prices:
                     - interval: '1_QUARTIL_CLIENTES'
-                      value: '75,4'
+                      value: '62.00'
                       currency: 'BRL'
                     - interval: '2_QUARTIL_CLIENTES'
-                      value: '85,00'
+                      value: '69.00'
                       currency: 'BRL'
                     - interval: '3_QUARTIL_CLIENTES'
-                      value: '62,00'
+                      value: '75.4'
                       currency: 'BRL'
                     - interval: '4_QUARTIL_CLIENTES'
-                      value: '69,00'
+                      value: '85.00'
                       currency: 'BRL'
                     minimum:
                       value: '59.90'
@@ -2569,16 +2569,16 @@ A apuração pode acontecer com até 4 casas decimais. O preenchimento deve resp
                   chargingTriggerInfo: '3% do valor do contrato'
                   prices:
                   - interval: '1_QUARTIL_CLIENTES'
-                    value: '75,4'
+                    value: '62.00'
                     currency: 'BRL'
                   - interval: '2_QUARTIL_CLIENTES'
-                    value: '85,00'
+                    value: '69.00'
                     currency: 'BRL'
                   - interval: '3_QUARTIL_CLIENTES'
-                    value: '62,00'
+                    value: '75.4'
                     currency: 'BRL'
                   - interval: '4_QUARTIL_CLIENTES'
-                    value: '69,00'
+                    value: '85.00'
                     currency: 'BRL'
                   minimum:
                     value: '59.90'
