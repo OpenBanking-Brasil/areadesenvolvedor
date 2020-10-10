@@ -13,32 +13,34 @@
           "urlComplementaryList": "string",
           "personalLoans": [
             {
-              "type": "string",
+              "types": "string",
               "fees": [
                 {
-                  "serviceName": "string",
-                  "serviceCode": "string",
-                  "chargingTriggerInfo": "string",
-                  "price": [
-                    {
-                      "interval": "string",
+                  "service":{
+                    "name": "string",
+                    "code": "string",
+                    "chargingTriggerInfo": "string",
+                    "prices": [
+                      {
+                        "interval": "string",
+                        "value": "string",
+                        "currency": "string"
+                      }
+                    ],
+                    "minimum": {
+                      "value": "string",
+                      "currency": "string"
+                    },
+                    "maximum": {
                       "value": "string",
                       "currency": "string"
                     }
-                  ],
-                  "minimum": {
-                    "value": "string",
-                    "currency": "string"
-                  },
-                  "maximum": {
-                    "value": "string",
-                    "currency": "string"
                   }
                 }
               ],
-              "interestRates": [
+              "interestRate": [
                 {
-                  "application": [
+                  "applications": [
                     {
                       "interval": "string",
                       "rate": "string",
@@ -92,37 +94,37 @@
       "urlComplementaryList": "string",
       "personalLoans": [
         {
-          "type": "string",
+          "types": "string",
           "fees": [
             {
-              "serviceName": "string",
-              "serviceCode": "string",
-              "chargingTriggerInfo": "string",
-              "chargingUnit": "string",
-              "price": [
-                {
-                  "interval": "string",
+              "service":{
+                "name": "string",
+                "code": "string",
+                "chargingTriggerInfo": "string",
+                "prices": [
+                  {
+                    "interval": "string",
+                    "value": "string",
+                    "currency": "string"
+                  }
+                ],
+                "minimum": {
+                  "value": "string",
+                  "currency": "string"
+                },
+                "maximum": {
                   "value": "string",
                   "currency": "string"
                 }
-              ],
-              "minimum": {
-                "value": "string",
-                "currency": "string"
-              },
-              "maximum": {
-                "value": "string",
-                "currency": "string"
-              },
-              "additionalInfo": "string"
+              }
             }
           ],
-          "interestRates": [
+          "interestRate": [
             {
-              "application": [
+              "applications": [
                 {
-                  "interval": ["string"],
-                  "rate": "string"
+                  "interval": "string",
+                  "rate": "string",
                 }
               ],
               "minimumRate": "string",
@@ -155,37 +157,37 @@
   "urlComplementaryList": "string",
   "personalLoans": [
     {
-      "type": "string",
+      "types": "string",
       "fees": [
         {
-          "serviceName": "string",
-          "serviceCode": "string",
-          "chargingTriggerInfo": "string",
-          "chargingUnit": "string",
-          "price": [
-            {
-              "interval": "string",
+          "service":{
+            "name": "string",
+            "code": "string",
+            "chargingTriggerInfo": "string",
+            "prices": [
+              {
+                "interval": "string",
+                "value": "string",
+                "currency": "string"
+              }
+            ],
+            "minimum": {
+              "value": "string",
+              "currency": "string"
+            },
+            "maximum": {
               "value": "string",
               "currency": "string"
             }
-          ],
-          "minimum": {
-            "value": "string",
-            "currency": "string"
-          },
-          "maximum": {
-            "value": "string",
-            "currency": "string"
-          },
-          "additionalInfo": "string"
+          }
         }
       ],
-      "interestRates": [
+      "interestRate": [
         {
-          "application": [
+          "applications": [
             {
-              "interval": ["string"],
-              "rate": "string"
+              "interval": "string",
+              "rate": "string",
             }
           ],
           "minimumRate": "string",
@@ -212,35 +214,35 @@
 <a id="schemaPersonalLoans"></a>
 
 ```json
-{
-  "type": "string",
+ {
+  "types": "string",
   "fees": [
     {
-      "serviceName": "string",
-      "serviceCode": "string",
-      "chargingTriggerInfo": "string",
-      "chargingUnit": "string",
-      "price": [
-        {
-          "interval": "string",
+      "service":{
+        "name": "string",
+        "code": "string",
+        "chargingTriggerInfo": "string",
+        "prices": [
+          {
+            "interval": "string",
+            "value": "string",
+            "currency": "string"
+          }
+        ],
+        "minimum": {
+          "value": "string",
+          "currency": "string"
+        },
+        "maximum": {
           "value": "string",
           "currency": "string"
         }
-      ],
-      "minimum": {
-        "value": "string",
-        "currency": "string"
-      },
-      "maximum": {
-        "value": "string",
-        "currency": "string"
-      },
-      "additionalInfo": "string"
+      }
     }
   ],
-  "interestRates": [
+  "interestRate": [
     {
-      "application": [
+      "applications": [
         {
           "interval": "string",
           "rate": "string",
@@ -284,11 +286,11 @@
 | Propriedade  | Código                                        | Definição                                    
 |:------------ |:------                                       |:------
 | requiredWarranties        | CESSAO_DIREITOS_CREDITORIOS     | Cessão de direitos creditórios
-| requiredWarranties        | CAUÇAO                          | Caução
+| requiredWarranties        | CAUCAO                          | Caução
 | requiredWarranties        | PENHOR                          | Penhor
-| requiredWarranties        | ANILEAÇAO_FIDUCIARIA            | Alienação fiduciária
+| requiredWarranties        | ALIENACAO_FIDUCIARIA            | Alienação fiduciária
 | requiredWarranties        | HIPOTECA                        | Hipoteca
-| requiredWarranties        | OPERAÇOES_GARANTIDAS_GOVERNO    | Operações garantidas pelo governo
+| requiredWarranties        | OPERCAOES_GARANTIDAS_PELO_GOVERNO    | Operações garantidas pelo governo
 | requiredWarranties        | OUTRAS_GARANTIAS_NAO_FIDEJUSSORIAS  | Outras garantias não fidejussórias
 | requiredWarranties        | SEGUROS_ASSEMELHADOS            | Seguros e assemelhados
 | requiredWarranties        | GARANTIA_FIDEJUSSORIA           | Garantia fidejussória
@@ -296,7 +298,7 @@
 | requiredWarranties        | GARANTIAS_INTERNACIONAIS        | Garantias internacionais
 | requiredWarranties        | OPERACOES_GARANTIDAS_OUTRAS_ENTIDADES
   | Operações garantidas por outras entidades
-| requiredWarranties        | ACORDOS_DE_COMPENSAÇAO          | Acordos de compensação
+| requiredWarranties        | ACORDOS_COMPENSACAO             | Acordos de compensação
 | requiredWarranties        | NAO_APLICAVEL                   | Não aplicável
 
 ## LoanFees
@@ -304,48 +306,46 @@
 
 ```json
 {
-  "serviceName": "string",
-  "serviceCode": "string",
-  "chargingTriggerInfo": "string",
-  "chargingUnit": "string",
-  "price": [
-    {
-      "interval": "string",
+  "service":{
+    "name": "string",
+    "code": "string",
+    "chargingTriggerInfo": "string",
+    "prices": [
+      {
+        "interval": "string",
+        "value": "string",
+        "currency": "string"
+      }
+    ],
+    "minimum": {
+      "value": "string",
+      "currency": "string"
+    },
+    "maximum": {
       "value": "string",
       "currency": "string"
     }
-  ],
-  "minimum": {
-    "value": "string",
-    "currency": "string"
-  },
-  "maximum": {
-    "value": "string",
-    "currency": "string"
-  },
-  "additionalInfo": "string"
+  }
 }
 ```
 |     Nome            |  Tipo                                           | Obrigatório  |                            Definição                         | Restrições
 |:------------        |:---------------------------------               |:-----------  |:----------------------------------------------------         | :------
-| serviceName         | string                                          | Sim          | Nomes das Tarifas cobradas sobre Serviços relacionados à Modalidade informada do Empréstimo para pessoa física/jurídica.    | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para o item priceInfo
-| serviceCode         | string                                          | Sim          | Sigla de identificação do serviço relacionado à Modalidade informada de Empréstimo para pessoa física/jurídica.             | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para o item priceInfo
+| name         | string                                          | Sim          | Nomes das Tarifas cobradas sobre Serviços relacionados à Modalidade informada do Empréstimo para pessoa física/jurídica.    | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para o item priceInfo
+| code         | string                                          | Sim          | Sigla de identificação do serviço relacionado à Modalidade informada de Empréstimo para pessoa física/jurídica.             | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para o item priceInfo
 | chargingTriggerInfo | string                                          | Sim          | Fatos geradores de cobrança que incidem sobre as Modalidades informada de Empréstimos para pessoa física/jurídica.        | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para o item priceInfo
-| chargingUnit        | string                                          | Não          | Unidade ou forma de cobrança                                                                                                | 
-| price               | [[Price](#schemaPrice)]                         | Sim          | Valor da mediana da tarifa, relativa ao serviço ofertado, informado no período.                                                       | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
+| prices               | [[Price](#schemaPrice)]                         | Sim          | Valor da mediana da tarifa, relativa ao serviço ofertado, informado no período.                                                       | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
 | minimum             | [[MinimumPrice](#schemaMinimumPrice)]           | Sim          | Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
 | maximum             | [[MaximumPrice](#schemaMaximumPrice)]           | Sim          | Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
-| additionalInfo      | string                                          | Não          | Descrição de como é composto o valor da tarifa. p.ex. '0,25% sobre o excedente do limite acima de R$ 500,00'.               |
 
 ## LoanInterestRates
 <a id="schemaLoanInterestRates"></a>
 
 ```json
 {
-  "application": [
+  "applications": [
     {
       "interval": "string",
-      "rate": "string"
+      "rate": "string",
     }
   ],
   "minimumRate": "string",
@@ -355,7 +355,7 @@
 
 | Nome                | Tipo                                            | Obrigatório | Definição                                                 |
 |:----------------    |:------                                          |:----------- |:-------------------------------                           |
-| application         | [[Price](#schemaPrice)]                         | Sim          | Valor da mediana da taxa de remuneração relativa ao serviço ofertado.                                                       | 
+| applications         | [[Application](#schemaApplication)]                         | Sim          | Valor da mediana da taxa de remuneração relativa ao serviço ofertado.                                                       | 
 | minimumRate         | [[MinimumRate](#schemaMinimumRate)]           | Sim          | Valor mínimo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | 
 | maximumRate          | [[MaximumRate](#schemaMaximumRate)]           | Sim          | Valor máximo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | 
 

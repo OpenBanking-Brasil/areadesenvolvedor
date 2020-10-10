@@ -152,3 +152,24 @@
 | interval     | [Enum PriceInterval](#schemaPriceInterval)       | Sim            | Faixas para a cobrança da taxa de utilização do crédito rotativo, no intervalo informado: 1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes.           |
 | rate         | [RateString](#commonFieldRateString)             | Sim            | Percentual que corresponde a taxa mediana aplicada para pagamento parcelado do saldo devedor quando não realizado pagamento integral da fatura, no período informado.  |
 | frequency    | [RateString](#commonFieldRateString)             | Sim            | Frequência de clientes em cada faixa de valor. Representa uma porcentagem Ex: 0.15  |
+
+
+## Application
+<a id="schemaApplication"></a>
+
+```json
+{
+  "interval": "string",
+  "value": "string",
+  "currency": "string"
+}
+```
+
+
+
+|     Nome     |  Tipo            | Obrigatório    |             Definição   |
+|:------------ |:------------------------------------------------ |:-------------- |:-----------------------------------------------------------------------------                                                                                                                                                                                                                                                                                   |
+| interval     | [Enum PriceInterval](#schemaPriceInterval)       | Sim            | Faixas para cobrança da taxa efetiva aplicada pela contratação do Empréstimo, no intervalo informado: 1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes |
+| rate        | [AmountString](#commonFieldAmountString)         | Sim            | Percentual que corresponde a mediana da taxa efetiva cobrada do cliente pela contratação do Empréstimo, no intervalo informado. p.ex. '9,8700%'
+A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros
+(representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%) |
