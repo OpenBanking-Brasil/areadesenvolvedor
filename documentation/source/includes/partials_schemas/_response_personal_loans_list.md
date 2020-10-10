@@ -98,7 +98,6 @@
               "serviceName": "string",
               "serviceCode": "string",
               "chargingTriggerInfo": "string",
-              "chargingUnit": "string",
               "price": [
                 {
                   "interval": "string",
@@ -161,7 +160,6 @@
           "serviceName": "string",
           "serviceCode": "string",
           "chargingTriggerInfo": "string",
-          "chargingUnit": "string",
           "price": [
             {
               "interval": "string",
@@ -219,7 +217,6 @@
       "serviceName": "string",
       "serviceCode": "string",
       "chargingTriggerInfo": "string",
-      "chargingUnit": "string",
       "price": [
         {
           "interval": "string",

@@ -1208,9 +1208,12 @@ components:
           description: "Modalidades de empréstimos ofertados para pessoas físicas"
           example: "ADIANTAMENTO_DEPOSITANTE"
         fees:
-          type: array
-          items:
-            $ref: '#/components/schemas/LoanFees'
+          type: object
+          properties:
+            services:
+              type: array
+              items:
+                $ref: '#/components/schemas/LoanServicesFees'
           description: Lista
         interestRates:
           type: array
@@ -1225,7 +1228,7 @@ components:
           pattern: '\w*\W*'
           maxLength: 2000
           description: "Campo aberto para informar as condições contratuais relativas ao produto ou serviço informado. Pode ser informada a URL referente ao endereço onde constam as condições informadas."
-          example: ""
+          example: "https://empresaa1.com/personal_loans"
     #### BusinessLoans ####
     BusinessLoans:
       type: object
@@ -1268,7 +1271,7 @@ components:
           example: ""
 
     #### Fees ####
-    LoanFees:
+    LoanServicesFees:
       type: object
       required:
         - name
@@ -1342,6 +1345,9 @@ A apuração pode acontecer com até 4 casas decimais. O preenchimento deve resp
 A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros
 (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)"
             example: "0.0987"
+      required:
+          - intervals
+          - rates
 
   #### Intervals ####          
     Intervals:
@@ -1911,7 +1917,7 @@ A apuração pode acontecer com até 4 casas decimais. O preenchimento deve resp
           pattern: '\w*\W*'
           maxLength: 30
           description: Nome da marca.
-          example: "Marca A"
+          example: "Organização A"
         companies:
           type: array
           items:
@@ -1928,15 +1934,15 @@ A apuração pode acontecer com até 4 casas decimais. O preenchimento deve resp
         name:
           type: string
           pattern: '\w*\W*'
-          maxLength: 30
+          maxLength: 80
           description: "Nome da Instituição, pertencente à marca, responsável pela comercialização dos produtos e serviços"
-          example: "Empresa da Marca A"
+          example: "Empresa A1"
         urlComplementaryList:
           type: string
           pattern: '\w*\W*'
           maxLength: 1024
           description: "URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. Endereço eletrônico de acesso ao canal." 
-          example: "https://example.com/mobile-banking"
+          example: "'https://empresaa1.com/branches-banking'"
         personalFinancings:
           type: array
           items:
@@ -1955,17 +1961,18 @@ A apuração pode acontecer com até 4 casas decimais. O preenchimento deve resp
       properties:
         type:
           type: string
-          enum: ["AQUISICAO_BENS_VEICULOS_AUTOMOTORES",
-                "AQUISICAO_BENS_OUTROS_BENS",
-                "MICROCREDITO_PRODUTIVO_ORIENTADO",
-                "CARTAO_CREDITO",
-                "FINANCIAMENTOS_RURAIS_CUSTEIO",
-                "FINANCIAMENTOS_RURAIS_INVESTIMENTO",
-                "FINANCIAMENTOS_RURAIS_COMERCIALIZACAO",
-                "FINANCIAMENTOS_RURAIS_INDUSTRIALIZACAO",
-                "FINANCIMENTO_IMOBILIARIO_SFH",
-                "FINANCIMENTO_IMOBILIARIO_SFI"]
+          enum: 
+            - FINANCIAMENTO_AQUISICAO_BENS_VEICULOS_AUTOMOTORES
+            - FINANCIAMENTO_AQUISICAO_BENS_OUTROS_BENS
+            - FINANCIAMENTO-MICROCREDITO
+            - FINANCIAMENTO_RURAL_CUSTEIO
+            - FINANCIAMENTO_RURAL_INVESTIMENTO
+            - FINANCIAMENTO_RURAL_COMERCIALIZACAO
+            - FINANCIAMENTO_RURAL_INDUSTRIALIZACAO
+            - FINANCIAMENTO_IMOBILIARIO_SISTEMA_FINANCIERO_HABILITACAO-SFH
+            - FINANCIAMENTO_IMOBILIARIO_SISTEMA_FINANCIERO_HABILITACAO-SFI
           description: "Modalidades de financiamentos ofertados para pessoas físicas, conforme Circular 4015-Bacen. Segundo cartilha do Bacen: Financiamento é um contrato entre o cliente e uma instituição financeira, mas com, destinação específica como para a aquisição de veículo ou de bem imóvel, que funcionam como garantia para o crédito concedido"
+          example: 'FINANCIAMENTO_AQUISICAO_BENS_VEICULOS_AUTOMOTORES'
         fees:
           type: array
           items:
@@ -1976,27 +1983,29 @@ A apuração pode acontecer com até 4 casas decimais. O preenchimento deve resp
             $ref: '#/components/schemas/PersonalFinancingsInterestRates'
         requiredWarranties:
           type: string
-          enum: ["CESSAO_DIREITOS_CREDITORIOS",
-                "CAUCAO",
-                "PENHOR",
-                "ALIENACAO_FIDUCIARIA",
-                "HIPOTECA",
-                "OPERACOES_GARANTIDAS_GOVERNO",
-                "OUTRAS_GARANTIAS_NAO_FIDEJUSSORIAS",
-                "SEGUROS_ASSEMELHADOS",
-                "GARANTIA_FIDEJUSSORIA",
-                "BENS_ARRENDADOS",
-                "GARANTIAS_INTERNACIONAIS",
-                "OPERACOES_GARANTIDAS_OUTRAS_ENTIDADE",
-                "ACORDOS_COMPENSACAO",
-                "NAO_APLICAVEL"]
+          enum: 
+            - CESSAO_DIREITOS_CREDITORIOS
+            - CAUCAO
+            - PENHOR
+            - ALIENACAO_FIDUCIARIA
+            - HIPOTECA
+            - OPERCAOES_GARANTIDAS_PELO_GOVERNO
+            - OUTRAS_GARANTIAS_NAO_FIDEJUSSORIAS 
+            - SEGUROS_ASSEMELHADOS
+            - GARANTIA_FIDEJUSSORIA
+            - BENS_ARRENDADOS
+            - GARANTIAS_INTERNACIONAIS
+            - OPERACOES_GARANTIDAS_OUTRAS_ENTIDADES
+            - ACORDOS_COMPENSACAO
+            - NAO_APLICAVEL
           description: "Relação de garantias exigidas"
+          example: 'ALIENACAO_FIDUCIARIA'
         termsConditions:
           type: string
           pattern: '\w*\W*'
           maxLength: 2000
           description: "Campo aberto para informar as condições contratuais relativas ao produto ou serviço informado. Pode ser informada a URL referente ao endereço onde constam as condições informadas."
-          example: ""
+          example: "https://empresaa1.com/personal_financing"
     ##### PersonalFinancingsFees #####
     PersonalFinancingsFees:
       type: object
@@ -2004,15 +2013,15 @@ A apuração pode acontecer com até 4 casas decimais. O preenchimento deve resp
         serviceName:
           type: string
           description: "Nomes das Tarifas cobradas sobre Serviços ofertados à Modalidade de Financiamento, para pessoa física"
+          example: 'Avaliação, Reavaliação e Substituição de Bens Recebidos em Garantia'
         serviceCode:
           type: string
           description: "Sigla de identificação do serviço relacionado à Modalidade de Financiamento informada, para pessoa física. Campo aberto"
+          example: NA
         chargingTriggerInfo:
           type: string
           description: "Fatores geradores de cobrança que incidem sobre as Modalidades de Financiamentos, para pessoa física. Campo Livre"
-        chargingUnit:
-          type: string
-          description: "Unidade ou forma de cobrança"
+          example: '570.00'
         price:
           type: array
           items:
@@ -2025,9 +2034,6 @@ A apuração pode acontecer com até 4 casas decimais. O preenchimento deve resp
           type: object
           items:
             $ref: '#/components/schemas/MaximumPrice'
-        additionalInfo:
-          type: string
-          description: "Descrição de como é composto o valor da tarifa. p.ex. '0,25% sobre o excedente do limite acima de R$ 500,00'"
       required:
         - serviceName
         - serviceCode
@@ -2038,53 +2044,28 @@ A apuração pode acontecer com até 4 casas decimais. O preenchimento deve resp
     PersonalFinancingsInterestRates:
       type: object
       properties:
-        rate:
-          type: string
-          description: "Percentual que incide sobre a composição da  taxa de juros remuneratórias"
-        referencialRate:
-          type: string
-          description: "Taxa Referencial se configura como uma taxa de juros de referência, ou seja, um indicador geral da economia brasileira. Por isso, é utilizada na hora de calcular o rendimento de determinadas aplicações financeiras"
-        indexer:
-          type: string
-          enum: ["IPCA",
-                "SELIC",
-                "CDI"]
-          description: "Indexador é o termo utilizado para se referir aos índices usados como base para corrigir os valores monetários de um determinado ativo. No Brasil, os indexadores mais comuns são o IPCA, a taxa Selic e o CDI"
-        prePostTax:
-          type: string
-          enum: ["PRE",
-                "POS"]
-          description: "Indicador de pré ou pós. A diferença básica é que, enquanto o prefixado apresenta rentabilidade definida, o pós-fixado acompanha algum indicador. Assim, quem investe no primeiro grupo sabe como será seu rendimento previamente, enquanto quem investe no segundo, só conhecerá os resultados na data de vencimento"
-        occurrence:
-          type: string
-          enum: ["AD",
-                "AM",
-                "AA"]
-          description: "Frequência sobre a qual incide a Remuneração"
-        incomeRateInfo:
-          type: string
-          description: "Descrição da Remuneração relativa as taxas de juros remuneratórias sobre a modalidade de Financiamento informada, para pessoa física"
         application:
           type: array
           items:
-            $ref: '#/components/schemas/Price'
-        minimum:
-          type: object
-          items:
-            $ref: '#/components/schemas/MinimumPrice'
-        maximum:
-          type: object
-          items:
-            $ref: '#/components/schemas/MaximumPrice'
+            $ref: '#/components/schemas/ApplicationRates'
+        minimumRate:
+          type: string
+          format: (-?[1-9]?\d{1,4}){1}(\,\d{1,4}){1}
+          description: "Percentual mínimo cobrado (taxa efetiva) no mês de referência, para o Financiamento contratado 
+A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros
+(representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)"
+          example: '0.0456'
+        maximumRate:
+          type: string
+          format: (-?[1-9]?\d{1,4}){1}(\,\d{1,4}){1}
+          description: "Percentual máximo cobrado (taxa efetiva) no mês de referência, para o Financiamento contratado 
+A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros
+(representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)"
+          example: '0.6865'
       required:
-        - rate
-        - referencialRate
-        - indexer
-        - prePostTax
-        - occurrence
         - application
-        - minimum
-        - maximum
+        - minimumRate
+        - maximumRate
 
   ##########################
   ##  Business Financings ##
@@ -2713,14 +2694,8 @@ A apuração pode acontecer com até 4 casas decimais. O preenchimento deve resp
         - value
         - currency
       properties:
-        interval:
-          type: string
-          enum: 
-            - 1_QUARTIL_CLIENTES
-            - 2_QUARTIL_CLIENTES
-            - 3_QUARTIL_CLIENTES
-            - 4_QUARTIL_CLIENTES
-          description: "Faixas para cobrança da taxa efetiva aplicada pela contratação do Empréstimo, no intervalo informado: 1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes"
+        intervals:
+          $ref:  "#/components/schemas/Intervals"
           example: "1_QUARTIL_CLIENTES"
         values:
           type: string
@@ -2728,8 +2703,8 @@ A apuração pode acontecer com até 4 casas decimais. O preenchimento deve resp
           maxLength: 12
           x-cds-type: AmountString
           description: "Valor da mediana da tarifa, relativa ao serviço ofertado, informado no período."
-          example: "45,40"
-        currency:
+          example: "45.40"
+        currencies:
           type: string
           pattern: '^(\w{3}){1}$'
           maxLength: 3
@@ -2748,7 +2723,7 @@ A apuração pode acontecer com até 4 casas decimais. O preenchimento deve resp
           maxLength: 12
           x-cds-type: AmountString
           description: "Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência"
-          example: "39,90"
+          example: "39.90"
         currency:
           type: string
           pattern: '^(\w{3}){1}$'
@@ -2768,7 +2743,7 @@ A apuração pode acontecer com até 4 casas decimais. O preenchimento deve resp
           maxLength: 12
           x-cds-type: AmountString
           description: "Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência"
-          example: "71,00"
+          example: "71.00"
         currency:
           type: string
           pattern: '^(\w{3}){1}$'
