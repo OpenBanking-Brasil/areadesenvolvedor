@@ -13,7 +13,7 @@
           "urlComplementaryList": "string",
           "businessLoans": [
             {
-              "types": "string",
+              "type": "string",
               "fees": [
                 {
                   "service":{
@@ -94,7 +94,7 @@
       "urlComplementaryList": "string",
       "businessLoans": [
         {
-          "types": "string",
+          "type": "string",
           "fees": [
             {
               "service":{
@@ -157,7 +157,7 @@
   "urlComplementaryList": "string",
   "businessLoans": [
     {
-      "types": "string",
+      "type": "string",
       "fees": [
         {
           "service":{
@@ -215,7 +215,7 @@
 
 ```json
 {
-  "types": "string",
+  "type": "string",
   "fees": [
     {
       "service":{
