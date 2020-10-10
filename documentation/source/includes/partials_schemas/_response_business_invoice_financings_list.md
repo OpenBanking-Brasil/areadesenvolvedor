@@ -16,51 +16,40 @@
               "type": "string",
               "fees": [
                 {
-                  "serviceName": "string",
-                  "serviceCode": "string",
-                  "chargingTriggerInfo": "string",
-                  "chargingUnit": "string",
-                  "price": [
+                  "services": [
                     {
-                      "interval": "string",
-                      "value": "string",
-                      "currency": "string"
+                      "name": "string",
+                      "code": "string",
+                      "chargingTriggerInfo": "string",
+                      "prices": [
+                        {
+                          "interval": "string",
+                          "value": "string",
+                          "currency": "string"
+                        }
+                      ],
+                      "minimum": {
+                        "value": "string",
+                        "currency": "string"
+                      },
+                      "maximum": {
+                        "value": "string",
+                        "currency": "string"
+                      }
                     }
-                  ],
-                  "minimum": {
-                    "value": "string",
-                    "currency": "string"
-                  },
-                  "maximum": {
-                    "value": "string",
-                    "currency": "string"
-                  },
-                  "additionalInfo": "string"
+                  ]
                 }
               ],
               "interestRates": [
                 {
-                  "rate": "string",
-                  "referencialRate": "string",
-                  "indexer": "string",
-                  "prePostTax": "string",
-                  "occurrence": "string",
-                  "incomeRateInfo": "string",
-                  "application": [
+                  "applications": [
                     {
                       "interval": "string",
-                      "value": "string",
-                      "currency": "string"
+                      "rate": "string"
                     }
                   ],
-                  "minimum": {
-                    "value": "string",
-                    "currency": "string"
-                  },
-                  "maximum": {
-                    "value": "string",
-                    "currency": "string"
-                  }
+                  "minimumRate": "string",
+                  "maximumRate": "string"
                 }
               ],
               "requiredWarranties": [
@@ -110,51 +99,40 @@
           "type": "string",
           "fees": [
             {
-              "serviceName": "string",
-              "serviceCode": "string",
-              "chargingTriggerInfo": "string",
-              "chargingUnit": "string",
-              "price": [
+              "services": [
                 {
-                  "interval": "string",
-                  "value": "string",
-                  "currency": "string"
+                  "name": "string",
+                  "code": "string",
+                  "chargingTriggerInfo": "string",
+                  "prices": [
+                    {
+                      "interval": "string",
+                      "value": "string",
+                      "currency": "string"
+                    }
+                  ],
+                  "minimum": {
+                    "value": "string",
+                    "currency": "string"
+                  },
+                  "maximum": {
+                    "value": "string",
+                    "currency": "string"
+                  }
                 }
-              ],
-              "minimum": {
-                "value": "string",
-                "currency": "string"
-              },
-              "maximum": {
-                "value": "string",
-                "currency": "string"
-              },
-              "additionalInfo": "string"
+              ]
             }
           ],
           "interestRates": [
             {
-              "rate": "string",
-              "referencialRate": "string",
-              "indexer": "string",
-              "prePostTax": "string",
-              "occurrence": "string",
-              "incomeRateInfo": "string",
-              "application": [
+              "applications": [
                 {
                   "interval": "string",
-                  "value": "string",
-                  "currency": "string"
+                  "rate": "string"
                 }
               ],
-              "minimum": {
-                "value": "string",
-                "currency": "string"
-              },
-              "maximum": {
-                "value": "string",
-                "currency": "string"
-              }
+              "minimumRate": "string",
+              "maximumRate": "string"
             }
           ],
           "requiredWarranties": [
@@ -186,51 +164,40 @@
       "type": "string",
       "fees": [
         {
-          "serviceName": "string",
-          "serviceCode": "string",
-          "chargingTriggerInfo": "string",
-          "chargingUnit": "string",
-          "price": [
+          "services": [
             {
-              "interval": "string",
-              "value": "string",
-              "currency": "string"
+              "name": "string",
+              "code": "string",
+              "chargingTriggerInfo": "string",
+              "prices": [
+                {
+                  "interval": "string",
+                  "value": "string",
+                  "currency": "string"
+                }
+              ],
+              "minimum": {
+                "value": "string",
+                "currency": "string"
+              },
+              "maximum": {
+                "value": "string",
+                "currency": "string"
+              }
             }
-          ],
-          "minimum": {
-            "value": "string",
-            "currency": "string"
-          },
-          "maximum": {
-            "value": "string",
-            "currency": "string"
-          },
-          "additionalInfo": "string"
+          ]
         }
       ],
       "interestRates": [
         {
-          "rate": "string",
-          "referencialRate": "string",
-          "indexer": "string",
-          "prePostTax": "string",
-          "occurrence": "string",
-          "incomeRateInfo": "string",
-          "application": [
+          "applications": [
             {
               "interval": "string",
-              "value": "string",
-              "currency": "string"
+              "rate": "string"
             }
           ],
-          "minimum": {
-            "value": "string",
-            "currency": "string"
-          },
-          "maximum": {
-            "value": "string",
-            "currency": "string"
-          }
+          "minimumRate": "string",
+          "maximumRate": "string"
         }
       ],
       "requiredWarranties": [
@@ -257,51 +224,40 @@
   "type": "string",
   "fees": [
     {
-      "serviceName": "string",
-      "serviceCode": "string",
-      "chargingTriggerInfo": "string",
-      "chargingUnit": "string",
-      "price": [
+      "services": [
         {
-          "interval": "string",
-          "value": "string",
-          "currency": "string"
+          "name": "string",
+          "code": "string",
+          "chargingTriggerInfo": "string",
+          "prices": [
+            {
+              "interval": "string",
+              "value": "string",
+              "currency": "string"
+            }
+          ],
+          "minimum": {
+            "value": "string",
+            "currency": "string"
+          },
+          "maximum": {
+            "value": "string",
+            "currency": "string"
+          }
         }
-      ],
-      "minimum": {
-        "value": "string",
-        "currency": "string"
-      },
-      "maximum": {
-        "value": "string",
-        "currency": "string"
-      },
-      "additionalInfo": "string"
+      ]
     }
   ],
   "interestRates": [
     {
-      "rate": "string",
-      "referencialRate": "string",
-      "indexer": "string",
-      "prePostTax": "string",
-      "occurrence": "string",
-      "incomeRateInfo": "string",
-      "application": [
+      "applications": [
         {
           "interval": "string",
-          "value": "string",
-          "currency": "string"
+          "rate": "string"
         }
       ],
-      "minimum": {
-        "value": "string",
-        "currency": "string"
-      },
-      "maximum": {
-        "value": "string",
-        "currency": "string"
-      }
+      "minimumRate": "string",
+      "maximumRate": "string"
     }
   ],
   "requiredWarranties": [
