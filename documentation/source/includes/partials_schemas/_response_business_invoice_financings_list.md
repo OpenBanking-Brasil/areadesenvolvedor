@@ -247,7 +247,7 @@
 |:------------          |:---------------------------------------------------------------------------                                 |:----------- |:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------         |
 | type                  | [Enum BusinessInvoiceFinancingsType](#schemaEnumBusinessInvoiceFinancingsType)                                | Sim         | Modalidades de direitos creditórios descontados ofertados para pessoas Jurídicas, conforme Circular 4015-Bacen. Direito creditório descontado é a antecipação de créditos relativos por ex. ao: desconto de duplicatas, desconto de cheques,antecipação de fatura de cartão de crédito  |
 | fees                  | [[BusinessInvoiceFinancingsFees](#schemaBusinessInvoiceFinancingsFees)]                                       | Sim         | Lista das Tarifas cobradas sobre Serviços ofertados à Modalidade de direitos creditórios descontados, para pessoa jurídica                                                                                                                                                              |
-| interestRates         | [[BusinessInvoiceFinancingsInterestRates](#schemaBusinessInvoiceFinancingsInterestRates)]                     | Sim         | Lista de taxas de juros remuneratórias                                                                                                                                                                                                                                                |
+| interestRate          | [[BusinessInvoiceFinancingsInterestRates](#schemaBusinessInvoiceFinancingsInterestRates)]                     | Sim         | Lista de taxas de juros remuneratórias                                                                                                                                                                                                                                                |
 | requiredWarranties    | [[Enum BusinessInvoiceFinancingsRequiredWarranties](#schemaEnumBusinessInvoiceFinancingsRequiredWarranties)]  | Sim         | Relação de garantias exigidas                                                                                                                                                                                                                                                         |
 | termsConditions       | string                                                                                                        | Não          | Campo aberto para informar as condições contratuais relativas ao produto ou serviço informado. Pode ser informada a URL ([[URIString](#commonFieldURIString)]) referente ao endereço onde constam as condições informadas.   |
 
@@ -308,27 +308,55 @@
       "value": "string",
       "currency": "string"
     }
-  }
+  }                
 }
 ```
 
-|     Nome             |  Tipo                                                                    | Obrigatório    |                            Definição                                                                                                       |
-|:------------         |:------------------------------------------------------------------------ |:-------------- |:------------------------------------------------------------------------------------------------------------------------------------------ |
-| serviceName          | string                                                                   | Sim            | Nomes das Tarifas cobradas sobre Serviços ofertados à Modalidade de direitos creditórios descontados, para pessoa jurídica. (Campo Livre)    |
-| serviceCode          | string                                                                   | Sim            | Sigla de identificação do serviço relacionado à Modalidade de direitos creditórios descontados, para pessoa jurídica. Campo aberto           |
-| chargingTriggerInfo  | string                                                                   | Não            | Fatos geradores de cobrança que incidem sobre as Modalidades de direitos creditórios descontados, para pessoa jurídica. Campo Livre        |
-| chargingUnit         | string                                                                   | Não            | Unidade ou forma de cobrança                                                                                                               |
-| price                | [[Price](#schemaPrice)]                | Sim            | Valor médio da tarifa, relativa ao serviço ofertado, informado no período.                                                                       |
-| minimum              | [[MinimumPrice](#schemaMinimumPrice)]  | Sim            | Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. | 
-| maximum              | [[MaximumPrice](#schemaMaximumPrice)]  | Sim            | Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. | 
-| additionalInfo       | string                                                                   | Não            | Descrição de como é composto o valor da tarifa. p.ex. '0,25% sobre o excedente do limite acima de R$ 500,00'                               |
+| Nome         |  Tipo                                                                                 | Obrigatório    |  Definição                                                                                                                                 |
+|:------------ |:------------------------------------------------------------------------------------- |:-------------- |:------------------------------------------------------------------------------------------------------------------------------------------ |
+| service      | [[BusinessInvoiceFinancingsFeesService](#schemaBusinessInvoiceFinancingsFeesService)] | Sim            | Nomes das Tarifas cobradas sobre Serviços ofertados à Modalidade de direitos creditórios descontados, para pessoa física. (Campo Livre)    |
+
+## BusinessInvoiceFinancingsFeesService 
+<a id="schemaBusinessInvoiceFinancingsFeesService"></a>
+
+```json
+{
+  "name": "string",
+  "code": "string",
+  "chargingTriggerInfo": "string",
+  "prices": [
+    {
+      "interval": "string",
+      "value": "string",
+      "currency": "string"
+    }
+  ],
+  "minimum": {
+    "value": "string",
+    "currency": "string"
+  },
+  "maximum": {
+    "value": "string",
+    "currency": "string"
+  }
+}   
+```
+
+|     Nome             |  Tipo                                  | Obrigatório    |                            Definição                                                                                                       |
+|:------------         |:-------------------------------------- |:-------------- |:------------------------------------------------------------------------------------------------------------------------------------------ |
+| name                 | string                                 | Sim            | Nomes das Tarifas cobradas sobre Serviços ofertados à Modalidade de direitos creditórios descontados, para pessoa física. (Campo Livre)    |
+| code                 | string                                 | Sim            | Sigla de identificação do serviço relacionado à Modalidade de direitos creditórios descontados, para pessoa física. Campo aberto           |
+| chargingTriggerInfo  | string                                 | Não            | Fatos geradores de cobrança que incidem sobre as Modalidades de direitos creditórios descontados, para pessoa física. Campo Livre          |
+| prices               | [[Price](#schemaPrice)]                | Sim            | Valor médio da tarifa, relativa ao serviço ofertado, informado no período.                                                                 |
+| minimum              | [[MinimumPrice](#schemaMinimumPrice)]  | Sim            | Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência.                                              | 
+| maximum              | [[MaximumPrice](#schemaMaximumPrice)]  | Sim            | Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência.                                              | 
 
 ## BusinessInvoiceFinancingsInterestRates 
 <a id="schemaBusinessInvoiceFinancingsInterestRates"></a>
 
 ```json
 {
-  "applications": [                  
+  "applications": [
     {
       "interval": "string",
       "rate": "string"
@@ -339,23 +367,8 @@
 }
 ```
 
-|     Nome                  |  Tipo                                                                                       | Obrigatório    |                            Definição                                                                                                       |
-|:------------              |:------------------------------------------------------------------------------------------- |:-------------- |:------------------------------------------------------------------------------------------------------------------------------------------ |
-| rate                      | [RateString](#commonFieldRateString)                                                        | Sim            | Percentual que incide sobre a composição da  taxa de juros remuneratórias                                                                                                                                                                                                                                             |
-| referencialRate           | [RateString](#commonFieldRateString)                                                        | Sim            | Taxa Referencial se configura como uma taxa de juros de referência, ou seja, um indicador geral da economia brasileira. Por isso, é utilizada na hora de calcular o rendimento de determinadas aplicações financeiras                                                                                                 |
-| indexer                   | [Enum BusinessInvoiceFinancingsIndexer](#schemaEnumBusinessInvoiceFinancingsIndexer)        | Sim            | Indexador é o termo utilizado para se referir aos índices usados como base para corrigir os valores monetários de um determinado ativo. No Brasil, os indexadores mais comuns são o IPCA, a taxa Selic e o CDI                                                                                                        |
-| prePostTax                | [Enum PrePostTax](#schemaPrePostTax)                                                        | Sim            | Indicador de pré ou pós. A diferença básica é que, enquanto o prefixado apresenta rentabilidade definida, o pós-fixado acompanha algum indicador. Assim, quem investe no primeiro grupo sabe como será seu rendimento previamente, enquanto quem investe no segundo, só conhecerá os resultados na data de vencimento |
-| occurrence                | [Enum OccurrenceType](#schemaOccurrenceType)                                                | Sim            | Frequência sobre a qual incide a Remuneração                                                                                                                                                                                                                                                                          |
-| incomeRateInfo            | string                                                                                      | Não            | Descrição da Remuneração relativa as taxas de juros remuneratórias sobre a modalidade de direitos creditórios descontados informada, para pessoa jurídica                                                                                                                                                             |
-| application               | [[Price](#schemaPrice)]                                                                     | Sim            | Valor da mediana da taxa de remuneração relativa ao serviço ofertado, para pessoa física informado no período.                                                                                                                                                                                                         |
-| minimum                   | [[MinimumPrice](#schemaMinimumPrice)]                                                       | Sim            | Valor mínimo cobrado para a taxa de remuneração relativa ao serviço ofertado, sobre a base de clientes,  no mês de referência | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
-| maximum                   | [[MaximumPrice](#schemaMaximumPrice)]                                                       | Sim            | Valor máximo cobrado para a taxa de remuneração relativa ao serviço ofertado, sobre a base de clientes,  no mês de referência | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
-
-### Enum BusinessInvoiceFinancingsIndexer
-<a id="schemaEnumBusinessInvoiceFinancingsIndexer"></a>
-
-| Propriedade  | Código | Definição   |
-|:------------ |:------ |:----------- |
-| indexer      | IPCA   | IPCA        |
-| indexer      | SELIC  | SELIC       |
-| indexer      | CDI    | CDI         |
+|  Nome           |  Tipo                   | Obrigatório |   Definição   |
+|:--------------- |:----------------------- |------------ |:--------------|
+| applications    | [[Price](#schemaPrice)] | Sim | Valor da mediana da taxa de remuneração relativa ao serviço ofertado, para pessoa física informado no período.     
+| minimumRate     | string                  | Sim | Valor mínimo cobrado para a taxa de remuneração relativa ao serviço ofertado, sobre a base de clientes,  no mês de referência | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
+| maximumRate     | string                  | Sim | Valor máximo cobrado para a taxa de remuneração relativa ao serviço ofertado, sobre a base de clientes,  no mês de referência | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
