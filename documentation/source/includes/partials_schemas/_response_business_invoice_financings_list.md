@@ -14,30 +14,28 @@
           "businessInvoiceFinancings": [
             {
               "type": "string",
-              "fee": {
-                "services": [
-                  {
-                    "name": "string",
-                    "code": "string",
-                    "chargingTriggerInfo": "string",
-                    "prices": [
-                      {
-                        "interval": "string",
-                        "value": "string",
-                        "currency": "string"
-                      }
-                    ],
-                    "minimum": {
-                      "value": "string",
-                      "currency": "string"
-                    },
-                    "maximum": {
+              "fees": [{
+                "service": {
+                  "name": "string",
+                  "code": "string",
+                  "chargingTriggerInfo": "string",
+                  "prices": [
+                    {
+                      "interval": "string",
                       "value": "string",
                       "currency": "string"
                     }
+                  ],
+                  "minimum": {
+                    "value": "string",
+                    "currency": "string"
+                  },
+                  "maximum": {
+                    "value": "string",
+                    "currency": "string"
                   }
-                ]
-              },
+                }
+              }],
               "interestRate": {
                 "applications": [                  
                   {
@@ -93,30 +91,28 @@
       "businessInvoiceFinancings": [
         {
           "type": "string",
-          "fee": {
-            "services": [
-              {
-                "name": "string",
-                "code": "string",
-                "chargingTriggerInfo": "string",
-                "prices": [
-                  {
-                    "interval": "string",
-                    "value": "string",
-                    "currency": "string"
-                  }
-                ],
-                "minimum": {
-                  "value": "string",
-                  "currency": "string"
-                },
-                "maximum": {
+          "fees": [{
+            "service": {
+              "name": "string",
+              "code": "string",
+              "chargingTriggerInfo": "string",
+              "prices": [
+                {
+                  "interval": "string",
                   "value": "string",
                   "currency": "string"
                 }
+              ],
+              "minimum": {
+                "value": "string",
+                "currency": "string"
+              },
+              "maximum": {
+                "value": "string",
+                "currency": "string"
               }
-            ]
-          },
+            }            
+          }],
           "interestRate": {
             "applications": [                  
               {
@@ -154,30 +150,28 @@
   "businessInvoiceFinancings": [
     {
       "type": "string",
-      "fee": {
-        "services": [
-          {
-            "name": "string",
-            "code": "string",
-            "chargingTriggerInfo": "string",
-            "prices": [
-              {
-                "interval": "string",
-                "value": "string",
-                "currency": "string"
-              }
-            ],
-            "minimum": {
-              "value": "string",
-              "currency": "string"
-            },
-            "maximum": {
+      "fees": [{
+        "service": {
+          "name": "string",
+          "code": "string",
+          "chargingTriggerInfo": "string",
+          "prices": [
+            {
+              "interval": "string",
               "value": "string",
               "currency": "string"
             }
+          ],
+          "minimum": {
+            "value": "string",
+            "currency": "string"
+          },
+          "maximum": {
+            "value": "string",
+            "currency": "string"
           }
-        ]
-      },
+        }
+      }],
       "interestRate": {
         "applications": [                  
           {
@@ -210,29 +204,27 @@
 ```json
 {
   "type": "string",
-  "fee": {
-    "services": [
-      {
-        "name": "string",
-        "code": "string",
-        "chargingTriggerInfo": "string",
-        "prices": [
-          {
-            "interval": "string",
-            "value": "string",
-            "currency": "string"
-          }
-        ],
-        "minimum": {
-          "value": "string",
-          "currency": "string"
-        },
-        "maximum": {
+  "fees": {
+    "service": {
+      "name": "string",
+      "code": "string",
+      "chargingTriggerInfo": "string",
+      "prices": [
+        {
+          "interval": "string",
           "value": "string",
           "currency": "string"
         }
+      ],
+      "minimum": {
+        "value": "string",
+        "currency": "string"
+      },
+      "maximum": {
+        "value": "string",
+        "currency": "string"
       }
-    ]
+    }
   },
   "interestRate": {
     "applications": [                  
@@ -297,28 +289,26 @@
 
 ```json
 {
-  "services": [
-    {
-      "name": "string",
-      "code": "string",
-      "chargingTriggerInfo": "string",
-      "prices": [
-        {
-          "interval": "string",
-          "value": "string",
-          "currency": "string"
-        }
-      ],
-      "minimum": {
-        "value": "string",
-        "currency": "string"
-      },
-      "maximum": {
+  "service": {
+    "name": "string",
+    "code": "string",
+    "chargingTriggerInfo": "string",
+    "prices": [
+      {
+        "interval": "string",
         "value": "string",
         "currency": "string"
       }
+    ],
+    "minimum": {
+      "value": "string",
+      "currency": "string"
+    },
+    "maximum": {
+      "value": "string",
+      "currency": "string"
     }
-  ]
+  }
 }
 ```
 
@@ -338,28 +328,14 @@
 
 ```json
 {
-  "services": [
+  "applications": [                  
     {
-      "name": "string",
-      "code": "string",
-      "chargingTriggerInfo": "string",
-      "prices": [
-        {
-          "interval": "string",
-          "value": "string",
-          "currency": "string"
-        }
-      ],
-      "minimum": {
-        "value": "string",
-        "currency": "string"
-      },
-      "maximum": {
-        "value": "string",
-        "currency": "string"
-      }
+      "interval": "string",
+      "rate": "string"
     }
-  ]
+  ],
+  "minimumRate": "string",
+  "maximumRate": "string"
 }
 ```
 
