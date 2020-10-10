@@ -5,57 +5,81 @@
 {
   "data": {
     "brand": {
-      "name": "string",
+      "name": "Organização A",
       "companies": [
         {
-          "name": "string",
-          "cnpjNumber": "string",
-          "urlComplementaryList": "string",
+          "name": "Empresa A1",
+          "cnpjNumber": "45086338000178",
+          "urlComplementaryList": "https://empresaa1.com/branches-banking",
           "businessInvoiceFinancings": [
             {
-              "type": "string",
-              "fees": [
-                {
-                  "services": [
-                    {
-                      "name": "string",
-                      "code": "string",
-                      "chargingTriggerInfo": "string",
-                      "prices": [
-                        {
-                          "interval": "string",
-                          "value": "string",
-                          "currency": "string"
-                        }
-                      ],
-                      "minimum": {
-                        "value": "string",
-                        "currency": "string"
+              "type": "DESCONTO_DUPLICATAS",
+              "fee": {
+                "services": [
+                  {
+                    "name": "Informar Serviço para PJ",
+                    "code": "NA",
+                    "chargingTriggerInfo": "3% do valor do contrato",
+                    "prices": [
+                      {
+                        "interval": "1_QUARTIL_CLIENTES",
+                        "value": "75,4",
+                        "currency": "BRL"
                       },
-                      "maximum": {
-                        "value": "string",
-                        "currency": "string"
+                      {
+                        "interval": "2_QUARTIL_CLIENTES",
+                        "value": "85,00",
+                        "currency": "BRL"
+                      },
+                      {
+                        "interval": "3_QUARTIL_CLIENTES",
+                        "value": "62,00",
+                        "currency": "BRL"
+                      },
+                      {
+                        "interval": "4_QUARTIL_CLIENTES",
+                        "value": "69,00",
+                        "currency": "BRL"
                       }
+                    ],
+                    "minimum": {
+                      "value": "59.90",
+                      "currency": "BRL"
+                    },
+                    "maximum": {
+                      "value": "87.00",
+                      "currency": "BRL"
                     }
-                  ]
-                }
-              ],
-              "interestRates": [
-                {
-                  "applications": [
-                    {
-                      "interval": "string",
-                      "rate": "string"
-                    }
-                  ],
-                  "minimumRate": "string",
-                  "maximumRate": "string"
-                }
-              ],
+                  }
+                ]
+              },
+              "interestRate": {
+                "applications": [
+                  {
+                    "interval": "1_QUARTIL_CLIENTES",
+                    "rate": "0.0100"
+                  },
+                  {
+                    "interval": "2_QUARTIL_CLIENTES",
+                    "rate": "0.0200"
+                  },
+                  {
+                    "interval": "3_QUARTIL_CLIENTES",
+                    "rate": "0.0390"
+                  },
+                  {
+                    "interval": "4_QUARTIL_CLIENTES",
+                    "rate": "0.0455"
+                  }
+                ],
+                "minimumRate": "0.0015",
+                "maximumRate": "0.5100"
+              },
               "requiredWarranties": [
-                "string"
+                "CESSAO_DIREITOS_CREDITORIOS",
+                "https://empresaa1.com/personal_invoice_financings"
               ],
-              "termsConditions": "string"
+              "termsConditions": "https://empresaa1.com/business_invoice_financings"
             }
           ]
         }
@@ -63,11 +87,11 @@
     }
   },
   "links": {
-    "self": "string",
-    "first": "string",
-    "prev": "string",
-    "next": "string",
-    "last": "string"
+    "self": "https://api.banco.com.br/open-banking/products-services/v1/business-invoice-financings",
+    "first": "https://api.banco.com.br/open-banking/products-services/v1/business-invoice-financings",
+    "prev": "null,",
+    "next": "null,",
+    "last": "https://api.banco.com.br/open-banking/products-services/v1/business-invoice-financings"
   },
   "meta": {
     "totalRecords": "integer",
