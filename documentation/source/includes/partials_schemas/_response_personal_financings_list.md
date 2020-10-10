@@ -8,47 +8,46 @@
       "name": "string",
       "companies": [
         {
-          "name": "string",
           "cnpjNumber": "string",
+          "name": "string",
           "urlComplementaryList": "string",
           "personalFinancings": [
             {
               "type": "string",
               "fees": [
                 {
-                  "serviceName": "string",
-                  "serviceCode": "string",
-                  "chargingTriggerInfo": "string",
-                  "chargingUnit": "string",
-                  "price": [
-                    {
-                      "interval": "string",
+                  "service": {
+                    "name": "string",
+                    "code": "string",
+                    "chargingTriggerInfo": "string",
+                    "prices": [
+                      {
+                        "interval": "string",
+                        "value": "string",
+                        "currency": "string"
+                      }
+                    ],
+                    "minimum": {
+                      "value": "string",
+                      "currency": "string"
+                    },
+                    "maximum": {
                       "value": "string",
                       "currency": "string"
                     }
-                  ],
-                  "minimum": {
-                    "value": "string",
-                    "currency": "string"
-                  },
-                  "maximum": {
-                    "value": "string",
-                    "currency": "string"
-                  },
-                  "additionalInfo": "string"
+                  }
                 }
               ],
-              "interestRates": [
-                {
-                  "application": [
-                    {
-                      "rate": "string"
-                    }
-                  ],
-                  "minimumRate": "string",
-                  "maximumRate": "string",
-                }
-              ],
+              "interestRate": {
+                "applications": [
+                  {
+                    "interval": "string",
+                    "rate": "string"
+                  }
+                ],
+                "minimumRate": "string",
+                "maximumRate": "string"
+              },
               "requiredWarranties": [
                 "string"
               ],
@@ -85,64 +84,59 @@
 
 ```json
 {
-  "name": "string",
-  "companies": [
-    {
-      "name": "string",
-      "cnpjNumber": "string",
-      "urlComplementaryList": "string",
-      "personalFinancings": [
-        {
-          "type": "string",
-          "fees": [
-            {
-              "serviceName": "string",
-              "serviceCode": "string",
-              "chargingTriggerInfo": "string",
-              "chargingUnit": "string",
-              "price": [
+  "brand": {
+    "name": "string",
+    "companies": [
+      {
+        "cnpjNumber": "string",
+        "name": "string",
+        "urlComplementaryList": "string",
+        "personalFinancings": [
+          {
+            "type": "string",
+            "fees": [
+              {
+                "service": {
+                  "name": "string",
+                  "code": "string",
+                  "chargingTriggerInfo": "string",
+                  "prices": [
+                    {
+                      "interval": "string",
+                      "value": "string",
+                      "currency": "string"
+                    }
+                  ],
+                  "minimum": {
+                    "value": "string",
+                    "currency": "string"
+                  },
+                  "maximum": {
+                    "value": "string",
+                    "currency": "string"
+                  }
+                }
+              }
+            ],
+            "interestRate": {
+              "applications": [
                 {
                   "interval": "string",
-                  "value": "string",
-                  "currency": "string"
-                }
-              ],
-              "minimum": {
-                "value": "string",
-                "currency": "string"
-              },
-              "maximum": {
-                "value": "string",
-                "currency": "string"
-              },
-              "additionalInfo": "string"
-            }
-          ],
-          "interestRates": [
-            {
-              "application": [
-                {
                   "rate": "string"
                 }
               ],
-              "minimum": {
-                "value": "string",
-                "currency": "string"
-              },
-              "maximum": {
-                "value": "string",
-                "currency": "string"
-              }
-            }
-          ],
-          "requiredWarranties": [
-            "string"
-          ],
-          "termsConditions": "string"
-        }
-      ]
-    }
-  ]
+              "minimumRate": "string",
+              "maximumRate": "string"
+            },
+            "requiredWarranties": [
+              "string"
+            ],
+            "termsConditions": "string"
+          }
+        ]
+      }
+    ]
+  }
 }
 ```
 
@@ -156,61 +150,46 @@
 
 ```json
 {
-  "name": "string",
   "cnpjNumber": "string",
+  "name": "string",
   "urlComplementaryList": "string",
   "personalFinancings": [
     {
       "type": "string",
       "fees": [
         {
-          "serviceName": "string",
-          "serviceCode": "string",
-          "chargingTriggerInfo": "string",
-          "chargingUnit": "string",
-          "price": [
-            {
-              "interval": "string",
+          "service": {
+            "name": "string",
+            "code": "string",
+            "chargingTriggerInfo": "string",
+            "prices": [
+              {
+                "interval": "string",
+                "value": "string",
+                "currency": "string"
+              }
+            ],
+            "minimum": {
+              "value": "string",
+              "currency": "string"
+            },
+            "maximum": {
               "value": "string",
               "currency": "string"
             }
-          ],
-          "minimum": {
-            "value": "string",
-            "currency": "string"
-          },
-          "maximum": {
-            "value": "string",
-            "currency": "string"
-          },
-          "additionalInfo": "string"
-        }
-      ],
-      "interestRates": [
-        {
-          "rate": "string",
-          "referencialRate": "string",
-          "indexer": "string",
-          "prePostTax": "string",
-          "occurrence": "string",
-          "incomeRateInfo": "string",
-          "application": [
-            {
-              "interval": "string",
-              "value": "string",
-              "currency": "string"
-            }
-          ],
-          "minimum": {
-            "value": "string",
-            "currency": "string"
-          },
-          "maximum": {
-            "value": "string",
-            "currency": "string"
           }
         }
       ],
+      "interestRate": {
+        "applications": [
+          {
+            "interval": "string",
+            "rate": "string"
+          }
+        ],
+        "minimumRate": "string",
+        "maximumRate": "string"
+      },
       "requiredWarranties": [
         "string"
       ],
@@ -235,53 +214,38 @@
   "type": "string",
   "fees": [
     {
-      "serviceName": "string",
-      "serviceCode": "string",
-      "chargingTriggerInfo": "string",
-      "chargingUnit": "string",
-      "price": [
-        {
-          "interval": "string",
+      "service": {
+        "name": "string",
+        "code": "string",
+        "chargingTriggerInfo": "string",
+        "prices": [
+          {
+            "interval": "string",
+            "value": "string",
+            "currency": "string"
+          }
+        ],
+        "minimum": {
+          "value": "string",
+          "currency": "string"
+        },
+        "maximum": {
           "value": "string",
           "currency": "string"
         }
-      ],
-      "minimum": {
-        "value": "string",
-        "currency": "string"
-      },
-      "maximum": {
-        "value": "string",
-        "currency": "string"
-      },
-      "additionalInfo": "string"
-    }
-  ],
-  "interestRates": [
-    {
-      "rate": "string",
-      "referencialRate": "string",
-      "indexer": "string",
-      "prePostTax": "string",
-      "occurrence": "string",
-      "incomeRateInfo": "string",
-      "application": [
-        {
-          "interval": "string",
-          "value": "string",
-          "currency": "string"
-        }
-      ],
-      "minimum": {
-        "value": "string",
-        "currency": "string"
-      },
-      "maximum": {
-        "value": "string",
-        "currency": "string"
       }
     }
   ],
+  "interestRate": {
+    "applications": [
+      {
+        "interval": "string",
+        "rate": "string"
+      }
+    ],
+    "minimumRate": "string",
+    "maximumRate": "string"
+  },
   "requiredWarranties": [
     "string"
   ],
@@ -293,7 +257,7 @@
 |:------------          |:---------------------------------------------------------------------------                     |:----------- |:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------                                                           |
 | type                  | [Enum PersonalFinancingsType](#schemaEnumPersonalFinancingsType)                                | Sim         | Modalidades de financiamentos ofertados para pessoas físicas, conforme Circular 4015-Banco Central do Brasil. Segundo cartilha do Banco Central do Brasil: Financiamento é um contrato entre o cliente e uma instituição financeira, mas com, destinação específica como para a aquisição de veículo ou de bem imóvel, que funcionam como garantia para o crédito concedido. |
 | fees                  | [[PersonalFinancingsFees](#schemaPersonalFinancingsFees)]                                       | Sim         | Valor da mediana da tarifa, relativa ao serviço ofertado, para pessoa física, informado no período. p.ex. '45.00'00'                                                                                                                                                                                                                                   |
-| interestRates         | [[PersonalFinancingsInterestRates](#schemaPersonalFinancingsInterestRates)]                     | Sim         | Lista de taxas de juros.                                                                                                                                                                                                                                                                                                                 |
+| interestRate         | [[PersonalFinancingsInterestRates](#schemaPersonalFinancingsInterestRates)]                     | Sim         | Lista de taxas de juros.                                                                                                                                                                                                                                                                                                                 |
 | requiredWarranties    | [[Enum PersonalFinancingsRequiredWarranties](#schemaEnumPersonalFinancingsRequiredWarranties)]  | Sim         | Relação de garantias exigidas.                                                                                                                                                                                                                                                                                                           |
 | termsConditions       | string                                                                                          | Não          | Campo aberto para informar as condições contratuais relativas ao produto ou serviço informado. Pode ser informada a URL ([[URIString](#commonFieldURIString)]) referente ao endereço onde constam as condições informadas.   |
 
@@ -341,39 +305,37 @@
 
 ```json
 {
-  "serviceName": "string",
-  "serviceCode": "string",
-  "chargingTriggerInfo": "string",
-  "chargingUnit": "string",
-  "price": [
-    {
-      "interval": "string",
+  "service": {
+    "name": "string",
+    "code": "string",
+    "chargingTriggerInfo": "string",
+    "prices": [
+      {
+        "interval": "string",
+        "value": "string",
+        "currency": "string"
+      }
+    ],
+    "minimum": {
+      "value": "string",
+      "currency": "string"
+    },
+    "maximum": {
       "value": "string",
       "currency": "string"
     }
-  ],
-  "minimum": {
-    "value": "string",
-    "currency": "string"
-  },
-  "maximum": {
-    "value": "string",
-    "currency": "string"
-  },
-  "additionalInfo": "string"
+  }
 }
 ```
 
 |     Nome             |  Tipo                                             | Obrigatório    |                            Definição                                                                                                       |
 |:------------         |:------------------------------------------------- |:-------------- |:------------------------------------------------------------------------------------------------------------------------------------------ |
-| serviceName          | string                                            | Sim            | Nomes das Tarifas cobradas sobre Serviços ofertados à Modalidade de Financiamento, para pessoa física.                                      |
-| serviceCode          | string                                            | Sim            | Sigla de identificação do serviço relacionado à Modalidade de Financiamento informada, para pessoa física. Campo Aberto.                    |
+| name                 | string                                            | Sim            | Nomes das Tarifas cobradas sobre Serviços ofertados à Modalidade de Financiamento, para pessoa física.                                      |
+| code          | string                                            | Sim            | Sigla de identificação do serviço relacionado à Modalidade de Financiamento informada, para pessoa física. Campo Aberto.                    |
 | chargingTriggerInfo  | string                                            | Não            | Fatos geradores de cobrança que incidem sobre as Modalidades de Financiamentos, para pessoa física. Campo Aberto.                          |
-| chargingUnit         | string                                            | Não            | Unidade ou forma de cobrança.                                                                                                               |
-| price                | [[Price](#schemaPrice)]                           | Sim            | Valor da mediana da tarifa, relativa ao serviço ofertado, para pessoa física, informado no período. p.ex. '45.00'                              |
+| prices                | [[Price](#schemaPrice)]                           | Sim            | Valor da mediana da tarifa, relativa ao serviço ofertado, para pessoa física, informado no período. p.ex. '45.00'                              |
 | minimum              | [[MinimumPrice](#schemaMinimumPrice)]             | Sim           | Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
 | maximum              | [[MaximumPrice](#schemaMaximumPrice)]             | Sim           | Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
-| additionalInfo       | string                                            | Não            | Descrição de como é composto o valor da tarifa. p.ex. '0,25% sobre o excedente do limite acima de R$ 500,00'.                               |
 
 ## PersonalFinancingsInterestRates 
 <a id="schemaPersonalFinancingsInterestRates"></a>

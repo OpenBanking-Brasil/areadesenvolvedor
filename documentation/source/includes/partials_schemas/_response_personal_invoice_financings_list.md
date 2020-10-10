@@ -245,9 +245,9 @@
 
 |     Nome              |  Tipo                                                                                                       | Obrigatório |                            Definição                                                                                                                                                                                                                                                  |
 |:------------          |:---------------------------------------------------------------------------                                 |:----------- |:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------         |
-| type                  | [Enum PersonalInvoiceFinancingsType](#schemaEnumPersonalInvoiceFinancingsType)                                | Sim         | Modalidades de direitos creditórios descontados ofertados para pessoas Físicas, conforme Circular 4015-Bacen. Direito creditório descontado é a antecipação de créditos relativos por ex. ao: desconto de duplicatas, desconto de cheques,antecipação de fatura de cartão de crédito  |
+| type                  | [Enum PersonalInvoiceFinancingsType](#schemaEnumPersonalInvoiceFinancingsType)                                | Sim         | Modalidades de direitos creditórios descontados ofertados para pessoas Físicas, conforme Circular 4015-Bacen. Direito creditório descontado é a antecipação de créditos relativos p.ex.: desconto de duplicatas, desconto de cheques, antecipação de fatura de cartão de crédito  |
 | fees                  | [[PersonalInvoiceFinancingsFees](#schemaPersonalInvoiceFinancingsFees)]                                       | Sim         | Lista das Tarifas cobradas sobre Serviços ofertados à Modalidade de direitos creditórios descontados, para pessoa física                                                                                                                                                              |
-| interestRates         | [[PersonalInvoiceFinancingsInterestRates](#schemaPersonalInvoiceFinancingsInterestRates)]                     | Sim         | Lista de taxas de juros remuneratórias                                                                                                                                                                                                                                                |
+| interestRate         | [[PersonalInvoiceFinancingsInterestRates](#schemaPersonalInvoiceFinancingsInterestRates)]                     | Sim         | Lista de taxas de juros remuneratórias                                                                                                                                                                                                                                                |
 | requiredWarranties    | [[Enum PersonalInvoiceFinancingsRequiredWarranties](#schemaEnumPersonalInvoiceFinancingsRequiredWarranties)]  | Sim         | Relação de garantias exigidas                                                                                                                                                                                                                                                         |
 | termsConditions       | string                                                                                                        | Não          | Campo aberto para informar as condições contratuais relativas ao produto ou serviço informado. Pode ser informada a URL ([[URIString](#commonFieldURIString)]) referente ao endereço onde constam as condições informadas.   |
 
@@ -261,7 +261,7 @@
 | type         | DESCONTO_CHEQUES                          | Desconto de cheques                                   |
 | type         | ANTECIPACAO_FATURA_CARTAO_CREDITO         | Antecipação de fatura de cartão de crédito            |
 | type         | OUTROS_DIREITOS_CREDITORIOS_DESCONTADOS   | Outros direitos creditórios descontados               |
-| type         | OUTROS_TÍTULOS_DESCONTADOS                | Outros títulos descontados                            |
+| type         | OUTROS_TITULOS_DESCONTADOS                | Outros títulos descontados                            |
 
 
 ### Enum PersonalInvoiceFinancingsRequiredWarranties
@@ -312,16 +312,44 @@
 }
 ```
 
+| Nome         |  Tipo                                                                                 | Obrigatório    |  Definição                                                                                                                                 |
+|:------------ |:------------------------------------------------------------------------------------- |:-------------- |:------------------------------------------------------------------------------------------------------------------------------------------ |
+| service      | [[PersonalInvoiceFinancingsFeesService](#schemaPersonalInvoiceFinancingsFeesService)] | Sim            | Nomes das Tarifas cobradas sobre Serviços ofertados à Modalidade de direitos creditórios descontados, para pessoa física. (Campo Livre)    |
+
+## PersonalInvoiceFinancingsFeesService 
+<a id="schemaPersonalInvoiceFinancingsFeesService"></a>
+
+```json
+{
+  "name": "string",
+  "code": "string",
+  "chargingTriggerInfo": "string",
+  "prices": [
+    {
+      "interval": "string",
+      "value": "string",
+      "currency": "string"
+    }
+  ],
+  "minimum": {
+    "value": "string",
+    "currency": "string"
+  },
+  "maximum": {
+    "value": "string",
+    "currency": "string"
+  }
+}   
+```
+
 |     Nome             |  Tipo                                  | Obrigatório    |                            Definição                                                                                                       |
 |:------------         |:-------------------------------------- |:-------------- |:------------------------------------------------------------------------------------------------------------------------------------------ |
-| serviceName          | string                                 | Sim            | Nomes das Tarifas cobradas sobre Serviços ofertados à Modalidade de direitos creditórios descontados, para pessoa física. (Campo Livre)    |
-| serviceCode          | string                                 | Sim            | Sigla de identificação do serviço relacionado à Modalidade de direitos creditórios descontados, para pessoa física. Campo aberto           |
-| chargingTriggerInfo  | string                                 | Não            | Fatos geradores de cobrança que incidem sobre as Modalidades de direitos creditórios descontados, para pessoa física. Campo Livre        |
-| chargingUnit         | string                                 | Não            | Unidade ou forma de cobrança                                                                                                               |
-| price                | [[Price](#schemaPrice)]                | Sim            | Valor médio da tarifa, relativa ao serviço ofertado, informado no período.                                                                       |
-| minimum              | [[MinimumPrice](#schemaMinimumPrice)]  | Sim            | Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. | 
-| maximum              | [[MaximumPrice](#schemaMaximumPrice)]  | Sim            | Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. | 
-| additionalInfo       | string                                 | Não            | Descrição de como é composto o valor da tarifa. p.ex. '0,25% sobre o excedente do limite acima de R$ 500,00'                               |
+| name                 | string                                 | Sim            | Nomes das Tarifas cobradas sobre Serviços ofertados à Modalidade de direitos creditórios descontados, para pessoa física. (Campo Livre)    |
+| code                 | string                                 | Sim            | Sigla de identificação do serviço relacionado à Modalidade de direitos creditórios descontados, para pessoa física. Campo aberto           |
+| chargingTriggerInfo  | string                                 | Não            | Fatos geradores de cobrança que incidem sobre as Modalidades de direitos creditórios descontados, para pessoa física. Campo Livre          |
+| prices               | [[Price](#schemaPrice)]                | Sim            | Valor da mediana, relativa ao serviço ofertado, informado no período.                                                                      |
+| minimum              | [[MinimumPrice](#schemaMinimumPrice)]  | Sim            | Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência.                                              | 
+| maximum              | [[MaximumPrice](#schemaMaximumPrice)]  | Sim            | Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência.                                              | 
 
 ## PersonalInvoiceFinancingsInterestRates 
 <a id="schemaPersonalInvoiceFinancingsInterestRates"></a>
@@ -339,23 +367,8 @@
 }
 ```
 
-|     Nome                  |  Tipo                                                                                       | Obrigatório    |                            Definição                                                                                                       |
-|:------------              |:------------------------------------------------------------------------------------------- |:-------------- |:------------------------------------------------------------------------------------------------------------------------------------------ |
-| rate                      | [RateString](#commonFieldRateString)                                                        | Sim            | Percentual que incide sobre a composição da  taxa de juros remuneratórias                                                                                                                                                                                                                                             |
-| referencialRate           | [RateString](#commonFieldRateString)                                                        | Sim            | Taxa Referencial se configura como uma taxa de juros de referência, ou seja, um indicador geral da economia brasileira. Por isso, é utilizada na hora de calcular o rendimento de determinadas aplicações financeiras                                                                                                 |
-| indexer                   | [Enum PersonalInvoiceFinancingsIndexer](#schemaEnumPersonalInvoiceFinancingsIndexer)        | Sim            | Indexador é o termo utilizado para se referir aos índices usados como base para corrigir os valores monetários de um determinado ativo. No Brasil, os indexadores mais comuns são o IPCA, a taxa Selic e o CDI                                                                                                        |
-| prePostTax                | [Enum PrePostTax](#schemaPrePostTax)                                                        | Sim            | Indicador de pré ou pós. A diferença básica é que, enquanto o prefixado apresenta rentabilidade definida, o pós-fixado acompanha algum indicador. Assim, quem investe no primeiro grupo sabe como será seu rendimento previamente, enquanto quem investe no segundo, só conhecerá os resultados na data de vencimento |
-| occurrence                | [Enum OccurrenceType](#OccurrenceType)                                                      | Sim            | Código que indica Ocorrência sobre a qual incide a Remuneração                                                                                                                                                                                                                                                        |
-| incomeRateInfo            | string                                                                                      | Não            | Descrição da Remuneração relativa as taxas de juros remuneratórias sobre a modalidade de direitos creditórios descontados informada, para pessoa física                                                                                                                                                               |
-| application               | [[Price](#schemaPrice)]                                                                     | Sim            | Valor da mediana da taxa de remuneração relativa ao serviço ofertado, para pessoa física informado no período.                                                                                                                                                                                                         |
-| minimum                   | [[MinimumPrice](#schemaMinimumPrice)]                                                       | Sim            | Valor mínimo cobrado para a taxa de remuneração relativa ao serviço ofertado, sobre a base de clientes,  no mês de referência | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
-| maximum                   | [[MaximumPrice](#schemaMaximumPrice)]                                                       | Sim            | Valor máximo cobrado para a taxa de remuneração relativa ao serviço ofertado, sobre a base de clientes,  no mês de referência | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
-
-### Enum PersonalInvoiceFinancingsIndexer
-<a id="schemaEnumPersonalInvoiceFinancingsIndexer"></a>
-
-| Propriedade  | Código | Definição   |
-|:------------ |:------ |:----------- |
-| indexer      | IPCA   | IPCA        |
-| indexer      | SELIC  | SELIC       |
-| indexer      | CDI    | CDI         |
+|  Nome           |  Tipo                   | Obrigatório |   Definição   |
+|:--------------- |:----------------------- |------------ |:--------------|
+| applications    | [[Price](#schemaPrice)] | Sim | Valor da mediana da taxa de remuneração relativa ao serviço ofertado, para pessoa física informado no período.     
+| minimumRate     | string                  | Sim | Valor mínimo cobrado para a taxa de remuneração relativa ao serviço ofertado, sobre a base de clientes,  no mês de referência | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
+| maximumRate     | string                  | Sim | Valor máximo cobrado para a taxa de remuneração relativa ao serviço ofertado, sobre a base de clientes,  no mês de referência | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
