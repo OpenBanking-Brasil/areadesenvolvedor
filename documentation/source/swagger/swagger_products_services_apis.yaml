@@ -1076,7 +1076,7 @@ components:
           pattern: '\w*\W*'
           maxLength: 30
           description: Nome da Marca.
-          example: "Marca A"
+          example: "Organização A"
         companies:
           type: array
           items:
@@ -1177,7 +1177,7 @@ components:
         businessLoans:
           type: array
           items:
-            $ref: '#/components/schemas/BusinessLoans'
+            $ref: '#/components/schemas/BusinessLoan'
           description: Lista
       allOf:
         - $ref: '#/components/schemas/CNPJ'
@@ -1192,7 +1192,7 @@ components:
       required:
         - types
         - fees
-        - interestRates
+        - interestRate
         - requiredWarranties
       properties:
         types:
@@ -1208,34 +1208,30 @@ components:
           description: "Modalidades de empréstimos ofertados para pessoas físicas"
           example: "ADIANTAMENTO_DEPOSITANTE"
         fees:
-          type: object
-          properties:
-            services:
-              type: array
-              items:
-                $ref: '#/components/schemas/LoanServicesFees'
-          description: Lista
-        interestRates:
           type: array
           items:
-            $ref: '#/components/schemas/LoanInterestRates'
+            $ref: '#/components/schemas/LoanFee'  
+          description: Lista
+        interestRate:
+          type: object
+          $ref: '#/components/schemas/LoanInterestRate'
         requiredWarranties:
           type: array
           items:
-            $ref: '#/components/schemas/RequiredWarranties'
+            $ref: '#/components/schemas/RequiredWarranty'
         termsConditions:
           type: string
           pattern: '\w*\W*'
           maxLength: 2000
           description: "Campo aberto para informar as condições contratuais relativas ao produto ou serviço informado. Pode ser informada a URL referente ao endereço onde constam as condições informadas."
           example: "https://empresaa1.com/personal_loans"
-    #### BusinessLoans ####
-    BusinessLoans:
+    #### BusinessLoan ####
+    BusinessLoan:
       type: object
       required:
         - types
         - fees
-        - interestRates
+        - interestRate
         - requiredWarranties
       properties:
         types:
@@ -1253,31 +1249,38 @@ components:
         fees:
           type: array
           items:
-            $ref: '#/components/schemas/LoanFees'
+            $ref: '#/components/schemas/LoanFee'  
           description: Lista
-        interestRates:
-          type: array
-          items:
-            $ref: '#/components/schemas/LoanInterestRates'
+        interestRate:
+          type: object
+          $ref: '#/components/schemas/LoanInterestRate'
         requiredWarranties:
           type: array
           items:
-            $ref: '#/components/schemas/RequiredWarranties'
+            $ref: '#/components/schemas/RequiredWarranty'
         termsConditions:
           type: string
           pattern: '\w*\W*'
           maxLength: 2000
           description: "Campo aberto para informar as condições contratuais relativas ao produto ou serviço informado. Pode ser informada a URL referente ao endereço onde constam as condições informadas."
-          example: ""
+          example: "https://empresaa1.com/personal_loans"
 
     #### Fees ####
-    LoanServicesFees:
+    LoanFee:
+      type: object
+      properties:
+        service:
+          type: object
+          $ref: '#/components/schemas/LoanService'
+
+    #### Fees ####
+    LoanService:
       type: object
       required:
         - name
         - code
         - chargeTriggerInfo
-        - price
+        - prices
         - minimum
         - maximum
       properties:
@@ -1299,7 +1302,7 @@ components:
           maxLength: 2000
           description: "Fatores geradores de cobrança que incidem sobre as Modalidades informada de Empréstimos para pessoa física/jurídica."
           example: "Tarifa cobrada sobre saldo a descoberto em conta corrente a cada ocorrencia"
-        price:
+        prices:
           type: array
           items:
             $ref: '#/components/schemas/Price'
@@ -1309,13 +1312,13 @@ components:
           $ref: '#/components/schemas/MaximumPrice'
           
   #### LoanInterestRates ####
-    LoanInterestRates:
+    LoanInterestRate:
       type: object
       properties:
-        application:
+        applications:
           type: array
           items:
-            $ref: '#/components/schemas/ApplicationRates'
+            $ref: '#/components/schemas/ApplicationRate'
         minimumRate:
           type: string
           format: (-?[1-9]?\d{1,4}){1}(\,\d{1,4}){1}
@@ -1332,13 +1335,13 @@ A apuração pode acontecer com até 4 casas decimais. O preenchimento deve resp
           example: '0.6865'
 
   #### ApplicationRates ####
-    ApplicationRates:
+    ApplicationRate:
       type: object
       properties:
-          intervals:
+          interval:
             $ref: '#/components/schemas/Intervals'
             example: 1_QUARTIL_CLIENTES
-          rates:
+          rate:
             type: string
             format: (-?[1-9]?\d{1,4}){1}(\,\d{1,4}){1}
             description: "Percentual que corresponde a mediana da taxa efetiva cobrada do cliente pela contratação do Empréstimo, no intervalo informado. p.ex. '9,8700%'
@@ -1346,8 +1349,8 @@ A apuração pode acontecer com até 4 casas decimais. O preenchimento deve resp
 (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)"
             example: "0.0987"
       required:
-          - intervals
-          - rates
+          - interval
+          - rate
 
   #### Intervals ####          
     Intervals:
@@ -1360,28 +1363,26 @@ A apuração pode acontecer com até 4 casas decimais. O preenchimento deve resp
       description: 'Faixas para cobrança da taxa efetiva aplicada pela contratação do Empréstimo, no intervalo informado: 1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes'
 
   ####  Required Warranties  ####
-    RequiredWarranties:
-          type: array
-          items:
-            type: string
-            enum:
-              - CESSAO_DIREITOS_CREDITORIOS
-              - CAUCAO
-              - PENHOR
-              - ALIENACAO_FIDUCIARIA
-              - HIPOTECA
-              - OPERCAOES_GARANTIDAS_PELO_GOVERNO
-              - OUTRAS_GARANTIAS_NAO_FIDEJUSSORIAS 
-              - SEGUROS_ASSEMELHADOS
-              - GARANTIA_FIDEJUSSORIA
-              - BENS_ARRENDADOS
-              - GARANTIAS_INTERNACIONAIS
-              - OPERACOES_GARANTIDAS_OUTRAS_ENTIDADES
-              - ACORDOS_COMPENSACAO
-              - NAO_APLICAVEL
-            maxLength: 50
-            description: "Campo aberto para informar as condições contratuais relativas à Modalidade de direitos creditórios descontados informada"
-            example: "CESSAO_DIREITOS_CREDITORIOS"
+    RequiredWarranty:  
+      type: string
+      enum:
+        - CESSAO_DIREITOS_CREDITORIOS
+        - CAUCAO
+        - PENHOR
+        - ALIENACAO_FIDUCIARIA
+        - HIPOTECA
+        - OPERCAOES_GARANTIDAS_PELO_GOVERNO
+        - OUTRAS_GARANTIAS_NAO_FIDEJUSSORIAS 
+        - SEGUROS_ASSEMELHADOS
+        - GARANTIA_FIDEJUSSORIA
+        - BENS_ARRENDADOS
+        - GARANTIAS_INTERNACIONAIS
+        - OPERACOES_GARANTIDAS_OUTRAS_ENTIDADES
+        - ACORDOS_COMPENSACAO
+        - NAO_APLICAVEL
+      maxLength: 50
+      description: "Campo aberto para informar as condições contratuais relativas à Modalidade de direitos creditórios descontados informada"
+      example: "CESSAO_DIREITOS_CREDITORIOS"
   ############
   ##  CNPJ  ##
   ############
@@ -2047,7 +2048,7 @@ A apuração pode acontecer com até 4 casas decimais. O preenchimento deve resp
         application:
           type: array
           items:
-            $ref: '#/components/schemas/ApplicationRates'
+            $ref: '#/components/schemas/ApplicationRate'
         minimumRate:
           type: string
           format: (-?[1-9]?\d{1,4}){1}(\,\d{1,4}){1}
@@ -2752,7 +2753,7 @@ A apuração pode acontecer com até 4 casas decimais. O preenchimento deve resp
         - value
         - currency
       properties:
-        intervals:
+        interval:
           $ref:  "#/components/schemas/Intervals"
           example: "1_QUARTIL_CLIENTES"
         value:
@@ -2762,7 +2763,7 @@ A apuração pode acontecer com até 4 casas decimais. O preenchimento deve resp
           x-cds-type: AmountString
           description: "Valor da mediana da tarifa, relativa ao serviço ofertado, informado no período."
           example: "45.40"
-        currencies:
+        currency:
           type: string
           pattern: '^(\w{3}){1}$'
           maxLength: 3

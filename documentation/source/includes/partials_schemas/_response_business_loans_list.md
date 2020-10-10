@@ -13,32 +13,34 @@
           "urlComplementaryList": "string",
           "businessLoans": [
             {
-              "type": "string",
+              "types": "string",
               "fees": [
                 {
-                  "serviceName": "string",
-                  "serviceCode": "string",
-                  "chargingTriggerInfo": "string",
-                  "price": [
-                    {
-                      "interval": "string",
+                  "service":{
+                    "name": "string",
+                    "code": "string",
+                    "chargingTriggerInfo": "string",
+                    "prices": [
+                      {
+                        "interval": "string",
+                        "value": "string",
+                        "currency": "string"
+                      }
+                    ],
+                    "minimum": {
+                      "value": "string",
+                      "currency": "string"
+                    },
+                    "maximum": {
                       "value": "string",
                       "currency": "string"
                     }
-                  ],
-                  "minimum": {
-                    "value": "string",
-                    "currency": "string"
-                  },
-                  "maximum": {
-                    "value": "string",
-                    "currency": "string"
                   }
                 }
               ],
-              "interestRates": [
+              "interestRate": [
                 {
-                  "application": [
+                  "applications": [
                     {
                       "interval": "string",
                       "rate": "string",
@@ -92,42 +94,42 @@
       "urlComplementaryList": "string",
       "businessLoans": [
         {
-          "type": "string",
+          "types": "string",
           "fees": [
             {
-              "serviceName": "string",
-              "serviceCode": "string",
-              "chargingTriggerInfo": "string",
-              "chargingUnit": "string",
-              "price": [
-                {
-                  "interval": "string",
+              "service":{
+                "name": "string",
+                "code": "string",
+                "chargingTriggerInfo": "string",
+                "prices": [
+                  {
+                    "interval": "string",
+                    "value": "string",
+                    "currency": "string"
+                  }
+                ],
+                "minimum": {
+                  "value": "string",
+                  "currency": "string"
+                },
+                "maximum": {
                   "value": "string",
                   "currency": "string"
                 }
-              ],
-              "minimum": {
-                "value": "string",
-                "currency": "string"
-              },
-              "maximum": {
-                "value": "string",
-                "currency": "string"
-              },
-              "additionalInfo": "string"
+              }
             }
           ],
-          "interestRates": [
+          "interestRate": [
+            {
+              "applications": [
                 {
-                  "application": [
-                    {
-                      "interval": ["string"],
-                      "rate": "string",
-                    }
-                  ],
-                  "minimumRate": "string",
-                  "maximumRate": "string"
+                  "interval": "string",
+                  "rate": "string",
                 }
+              ],
+              "minimumRate": "string",
+              "maximumRate": "string"
+            }
           ],
           "requiredWarranties": [
             "string"
@@ -155,36 +157,36 @@
   "urlComplementaryList": "string",
   "businessLoans": [
     {
-      "type": "string",
+      "types": "string",
       "fees": [
         {
-          "serviceName": "string",
-          "serviceCode": "string",
-          "chargingTriggerInfo": "string",
-          "chargingUnit": "string",
-          "price": [
-            {
-              "interval": "string",
+          "service":{
+            "name": "string",
+            "code": "string",
+            "chargingTriggerInfo": "string",
+            "prices": [
+              {
+                "interval": "string",
+                "value": "string",
+                "currency": "string"
+              }
+            ],
+            "minimum": {
+              "value": "string",
+              "currency": "string"
+            },
+            "maximum": {
               "value": "string",
               "currency": "string"
             }
-          ],
-          "minimum": {
-            "value": "string",
-            "currency": "string"
-          },
-          "maximum": {
-            "value": "string",
-            "currency": "string"
-          },
-          "additionalInfo": "string"
+          }
         }
       ],
-      "interestRates": [
+      "interestRate": [
         {
-          "application": [
+          "applications": [
             {
-              "interval": ["string"],
+              "interval": "string",
               "rate": "string",
             }
           ],
@@ -213,43 +215,43 @@
 
 ```json
 {
-  "type": "string",
+  "types": "string",
   "fees": [
     {
-      "serviceName": "string",
-      "serviceCode": "string",
-      "chargingTriggerInfo": "string",
-      "chargingUnit": "string",
-      "price": [
-        {
-          "interval": "string",
+      "service":{
+        "name": "string",
+        "code": "string",
+        "chargingTriggerInfo": "string",
+        "prices": [
+          {
+            "interval": "string",
+            "value": "string",
+            "currency": "string"
+          }
+        ],
+        "minimum": {
+          "value": "string",
+          "currency": "string"
+        },
+        "maximum": {
           "value": "string",
           "currency": "string"
         }
-      ],
-      "minimum": {
-        "value": "string",
-        "currency": "string"
-      },
-      "maximum": {
-        "value": "string",
-        "currency": "string"
-      },
-      "additionalInfo": "string"
+      }
     }
   ],
-  "interestRates": [
+  "interestRate": [
+    {
+      "applications": [
         {
-          "application": [
-            {
-              "interval": ["string"],
-              "rate": "string",
-            }
-          ],
-          "minimumRate": "string",
-          "maximumRate": "string"
+          "interval": "string",
+          "rate": "string",
         }
       ],
+      "minimumRate": "string",
+      "maximumRate": "string"
+    }
+  ],
   "requiredWarranties": [
     "string"
   ],
@@ -272,7 +274,7 @@
 |:------------ |:------                       |:------
 | type         | ADIANTAMENTO_DEPOSITANTE    | Adiantamento a depositante
 | type         | EMPRESTIMO_MICROCREDITO_PRODUTIVO_ORIENTADO  | Microcrédito produtivo orientado
-| type         | EMPRESTIMO_CHEQUE ESPECIAL  | Cheque especial
+| type         | EMPRESTIMO_CHEQUE_ESPECIAL  | Cheque especial
 | type         | EMPRESTIMO_CONTA_GARANTIDA  | Conta garantida
 | type         | EMPRESTIMO_CAPITAL_GIRO_PRAZO_VENCIMENTO_ATE_365_DIAS | Capital de giro com prazo de vencimento até 365 dias
 | type         | EMPRESTIMO_CAPITAL_GIRO_PRAZO_VENCIMENTO_SUPERIOR_365_DIAS | Capital de giro com prazo de vencimento superior a 365 dias
