@@ -1436,6 +1436,7 @@ A apuração pode acontecer com até 4 casas decimais. O preenchimento deve resp
           ]
           description: "Categoria atribuída a um cartão de pagamento, sob uma certa denominação, que lhe agrega um conjunto de vantagens, diferenciando-o de acordo com o perfil do portador. Essa categoria é definida pelo BACEN e está contida no documento de nome 'Elaboração e Remessa de Informações Relativas aos Cartões de Pagamento  Emissores'"
           example: "PLATINUM"
+
         creditCardNetwork:
           type: string
           enum: [
@@ -1562,13 +1563,14 @@ A apuração pode acontecer com até 4 casas decimais. O preenchimento deve resp
           type: object
           required:
             - price
+            - minimumRate
+            - maximumRate
           properties:
             price:
               type: object
               required:
                 - interval
                 - rate
-                - frequency
               properties:
                 interval:
                   type: string
@@ -1578,12 +1580,25 @@ A apuração pode acontecer com até 4 casas decimais. O preenchimento deve resp
                     - 3_QUARTIL_CLIENTES
                     - 4_QUARTIL_CLIENTES
                   description: "Faixas para cobrança de valores de tarifas por produto/serviço informado."
+                  example: 1_QUARTIL_CLIENTES
                 rate:
                   type: string
                   description: "Percentual que corresponde a taxa média aplicada para utilização de Crédito Rotativo, no intervalo informado."
-                frequency:
-                  type: string
-                  description: "Frequência de clientes em cada faixa de valor. Representa uma porcentagem"
+                  pattern: (-?[1-9]?\d{1,4}){1}(\,\d{1,4}){1
+                  maxLength: 9
+                  example: "4,10%"
+            minimumRate:
+              type: string
+              description: "Percentual mínimo cobrado (taxa efetiva) para o pagamento parcelado do saldo devedor na fatura do mês de referência."
+              pattern: (-?[1-9]?\d{1,4}){1}(\,\d{1,4}){1
+              maxLength: 9
+              example: "15%"
+            maximumRate:
+              type: string
+              description: "Percentual máximo cobrado (taxa efetiva) para o pagamento parcelado do saldo devedor na fatura do mês de referência."
+              pattern: (-?[1-9]?\d{1,4}){1}(\,\d{1,4}){1
+              maxLength: 9
+              example: "15%"
         codes:
           type: string
           enum: [
@@ -1648,29 +1663,28 @@ A apuração pode acontecer com até 4 casas decimais. O preenchimento deve resp
         - interval
         - value
         - currency
-        - frequency
       properties:
         type:
           type: string
-          enum: ["1ª quartil de clientes",
-                "2ª quartil de clientes",
-                "3ª quartil de clientes",
-                "4ª quartil de clientes"]
-          description: "Faixas para cobrança de valores de tarifas por produto/serviço informado."
-          example: "1ª quartil de clientes"
+          enum:
+            - 1_QUARTIL_CLIENTES
+            - 2_QUARTIL_CLIENTES
+            - 3_QUARTIL_CLIENTES
+            - 4_QUARTIL_CLIENTES
+          description: "Faixas para cobrança de valores de tarifas por Serviço informado, sobre a base de clientes, no mês de referência: 1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes"
+          example: "1_QUARTIL_CLIENTES"
         value:
-          type: number
-          description: "Valor da tarifa cobrada referente aos Outros Serviços"
-          example: 15.66
+          type: string
+          description: "Valor da mediana da tarifa cobrada, relativa ao Serviço, para o tipo de faixa informada"
+          maxLength: 12
+          pattern: ^(\d{1,9}\,\d{2}){1}$
+          example: "45.00"
         currency:
           type: string
           maxLength: 3
           pattern: ^([A-Z]{3})$
           description: "Moeda referente ao valor máximo da tarifa conforme ISO-4217"
           example: "BRL"
-        frequency:
-          type: string
-          description: "Frequência de clientes em cada faixa de valor. Representa uma porcentagem"
           
   ############################
   ##  Personal Credit Cards ##
@@ -1709,7 +1723,7 @@ A apuração pode acontecer com até 4 casas decimais. O preenchimento deve resp
                     properties:
                       name:
                         type: string
-                        maxLength: 30
+                        maxLength: 80
                         description: "Nome da Instituição, pertencente à marca, responsável pela comercialização dos produtos e serviços"
                         example: "The Big Bank Company"
                       cnpjNumber:
@@ -1764,10 +1778,22 @@ A apuração pode acontecer com até 4 casas decimais. O preenchimento deve resp
     PersonalCreditCardPriorityServices:
       type: object
       required:
+        - name
         - code
-        - price
-        - chargingUnit
+        - chargingTriggerInfo
       properties:
+        name:
+          type: string
+          enum:
+            - ANUIDADE
+            - SAQUE_CARTAO_BRASIL
+            - SAQUE_CARTAO_EXTERIOR
+            - AVALIACAO_EMERGENCIAL_CREDITO
+            - EMISSAO_SEGUNDA_VIA
+            - TARIFA_PAGAMENTO_CONTAS
+            - SMS
+          description: "Lista de denominação de Serviços relacionados à Modalidade de Contas de Pagmento Pós-Pagas, para pessoa físic"
+          example: "ANUIDADE"
         code:
           type: string
           enum: [
@@ -1779,77 +1805,80 @@ A apuração pode acontecer com até 4 casas decimais. O preenchimento deve resp
             ,"PAGAMENTO_CONTAS"
             ,"AVALIACAO_EMERGENCIAL_CREDITO"
           ]
-          description: "Sigla de identificação do serviço relacionado à modalidade de contas de pagamento pós-pagas para pessoa física informada conforme resolução 3.919 do BACEN"
+          description: "Sigla de identificação do Serviço relacionado à Modalidade de Contas de Pagamento Pós-Pagas para pessoa física informada."
           example: "AVALIACAO_EMERGENCIAL_CREDITO"
+        chargingTriggerInfo:
+          type: string
+          pattern: \w*\W*
+          maxLength: 2000
+          description: "Fatos geradores de cobrança que incidem sobre as Modalidades de de Contas de Pagamento Pós-Pagas informada, para pessoa física. Conforme serviços prioritários previstos na resolução 3919. "
         price:
           type: object
           required:
             - interval
             - value
             - currency
-            - frequency
+            - minimum
+            - maximum
           properties:
             interval:
               type: string
-              description: "Faixas para cobrança de valores de tarifas por serviço prioritário informado: 1ª quartil de clientes, 2ª quartil de clientes, 3ª quartil de clientes, 4ª quartil de clientes"
-              example: "1ª quartil de clientes"
+              enum: 
+                - 1_QUARTIL_CLIENTES
+                - 2_QUARTIL_CLIENTES
+                - 3_QUARTIL_CLIENTES
+                - 4_QUARTIL_CLIENTES
+              description: "Faixas para cobrança de valores de tarifas por Serviço informado, sobre a base de clientes, no mês de referência: 1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes"
+              example: "1_QUARTIL_CLIENTES"
             value:
               type: string
-              description: "Valor médio da tarifa cobrada, relativa ao serviço prioritário, para o tipo de faixa informada."
-              example: 45,00
+              pattern: ^(\d{1,9}\,\d{2}){1}$
+              maxLength: 12
+              description: "Valor da mediana da tarifa cobrada, relativa ao Serviço, para o tipo de faixa informada."
+              example: "45.00"
             currency:
               type: string
               maxLength: 3
               pattern: ^([A-Z]{3})$
               description: "Moeda referente ao valor da tarifa conforme ISO-4217"
               example: "BRL"
-            frequency:
-              type: string
-              description: "Frequência de clientes em cada faixa de valor. Representa uma porcentagem"
-              example: " 0.15 (O valor ao lado representa 15%. O valor 1 representa 100%)"
-        chargingUnit:
-          type: string
-          maxLength: 50
-          description: "Unidade ou forma de cobrança"
-          example: "Por depósito recebido"
-  
-  ##### PersonalCreditCardOtherServices #####
-    PersonalCreditCardOtherServices:
-      type: object
-      required: 
-        - name
-        - code
-        - chargingTriggerInfo
-        - chargingUnit
-        - price
-      properties:
-        name:
-          type: string
-          maxLength: 50
-          description: "Nomes das Tarifas cobradas sobre Serviços relacionados à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa física"
-          example: "Evento personalizado"
-        code:
-          type: string
-          maxLength: 30
-          description: "Sigla de identificação do serviço relacionado à Modalidade de Contas de Pagamento Pós-Pagas para pessoa física informada"
-          example: "EVENTO_PERSONALIZADO"
-        chargingTriggerInfo:
-          type: string
-          maxLength: 3000
-          description: "Fatores geradores de cobrança que incidem sobre as Modalidades inforrmadas de Contas de Pagamento Pós-Pagas para pessoa física"
-          example: "Cobrança devido a evento personalizado"
-        price:
-          $ref: '#/components/schemas/CreditCardServicePrice'
-        additionalInfo:
-          type: string
-          maxLength: 80
-          description: "Descrição de como é composto o valor da tarifa"
-          example: "50% do valor da anuidade do cartão titular"
-        chargingUnit:
-          type: string
-          maxLength: 50
-          description: "Unidade ou forma de cobrança"
-          example: "Anualmente"
+            minimum:
+              type: object
+              required:
+                - value
+                - currency
+              properties:
+                value:
+                  type: string
+                  maxLength: 12
+                  pattern: ^(\d{1,9}\,\d{2}){1}$
+                  description: "Valor mínimo cobrado para a tarifa de Serviço  no mês de referência"
+                  example: "45.00"
+                currency:
+                  type: string
+                  maxLength: 3
+                  pattern: ^([A-Z]{3})$
+                  description: "Moeda referente ao valor da tarifa conforme ISO-4217"
+                  example: "BRL"
+            maximum:
+              type: object
+              required:
+                - value
+                - currency
+              properties:
+                value:
+                  type: string
+                  maxLength: 12
+                  pattern: ^(\d{1,9}\,\d{2}){1}$
+                  description: "Valor máximo cobrado para a tarifa de Serviço  no mês de referência"
+                  example: "45.00"
+                currency:
+                  type: string
+                  maxLength: 3
+                  pattern: ^([A-Z]{3})$
+                  description: "Moeda referente ao valor da tarifa conforme ISO-4217"
+                  example: "BRL
+ 
   ############################
   ##  Business Credit Cards ##
   ############################
