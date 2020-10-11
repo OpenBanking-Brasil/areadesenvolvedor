@@ -414,7 +414,7 @@
 | serviceBundles        | [ServiceBundleBusinessAccount](#schemaServiceBundleBusinessAccount)] | Sim   | Nome dos pacotes de serviços.                                                                           |
 | openingClosingChannels| [Enum BusinessAccountOpeningClosingChannel ](#schemaEnumBusinessAccountOpeningClosingChannel)       | Sim             | Canais disponíveis para abertura e encerramento de contas.    |
 | additionalInfo        | string                                         | Sim             | Texto livre para complementar informação relativa ao Canal disponível.                                                 |
-| transactionMethods    | [Enum BusinessAccountOpeningTransactionMethod ](#schemaEnumBusinessAccountOpeningTransactionMethod) | Sim             | Lista de formas de movimentação possíveis para a conta. |
+| transactionMethods    | [Enum BusinessAccountTransactionMethod ](#schemaEnumBusinessAccounTransactionMethod) | Sim             | Lista de formas de movimentação possíveis para a conta. |
 | termsConditions       | [TermConditionsBusinessAccount](#schemaTermConditionBusinessAccount) | Sim             | Termos e condições contratuais.                   |
 | incomeRates           | [IncomeRateBusinessAccount](#schemaIncomeRateBusinessAccount) | Sim             | Valores dos percentuais de taxas.                         |
 
@@ -440,8 +440,8 @@
 | openingClosingChannels   | CHAT                      | Chat.                                      |
 | openingClosingChannels   | OUTROS                    | Outros (p.ex. website/appps de terceiros). |
 
-### Enum BusinessAccountOpeningTransactionMethod  
-<a id="schemaEnumBusinessAccountOpeningTransactionMethod"></a>
+### Enum BusinessAccountTransactionMethod  
+<a id="schemaEnumBusinessAccounTransactionMethod"></a>
 
 | Propriedade          | Valor                     | Definição                  |                     
 |:---------------------|:--------------------------|:---------------------------|
@@ -674,8 +674,8 @@
 
 |     Nome          |  Tipo                                        |  Obrigatório | Descrição                                           |
 |:------------------|:---------------------------------------------|:-------------|:----------------------------------------------------|
-| savingAccount         | string                                                                                    | Sim          | Percentual que corresponde a mediana da remuneração efetivamente aplicada no intervalo informado.                                         |
-| prepaidPaymentAccount | [PrepaidPaymentIncomeRateBusinessAccount](#schemaPrepaidPaymentIncomeRateBusinessAccount) | Sim          | Taxa Referencial se configura como uma taxa de juros de referência, ou seja, um indicador geral da economia brasileira.                   |
+| savingAccount         | string                                                                                    | Sim          | Descrição da Remuneração especificamente para Conta de Poupança. Deve ser preenchida com a determinação legal vigente.                    |
+| prepaidPaymentAccount | [PrepaidPaymentIncomeRateBusinessAccount](#schemaPrepaidPaymentIncomeRateBusinessAccount) | Sim          | Taxa de remuneração para conta do tipo CONTA_PAGAMENTO_PRE_PAGA                  |
 
 ## PrepaidPaymentIncomeRateBusinessAccount
 <a id="schemaPrepaidPaymentIncomeRateBusinessAccount"></a>
