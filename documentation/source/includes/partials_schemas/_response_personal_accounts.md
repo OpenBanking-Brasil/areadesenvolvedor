@@ -8,16 +8,16 @@
       "name": "string",
       "companies": [
         {
-          "names": "string",
-          "cnpjNumbers": "string",
+          "name": "string",
+          "cnpjNumber": "string",
           "urlComplementaryList": "string",
           "PersonalAccounts": [
             {
-              "types": "string",
+              "type": "string",
               "fees": {
-                "priorityServices": [
+                "priorityService": [
                   {
-                    "names": "string",
+                    "name": "string",
                     "codes": "string",
                     "chargingTriggerInfo": "string",
                     "price": [
@@ -37,7 +37,7 @@
                       }
                   }
                 ],
-                "otherServices": [
+                "otherService": [
                   {
                     "name": "string",
                     "code": "string",
