@@ -835,4 +835,4 @@
 |     Nome          |  Tipo                                        |  Obrigatório | Descrição                                           |
 |:------------------|:---------------------------------------------|:-------------|:----------------------------------------------------|
 | savingAccount              | string                                       | Sim          |Descrição da Remuneração especificamente para Conta de Poupança. Deve ser preenchido com a determinação legal vigente.      |
-| prePaidPaymentAccount   | string                                       | Sim          | Estrutura de objetos          |
+| prePaidPaymentAccount   | string                                       | Sim          | Remuneração efetivamente aplicada para CONTA_PAGAMENTO_PRE_PAGA          |
