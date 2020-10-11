@@ -974,7 +974,7 @@ components:
                       value: '65.00'
                       currency: 'BRL'
                     - interval: '3_QUARTIL_CLIENTES'
-                      value: '69.00	'
+                      value: '69.00  '
                       currency: 'BRL'
                     - interval: '4_QUARTIL_CLIENTES'
                       value: '72.00'
@@ -1841,15 +1841,12 @@ A apuração pode acontecer com até 4 casas decimais. O preenchimento deve resp
                             rewardsProgram:
                               $ref: '#/components/schemas/CreditCardRewardsProgram'
                             fees:
-                              type: object
-                              required:
-                                - priorityServices
-                              properties:
-                                priorityService:
-                                  $ref: '#/components/schemas/PersonalCreditCardPriorityServices'
-                                otherService:
-                                  $ref: '#/components/schemas/PersonalCreditCardOtherServices'
-                            interestRates:
+                              type: array
+                              items:
+                                properties:
+                                    service:
+                                      $ref: '#/components/schemas/PersonalCreditCardService'
+                            interest:
                               $ref: '#/components/schemas/CreditCardInterest'
                             termsConditions:
                               $ref: '#/components/schemas/CreditCardTermsConditions'
@@ -1857,6 +1854,68 @@ A apuração pode acontecer com até 4 casas decimais. O preenchimento deve resp
           $ref: '#/components/schemas/Links'
         meta:
           $ref: '#/components/schemas/Meta'
+          
+  ##### PersonalCreditCardService #####
+    PersonalCreditCardService:
+      type: object
+      required: 
+        - name
+        - code
+        - chargingTriggerInfo
+      properties:
+        name:
+          type: string
+          maxLength: 50
+          description: "Nomes das Tarifas cobradas sobre Serviços relacionados à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa física"
+          example: "ANUIDADE"
+        code:
+          type: string
+          maxLength: 30
+          description: "Sigla de identificação do serviço relacionado à Modalidade de Contas de Pagamento Pós-Pagas para pessoa física informada"
+          example: "ANUIDADENacional"
+        chargingTriggerInfo:
+          type: string
+          maxLength: 3000
+          description: "Fatores geradores de cobrança que incidem sobre as Modalidades inforrmadas de Contas de Pagamento Pós-Pagas para pessoa física"
+          example: "SEGUNDA_VIA_CARTAO_CREDITO"
+        prices:
+          $ref: '#/components/schemas/CreditCardServicePrice'
+        minimum:
+          type: object
+          required:
+            - value
+            - currency
+          properties:
+            value:
+              type: string
+              maxLength: 12
+              pattern: ^(\d{1,9}\,\d{2}){1}$
+              description: "Valor mínimo cobrado para a tarifa de Serviço  no mês de referência"
+              example: "45.00"
+            currency:
+              type: string
+              maxLength: 3
+              pattern: ^([A-Z]{3})$
+              description: "Moeda referente ao valor da tarifa conforme ISO-4217"
+              example: "BRL"
+        maximum:
+          type: object
+          required:
+            - value
+            - currency
+          properties:
+            value:
+              type: string
+              maxLength: 12
+              pattern: ^(\d{1,9}\,\d{2}){1}$
+              description: "Valor máximo cobrado para a tarifa de Serviço  no mês de referência"
+              example: "45.00"
+            currency:
+              type: string
+              maxLength: 3
+              pattern: ^([A-Z]{3})$
+              description: "Moeda referente ao valor da tarifa conforme ISO-4217"
+              example: "BRL"
                   
   ##### PersonalCreditCardPriorityServices #####
     PersonalCreditCardPriorityServices:
