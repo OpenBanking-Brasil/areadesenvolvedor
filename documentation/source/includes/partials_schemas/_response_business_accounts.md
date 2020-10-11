@@ -47,7 +47,22 @@
                       "eventLimitQuantity": "string",
                       "freeEventQuantity": "string"
                     }
-                  ]
+                  ],
+                  "prices": [
+                    {
+                      "interval": "string",
+                      "monthlyFee": "string",
+                      "currency": "string"
+                    }
+                  ],
+                  "minimum": {
+                    "value": "string",
+                    "currency": "string"
+                  },
+                  "maximum": {
+                    "value": "string",
+                    "currency": "string"
+                  }
                 }
               ],
               "openingClosingChannels": [
@@ -150,7 +165,22 @@
                   "eventLimitQuantity": "string",
                   "freeEventQuantity": "string"
                 }
-              ]
+              ],
+              "prices": [
+                {
+                  "interval": "string",
+                  "monthlyFee": "string",
+                  "currency": "string"
+                }
+              ],
+              "minimum": {
+                "value": "string",
+                "currency": "string"
+              },
+              "maximum": {
+                "value": "string",
+                "currency": "string"
+              }
             }
           ],
           "openingClosingChannels": [
@@ -235,7 +265,22 @@
               "eventLimitQuantity": "string",
               "freeEventQuantity": "string"
             }
-          ]
+          ],
+          "prices": [
+            {
+              "interval": "string",
+              "monthlyFee": "string",
+              "currency": "string"
+            }
+          ],
+          "minimum": {
+            "value": "string",
+            "currency": "string"
+          },
+          "maximum": {
+            "value": "string",
+            "currency": "string"
+          }
         }
       ],
       "openingClosingChannels": [
@@ -315,7 +360,22 @@
           "eventLimitQuantity": "string",
           "freeEventQuantity": "string"
         }
-      ]
+      ],
+      "prices": [
+        {
+          "interval": "string",
+          "monthlyFee": "string",
+          "currency": "string"
+        }
+      ],
+      "minimum": {
+        "value": "string",
+        "currency": "string"
+      },
+      "maximum": {
+        "value": "string",
+        "currency": "string"
+      }
     }
   ],
   "openingClosingChannels": [
@@ -352,9 +412,9 @@
 | type                  | [Enum TypeBusinessAccount](#schemaEnumTypeBusinessAccount) | Sim              | Tipos de contas ofertadas para pessoas jurídicas, conforme Resolução 3.919 do Banco Central do Brasil.  |
 | fees                  | [FeesBusinessAccount](#schemaFeeBusinessAccount)          | Sim              | Lista Tarifas cobradas.                                                                                 |
 | serviceBundles        | [ServiceBundleBusinessAccount](#schemaServiceBundleBusinessAccount)] | Sim   | Nome dos pacotes de serviços.                                                                           |
-| openingClosingChannels| [Enum BusinessAccountOpeningClosingChannel ](#schemaEnumBusinessAccountOpeningClosingChannels)       | Sim             | Canais disponíveis para abertura e encerramento de contas.    |
+| openingClosingChannels| [Enum BusinessAccountOpeningClosingChannel ](#schemaEnumBusinessAccountOpeningClosingChannel)       | Sim             | Canais disponíveis para abertura e encerramento de contas.    |
 | additionalInfo        | string                                         | Sim             | Texto livre para complementar informação relativa ao Canal disponível.                                                 |
-| transactionMethods    | [Enum BusinessAccountOpeningTransactionMethod ](#schemaEnumBusinessAccountOpeningTransactionMethods) | Sim             | Lista de formas de movimentação possíveis para a conta. |
+| transactionMethods    | [Enum BusinessAccountTransactionMethod ](#schemaEnumBusinessAccounTransactionMethod) | Sim             | Lista de formas de movimentação possíveis para a conta. |
 | termsConditions       | [TermConditionsBusinessAccount](#schemaTermConditionBusinessAccount) | Sim             | Termos e condições contratuais.                   |
 | incomeRates           | [IncomeRateBusinessAccount](#schemaIncomeRateBusinessAccount) | Sim             | Valores dos percentuais de taxas.                         |
 
@@ -380,8 +440,8 @@
 | openingClosingChannels   | CHAT                      | Chat.                                      |
 | openingClosingChannels   | OUTROS                    | Outros (p.ex. website/appps de terceiros). |
 
-### Enum BusinessAccountOpeningTransactionMethod  
-<a id="schemaEnumBusinessAccountOpeningTransactionMethod"></a>
+### Enum BusinessAccountTransactionMethod  
+<a id="schemaEnumBusinessAccounTransactionMethod"></a>
 
 | Propriedade          | Valor                     | Definição                  |                     
 |:---------------------|:--------------------------|:---------------------------|
@@ -598,29 +658,48 @@
 
 ```json
 {
-  "rate": "string",
-  "referencialRate": "string",
-  "indexer": "string",
-  "prePostTax": "string",
-  "occurrence": "string",
-  "additionalInfo": "string",
-  "applications": [{
-    "interval": "string",
-    "rate": "string"
-  }],
-  "minumumRate": "string",
-  "maxiumRate": "string"
+  "savingAccount": "string",
+  "prepaidPaymentAccount": {
+    "applications": [                    
+      {
+        "interval": "string",
+        "rate": "string"
+      }
+    ],
+    "minimumRate": "string",
+    "maximumRate": "string"
+  }
 }
 ```
 
 |     Nome          |  Tipo                                        |  Obrigatório | Descrição                                           |
 |:------------------|:---------------------------------------------|:-------------|:----------------------------------------------------|
-| rate              | string                                       | Sim          | Percentual que corresponde a mediana da remuneração efetivamente aplicada no intervalo informado.      |
-| referencialRate   | string                                       | Sim          | Taxa Referencial se configura como uma taxa de juros de referência, ou seja, um indicador geral da economia brasileira.          |
-| indexer           | string                                       | Sim          | Indexador é o termo utilizado para se referir aos índices usados como base para corrigir os valores monetários de um determinado ativo.     |
-| prePostTax        | [Enum PrePostTax](#schemaPrePostTax)         | Sim          | Indicador de indexador pré ou pós fixado.         |
-| occurrence        | [Enum OccurrenceType](#schemaOccurrenceType)   | Sim          | Código que indica Frequência sobre a qual incide a Remuneração.             |
-| additionalInfo    | string                                       | Sim          | Descrição da Remuneração            |
-| application       | [[Price](#schemaPrice)]                      | Sim          | Identifica o período referente ao percentual de taxa de remuneração efetivamente aplicada no intervalo informado.              |
-| minimumRate     | String                                                                                      | Sim             | Percentual mínimo referente à taxa de remuneração efetivamente aplicada no mês de referência.                                                                |
-| maximumRate     | String                                                                                      | Sim             | Percentual máximo referente à taxa de remuneração efetivamente aplicada no mês de referência.                                                                   |
+| savingAccount         | string                                                                                    | Sim          | Descrição da Remuneração especificamente para Conta de Poupança. Deve ser preenchida com a determinação legal vigente.                    |
+| prepaidPaymentAccount | [PrepaidPaymentIncomeRateBusinessAccount](#schemaPrepaidPaymentIncomeRateBusinessAccount) | Sim          | Taxa de remuneração para conta do tipo CONTA_PAGAMENTO_PRE_PAGA                  |
+
+## PrepaidPaymentIncomeRateBusinessAccount
+<a id="schemaPrepaidPaymentIncomeRateBusinessAccount"></a>
+
+```json
+{
+  "applications": [                    
+    {
+      "interval": "string",
+      "rate": "string"
+    }
+  ],
+  "minimumRate": "string",
+  "maximumRate": "string"
+}
+```
+
+|     Nome          |  Tipo                                        |  Obrigatório | Descrição                                           |
+|:------------------|:---------------------------------------------|:-------------|:----------------------------------------------------|
+| applications          | [Price](#schemaPrice) | Sim | Identifica o período referente ao percentual de taxa de remuneração efetivamente aplicada no intervalo informado. |
+| minimumRate           | String                | Sim | Percentual mínimo referente à taxa de remuneração efetivamente aplicada no mês de referência.                     |
+| maximumRate           | String                | Sim | Percentual máximo referente à taxa de remuneração efetivamente aplicada no mês de referência.                     |
+
+
+
+
+
