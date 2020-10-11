@@ -1,5 +1,5 @@
-## ResponsePersonalAccountsList
-<a id="schemaResponsePersonalAccountsList"></a>
+## ResponsePersonalAccountList
+<a id="schemaResponsePersonalAccountList"></a>
 
 ```json
 { 
@@ -253,10 +253,10 @@
 |     Nome     |  Tipo                                                        | Obrigatório  |                            Definição                         |
 |:------------ |:---------------------------------                            |:-----------  |:----------------------------------------------------         |
 | name         | string                                                       | Sim          | Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a 'marca' utilizada está em definição pelos participantes.  |
-| companies    | [PersonalAccountCompanies](#schemaPersonalAccountCompanies)| Sim          | Lista de instituições pertencentes à marca.                   |
+| companies    | [PersonalAccountCompany](#schemaPersonalAccountCompany)| Sim          | Lista de instituições pertencentes à marca.                   |
 
-## PersonalAccountCompanies 
-<a id="schemaPersonalAccountCompanies"></a>
+## PersonalAccountCompany 
+<a id="schemaPersonalAccountCompany"></a>
 
 ```json
 {
@@ -370,11 +370,11 @@
 | name            | string                                                        | Sim          | Nome da Instituição, pertencente à marca, responsável pela comercialização dos tipos de contas de pessoas física consultadas.                       |
 | cnpjNumber      | string                                                        | Sim          | O responsável pela comercialização das modalidades de Contas para Pessoas Física consultadas.                                       |
 | urlComplementaryList | string                                                        | Sim          | URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. |
-| PersonalAccounts| [PersonalAccounts](#schemaPersonalAccounts)                 | Sim          | Lista de contas pessoa física.                                      |
+| PersonalAccounts| [PersonalAccount](#schemaPersonalAccount)                 | Sim          | Lista de contas pessoa física.                                      |
 
 
-## PersonalAccounts
-<a id="schemaPersonalAccounts"></a>
+## PersonalAccount
+<a id="schemaPersonalAccount"></a>
 
 ```json
 {
@@ -480,7 +480,7 @@
 |:----------------------|:-----------------------------------------------| :---------------|:------------------------------------------------------|
 | type                  | [Enum TypePersonalAccount](#schemaEnumTypePersonalAccount) | Sim             | Tipos de contas ofertadas para pessoas físicas, conforme Resolução 3.919 do Banco Central do Brasil.                                 |
 | fees                  | [FeesPersonalAccount](#schemaFeesPersonalAccount) | Sim             | Lista Tarifas cobradas.                             |
-| serviceBundle        | [ServiceBundlesPersonalAccount](#schemaServiceBundlesPersonalAccount) | Sim             | Nome dos pacotes de serviços.                          |
+| serviceBundle        | [ServiceBundlePersonalAccount](#schemaServiceBundlePersonalAccount) | Sim             | Nome dos pacotes de serviços.                          |
 | openingClosingChannels   | [Enum PersonalAccountOpeningClosingChannels ](#schemaEnumPersonalAccountOpeningClosingChannels) | Sim             | Canais disponíveis para abertura e encerramento de contas.      |
 | additionalInfo        | string                                         | Sim             | Texto livre para complementar informação relativa ao Canal disponível.    |
 | transactionMethods    | [Enum PersonalAccountOpeningTransactionMethods ](#schemaEnumPersonalAccountOpeningTransactionMethods)                                         | Sim             | Lista de formas de movimentação possíveis para a conta.  |
@@ -573,12 +573,12 @@
 
 |     Nome         |  Tipo                              |  Obrigatório    |                       Descrição                     |
 |:-----------------|:-----------------------------------|:----------------|:----------------------------------------------------|
-| priorityService | [PriorityServicesPersonalAccount](#schemaPriorityServicesPersonalAccount) | Sim             | Lista Tarifas de serviços prioritários da conta                                 |
-| otherService    | [OtherServicesPersonalAccount](#schemaOtherServicesPersonalAccount) | Sim             | Lista Tarifas de outros serviços da conta                                 |
+| priorityService | [PriorityServicePersonalAccount](#schemaPriorityServicePersonalAccount) | Sim             | Lista Tarifas de serviços prioritários da conta                                 |
+| otherService    | [OtherServicePersonalAccount](#schemaOtherServicePersonalAccount) | Sim             | Lista Tarifas de outros serviços da conta                                 |
 
 
-## PriorityServicesPersonalAccount
-<a id="schemaPriorityServicesPersonalAccount"></a>
+## PriorityServicePersonalAccount
+<a id="schemaPriorityServicePersonalAccount"></a>
 
 ```json
 {
@@ -606,15 +606,15 @@
 |     Nome          |  Tipo                              |  Obrigatório    |                            Descrição                |
 |:------------------|:-----------------------------------|:----------------|:----------------------------------------------------|
 | name              |string                             | Sim             | Nome dos Serviços prioritários, segundo Resolução 3.919 do Bacen, para pessoa física  |
-| code              | [Enum CodePriorityServicesPersonalAccount ](#schemaEnumCodePriorityServicesPersonalAccount)                             | Sim             | Sigla de identificação do Serviço Prioritário, segundo Resolução 3.919 do Bacen  |
+| code              | [Enum CodePriorityServicePersonalAccount ](#schemaEnumCodePriorityServicePersonalAccount)                             | Sim             | Sigla de identificação do Serviço Prioritário, segundo Resolução 3.919 do Bacen  |
 | chargingTriggerInfo  |string                             | Sim             | Fatos geradores de cobrança que incidem sobre os serviços prioritários, segundo Resolução 3.919 do Bacen, para pessoa física.  |
 | prices             | [Price](#schemaPrice) | Sim             | Lista Tarifas de serviços prioritários da conta                                 |
 | minimum             | [MinimumPrice](#schemaMinimumPrice)           | Sim          | Valor mínimo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
 | maximum             | [MaximumPrice](#schemaMaximumPrice)           | Sim          | Valor máximo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
 
 
-### Enum CodePriorityServicesPersonalAccount  
-<a id="schemaEnumCodePriorityServicesPersonalAccount"></a>
+### Enum CodePriorityServicePersonalAccount  
+<a id="schemaEnumCodePriorityServicePersonalAccount"></a>
 
 | Propriedade          | Valor                                            | Definição                  |                     
 |:---------------------|:-------------------------------------------------|:---------------------------|
@@ -652,8 +652,8 @@
 | code                 | ORDEM_PAGAMENTO       | Movimentação eletrônica    |
 
 
-## OtherServicesPersonalAccount
-<a id="schemaOtherServicesPersonalAccount"></a>
+## OtherServicePersonalAccount
+<a id="schemaOtherServicePersonalAccount"></a>
 
 ```json
 {
@@ -688,8 +688,8 @@
 | maximum             | [[MaximumPrice](#schemaMaximumPrice)]           | Sim          | Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
 
 
-## ServiceBundlesPersonalAccount
-<a id="schemaServiceBundlesPersonalAccount"></a>
+## ServiceBundlePersonalAccount
+<a id="schemaServiceBundlePersonalAccount"></a>
 
 ```json
 {
