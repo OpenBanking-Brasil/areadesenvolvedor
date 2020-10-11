@@ -1544,7 +1544,7 @@ A apuração pode acontecer com até 4 casas decimais. O preenchimento deve resp
                   description: "Percentual que corresponde a mediana (taxa efetiva) cobrada do cliente pela utilização do crédito rotativo, no intervalo informado."
                   pattern: (-?[1-9]?\d{1,4}){1}(\,\d{1,4}){1
                   maxLength: 9
-                  examples: "9,8700%"
+                  example: "9,8700%"
             minimumRate:
               type: string
               pattern: (-?[1-9]?\d{1,4}){1}(\,\d{1,4}){1
@@ -1610,22 +1610,26 @@ A apuração pode acontecer com até 4 casas decimais. O preenchimento deve resp
           example: "SAQUE_A_CREDITO"
         prices:
           type: array
-          properties:
-            interval:
-              type: string
-              enum:
-                - 1_QUARTIL_CLIENTES
-                - 2_QUARTIL_CLIENTES
-                - 3_QUARTIL_CLIENTES
-                - 4_QUARTIL_CLIENTES
-              description: "Faixas para cobrança da taxa efetiva outras operações de crédito, no intervalo informado: 1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes"
-              example: "1_QUARTIL_CLIENTES"
-            rate:
-              type: string
-              pattern: (-?[1-9]?\d{1,4}){1}(\,\d{1,4}){1
-              maxLength:
-              description:
-              example:
+          items:
+            required:
+              - interval
+              - rate
+            properties:
+              interval:
+                type: string
+                enum:
+                  - 1_QUARTIL_CLIENTES
+                  - 2_QUARTIL_CLIENTES
+                  - 3_QUARTIL_CLIENTES
+                  - 4_QUARTIL_CLIENTES
+                description: "Faixas para cobrança da taxa efetiva outras operações de crédito, no intervalo informado: 1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes"
+                example: "1_QUARTIL_CLIENTES"
+              rate:
+                type: string
+                pattern: (-?[1-9]?\d{1,4}){1}(\,\d{1,4}){1
+                maxLength: 9
+                description: "Percentual que corresponde a mediana (taxa efetiva) aplicada para  outras operações de crédito, no período informado."
+                example: "15%"
         minimum:
           type: object
           required:
@@ -1651,7 +1655,7 @@ A apuração pode acontecer com até 4 casas decimais. O preenchimento deve resp
         additionalInfo:
           type: string
           maxLength: 50
-          pattern:
+          pattern: \w*\W*
           description: "Campo Texto para descrever outras operações de crédito marcadas como 'Outros'"
           example:
 
@@ -1757,14 +1761,10 @@ A apuração pode acontecer com até 4 casas decimais. O preenchimento deve resp
                               required:
                                 - priorityServices
                               properties:
-                                priorityServices:
-                                  type: array
-                                  items:
-                                    $ref: '#/components/schemas/PersonalCreditCardPriorityServices'
-                                otherServices:
-                                  type: array
-                                  items:
-                                    $ref: '#/components/schemas/PersonalCreditCardOtherServices'
+                                priorityService:
+                                  $ref: '#/components/schemas/PersonalCreditCardPriorityServices'
+                                otherService:
+                                  $ref: '#/components/schemas/PersonalCreditCardOtherServices'
                             interestRates:
                               $ref: '#/components/schemas/CreditCardInterestRates'
                             termsConditions:
@@ -1878,6 +1878,44 @@ A apuração pode acontecer com até 4 casas decimais. O preenchimento deve resp
                   pattern: ^([A-Z]{3})$
                   description: "Moeda referente ao valor da tarifa conforme ISO-4217"
                   example: "BRL"
+                  
+  ##### PersonalCreditCardOtherServices #####
+    PersonalCreditCardOtherServices:
+      type: object
+      required: 
+        - name
+        - code
+        - chargingTriggerInfo
+        - chargingUnit
+      properties:
+        name:
+          type: string
+          maxLength: 50
+          description: "Nomes das Tarifas cobradas sobre Serviços relacionados à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa jurídica"
+          example: "2ª via do cartão de crédito"
+        code:
+          type: string
+          maxLength: 30
+          description: "Sigla de identificação do serviço relacionado à Modalidade de Contas de Pagamento Pós-Pagas para pessoa jurídica informada"
+          example: "SEGUNDA_VIA_CARTAO_CREDITO"
+        chargingTriggerInfo:
+          type: string
+          maxLength: 3000
+          description: "Fatores geradores de cobrança que incidem sobre as Modalidades inforrmadas de Contas de Pagamento Pós-Pagas para pessoa jurídica"
+          example: "SEGUNDA_VIA_CARTAO_CREDITO"
+        price:
+          $ref: '#/components/schemas/CreditCardServicePrice'
+        additionalInfo:
+          type: string
+          maxLength: 80
+          description: "Descrição de como é composto o valor da tarifa"
+          example: "0.5% da valor do orçamento"
+        chargingUnit:
+          type: string
+          maxLength: 50
+          description: "Unidade ou forma de cobrança"
+          example: "Por evento"
+
  
   ############################
   ##  Business Credit Cards ##
