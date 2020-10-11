@@ -69,12 +69,12 @@
                     "freeEventQuantity": "string"
                   }
                 ],
-                "prices":{
+                "prices":[{
                   "interval": "string",
                   "monthlyFee":"string",
                   "currency":"string"
                   
-                },
+                }],
                 "minimum": {
                         "value": "string",
                         "currency": "string"
