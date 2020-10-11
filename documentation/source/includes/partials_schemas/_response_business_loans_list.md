@@ -77,12 +77,12 @@
 |     Nome          |  Tipo                                                   | Obrigatório  |                            Definição                  |
 |:------------      |:---------------------------------                       |:-----------  |:----------------------------------------------------  |
 | data              | object                                                  | Sim          |                                                       |
-| » brand           | [[BusinessLoansBrand](#schemaBusinessLoansBrand)]       | Sim          | organização titular das dependências                  |
+| » brand           | [BusinessLoanBrand](#schemaBusinessLoanBrand)       | Sim          | organização titular das dependências                  |
 | links             | [LinksPaginated](#schemaLinksPaginated)                 | Sim          |                                                       |
 | meta              | [MetaPaginated](#schemaMetaPaginated)                   | Sim          |                                                       |
 
-## BusinessLoansBrand
-<a id="schemaBusinessLoansBrand"></a>
+## BusinessLoanBrand
+<a id="schemaBusinessLoanBrand"></a>
 
 ```json
 {
@@ -145,10 +145,10 @@
 |     Nome     |  Tipo                                                      | Obrigatório  |                            Definição                         |
 |:------------ |:---------------------------------                          |:-----------  |:----------------------------------------------------         |
 | name         | string                                                     | Sim          | Nome da marca proprietária da dependência (titular).  |
-| companies    | [[BusinessLoansCompanies](#schemaBusinessLoansCompanies)]  | Sim          | Lista de instituições pertencentes à marca             |
+| companies    | [BusinessLoanCompany](#schemaBusinessLoanCompany)  | Sim          | Lista de instituições pertencentes à marca             |
 
-## BusinessLoansCompanies
-<a id="schemaBusinessLoansCompanies"></a>
+## BusinessLoanCompany
+<a id="schemaBusinessLoanCompany"></a>
 
 ```json
 {
@@ -207,11 +207,11 @@
 |:------------    |:---------------------------------                             |:-----------  |:----------------------------------------------------                 |
 | name            | string                                                        | Sim          | Nome da Instituição, pertencente à marca, responsável pela comercialização das modalidades de Empréstimos para Pessoas Jurídicas consultadas.  |
 | cnpjNumber      | string                                                        | Sim          | Número do CNPJ do conglomerado                                       |
-| urlComplementaryList  | [[URIString](#commonFieldURIString)]                          | Sim          | URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. |
-| businessLoans   | [[BusinessLoans](#schemaBusinessLoans)]                       | Sim          | Empréstimos Pessoas Jurídicas                                        |
+| urlComplementaryList  | [URIString](#commonFieldURIString)                          | Sim          | URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. |
+| businessLoans   | [BusinessLoan](#schemaBusinessLoan)                       | Sim          | Empréstimos Pessoas Jurídicas                                        |
 
-## BusinessLoans
-<a id="schemaBusinessLoans"></a>
+## BusinessLoan
+<a id="schemaBusinessLoan"></a>
 
 ```json
 {
@@ -261,14 +261,14 @@
 
 |     Nome            |  Tipo                                                       | Obrigatório  |                            Definição                         |
 |:------------        |:---------------------------------                           |:-----------  |:----------------------------------------------------         |
-| type                | [Enum BusinessLoanTypes](#schemaEnumBusinessLoanTypes)      | Sim          | Modalidades de empréstimos ofertados para pessoas jurídicas, conforme Circular <a href='https://www.bcb.gov.br/pre/normativos/busca/downloadNormativo.asp?arquivo=/Lists/Normativos/Attachments/51025/Circ_4015_v1_O.pdf' target="_blank">4015-Bacem</a>|
-| fees                | [[LoanFees](#schemaLoanFees)]                               | Sim          | Tarifas cobradas sobre Serviços ofertados à Modalidade de Empréstimo             |
-| interestRate        | [[LoanInterestRate](#schemaLoanInterestRates)]             | Sim          | Taxas de juros remuneratórias             |
-| requiredWarranties  | [[Enum RequiredWarranties](#schemaEnumRequiredWarranties)]  | Sim          | Relação de garantias exigidas, segundo documento <a href='https://www.bcb.gov.br/estabilidadefinanceira/scrdoc3040' target="_blank">3040 do Bacem</a>       |
+| type                | [Enum BusinessLoanType](#schemaEnumBusinessLoanType)      | Sim          | Modalidades de empréstimos ofertados para pessoas jurídicas, conforme Circular <a href='https://www.bcb.gov.br/pre/normativos/busca/downloadNormativo.asp?arquivo=/Lists/Normativos/Attachments/51025/Circ_4015_v1_O.pdf' target="_blank">4015-Bacem</a>|
+| fees                | [LoanFee](#schemaLoanFee)                               | Sim          | Tarifas cobradas sobre Serviços ofertados à Modalidade de Empréstimo             |
+| interestRate        | [LoanInterestRate](#schemaLoanInterestRate)             | Sim          | Taxas de juros remuneratórias             |
+| requiredWarranties  | [Enum RequiredWarranty](#schemaEnumRequiredWarranty)  | Sim          | Relação de garantias exigidas, segundo documento <a href='https://www.bcb.gov.br/estabilidadefinanceira/scrdoc3040' target="_blank">3040 do Bacem</a>       |
 | termsConditions     | string                                                      | Não          | Campo aberto para informar as condições contratuais relativas ao produto ou serviço informado. Pode ser informada a URL ([[URIString](#commonFieldURIString)]) referente ao endereço onde constam as condições informadas.   |
 
-### Enum BusinessLoanTypes
-<a id="schemaEnumBusinessLoanTypes"></a>
+### Enum BusinessLoanType
+<a id="schemaEnumBusinessLoanType"></a>
 
 | Propriedade  | Código                        | Definição
 |:------------ |:------                       |:------

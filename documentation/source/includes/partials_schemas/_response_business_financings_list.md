@@ -75,12 +75,12 @@
 |     Nome          |  Tipo                                                       | Obrigatório  |                            Definição                  |
 |:------------      |:---------------------------------                           |:-----------  |:----------------------------------------------------  |
 | data              | object                                                      | Sim          |                                                       |
-| » brand           | [[BusinessFinancingsBrand](#schemaBusinessFinancingsBrand)] | Sim          | Organização titular das dependências                  |
-| links             | [[LinksPaginated](#schemaLinksPaginated)]                   | Sim          |                                                       |
+| » brand           | [BusinessFinancingBrand](#schemaBusinessFinancingBrand) | Sim          | Organização titular das dependências                  |
+| links             | [LinksPaginated](#schemaLinksPaginated)                   | Sim          |                                                       |
 | meta              | [MetaPaginated](#schemaMetaPaginated)                       | Sim          |                                                       |
 
-## BusinessFinancingsBrand
-<a id="schemaBusinessFinancingsBrand"></a>
+## BusinessFinancingBrand
+<a id="schemaBusinessFinancingBrand"></a>
 
 ```json
 {
@@ -141,10 +141,10 @@
 |     Nome     |  Tipo                                                                | Obrigatório  |                            Definição                         |
 |:------------ |:---------------------------------                                    |:-----------  |:----------------------------------------------------         |
 | name         | string                                                               | Sim          | Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a 'marca' utilizada está em definição pelos participantes.  |
-| companies    | [[BusinessFinancingsCompanies](#schemaBusinessFinancingsCompanies)]  | Sim          | Lista de instituições pertencentes à marca.             |
+| companies    | [BusinessFinancingCompany](#schemaBusinessFinancingCompany)  | Sim          | Lista de instituições pertencentes à marca.             |
 
-## BusinessFinancingsCompanies 
-<a id="schemaBusinessFinancingsCompanies"></a>
+## BusinessFinancingCompany 
+<a id="schemaBusinessFinancingCompany"></a>
 
 ```json
 {
@@ -201,11 +201,11 @@
 |:------------         |:---------------------------------                 |:-------------- |:--------------------------------- |
 | name                 | string                                            | Sim            | Nome do conglomerado responsável.  |
 | cnpjNumber           | string                                            | Sim            | CNPJ da instituição responsável.   |
-| urlComplementaryList | [[URIString](#commonFieldURIString)]              | Sim            | URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. |
-| businessFinancings   | [[BusinessFinancings](#schemaBusinessFinancings)] | Sim            | Lista de financiamentos.          |
+| urlComplementaryList | [URIString](#commonFieldURIString)              | Sim            | URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. |
+| businessFinancings   | [BusinessFinancing](#schemaBusinessFinancing) | Sim            | Lista de financiamentos.          |
 
-## BusinessFinancings
-<a id="schemaBusinessFinancings"></a>
+## BusinessFinancing
+<a id="schemaBusinessFinancing"></a>
 
 ```json
 {
@@ -253,15 +253,15 @@
 
 |     Nome              |  Tipo                                                                                           | Obrigatório |                            Definição                                                                                                                                                                                                                                                                                                      |
 |:------------          |:---------------------------------------------------------------------------                     |:----------- |:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------                                                             |
-| type                  | [Enum BusinessFinancingsType](#schemaEnumBusinessFinancingsType)                                | Sim         | Modalidades de financiamentos ofertados para pessoas jurídicas, conforme Circular 4015-Banco Central do Brasil. Segundo cartilha do Banco Central do Brasil: Financiamento é um contrato entre o cliente e uma instituição financeira, mas com, destinação específica como para a aquisição de veículo ou de bem imóvel, que funcionam como garantia para o crédito concedido. |
-| fees                  | [[BusinessFinancingsFees](#schemaBusinessFinancingsFees)]                                       | Sim         | Lista das Tarifas cobradas sobre Serviços ofertados à Modalidade de Financiamento, para pessoa jurídica.                                                                                                                                                                                                                                   |
-| interestRate         | [[BusinessFinancingsInterestRate](#schemaBusinessFinancingsInterestRates)]                     | Sim         | Lista de taxas de juros.                                                                                                                                                                                                                                                                                                                   |
-| requiredWarranties    | [[Enum BusinessFinancingsRequiredWarranties](#schemaEnumBusinessFinancingsRequiredWarranties)]  | Sim         | Relação de garantias exigidas.                                                                                                                                                                                                                                                                                                             |
-| termsConditions       | string                                                                                          | Não          | Campo aberto para informar as condições contratuais relativas ao produto ou serviço informado. Pode ser informada a URL ([[URIString](#commonFieldURIString)]) referente ao endereço onde constam as condições informadas.   |
+| type                  | [Enum BusinessFinancingType](#schemaEnumBusinessFinancingType)                                | Sim         | Modalidades de financiamentos ofertados para pessoas jurídicas, conforme Circular 4015-Banco Central do Brasil. Segundo cartilha do Banco Central do Brasil: Financiamento é um contrato entre o cliente e uma instituição financeira, mas com, destinação específica como para a aquisição de veículo ou de bem imóvel, que funcionam como garantia para o crédito concedido. |
+| fees                  | [BusinessFinancingFee](#schemaBusinessFinancingFee)                                       | Sim         | Lista das Tarifas cobradas sobre Serviços ofertados à Modalidade de Financiamento, para pessoa jurídica.                                                                                                                                                                                                                                   |
+| interestRate         | [BusinessFinancingInterestRate](#schemaBusinessFinancingInterestRate)                     | Sim         | Lista de taxas de juros.                                                                                                                                                                                                                                                                                                                   |
+| requiredWarranties    | [Enum BusinessFinancingRequiredWarranty](#schemaEnumBusinessFinancingRequiredWarranty)  | Sim         | Relação de garantias exigidas.                                                                                                                                                                                                                                                                                                             |
+| termsConditions       | string                                                                                          | Não          | Campo aberto para informar as condições contratuais relativas ao produto ou serviço informado. Pode ser informada a URL ([URIString](#commonFieldURIString)) referente ao endereço onde constam as condições informadas.   |
 
 
-### Enum BusinessFinancingsType
-<a id="schemaEnumBusinessFinancingsType"></a>
+### Enum BusinessFinancingType
+<a id="schemaEnumBusinessFinancingType"></a>
 
 | Propriedade  | Código                                 | Definição                                                        |
 |:------------ |:-------------------------------------- |:---------------------------------------------------------------- |
@@ -276,28 +276,28 @@
 | type         | FINANCIAMENTO_IMOBILIARIO_SISTEMA_FINANCIERO_HABILITACAO_SFI          | Financimento imobiliário - Sistema Financeiro da Imobiliário (SFI). |
 
 
-### Enum BusinessFinancingsRequiredWarranties
-<a id="schemaEnumBusinessFinancingsRequiredWarranties"></a>
+### Enum BusinessFinancingRequiredWarranty
+<a id="schemaEnumBusinessFinancingRequiredWarranty"></a>
 
 | Propriedade        | Código                                     | Definição                                             |
 |:------------------ |:------------------------------------------ |:----------------------------------------------------- |
-| requiredWarranties | CESSAO_DIREITOS_CREDITORIOS                | Cessão de direitos creditórios.                       |
-| requiredWarranties | CAUCAO                                     | Caução.                                               |
-| requiredWarranties | PENHOR                                     | Penhor.                                               |
-| requiredWarranties | ALIENACAO_FIDUCIARIA                       | Alienação fiduciária.                                 |
-| requiredWarranties | HIPOTECA                                   | Hipoteca.                                              |
-| requiredWarranties | OPERACOES_GARANTIDAS_GOVERNO               | Operações garantidas pelo governo.                     |
-| requiredWarranties | OUTRAS_GARANTIAS_NAO_FIDEJUSSORIAS         | Outras garantias não fidejussórias.                    |
-| requiredWarranties | SEGUROS_ASSEMELHADOS                       | Seguros e assemelhados.                                |
-| requiredWarranties | GARANTIA_FIDEJUSSORIA                      | Garantia fidejussória.                                 |
-| requiredWarranties | BENS_ARRENDADOS                            | Bens arrendados.                                       |
-| requiredWarranties | GARANTIAS_INTERNACIONAIS                   | Garantias internacionais.                              |
-| requiredWarranties | OPERACOES_GARANTIDAS_OUTRAS_ENTIDADE       | Operações garantidas por outras entidades.             |
-| requiredWarranties | ACORDOS_COMPENSACAO                        | Acordos de compensação.                                |
-| requiredWarranties | NAO_APLICAVEL                              | Não aplicável.                                         |
+| requiredWarranty | CESSAO_DIREITOS_CREDITORIOS                | Cessão de direitos creditórios.                       |
+| requiredWarranty | CAUCAO                                     | Caução.                                               |
+| requiredWarranty | PENHOR                                     | Penhor.                                               |
+| requiredWarranty | ALIENACAO_FIDUCIARIA                       | Alienação fiduciária.                                 |
+| requiredWarranty | HIPOTECA                                   | Hipoteca.                                              |
+| requiredWarranty | OPERACOES_GARANTIDAS_GOVERNO               | Operações garantidas pelo governo.                     |
+| requiredWarranty | OUTRAS_GARANTIAS_NAO_FIDEJUSSORIAS         | Outras garantias não fidejussórias.                    |
+| requiredWarranty | SEGUROS_ASSEMELHADOS                       | Seguros e assemelhados.                                |
+| requiredWarranty | GARANTIA_FIDEJUSSORIA                      | Garantia fidejussória.                                 |
+| requiredWarranty | BENS_ARRENDADOS                            | Bens arrendados.                                       |
+| requiredWarranty | GARANTIAS_INTERNACIONAIS                   | Garantias internacionais.                              |
+| requiredWarranty | OPERACOES_GARANTIDAS_OUTRAS_ENTIDADE       | Operações garantidas por outras entidades.             |
+| requiredWarranty | ACORDOS_COMPENSACAO                        | Acordos de compensação.                                |
+| requiredWarranty | NAO_APLICAVEL                              | Não aplicável.                                         |
 
-## BusinessFinancingsFees 
-<a id="schemaBusinessFinancingsFees"></a>
+## BusinessFinancingFee 
+<a id="schemaBusinessFinancingFee"></a>
 
 ```json
 {
@@ -329,12 +329,12 @@
 | name          | string                                                                   | Sim            | Nomes das Tarifas cobradas sobre Serviços ofertados à Modalidade de Financiamento, para pessoa jurídica.                                      |
 | code          | string                                                                   | Sim            | Sigla de identificação do serviço relacionado à Modalidade de Financiamento informada, para pessoa jurídica. Campo aberto.                   |
 | chargingTriggerInfo  | string                                                                   | Não            | Fatos geradores de cobrança que incidem sobre as Modalidades de Financiamentos, para pessoa jurídica. Campo Aberto.                          |
-| prices                | [[Price](#schemaPrice)]                                                  | Sim            | Valor médio da tarifa, relativa ao serviço ofertado, informado no período.                                                                       |
-| minimum              | [[MinimumPrice](#schemaMinimumPrice)]                                     | Sim           | Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
-| maximum              | [[MaximumPrice](#schemaMaximumPrice)]                                     | Sim           | Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
+| prices                | [Price](#schemaPrice)                                                  | Sim            | Valor da mediana da tarifa, relativa ao serviço ofertado, informado no período.                                                                       |
+| minimum              | [MinimumPrice](#schemaMinimumPrice)                                     | Sim           | Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
+| maximum              | [MaximumPrice](#schemaMaximumPrice)                                     | Sim           | Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
 
-## BusinessFinancingsInterestRate 
-<a id="schemaBusinessFinancingsInterestRates"></a>
+## BusinessFinancingInterestRate 
+<a id="schemaBusinessFinancingInterestRate"></a>
 
 ```json
 {
@@ -351,6 +351,6 @@
 
 |     Nome                  |  Tipo                                                                           | Obrigatório    |                            Definição                                                                                                                                                                                                                                                                                  |
 |:------------              |:------------------------------------------------------------------------------- |:-------------- |:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| applications               | [[Application](#schemaApplication)]    | Sim            | Valor da mediana da taxa de remuneração relativa ao serviço ofertado, para pessoa física informado no período.                                                                                                                                                                                                         |
+| applications               | [Application](#schemaApplication)    | Sim            | Valor da mediana da taxa de remuneração relativa ao serviço ofertado, para pessoa física informado no período.                                                                                                                                                                                                         |
 | minimumRate                   | string | Sim            | Percentual mínimo cobrado (taxa efetiva) no mês de referência, para o Financiamento contratado. A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%) | 
 | maximumRate                   | string | Sim            |  Percentual máximo cobrado (taxa efetiva) no mês de referência, para o Financiamento contratado. A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%) | 
