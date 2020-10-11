@@ -35,31 +35,6 @@
 | interval     | 3_QUARTIL_CLIENTES    | 3ª Quartil de clientes |
 | interval     | 4_QUARTIL_CLIENTES    | 4ª Quartil de clientes |
 
-## Enum FrequencyType
-<a id="schemaFrequencyType"></a>
-
-| Nome         | Código | Definição   |
-|:------------ |:------ |:----------- |
-| frequency    | AD     | Ao dia      |
-| frequency    | AM     | Ao mês      |
-| frequency    | AA     | Ao ano      |
-
-## Enum OccurrenceType
-<a id="schemaOccurrenceType"></a>
-
-| Nome         | Código | Definição   |
-|:------------ |:------ |:----------- |MaximumRate
-| occurrence   | AD     | Ao dia      |
-| occurrence   | AM     | Ao mês      |
-| occurrence   | AA     | Ao ano      |
-
-## Enum PrePostTax
-<a id="schemaPrePostTax"></a>
-
-| Nome         | Código | Definição   |
-|:------------ |:------ |:----------- |
-| prePostTax   | PRE    | Pré fixado  |
-| prePostTax   | POS    | Pós fixado  |
 
 ## Price
 <a id="schemaPrice"></a>
@@ -169,6 +144,4 @@
 |     Nome     |  Tipo            | Obrigatório    |             Definição   |
 |:------------ |:------------------------------------------------ |:-------------- |:-----------------------------------------------------------------------------                                                                                                                                                                                                                                                                                   |
 | interval     | [Enum PriceInterval](#schemaPriceInterval)       | Sim            | Faixas para cobrança da taxa efetiva aplicada pela contratação do Empréstimo, no intervalo informado: 1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes |
-| rate        | string        | Sim            | Percentual que corresponde a mediana da taxa efetiva cobrada do cliente pela contratação do Empréstimo, no intervalo informado. p.ex. '9,8700%'
-A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros
-(representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%) |
+| rate        | string        | Sim            | Percentual que corresponde a mediana da taxa efetiva cobrada do cliente pela contratação do Empréstimo, no intervalo informado. p.ex. '9,8700%'. A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%) |
