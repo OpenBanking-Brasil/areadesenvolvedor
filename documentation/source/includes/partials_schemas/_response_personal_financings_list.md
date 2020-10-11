@@ -75,12 +75,12 @@
 |     Nome      |  Tipo                                                       | Obrigatório  |                            Definição                  |
 |:------------  |:---------------------------------                           |:-----------  |:----------------------------------------------------  |
 | data          | object                                                      | Sim          |                                                       |
-| » brand       | [[PersonalFinancingsBrand](#schemaPersonalFinancingsBrand)] | Sim          | Organização titular das dependências                  |
-| links         | [[LinksPaginated](#schemaLinksPaginated)]                   | Sim          |                                                       |
+| » brand       | [PersonalFinancingBrand](#schemaPersonalFinancingBrand) | Sim          | Organização titular das dependências                  |
+| links         | [LinksPaginated](#schemaLinksPaginated)                   | Sim          |                                                       |
 | meta          | [MetaPaginated](#schemaMetaPaginated)                     | Sim          |                                                       |
 
-## PersonalFinancingsBrand
-<a id="schemaPersonalFinancingsBrand"></a>
+## PersonalFinancingBrand
+<a id="schemaPersonalFinancingBrand"></a>
 
 ```json
 {
@@ -143,10 +143,10 @@
 |     Nome     |  Tipo                                                                | Obrigatório  |                            Definição                         |
 |:------------ |:---------------------------------                                    |:-----------  |:----------------------------------------------------         |
 | name         | string                                                               | Sim          | Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a 'marca' utilizada está em definição pelos participantes.  |
-| companies    | [[PersonalFinancingsCompanies](#schemaPersonalFinancingsCompanies)]  | Sim          | Lista de instituições pertencentes à marca.             |
+| companies    | [PersonalFinancingCompany](#schemaPersonalFinancingCompany)  | Sim          | Lista de instituições pertencentes à marca.             |
 
-## PersonalFinancingsCompanies 
-<a id="schemaPersonalFinancingsCompanies"></a>
+## PersonalFinancingCompany 
+<a id="schemaPersonalFinancingCompany"></a>
 
 ```json
 {
@@ -203,11 +203,11 @@
 |:------------         |:---------------------------------                 |:-------------- |:--------------------------------- |
 | name                 | string                                            | Sim            | Nome do conglomerado responsável.  |
 | cnpjNumber           | string                                            | Sim            | CNPJ da instituição responsável.   |
-| urlComplementaryList | [[URIString](#commonFieldURIString)]              | Sim            | URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. |
-| personalFinancings   | [[PersonalFinancings](#schemaPersonalFinancings)] | Sim            | Lista de financiamentos.          |
+| urlComplementaryList | [URIString](#commonFieldURIString)              | Sim            | URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. |
+| personalFinancings   | [PersonalFinancing](#schemaPersonalFinancing) | Sim            | Lista de financiamentos.          |
 
-## PersonalFinancings
-<a id="schemaPersonalFinancings"></a>
+## PersonalFinancing
+<a id="schemaPersonalFinancing"></a>
 
 ```json
 {
@@ -255,15 +255,15 @@
 
 |     Nome              |  Tipo                                                                                           | Obrigatório |                            Definição                                                                                                                                                                                                                                                                                                    |
 |:------------          |:---------------------------------------------------------------------------                     |:----------- |:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------                                                           |
-| type                  | [Enum PersonalFinancingsType](#schemaEnumPersonalFinancingsType)                                | Sim         | Modalidades de financiamentos ofertados para pessoas físicas, conforme Circular 4015-Banco Central do Brasil. Segundo cartilha do Banco Central do Brasil: Financiamento é um contrato entre o cliente e uma instituição financeira, mas com, destinação específica como para a aquisição de veículo ou de bem imóvel, que funcionam como garantia para o crédito concedido. |
-| fees                  | [[PersonalFinancingsFees](#schemaPersonalFinancingsFees)]                                       | Sim         | Valor da mediana da tarifa, relativa ao serviço ofertado, para pessoa física, informado no período. p.ex. '45.00'00'                                                                                                                                                                                                                                   |
-| interestRate         | [[PersonalFinancingsInterestRate](#schemaPersonalFinancingsInterestRates)]                     | Sim         | Lista de taxas de juros.                                                                                                                                                                                                                                                                                                                 |
-| requiredWarranties    | [[Enum PersonalFinancingsRequiredWarranties](#schemaEnumPersonalFinancingsRequiredWarranties)]  | Sim         | Relação de garantias exigidas.                                                                                                                                                                                                                                                                                                           |
-| termsConditions       | string                                                                                          | Não          | Campo aberto para informar as condições contratuais relativas ao produto ou serviço informado. Pode ser informada a URL ([[URIString](#commonFieldURIString)]) referente ao endereço onde constam as condições informadas.   |
+| type                  | [Enum PersonalFinancingType](#schemaEnumPersonalFinancingType)                                | Sim         | Modalidades de financiamentos ofertados para pessoas físicas, conforme Circular 4015-Banco Central do Brasil. Segundo cartilha do Banco Central do Brasil: Financiamento é um contrato entre o cliente e uma instituição financeira, mas com, destinação específica como para a aquisição de veículo ou de bem imóvel, que funcionam como garantia para o crédito concedido. |
+| fees                  | [PersonalFinancingFee](#schemaPersonalFinancingFee)                                       | Sim         | Valor da mediana da tarifa, relativa ao serviço ofertado, para pessoa física, informado no período. p.ex. '45.00'00'                                                                                                                                                                                                                                   |
+| interestRate         | [PersonalFinancingInterestRate](#schemaPersonalFinancingInterestRate)                     | Sim         | Lista de taxas de juros.                                                                                                                                                                                                                                                                                                                 |
+| requiredWarranties    | [Enum PersonalFinancingRequiredWarranty](#schemaEnumPersonalFinancingRequiredWarranty)  | Sim         | Relação de garantias exigidas.                                                                                                                                                                                                                                                                                                           |
+| termsConditions       | string                                                                                          | Não          | Campo aberto para informar as condições contratuais relativas ao produto ou serviço informado. Pode ser informada a URL ([URIString](#commonFieldURIString)) referente ao endereço onde constam as condições informadas.   |
 
 
-### Enum PersonalFinancingsType
-<a id="schemaEnumPersonalFinancingsType"></a>
+### Enum PersonalFinancingType
+<a id="schemaEnumPersonalFinancingType"></a>
 
 | Propriedade  | Código                                 | Definição                                                        |
 |:------------ |:-------------------------------------- |:---------------------------------------------------------------- |
@@ -277,28 +277,28 @@
 | type         | FINANCIAMENTO_IMOBILIARIO_SISTEMA_FINANCIERO_HABILITACAO_SFH   | Financimento imobiliário - Sistema Financeiro da Habitação (SFH). |
 | type         | FINANCIAMENTO_IMOBILIARIO_SISTEMA_FINANCIERO_HABILITACAO_SFI   | Financimento imobiliário - Sistema Financeiro da Imobiliário (SFI). |
 
-### Enum PersonalFinancingsRequiredWarranties
-<a id="schemaEnumPersonalFinancingsRequiredWarranties"></a>
+### Enum PersonalFinancingRequiredWarranty
+<a id="schemaEnumPersonalFinancingRequiredWarranty"></a>
 
 | Propriedade        | Código                                     | Definição                                             |
 |:------------------ |:------------------------------------------ |:----------------------------------------------------- |
-| requiredWarranties | CESSAO_DIREITOS_CREDITORIOS                | Cessão de direitos creditórios.                        |
-| requiredWarranties | CAUCAO                                     | Caução.                                                |
-| requiredWarranties | PENHOR                                     | Penhor.                                                |
-| requiredWarranties | ALIENACAO_FIDUCIARIA                       | Alienação fiduciária.                                  |
-| requiredWarranties | HIPOTECA                                   | Hipoteca.                                              |
-| requiredWarranties | OPERCAOES_GARANTIDAS_PELO_GOVERNO          | Operações garantidas pelo governo.                     |
-| requiredWarranties | OUTRAS_GARANTIAS_NAO_FIDEJUSSORIAS         | Outras garantias não fidejussórias.                    |
-| requiredWarranties | SEGUROS_ASSEMELHADOS                       | Seguros e assemelhados.                                |
-| requiredWarranties | GARANTIA_FIDEJUSSORIA                      | Garantia fidejussória.                                 |
-| requiredWarranties | BENS_ARRENDADOS                            | Bens arrendados.                                       |
-| requiredWarranties | GARANTIAS_INTERNACIONAIS                   | Garantias internacionais.                              |
-| requiredWarranties | OPERACOES_GARANTIDAS_OUTRAS_ENTIDADES      | Operações garantidas por outras entidades.             |
-| requiredWarranties | ACORDOS_COMPENSACAO                        | Acordos de compensação.                                |
-| requiredWarranties | NAO_APLICAVEL                              | Não aplicável.                                         |
+| requiredWarranty | CESSAO_DIREITOS_CREDITORIOS                | Cessão de direitos creditórios.                        |
+| requiredWarranty | CAUCAO                                     | Caução.                                                |
+| requiredWarranty | PENHOR                                     | Penhor.                                                |
+| requiredWarranty | ALIENACAO_FIDUCIARIA                       | Alienação fiduciária.                                  |
+| requiredWarranty | HIPOTECA                                   | Hipoteca.                                              |
+| requiredWarranty | OPERCAOES_GARANTIDAS_PELO_GOVERNO          | Operações garantidas pelo governo.                     |
+| requiredWarranty | OUTRAS_GARANTIAS_NAO_FIDEJUSSORIAS         | Outras garantias não fidejussórias.                    |
+| requiredWarranty | SEGUROS_ASSEMELHADOS                       | Seguros e assemelhados.                                |
+| requiredWarranty | GARANTIA_FIDEJUSSORIA                      | Garantia fidejussória.                                 |
+| requiredWarranty | BENS_ARRENDADOS                            | Bens arrendados.                                       |
+| requiredWarranty | GARANTIAS_INTERNACIONAIS                   | Garantias internacionais.                              |
+| requiredWarranty | OPERACOES_GARANTIDAS_OUTRAS_ENTIDADES      | Operações garantidas por outras entidades.             |
+| requiredWarranty | ACORDOS_COMPENSACAO                        | Acordos de compensação.                                |
+| requiredWarranty | NAO_APLICAVEL                              | Não aplicável.                                         |
 
-## PersonalFinancingsFees 
-<a id="schemaPersonalFinancingsFees"></a>
+## PersonalFinancingFee 
+<a id="schemaPersonalFinancingFee"></a>
 
 ```json
 {
@@ -334,8 +334,8 @@
 | minimum              | [[MinimumPrice](#schemaMinimumPrice)]             | Sim           | Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
 | maximum              | [[MaximumPrice](#schemaMaximumPrice)]             | Sim           | Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
 
-## PersonalFinancingsInterestRate 
-<a id="schemaPersonalFinancingsInterestRates"></a>
+## PersonalFinancingInterestRate 
+<a id="schemaPersonalFinancingInterestRate"></a>
 
 ```json
 {

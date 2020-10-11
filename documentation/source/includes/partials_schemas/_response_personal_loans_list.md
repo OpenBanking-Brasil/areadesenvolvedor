@@ -77,12 +77,12 @@
 |     Nome      |  Tipo                                                  | Obrigatório  |                            Definição                  |
 |:------------  |:---------------------------------                      |:-----------  |:----------------------------------------------------  |
 | data          | object                                                 | Sim          |                                                       |
-| » brand       | [[PersonalLoansBrand](#schemaPersonalLoansBrand)]      | Sim          | Organização titular das dependências                  |
-| links         | [[LinksPaginated](#schemaLinksPaginated)]              | Sim          |                                                       |
+| » brand       | [PersonalLoanBrand](#schemaPersonalLoanBrand)      | Sim          | Organização titular das dependências                  |
+| links         | [LinksPaginated](#schemaLinksPaginated)              | Sim          |                                                       |
 | meta          | [MetaPaginated](#schemaMetaPaginated)                  | Sim          |                                                       |
 
-## PersonalLoansBrand
-<a id="schemaPersonalLoansBrand"></a>
+## PersonalLoanBrand
+<a id="schemaPersonalLoanBrand"></a>
 
 ```json
 {
@@ -145,10 +145,10 @@
 |     Nome     |  Tipo                                                      | Obrigatório  |                            Definição                         |
 |:------------ |:---------------------------------                          |:-----------  |:----------------------------------------------------         |
 | name         | string                                                     | Sim          | Nome da marca proprietária da dependência (titular).  |
-| companies    | [[PersonalLoansCompanies](#schemaPersonalLoansCompanies)]  | Sim          | Lista de instituições pertencentes à marca             |
+| companies    | [PersonalLoanCompany](#schemaPersonalLoanCompany)  | Sim          | Lista de instituições pertencentes à marca             |
 
-## PersonalLoansCompanies
-<a id="schemaPersonalLoansCompanies"></a>
+## PersonalLoanCompany
+<a id="schemaPersonalLoanCompany"></a>
 
 ```json
 {
@@ -207,11 +207,11 @@
 |:------------          |:---------------------------------                             |:-----------  |:----------------------------------------------------                 |
 | name                  | string                                                        | Sim          | Nome da Instituição, pertencente à marca, responsável pela comercialização das modalidades de Empréstimos para Pessoas Físicas consultadas.                                             |
 | cnpjNumber            | string                                                        | Sim          | Número do CNPJ do conglomerado                                                                                                                                                          |
-| urlComplementaryList  | [[URIString](#commonFieldURIString)]                          | Sim          | URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. |
-| personalLoans         | [[PersonalLoans](#schemaPersonalLoans)]                       | Sim          | Empréstimos Pessoas Físicas                                                                                                                                                             |
+| urlComplementaryList  | [URIString](#commonFieldURIString)                          | Sim          | URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. |
+| personalLoans         | [PersonalLoan](#schemaPersonalLoan)                       | Sim          | Empréstimos Pessoas Físicas                                                                                                                                                             |
 
-## PersonalLoans
-<a id="schemaPersonalLoans"></a>
+## PersonalLoan
+<a id="schemaPersonalLoan"></a>
 
 ```json
  {
@@ -261,14 +261,14 @@
 
 |     Nome            |  Tipo                                                       | Obrigatório  |                            Definição                         |
 |:------------        |:---------------------------------                           |:-----------  |:----------------------------------------------------         |
-| type                | [Enum PersonalLoansTypes](#schemaEnumPersonalLoanTypes)     | Sim          | Modalidades de empréstimos ofertados para pessoas Físicas, conforme Circular <a href='https://www.bcb.gov.br/pre/normativos/busca/downloadNormativo.asp?arquivo=/Lists/Normativos/Attachments/51025/Circ_4015_v1_O.pdf' target="_blank">4015-Bacem</a>|
-| fees                | [[LoanFees](#schemaLoanFees)]                               | Sim          | Tarifas cobradas sobre Serviços ofertados à Modalidade de Empréstimo                                                                                                                                                                                  |
-| interestRate       | [[LoanInterestRate](#schemaLoanInterestRates)]             | Sim          | Taxas de juros remuneratórias                                                                                                                                                                                                                         |
-| requiredWarranties  | [[Enum RequiredWarranties](#schemaEnumRequiredWarranties)]  | Sim          | Relação de garantias exigidas, segundo documento <a href='https://www.bcb.gov.br/estabilidadefinanceira/scrdoc3040' target="_blank">3040 do Bacem</a>                                                                                                 |
-| termsConditions     | string                                                      | Não          | Campo aberto para informar as condições contratuais relativas ao produto ou serviço informado. Pode ser informada a URL ([[URIString](#commonFieldURIString)]) referente ao endereço onde constam as condições informadas.   |
+| type                | [Enum PersonalLoanType](#schemaEnumPersonalLoanType)     | Sim          | Modalidades de empréstimos ofertados para pessoas Físicas, conforme Circular <a href='https://www.bcb.gov.br/pre/normativos/busca/downloadNormativo.asp?arquivo=/Lists/Normativos/Attachments/51025/Circ_4015_v1_O.pdf' target="_blank">4015-Bacem</a>|
+| fees                | [LoanFee](#schemaLoanFee)                               | Sim          | Tarifas cobradas sobre Serviços ofertados à Modalidade de Empréstimo                                                                                                                                                                                  |
+| interestRate       | [LoanInterestRate](#schemaLoanInterestRate)             | Sim          | Taxas de juros remuneratórias                                                                                                                                                                                                                         |
+| requiredWarranties  | [Enum RequiredWarranty](#schemaEnumRequiredWarranty)  | Sim          | Relação de garantias exigidas, segundo documento <a href='https://www.bcb.gov.br/estabilidadefinanceira/scrdoc3040' target="_blank">3040 do Bacem</a>                                                                                                 |
+| termsConditions     | string                                                      | Não          | Campo aberto para informar as condições contratuais relativas ao produto ou serviço informado. Pode ser informada a URL ([URIString](#commonFieldURIString)) referente ao endereço onde constam as condições informadas.   |
 
-### Enum PersonalLoansTypes
-<a id="schemaEnumPersonalLoanTypes"></a>
+### Enum PersonalLoanType
+<a id="schemaEnumPersonalLoanType"></a>
 
 | Propriedade  | Código                        | Definição
 |:------------ |:------                       |:------
@@ -280,29 +280,29 @@
 | type         | EMPRESTIMO_CHEQUE_ESPECIAL | Cheque especial
 | type         | EMPRESTIMO_CONTA_GARANTIDA  | Conta garantida
 
-### Enum RequiredWarranties
-<a id="schemaEnumRequiredWarranties"></a>
+### Enum RequiredWarranty
+<a id="schemaEnumRequiredWarranty"></a>
 
 | Propriedade  | Código                                        | Definição                                    
 |:------------ |:------                                       |:------
-| requiredWarranties        | CESSAO_DIREITOS_CREDITORIOS     | Cessão de direitos creditórios
-| requiredWarranties        | CAUCAO                          | Caução
-| requiredWarranties        | PENHOR                          | Penhor
-| requiredWarranties        | ALIENACAO_FIDUCIARIA            | Alienação fiduciária
-| requiredWarranties        | HIPOTECA                        | Hipoteca
-| requiredWarranties        | OPERACOES_GARANTIDAS_PELO_GOVERNO    | Operações garantidas pelo governo
-| requiredWarranties        | OUTRAS_GARANTIAS_NAO_FIDEJUSSORIAS  | Outras garantias não fidejussórias
-| requiredWarranties        | SEGUROS_ASSEMELHADOS            | Seguros e assemelhados
-| requiredWarranties        | GARANTIA_FIDEJUSSORIA           | Garantia fidejussória
-| requiredWarranties        | BENS_ARRENDADOS                 | Bens arrendados
-| requiredWarranties        | GARANTIAS_INTERNACIONAIS        | Garantias internacionais
-| requiredWarranties        | OPERACOES_GARANTIDAS_OUTRAS_ENTIDADES
+| requiredWarranty        | CESSAO_DIREITOS_CREDITORIOS     | Cessão de direitos creditórios
+| requiredWarranty        | CAUCAO                          | Caução
+| requiredWarranty        | PENHOR                          | Penhor
+| requiredWarranty        | ALIENACAO_FIDUCIARIA            | Alienação fiduciária
+| requiredWarranty        | HIPOTECA                        | Hipoteca
+| requiredWarranty        | OPERACOES_GARANTIDAS_PELO_GOVERNO    | Operações garantidas pelo governo
+| requiredWarranty        | OUTRAS_GARANTIAS_NAO_FIDEJUSSORIAS  | Outras garantias não fidejussórias
+| requiredWarranty        | SEGUROS_ASSEMELHADOS            | Seguros e assemelhados
+| requiredWarranty        | GARANTIA_FIDEJUSSORIA           | Garantia fidejussória
+| requiredWarranty        | BENS_ARRENDADOS                 | Bens arrendados
+| requiredWarranty        | GARANTIAS_INTERNACIONAIS        | Garantias internacionais
+| requiredWarranty        | OPERACOES_GARANTIDAS_OUTRAS_ENTIDADES
   | Operações garantidas por outras entidades
-| requiredWarranties        | ACORDOS_COMPENSACAO             | Acordos de compensação
-| requiredWarranties        | NAO_APLICAVEL                   | Não aplicável
+| requiredWarranty        | ACORDOS_COMPENSACAO             | Acordos de compensação
+| requiredWarranty        | NAO_APLICAVEL                   | Não aplicável
 
-## LoanFees
-<a id="schemaLoanFees"></a>
+## LoanFee
+<a id="schemaLoanFee"></a>
 
 ```json
 {
@@ -333,12 +333,12 @@
 | name         | string                                          | Sim          | Nomes das Tarifas cobradas sobre Serviços relacionados à Modalidade informada do Empréstimo para pessoa física/jurídica.    | NA
 | code         | string                                          | Sim          | Sigla de identificação do serviço relacionado à Modalidade informada de Empréstimo para pessoa física/jurídica.             | NA
 | chargingTriggerInfo | string                                          | Sim          | Fatos geradores de cobrança que incidem sobre as Modalidades informada de Empréstimos para pessoa física/jurídica.        | NA
-| prices               | [[Price](#schemaPrice)]                         | Sim          | Valor da mediana da tarifa, relativa ao serviço ofertado, informado no período.                                                       | NA
-| minimum             | [[MinimumPrice](#schemaMinimumPrice)]           | Sim          | Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. | NA
-| maximum             | [[MaximumPrice](#schemaMaximumPrice)]           | Sim          | Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. | NA
+| prices               | [Price](#schemaPrice)                         | Sim          | Valor da mediana da tarifa, relativa ao serviço ofertado, informado no período.                                                       | NA
+| minimum             | [MinimumPrice](#schemaMinimumPrice)           | Sim          | Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. | NA
+| maximum             | [MaximumPrice](#schemaMaximumPrice)           | Sim          | Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. | NA
 
 ## LoanInterestRate
-<a id="schemaLoanInterestRates"></a>
+<a id="schemaLoanInterestRate"></a>
 
 ```json
 {
@@ -355,7 +355,7 @@
 
 | Nome                | Tipo                                            | Obrigatório | Definição                                                 |
 |:----------------    |:------                                          |:----------- |:-------------------------------                           |
-| applications        | [[Application](#schemaApplication)]                         | Sim          | Valor da mediana da taxa de remuneração relativa ao serviço ofertado.                                                       | 
+| applications        | [Application](#schemaApplication)                         | Sim          | Valor da mediana da taxa de remuneração relativa ao serviço ofertado.                                                       | 
 | minimumRate         | string     | Sim          | Percentual mínimo cobrado (taxa efetiva) no mês de referência, para o Empréstimo contratado. A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%) | 
 | maximumRate         | string     | Sim          | Percentual máximo cobrado (taxa efetiva) no mês de referência, para o Empréstimo contratado. A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%) | 
 
