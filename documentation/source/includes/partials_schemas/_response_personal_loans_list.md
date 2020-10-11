@@ -263,7 +263,7 @@
 |:------------        |:---------------------------------                           |:-----------  |:----------------------------------------------------         |
 | type                | [Enum PersonalLoansTypes](#schemaEnumPersonalLoanTypes)     | Sim          | Modalidades de empréstimos ofertados para pessoas Físicas, conforme Circular <a href='https://www.bcb.gov.br/pre/normativos/busca/downloadNormativo.asp?arquivo=/Lists/Normativos/Attachments/51025/Circ_4015_v1_O.pdf' target="_blank">4015-Bacem</a>|
 | fees                | [[LoanFees](#schemaLoanFees)]                               | Sim          | Tarifas cobradas sobre Serviços ofertados à Modalidade de Empréstimo                                                                                                                                                                                  |
-| interestRates       | [[LoanInterestRates](#schemaLoanInterestRates)]             | Sim          | Taxas de juros remuneratórias                                                                                                                                                                                                                         |
+| interestRate       | [[LoanInterestRate](#schemaLoanInterestRates)]             | Sim          | Taxas de juros remuneratórias                                                                                                                                                                                                                         |
 | requiredWarranties  | [[Enum RequiredWarranties](#schemaEnumRequiredWarranties)]  | Sim          | Relação de garantias exigidas, segundo documento <a href='https://www.bcb.gov.br/estabilidadefinanceira/scrdoc3040' target="_blank">3040 do Bacem</a>                                                                                                 |
 | termsConditions     | string                                                      | Não          | Campo aberto para informar as condições contratuais relativas ao produto ou serviço informado. Pode ser informada a URL ([[URIString](#commonFieldURIString)]) referente ao endereço onde constam as condições informadas.   |
 
@@ -290,7 +290,7 @@
 | requiredWarranties        | PENHOR                          | Penhor
 | requiredWarranties        | ALIENACAO_FIDUCIARIA            | Alienação fiduciária
 | requiredWarranties        | HIPOTECA                        | Hipoteca
-| requiredWarranties        | OPERCAOES_GARANTIDAS_PELO_GOVERNO    | Operações garantidas pelo governo
+| requiredWarranties        | OPERACOES_GARANTIDAS_PELO_GOVERNO    | Operações garantidas pelo governo
 | requiredWarranties        | OUTRAS_GARANTIAS_NAO_FIDEJUSSORIAS  | Outras garantias não fidejussórias
 | requiredWarranties        | SEGUROS_ASSEMELHADOS            | Seguros e assemelhados
 | requiredWarranties        | GARANTIA_FIDEJUSSORIA           | Garantia fidejussória
@@ -330,14 +330,14 @@
 ```
 |     Nome            |  Tipo                                           | Obrigatório  |                            Definição                         | Restrições
 |:------------        |:---------------------------------               |:-----------  |:----------------------------------------------------         | :------
-| name         | string                                          | Sim          | Nomes das Tarifas cobradas sobre Serviços relacionados à Modalidade informada do Empréstimo para pessoa física/jurídica.    | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para o item priceInfo
-| code         | string                                          | Sim          | Sigla de identificação do serviço relacionado à Modalidade informada de Empréstimo para pessoa física/jurídica.             | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para o item priceInfo
-| chargingTriggerInfo | string                                          | Sim          | Fatos geradores de cobrança que incidem sobre as Modalidades informada de Empréstimos para pessoa física/jurídica.        | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para o item priceInfo
-| prices               | [[Price](#schemaPrice)]                         | Sim          | Valor da mediana da tarifa, relativa ao serviço ofertado, informado no período.                                                       | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
-| minimum             | [[MinimumPrice](#schemaMinimumPrice)]           | Sim          | Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
-| maximum             | [[MaximumPrice](#schemaMaximumPrice)]           | Sim          | Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
+| name         | string                                          | Sim          | Nomes das Tarifas cobradas sobre Serviços relacionados à Modalidade informada do Empréstimo para pessoa física/jurídica.    | NA
+| code         | string                                          | Sim          | Sigla de identificação do serviço relacionado à Modalidade informada de Empréstimo para pessoa física/jurídica.             | NA
+| chargingTriggerInfo | string                                          | Sim          | Fatos geradores de cobrança que incidem sobre as Modalidades informada de Empréstimos para pessoa física/jurídica.        | NA
+| prices               | [[Price](#schemaPrice)]                         | Sim          | Valor da mediana da tarifa, relativa ao serviço ofertado, informado no período.                                                       | NA
+| minimum             | [[MinimumPrice](#schemaMinimumPrice)]           | Sim          | Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. | NA
+| maximum             | [[MaximumPrice](#schemaMaximumPrice)]           | Sim          | Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. | NA
 
-## LoanInterestRates
+## LoanInterestRate
 <a id="schemaLoanInterestRates"></a>
 
 ```json
@@ -355,7 +355,7 @@
 
 | Nome                | Tipo                                            | Obrigatório | Definição                                                 |
 |:----------------    |:------                                          |:----------- |:-------------------------------                           |
-| applications         | [[Application](#schemaApplication)]                         | Sim          | Valor da mediana da taxa de remuneração relativa ao serviço ofertado.                                                       | 
-| minimumRate         | [[MinimumRate](#schemaMinimumRate)]           | Sim          | Valor mínimo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | 
-| maximumRate          | [[MaximumRate](#schemaMaximumRate)]           | Sim          | Valor máximo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | 
+| applications        | [[Application](#schemaApplication)]                         | Sim          | Valor da mediana da taxa de remuneração relativa ao serviço ofertado.                                                       | 
+| minimumRate         | string     | Sim          | Percentual mínimo cobrado (taxa efetiva) no mês de referência, para o Empréstimo contratado. A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%) | 
+| maximumRate         | string     | Sim          | Percentual máximo cobrado (taxa efetiva) no mês de referência, para o Empréstimo contratado. A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%) | 
 

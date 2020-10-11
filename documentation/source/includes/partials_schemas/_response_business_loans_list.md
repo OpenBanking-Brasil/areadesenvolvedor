@@ -77,7 +77,7 @@
 |     Nome          |  Tipo                                                   | Obrigatório  |                            Definição                  |
 |:------------      |:---------------------------------                       |:-----------  |:----------------------------------------------------  |
 | data              | object                                                  | Sim          |                                                       |
-| » brand           | [[BusinessLoansBrand](#schemaBusinessLoansBrand)]       | Sim          | organizaçãs titular das dependências                  |
+| » brand           | [[BusinessLoansBrand](#schemaBusinessLoansBrand)]       | Sim          | organização titular das dependências                  |
 | links             | [LinksPaginated](#schemaLinksPaginated)                 | Sim          |                                                       |
 | meta              | [MetaPaginated](#schemaMetaPaginated)                   | Sim          |                                                       |
 
@@ -263,7 +263,7 @@
 |:------------        |:---------------------------------                           |:-----------  |:----------------------------------------------------         |
 | type                | [Enum BusinessLoanTypes](#schemaEnumBusinessLoanTypes)      | Sim          | Modalidades de empréstimos ofertados para pessoas jurídicas, conforme Circular <a href='https://www.bcb.gov.br/pre/normativos/busca/downloadNormativo.asp?arquivo=/Lists/Normativos/Attachments/51025/Circ_4015_v1_O.pdf' target="_blank">4015-Bacem</a>|
 | fees                | [[LoanFees](#schemaLoanFees)]                               | Sim          | Tarifas cobradas sobre Serviços ofertados à Modalidade de Empréstimo             |
-| interestRate        | [[LoanInterestRates](#schemaLoanInterestRates)]             | Sim          | Taxas de juros remuneratórias             |
+| interestRate        | [[LoanInterestRate](#schemaLoanInterestRates)]             | Sim          | Taxas de juros remuneratórias             |
 | requiredWarranties  | [[Enum RequiredWarranties](#schemaEnumRequiredWarranties)]  | Sim          | Relação de garantias exigidas, segundo documento <a href='https://www.bcb.gov.br/estabilidadefinanceira/scrdoc3040' target="_blank">3040 do Bacem</a>       |
 | termsConditions     | string                                                      | Não          | Campo aberto para informar as condições contratuais relativas ao produto ou serviço informado. Pode ser informada a URL ([[URIString](#commonFieldURIString)]) referente ao endereço onde constam as condições informadas.   |
 

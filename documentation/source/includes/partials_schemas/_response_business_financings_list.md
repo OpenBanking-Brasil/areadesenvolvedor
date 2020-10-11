@@ -3,66 +3,51 @@
 
 ```json
 {
-  "data": {
+  "data":  {
     "brand": {
       "name": "string",
       "companies": [
         {
-          "name": "string",
           "cnpjNumber": "string",
+          "name": "string",
           "urlComplementaryList": "string",
           "businessFinancings": [
             {
               "type": "string",
               "fees": [
                 {
-                  "serviceName": "string",
-                  "serviceCode": "string",
-                  "chargingTriggerInfo": "string",
-                  "chargingUnit": "string",
-                  "price": [
-                    {
-                      "interval": "string",
+                  "service": {
+                    "name": "string",
+                    "code": "string",
+                    "chargingTriggerInfo": "string",
+                    "prices": [
+                      {
+                        "interval": "string",
+                        "value": "string",
+                        "currency": "string"
+                      }
+                    ],
+                    "minimum": {
+                      "value": "string",
+                      "currency": "string"
+                    },
+                    "maximum": {
                       "value": "string",
                       "currency": "string"
                     }
-                  ],
-                  "minimum": {
-                    "value": "string",
-                    "currency": "string"
-                  },
-                  "maximum": {
-                    "value": "string",
-                    "currency": "string"
-                  },
-                  "additionalInfo": "string"
-                }
-              ],
-              "interestRates": [
-                {
-                  "rate": "string",
-                  "referencialRate": "string",
-                  "indexer": "string",
-                  "prePostTax": "string",
-                  "occurrence": "string",
-                  "incomeRateInfo": "string",
-                  "application": [
-                    {
-                      "interval": "string",
-                      "value": "string",
-                      "currency": "string"
-                    }
-                  ],
-                  "minimum": {
-                    "value": "string",
-                    "currency": "string"
-                  },
-                  "maximum": {
-                    "value": "string",
-                    "currency": "string"
                   }
                 }
               ],
+              "interestRate": {
+                "applications": [
+                  {
+                    "interval": "string",
+                    "rate": "string"
+                  }
+                ],
+                "minimumRate": "string",
+                "maximumRate": "string"
+              },
               "requiredWarranties": [
                 "string"
               ],
@@ -102,61 +87,46 @@
   "name": "string",
   "companies": [
     {
-      "name": "string",
       "cnpjNumber": "string",
+      "name": "string",
       "urlComplementaryList": "string",
       "businessFinancings": [
         {
           "type": "string",
           "fees": [
             {
-              "serviceName": "string",
-              "serviceCode": "string",
-              "chargingTriggerInfo": "string",
-              "chargingUnit": "string",
-              "price": [
-                {
-                  "interval": "string",
+              "service": {
+                "name": "string",
+                "code": "string",
+                "chargingTriggerInfo": "string",
+                "prices": [
+                  {
+                    "interval": "string",
+                    "value": "string",
+                    "currency": "string"
+                  }
+                ],
+                "minimum": {
+                  "value": "string",
+                  "currency": "string"
+                },
+                "maximum": {
                   "value": "string",
                   "currency": "string"
                 }
-              ],
-              "minimum": {
-                "value": "string",
-                "currency": "string"
-              },
-              "maximum": {
-                "value": "string",
-                "currency": "string"
-              },
-              "additionalInfo": "string"
-            }
-          ],
-          "interestRates": [
-            {
-              "rate": "string",
-              "referencialRate": "string",
-              "indexer": "string",
-              "prePostTax": "string",
-              "occurrence": "string",
-              "incomeRateInfo": "string",
-              "application": [
-                {
-                  "interval": "string",
-                  "value": "string",
-                  "currency": "string"
-                }
-              ],
-              "minimum": {
-                "value": "string",
-                "currency": "string"
-              },
-              "maximum": {
-                "value": "string",
-                "currency": "string"
               }
             }
           ],
+          "interestRate": {
+            "applications": [
+              {
+                "interval": "string",
+                "rate": "string"
+              }
+            ],
+            "minimumRate": "string",
+            "maximumRate": "string"
+          },
           "requiredWarranties": [
             "string"
           ],
@@ -178,61 +148,46 @@
 
 ```json
 {
-  "name": "string",
   "cnpjNumber": "string",
+  "name": "string",
   "urlComplementaryList": "string",
   "businessFinancings": [
     {
       "type": "string",
       "fees": [
         {
-          "serviceName": "string",
-          "serviceCode": "string",
-          "chargingTriggerInfo": "string",
-          "chargingUnit": "string",
-          "price": [
-            {
-              "interval": "string",
+          "service": {
+            "name": "string",
+            "code": "string",
+            "chargingTriggerInfo": "string",
+            "prices": [
+              {
+                "interval": "string",
+                "value": "string",
+                "currency": "string"
+              }
+            ],
+            "minimum": {
+              "value": "string",
+              "currency": "string"
+            },
+            "maximum": {
               "value": "string",
               "currency": "string"
             }
-          ],
-          "minimum": {
-            "value": "string",
-            "currency": "string"
-          },
-          "maximum": {
-            "value": "string",
-            "currency": "string"
-          },
-          "additionalInfo": "string"
-        }
-      ],
-      "interestRates": [
-        {
-          "rate": "string",
-          "referencialRate": "string",
-          "indexer": "string",
-          "prePostTax": "string",
-          "occurrence": "string",
-          "incomeRateInfo": "string",
-          "application": [
-            {
-              "interval": "string",
-              "value": "string",
-              "currency": "string"
-            }
-          ],
-          "minimum": {
-            "value": "string",
-            "currency": "string"
-          },
-          "maximum": {
-            "value": "string",
-            "currency": "string"
           }
         }
       ],
+      "interestRate": {
+        "applications": [
+          {
+            "interval": "string",
+            "rate": "string"
+          }
+        ],
+        "minimumRate": "string",
+        "maximumRate": "string"
+      },
       "requiredWarranties": [
         "string"
       ],
@@ -257,53 +212,38 @@
   "type": "string",
   "fees": [
     {
-      "serviceName": "string",
-      "serviceCode": "string",
-      "chargingTriggerInfo": "string",
-      "chargingUnit": "string",
-      "price": [
-        {
-          "interval": "string",
+      "service": {
+        "name": "string",
+        "code": "string",
+        "chargingTriggerInfo": "string",
+        "prices": [
+          {
+            "interval": "string",
+            "value": "string",
+            "currency": "string"
+          }
+        ],
+        "minimum": {
+          "value": "string",
+          "currency": "string"
+        },
+        "maximum": {
           "value": "string",
           "currency": "string"
         }
-      ],
-      "minimum": {
-        "value": "string",
-        "currency": "string"
-      },
-      "maximum": {
-        "value": "string",
-        "currency": "string"
-      },
-      "additionalInfo": "string"
-    }
-  ],
-  "interestRates": [
-    {
-      "rate": "string",
-      "referencialRate": "string",
-      "indexer": "string",
-      "prePostTax": "string",
-      "occurrence": "string",
-      "incomeRateInfo": "string",
-      "application": [
-        {
-          "interval": "string",
-          "value": "string",
-          "currency": "string"
-        }
-      ],
-      "minimum": {
-        "value": "string",
-        "currency": "string"
-      },
-      "maximum": {
-        "value": "string",
-        "currency": "string"
       }
     }
   ],
+  "interestRate": {
+    "applications": [
+      {
+        "interval": "string",
+        "rate": "string"
+      }
+    ],
+    "minimumRate": "string",
+    "maximumRate": "string"
+  },
   "requiredWarranties": [
     "string"
   ],
@@ -315,7 +255,7 @@
 |:------------          |:---------------------------------------------------------------------------                     |:----------- |:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------                                                             |
 | type                  | [Enum BusinessFinancingsType](#schemaEnumBusinessFinancingsType)                                | Sim         | Modalidades de financiamentos ofertados para pessoas jurídicas, conforme Circular 4015-Banco Central do Brasil. Segundo cartilha do Banco Central do Brasil: Financiamento é um contrato entre o cliente e uma instituição financeira, mas com, destinação específica como para a aquisição de veículo ou de bem imóvel, que funcionam como garantia para o crédito concedido. |
 | fees                  | [[BusinessFinancingsFees](#schemaBusinessFinancingsFees)]                                       | Sim         | Lista das Tarifas cobradas sobre Serviços ofertados à Modalidade de Financiamento, para pessoa jurídica.                                                                                                                                                                                                                                   |
-| interestRates         | [[BusinessFinancingsInterestRates](#schemaBusinessFinancingsInterestRates)]                     | Sim         | Lista de taxas de juros.                                                                                                                                                                                                                                                                                                                   |
+| interestRate         | [[BusinessFinancingsInterestRate](#schemaBusinessFinancingsInterestRates)]                     | Sim         | Lista de taxas de juros.                                                                                                                                                                                                                                                                                                                   |
 | requiredWarranties    | [[Enum BusinessFinancingsRequiredWarranties](#schemaEnumBusinessFinancingsRequiredWarranties)]  | Sim         | Relação de garantias exigidas.                                                                                                                                                                                                                                                                                                             |
 | termsConditions       | string                                                                                          | Não          | Campo aberto para informar as condições contratuais relativas ao produto ou serviço informado. Pode ser informada a URL ([[URIString](#commonFieldURIString)]) referente ao endereço onde constam as condições informadas.   |
 
@@ -325,15 +265,16 @@
 
 | Propriedade  | Código                                 | Definição                                                        |
 |:------------ |:-------------------------------------- |:---------------------------------------------------------------- |
-| type         | AQUISICAO_BENS_VEICULOS_AUTOMOTORES    | Aquisição de bens – veículos automotores.                         |
-| type         | AQUISICAO_BENS_OUTROS_BENS             | Aquisição de bens – outros bens.                                  |
-| type         | MICROCREDITO_PRODUTIVO_ORIENTADO       | Microcrédito Produtivo Orientado.                                 |
-| type         | FINANCIAMENTOS_RURAIS_CUSTEIO          | Financiamentos rurais - custeio.                                  |
-| type         | FINANCIAMENTOS_RURAIS_INVESTIMENTO     | Financiamentos rurais - investimento.                             |
-| type         | FINANCIAMENTOS_RURAIS_COMERCIALIZACAO  | Financiamentos rurais - comercialização.                          |
-| type         | FINANCIAMENTOS_RURAIS_INDUSTRIALIZACAO | Financiamentos rurais - industrialização.                         |
-| type         | FINANCIAMENTO_IMOBILIARIO_SFH          | Financimento imobiliário - Sistema Financeiro da Habitação (SFH. |
-| type         | FINANCIAMENTO_IMOBILIARIO_SFI          | Financimento imobiliário - Sistema Financeiro da Imobiliário (SFI). |
+| type         | FINANCIAMENTO_AQUISICAO_BENS_VEICULOS_AUTOMOTORES    | Aquisição de bens – veículos automotores.                         |
+| type         | FINANCIAMENTO_AQUISICAO_BENS_OUTROS_BENS             | Aquisição de bens – outros bens.                                  |
+| type         | FINANCIAMENTO_MICROCREDITO                           | operação de crédito realizada para financiamento de atividades produtivas de pessoas naturais ou jurídicas, organizadas de forma individual ou coletiva, com renda ou receita bruta anual de até R$200.000,00 (duzentos mil reais)                                 |
+| type         | FINANCIAMENTO_RURAL_CUSTEIO                          | Financiamentos rurais - custeio.                                  |
+| type         | FINANCIAMENTO_RURAL_INVESTIMENTO                     | Financiamentos rurais - investimento.                             |
+| type         | FINANCIAMENTO_RURAL_COMERCIALIZACAO                  | Financiamentos rurais - comercialização.                          |
+| type         | FINANCIAMENTO_RURAL_INDUSTRIALIZACAO                 | Financiamentos rurais - industrialização.                         |
+| type         | FINANCIAMENTO_IMOBILIARIO_SISTEMA_FINANCIERO_HABILITACAO_SFH          | Financimento imobiliário - Sistema Financeiro da Habitação (SFH. |
+| type         | FINANCIAMENTO_IMOBILIARIO_SISTEMA_FINANCIERO_HABILITACAO_SFI          | Financimento imobiliário - Sistema Financeiro da Imobiliário (SFI). |
+
 
 ### Enum BusinessFinancingsRequiredWarranties
 <a id="schemaEnumBusinessFinancingsRequiredWarranties"></a>
@@ -360,86 +301,56 @@
 
 ```json
 {
-  "serviceName": "string",
-  "serviceCode": "string",
-  "chargingTriggerInfo": "string",
-  "chargingUnit": "string",
-  "price": [
-    {
-      "interval": "string",
+  "service": {
+    "name": "string",
+    "code": "string",
+    "chargingTriggerInfo": "string",
+    "prices": [
+      {
+        "interval": "string",
+        "value": "string",
+        "currency": "string"
+      }
+    ],
+    "minimum": {
+      "value": "string",
+      "currency": "string"
+    },
+    "maximum": {
       "value": "string",
       "currency": "string"
     }
-  ],
-  "minimum": {
-    "value": "string",
-    "currency": "string"
-  },
-  "maximum": {
-    "value": "string",
-    "currency": "string"
-  },
-  "additionalInfo": "string"
+  }
 }
 ```
 
 |     Nome             |  Tipo                                                                    | Obrigatório    |                            Definição                                                                                                       |
 |:------------         |:------------------------------------------------------------------------ |:-------------- |:------------------------------------------------------------------------------------------------------------------------------------------ |
-| serviceName          | string                                                                   | Sim            | Nomes das Tarifas cobradas sobre Serviços ofertados à Modalidade de Financiamento, para pessoa jurídica.                                      |
-| serviceCode          | string                                                                   | Sim            | Sigla de identificação do serviço relacionado à Modalidade de Financiamento informada, para pessoa jurídica. Campo aberto.                   |
+| name          | string                                                                   | Sim            | Nomes das Tarifas cobradas sobre Serviços ofertados à Modalidade de Financiamento, para pessoa jurídica.                                      |
+| code          | string                                                                   | Sim            | Sigla de identificação do serviço relacionado à Modalidade de Financiamento informada, para pessoa jurídica. Campo aberto.                   |
 | chargingTriggerInfo  | string                                                                   | Não            | Fatos geradores de cobrança que incidem sobre as Modalidades de Financiamentos, para pessoa jurídica. Campo Aberto.                          |
-| chargingUnit         | string                                                                   | Não            | Unidade ou forma de cobrança.                                                                                                               |
-| price                | [[Price](#schemaPrice)]                                                  | Sim            | Valor médio da tarifa, relativa ao serviço ofertado, informado no período.                                                                       |
+| prices                | [[Price](#schemaPrice)]                                                  | Sim            | Valor médio da tarifa, relativa ao serviço ofertado, informado no período.                                                                       |
 | minimum              | [[MinimumPrice](#schemaMinimumPrice)]                                     | Sim           | Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
 | maximum              | [[MaximumPrice](#schemaMaximumPrice)]                                     | Sim           | Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
-| additionalInfo       | string                                                                   | Não            | Descrição de como é composto o valor da tarifa. p.ex. '0,25% sobre o excedente do limite acima de R$ 500,00'.                           |
 
-## BusinessFinancingsInterestRates 
+## BusinessFinancingsInterestRate 
 <a id="schemaBusinessFinancingsInterestRates"></a>
 
 ```json
 {
-  "rate": "string",
-  "referencialRate": "string",
-  "indexer": "string",
-  "prePostTax": "string",
-  "occurrence": "string",
-  "incomeRateInfo": "string",
-  "application": [
+  "applications": [
     {
       "interval": "string",
-      "value": "string",
-      "currency": "string"
+      "rate": "string"
     }
   ],
-  "minimum": {
-    "value": "string",
-    "currency": "string"
-  },
-  "maximum": {
-    "value": "string",
-    "currency": "string"
-  }
+  "minimumRate": "string",
+  "maximumRate": "string"
 }
 ```
 
 |     Nome                  |  Tipo                                                                           | Obrigatório    |                            Definição                                                                                                                                                                                                                                                                                  |
 |:------------              |:------------------------------------------------------------------------------- |:-------------- |:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| rate                      | [RateString](#commonFieldRateString)                                            | Sim            | Percentual que incide sobre a composição da  taxa de juros remuneratórias                                                                                                                                                                                                                                             |
-| referencialRate           | [RateString](#commonFieldRateString)                                            | Sim            | Taxa Referencial se configura como uma taxa de juros de referência, ou seja, um indicador geral da economia brasileira. Por isso, é utilizada na hora de calcular o rendimento de determinadas aplicações financeiras.                                                                                                 |
-| indexer                   | [Enum BusinessFinancingsIndexer](#schemaEnumBusinessFinancingsIndexer)          | Sim            | Indexador é o termo utilizado para se referir aos índices usados como base para corrigir os valores monetários de um determinado ativo. No Brasil, os indexadores mais comuns são o IPCA, a taxa Selic e o CDI.                                                                                                        |
-| prePostTax                | [Enum PrePostTax](#schemaPrePostTax)                                            | Sim            | Indicador de pré ou pós. A diferença básica é que, enquanto o prefixado apresenta rentabilidade definida, o pós-fixado acompanha algum indicador. Assim, quem investe no primeiro grupo sabe como será seu rendimento previamente, enquanto quem investe no segundo, só conhecerá os resultados na data de vencimento. |
-| occurrence                | [Enum OccurrenceType](#schemaOccurrenceType)                                      | Sim          | Frequência sobre a qual incide a Remuneração.                                                                                                                                                                                                                                                                          |
-| incomeRateInfo            | string                                                                          | Não            | Descrição da Remuneração relativa as taxas de juros remuneratórias sobre a modalidade de Financiamento informada, para pessoa jurídica.                                                                                                                                                                                  |
-| application               | [[Price](#schemaPrice)]                                                         | Sim            | Valor da mediana da taxa de remuneração relativa ao serviço ofertado, para pessoa jurídica informado no período.                                                                                                                                                                                                         |
-| minimum                   | [[MinimumPrice](#schemaMinimumPrice)]                                           | Sim            | Valor mínimo cobrado para a taxa de remuneração relativa ao serviço ofertado, sobre a base de clientes,  no mês de referência | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
-| maximum                   | [[MaximumPrice](#schemaMaximumPrice)]                                           | Sim            | Valor máximo cobrado para a taxa de remuneração relativa ao serviço ofertado, sobre a base de clientes,  no mês de referência | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
-
-### Enum BusinessFinancingsIndexer
-<a id="schemaEnumBusinessFinancingsIndexer"></a>
-
-| Propriedade  | Código | Definição   |
-|:------------ |:------ |:----------- |
-| indexer      | IPCA   | IPCA        |
-| indexer      | SELIC  | SELIC       |
-| indexer      | CDI    | CDI         |
+| applications               | [[Application](#schemaApplication)]    | Sim            | Valor da mediana da taxa de remuneração relativa ao serviço ofertado, para pessoa física informado no período.                                                                                                                                                                                                         |
+| minimumRate                   | string | Sim            | Percentual mínimo cobrado (taxa efetiva) no mês de referência, para o Financiamento contratado. A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%) | 
+| maximumRate                   | string | Sim            |  Percentual máximo cobrado (taxa efetiva) no mês de referência, para o Financiamento contratado. A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%) | 
