@@ -24,7 +24,7 @@
                 "rewardProgramInfo": "string"
               },
               "fees": {
-                "services": [
+                "service": [
                   {
                     "name": "string",
                     "code": "string",
@@ -132,7 +132,7 @@
             "rewardProgramInfo": "string"
           },
           "fees": {
-            "services": [
+            "service": [
               {
                 "name": "string",
                 "code": "string",
@@ -222,7 +222,7 @@
         "rewardProgramInfo": "string"
       },
       "fees": {
-        "services": [
+        "service": [
           {
             "name": "string",
             "code": "string",
@@ -307,7 +307,7 @@
     "rewardProgramInfo": "string"
   },
   "fees": {
-    "services": [
+    "service": [
       {
         "name": "string",
         "code": "string",
@@ -396,7 +396,7 @@
 
 ```json
 {
-  "services": [
+  "service": [
     {
       "name": "string",
       "code": "string",

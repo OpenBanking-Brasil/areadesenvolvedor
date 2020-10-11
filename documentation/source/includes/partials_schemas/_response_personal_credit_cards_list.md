@@ -16,6 +16,7 @@
               "name": "string",
               "identification": {
                 "productType": "string",
+                "additionalInfo": "string",
                 "creditCardNetwork": "string",
                 "additionalInfo": "string"
               },
@@ -24,7 +25,7 @@
                 "rewardProgramInfo": "string"
               },
               "fees": {
-                "services": [
+                "service": [
                   {
                     "name": "string",
                     "code": "string",
@@ -133,7 +134,7 @@
             "rewardProgramInfo": "string"
           },
           "fees": {
-            "services": [
+            "service": [
               {
                 "name": "string",
                 "code": "string",
@@ -224,7 +225,7 @@
         "rewardProgramInfo": "string"
       },
       "fees": {
-        "services": [
+        "service": [
           {
             "name": "string",
             "code": "string",
@@ -311,7 +312,7 @@ urlComplementaryList
       "rewardProgramInfo": "string"
     },
     "fees": {
-    "services": [
+    "service": [
       {
         "name": "string",
         "code": "string",
@@ -448,7 +449,7 @@ urlComplementaryList
 
 ```json
 {
-  "services": [
+  "service": [
     {
       "name": "string",
       "code": "string",

@@ -41,7 +41,7 @@
               "serviceBundles": [
                 {
                   "name": "string",
-                  "services": [
+                  "service": [
                     {
                       "code": "string",
                       "eventLimitQuantity": "string",
@@ -144,7 +144,7 @@
           "serviceBundles": [
             {
               "name": "string",
-              "services": [
+              "service": [
                 {
                   "code": "string",
                   "eventLimitQuantity": "string",
@@ -229,7 +229,7 @@
       "serviceBundles": [
         {
           "name": "string",
-          "services": [
+          "service": [
             {
               "code": "string",
               "eventLimitQuantity": "string",
@@ -309,7 +309,7 @@
   "serviceBundles": [
     {
       "name": "string",
-      "services": [
+      "service": [
         {
           "code": "string",
           "eventLimitQuantity": "string",
@@ -463,7 +463,7 @@
 ```json
 {
   "name": "string",
-  "services": [
+  "service": [
     {
       "code": "string",
       "eventLimitQuantity": "string",
