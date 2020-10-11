@@ -50,32 +50,37 @@
               },
               "interestRates": {
                 "feeRate": {
+                  "prices": [
+                    {
+                      "interval": "string",
+                      "rate": "string"
+                    }
+                  ],
+                  "minimumRate" : "string",
+                  "maximumRate" :  "string",
+                },
+                "instalmentRate": {
                   "price": [
                     {
                       "interval": "string",
                       "rate": "string"
                     }
                   ],
-                  "minimumRate" : {
-                    "rate": "string"
-                  },
-                  "maximumRate" : {
-                    "rate": "string"
-                  },
+                  "minimumRate" : "string",
+                  "maximumRate" : "string",
                 },
-                "instalmentRate": {
+                "insterestRate": {
+                  "code": "string",
+                  "additionalInfo": "string",
                   "price": [
                     {
                       "interval": "string",
-                      "rate": "string",
-                      "frequency": "string"
+                      "rate": "string"
                     }
                   ],
                   "minimumRate" : "string",
-                  "maximumRate" : "string"
+                  "maximumRate" : "string",
                 },
-                "code": "string",
-                "additionalInfo": "string"
               },
               "termsConditions": {
                 "minimumFeeRate": "string",
@@ -116,87 +121,93 @@
 ```json
 {
   "name": "string",
-  "companies": [
-    {
-      "name": "string",
-      "cnpjNumber": "string",
-      "urlComplementaryList":"string",
-      "personalCreditCards": [
+      "companies": [
         {
           "name": "string",
-          "identification": {
-            "productType": "string",
-            "creditCardNetwork": "string",
-            "additionalInfo": "string"
-          },
-          "rewardsProgram": {
-            "hasRewardProgram": "boolean",
-            "rewardProgramInfo": "string"
-          },
-          "fees": {
-            "service": [
-              {
-                "name": "string",
-                "code": "string",
-                "chargingTriggerInfo": "string",
-                "price": [
+          "cnpjNumber": "string",
+          "urlComplementaryList":"string",
+          "personalCreditCards": [
+            {
+              "name": "string",
+              "identification": {
+                "productType": "string",
+                "additionalInfo": "string",
+                "creditCardNetwork": "string",
+                "additionalInfo": "string"
+              },
+              "rewardsProgram": {
+                "hasRewardProgram": "boolean",
+                "rewardProgramInfo": "string"
+              },
+              "fees": {
+                "service": [
                   {
-                    "interval": "string",
-                    "value": "string",
-                    "currency": "string"
+                    "name": "string",
+                    "code": "string",
+                    "chargingTriggerInfo": "string",
+                    "price": [
+                      {
+                        "interval": "string",
+                        "value": "string",
+                        "currency": "string"
+                      }
+                    ],
+                    "minimum": {
+                      "value": "string",
+                      "currency": "string"
+                    },
+                    "maximum": {
+                      "value": "string",
+                      "currency": "string"
+                    }
                   }
-                ],
-                "minimum": {
-                  "value": "string",
-                  "currency": "string"
+                ]
+              },
+              "interestRates": {
+                "feeRate": {
+                  "prices": [
+                    {
+                      "interval": "string",
+                      "rate": "string"
+                    }
+                  ],
+                  "minimumRate" : "string",
+                  "maximumRate" :  "string",
                 },
-                "maximum": {
-                  "value": "string",
-                  "currency": "string"
-                }
+                "instalmentRate": {
+                  "price": [
+                    {
+                      "interval": "string",
+                      "rate": "string"
+                    }
+                  ],
+                  "minimumRate" : "string",
+                  "maximumRate" : "string",
+                },
+                "insterestRate": {
+                  "code": "string",
+                  "additionalInfo": "string",
+                  "price": [
+                    {
+                      "interval": "string",
+                      "rate": "string"
+                    }
+                  ],
+                  "minimumRate" : "string",
+                  "maximumRate" : "string",
+                },
+              },
+              "termsConditions": {
+                "minimumFeeRate": "string",
+                "additionalInfo": "string",
+                "elegibilityCriteriaInfo": "string",
+                "closingProcessInfo": "string"
               }
-            ]
-          },
-          "interestRates": {
-            "feeRate": {
-              "price": [
-                {
-                  "interval": "string",
-                  "rate": "string"
-                }
-              ],
-              "minimumRate" : {
-                "rate": "string"
-              },
-              "maximumRate" : {
-                "rate": "string"
-              },
-            },
-            "instalmentRate": {
-              "price": [
-                {
-                  "interval": "string",
-                  "rate": "string",
-                  "frequency": "string"
-                }
-              ],
-              "minimumRate" : "string",
-              "maximumRate" : "string"
-            },
-            "code": "string",
-            "additionalInfo": "string"
-          },
-          "termsConditions": {
-            "minimumFeeRate": "string",
-            "additionalInfo": "string",
-            "elegibilityCriteriaInfo": "string",
-            "closingProcessInfo": "string"
-          }
+            }
+          ]
         }
       ]
     }
-  ]
-}
 ```
 
 |     Nome     |  Tipo                                                                    | Obrigatório  |                            Definição                                         |
@@ -209,83 +220,89 @@
 
 ```json
 {
-  "name": "string",
-  "cnpjNumber": "string",
-  "urlComplementaryList": "string",
-  "personalCreditCards": [
-    {
-      "name": "string",
-      "identification": {
-        "productType": "string",
-        "creditCardNetwork": "string",
-        "additionalInfo": "string"
-      },
-      "rewardsProgram": {
-        "hasRewardProgram": "boolean",
-        "rewardProgramInfo": "string"
-      },
-      "fees": {
-        "service": [
-          {
-            "name": "string",
-            "code": "string",
-            "chargingTriggerInfo": "string",
-            "price": [
-              {
-                "interval": "string",
+    "name": "string",
+    "cnpjNumber": "string",
+    "urlComplementaryList":"string",
+    "personalCreditCards": [
+      {
+        "name": "string",
+        "identification": {
+          "productType": "string",
+          "additionalInfo": "string",
+          "creditCardNetwork": "string",
+          "additionalInfo": "string"
+        },
+        "rewardsProgram": {
+          "hasRewardProgram": "boolean",
+          "rewardProgramInfo": "string"
+        },
+        "fees": {
+          "service": [
+            {
+              "name": "string",
+              "code": "string",
+              "chargingTriggerInfo": "string",
+              "price": [
+                {
+                  "interval": "string",
+                  "value": "string",
+                  "currency": "string"
+                }
+              ],
+              "minimum": {
+                "value": "string",
+                "currency": "string"
+              },
+              "maximum": {
                 "value": "string",
                 "currency": "string"
               }
+            }
+          ]
+        },
+        "interestRates": {
+          "feeRate": {
+            "prices": [
+              {
+                "interval": "string",
+                "rate": "string"
+              }
             ],
-            "minimum": {
-              "value": "string",
-              "currency": "string"
-            },
-            "maximum": {
-              "value": "string",
-              "currency": "string"
-            }
-          }
-        ]
-      },
-      "interestRates": {
-        "feeRate": {
-          "price": [
-            {
-              "interval": "string",
-              "rate": "string"
-            }
-          ],
-          "minimumRate" : {
-            "rate": "string"
+            "minimumRate" : "string",
+            "maximumRate" :  "string",
           },
-          "maximumRate" : {
-            "rate": "string"
+          "instalmentRate": {
+            "price": [
+              {
+                "interval": "string",
+                "rate": "string"
+              }
+            ],
+            "minimumRate" : "string",
+            "maximumRate" : "string",
+          },
+          "insterestRate": {
+            "code": "string",
+            "additionalInfo": "string",
+            "price": [
+              {
+                "interval": "string",
+                "rate": "string"
+              }
+            ],
+            "minimumRate" : "string",
+            "maximumRate" : "string",
           },
         },
-        "instalmentRate": {
-          "price": [
-            {
-              "interval": "string",
-              "rate": "string",
-              "frequency": "string"
-            }
-          ],
-          "minimumRate" : "string",
-          "maximumRate" : "string"
-        },
-        "code": "string",
-        "additionalInfo": "string"
-      },
-      "termsConditions": {
-        "minimumFeeRate": "string",
-        "additionalInfo": "string",
-        "elegibilityCriteriaInfo": "string",
-        "closingProcessInfo": "string"
+        "termsConditions": {
+          "minimumFeeRate": "string",
+          "additionalInfo": "string",
+          "elegibilityCriteriaInfo": "string",
+          "closingProcessInfo": "string"
+        }
       }
-    }
-  ]
-}
+    ]
+  }
 ```
 
 |     Nome             |  Tipo                                                | Obrigatório    |    Definição                       |
@@ -304,6 +321,7 @@ urlComplementaryList
     "name": "string",
     "identification": {
       "productType": "string",
+      "additionalInfo": "string",
       "creditCardNetwork": "string",
       "additionalInfo": "string"
     },
@@ -312,65 +330,70 @@ urlComplementaryList
       "rewardProgramInfo": "string"
     },
     "fees": {
-    "service": [
-      {
-        "name": "string",
-        "code": "string",
-        "chargingTriggerInfo": "string",
-        "price": [
-          {
-            "interval": "string",
+      "service": [
+        {
+          "name": "string",
+          "code": "string",
+          "chargingTriggerInfo": "string",
+          "price": [
+            {
+              "interval": "string",
+              "value": "string",
+              "currency": "string"
+            }
+          ],
+          "minimum": {
+            "value": "string",
+            "currency": "string"
+          },
+          "maximum": {
             "value": "string",
             "currency": "string"
           }
+        }
+      ]
+    },
+    "interestRates": {
+      "feeRate": {
+        "prices": [
+          {
+            "interval": "string",
+            "rate": "string"
+          }
         ],
-        "minimum": {
-          "value": "string",
-          "currency": "string"
-        },
-        "maximum": {
-          "value": "string",
-          "currency": "string"
-        }
-      }
-    ]
-  },
-  "interestRates": {
-    "feeRate": {
-      "price": [
-        {
-          "interval": "string",
-          "rate": "string"
-        }
-      ],
-      "minimumRate" : {
-        "rate": "string"
+        "minimumRate" : "string",
+        "maximumRate" :  "string",
       },
-      "maximumRate" : {
-        "rate": "string"
+      "instalmentRate": {
+        "price": [
+          {
+            "interval": "string",
+            "rate": "string"
+          }
+        ],
+        "minimumRate" : "string",
+        "maximumRate" : "string",
+      },
+      "insterestRate": {
+        "code": "string",
+        "additionalInfo": "string",
+        "price": [
+          {
+            "interval": "string",
+            "rate": "string"
+          }
+        ],
+        "minimumRate" : "string",
+        "maximumRate" : "string",
       },
     },
-    "instalmentRate": {
-      "price": [
-        {
-          "interval": "string",
-          "rate": "string",
-          "frequency": "string"
-        }
-      ],
-      "minimumRate" : "string",
-      "maximumRate" : "string"
-    },
-    "code": "string",
-    "additionalInfo": "string"
-  },
-  "termsConditions": {
-    "minimumFeeRate": "string",
-    "additionalInfo": "string",
-    "elegibilityCriteriaInfo": "string",
-    "closingProcessInfo": "string"
+    "termsConditions": {
+      "minimumFeeRate": "string",
+      "additionalInfo": "string",
+      "elegibilityCriteriaInfo": "string",
+      "closingProcessInfo": "string"
+    }
   }
-}
 ```
 
 |     Nome              |  Tipo                                                                             | Obrigatório |                            Definição                                      |
@@ -389,6 +412,7 @@ urlComplementaryList
 {
 
   "productType": "string",
+  "additionalInfo": "string",
   "creditCardNetwork": "string",
   "additionalInfo": "string"
 }
@@ -397,6 +421,7 @@ urlComplementaryList
 |     Nome          |  Tipo                                                                          | Obrigatório    |    Definição                                                                                                                                                                                                                                                                                                                               |
 |:----------------- |:-------------------------------------------------------------------------------|:-------------- |:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | productType       | [Enum PersonalCreditCardProductType](#schemaEnumPersonalCreditCardProductType) | Sim            | Categoria atribuída a um cartão de pagamento, sob uma certa denominação, que lhe agrega um conjunto de vantagens, diferenciando-o de acordo com o perfil do portador. Essa categoria é definida pelo BACEN e está contida no documento de nome 'Elaboração e Remessa de Informações Relativas aos Cartões de Pagamento  Emissores'         |
+| additionalInfo    | string                                                                         | Não            | Texto livre para especificar                                    |
 | creditCardNetwork | [Enum PersonalCreditCardBrandCode](#schemaEnumPersonalCreditCardBrandCode)     | Sim            | Categoria de Bandeiras de Cartões. Bandeira é a detentora de todos os direitos e deveres da utilização da marca estampada no cartão, inclusive as bandeiras pertencentes aos emissores. Essas bandeiras estão definidas em documento do BACEN de nome 'Elaboração e Remessa de Informações Relativas aos Cartões de Pagamento  Emissores'  |
 | additionalInfo    | string                                                                         | Não            | Texto livre para especificar categoria de bandeira marcada como 'Outras'                                                                                                                                                                                                                                                                   |
 
@@ -413,6 +438,20 @@ urlComplementaryList
 | productType         | ELECTRON                | Electron               |
 | productType         | STANDARD_NACIONAL       | Standard Nacional      |
 | productType         | STANDARD_INTERNACIONAL  | Standard Internacional |
+| productType         | CLASSIC_NACIONAL        | Classic Nacional       |
+| productType         | CLASSIC_INTERNACIONAL   | Classic Internacional  |
+| productType         | GOLD                    | Gold                   |
+| productType         | PLATINUM                | Platinum               |
+| productType         | INFINITE                | Infinite               |
+| productType         | ELECTRON                | Electron               |
+| productType         | STANDARD_NACIONAL       | Standard Nacional      |
+| productType         | STANDARD_INTERNACIONAL  | Standard Internacional |
+| productType         | CLASSIC_NACIONAL        | Classic Nacional       |
+| productType         | CLASSIC_INTERNACIONAL   | Classic Internacional  |
+| productType         | GOLD                    | Gold                   |
+| productType         | PLATINUM                | Platinum               |
+| productType         | OUTROS                | Infinite               |
+
 
 ### Enum PersonalCreditCardBrandCode
 <a id="schemaEnumPersonalCreditCardBrandCode"></a>
