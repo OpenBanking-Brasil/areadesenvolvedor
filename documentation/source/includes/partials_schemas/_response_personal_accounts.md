@@ -18,13 +18,13 @@
                 "priorityService": [
                   {
                     "name": "string",
-                    "codes": "string",
+                    "code": "string",
                     "chargingTriggerInfo": "string",
                     "price": [
                       {
-                        "intervals": "string",
-                        "values": "string",
-                        "currencies": "string"
+                        "interval": "string",
+                        "value": "string",
+                        "currency": "string"
                       }
                     ],
                     "minimum": {
@@ -42,11 +42,11 @@
                     "name": "string",
                     "code": "string",
                     "chargingTriggerInfo": "string",
-                    "price": [
+                    "prices": [
                       {
-                        "intervals": "string",
-                        "values": "string",
-                        "currencies": "string"
+                        "interval": "string",
+                        "value": "string",
+                        "currency": "string"
                       }
                     ],
                     "minimum": {
@@ -61,7 +61,7 @@
                 ]
               },
               "serviceBundles": {
-                "names":"string",
+                "name":"string"
                 "services": [
                   {
                     "code": "string",
@@ -69,10 +69,10 @@
                     "freeEventQuantity": "string"
                   }
                 ],
-                "price":{
-                  "intervals": "string",
-                  "monthlyFees":"string",
-                  "currencies":"string"
+                "prices":{
+                  "interval": "string",
+                  "monthlyFee":"string",
+                  "currency":"string"
                   
                 },
                 "minimum": {
@@ -99,12 +99,14 @@
               },
               "incomeRates": {
                 "savingAccount": "string",
-                "application":{
-                  "intervals":"string",
-                  "rates":"string"
-                },
-                "minimumRate": "string",
-                "maxiumRate": "string"
+                "prePaidPaymentAccount": {
+                    "applications":{
+                      "interval":"string",
+                      "rate":"string"
+                    },
+                    "minimumRate": "string",
+                    "maxiumRate": "string"
+                }
               }
             }
           ]
@@ -138,141 +140,26 @@
 
 ```json
 {
+  "name": "string",
+  "companies": [
+    {
       "name": "string",
-      "companies": [
-        {
-          "names": "string",
-          "cnpjNumbers": "string",
-          "urlComplementaryList": "string",
-          "PersonalAccounts": [
-            {
-              "types": "string",
-              "fees": {
-                "priorityServices": [
-                  {
-                    "names": "string",
-                    "codes": "string",
-                    "chargingTriggerInfo": "string",
-                    "price": [
-                      {
-                        "intervals": "string",
-                        "values": "string",
-                        "currencies": "string"
-                      }
-                    ],
-                    "minimum": {
-                        "value": "string",
-                        "currency": "string"
-                      },
-                    "maximum": {
-                        "value": "string",
-                        "currency": "string"
-                      }
-                  }
-                ],
-                "otherServices": [
-                  {
-                    "name": "string",
-                    "code": "string",
-                    "chargingTriggerInfo": "string",
-                    "price": [
-                      {
-                        "intervals": "string",
-                        "values": "string",
-                        "currencies": "string"
-                      }
-                    ],
-                    "minimum": {
-                        "value": "string",
-                        "currency": "string"
-                      },
-                    "maximum": {
-                        "value": "string",
-                        "currency": "string"
-                      }
-                  }
-                ]
-              },
-              "serviceBundles": {
-                "names":"string",
-                "services": [
-                  {
-                    "code": "string",
-                    "eventLimitQuantity": "string",
-                    "freeEventQuantity": "string"
-                  }
-                ],
-                "price":{
-                  "intervals": "string",
-                  "monthlyFees":"string",
-                  "currencies":"string"
-                  
-                },
-                "minimum": {
-                        "value": "string",
-                        "currency": "string"
-                      },
-                "maximum": {
-                        "value": "string",
-                        "currency": "string"
-                      },
-                
-              },
-              "openingClosingChannels": "string",
-              "additionalInfo":"string",
-              "transactionMethods": "string",
-              "termsConditions": {
-              "minimumBalance": {
-                   "value": "string",
-                   "currency": "string"
-
-                },
-                "elegibilityCriteriaInfo": "string",
-                "closingProcessInfo": "string"
-              },
-              "incomeRates": {
-                "savingAccount": "string",
-                "application":{
-                  "intervals":"string",
-                  "rates":"string"
-                },
-                "minimumRate": "string",
-                "maxiumRate": "string"
-              }
-            }
-          ]
-        }
-      ]
-    }
-```
-
-|     Nome     |  Tipo                                                        | Obrigatório  |                            Definição                         |
-|:------------ |:---------------------------------                            |:-----------  |:----------------------------------------------------         |
-| name         | string                                                       | Sim          | Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a 'marca' utilizada está em definição pelos participantes.  |
-| companies    | [[PersonalAccountCompanies](#schemaPersonalAccountCompanies)]| Sim          | Lista de instituições pertencentes à marca.                   |
-
-## PersonalAccountCompanies 
-<a id="schemaPersonalAccountCompanies"></a>
-
-```json
-{
-      "names": "string",
-      "cnpjNumbers": "string",
+      "cnpjNumber": "string",
       "urlComplementaryList": "string",
       "PersonalAccounts": [
         {
-          "types": "string",
+          "type": "string",
           "fees": {
-            "priorityServices": [
+            "priorityService": [
               {
-                "names": "string",
-                "codes": "string",
+                "name": "string",
+                "code": "string",
                 "chargingTriggerInfo": "string",
                 "price": [
                   {
-                    "intervals": "string",
-                    "values": "string",
-                    "currencies": "string"
+                    "interval": "string",
+                    "value": "string",
+                    "currency": "string"
                   }
                 ],
                 "minimum": {
@@ -285,16 +172,16 @@
                   }
               }
             ],
-            "otherServices": [
+            "otherService": [
               {
                 "name": "string",
                 "code": "string",
                 "chargingTriggerInfo": "string",
-                "price": [
+                "prices": [
                   {
-                    "intervals": "string",
-                    "values": "string",
-                    "currencies": "string"
+                    "interval": "string",
+                    "value": "string",
+                    "currency": "string"
                   }
                 ],
                 "minimum": {
@@ -309,7 +196,7 @@
             ]
           },
           "serviceBundles": {
-            "names":"string",
+            "name":"string",
             "services": [
               {
                 "code": "string",
@@ -317,10 +204,10 @@
                 "freeEventQuantity": "string"
               }
             ],
-            "price":{
-              "intervals": "string",
-              "monthlyFees":"string",
-              "currencies":"string"
+            "prices":{
+              "interval": "string",
+              "monthlyFee":"string",
+              "currency":"string"
               
             },
             "minimum": {
@@ -347,24 +234,143 @@
           },
           "incomeRates": {
             "savingAccount": "string",
-            "application":{
-              "intervals":"string",
-              "rates":"string"
-            },
-            "minimumRate": "string",
-            "maxiumRate": "string"
+            "prePaidPaymentAccount": {
+                "applications":{
+                  "interval":"string",
+                  "rate":"string"
+                },
+                "minimumRate": "string",
+                "maxiumRate": "string"
+            }
           }
         }
       ]
     }
+  ]
+}
+```
+
+|     Nome     |  Tipo                                                        | Obrigatório  |                            Definição                         |
+|:------------ |:---------------------------------                            |:-----------  |:----------------------------------------------------         |
+| name         | string                                                       | Sim          | Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a 'marca' utilizada está em definição pelos participantes.  |
+| companies    | [PersonalAccountCompanies](#schemaPersonalAccountCompanies)| Sim          | Lista de instituições pertencentes à marca.                   |
+
+## PersonalAccountCompanies 
+<a id="schemaPersonalAccountCompanies"></a>
+
+```json
+{
+  "name": "string",
+  "cnpjNumber": "string",
+  "urlComplementaryList": "string",
+  "PersonalAccounts": [
+    {
+      "type": "string",
+      "fees": {
+        "priorityService": [
+          {
+            "name": "string",
+            "code": "string",
+            "chargingTriggerInfo": "string",
+            "price": [
+              {
+                "interval": "string",
+                "value": "string",
+                "currency": "string"
+              }
+            ],
+            "minimum": {
+                "value": "string",
+                "currency": "string"
+              },
+            "maximum": {
+                "value": "string",
+                "currency": "string"
+              }
+          }
+        ],
+        "otherService": [
+          {
+            "name": "string",
+            "code": "string",
+            "chargingTriggerInfo": "string",
+            "prices": [
+              {
+                "interval": "string",
+                "value": "string",
+                "currency": "string"
+              }
+            ],
+            "minimum": {
+                "value": "string",
+                "currency": "string"
+              },
+            "maximum": {
+                "value": "string",
+                "currency": "string"
+              }
+          }
+        ]
+      },
+      "serviceBundles": {
+        "name":"string",
+        "services": [
+          {
+            "code": "string",
+            "eventLimitQuantity": "string",
+            "freeEventQuantity": "string"
+          }
+        ],
+        "prices":{
+          "interval": "string",
+          "monthlyFee":"string",
+          "currency":"string"
+          
+        },
+        "minimum": {
+                "value": "string",
+                "currency": "string"
+              },
+        "maximum": {
+                "value": "string",
+                "currency": "string"
+              },
+        
+      },
+      "openingClosingChannels": "string",
+      "additionalInfo":"string",
+      "transactionMethods": "string",
+      "termsConditions": {
+      "minimumBalance": {
+            "value": "string",
+            "currency": "string"
+
+        },
+        "elegibilityCriteriaInfo": "string",
+        "closingProcessInfo": "string"
+      },
+      "incomeRates": {
+        "savingAccount": "string",
+        "prePaidPaymentAccount": {
+            "applications":{
+              "interval":"string",
+              "rate":"string"
+            },
+            "minimumRate": "string",
+            "maxiumRate": "string"
+        }
+      }
+    }
+  ]
+}
 ```
 
 |     Nome        |  Tipo                                                         | Obrigatório  |                            Definição                                 |
 |:------------    |:---------------------------------                             |:-----------  |:----------------------------------------------------                 |
-| names            | string                                                        | Sim          | Nome da Instituição, pertencente à marca, responsável pela comercialização dos tipos de contas de pessoas física consultadas.                       |
-| cnpjNumbers      | string                                                        | Sim          | O responsável pela comercialização das modalidades de Contas para Pessoas Física consultadas.                                       |
-| urlComplementaryLists | string                                                        | Sim          | URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. |
-| PersonalAccounts| [[PersonalAccounts](#schemaPersonalAccounts)]                 | Sim          | Lista de contas pessoa física.                                      |
+| name            | string                                                        | Sim          | Nome da Instituição, pertencente à marca, responsável pela comercialização dos tipos de contas de pessoas física consultadas.                       |
+| cnpjNumber      | string                                                        | Sim          | O responsável pela comercialização das modalidades de Contas para Pessoas Física consultadas.                                       |
+| urlComplementaryList | string                                                        | Sim          | URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. |
+| PersonalAccounts| [PersonalAccounts](#schemaPersonalAccounts)                 | Sim          | Lista de contas pessoa física.                                      |
 
 
 ## PersonalAccounts
@@ -372,112 +378,114 @@
 
 ```json
 {
-  "types": "string",
-  "fees": {
-    "priorityServices": [
-      {
-        "names": "string",
-        "codes": "string",
-        "chargingTriggerInfo": "string",
-        "price": [
+  "type": "string",
+      "fees": {
+        "priorityService": [
           {
-            "intervals": "string",
-            "values": "string",
-            "currencies": "string"
+            "name": "string",
+            "code": "string",
+            "chargingTriggerInfo": "string",
+            "price": [
+              {
+                "interval": "string",
+                "value": "string",
+                "currency": "string"
+              }
+            ],
+            "minimum": {
+                "value": "string",
+                "currency": "string"
+              },
+            "maximum": {
+                "value": "string",
+                "currency": "string"
+              }
           }
         ],
-        "minimum": {
-            "value": "string",
-            "currency": "string"
-          },
-        "maximum": {
-            "value": "string",
-            "currency": "string"
-          }
-      }
-    ],
-    "otherServices": [
-      {
-        "name": "string",
-        "code": "string",
-        "chargingTriggerInfo": "string",
-        "price": [
+        "otherService": [
           {
-            "intervals": "string",
-            "values": "string",
-            "currencies": "string"
+            "name": "string",
+            "code": "string",
+            "chargingTriggerInfo": "string",
+            "prices": [
+              {
+                "interval": "string",
+                "value": "string",
+                "currency": "string"
+              }
+            ],
+            "minimum": {
+                "value": "string",
+                "currency": "string"
+              },
+            "maximum": {
+                "value": "string",
+                "currency": "string"
+              }
+          }
+        ]
+      },
+      "serviceBundles": {
+        "name":"string",
+        "services": [
+          {
+            "code": "string",
+            "eventLimitQuantity": "string",
+            "freeEventQuantity": "string"
           }
         ],
+        "prices":{
+          "interval": "string",
+          "monthlyFee":"string",
+          "currency":"string"
+          
+        },
         "minimum": {
-            "value": "string",
-            "currency": "string"
-          },
+                "value": "string",
+                "currency": "string"
+              },
         "maximum": {
+                "value": "string",
+                "currency": "string"
+              },
+        
+      },
+      "openingClosingChannels": "string",
+      "additionalInfo":"string",
+      "transactionMethods": "string",
+      "termsConditions": {
+      "minimumBalance": {
             "value": "string",
             "currency": "string"
-          }
-      }
-    ]
-  },
-  "serviceBundles": {
-    "names":"string",
-    "services": [
-      {
-        "code": "string",
-        "eventLimitQuantity": "string",
-        "freeEventQuantity": "string"
-      }
-    ],
-    "price":{
-      "intervals": "string",
-      "monthlyFees":"string",
-      "currencies":"string"
-      
-    },
-    "minimum": {
-            "value": "string",
-            "currency": "string"
-          },
-    "maximum": {
-            "value": "string",
-            "currency": "string"
-          },
-    
-  },
-  "openingClosingChannels": "string",
-  "additionalInfo":"string",
-  "transactionMethods": "string",
-  "termsConditions": {
-  "minimumBalance": {
-        "value": "string",
-        "currency": "string"
 
-    },
-    "elegibilityCriteriaInfo": "string",
-    "closingProcessInfo": "string"
-  },
-  "incomeRates": {
-    "savingAccount": "string",
-    "application":{
-      "intervals":"string",
-      "rates":"string"
-    },
-    "minimumRate": "string",
-    "maxiumRate": "string"
-  }
-}
+        },
+        "elegibilityCriteriaInfo": "string",
+        "closingProcessInfo": "string"
+      },
+      "incomeRates": {
+        "savingAccount": "string",
+        "prePaidPaymentAccount": {
+            "applications":{
+              "interval":"string",
+              "rate":"string"
+            },
+            "minimumRate": "string",
+            "maxiumRate": "string"
+        }
+      }
+    }
 ```
 
 |     Nome              |  Tipo                                          |  Obrigatório    |                            Descrição                  |
 |:----------------------|:-----------------------------------------------| :---------------|:------------------------------------------------------|
-| types                  | [[Enum TypePersonalAccount](#schemaEnumTypePersonalAccount)] | Sim             | Tipos de contas ofertadas para pessoas físicas, conforme Resolução 3.919 do Banco Central do Brasil.                                 |
-| fees                  | [[FeesPersonalAccount](#schemaFeesPersonalAccount)] | Sim             | Lista Tarifas cobradas.                             |
-| serviceBundles        | [[ServiceBundlesPersonalAccount](#schemaServiceBundlesPersonalAccount)] | Sim             | Nome dos pacotes de serviços.                          |
-| openingClosingChannels   | [[Enum PersonalAccountOpeningClosingChannels ](#schemaEnumPersonalAccountOpeningClosingChannels)] | Sim             | Canais disponíveis para abertura e encerramento de contas.      |
+| type                  | [Enum TypePersonalAccount](#schemaEnumTypePersonalAccount) | Sim             | Tipos de contas ofertadas para pessoas físicas, conforme Resolução 3.919 do Banco Central do Brasil.                                 |
+| fees                  | [FeesPersonalAccount](#schemaFeesPersonalAccount) | Sim             | Lista Tarifas cobradas.                             |
+| serviceBundle        | [ServiceBundlesPersonalAccount](#schemaServiceBundlesPersonalAccount) | Sim             | Nome dos pacotes de serviços.                          |
+| openingClosingChannels   | [Enum PersonalAccountOpeningClosingChannels ](#schemaEnumPersonalAccountOpeningClosingChannels) | Sim             | Canais disponíveis para abertura e encerramento de contas.      |
 | additionalInfo        | string                                         | Sim             | Texto livre para complementar informação relativa ao Canal disponível.    |
-| transactionMethods    | [[Enum PersonalAccountOpeningTransactionMethods ](#schemaEnumPersonalAccountOpeningTransactionMethods)]                                         | Sim             | Lista de formas de movimentação possíveis para a conta.  |
-| termsConditions       | [[TermsConditionsPersonalAccount](#schemaTermsConditionsPersonalAccount)] | Sim             | Termos e condições contratuais.                        |
-| incomeRates           | [[IncomeRatesPersonalAccount](#schemaIncomeRatesPersonalAccount)] | Sim             | Valores dos percentuais de taxas.                      |
+| transactionMethods    | [Enum PersonalAccountOpeningTransactionMethods ](#schemaEnumPersonalAccountOpeningTransactionMethods)                                         | Sim             | Lista de formas de movimentação possíveis para a conta.  |
+| termsConditions       | [TermsConditionsPersonalAccount](#schemaTermsConditionsPersonalAccount) | Sim             | Termos e condições contratuais.                        |
+| incomeRates           | [IncomeRatesPersonalAccount](#schemaIncomeRatesPersonalAccount) | Sim             | Valores dos percentuais de taxas.                      |
 
 ### Enum TypePersonalAccount
 <a id="schemaEnumTypePersonalAccount"></a>
@@ -516,57 +524,57 @@
 
 ```json
 {
-    "priorityServices": [
-      {
-        "names": "string",
-        "codes": "string",
-        "chargingTriggerInfo": "string",
-        "price": [
-          {
-            "intervals": "string",
-            "values": "string",
-            "currencies": "string"
-          }
-        ],
-        "minimum": {
-            "value": "string",
-            "currency": "string"
-          },
-        "maximum": {
-            "value": "string",
-            "currency": "string"
-          }
-      }
-    ],
-    "otherServices": [
-      {
-        "name": "string",
-        "code": "string",
-        "chargingTriggerInfo": "string",
-        "price": [
-          {
-            "intervals": "string",
-            "values": "string",
-            "currencies": "string"
-          }
-        ],
-        "minimum": {
-            "value": "string",
-            "currency": "string"
-          },
-        "maximum": {
-            "value": "string",
-            "currency": "string"
-          }
-      }
-    ]
-  }
+  "priorityService": [
+    {
+      "name": "string",
+      "code": "string",
+      "chargingTriggerInfo": "string",
+      "price": [
+        {
+          "interval": "string",
+          "value": "string",
+          "currency": "string"
+        }
+      ],
+      "minimum": {
+          "value": "string",
+          "currency": "string"
+        },
+      "maximum": {
+          "value": "string",
+          "currency": "string"
+        }
+    }
+  ],
+  "otherService": [
+    {
+      "name": "string",
+      "code": "string",
+      "chargingTriggerInfo": "string",
+      "prices": [
+        {
+          "interval": "string",
+          "value": "string",
+          "currency": "string"
+        }
+      ],
+      "minimum": {
+          "value": "string",
+          "currency": "string"
+        },
+      "maximum": {
+          "value": "string",
+          "currency": "string"
+        }
+    }
+  ]
+}
 ```
 
 |     Nome         |  Tipo                              |  Obrigatório    |                       Descrição                     |
 |:-----------------|:-----------------------------------|:----------------|:----------------------------------------------------|
-| priorityServices | [[PriorityServicesPersonalAccount](#schemaPriorityServicesPersonalAccount)] | Sim             | Lista Tarifas de serviços prioritários da conta                                 |
-| otherServices    | [[OtherServicesPersonalAccount](#schemaOtherServicesPersonalAccount)] | Sim             | Lista Tarifas de outros serviços da conta                                 |
+| priorityService | [PriorityServicesPersonalAccount](#schemaPriorityServicesPersonalAccount) | Sim             | Lista Tarifas de serviços prioritários da conta                                 |
+| otherService    | [OtherServicesPersonalAccount](#schemaOtherServicesPersonalAccount) | Sim             | Lista Tarifas de outros serviços da conta                                 |
 
 
 ## PriorityServicesPersonalAccount
@@ -574,14 +582,14 @@
 
 ```json
 {
-  "names": "string",
-  "codes": "string",
+  "name": "string",
+  "code": "string",
   "chargingTriggerInfo": "string",
   "price": [
     {
-      "intervals": "string",
-      "values": "string",
-      "currencies": "string"
+      "interval": "string",
+      "value": "string",
+      "currency": "string"
     }
   ],
   "minimum": {
@@ -597,11 +605,12 @@
 
 |     Nome          |  Tipo                              |  Obrigatório    |                            Descrição                |
 |:------------------|:-----------------------------------|:----------------|:----------------------------------------------------|
-| names              |string                             | Sim             | Nome dos Serviços prioritários, segundo Resolução 3.919 do Bacen, para pessoa física  |
-| code              | [[Enum CodePriorityServicesPersonalAccount ](#schemaEnumCodePriorityServicesPersonalAccount)]                             | Sim             | Sigla de identificação do Serviço Prioritário, segundo Resolução 3.919 do Bacen  |
-| price             | [[Price](#schemaPrice)] | Sim             | Lista Tarifas de serviços prioritários da conta                                 |
-| minimum             | [[MinimumPrice](#schemaMinimumPrice)]           | Sim          | Valor mínimo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
-| maximum             | [[MaximumPrice](#schemaMaximumPrice)]           | Sim          | Valor máximo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
+| name              |string                             | Sim             | Nome dos Serviços prioritários, segundo Resolução 3.919 do Bacen, para pessoa física  |
+| code              | [Enum CodePriorityServicesPersonalAccount ](#schemaEnumCodePriorityServicesPersonalAccount)                             | Sim             | Sigla de identificação do Serviço Prioritário, segundo Resolução 3.919 do Bacen  |
+| chargingTriggerInfo  |string                             | Sim             | Fatos geradores de cobrança que incidem sobre os serviços prioritários, segundo Resolução 3.919 do Bacen, para pessoa física.  |
+| prices             | [Price](#schemaPrice) | Sim             | Lista Tarifas de serviços prioritários da conta                                 |
+| minimum             | [MinimumPrice](#schemaMinimumPrice)           | Sim          | Valor mínimo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
+| maximum             | [MaximumPrice](#schemaMaximumPrice)           | Sim          | Valor máximo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
 
 
 ### Enum CodePriorityServicesPersonalAccount  
@@ -651,11 +660,11 @@
   "name": "string",
   "code": "string",
   "chargingTriggerInfo": "string",
-  "price": [
+  "prices": [
     {
-      "intervals": "string",
-      "values": "string",
-      "currencies": "string"
+      "interval": "string",
+      "value": "string",
+      "currency": "string"
     }
   ],
   "minimum": {
@@ -674,7 +683,7 @@
 | name                | string | Sim         | Nome atribuído a Outros Serviços disponíveis para os tipos de contas.                           |
 | code                | string | Não         | Sigla de identificação de Outros Serviços que incidem sobre os tipos de contas.   |
 | chargingTriggerInfo | string | Sim         | Outros Fatos geradores de cobrança referentes aos Outros Serviços que incidem sobre as contas comercializadas.                                    |
-| price               | [[Price](#schemaPrice)] | Sim      | Valor da tarifa cobrada referente aos Outros Serviços.                  |
+| prices               | [[Price](#schemaPrice)] | Sim      | Valor da tarifa cobrada referente aos Outros Serviços.                  |
 | minimum             | [[MinimumPrice](#schemaMinimumPrice)]           | Sim          | Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
 | maximum             | [[MaximumPrice](#schemaMaximumPrice)]           | Sim          | Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
 
@@ -684,7 +693,7 @@
 
 ```json
 {
-    "names":"string",
+"name":"string",
     "services": [
       {
         "code": "string",
@@ -692,10 +701,10 @@
         "freeEventQuantity": "string"
       }
     ],
-    "price":{
-      "intervals": "string",
-      "monthlyFees":"string",
-      "currencies":"string"
+    "prices":{
+      "interval": "string",
+      "monthlyFee":"string",
+      "currency":"string"
       
     },
     "minimum": {
@@ -705,7 +714,7 @@
     "maximum": {
             "value": "string",
             "currency": "string"
-          },
+          }
     
   }
 ```
@@ -714,7 +723,7 @@
 |:-------------------|:-----------------------------                                       |:-------------|:----------------------------------------------------|
 | name               | string                                                              | Sim          | Nome do conjunto de serviços                        |
 | services           | [[ServicesPersonalAccount](#schemaServicesPersonalAccount)]         | Sim          | Lista de serviços       |
-| price              | [ServiceBundlesPersonalAccountPrice](#schemaServiceBundlesPersonalAccountPrice) | Sim          | Valor mensal da tarifa referente ao Pacote de Serviços |
+| prices              | [ServiceBundlesPersonalAccountPrice](#schemaServiceBundlesPersonalAccountPrice) | Sim          | Valor mensal da tarifa referente ao Pacote de Serviços |
 | minimum             | [[MinimumPrice](#schemaMinimumPrice)]           | Sim          | Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
 | maximum             | [[MaximumPrice](#schemaMaximumPrice)]           | Sim          | Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
 
@@ -740,18 +749,18 @@
 
 ```json
 {
-  "intervals": "string",
-  "monthlyFees": "string",
-  "currencies": "string"
+  "interval": "string",
+  "monthlyFee": "string",
+  "currency": "string"
   
 }
 ```
 
 |     Nome           |  Tipo                        |  Obrigatório |                            Descrição                |
 |:-------------------|:-----------------------------|:-------------|:----------------------------------------------------|
-| intervals           | string                       | Sim          | Faixas de valor referentes ao Serviço que compõe o Pacote de Serviços informado:: 1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes. |
-| monthlyFees              | string                       | Sim          | Valor da mediana da tarifa cobrada, relativa ao Serviço Prioritário, para o tipo de faixa informada.    |
-| currencies           | string                       | Sim          | Moeda referente ao valor máximo da tarifa, segundo modelo ISO-4217.                |
+| interval           | string                       | Sim          | Faixas de valor referentes ao Serviço que compõe o Pacote de Serviços informado:: 1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes. |
+| monthlyFee              | string                       | Sim          | Valor da mediana da tarifa cobrada, relativa ao Serviço Prioritário, para o tipo de faixa informada.    |
+| currency          | string                       | Sim          | Moeda referente ao valor máximo da tarifa, segundo modelo ISO-4217.                |
 
 
 
@@ -781,27 +790,28 @@
 
 ```json
 {
-    "openingClosingChannels": "string",
-    "additionalInfo":"string",
-    "transactionMethods": "string",
-    "termsConditions": {
-    "minimumBalance": {
-          "value": "string",
-          "currency": "string"
+  "openingClosingChannels": "string",
+  "additionalInfo":"string",
+  "transactionMethods": "string",
+  "termsConditions": {
+  "minimumBalance": {
+        "value": "string",
+        "currency": "string"
 
-      },
-      "elegibilityCriteriaInfo": "string",
-      "closingProcessInfo": "string"
+    },
+    "elegibilityCriteriaInfo": "string",
+    "closingProcessInfo": "string"
   }
 }
 ```
 
 |     Nome                |  Tipo                        |  Obrigatório |                            Descrição                |
 |:------------------------|:-----------------------------|:-------------|:----------------------------------------------------|
-| minimumBalance          | string                       | Sim          | Saldo mínimo exigido nos Termos e condições contratuais, que regem as contas comercializadas.     |
-| minimumBalanceCurrency  | string                       | Sim          | Moeda referente ao saldo mínimo exigido, segundo modelo ISO-4217.  |
-| elegibilityCriteriaInfo | string                       | Sim          | Critérios de elegibilidade para a aquisição do tipo de conta comercializado.      |
-| closingProcessInfo      | string                       | Sim          | Procedimentos de encerramento para o tipo de conta tratado.        |
+| openingClosingChannels          | string                       | Sim          | SCanais disponíveis para abertura e encerramento de contas.     |
+| additionalInfo          | string                       | Sim          | Texto livre para complementar informação relativa ao Canal disponível, quando no campo 'openingClosingChannels' estiver preenchida a opção 'Outros'     |
+| transactionMethods          | string                       | Sim          | Lista de formas de movimentação possíveis para a conta.     |
+| termsConditions          | string                       | Sim          | Saldo mínimo exigido nos Termos e condições contratuais, que regem as contas comercializadas.     |
+  |
 
 ## IncomeRatesPersonalAccount
 <a id="schemaIncomeRatesPersonalAccount"></a>
