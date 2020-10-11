@@ -807,35 +807,32 @@
 
 |     Nome                |  Tipo                        |  Obrigatório |                            Descrição                |
 |:------------------------|:-----------------------------|:-------------|:----------------------------------------------------|
-| openingClosingChannels          | string                       | Sim          | SCanais disponíveis para abertura e encerramento de contas.     |
+| openingClosingChannels          | string                       | Sim          | Canais disponíveis para abertura e encerramento de contas.     |
 | additionalInfo          | string                       | Sim          | Texto livre para complementar informação relativa ao Canal disponível, quando no campo 'openingClosingChannels' estiver preenchida a opção 'Outros'     |
 | transactionMethods          | string                       | Sim          | Lista de formas de movimentação possíveis para a conta.     |
-| termsConditions          | string                       | Sim          | Saldo mínimo exigido nos Termos e condições contratuais, que regem as contas comercializadas.     |
-  |
+| minimumBalance          | string                       | Sim          | Saldo mínimo exigido nos Termos e condições contratuais, que regem as contas comercializadas.     |
+| elegibilityCriteriaInfo          | string                       | Sim          | Critérios de qualificação do cliente com a finalidade de definir sua elegibilidade para a aquisição do tipo de conta.     |
+| closingProcessInfo          | string                       | Sim          | Procedimentos de encerramento para o tipo de conta tratado.     |
+
 
 ## IncomeRatesPersonalAccount
 <a id="schemaIncomeRatesPersonalAccount"></a>
 
 ```json
  {
-    "savingAccount": "string",
-    "application":{
-      "intervals":"string",
-      "rates":"string"
-    },
-    "minimumRate": "string",
-    "maxiumRate": "string"
+  "savingAccount": "string",
+  "prePaidPaymentAccount": {
+      "applications":[{
+        "interval":"string",
+        "rate":"string"
+      }],
+      "minimumRate": "string",
+      "maxiumRate": "string"
   }
+}
 ```
 
 |     Nome          |  Tipo                                        |  Obrigatório | Descrição                                           |
 |:------------------|:---------------------------------------------|:-------------|:----------------------------------------------------|
-| rate              | string                                       | Sim          | Percentual que corresponde a mediana da remuneração efetivamente aplicada no intervalo informado.      |
-| referencialRate   | string                                       | Sim          | Taxa Referencial se configura como uma taxa de juros de referência, ou seja, um indicador geral da economia brasileira.          |
-| indexer           | string                                       | Sim          | Indexador é o termo utilizado para se referir aos índices usados como base para corrigir os valores monetários de um determinado ativo.     |
-| prePostTax        | [Enum PrePostTax](#schemaPrePostTax)         | Sim          | Indicador de indexador pré ou pós fixado.         |
-| occurrence        | [Enum OccurrenceType](#schemaOccurrenceType) | Sim          | Código que indica Frequência sobre a qual incide a Remuneração.             |
-| additionalInfo    | string                                       | Sim          | Descrição da Remuneração.            |
-| application       | [[Rate](#schemaRate)]                        | Sim          | Identifica o período referente ao percentual de taxa de remuneração efetivamente aplicada no intervalo informado.              |
-| minimumRate     | String                                                                                      | Sim             | Percentual mínimo referente à taxa de remuneração efetivamente aplicada no mês de referência.                                                                |
-| maximumRate     | String                                                                                      | Sim             | Percentual máximo referente à taxa de remuneração efetivamente aplicada no mês de referência.                                                                   |
+| savingAccount              | string                                       | Sim          |Descrição da Remuneração especificamente para Conta de Poupança. Deve ser preenchido com a determinação legal vigente.      |
+| prePaidPaymentAccount   | string                                       | Sim          | Estrutura de objetos          |

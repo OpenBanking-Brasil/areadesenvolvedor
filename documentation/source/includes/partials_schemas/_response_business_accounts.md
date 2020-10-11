@@ -536,9 +536,9 @@
 | code               | string                       | Sim          | Código que identifica o Serviço que compõe o Pacote de Serviços.   |
 | eventLimitQuantity | string                       | Sim          | Quantidade de eventos previstos no Pacote de Serviços.      |
 | freeEventQuantity  | string                       | Sim          | Quantidade de eventos previstos no Pacote de Serviços com isenção de Tarifa.      |
-| prices           |  [[PriceServiceBusinessAccount](#schemaPriceServiceBusinessAccount)]| Sim          | Indica o tipo de valor da tarifa do serviço que compõe o Pacote de Serviços.     |
-| minimum             | [[MinimumPrice](#schemaMinimumPrice)]           | Sim          | Valor mínimo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
-| maximum             | [[MaximumPrice](#schemaMaximumPrice)]           | Sim          | Valor máximo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
+| prices           |  [PriceServiceBusinessAccount](#schemaPriceServiceBusinessAccount)| Sim          | Indica o tipo de valor da tarifa do serviço que compõe o Pacote de Serviços.     |
+| minimum             | [MinimumPrice](#schemaMinimumPrice)           | Sim          | Valor mínimo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
+| maximum             | [MaximumPrice](#schemaMaximumPrice)           | Sim          | Valor máximo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
 
 
 ## PriceServiceBusinessAccount
@@ -574,9 +574,7 @@
 |:-------------------|:-----------------------------|:-------------|:----------------------------------------------------|
 | interval           | string                       | Sim          | Faixas de valor referentes ao Serviço que compõe o Pacote de Serviços informado:: 1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes. |
 | monthlyFee         | string                       | Sim          | Valor da mediana da tarifa mensal referente ao Pacote de Serviços. |
-| currency           | string                       | Sim          | Moeda referente ao valor do Pacote de serviços, segundo modelo ISO-4217.      |
-
-
+| currency           | [MinimumPrice](#schemaMinimumPrice) | Sim          | Moeda referente ao valor do Pacote de serviços, segundo modelo ISO-4217.      |
 
 
 ## TermConditionBusinessAccount
@@ -585,7 +583,6 @@
 ```json
 {
   "minimumBalance": "string",
-  "minimumBalanceCurrency": "string",
   "elegibilityCriteriaInfo": "string",
   "closingProcessInfo": "string"
 }
@@ -594,8 +591,6 @@
 |     Nome                |  Tipo                        |  Obrigatório |                            Descrição                |
 |:------------------------|:-----------------------------|:-------------|:----------------------------------------------------|
 | minimumBalance          | string                       | Sim          | Saldo mínimo exigido nos Termos e condições contratuais, que regem as contas comercializadas.     |
-| minimumBalanceCurrency  | string                       | Sim          | Moeda referente ao saldo mínimo exigido, segundo modelo ISO-4217.  |
-| elegibilityCriteriaInfo | string                       | Sim          | Critérios de elegibilidade para a aquisição do tipo de conta comercializado.      |
 | closingProcessInfo      | string                       | Sim          | Procedimentos de encerramento para o tipo de conta tratado.        |
 
 ## IncomeRateBusinessAccount
@@ -609,10 +604,10 @@
   "prePostTax": "string",
   "occurrence": "string",
   "additionalInfo": "string",
-  "application": {
+  "applications": [{
     "interval": "string",
     "rate": "string"
-  },
+  }],
   "minumumRate": "string",
   "maxiumRate": "string"
 }
