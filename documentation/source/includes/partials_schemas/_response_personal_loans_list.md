@@ -290,7 +290,7 @@
 | requiredWarranties        | PENHOR                          | Penhor
 | requiredWarranties        | ALIENACAO_FIDUCIARIA            | Alienação fiduciária
 | requiredWarranties        | HIPOTECA                        | Hipoteca
-| requiredWarranties        | OPERCAOES_GARANTIDAS_PELO_GOVERNO    | Operações garantidas pelo governo
+| requiredWarranties        | OPERACOES_GARANTIDAS_PELO_GOVERNO    | Operações garantidas pelo governo
 | requiredWarranties        | OUTRAS_GARANTIAS_NAO_FIDEJUSSORIAS  | Outras garantias não fidejussórias
 | requiredWarranties        | SEGUROS_ASSEMELHADOS            | Seguros e assemelhados
 | requiredWarranties        | GARANTIA_FIDEJUSSORIA           | Garantia fidejussória

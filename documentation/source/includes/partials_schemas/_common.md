@@ -35,31 +35,6 @@
 | interval     | 3_QUARTIL_CLIENTES    | 3ª Quartil de clientes |
 | interval     | 4_QUARTIL_CLIENTES    | 4ª Quartil de clientes |
 
-## Enum FrequencyType
-<a id="schemaFrequencyType"></a>
-
-| Nome         | Código | Definição   |
-|:------------ |:------ |:----------- |
-| frequency    | AD     | Ao dia      |
-| frequency    | AM     | Ao mês      |
-| frequency    | AA     | Ao ano      |
-
-## Enum OccurrenceType
-<a id="schemaOccurrenceType"></a>
-
-| Nome         | Código | Definição   |
-|:------------ |:------ |:----------- |MaximumRate
-| occurrence   | AD     | Ao dia      |
-| occurrence   | AM     | Ao mês      |
-| occurrence   | AA     | Ao ano      |
-
-## Enum PrePostTax
-<a id="schemaPrePostTax"></a>
-
-| Nome         | Código | Definição   |
-|:------------ |:------ |:----------- |
-| prePostTax   | PRE    | Pré fixado  |
-| prePostTax   | POS    | Pós fixado  |
 
 ## Price
 <a id="schemaPrice"></a>
