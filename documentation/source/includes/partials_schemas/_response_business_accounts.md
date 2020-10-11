@@ -503,7 +503,7 @@
 |:-------------------|:-----------------------------|:-------------|:----------------------------------------------------|
 | name               | string                       | Sim          | Nome do conjunto de serviços.                        |
 | services           | [ServiceBusinessAccount](#schemaServiceBusinessAccount)| Sim          | Lista de serviços.       |
-| prices              | [ServiceBundlesBusinessAccountPrice](#schemaServiceBundlesBusinessAccountPrice) | Sim          | Valor mensal da tarifa referente ao Pacote de Serviços |
+| prices              | [ServiceBundleBusinessAccountPrice](#schemaServiceBundleBusinessAccountPrice) | Sim          | Valor mensal da tarifa referente ao Pacote de Serviços |
 | minimum             | [MinimumPrice](#schemaMinimumPrice)           | Sim          | Valor mínimo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
 | maximum             | [MaximumPrice](#schemaMaximumPrice)           | Sim          | Valor máximo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
 
@@ -559,7 +559,7 @@
 | currency           | string                       | Sim          | Moeda referente ao valor máximo da tarifa, segundo modelo ISO-4217.                |
 
 
-## ServiceBundlesBusinessAccountPrice
+## ServiceBundleBusinessAccountPrice
 <a id="schemaServiceBundleBusinessAccountPrice"></a>
 
 ```json
