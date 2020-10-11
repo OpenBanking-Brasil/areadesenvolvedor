@@ -15,7 +15,7 @@
             {
               "name": "string",
               "identification": {
-                "productType": "string",
+                "ProductType": "string",
                 "creditCardNetwork": "string",
                 "additionalInfo": "string"
               },
