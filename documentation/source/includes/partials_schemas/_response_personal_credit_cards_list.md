@@ -118,12 +118,12 @@
 }
 ```
 
-|     Nome   |  Tipo                                                                     | Obrigatório  |                            Definição                                                                                     |
-|:-----------|:--------------------------------------------------------------------------|:-------------|:-------------------------------------------------------------------------------------------------------------------------|
-| data       | object                                                                    | Sim          |                                                                                                                          |
-| » brand    | [PersonalCreditCardBrand](#schemaPersonalCreditCardBrand) | Sim         | Dados da Marca selecionada pelas Organizações que fornecem produtos e serviços de cartões de crédito para pessoa física      |
-| links      | [LinksPaginated](#schemaLinksPaginated)                                   | Sim          |                                                                                                                          |
-| meta       | [MetaPaginated](#schemaMetaPaginated)                                     | Sim          |                                                                                                                          |
+|     Nome          |  Tipo                                                       | Obrigatório  |                            Definição                                                                      |
+|:------------------|:----------------------------------------------------------- |:------------ |:--------------------------------------------------------------------------------------------------------- | 
+| data              | object                                                      | Sim          |                                                                                                           |
+| » brand           | [PersonalCreditCardBrand](#schemaPersonalCreditCardBrand) | Sim          | Dados da Marca selecionada que fornecem produtos e serviços de cartões de crédito para pessoa jurídica    |
+| links             | [LinksPaginated](#schemaLinksPaginated)                     | Sim          |                                                                                                           |
+| meta              | [MetaPaginated](#schemaMetaPaginated)                       | Sim          |                                                                                                           |
 
 ## PersonalCreditCardBrand
 <a id="schemaPersonalCreditCardBrand"></a>
@@ -230,13 +230,13 @@
 }
 ```
 
-|     Nome     |  Tipo                                                                    | Obrigatório  |                            Definição                                         |
-|:-------------|:-------------------------------------------------------------------------|:-----------  |:-----------------------------------------------------------------------------|
-| name         | string                                                                   | Sim          | Nome da Marca ao qual as instituições financeiras estão subordinadas  |
-| companies    | [PersonalCreditCardCompany](#schemaPersonalCreditCardCompany)    | Sim          | Lista de instituições pertencentes à marca                           |
+|     Nome     |  Tipo                                                                    | Obrigatório  |                            Definição                 |
+|:-------------|:-------------------------------------------------------------------------|:-----------  |:---------------------------------------------------- |
+| name         | string                                                                   | Sim          | Nome da Marca selecionada pelas Organizações         |
+| companies    | [[PersonalCreditCardCompanies](#schemaPersonalCreditCardCompanies)]    | Sim          | Lista de instituições pertencentes a marca           |
 
-## PersonalCreditCardCompany 
-<a id="schemaPersonalCreditCardCompany"></a>
+## PersonalCreditCardCompanies 
+<a id="schemaPersonalCreditCardCompanies"></a>
 
 ```json
 {
@@ -340,162 +340,188 @@
 | name                 | string                                               | Sim            | Nome da instituição financeira     |
 | cnpjNumber           | string                                               | Sim            | CNPJ da instituição financeira     |
 | urlComplementaryList | string                                               | Não            | URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber |
-| personalCreditCards  | [PersonalCreditCard](#schemaPersonalCreditCard)  | Sim            | Lista  de cartões de crédito       |
+| personalCreditCards  | [[PersonalCreditCard](#schemaPersonalCreditCard)]  | Sim            | Lista  de cartões de crédito       |
 
-urlComplementaryList
 ## PersonalCreditCard
 <a id="schemaPersonalCreditCard"></a>
 
 ```json
 {
-    "name": "string",
-    "identification": {
-      "product": {
-        "type": "string",
-        "additionalInfo": "string"
-      },
-      "creditCard": {
-        "network": "string",
-        "additionalInfo": "string"
-      }
+  "name": "string",
+  "identification": {
+    "product": {
+      "type": "string",
+      "additionalInfo": "string"
     },
-    "rewardsProgram": {
-      "hasRewardProgram": "string",
-      "rewardProgramInfo": "string"
-    },
-    "fees": [
-      {
-        "service": {
-          "name": "string",
-          "code": "string",
-          "chargingTriggerInfo": "string",
-          "prices": [
-            {
-              "interval": "string",
-              "value": "string",
-              "currency": "string"
-            }
-          ],
-          "minimum": {
-            "value": "string",
-            "currency": "string"
-          },
-          "maximum": {
+    "creditCard": {
+      "network": "string",
+      "additionalInfo": "string"
+    }
+  },
+  "rewardsProgram": {
+    "hasRewardProgram": "string",
+    "rewardProgramInfo": "string"
+  },
+  "fees": [
+    {
+      "service": {
+        "name": "string",
+        "code": "string",
+        "chargingTriggerInfo": "string",
+        "prices": [
+          {
+            "interval": "string",
             "value": "string",
             "currency": "string"
           }
+        ],
+        "minimum": {
+          "value": "string",
+          "currency": "string"
+        },
+        "maximum": {
+          "value": "string",
+          "currency": "string"
         }
       }
-    ],
-    "interest": {
-      "feeRate": {
-        "prices": [
-          [
-            {
-              "interval": "string",
-              "rate": "string"
-            }
-          ]
-        ],
-        "minimumRate": "string",
-        "maximumRate": "string"
-      },
-      "instalmentRate": {
-        "prices": [
-          [
-            {
-              "interval": "string",
-              "rate": "string"
-            }
-          ]
-        ],
-        "minimumRate": "string",
-        "maximumRate": "string"
-      },
-      "interestRate": {
-        "code": "string",
-        "additionalInfo": "string",
-        "prices": [
-          [
-            {
-              "interval": "string",
-              "rate": "string"
-            }
-          ]
-        ],
-        "minimumRate": "string",
-        "maximumRate": "string"
-      }
-    },
-    "termsConditions": {
-      "minimumFeeRate": "string",
-      "additionalInfo": "string",
-      "elegibilityCriteriaInfo": "string",
-      "closingProcessInfo": "string"
     }
+  ],
+  "interest": {
+    "feeRate": {
+      "prices": [
+        [
+          {
+            "interval": "string",
+            "rate": "string"
+          }
+        ]
+      ],
+      "minimumRate": "string",
+      "maximumRate": "string"
+    },
+    "instalmentRate": {
+      "prices": [
+        [
+          {
+            "interval": "string",
+            "rate": "string"
+          }
+        ]
+      ],
+      "minimumRate": "string",
+      "maximumRate": "string"
+    },
+    "interestRate": {
+      "code": "string",
+      "additionalInfo": "string",
+      "prices": [
+        [
+          {
+            "interval": "string",
+            "rate": "string"
+          }
+        ]
+      ],
+      "minimumRate": "string",
+      "maximumRate": "string"
+    }
+  },
+  "termsConditions": {
+    "minimumFeeRate": "string",
+    "additionalInfo": "string",
+    "elegibilityCriteriaInfo": "string",
+    "closingProcessInfo": "string"
   }
+}
 ```
 
 |     Nome              |  Tipo                                                                             | Obrigatório |                            Definição                                      |
 |:----------------------|:----------------------------------------------------------------------------------|:------------|:--------------------------------------------------------------------------|
 | name                  | string                                                                            | Sim         | Denominação/Identificação do nome da conta (cartão de crédito)            |
-| identification        | [CreditCardIdentification](#schemaCreditCardIdentification)                     | Sim         | Informações de identificação do cartão de crédito                         |
-| rewardsProgram        | [CreditCardRewardsProgram](#schemaCreditCardRewardsProgram)     | Sim         | Informações sobre programas de recompensa presentes no cartão de crédito  |
-| fees                  | [PersonalCreditCardFee](#schemaPersonalCreditCardFee)                         | Sim         | Informações sobre tarifas cobradas sobre o produto e serviços             |
-| interest         | [CreditCardInterest](#schemaCreditCardInterest)       | Sim         | Informações sobre taxas de juros                                          |
+| identification        | [PersonalCreditCardIdentification](#schemaPersonalCreditCardIdentification)                     | Sim         | Informações de identificação do cartão de crédito                         |
+| rewardsProgram        | [PersonalCreditCardRewardProgram](#schemaPersonalCreditCardRewardProgram)     | Sim         | Informações sobre programas de recompensa presentes no cartão de crédito  |
+| fees                  | [PersonalCreditCardFee](#schemaPersonalCreditCardFees)                         | Sim         | Informações sobre tarifas cobradas sobre o produto e serviços             |
+| interest              | [PersonalCreditCardInterest](#schemaPersonalCreditCardInterest)       | Sim         | Informações sobre taxas de juros                                          |
 | termsConditions       | [PersonalCreditCardTermsConditions](#schemaPersonalCreditCardTermsConditions)   | Sim         | Informações sobre termos e condições para aquisição e cancelamento        |
 
-## CreditCardIdentification
-<a id="schemaCreditCardIdentification"></a>
+
+## PersonalCreditCardIdentification
+<a id="schemaPersonalCreditCardIdentification"></a>
 
 ```json
 {
-
   "product":{
-      "type": "string",
-      "additionalInfo": "string"
-    },
-    "creditCard":{
-      "network": "string",
-      "additionalInfo": "string",
-    }
+    "type": "string",
+    "additionalInfo": "string"
+  },
+  "creditCard":{
+    "network": "string",
+    "additionalInfo": "string",
+  }
 }
 ```
 
-|     Nome          |  Tipo                                                                          | Obrigatório    |    Definição                                                                                                                                                                                                                                                                                                                               |
-|:----------------- |:-------------------------------------------------------------------------------|:-------------- |:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| productType       | [Enum PersonalCreditCardProductType](#schemaEnumPersonalCreditCardProductType) | Sim            | Categoria atribuída a um cartão de pagamento, sob uma certa denominação, que lhe agrega um conjunto de vantagens, diferenciando-o de acordo com o perfil do portador. Essa categoria é definida pelo BACEN e está contida no documento de nome 'Elaboração e Remessa de Informações Relativas aos Cartões de Pagamento  Emissores'         |
-| additionalInfo    | string                                                                         | Não            | Texto livre para especificar                                    |
-| creditCardNetwork | [Enum PersonalCreditCardBrandCode](#schemaEnumPersonalCreditCardBrandCode)     | Sim            | Categoria de Bandeiras de Cartões. Bandeira é a detentora de todos os direitos e deveres da utilização da marca estampada no cartão, inclusive as bandeiras pertencentes aos emissores. Essas bandeiras estão definidas em documento do BACEN de nome 'Elaboração e Remessa de Informações Relativas aos Cartões de Pagamento  Emissores'  |
-| additionalInfo    | string                                                                         | Não            | Texto livre para especificar categoria de bandeira marcada como 'Outras'                                                                                                                                                                                                                                                                   |
+|     Nome          |  Tipo        | Obrigatório    |    Definição                   |
+|:----------------- |:------------ |:-------------- |:------------------------------ |
+| product           | [PersonalCreditCardIdentificationProduct](#schemaPersonalCreditCardIdentificationProduct)       | Sim            | Categoria atribuída a um cartão de pagamento, sob uma certa denominação, que lhe agrega um conjunto de vantagens, diferenciando-o de acordo com o perfil do portador  |
+| creditCard        | [PersonalCreditCardIdentificationCreditCard](#schemaPersonalCreditCardIdentificationCreditCard) | Sim            | Categoria de Bandeiras de Cartões de Crédito |
+
+## PersonalCreditCardIdentificationProduct
+<a id="schemaPersonalCreditCardIdentificationProduct"></a>
+
+```json
+{
+  "type": "string",
+  "additionalInfo": "string"
+}
+```
+
+|     Nome          |  Tipo        | Obrigatório    |    Definição                   |
+|:----------------- |:------------ |:-------------- |:------------------------------ |
+| type              | [Enum PersonalCreditCardProductType](#schemaEnumPersonalCreditCardProductType) | Sim  | Categoria atribuída a um cartão de pagamento, sob uma certa denominação, que lhe agrega um conjunto de vantagens, diferenciando-o de acordo com o perfil do portador. Essa categoria é definida pelo BACEN e está contida no documento de nome 'Elaboração e Remessa de Informações Relativas aos Cartões de Pagamento  Emissores' |
+| additionalInfo    | string                                                                         | Sim  | Texto livre para especificar                              |
 
 ### Enum PersonalCreditCardProductType
 <a id="schemaEnumPersonalCreditCardProductType"></a>
 
-| Propriedade         | Código                  | Definição              |
-|:------------------- |:------------------------|:---------------------- |
-| productType         | CLASSIC_NACIONAL        | Classic Nacional       |
-| productType         | CLASSIC_INTERNACIONAL   | Classic Internacional  |
-| productType         | GOLD                    | Gold                   |
-| productType         | PLATINUM                | Platinum               |
-| productType         | INFINITE                | Infinite               |
-| productType         | ELECTRON                | Electron               |
-| productType         | STANDARD_NACIONAL       | Standard Nacional      |
-| productType         | STANDARD_INTERNACIONAL  | Standard Internacional |
-| productType         | ELETRONIC        | Classic Nacional       |
-| productType         | BLACK   | Classic Internacional  |
-| productType         | REDESHOP                    | Gold                   |
-| productType         | MAESTRO_MASTERCARD_MAESTRO                | Maestro Mastercard maestro               |
-| productType         | GREEN                | gree               |
-| productType         | BLUE                | blue               |
-| productType         | BLUEBOX       | blue box      |
-| productType         | PROFISSIONAL_LIBERAL  | profissional liberal |
-| productType         | CHEQUE_ELETRONICO        | cheque eletronico       |
-| productType         | CORPORATIVO   | corporativo  |
-| productType         | EMPRESARIAL                    | Gold                   |
-| productType         | COMPRAS                | compras               |
-| productType         | OUTROS                | outros               |
+| Propriedade         | Código                     | Definição                  |
+|:------------------- |:-------------------------- |:-------------------------- |
+| productType         | CLASSIC_NACIONAL           | Classic Nacional           |
+| productType         | CLASSIC_INTERNACIONAL      | Classic Internacional      |
+| productType         | GOLD                       | Gold                       |
+| productType         | PLATINUM                   | Platinum                   |
+| productType         | INFINITE                   | Infinite                   |
+| productType         | ELECTRON                   | Electron                   |
+| productType         | STANDARD_NACIONAL          | Standard Nacional          |
+| productType         | STANDARD_INTERNACIONAL     | Standard Internacional     |
+| productType         | ELETRONIC                  | Classic Nacional           |
+| productType         | BLACK                      | Classic Internacional      |
+| productType         | REDESHOP                   | Gold                       |
+| productType         | MAESTRO_MASTERCARD_MAESTRO | Maestro Mastercard maestro |
+| productType         | GREEN                      | gree                       |
+| productType         | BLUE                       | blue                       |
+| productType         | BLUEBOX                    | blue box                   |
+| productType         | PROFISSIONAL_LIBERAL       | profissional liberal       |
+| productType         | CHEQUE_ELETRONICO          | cheque eletronico          |
+| productType         | CORPORATIVO                | corporativo                |
+| productType         | EMPRESARIAL                | Gold                       |
+| productType         | COMPRAS                    | compras                    |
+| productType         | OUTROS                     | outros                     |
 
+## PersonalCreditCardIdentificationCreditCard
+<a id="schemaPersonalCreditCardIdentificationCreditCard"></a>
+
+```json
+{
+  "network": "string",
+  "additionalInfo": "string",
+}
+```
+
+|     Nome          |  Tipo        | Obrigatório    |    Definição                   |
+|:----------------- |:------------ |:-------------- |:------------------------------ |
+| network           | [Enum PersonalCreditCardBrandCode](#schemaEnumPersonalCreditCardBrandCode) | Sim            | Categoria de Bandeiras de Cartões. Bandeira é a detentora de todos os direitos e deveres da utilização da marca estampada no cartão, inclusive as bandeiras pertencentes aos emissores. Essas bandeiras estão definidas em documento do BACEN de nome 'Elaboração e Remessa de Informações Relativas aos Cartões de Pagamento  Emissores' |
+| additionalInfo    | string                                                                     | Sim            | Texto livre para especificar categoria de bandeira marcada como 'Outras' |
 
 ### Enum PersonalCreditCardBrandCode
 <a id="schemaEnumPersonalCreditCardBrandCode"></a>
@@ -512,8 +538,8 @@ urlComplementaryList
 | creditCardNetwork | ELO               | Elo                 |
 | creditCardNetwork | OUTRAS            | Outras              |
 
-## CreditCardRewardsProgram
-<a id="schemaCreditCardRewardsProgram"></a>
+## PersonalCreditCardRewardProgram
+<a id="schemaPersonalCreditCardRewardProgram"></a>
 
 ```json
 {
@@ -537,27 +563,27 @@ urlComplementaryList
     "code": "string",
     "chargingTriggerInfo": "string",
     "prices": [
-      {
-        "interval": "string",
+        {
+          "interval": "string",
+          "value": "string",
+          "currency": "string"
+        }
+      ],
+      "minimum": {
+        "value": "string",
+        "currency": "string"
+      },
+      "maximum": {
         "value": "string",
         "currency": "string"
       }
-    ],
-    "minimum": {
-      "value": "string",
-      "currency": "string"
-    },
-    "maximum": {
-      "value": "string",
-      "currency": "string"
-    }
   }
 }
 ```
 
-|     Nome    |  Tipo                                                               | Obrigatório     |    Definição                                                                                      |
-|:------------|:--------------------------------------------------------------------|:----------------|:--------------------------------------------------------------------------------------------------|
-| service    | [PersonalCreditCardService](#schemaPersonalCreditCardService) | Sim             | Informações de tarifas sobre serviços  |
+|     Nome    |  Tipo                                                               | Obrigatório     |    Definição                           |
+|:------------|:--------------------------------------------------------------------|:----------------|:-------------------------------------- |
+| services    | [[PersonalCreditCardService](#schemaPersonalCreditCardService)]     | Sim             | Informações de tarifas sobre serviços  |
 
 ## PersonalCreditCardService
 <a id="schemaPersonalCreditCardService"></a>
@@ -567,7 +593,7 @@ urlComplementaryList
   "name": "string",
   "code": "string",
   "chargingTriggerInfo": "string",
-  "prices": [
+  "price": [
     {
       "interval": "string",
       "value": "string",
@@ -585,18 +611,17 @@ urlComplementaryList
 }
 ```
 
+|     Nome   |  Tipo  | Obrigatório     |    Definição   |
+|:---------- |:-------|:----------------|:-------------- |
+| name                | string                                | Sim | Nomes das Tarifas cobradas sobre Serviços relacionados à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa jurídica               |
+| code                | string                                | Sim | Fatos geradores de cobrança que incidem sobre as Modalidades de Contas de Pagamento Pós-Pagas informada, para pessoa jurídica.               |
+| chargingTriggerInfo | string                                | Sim | Fatos geradores de cobrança que incidem sobre as Modalidades inforrmadas de Contas de Pagamento Pós-Pagas para pessoa jurídica                  |
+| price               | [[Price](#schemaPrice)]               | Sim | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa jurídica  |
+| minimum             | [[MinimumPrice](#schemaMinimumPrice)] | Sim | Valor mínimo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
+| maximum             | [[MaximumPrice](#schemaMaximumPrice)] | Sim | Valor máximo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type |
 
-|     Nome            |  Tipo                                                                                   | Obrigatório     |    Definição                                                                                                                                      |
-|:--------------------|:----------------------------------------------------------------------------------------|:----------------|:--------------------------------------------------------------------------------------------------------------------------------------------------|
-| name                | string                                                                                  | Sim             | Nomes das Tarifas cobradas sobre Serviços relacionados à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa fisica               |
-| code                | string                                                                                  | Sim             | Fatos geradores de cobrança que incidem sobre as Modalidades de Contas de Pagamento Pós-Pagas informada, para pessoa fisica.               |
-| chargingTriggerInfo | string                                                                                  | Sim             | Fatos geradores de cobrança que incidem sobre as Modalidades inforrmadas de Contas de Pagamento Pós-Pagas para pessoa fisics                  |
-| prices               | [Price](#schemaPrice)                                                                 | Sim             | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa fisica  |
-| minimum             | [MinimumPrice](#schemaMinimumPrice)           | Sim          | Valor mínimo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
-| maximum             | [MaximumPrice](#schemaMaximumPrice)           | Sim          | Valor máximo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
-
-## CreditCardInterest
-<a id="schemaCreditCardInterest"></a>
+## PersonalCreditCardInterest
+<a id="schemaPersonalCreditCardInterest"></a>
 
 ```json
 {
@@ -607,8 +632,8 @@ urlComplementaryList
         "rate": "string"
       }
     ],
-    "minimumRate" : "string",
-    "maximumRate" :  "string",
+    "minimumRate": "string",
+    "maximumRate": "string"
   },
   "instalmentRate": {
     "prices": [
@@ -617,10 +642,10 @@ urlComplementaryList
         "rate": "string"
       }
     ],
-    "minimumRate" : "string",
-    "maximumRate" : "string",
+    "minimumRate": "string",
+    "maximumRate": "string"
   },
-  "insterestRate": {
+  "interestRate": {
     "code": "string",
     "additionalInfo": "string",
     "prices": [
@@ -629,18 +654,17 @@ urlComplementaryList
         "rate": "string"
       }
     ],
-    "minimumRate" : "string",
-    "maximumRate" : "string",
-  },
+    "minimumRate": "string",
+    "maximumRate": "string"
+  }
 }
 ```
 
-|     Nome        |  Tipo                                                                                       | Obrigatório     |    Definição                                                 |
-|:----------------|:--------------------------------------------------------------------------------------------|:----------------|:---------------------------------------------------------------------------------------------------------------------------------------|
-| feeRate         | [PersonalCreditCardFeeRate](#schemaPersonalCreditCardFeeRate)                             | Sim             | Percentual que corresponde a taxa aplicada para utilização de Crédito Rotativo                                                         |
-| instalmentRate  | [PersonalCreditCardInstalmentRate](#schemaPersonalCreditCardInstalmentRate)               | Sim             | Percentual que corresponde a taxa aplicada para pagamento parcelado do saldo devedor quando não realizado pagamento integral da fatura |
-| interestRate  | [PersonalCreditCardInterestRate](#schemaPersonalCreditCardInterestRate)               | Sim             | Informações sobre taxas de juros   |
-
+|     Nome       |  Tipo                       | Obrigatório      |    Definição                                                 |
+|:-------------- |:--------------------------- |:---------------- |:------------------------------------------------------------ |
+| feeRate        | [PersonalCreditCardFeeRate](#schemaPersonalCreditCardFeeRate)               | Sim | Percentual que corresponde a taxa aplicada para utilização de Crédito Rotativo              |
+| instalmentRate | [PersonalCreditCardInstalmentRate](#schemaPersonalCreditCardInstalmentRate) | Sim | Percentual que corresponde a taxa aplicada para pagamento parcelado do saldo devedor quando não realizado pagamento integral da fatura |
+| interestRate   | [PersonalCreditCardInterestRate](#schemaPersonalCreditCardInterestRate) | Sim | Percentual que corresponde a taxa aplicada para pagamento parcelado do saldo devedor quando não realizado pagamento integral da fatura |
 
 ## PersonalCreditCardInterestRate
 <a id="schemaPersonalCreditCardInterestRate"></a>
@@ -655,26 +679,27 @@ urlComplementaryList
       "rate": "string"
     }
   ],
-  "minimumRate" : "string",
-  "maximumRate" : "string",
+  "minimumRate": "string",
+  "maximumRate": "string"
 }
 ```
-|     Nome        |  Tipo                                                                                       | Obrigatório     |    Definição                                                 |
-|:----------------|:--------------------------------------------------------------------------------------------|:----------------|:---------------------------------------------------------------------------------------------------------------------------------------|
-| code            | [Enum PersonalCreditCardInterestRatesCode](#schemaEnumPersonalCreditCardInterestRatesCode)| Sim             | Lista de outras operações de crédito                                                                                                   |
-| additionalInfo  | string                                                                                      | Sim             | Campo Texto para descrever outras operações de crédito marcadas como 'Outros'                                                          |
-| prices               | [Price](#schemaPrice)                                                                 | Sim             | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa fisica  |
-| minimumRate     | String                                                                                      | Sim             | Percentual mínimo cobrado (taxa efetiva) para  outras operações de crédito do mês de referência.                                                             |
-| maximumRate     | String                                                                                      | Sim             | Percentual máximo cobrado (taxa efetiva) para  outras operações de crédito do mês de referência. 
 
-### Enum PersonalCreditCardInterestRatesCode
-<a id="schemaEnumPersonalCreditCardInterestRatesCode"></a>
+|     Nome        |  Tipo                                                                                       | Obrigatório     |    Definição        |
+|:----------------|:--------------------------------------------------------------------------------------------|:----------------|:--------------------|
+| code            | [Enum PersonalCreditCardInterestRateCode](#schemaEnumPersonalCreditCardInterestRateCode) | Sim    | Lista de outras operações de crédito                                          |
+| additionalInfo  | string                                                                                       | Sim    | Campo Texto para descrever outras operações de crédito marcadas como 'Outros' |
+| prices           | [[Rate](#schemaRate)]               | Sim    | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa física  |
+| minimumRate     | String                              | Sim    | Percentual mínimo cobrado para a taxa do crédito rotativo no mês de referência                                                                  |
+| maximumRate     | String                              | Sim    | Percentual máximo cobrado para o pagamento parcelado do saldo devedor na fatura do mês de referência.                                           |
+
+### Enum PersonalCreditCardInterestRateCode
+<a id="schemaEnumPersonalCreditCardInterestRateCode"></a>
 
 | Propriedade                 | Código               | Definição        |
-|:----------------------------|:---------------------|:---------------- |
-| code                        | SAQUE_A_CREDITO        | Saque a crédito  |
-| code                        | PAGAMENTOS_CONTAS     | Pagamento de contas  |
-| code                        | OUTROS               | Outros           |
+|:----------------------------|:---------------------|:------------------- |
+| code                        | SAQUE_CREDITO        | Saque a crédito     |
+| code                        | PAGAMENTO_CONTA      | Pagamento de contas |
+| code                        | OUTROS               | Outros              |
 
 
 ## PersonalCreditCardFeeRate
@@ -685,29 +710,8 @@ urlComplementaryList
   "prices": [
     {
       "interval": "string",
-      "rate": "string"
-    }
-  ],
-  "minimumRate" : "string",
-  "maximumRate" :  "string",
-}
-```
-
-|     Nome                |  Tipo       | Obrigatório     |    Definição                                                                                                                                                          |
-|:------------------------|:------------|:----------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| prices                 [Rate](#schemaRate)                                                                | Sim             | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa física  |
-| minimumRate     | String                                                                                      | Sim             | Percentual mínimo cobrado para a taxa de crédito rotativo no mês de referência.                                                              |
-| maximumRate     | String                                                                                      | Sim             | Percentual máximo cobrado para a taxa de crédito rotativo no mês de referência.                                                                   |
-
-## PersonalCreditCardInstalmentRate
-<a id="schemaPersonalCreditCardInstalmentRate"></a>
-
-```json
-{
-  "price": [
-    {
-      "interval": "string",
       "rate": "string",
+      "frequency": "string"
     }
   ],
   "minimumRate" : "string",
@@ -717,13 +721,35 @@ urlComplementaryList
 
 |     Nome                |  Tipo       | Obrigatório     |    Definição                                                                                                                                                          |
 |:------------------------|:------------|:----------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| price                 [Rate](#schemaRate)                                                                 | Sim             | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa física  |
-| minimumRate     | String                                                                                      | Sim             | Percentual mínimo cobrado para a taxa de crédito rotativo no mês de referência.                                                              |
-| maximumRate     | String                                                                                      | Sim             | Percentual máximo cobrado para a taxa de crédito rotativo no mês de referência.                                                                   |                                                            |
+| prices                 [[Rate](#schemaRate)]                                                                 | Sim             | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa física  |
+| minimumRate     | String                                                                                      | Sim             | Percentual mínimo cobrado para a taxa do crédito rotativo no mês de referência                                                                |
+| maximumRate     | String                                                                                      | Sim             | Percentual máximo cobrado para o pagamento parcelado do saldo devedor na fatura do mês de referência.                                                                   |
 
+## PersonalCreditCardInstalmentRate
+<a id="schemaPersonalCreditCardInstalmentRate"></a>
 
-## PersonalCreditCardTermsConditions
-<a id="schemaPersonalCreditCardTermsConditions"></a>
+```json
+{
+  "prices": [
+    {
+      "interval": "string",
+      "rate": "string",
+      "frequency": "string"
+    }
+  ],
+  "minimumRate" : "string",
+  "maximumRate" : "string"
+}
+```
+
+|     Nome     |  Tipo       | Obrigatório     |    Definição        |
+|:------------ |:----------- |:--------------- |:------------------- |
+| prices        | [[Rate](#schemaRate)] | Sim    | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa física  |
+| minimumRate  | String                | Sim    | Percentual mínimo cobrado para a taxa do crédito rotativo no mês de referência                                                                  |
+| maximumRate  | String                | Sim    | Percentual máximo cobrado para o pagamento parcelado do saldo devedor na fatura do mês de referência.                                           |
+
+## PersonalCreditCardsTermsConditions
+<a id="schemaPersonalCreditCardsTermsConditions"></a>
 
 ```json
 {
@@ -734,9 +760,9 @@ urlComplementaryList
 }
 ```
 
-|     Nome                |  Tipo       | Obrigatório     |    Definição                                                                                                                                                          |
-|:------------------------|:------------|:----------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| minimumFeeRate          | string      | Sim             | Percentual para pagamento mínimo sobre o saldo devedor da fatura                                                                                                      |
-| additionalInfo          | string      | Sim             | Campo aberto para detalhamento de taxas de juros                                                                                                                      |
-| elegibilityCriteriaInfo | string      | Sim             | Informação sobre as condições e critérios de elegibilidade do emissor do cartão. Pode ser informada a URL referente ao endereço onde constam as condições informadas  |
-| closingProcessInfo      | string      | Sim             | Descrição dos procedimentos para encerramento da conta pós paga. Pode ser informada a URL referente ao endereço onde constam as condições informadas                  |
+|     Nome                |  Tipo                                 | Obrigatório     |    Definição                                                                                                                                                          |
+|:------------------------|:------------                          |:----------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| minimumFeeRate          | [RateString](#commonFieldRateString)  | Sim             | Percentual para pagamento mínimo sobre o saldo devedor da fatura                                                                                                      |
+| additionalInfo          | string                                | Sim             | Campo aberto para detalhamento de taxas de juros                                                                                                                      |
+| elegibilityCriteriaInfo | string                                | Sim             | Informação sobre as condições e critérios de elegibilidade do emissor do cartão. Pode ser informada a URL referente ao endereço onde constam as condições informadas  |
+| closingProcessInfo      | string                                | Sim             | Descrição dos procedimentos para encerramento da conta pós paga. Pode ser informada a URL referente ao endereço onde constam as condições informadas                  |
