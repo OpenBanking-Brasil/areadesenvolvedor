@@ -15,10 +15,14 @@
             {
               "name": "string",
               "identification": {
-                "productType": "string",
-                "additionalInfo": "string",
-                "creditCardNetwork": "string",
-                "additionalInfo": "string"
+                "product":{
+                    "type": "string",
+                    "additionalInfo": "string"
+                  },
+                  "creditCard":{
+                    "network": "string",
+                    "additionalInfo": "string",
+                  } 
               },
               "rewardsProgram": {
                 "hasRewardProgram": "boolean",
@@ -130,10 +134,14 @@
             {
               "name": "string",
               "identification": {
-                "productType": "string",
-                "additionalInfo": "string",
-                "creditCardNetwork": "string",
-                "additionalInfo": "string"
+                 "product":{
+                    "type": "string",
+                    "additionalInfo": "string"
+                  },
+                  "creditCard":{
+                    "network": "string",
+                    "additionalInfo": "string",
+                  } 
               },
               "rewardsProgram": {
                 "hasRewardProgram": "boolean",
@@ -227,10 +235,14 @@
       {
         "name": "string",
         "identification": {
-          "productType": "string",
-          "additionalInfo": "string",
-          "creditCardNetwork": "string",
-          "additionalInfo": "string"
+           "product":{
+                    "type": "string",
+                    "additionalInfo": "string"
+                  },
+                  "creditCard":{
+                    "network": "string",
+                    "additionalInfo": "string",
+                  } 
         },
         "rewardsProgram": {
           "hasRewardProgram": "boolean",
@@ -320,10 +332,14 @@ urlComplementaryList
 {
     "name": "string",
     "identification": {
-      "productType": "string",
-      "additionalInfo": "string",
-      "creditCardNetwork": "string",
-      "additionalInfo": "string"
+       "product":{
+          "type": "string",
+          "additionalInfo": "string"
+        },
+        "creditCard":{
+          "network": "string",
+          "additionalInfo": "string",
+        } 
     },
     "rewardsProgram": {
       "hasRewardProgram": "boolean",
@@ -411,10 +427,14 @@ urlComplementaryList
 ```json
 {
 
-  "productType": "string",
-  "additionalInfo": "string",
-  "creditCardNetwork": "string",
-  "additionalInfo": "string"
+  "product":{
+      "type": "string",
+      "additionalInfo": "string"
+    },
+    "creditCard":{
+      "network": "string",
+      "additionalInfo": "string",
+    }
 }
 ```
 
