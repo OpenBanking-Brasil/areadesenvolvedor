@@ -194,6 +194,8 @@ components:
         - interval
         - value
         - currency
+        - minimum
+        - maximum
       properties:
         interval:
           type: string
@@ -214,7 +216,39 @@ components:
           type: string
           pattern: '^(\w{3}){1}$'
           description: 'Moeda referente ao valor da mediana da tarifa de Outros Serviços no quartil informado, segundo modelo ISO-4217.'
-          example: BRL       
+          example: BRL
+        minimum:
+          type: object
+          required:
+            - value
+            - currency
+          properties:
+            value:
+              type: string
+              maxLength: 12
+              description: Valor mínimo cobrado para a tarifa de Outros Serviços no mês de referência
+              pattern: '^(\d{1,9}\.\d{2}){1}$'
+              example: '45.00'
+            currency:
+              type: string
+              description: 'Moeda referente ao valor mínimo da tarifa de Outros Serviços, segundo modelo ISO-4217.'
+              example: BRL
+        maximum:
+          type: object
+          required:
+            - value
+            - currency
+          properties:
+            value:
+              type: string
+              maxLength: 12
+              pattern: '^(\d{1,9}\.\d{2}){1}$'
+              description: Valor máximo cobrado para a tarifa de Outros Serviços no mês de referência.
+              example: '45.00'
+            currency:
+              type: string
+              description: 'Moeda referente ao valor máximo da tarifa de outros serviços, segundo modelo ISO-4217.'
+              example: BRL
     PersonalAccountsResponse:
       type: object
       required:
@@ -274,6 +308,7 @@ components:
                             - openingClosingChannels
                             - transactionMethods
                             - termsConditions
+                            - incomeRates
                           properties:
                             types:
                               type: string
@@ -312,7 +347,7 @@ components:
                                     maxLength: 70
                                     pattern: \w*\W*
                                     description: Nome do Pacote de Serviços dado pela instituição.
-                                    example: Conta de depósitos à vista Movimentação com cartão
+                                    example: Conta de depósitos à vista Movimentação com cartão (sem cheque)
                                   service:
                                     type: array
                                     items:
@@ -448,7 +483,7 @@ components:
           maxLength: 80
           pattern: \w*\W*
           description: 'Nome dos Serviços prioritários, segundo Resolução 3.919 do Bacen, para pessoa física.'
-          example: Fornecimento de extrato de um período de conta de depósitos
+          example: Fornecimento de extrato de um período de conta de depósitos à vista e de poupança
         code:
           type: string
           enum:
@@ -691,6 +726,7 @@ components:
                             - openingClosingChannels
                             - transactionMethods
                             - termsConditions
+                            - incomeRates
                           properties:
                             type:
                               type: string
@@ -820,7 +856,7 @@ components:
                                   prepaidPaymentAccount:
                                     type: object
                                     required:
-                                      - applications
+                                      - application
                                       - minimumRate
                                       - maximumRate
                                     properties:
@@ -886,7 +922,7 @@ components:
                               value: '65.00'
                               currency: BRL
                             - interval: 3_QUARTIL_CLIENTES
-                              value: '69.00'
+                              value: '69.00  '
                               currency: BRL
                             - interval: 4_QUARTIL_CLIENTES
                               value: '72.00'
@@ -898,7 +934,7 @@ components:
                             value: '88.00'
                             currency: BRL
                     serviceBundles:
-                      - name: Conta de depósitos à vista Movimentação com cartão
+                      - name: Conta de depósitos à vista Movimentação com cartão (sem cheque)
                         service:
                           - code: CADASTRO
                             eventLimitQuantity: '999999'
@@ -931,7 +967,14 @@ components:
                         maximum:
                           value: '87.00'
                           currency: BRL
-                    openingClosingChannels: "DEPENDENCIAS_PROPRIAS"
+                    openingClosingChannels:
+                      - DEPENDENCIAS_PROPRIAS
+                      - CORRESPONDENTES_BANCARIOS
+                      - INTERNET_BANKING
+                      - MOBILE_BANKING
+                      - CENTRAL_TELEFONICA
+                      - CHAT
+                      - OUTROS
                     additionalInfo: Whatsapp
                     transactionMethods: MOVIMENTACAO_CARTAO
                     termsConditions:
@@ -940,6 +983,20 @@ components:
                         currency: BRL
                       elegibilityCriteriaInfo: 'https://empresaa1.com/Accounts_elegebilityCriteria'
                       closingProcessInfo: 'https://empresaa1.com/Accounts_closingProcess'
+                    incomeRates:
+                      savingAccount: NA
+                      prepaidPaymentAccount:
+                        applications:
+                          - interval: NA
+                            rate: NA
+                          - interval: NA
+                            rate: NA
+                          - interval: NA
+                            rate: NA
+                          - interval: NA
+                            rate: NA
+                        minimumRate: NA
+                        maximumRate: NA
         links:
           self: 'https://api.banco.com.br/open-banking/products-services/v1/business-accounts'
           first: 'https://api.banco.com.br/open-banking/products-services/v1/business-accounts'
@@ -1476,18 +1533,18 @@ components:
                     $ref: '#/components/schemas/Intervals'
                   rate:
                     type: string
-                    pattern: '(-?[1-9]?\d{1,4}){1}(\.\d{1,4}){1}'
+                    pattern: '(-?[1-9]?\d{1,4}){1}(\,\d{1,4}){1'
                     maxLength: 9
                     description: 'Percentual que corresponde a mediana (taxa efetiva) aplicada para  outras operações de crédito, no período informado.'
-              example:
-                - interval: 1_QUARTIL_CLIENTES
-                  rate: '0.1500'
-                - interval: 2_QUARTIL_CLIENTES
-                  rate: '0.2000'
-                - interval: 3_QUARTIL_CLIENTES
-                  rate: '0.3500'
-                - interval: 4_QUARTIL_CLIENTES
-                  rate: '0.6800'
+                example:
+                  - interval: 1_QUARTIL_CLIENTES
+                    rate: '0.1500'
+                  - interval: 2_QUARTIL_CLIENTES
+                    rate: '0.2000'
+                  - interval: 3_QUARTIL_CLIENTES
+                    rate: '0.3500'
+                  - interval: 4_QUARTIL_CLIENTES
+                    rate: '0.6800'
             minimumRate:
               type: string
               pattern: '(-?[1-9]?\d{1,4}){1}(\.\d{1,4}){1}$'
@@ -2588,15 +2645,15 @@ components:
                 description: |
                   Percentual que corresponde a mediana da taxa efetiva cobrada do cliente pela contratação dos Direitos Creditórios Descontados, no intervalo informado. p.ex. '9,8700%' A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.15. Este valor representa 15%. O valor 1 representa 100%)
                 pattern: '(-?[1-9]?\d{1,4}){1}(\,\d{1,4}){1}'
-        example:
-          - interval: 1_QUARTIL_CLIENTES
-            rate: '0.0987'
-          - interval: 2_QUARTIL_CLIENTES
-            rate: '0.1600'
-          - interval: 3_QUARTIL_CLIENTES
-            rate: '0.3600'
-          - interval: 4_QUARTIL_CLIENTES
-            rate: '0.5890'
+      example:
+      - interval: 1_QUARTIL_CLIENTES
+        rate: '0.0987'
+      - interval: 2_QUARTIL_CLIENTES
+        rate: '0.1600'
+      - interval: 3_QUARTIL_CLIENTES
+        rate: '0.3600'
+      - interval: 4_QUARTIL_CLIENTES
+        rate: '0.5890'
         minimumRate:
           type: string
           description: |

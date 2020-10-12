@@ -440,7 +440,7 @@
 | name                  | string                                                                            | Sim         | Denominação/Identificação do nome da conta (cartão de crédito)            |
 | identification        | [PersonalCreditCardIdentification](#schemaPersonalCreditCardIdentification)                     | Sim         | Informações de identificação do cartão de crédito                         |
 | rewardsProgram        | [PersonalCreditCardRewardProgram](#schemaPersonalCreditCardRewardProgram)     | Sim         | Informações sobre programas de recompensa presentes no cartão de crédito  |
-| fees                  | [PersonalCreditCardFee](#schemaPersonalCreditCardFees)                         | Sim         | Informações sobre tarifas cobradas sobre o produto e serviços             |
+| fees                  | [PersonalCreditCardFee](#schemaPersonalCreditCardFee)                         | Sim         | Informações sobre tarifas cobradas sobre o produto e serviços             |
 | interest              | [PersonalCreditCardInterest](#schemaPersonalCreditCardInterest)       | Sim         | Informações sobre taxas de juros                                          |
 | termsConditions       | [PersonalCreditCardTermsConditions](#schemaPersonalCreditCardTermsConditions)   | Sim         | Informações sobre termos e condições para aquisição e cancelamento        |
 
@@ -498,13 +498,13 @@
 | productType         | BLACK                      | Classic Internacional      |
 | productType         | REDESHOP                   | Gold                       |
 | productType         | MAESTRO_MASTERCARD_MAESTRO | Maestro Mastercard maestro |
-| productType         | GREEN                      | gree                       |
+| productType         | GREEN                      | green                      |
 | productType         | BLUE                       | blue                       |
 | productType         | BLUEBOX                    | blue box                   |
 | productType         | PROFISSIONAL_LIBERAL       | profissional liberal       |
 | productType         | CHEQUE_ELETRONICO          | cheque eletronico          |
 | productType         | CORPORATIVO                | corporativo                |
-| productType         | EMPRESARIAL                | Gold                       |
+| productType         | EMPRESARIAL                | Empresarial                |
 | productType         | COMPRAS                    | compras                    |
 | productType         | OUTROS                     | outros                     |
 
@@ -748,8 +748,8 @@
 | minimumRate  | String                | Sim    | Percentual mínimo cobrado para a taxa do crédito rotativo no mês de referência                                                                  |
 | maximumRate  | String                | Sim    | Percentual máximo cobrado para o pagamento parcelado do saldo devedor na fatura do mês de referência.                                           |
 
-## PersonalCreditCardsTermsConditions
-<a id="schemaPersonalCreditCardsTermsConditions"></a>
+## PersonalCreditCardTermsConditions
+<a id="schemaPersonalCreditCardTermsConditions"></a>
 
 ```json
 {
