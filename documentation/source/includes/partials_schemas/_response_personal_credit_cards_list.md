@@ -10,27 +10,27 @@
         {
           "name": "string",
           "cnpjNumber": "string",
-          "urlComplementaryList":"string",
+          "urlComplementaryList": "string",
           "personalCreditCards": [
             {
               "name": "string",
               "identification": {
-                "product":{
-                    "type": "string",
-                    "additionalInfo": "string"
-                  },
-                  "creditCard":{
-                    "network": "string",
-                    "additionalInfo": "string",
-                  } 
+                "product": {
+                  "type": "string",
+                  "additionalInfo": "string"
+                },
+                "creditCard": {
+                  "network": "string",
+                  "additionalInfo": "string"
+                }
               },
               "rewardsProgram": {
-                "hasRewardProgram": "boolean",
+                "hasRewardProgram": "string",
                 "rewardProgramInfo": "string"
               },
-              "fees": {
-                "service": [
-                  {
+              "fees": [
+                {
+                  "service": {
                     "name": "string",
                     "code": "string",
                     "chargingTriggerInfo": "string",
@@ -50,41 +50,47 @@
                       "currency": "string"
                     }
                   }
-                ]
-              },
+                }
+              ],
               "interest": {
                 "feeRate": {
                   "prices": [
-                    {
-                      "interval": "string",
-                      "rate": "string"
-                    }
+                    [
+                      {
+                        "interval": "string",
+                        "rate": "string"
+                      }
+                    ]
                   ],
-                  "minimumRate" : "string",
-                  "maximumRate" :  "string",
+                  "minimumRate": "string",
+                  "maximumRate": "string"
                 },
                 "instalmentRate": {
                   "prices": [
-                    {
-                      "interval": "string",
-                      "rate": "string"
-                    }
+                    [
+                      {
+                        "interval": "string",
+                        "rate": "string"
+                      }
+                    ]
                   ],
-                  "minimumRate" : "string",
-                  "maximumRate" : "string",
+                  "minimumRate": "string",
+                  "maximumRate": "string"
                 },
-                "insterestRate": {
+                "interestRate": {
                   "code": "string",
                   "additionalInfo": "string",
                   "prices": [
-                    {
-                      "interval": "string",
-                      "rate": "string"
-                    }
+                    [
+                      {
+                        "interval": "string",
+                        "rate": "string"
+                      }
+                    ]
                   ],
-                  "minimumRate" : "string",
-                  "maximumRate" : "string",
-                },
+                  "minimumRate": "string",
+                  "maximumRate": "string"
+                }
               },
               "termsConditions": {
                 "minimumFeeRate": "string",
@@ -125,196 +131,208 @@
 ```json
 {
   "name": "string",
-      "companies": [
+  "companies": [
+    {
+      "name": "string",
+      "cnpjNumber": "string",
+      "urlComplementaryList": "string",
+      "personalCreditCards": [
         {
           "name": "string",
-          "cnpjNumber": "string",
-          "urlComplementaryList":"string",
-          "personalCreditCards": [
+          "identification": {
+            "product": {
+              "type": "string",
+              "additionalInfo": "string"
+            },
+            "creditCard": {
+              "network": "string",
+              "additionalInfo": "string"
+            }
+          },
+          "rewardsProgram": {
+            "hasRewardProgram": "string",
+            "rewardProgramInfo": "string"
+          },
+          "fees": [
             {
-              "name": "string",
-              "identification": {
-                 "product":{
-                    "type": "string",
-                    "additionalInfo": "string"
-                  },
-                  "creditCard":{
-                    "network": "string",
-                    "additionalInfo": "string",
-                  } 
-              },
-              "rewardsProgram": {
-                "hasRewardProgram": "boolean",
-                "rewardProgramInfo": "string"
-              },
-              "fees": {
-                "service": [
+              "service": {
+                "name": "string",
+                "code": "string",
+                "chargingTriggerInfo": "string",
+                "prices": [
                   {
-                    "name": "string",
-                    "code": "string",
-                    "chargingTriggerInfo": "string",
-                    "prices": [
-                      {
-                        "interval": "string",
-                        "value": "string",
-                        "currency": "string"
-                      }
-                    ],
-                    "minimum": {
-                      "value": "string",
-                      "currency": "string"
-                    },
-                    "maximum": {
-                      "value": "string",
-                      "currency": "string"
-                    }
+                    "interval": "string",
+                    "value": "string",
+                    "currency": "string"
                   }
-                ]
-              },
-              "interest": {
-                "feeRate": {
-                  "prices": [
-                    {
-                      "interval": "string",
-                      "rate": "string"
-                    }
-                  ],
-                  "minimumRate" : "string",
-                  "maximumRate" :  "string",
+                ],
+                "minimum": {
+                  "value": "string",
+                  "currency": "string"
                 },
-                "instalmentRate": {
-                  "prices": [
-                    {
-                      "interval": "string",
-                      "rate": "string"
-                    }
-                  ],
-                  "minimumRate" : "string",
-                  "maximumRate" : "string",
-                },
-                "insterestRate": {
-                  "code": "string",
-                  "additionalInfo": "string",
-                  "prices": [
-                    {
-                      "interval": "string",
-                      "rate": "string"
-                    }
-                  ],
-                  "minimumRate" : "string",
-                  "maximumRate" : "string",
-                },
-              },
-              "termsConditions": {
-                "minimumFeeRate": "string",
-                "additionalInfo": "string",
-                "elegibilityCriteriaInfo": "string",
-                "closingProcessInfo": "string"
+                "maximum": {
+                  "value": "string",
+                  "currency": "string"
+                }
               }
             }
-          ]
+          ],
+          "interest": {
+            "feeRate": {
+              "prices": [
+                [
+                  {
+                    "interval": "string",
+                    "rate": "string"
+                  }
+                ]
+              ],
+              "minimumRate": "string",
+              "maximumRate": "string"
+            },
+            "instalmentRate": {
+              "prices": [
+                [
+                  {
+                    "interval": "string",
+                    "rate": "string"
+                  }
+                ]
+              ],
+              "minimumRate": "string",
+              "maximumRate": "string"
+            },
+            "interestRate": {
+              "code": "string",
+              "additionalInfo": "string",
+              "prices": [
+                [
+                  {
+                    "interval": "string",
+                    "rate": "string"
+                  }
+                ]
+              ],
+              "minimumRate": "string",
+              "maximumRate": "string"
+            }
+          },
+          "termsConditions": {
+            "minimumFeeRate": "string",
+            "additionalInfo": "string",
+            "elegibilityCriteriaInfo": "string",
+            "closingProcessInfo": "string"
+          }
         }
       ]
     }
+  ]
+}
 ```
 
 |     Nome     |  Tipo                                                                    | Obrigatório  |                            Definição                                         |
 |:-------------|:-------------------------------------------------------------------------|:-----------  |:-----------------------------------------------------------------------------|
 | name         | string                                                                   | Sim          | Nome da Marca ao qual as instituições financeiras estão subordinadas  |
-| companies    | [PersonalCreditCardCompany](#schemaPersonalCreditCardsCompany)    | Sim          | Lista de instituições pertencentes à marca                           |
+| companies    | [PersonalCreditCardCompany](#schemaPersonalCreditCardCompany)    | Sim          | Lista de instituições pertencentes à marca                           |
 
 ## PersonalCreditCardCompany 
 <a id="schemaPersonalCreditCardCompany"></a>
 
 ```json
 {
-    "name": "string",
-    "cnpjNumber": "string",
-    "urlComplementaryList":"string",
-    "personalCreditCards": [
-      {
-        "name": "string",
-        "identification": {
-           "product":{
-                    "type": "string",
-                    "additionalInfo": "string"
-                  },
-                  "creditCard":{
-                    "network": "string",
-                    "additionalInfo": "string",
-                  } 
+  "name": "string",
+  "cnpjNumber": "string",
+  "urlComplementaryList": "string",
+  "personalCreditCards": [
+    {
+      "name": "string",
+      "identification": {
+        "product": {
+          "type": "string",
+          "additionalInfo": "string"
         },
-        "rewardsProgram": {
-          "hasRewardProgram": "boolean",
-          "rewardProgramInfo": "string"
-        },
-        "fees": {
-          "service": [
-            {
-              "name": "string",
-              "code": "string",
-              "chargingTriggerInfo": "string",
-              "prices": [
-                {
-                  "interval": "string",
-                  "value": "string",
-                  "currency": "string"
-                }
-              ],
-              "minimum": {
-                "value": "string",
-                "currency": "string"
-              },
-              "maximum": {
-                "value": "string",
-                "currency": "string"
-              }
-            }
-          ]
-        },
-        "interest": {
-          "feeRate": {
-            "prices": [
-              {
-                "interval": "string",
-                "rate": "string"
-              }
-            ],
-            "minimumRate" : "string",
-            "maximumRate" :  "string",
-          },
-          "instalmentRate": {
-            "prices": [
-              {
-                "interval": "string",
-                "rate": "string"
-              }
-            ],
-            "minimumRate" : "string",
-            "maximumRate" : "string",
-          },
-          "insterestRate": {
-            "code": "string",
-            "additionalInfo": "string",
-            "prices": [
-              {
-                "interval": "string",
-                "rate": "string"
-              }
-            ],
-            "minimumRate" : "string",
-            "maximumRate" : "string",
-          },
-        },
-        "termsConditions": {
-          "minimumFeeRate": "string",
-          "additionalInfo": "string",
-          "elegibilityCriteriaInfo": "string",
-          "closingProcessInfo": "string"
+        "creditCard": {
+          "network": "string",
+          "additionalInfo": "string"
         }
+      },
+      "rewardsProgram": {
+        "hasRewardProgram": "string",
+        "rewardProgramInfo": "string"
+      },
+      "fees": [
+        {
+          "service": {
+            "name": "string",
+            "code": "string",
+            "chargingTriggerInfo": "string",
+            "prices": [
+              {
+                "interval": "string",
+                "value": "string",
+                "currency": "string"
+              }
+            ],
+            "minimum": {
+              "value": "string",
+              "currency": "string"
+            },
+            "maximum": {
+              "value": "string",
+              "currency": "string"
+            }
+          }
+        }
+      ],
+      "interest": {
+        "feeRate": {
+          "prices": [
+            [
+              {
+                "interval": "string",
+                "rate": "string"
+              }
+            ]
+          ],
+          "minimumRate": "string",
+          "maximumRate": "string"
+        },
+        "instalmentRate": {
+          "prices": [
+            [
+              {
+                "interval": "string",
+                "rate": "string"
+              }
+            ]
+          ],
+          "minimumRate": "string",
+          "maximumRate": "string"
+        },
+        "interestRate": {
+          "code": "string",
+          "additionalInfo": "string",
+          "prices": [
+            [
+              {
+                "interval": "string",
+                "rate": "string"
+              }
+            ]
+          ],
+          "minimumRate": "string",
+          "maximumRate": "string"
+        }
+      },
+      "termsConditions": {
+        "minimumFeeRate": "string",
+        "additionalInfo": "string",
+        "elegibilityCriteriaInfo": "string",
+        "closingProcessInfo": "string"
       }
-    ]
-  }
+    }
+  ]
+}
 ```
 
 |     Nome             |  Tipo                                                | Obrigatório    |    Definição                       |
@@ -322,32 +340,32 @@
 | name                 | string                                               | Sim            | Nome da instituição financeira     |
 | cnpjNumber           | string                                               | Sim            | CNPJ da instituição financeira     |
 | urlComplementaryList | string                                               | Não            | URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber |
-| personalCreditCards  | [PersonalCreditCards](#schemaPersonalCreditCards)  | Sim            | Lista  de cartões de crédito       |
+| personalCreditCards  | [PersonalCreditCard](#schemaPersonalCreditCard)  | Sim            | Lista  de cartões de crédito       |
 
 urlComplementaryList
-## PersonalCreditCards
-<a id="schemaPersonalCreditCards"></a>
+## PersonalCreditCard
+<a id="schemaPersonalCreditCard"></a>
 
 ```json
 {
     "name": "string",
     "identification": {
-       "product":{
-          "type": "string",
-          "additionalInfo": "string"
-        },
-        "creditCard":{
-          "network": "string",
-          "additionalInfo": "string",
-        } 
+      "product": {
+        "type": "string",
+        "additionalInfo": "string"
+      },
+      "creditCard": {
+        "network": "string",
+        "additionalInfo": "string"
+      }
     },
     "rewardsProgram": {
-      "hasRewardProgram": "boolean",
+      "hasRewardProgram": "string",
       "rewardProgramInfo": "string"
     },
-    "fees": {
-      "service": [
-        {
+    "fees": [
+      {
+        "service": {
           "name": "string",
           "code": "string",
           "chargingTriggerInfo": "string",
@@ -367,41 +385,47 @@ urlComplementaryList
             "currency": "string"
           }
         }
-      ]
-    },
+      }
+    ],
     "interest": {
       "feeRate": {
         "prices": [
-          {
-            "interval": "string",
-            "rate": "string"
-          }
+          [
+            {
+              "interval": "string",
+              "rate": "string"
+            }
+          ]
         ],
-        "minimumRate" : "string",
-        "maximumRate" :  "string",
+        "minimumRate": "string",
+        "maximumRate": "string"
       },
       "instalmentRate": {
         "prices": [
-          {
-            "interval": "string",
-            "rate": "string"
-          }
+          [
+            {
+              "interval": "string",
+              "rate": "string"
+            }
+          ]
         ],
-        "minimumRate" : "string",
-        "maximumRate" : "string",
+        "minimumRate": "string",
+        "maximumRate": "string"
       },
-      "insterestRate": {
+      "interestRate": {
         "code": "string",
         "additionalInfo": "string",
         "prices": [
-          {
-            "interval": "string",
-            "rate": "string"
-          }
+          [
+            {
+              "interval": "string",
+              "rate": "string"
+            }
+          ]
         ],
-        "minimumRate" : "string",
-        "maximumRate" : "string",
-      },
+        "minimumRate": "string",
+        "maximumRate": "string"
+      }
     },
     "termsConditions": {
       "minimumFeeRate": "string",
@@ -416,9 +440,9 @@ urlComplementaryList
 |:----------------------|:----------------------------------------------------------------------------------|:------------|:--------------------------------------------------------------------------|
 | name                  | string                                                                            | Sim         | Denominação/Identificação do nome da conta (cartão de crédito)            |
 | identification        | [CreditCardIdentification](#schemaCreditCardIdentification)                     | Sim         | Informações de identificação do cartão de crédito                         |
-| rewardsProgram        | [PersonalCreditCardRewardsProgram](#schemaPersonalCreditCardRewardsProgram)     | Sim         | Informações sobre programas de recompensa presentes no cartão de crédito  |
-| fees                  | [PersonalCreditCardFees](#schemaPersonalCreditCardFees)                         | Sim         | Informações sobre tarifas cobradas sobre o produto e serviços             |
-| interest         | [PersonalCreditCardInterest](#schemaPersonalCreditCardInterest)       | Sim         | Informações sobre taxas de juros                                          |
+| rewardsProgram        | [CreditCardRewardsProgram](#schemaCreditCardRewardsProgram)     | Sim         | Informações sobre programas de recompensa presentes no cartão de crédito  |
+| fees                  | [PersonalCreditCardFee](#schemaPersonalCreditCardFee)                         | Sim         | Informações sobre tarifas cobradas sobre o produto e serviços             |
+| interest         | [CreditCardInterest](#schemaCreditCardInterest)       | Sim         | Informações sobre taxas de juros                                          |
 | termsConditions       | [PersonalCreditCardTermsConditions](#schemaPersonalCreditCardTermsConditions)   | Sim         | Informações sobre termos e condições para aquisição e cancelamento        |
 
 ## CreditCardIdentification
@@ -488,8 +512,8 @@ urlComplementaryList
 | creditCardNetwork | ELO               | Elo                 |
 | creditCardNetwork | OUTRAS            | Outras              |
 
-## PersonalCreditCardRewardsProgram
-<a id="schemaPersonalCreditCardRewardsProgram"></a>
+## CreditCardRewardsProgram
+<a id="schemaCreditCardRewardsProgram"></a>
 
 ```json
 {
@@ -503,49 +527,47 @@ urlComplementaryList
 | hasRewardProgram    | boolean         | Sim             | Indicador da existência de programa de fidelidade/recompensa associado à conta                                                                                |
 | rewardProgramInfo   | string          | Não             | Informações de termos e condições do programa de fidelidade/recompensa. Pode ser informada a URL referente ao endereço onde constam as condições informadas   |
 
-## PersonalCreditCardFees
-<a id="schemaPersonalCreditCardFees"></a>
+## PersonalCreditCardFee
+<a id="schemaPersonalCreditCardFee"></a>
 
 ```json
 {
-  "service": [
-    {
-      "name": "string",
-      "code": "string",
-      "chargingTriggerInfo": "string",
-      "prices": [
-        {
-          "interval": "string",
-          "value": "string",
-          "currency": "string"
-        }
-      ],
-      "minimum": {
-        "value": "string",
-        "currency": "string"
-      },
-      "maximum": {
+  "service": {
+    "name": "string",
+    "code": "string",
+    "chargingTriggerInfo": "string",
+    "prices": [
+      {
+        "interval": "string",
         "value": "string",
         "currency": "string"
       }
+    ],
+    "minimum": {
+      "value": "string",
+      "currency": "string"
+    },
+    "maximum": {
+      "value": "string",
+      "currency": "string"
     }
-  ]
+  }
 }
 ```
 
 |     Nome    |  Tipo                                                               | Obrigatório     |    Definição                                                                                      |
 |:------------|:--------------------------------------------------------------------|:----------------|:--------------------------------------------------------------------------------------------------|
-| services    | [PersonalCreditCardServices](#schemaPersonalCreditCardServices) | Sim             | Informações de tarifas sobre serviços  |
+| service    | [PersonalCreditCardService](#schemaPersonalCreditCardService) | Sim             | Informações de tarifas sobre serviços  |
 
-## PersonalCreditCardServices
-<a id="schemaPersonalCreditCardServices"></a>
+## PersonalCreditCardService
+<a id="schemaPersonalCreditCardService"></a>
 
 ```json
 {
   "name": "string",
   "code": "string",
   "chargingTriggerInfo": "string",
-  "pricse": [
+  "prices": [
     {
       "interval": "string",
       "value": "string",
@@ -573,8 +595,8 @@ urlComplementaryList
 | minimum             | [MinimumPrice](#schemaMinimumPrice)           | Sim          | Valor mínimo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
 | maximum             | [MaximumPrice](#schemaMaximumPrice)           | Sim          | Valor máximo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
 
-## PersonalCreditCardInterest
-<a id="schemaPersonalCreditCardInterest"></a>
+## CreditCardInterest
+<a id="schemaCreditCardInterest"></a>
 
 ```json
 {
