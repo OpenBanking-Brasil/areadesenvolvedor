@@ -11,11 +11,11 @@
           "name": "string",
           "cnpjNumber": "string",
           "urlComplementaryList": "string",
-          "PersonalAccounts": [
+          "personalAccounts": [
             {
               "type": "string",
               "fees": {
-                "priorityService": [
+                "priorityService": 
                   {
                     "name": "string",
                     "code": "string",
@@ -35,10 +35,8 @@
                         "value": "string",
                         "currency": "string"
                       }
-                  }
-                ],
-                "otherService": [
-                  {
+                  },
+                "otherService": {
                     "name": "string",
                     "code": "string",
                     "chargingTriggerInfo": "string",
@@ -58,7 +56,6 @@
                         "currency": "string"
                       }
                   }
-                ]
               },
               "serviceBundles": [
                 {
@@ -99,7 +96,7 @@
                 "elegibilityCriteriaInfo": "string",
                 "closingProcessInfo": "string"
               },
-              "incomeRates": {
+              "incomeRates": [{
                 "savingAccount": "string",
                 "prePaidPaymentAccount": {
                     "applications":{
@@ -109,7 +106,7 @@
                     "minimumRate": "string",
                     "maxiumRate": "string"
                 }
-              }
+              }]
             }
           ]
         }
@@ -124,8 +121,8 @@
     "last": "string"
   },
   "meta": {
-    "totalRecords": integer,
-    "totalPages": integer
+    "totalRecords": "integer",
+    "totalPages": "integer"
   }
 }
 ```
@@ -148,11 +145,11 @@
       "name": "string",
       "cnpjNumber": "string",
       "urlComplementaryList": "string",
-      "PersonalAccounts": [
+      "personalAccounts": [
         {
           "type": "string",
           "fees": {
-            "priorityService": [
+            "priorityService": 
               {
                 "name": "string",
                 "code": "string",
@@ -172,10 +169,8 @@
                     "value": "string",
                     "currency": "string"
                   }
-              }
-            ],
-            "otherService": [
-              {
+              },
+            "otherService": {
                 "name": "string",
                 "code": "string",
                 "chargingTriggerInfo": "string",
@@ -195,7 +190,6 @@
                     "currency": "string"
                   }
               }
-            ]
           },
           "serviceBundles": [
             {
@@ -236,7 +230,7 @@
             "elegibilityCriteriaInfo": "string",
             "closingProcessInfo": "string"
           },
-          "incomeRates": {
+          "incomeRates": [{
             "savingAccount": "string",
             "prePaidPaymentAccount": {
                 "applications":{
@@ -246,7 +240,7 @@
                 "minimumRate": "string",
                 "maxiumRate": "string"
             }
-          }
+          }]
         }
       ]
     }
@@ -267,11 +261,11 @@
   "name": "string",
   "cnpjNumber": "string",
   "urlComplementaryList": "string",
-  "PersonalAccounts": [
+  "personalAccounts": [
     {
       "type": "string",
       "fees": {
-        "priorityService": [
+        "priorityService": 
           {
             "name": "string",
             "code": "string",
@@ -291,10 +285,8 @@
                 "value": "string",
                 "currency": "string"
               }
-          }
-        ],
-        "otherService": [
-          {
+          },
+        "otherService": {
             "name": "string",
             "code": "string",
             "chargingTriggerInfo": "string",
@@ -314,7 +306,6 @@
                 "currency": "string"
               }
           }
-        ]
       },
       "serviceBundles": [
         {
@@ -355,7 +346,7 @@
         "elegibilityCriteriaInfo": "string",
         "closingProcessInfo": "string"
       },
-      "incomeRates": {
+      "incomeRates": [{
         "savingAccount": "string",
         "prePaidPaymentAccount": {
             "applications":{
@@ -365,7 +356,7 @@
             "minimumRate": "string",
             "maxiumRate": "string"
         }
-      }
+      }]
     }
   ]
 }
@@ -385,103 +376,99 @@
 ```json
 {
   "type": "string",
-      "fees": {
-        "priorityService": [
+  "fees": {
+    "priorityService": {
+      "name": "string",
+      "code": "string",
+      "chargingTriggerInfo": "string",
+      "price": [
+        {
+          "interval": "string",
+          "value": "string",
+          "currency": "string"
+        }
+      ],
+      "minimum": {
+          "value": "string",
+          "currency": "string"
+        },
+      "maximum": {
+          "value": "string",
+          "currency": "string"
+        }
+    },
+    "otherService": {
+        "name": "string",
+        "code": "string",
+        "chargingTriggerInfo": "string",
+        "prices": [
           {
-            "name": "string",
-            "code": "string",
-            "chargingTriggerInfo": "string",
-            "price": [
-              {
-                "interval": "string",
-                "value": "string",
-                "currency": "string"
-              }
-            ],
-            "minimum": {
-                "value": "string",
-                "currency": "string"
-              },
-            "maximum": {
-                "value": "string",
-                "currency": "string"
-              }
+            "interval": "string",
+            "value": "string",
+            "currency": "string"
           }
         ],
-        "otherService": [
-          {
-            "name": "string",
-            "code": "string",
-            "chargingTriggerInfo": "string",
-            "prices": [
-              {
-                "interval": "string",
-                "value": "string",
-                "currency": "string"
-              }
-            ],
-            "minimum": {
-                "value": "string",
-                "currency": "string"
-              },
-            "maximum": {
-                "value": "string",
-                "currency": "string"
-              }
-          }
-        ]
-      },
-      "serviceBundles": [
-        {
-          "name": "string",
-          "service": [
-            {
-              "code": "string",
-              "eventLimitQuantity": "string",
-              "freeEventQuantity": "string"
-            }
-          ],
-          "prices": [
-            {
-              "interval": "string",
-              "monthlyFee": "string",
-              "currency": "string"
-            }
-          ],
-          "minimum": {
+        "minimum": {
             "value": "string",
             "currency": "string"
           },
-          "maximum": {
+        "maximum": {
             "value": "string",
             "currency": "string"
           }
+      }
+  },
+  "serviceBundles": [
+    {
+      "name": "string",
+      "service": [
+        {
+          "code": "string",
+          "eventLimitQuantity": "string",
+          "freeEventQuantity": "string"
         }
       ],
-      "openingClosingChannels": "string",
-      "additionalInfo":"string",
-      "transactionMethods": "string",
-      "termsConditions": {
-      "minimumBalance": {
-            "value": "string",
-            "currency": "string"
-
-        },
-        "elegibilityCriteriaInfo": "string",
-        "closingProcessInfo": "string"
-      },
-      "incomeRates": {
-        "savingAccount": "string",
-        "prePaidPaymentAccount": {
-            "applications":{
-              "interval":"string",
-              "rate":"string"
-            },
-            "minimumRate": "string",
-            "maxiumRate": "string"
+      "prices": [
+        {
+          "interval": "string",
+          "monthlyFee": "string",
+          "currency": "string"
         }
+      ],
+      "minimum": {
+        "value": "string",
+        "currency": "string"
+      },
+      "maximum": {
+        "value": "string",
+        "currency": "string"
       }
     }
+  ],
+  "openingClosingChannels": "string",
+  "additionalInfo":"string",
+  "transactionMethods": "string",
+  "termsConditions": {
+  "minimumBalance": {
+        "value": "string",
+        "currency": "string"
+
+    },
+    "elegibilityCriteriaInfo": "string",
+    "closingProcessInfo": "string"
+  },
+  "incomeRates": [{
+    "savingAccount": "string",
+    "prePaidPaymentAccount": {
+        "applications":{
+          "interval":"string",
+          "rate":"string"
+        },
+        "minimumRate": "string",
+        "maxiumRate": "string"
+    }
+  }]
+}
 ```
 
 |     Nome              |  Tipo                                          |  Obrigatório    |                            Descrição                  |
@@ -532,30 +519,27 @@
 
 ```json
 {
-  "priorityService": [
-    {
-      "name": "string",
-      "code": "string",
-      "chargingTriggerInfo": "string",
-      "price": [
-        {
-          "interval": "string",
-          "value": "string",
-          "currency": "string"
-        }
-      ],
-      "minimum": {
-          "value": "string",
-          "currency": "string"
-        },
-      "maximum": {
-          "value": "string",
-          "currency": "string"
-        }
-    }
-  ],
-  "otherService": [
-    {
+  "priorityService": {
+    "name": "string",
+    "code": "string",
+    "chargingTriggerInfo": "string",
+    "price": [
+      {
+        "interval": "string",
+        "value": "string",
+        "currency": "string"
+      }
+    ],
+    "minimum": {
+        "value": "string",
+        "currency": "string"
+      },
+    "maximum": {
+        "value": "string",
+        "currency": "string"
+      }
+  },
+  "otherService": {
       "name": "string",
       "code": "string",
       "chargingTriggerInfo": "string",
@@ -575,7 +559,6 @@
           "currency": "string"
         }
     }
-  ]
 }
 ```
 

@@ -78,7 +78,7 @@
                 "elegibilityCriteriaInfo": "string",
                 "closingProcessInfo": "string"
               },
-              "incomeRates": {
+              "incomeRates": [{
                 "savingAccount": "string",
                 "prepaidPaymentAccount": {
                   "applications": [                    
@@ -90,7 +90,7 @@
                   "minimumRate": "string",
                   "maximumRate": "string"
                 }
-              }
+              }]
             }
           ]
         }
@@ -196,7 +196,7 @@
             "elegibilityCriteriaInfo": "string",
             "closingProcessInfo": "string"
           },
-          "incomeRates": {
+          "incomeRates": [{
             "savingAccount": "string",
             "prepaidPaymentAccount": {
               "applications": [                    
@@ -208,7 +208,7 @@
               "minimumRate": "string",
               "maximumRate": "string"
             }
-          }
+          }]
         }
       ]
     }
@@ -296,7 +296,7 @@
         "elegibilityCriteriaInfo": "string",
         "closingProcessInfo": "string"
       },
-      "incomeRates": {
+      "incomeRates": [{
         "savingAccount": "string",
         "prepaidPaymentAccount": {
           "applications": [                    
@@ -308,7 +308,7 @@
           "minimumRate": "string",
           "maximumRate": "string"
         }
-      }
+      }]
     }
   ]
 }
@@ -391,7 +391,7 @@
     "elegibilityCriteriaInfo": "string",
     "closingProcessInfo": "string"
   },
-  "incomeRates": {
+  "incomeRates": [{
     "savingAccount": "string",
     "prepaidPaymentAccount": {
       "applications": [                    
@@ -403,7 +403,7 @@
       "minimumRate": "string",
       "maximumRate": "string"
     }
-  }
+  }]
 }
 ```
 
