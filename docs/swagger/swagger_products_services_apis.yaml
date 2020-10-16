@@ -1500,63 +1500,93 @@ components:
           $ref: '#/components/schemas/InterestRate'
         instalmentRate:
           $ref: '#/components/schemas/InterestRate'
-        interestRate:
-          type: object
-          required:
-            - code
-            - prices
-            - mininumRate
-            - maximumRate
-          properties:
-            code:
-              type: string
-              enum:
-                - SAQUE_A_CREDITO
-                - PAGAMENTO_CONTAS
-                - OUTROS
-              description: Lista de outras operações de crédito
-              example: SAQUE_A_CREDITO
-            additionalInfo:
-              type: string
-              maxLength: 50
-              pattern: \w*\W*
-              description: Campo Texto para descrever outras operações de crédito marcadas como 'Outros'
-              example: NA
+        interestRates:
+          type: array
+          items:
+            type: object
+            required:
+              - code
+              - prices
+              - mininumRate
+              - maximumRate
+            properties:
+              code:
+                type: string
+                enum:
+                  - SAQUE_A_CREDITO
+                  - PAGAMENTO_CONTAS
+                  - OUTROS
+                description: Lista de outras operações de crédito
+                example: SAQUE_A_CREDITO
+              additionalInfo:
+                type: string
+                maxLength: 50
+                pattern: \w*\W*
+                description: Campo Texto para descrever outras operações de crédito marcadas como 'Outros'
+                example: NA
+              prices:
+                type: array
+                items:
+                  required:
+                    - interval
+                    - rate
+                  properties:
+                    interval:
+                      $ref: '#/components/schemas/Intervals'
+                    rate:
+                      type: string
+                      pattern: '(-?[1-9]?\d{1,4}){1}(\,\d{1,4}){1'
+                      maxLength: 9
+                      description: 'Percentual que corresponde a mediana (taxa efetiva) aplicada para  outras operações de crédito, no período informado.'
+                  example:
+                    - interval: 1_QUARTIL_CLIENTES
+                      rate: '0.1500'
+                    - interval: 2_QUARTIL_CLIENTES
+                      rate: '0.2000'
+                    - interval: 3_QUARTIL_CLIENTES
+                      rate: '0.3500'
+                    - interval: 4_QUARTIL_CLIENTES
+                      rate: '0.6800'
+              minimumRate:
+                type: string
+                pattern: '(-?[1-9]?\d{1,4}){1}(\.\d{1,4}){1}$'
+                maxLength: 9
+                description: Percentual mínimo cobrado (taxa efetiva) para  outras operações de crédito do mês de referência.
+                example: '0.0450'
+              maximumRate:
+                type: string
+                pattern: '(-?[1-9]?\d{1,4}){1}(\.\d{1,4}){1}$'
+                maxLength: 9
+                description: Percentual máximo cobrado (taxa efetiva) para  outras operações de crédito do mês de referência.
+                example: '0.8000'
+          example:
+          - code: "SAQUE_A_CREDITO"
+            additionalInfo: "NA"
             prices:
-              type: array
-              items:
-                required:
-                  - interval
-                  - rate
-                properties:
-                  interval:
-                    $ref: '#/components/schemas/Intervals'
-                  rate:
-                    type: string
-                    pattern: '(-?[1-9]?\d{1,4}){1}(\,\d{1,4}){1'
-                    maxLength: 9
-                    description: 'Percentual que corresponde a mediana (taxa efetiva) aplicada para  outras operações de crédito, no período informado.'
-                example:
-                  - interval: 1_QUARTIL_CLIENTES
-                    rate: '0.1500'
-                  - interval: 2_QUARTIL_CLIENTES
-                    rate: '0.2000'
-                  - interval: 3_QUARTIL_CLIENTES
-                    rate: '0.3500'
-                  - interval: 4_QUARTIL_CLIENTES
-                    rate: '0.6800'
-            minimumRate:
-              type: string
-              pattern: '(-?[1-9]?\d{1,4}){1}(\.\d{1,4}){1}$'
-              maxLength: 9
-              description: Percentual mínimo cobrado (taxa efetiva) para  outras operações de crédito do mês de referência.
-              example: '0.0450'
-            maximumRate:
-              type: string
-              pattern: '(-?[1-9]?\d{1,4}){1}(\.\d{1,4}){1}$'
-              maxLength: 9
-              description: Percentual máximo cobrado (taxa efetiva) para  outras operações de crédito do mês de referência.
-              example: '0.8000'
+            - interval: "1_QUARTIL_CLIENTES"
+              rate: "0.1500"
+            - interval: "2_QUARTIL_CLIENTES"
+              rate: "0.2000"
+            - interval: "3_QUARTIL_CLIENTES"
+              rate: "0.3500"
+            - interval: "4_QUARTIL_CLIENTES"
+              rate: "0.6800"
+            minimumRate: "0.0450"
+            maximumRate: "0.7000"
+          - code: "PAGAMENTOS_CONTAS"
+            additionalInfo: "NA"
+            prices:
+            - interval: "1_QUARTIL_CLIENTES"
+              rate: "0.1500"
+            - interval: "2_QUARTIL_CLIENTES"
+              rate: "0.2700"
+            - interval: "3_QUARTIL_CLIENTES"
+              rate: "0.4000"
+            - interval: "4_QUARTIL_CLIENTES"
+              rate: "0.4100"
+            minimumRate: "0.0900"
+            maximumRate: "0.5500"
+
     PersonalCreditCardResponse:
       type: object
       required:
