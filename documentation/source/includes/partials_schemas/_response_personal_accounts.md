@@ -492,7 +492,7 @@
 
 | Propriedade  | Valor                       | Definição                   |                
 |:-------------|:----------------------------|:----------------------------|
-| type         | CONTA_DEPOSITO_A_VISTA      | Conta Corrente.              |
+| type         | CONTA_DEPOSITO_A_VISTA      | Conta de depósito à vista.              |
 | type         | CONTA_POUPANCA              | Conta Poupança.              |
 | type         | CONTA_PAGAMENTO_PRE_PAGA    | Conta de pagamento pré paga. |
 
