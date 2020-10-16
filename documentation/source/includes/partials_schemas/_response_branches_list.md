@@ -20,15 +20,13 @@
                   "checkDigit": "string",
                   "name": "string"
                 },
-                "postalAddresses": [
-                  {
-                    "address": "string",
-                    "districtName": "string",
-                    "townName": "string",
-                    "countrySubDivision": "string",
-                    "postCode": "string"
-                  }
-                ],
+                "postalAddress": {
+                  "address": "string",
+                  "districtName": "string",
+                  "townName": "string",
+                  "countrySubDivision": "string",
+                  "postCode": "string"
+                },
                 "availability": {
                   "standards": [
                     {
