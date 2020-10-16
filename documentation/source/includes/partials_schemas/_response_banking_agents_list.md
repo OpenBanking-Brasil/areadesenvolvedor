@@ -22,13 +22,15 @@
                       "groupName": "string",
                       "cnpjNumber": "string"
                     },
-                    "postalAddress": {
-                      "address": "string",
-                      "districtName": "string",
-                      "townName": "string",
-                      "countrySubDivision": "string",
-                      "postCode": "string"
-                    },
+                    "postalAddresses": [
+                      {
+                        "address": "string",
+                        "districtName": "string",
+                        "townName": "string",
+                        "countrySubDivision": "string",
+                        "postCode": "string"
+                      }
+                    ],
                     "services": {
                       "codes": [
                         "string"
@@ -86,13 +88,15 @@
                 "groupName": "string",
                 "cnpjNumber": "string"
               },
-              "postalAddress": {
-                "address": "string",
-                "districtName": "string",
-                "townName": "string",
-                "countrySubDivision": "string",
-                "postCode": "string"
-              },
+              "postalAddresses": [
+                {
+                  "address": "string",
+                  "districtName": "string",
+                  "townName": "string",
+                  "countrySubDivision": "string",
+                  "postCode": "string"
+                }
+              ],
               "services": {
                 "codes": [
                   "string"
@@ -131,13 +135,15 @@
             "groupName": "string",
             "cnpjNumber": "string"
           },
-          "postalAddress": {
-            "address": "string",
-            "districtName": "string",
-            "townName": "string",
-            "countrySubDivision": "string",
-            "postCode": "string"
-          },
+          "postalAddresses": [
+            {
+              "address": "string",
+              "districtName": "string",
+              "townName": "string",
+              "countrySubDivision": "string",
+              "postCode": "string"
+            }
+          ],
           "services": {
             "codes": [
               "string"
@@ -172,13 +178,15 @@
         "groupName": "string",
         "cnpjNumber": "string"
       },
-      "postalAddress": {
-        "address": "string",
-        "districtName": "string",
-        "townName": "string",
-        "countrySubDivision": "string",
-        "postCode": "string"
-      },
+      "postalAddresses": [
+        {
+          "address": "string",
+          "districtName": "string",
+          "townName": "string",
+          "countrySubDivision": "string",
+          "postCode": "string"
+        }
+      ],
       "services": {
         "codes": [
           "string"
@@ -206,13 +214,15 @@
     "groupName": "string",
     "cnpjNumber": "string"
   },
-  "postalAddress": {
-    "address": "string",
-    "districtName": "string",
-    "townName": "string",
-    "countrySubDivision": "string",
-    "postCode": "string"
-  },
+  "postalAddresses": [
+    {
+      "address": "string",
+      "districtName": "string",
+      "townName": "string",
+      "countrySubDivision": "string",
+      "postCode": "string"
+    }
+  ],
   "services": {
     "codes": [
       "string"
@@ -225,7 +235,7 @@
 | Nome | Tipo|Obrigatório|Descrição|
 |:---- |:---|:---|:---|:---|
 | identification |[BankingAgentsIdentification](#schemaBankingAgentsIdentification)|Sim|Dados de identificação do correspondente.|
-| postalAddress |[BankingAgentsPostalAddress](#schemaBankingAgentsPostalAddress)|Sim|Endereço do correspondente.|
+| postalAddresses |[BankingAgentsPostalAddress](#schemaBankingAgentsPostalAddress)|Sim|Endereço do correspondente.|
 | services |[BankingAgentsServices](#schemaBankingAgentsServices)|Sim|Serviços fornecidos pelo correspondente.|
 
 ## BankingAgentsIdentification
