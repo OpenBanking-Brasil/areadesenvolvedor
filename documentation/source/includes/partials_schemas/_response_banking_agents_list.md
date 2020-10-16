@@ -23,7 +23,7 @@
                       "cnpjNumber": "string"
                     },
                     "postalAddress": {
-                      "adress": "string",
+                      "address": "string",
                       "districtName": "string",
                       "townName": "string",
                       "countrySubDivision": "string",
@@ -87,7 +87,7 @@
                 "cnpjNumber": "string"
               },
               "postalAddress": {
-                "adress": "string",
+                "address": "string",
                 "districtName": "string",
                 "townName": "string",
                 "countrySubDivision": "string",
@@ -132,7 +132,7 @@
             "cnpjNumber": "string"
           },
           "postalAddress": {
-            "adress": "string",
+            "address": "string",
             "districtName": "string",
             "townName": "string",
             "countrySubDivision": "string",
@@ -173,7 +173,7 @@
         "cnpjNumber": "string"
       },
       "postalAddress": {
-        "adress": "string",
+        "address": "string",
         "districtName": "string",
         "townName": "string",
         "countrySubDivision": "string",
@@ -207,7 +207,7 @@
     "cnpjNumber": "string"
   },
   "postalAddress": {
-    "adress": "string",
+    "address": "string",
     "districtName": "string",
     "townName": "string",
     "countrySubDivision": "string",
@@ -250,7 +250,7 @@
 
 ```json
 {
-  "adress": "string",
+  "address": "string",
   "districtName": "string",
   "townName": "string",
   "countrySubDivision": "string",
@@ -260,7 +260,7 @@
 
 |Nome|Tipo|Obrigatório|Descrição|
 |:---|:---|:---|:---|:---|
-|adress|string|Sim|Informações referente ao endereço do correspondente bancário.|
+|address|string|Sim|Informações referente ao endereço do correspondente bancário.|
 |districtName|string|Sim|Bairro.|
 |townName|string|Sim|Cidade.|
 |countrySubDivision|string|Sim|Estado.|
