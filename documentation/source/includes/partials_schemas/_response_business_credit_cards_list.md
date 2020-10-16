@@ -77,7 +77,7 @@
                   "minimumRate": "string",
                   "maximumRate": "string"
                 },
-                "interestRate": {
+                "interestRates": [{
                   "code": "string",
                   "additionalInfo": "string",
                   "prices": [
@@ -90,7 +90,7 @@
                   ],
                   "minimumRate": "string",
                   "maximumRate": "string"
-                }
+                }]
               },
               "termsConditions": {
                 "minimumFeeRate": "string",
@@ -202,7 +202,7 @@
               "minimumRate": "string",
               "maximumRate": "string"
             },
-            "interestRate": {
+            "interestRates": [{
               "code": "string",
               "additionalInfo": "string",
               "prices": [
@@ -215,7 +215,7 @@
               ],
               "minimumRate": "string",
               "maximumRate": "string"
-            }
+            }]
           },
           "termsConditions": {
             "minimumFeeRate": "string",
@@ -309,7 +309,7 @@
           "minimumRate": "string",
           "maximumRate": "string"
         },
-        "interestRate": {
+        "interestRates": [{
           "code": "string",
           "additionalInfo": "string",
           "prices": [
@@ -322,7 +322,7 @@
           ],
           "minimumRate": "string",
           "maximumRate": "string"
-        }
+        }]
       },
       "termsConditions": {
         "minimumFeeRate": "string",
@@ -411,7 +411,7 @@
       "minimumRate": "string",
       "maximumRate": "string"
     },
-    "interestRate": {
+    "interestRates": [{
       "code": "string",
       "additionalInfo": "string",
       "prices": [
@@ -424,7 +424,7 @@
       ],
       "minimumRate": "string",
       "maximumRate": "string"
-    }
+    }]
   },
   "termsConditions": {
     "minimumFeeRate": "string",
@@ -645,7 +645,7 @@
     "minimumRate": "string",
     "maximumRate": "string"
   },
-  "interestRate": {
+  "interestRates": [{
     "code": "string",
     "additionalInfo": "string",
     "prices": [
@@ -656,7 +656,7 @@
     ],
     "minimumRate": "string",
     "maximumRate": "string"
-  }
+  }]
 }
 ```
 
@@ -664,7 +664,7 @@
 |:-------------- |:--------------------------- |:---------------- |:------------------------------------------------------------ |
 | feeRate        | [BusinessCreditCardFeeRate](#schemaBusinessCreditCardFeeRate)               | Sim | Percentual que corresponde a taxa aplicada para utilização de Crédito Rotativo              |
 | instalmentRate | [BusinessCreditCardInstalmentRate](#schemaBusinessCreditCardInstalmentRate) | Sim | Percentual que corresponde a taxa aplicada para pagamento parcelado do saldo devedor quando não realizado pagamento integral da fatura |
-| interestRate   | [BusinessCreditCardInterestRate](#schemaBusinessCreditCardInterestRate) | Sim | Percentual que corresponde a taxa aplicada para pagamento parcelado do saldo devedor quando não realizado pagamento integral da fatura |
+| interestRates   | [BusinessCreditCardInterestRate](#schemaBusinessCreditCardInterestRate) | Sim | Percentual que corresponde a taxa aplicada para pagamento parcelado do saldo devedor quando não realizado pagamento integral da fatura |
 
 ## BusinessCreditCardInterestRate
 <a id="schemaBusinessCreditCardInterestRate"></a>
