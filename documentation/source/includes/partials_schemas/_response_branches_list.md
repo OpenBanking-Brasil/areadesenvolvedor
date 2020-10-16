@@ -21,7 +21,7 @@
                   "name": "string"
                 },
                 "postalAddress": {
-                  "adress": "string",
+                  "address": "string",
                   "districtName": "string",
                   "townName": "string",
                   "countrySubDivision": "string",
@@ -102,7 +102,7 @@
             "name": "string"
           },
           "postalAddress": {
-            "adress": "string",
+            "address": "string",
             "districtName": "string",
             "townName": "string",
             "countrySubDivision": "string",
@@ -162,7 +162,7 @@
         "name": "string"
       },
       "postalAddress": {
-        "adress": "string",
+        "address": "string",
         "districtName": "string",
         "townName": "string",
         "countrySubDivision": "string",
@@ -217,7 +217,7 @@
     "name": "string"
   },
   "postalAddress": {
-    "adress": "string",
+    "address": "string",
     "districtName": "string",
     "townName": "string",
     "countrySubDivision": "string",
@@ -291,7 +291,7 @@
 
 ```json
 {
-  "adress": "string",
+  "address": "string",
   "districtName": "string",
   "townName": "string",
   "countrySubDivision": "string",
@@ -301,7 +301,7 @@
 
 |Nome|Tipo|Obrigatório|Descrição|
 |:---|:---|:---|:---|:---|
-|adress|string|Sim|informação referente ao endereço da dependência informada.|
+|address|string|Sim|informação referente ao endereço da dependência informada.|
 |districtName|string|Sim|Bairro.|
 |townName|string|Sim|Cidade.|
 |countrySubDivision|string|Sim|Estado.|

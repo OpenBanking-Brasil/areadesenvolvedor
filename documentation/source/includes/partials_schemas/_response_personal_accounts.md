@@ -492,7 +492,7 @@
 
 | Propriedade  | Valor                       | Definição                   |                
 |:-------------|:----------------------------|:----------------------------|
-| type         | CONTA_DEPOSITO_A_VISTA      | Conta Corrente.              |
+| type         | CONTA_DEPOSITO_A_VISTA      | Conta de depósito à vista.              |
 | type         | CONTA_POUPANCA              | Conta Poupança.              |
 | type         | CONTA_PAGAMENTO_PRE_PAGA    | Conta de pagamento pré paga. |
 
@@ -629,7 +629,6 @@
 | code                 | SAQUE_PESSOAL       | Movimentação presencial    |
 | code                 | SAQUE_TERMINAL   | Movimentação com cartão    |
 | code                 | SAQUE_CORRESPONDENTE   | Movimentação em correspondente bancário    |
-| code                 | DEPOSITO   | Movimentação eletrônica    |
 | code                 | DEPOSITO_IDENTIFICADO       | Movimentação com cheque    |
 | code                 | EXTRATO_MES_P       | Movimentação eletrônica    |
 | code                 | EXTRATO_MES_E   | Movimentação eletrônica    |
@@ -639,7 +638,7 @@
 | code                 | EXTRATO_MOVIMENTO_C   | Movimentação eletrônica    |
 | code                 | MICROFILME   | Movimentação presencial    |
 | code                 | DOC_PESSOAL       | Movimentação eletrônica    |
-| code                 | DOCELETRONICO       | Movimentação eletrônica    |
+| code                 | DOC_ELETRONICO       | Movimentação eletrônica    |
 | code                 | DOC_INTERNET       | Movimentação eletrônica    |
 | code                 | TED_PESSOAL       | Movimentação eletrônica    |
 | code                 | TED_ELETRONICO       | Movimentação eletrônica    |

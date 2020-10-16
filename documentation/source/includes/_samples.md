@@ -1,4 +1,4 @@
-# Channels
+# ElectronicChannels
 
 ## Buscar todos os canais
 
