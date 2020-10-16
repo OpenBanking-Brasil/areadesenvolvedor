@@ -4,58 +4,77 @@
 ```json
 {
   "data": {
-    "brand": [
-      {
-        "name": "string",
-        "companies": [
-          {
-            "name": "string",
-            "cnpjNumber": "string",
-            "contractors": [
-              {
-                "name": "string",
-                "cnpjNumber": "string",
-                "bankingAgents": [
-                  {
-                    "identification": {
-                      "corporationName": "string",
-                      "groupName": "string",
-                      "cnpjNumber": "string"
+    "brand": {
+      "name": "Organização A",
+      "companies": [
+        {
+          "name": "Empresa A1",
+          "cnpjNumber": "45086338000178",
+          "contractors": [
+            {
+              "name": "Empresa Contratante 1",
+              "cnpjNumber": "99558332000137",
+              "bankingAgents": [
+                {
+                  "identification": {
+                    "corporationName": "Empresa Correspondente A",
+                    "groupName": "Grupo Master",
+                    "cnpjNumber": "02345876000299"
+                  },
+                  "postalAddresses": [
+                    {
+                      "address": "Av Tasuko Ykeda, 25",
+                      "districtName": "Centro",
+                      "townName": "Marília",
+                      "countrySubDivision": "SP",
+                      "postCode": "17500001"
                     },
-                    "postalAddresses": [
-                      {
-                        "address": "string",
-                        "districtName": "string",
-                        "townName": "string",
-                        "countrySubDivision": "string",
-                        "postCode": "string"
-                      }
-                    ],
-                    "services": {
-                      "codes": [
-                        "string"
-                      ],
-                      "additionalInfo": "string"
+                    {
+                      "address": "R Yroshima Takasi, 72",
+                      "districtName": "Altos da Colina",
+                      "townName": "Marília",
+                      "countrySubDivision": "SP",
+                      "postCode": "17526760"
+                    },
+                    {
+                      "address": "Al Nasso Origami, 15, bloco A",
+                      "districtName": "Centro",
+                      "townName": "Marília",
+                      "countrySubDivision": "SP",
+                      "postCode": "17500001"
                     }
+                  ],
+                  "services": {
+                    "codes": [
+                      "RECEPCAO_ENCAMINHAMENTO_PROPOSTAS_ABERTURA_CONTAS",
+                      "REALIZACAO_RECEBIMENTOS_PAGAMENTOS_TRANSFERENCIAS_ELETRONICAS",
+                      "RECEBIMENTOS_PAGAMENTOS_QUALQUER_NATUREZA",
+                      "EXECUCAO_ATIVA_PASSIVA_ORDENS_PAGAMENTO",
+                      "RECEPCAO_ENCAMINHAMENTO_PROPOSTAS_CREDITO_ARRENDAMENTO_MERCANTIL",
+                      "RECEBIMENTO_PAGAMENTOS_RELACIONADOS_LETRAS_CAMBIO_ACEITE_INSTITUICAO",
+                      "RECEPCAO_ENCAMINHAMENTO_PROPOSTAS_FORNECIMENTO_CARTAO_CREDITO",
+                      "REALIZACAO_OPERACOES_CAMBIO"
+                    ],
+                    "additionalInfo": "Compra e venda de moeda em dólar americano"
                   }
-                ]
-              }
-            ]
-          }
-        ]
-      }
-    ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
   },
   "links": {
-    "self": "string",
-    "first": "string",
-    "prev": "string",
-    "next": "string",
-    "last": "string"
+    "self": "https://api.banco.com.br/open-banking/channels/v1/banking-agents",
+    "first": "https://api.banco.com.br/open-banking/channels/v1/banking-agents",
+    "prev": "null",
+    "next": "null",
+    "last": "https://api.banco.com.br/open-banking/channels/v1/banking-agents"
   },
   "meta": {
-    "totalRecords": "string",
-    "totalPages": "string"
+    "totalRecords": 1,
+    "totalPages": 1
   }
 }
 ```
