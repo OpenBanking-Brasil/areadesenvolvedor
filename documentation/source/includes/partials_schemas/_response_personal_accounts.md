@@ -60,31 +60,33 @@
                   }
                 ]
               },
-              "serviceBundles": {
-                "name":"string",
-                "service": [
-                  {
-                    "code": "string",
-                    "eventLimitQuantity": "string",
-                    "freeEventQuantity": "string"
+              "serviceBundles": [
+                {
+                  "name": "string",
+                  "service": [
+                    {
+                      "code": "string",
+                      "eventLimitQuantity": "string",
+                      "freeEventQuantity": "string"
+                    }
+                  ],
+                  "prices": [
+                    {
+                      "interval": "string",
+                      "monthlyFee": "string",
+                      "currency": "string"
+                    }
+                  ],
+                  "minimum": {
+                    "value": "string",
+                    "currency": "string"
+                  },
+                  "maximum": {
+                    "value": "string",
+                    "currency": "string"
                   }
-                ],
-                "prices":[{
-                  "interval": "string",
-                  "monthlyFee":"string",
-                  "currency":"string"
-                  
-                }],
-                "minimum": {
-                        "value": "string",
-                        "currency": "string"
-                      },
-                "maximum": {
-                        "value": "string",
-                        "currency": "string"
-                      },
-                
-              },
+                }
+              ],
               "openingClosingChannels": "string",
               "additionalInfo":"string",
               "transactionMethods": "string",
@@ -195,31 +197,33 @@
               }
             ]
           },
-          "serviceBundles": {
-            "name":"string",
-            "service": [
-              {
-                "code": "string",
-                "eventLimitQuantity": "string",
-                "freeEventQuantity": "string"
+          "serviceBundles": [
+            {
+              "name": "string",
+              "service": [
+                {
+                  "code": "string",
+                  "eventLimitQuantity": "string",
+                  "freeEventQuantity": "string"
+                }
+              ],
+              "prices": [
+                {
+                  "interval": "string",
+                  "monthlyFee": "string",
+                  "currency": "string"
+                }
+              ],
+              "minimum": {
+                "value": "string",
+                "currency": "string"
+              },
+              "maximum": {
+                "value": "string",
+                "currency": "string"
               }
-            ],
-            "prices":{
-              "interval": "string",
-              "monthlyFee":"string",
-              "currency":"string"
-              
-            },
-            "minimum": {
-                    "value": "string",
-                    "currency": "string"
-                  },
-            "maximum": {
-                    "value": "string",
-                    "currency": "string"
-                  },
-            
-          },
+            }
+          ],
           "openingClosingChannels": "string",
           "additionalInfo":"string",
           "transactionMethods": "string",
@@ -312,31 +316,33 @@
           }
         ]
       },
-      "serviceBundles": {
-        "name":"string",
-        "service": [
-          {
-            "code": "string",
-            "eventLimitQuantity": "string",
-            "freeEventQuantity": "string"
+      "serviceBundles": [
+        {
+          "name": "string",
+          "service": [
+            {
+              "code": "string",
+              "eventLimitQuantity": "string",
+              "freeEventQuantity": "string"
+            }
+          ],
+          "prices": [
+            {
+              "interval": "string",
+              "monthlyFee": "string",
+              "currency": "string"
+            }
+          ],
+          "minimum": {
+            "value": "string",
+            "currency": "string"
+          },
+          "maximum": {
+            "value": "string",
+            "currency": "string"
           }
-        ],
-        "prices":{
-          "interval": "string",
-          "monthlyFee":"string",
-          "currency":"string"
-          
-        },
-        "minimum": {
-                "value": "string",
-                "currency": "string"
-              },
-        "maximum": {
-                "value": "string",
-                "currency": "string"
-              },
-        
-      },
+        }
+      ],
       "openingClosingChannels": "string",
       "additionalInfo":"string",
       "transactionMethods": "string",
@@ -425,31 +431,33 @@
           }
         ]
       },
-      "serviceBundles": {
-        "name":"string",
-        "service": [
-          {
-            "code": "string",
-            "eventLimitQuantity": "string",
-            "freeEventQuantity": "string"
+      "serviceBundles": [
+        {
+          "name": "string",
+          "service": [
+            {
+              "code": "string",
+              "eventLimitQuantity": "string",
+              "freeEventQuantity": "string"
+            }
+          ],
+          "prices": [
+            {
+              "interval": "string",
+              "monthlyFee": "string",
+              "currency": "string"
+            }
+          ],
+          "minimum": {
+            "value": "string",
+            "currency": "string"
+          },
+          "maximum": {
+            "value": "string",
+            "currency": "string"
           }
-        ],
-        "prices":{
-          "interval": "string",
-          "monthlyFee":"string",
-          "currency":"string"
-          
-        },
-        "minimum": {
-                "value": "string",
-                "currency": "string"
-              },
-        "maximum": {
-                "value": "string",
-                "currency": "string"
-              },
-        
-      },
+        }
+      ],
       "openingClosingChannels": "string",
       "additionalInfo":"string",
       "transactionMethods": "string",
