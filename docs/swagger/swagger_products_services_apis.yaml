@@ -249,6 +249,7 @@ components:
               type: string
               description: 'Moeda referente ao valor máximo da tarifa de outros serviços, segundo modelo ISO-4217.'
               example: BRL
+              
     PersonalAccountsResponse:
       type: object
       required:
@@ -276,6 +277,7 @@ components:
                 companies:
                   type: array
                   items:
+                    type: object
                     required:
                       - name
                       - cnpjNumbers
@@ -301,6 +303,7 @@ components:
                       personalAccounts:
                         type: array
                         items:
+                          type: object
                           required:
                             - type
                             - fees
@@ -320,16 +323,13 @@ components:
                               example: CONTA_DEPOSITO_A_VISTA
                             fees:
                               type: array
-                              required:
-                                - priorityServices
-                              properties:
-                                priorityServices:
-                                  type: array
-                                  items:
+                              items:
+                                required:
+                                  - priorityServices
+                                properties:
+                                  priorityService:
                                     $ref: '#/components/schemas/PersonalAccountsPriorityServices'
-                                otherServices:
-                                  type: array
-                                  items:
+                                  otherService:
                                     $ref: '#/components/schemas/PersonalAccountsOtherServices'
                             serviceBundles:
                               type: array
@@ -337,7 +337,7 @@ components:
                                 type: object
                                 required:
                                   - name
-                                  - service
+                                  - services
                                   - prices
                                   - minimum
                                   - maximum
@@ -348,7 +348,7 @@ components:
                                     pattern: \w*\W*
                                     description: Nome do Pacote de Serviços dado pela instituição.
                                     example: Conta de depósitos à vista Movimentação com cartão (sem cheque)
-                                  service:
+                                  services:
                                     type: array
                                     items:
                                       required:
@@ -370,7 +370,7 @@ components:
                                           type: string
                                           maxLength: 6
                                           description: Quantidade de eventos previstos no Pacote de Serviços com isenção de Tarifa
-                                          example: '1'
+                                          example: '1'                              
                                   prices:
                                     type: object
                                     required:
@@ -433,6 +433,73 @@ components:
                                         type: string
                                         description: 'Moeda referente ao valor máximo da tarifa do Pacote de Serviços, segundo modelo ISO-4217.'
                                         example: BRL
+                              example:
+                              - name: 'Movimentação com cartão (sem cheque)'
+                                services:
+                                - code: 'CADASTRO'
+                                  eventLimitQuantity: '1'
+                                  freeEventQuantity: '0'
+                                - code: 'SAQUE_TERMINAL'
+                                  eventLimitQuantity: '999999'
+                                  freeEventQuantity: '8'
+                                - code: 'EXTRATO_MOVIMENTO_E'
+                                  eventLimitQuantity: '999999'
+                                  freeEventQuantity: '4'
+                                - code: 'TRANSF_RECURSO_P'
+                                  eventLimitQuantity: '999999'
+                                  freeEventQuantity: '2'
+                                prices:
+                                - interval: '1_QUARTIL_CLIENTES'
+                                  monthlyFee: '43.40'
+                                  currency: 'BRL'
+                                - interval: '2_QUARTIL_CLIENTES'
+                                  monthlyFee: '55.00'
+                                  currency: 'BRL'
+                                - interval: '3_QUARTIL_CLIENTES'
+                                  monthlyFee: '62.00'
+                                  currency: 'BRL'
+                                - interval: '4_QUARTIL_CLIENTES'
+                                  monthlyFee: '69.0'
+                                  currency: 'BRL'
+                                minimum:
+                                  value: '19.00'
+                                  currency: 'BRL'
+                                maximum:
+                                  value: '88.00'
+                                  currency: 'BRL'
+                              - name: 'Conta de depósitos à vista - Pacote XXX'
+                                services: 
+                                - code: 'Serviço 1'
+                                  eventLimitQuantity: '999999'
+                                  freeEventQuantity: '999999'
+                                - code: 'Serviço 2'
+                                  eventLimitQuantity: '999999'
+                                  freeEventQuantity: '8'
+                                - code: 'Serviço 3'
+                                  eventLimitQuantity: '999999'
+                                  freeEventQuantity: '4'
+                                - code: 'Serviço 4'
+                                  eventLimitQuantity: '999999'
+                                  freeEventQuantity: '2'
+                                prices:
+                                - interval: '1_QUARTIL_CLIENTES'
+                                  monthlyFee: '30.40'
+                                  currency: 'BRL'
+                                - interval: '2_QUARTIL_CLIENTES'
+                                  monthlyFee: '45.00'
+                                  currency: 'BRL'
+                                - interval: '3_QUARTIL_CLIENTES'
+                                  monthlyFee: '62.00'
+                                  currency: 'BRL'
+                                - interval: '4_QUARTIL_CLIENTES'
+                                  monthlyFee: '69.00'
+                                  currency: 'BRL'
+                                minimum:
+                                  value: '33.00'
+                                  currency: 'BRL'
+                                maximum:
+                                  value: '87.00'
+                                  currency: 'BRL'
                             openingClosingChannels:
                               type: string
                               enum:
@@ -450,7 +517,7 @@ components:
                               maxLength: 100
                               pattern: \w*\W*
                               description: 'Texto livre para complementar informação relativa ao Canal disponível, quando no campo ''openingClosingChannels'' estiver preenchida a opção ''Outros'''
-                              example: NA
+                              example: 'NA'
                             transactionMethods:
                               type: string
                               enum:
@@ -463,11 +530,14 @@ components:
                             termsConditions:
                               $ref: '#/components/schemas/AccountsTermsConditions'
                             incomeRates:
-                              $ref: '#/components/schemas/PersonalAccountsIncomeRates'
+                              type: array
+                              items:
+                                $ref: '#/components/schemas/PersonalAccountsIncomeRates'
         links:
           $ref: '#/components/schemas/Links'
         meta:
           $ref: '#/components/schemas/Meta'
+
     PersonalAccountsPriorityServices:
       type: object
       required:
@@ -483,7 +553,7 @@ components:
           maxLength: 80
           pattern: \w*\W*
           description: 'Nome dos Serviços prioritários, segundo Resolução 3.919 do Bacen, para pessoa física.'
-          example: Fornecimento de extrato de um período de conta de depósitos
+          example: Fornecimento de extrato de um período de conta de depósitos à vista e de poupança
         code:
           type: string
           enum:
@@ -657,18 +727,27 @@ components:
                   maxLength: 9
                   description: 'Percentual que corresponde a taxa mediana de remuneração efetivamente aplicada no intervalo informado para CONTA_PAGAMENTO_PRE_PAGA. A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, emso que venham preenchidas com zeros'
                   example: '0.1500'
+              example:
+              - interval: '1_QUARTIL_CLIENTES'
+                rate: '0.3456'
+              - interval: '2_QUARTIL_CLIENTES'
+                rate: '0.4457'
+              - interval: '3_QUARTIL_CLIENTES'
+                rate: '0.5678'
+              - interval: '4_QUARTIL_CLIENTES'
+                rate: '0.6635'
             mininumRate:
               type: string
               pattern: '(-?[1-9]?\d{1,4}){1}(\.\d{1,4}){1}$'
               maxLength: 9
               description: 'Percentual mínimo referente à taxa de remuneração efetivamente aplicada no mês de referência para CONTA_PAGAMENTO_PRE_PAGA. A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, emso que venham preenchidas com zeros'
-              example: '0.1500'
+              example: '0.2998'
             maximumRate:
               type: string
               pattern: '(-?[1-9]?\d{1,4}){1}(\.\d{1,4}){1}$'
               maxLength: 9
               description: 'Percentual máximo referente à taxa de remuneração efetivamente aplicada no mês de referência para VCONTA_PAGAMENTO_PRE_PAGA. A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, emso que venham preenchidas com zeros'
-              example: '0.1500'
+              example: '0.7002'
     ResponseBusinessAccounts:
       type: object
       required:
@@ -923,18 +1002,18 @@ components:
                           code: "NA"
                           chargingTriggerInfo: "NA"
                           prices:
-                          - interval: 1_QUARTIL_CLIENTES
-                            value: '55.40'
-                            currency: BRL
-                          - interval: 2_QUARTIL_CLIENTES
-                            value: '65.00'
-                            currency: BRL
-                          - interval: 3_QUARTIL_CLIENTES
-                            value: '69.00  '
-                            currency: BRL
-                          - interval: 4_QUARTIL_CLIENTES
-                            value: '72.00'
-                            currency: BRL
+                            - interval: 1_QUARTIL_CLIENTES
+                              value: '55.40'
+                              currency: BRL
+                            - interval: 2_QUARTIL_CLIENTES
+                              value: '65.00'
+                              currency: BRL
+                            - interval: 3_QUARTIL_CLIENTES
+                              value: '69.00  '
+                              currency: BRL
+                            - interval: 4_QUARTIL_CLIENTES
+                              value: '72.00'
+                              currency: BRL
                           minimum:
                             value: '49.00'
                             currency: BRL
@@ -992,7 +1071,7 @@ components:
                       elegibilityCriteriaInfo: 'https://empresaa1.com/Accounts_elegebilityCriteria'
                       closingProcessInfo: 'https://empresaa1.com/Accounts_closingProcess'
                     incomeRates:
-                      savingAccount: NA
+                    - savingAccount: NA
                       prepaidPaymentAccount:
                         applications:
                           - interval: NA
@@ -1982,12 +2061,12 @@ components:
               rate: '0.5890'
         minimumRate:
           type: string
-          format: '(-?[1-9]?\d{1,4}){1}(\.\d{1,4}){1}'
+          format: '(-?[1-9]?\d{1,4}){1}(\,\d{1,4}){1}'
           description: 'Percentual mínimo cobrado (taxa efetiva) no mês de referência, para o Financiamento contratado  A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)'
           example: '0.0456'
         maximumRate:
           type: string
-          format: '(-?[1-9]?\d{1,4}){1}(\.\d{1,4}){1}'
+          format: '(-?[1-9]?\d{1,4}){1}(\,\d{1,4}){1}'
           description: 'Percentual máximo cobrado (taxa efetiva) no mês de referência, para o Financiamento contratado  A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)'
           example: '0.6865'
       required:
@@ -2682,17 +2761,17 @@ components:
                 type: string
                 description: |
                   Percentual que corresponde a mediana da taxa efetiva cobrada do cliente pela contratação dos Direitos Creditórios Descontados, no intervalo informado. p.ex. '9,8700%' A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.15. Este valor representa 15%. O valor 1 representa 100%)
-                pattern: '(-?[1-9]?\d{1,4}){1}(\.\d{1,4}){1}'
+                pattern: '(-?[1-9]?\d{1,4}){1}(\,\d{1,4}){1}'
         minimumRate:
           type: string
           description: |
             Percentual mínimo cobrado (taxa efetiva) no mês de referência, para os Direitos Creditórios Descontados contratado  A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.15. Este valor representa 15%. O valor 1 representa 100%)
-          pattern: '(-?[1-9]?\d{1,4}){1}(\.\d{1,4}){1}'
+          pattern: '(-?[1-9]?\d{1,4}){1}(\,\d{1,4}){1}'
         maximumRate:
           type: string
           description: |
             Percentual máximo cobrado (taxa efetiva) no mês de referência, para os Direitos Creditórios Descontados contratado  A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.15. Este valor representa 15%. O valor 1 representa 100%)
-          pattern: '(-?[1-9]?\d{1,4}){1}(\.\d{1,4}){1}'
+          pattern: '(-?[1-9]?\d{1,4}){1}(\,\d{1,4}){1}'
       example:
         prices:
         - interval: 1_QUARTIL_CLIENTES
@@ -2745,11 +2824,11 @@ components:
         - totalRecords
         - totalPages
   securitySchemes:
-    API Key - 1:
+    APIKey1:
       name: API Key
       type: apiKey
       in: query
-    API Key - 2:
+    APIKey2:
       name: API Key
       type: apiKey
       in: query
