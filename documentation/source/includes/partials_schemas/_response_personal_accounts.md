@@ -607,39 +607,39 @@
 ### Enum CodePriorityServicePersonalAccount  
 <a id="schemaEnumCodePriorityServicePersonalAccount"></a>
 
-| Propriedade          | Valor                                            | Definição                  |                     
-|:---------------------|:-------------------------------------------------|:---------------------------|
-| code                 | CADASTRO                               | CADASTRO                   |
-| code                 | 2_VIA_CARTAO_DEBITO               | 2ª via-CARTÃODEBITO        |
-| code                 | 2_VIA_CARTAO_POUPANCA       | 2ª via-CARTÃOPOUPANÇA      |
-| code                 | EXCLUSAO_CCF              | EXCLUSÃO CCF               |
-| code                 | SUSTACAO_REVOGACAO | SUSTAÇÃO/REVOGAÇÃO         |
-| code                 | FOLHA_CHEQUE   | Movimentação presencial    |
-| code                 | CHEQUE_ADMINISTRATIVO   | Movimentação eletrônica    |
-| code                 | CHEQUE_VISADO       | Movimentação com cheque    |
-| code                 | SAQUE_PESSOAL       | Movimentação presencial    |
-| code                 | SAQUE_TERMINAL   | Movimentação com cartão    |
-| code                 | SAQUE_CORRESPONDENTE   | Movimentação em correspondente bancário    |
-| code                 | DEPOSITO_IDENTIFICADO       | Movimentação com cheque    |
-| code                 | EXTRATO_MES_P       | Movimentação eletrônica    |
-| code                 | EXTRATO_MES_E   | Movimentação eletrônica    |
-| code                 | EXTRATO_MES_C   | Movimentação eletrônica    |
-| code                 | EXTRATO_MOVIMENTO_P       | Movimentação eletrônica   |
-| code                 | EXTRATO_MOVIMENTO_E       | Movimentação eletrônica    |
-| code                 | EXTRATO_MOVIMENTO_C   | Movimentação eletrônica    |
-| code                 | MICROFILME   | Movimentação presencial    |
-| code                 | DOC_PESSOAL       | Movimentação eletrônica    |
-| code                 | DOC_ELETRONICO       | Movimentação eletrônica    |
-| code                 | DOC_INTERNET       | Movimentação eletrônica    |
-| code                 | TED_PESSOAL       | Movimentação eletrônica    |
-| code                 | TED_ELETRONICO       | Movimentação eletrônica    |
-| code                 | TED_INTERNET       | Movimentação eletrônica    |
-| code                 | DOC_TED_AGENDADO_P       | Movimentação eletrônica    |
-| code                 | DOC_TED_AGENDADO_E       | Movimentação eletrônica    |
-| code                 | DOC_TED_AGENDADO_I       | Movimentação eletrônica    |
-| code                 | TRANSF_RECURSO_P       | Movimentação eletrônica    |
-| code                 | TRANSF_RECURSO_E       | Movimentação eletrônica    |
-| code                 | ORDEM_PAGAMENTO       | Movimentação eletrônica    |
+| Propriedade          | Valor                                            | Definição                                                                        |                     
+|:-------------------- |:------------------------------------------------ |:-------------------------------------------------------------------------------- |
+| code                 | CADASTRO                                         | CADASTRO                                                                         |
+| code                 | 2_VIA_CARTAO_DEBITO                              | 2ª via-CARTÃODEBITO                                                              |
+| code                 | 2_VIA_CARTAO_POUPANCA                            | 2ª via-CARTÃOPOUPANÇA                                                            |
+| code                 | EXCLUSAO_CCF                                     | EXCLUSÃO CCF                                                                     |
+| code                 | SUSTACAO_REVOGACAO                               | SUSTAÇÃO/REVOGAÇÃO                                                               |
+| code                 | FOLHA_CHEQUE                                     | Fornecimento Folha de cheque                                                     |
+| code                 | CHEQUE_ADMINISTRATIVO                            | Cheque Administrativo                                                            |
+| code                 | CHEQUE_VISADO                                    | Cheque Visado                                                                    |
+| code                 | SAQUE_PESSOAL                                    | Saque Pessoal ou Presencial                                                      |
+| code                 | SAQUE_TERMINAL                                   | Saque Terminal autoatendimento                                                   |
+| code                 | SAQUE_CORRESPONDENTE                             | Saque Correspondente no Pais                                                     |
+| code                 | DEPOSITO_IDENTIFICADO                            | Depósito identificado                                                            |
+| code                 | EXTRATO_MES_P                                    | Extrato mensal presencial                                                        |
+| code                 | EXTRATO_MES_E                                    | Extrato mensal meios eletrônicos                                                 |
+| code                 | EXTRATO_MES_C                                    | Extrato mensal Correspondente no Pais                                            |
+| code                 | EXTRATO_MOVIMENTO_P                              | Extrato por período presencial                                                   |
+| code                 | EXTRATO_MOVIMENTO_E                              | Extrato por período meio eletrônico                                              |
+| code                 | EXTRATO_MOVIMENTO_C                              | Extrato por período Correspondente no Pais                                       |
+| code                 | MICROFILME                                       | Fornecimento de cópia de microfilme, microficha ou assemelhado                   |
+| code                 | DOC_PESSOAL                                      | Transferência por DOC presencial ou pessoal                                      |
+| code                 | DOC_ELETRONICO                                   | Transferência por DOC meios eletrônicos                                          |
+| code                 | DOC_INTERNET                                     | Transferência por TED via Internet                                               |
+| code                 | TED_PESSOAL                                      | Transferência por TED pessoal ou presencial                                      |
+| code                 | TED_ELETRONICO                                   | Transferência por TED meio eletrônico                                            |
+| code                 | TED_INTERNET                                     | Transferência por TED via Internet                                               |
+| code                 | DOC_TED_AGENDADO_P                               | Transferência agendada TED ou DOC presencial ou pessoal                          |
+| code                 | DOC_TED_AGENDADO_E                               | Transferência agendada TED ou DOC meio eletrônico                                |
+| code                 | DOC_TED_AGENDADO_I                               | Transferência agendada TED ou DOC via Internet                                   |
+| code                 | TRANSF_RECURSO_P                                 | Transferência entre contas própria instituição presencial ou pessoal             |
+| code                 | TRANSF_RECURSO_E                                 | Transferência entre contas própria instituição por meios eletrônicos ou Internet |
+| code                 | ORDEM_PAGAMENTO                                  | Ordem de Pagamento                                                               |
 
 
 ## OtherServicePersonalAccount
