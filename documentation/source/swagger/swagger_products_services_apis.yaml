@@ -625,19 +625,19 @@ components:
                 pattern: '^([A-Z]{3})$'
                 description: 'Moeda referente ao valor da mediana da tarifa do Serviço Prioritário no quartil informado, segundo modelo ISO-4217.'
                 example: BRL
-            example:
-            - interval: '1_QUARTIL_CLIENTES'
-              value: '30.40'
-              currency: 'BRL'
-            - interval: '1_QUARTIL_CLIENTES'
-              value: '45.00'
-              currency: 'BRL'
-            - interval: '1_QUARTIL_CLIENTES'
-              value: '62.00'
-              currency: 'BRL'
-            - interval: '1_QUARTIL_CLIENTES'
-              value: '69.00'
-              currency: 'BRL'
+          example:
+          - interval: '1_QUARTIL_CLIENTES'
+            value: '35.40'
+            currency: 'BRL'
+          - interval: '2_QUARTIL_CLIENTES'
+            value: '45.00'
+            currency: 'BRL'
+          - interval: '3_QUARTIL_CLIENTES'
+            value: '52.00'
+            currency: 'BRL'
+          - interval: '4_QUARTIL_CLIENTES'
+            value: '69.00'
+            currency: 'BRL'
         minimum:
           type: object
           required:
@@ -698,8 +698,80 @@ components:
           example: Cobrança devido a evento personalizado
         prices:
           type: array
-          items:
-            $ref: '#/components/schemas/AccountOtherServicesPrice'
+          items:            
+            type: object
+            required:
+              - interval
+              - value
+              - currency
+            properties:
+              interval:
+                type: string
+                enum:
+                  - 1_QUARTIL_CLIENTES
+                  - 2_QUARTIL_CLIENTES
+                  - 3_QUARTIL_CLIENTES
+                  - 4_QUARTIL_CLIENTES
+                description: 'Faixas de valor referentes a tarifa do Serviço Prioritário informada: 1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes'
+                example: 1_QUARTIL_CLIENTES
+              value:
+                type: string
+                pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
+                maxLength: 12
+                description: 'Valor da mediana da tarifa cobrada, relativa ao Serviço Prioritário, para o tipo de faixa informada.'
+                example: '45.00'
+              currency:
+                type: string
+                pattern: '^([A-Z]{3})$'
+                description: 'Moeda referente ao valor da mediana da tarifa do Serviço Prioritário no quartil informado, segundo modelo ISO-4217.'
+                example: BRL
+          example:
+          - interval: '1_QUARTIL_CLIENTES'
+            value: '30.40'
+            currency: 'BRL'
+          - interval: '2_QUARTIL_CLIENTES'
+            value: '45.00'
+            currency: 'BRL'
+          - interval: '3_QUARTIL_CLIENTES'
+            value: '62.00'
+            currency: 'BRL'
+          - interval: '4_QUARTIL_CLIENTES'
+            value: '69.00'
+            currency: 'BRL'
+        minimum:
+          type: object
+          required:
+            - value
+            - currency
+          properties:
+            value:
+              type: string
+              maxLength: 12
+              description: Valor mínimo cobrado para a tarifa de Serviço Prioritário no mês de referência
+              pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
+              example: '19.00'
+            currency:
+              type: string
+              pattern: '^([A-Z]{3})$'
+              description: Moeda referente ao valor da tarifa conforme ISO-4217
+              example: BRL
+        maximum:
+          type: object
+          required:
+            - value
+            - currency
+          properties:
+            value:
+              type: string
+              maxLength: 12
+              pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
+              description: Valor máximo cobrado para a tarifa de Serviço Prioritário no mês de referência
+              example: '88.00'
+            currency:
+              type: string
+              pattern: '^([A-Z]{3})$'
+              description: Moeda referente ao valor da tarifa conforme ISO-4217
+              example: BRL
     PersonalAccountsIncomeRates:
       type: object
       required:
