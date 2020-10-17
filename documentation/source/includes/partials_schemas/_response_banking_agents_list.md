@@ -251,9 +251,9 @@
 
 | Nome                   | Tipo   | Obrigatório | Descrição                                                 |
 |:----------------       |:------ |:----------- |:-------------------------------                           |
-| corporationName        | string | Sim         | Nome do Correspondente Bancário.                           |
-| groupName              | string | Não         | Nome do conglomerado ao qual pertence o agente bancário.   |
-| cnpjNumber             | string | Sim         | CNPJ do Correspondente.                                    |
+| corporationName        | string | Sim         | Nome do Correspondente Bancário.                          |
+| groupName              | string | Não         | Nome do conglomerado ao qual pertence o agente bancário.  |
+| cnpjNumber             | string | Sim         | CNPJ do Correspondente.                                   |
 
 ## BankingAgentsPostalAddress
 <a id="schemaBankingAgentsPostalAddress"></a>
@@ -268,13 +268,13 @@
 }
 ```
 
-|Nome|Tipo|Obrigatório|Descrição|
-|:---|:---|:---|:---|:---|
-|address|string|Sim|Informações referente ao endereço do correspondente bancário.|
-|districtName|string|Sim|Bairro.|
-|townName|string|Sim|Cidade.|
-|countrySubDivision|string|Sim|Estado.|
-|postCode|string|Sim|CEP.|
+| Nome               | Tipo   | Obrigatório |Descrição|
+|:---                |:---    |:---         |:---                                                           |
+| address            | string | Sim         | informação referente ao endereço do Correspondente Bancário informado: Tipo de logradouro + Nome do logradouro + Número do Logradouro (se não existir usar ' s/n') + complemento (se houver)  |
+| districtName       | string | Sim         | Bairro.                                                       |
+| townName           | string | Sim         | Cidade.                                                       |
+| countrySubDivision | string | Sim         | Estado.                                                       |
+| postCode           | string | Sim         | CEP.                                                          |                                                       
 
 ## BankingAgentsServices
 <a id="schemaBankingAgentsServices"></a>

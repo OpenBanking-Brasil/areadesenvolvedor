@@ -286,11 +286,11 @@
 ### Enum BranchIdentificationType 
 <a id="schemaEnumBranchIdentificationType"></a>
 
-| Propriedade  | Código                         | Definição                            |
-|:------------ |:------------------------------ |:-----------------------------------  |
-| type         | AGENCIA                        | Agências.                             |
-| type         | POSTO_ATENDIMENTO              | Postos de atendimento.                |
-| type         | POSTO_ATENDIMENTO_ELETRONICO   | Postos de atendimento eletrônico.     |
+| Propriedade  | Código                         | Definição                           |
+|:------------ |:------------------------------ |:----------------------------------- |
+| type         | AGENCIA                        | Agências.                           |
+| type         | POSTO_ATENDIMENTO              | Postos de atendimento.              |
+| type         | POSTO_ATENDIMENTO_ELETRONICO   | Postos de atendimento eletrônico.   |
 
 ## BranchPostalAddress 
 <a id="schemaBranchPostalAddress"></a>
@@ -306,12 +306,12 @@
 ```
 
 |Nome|Tipo|Obrigatório|Descrição|
-|:---|:---|:---|:---|:---|
-|address|string|Sim|informação referente ao endereço da dependência informada.|
-|districtName|string|Sim|Bairro.|
-|townName|string|Sim|Cidade.|
-|countrySubDivision|string|Sim|Estado.|
-|postCode|string|Sim|CEP.|
+|:---|:---|:---|:---|
+|address|string|Sim|informação referente ao endereço do Correspondente Bancário informado: Tipo de logradouro + Nome do logradouro + Número do Logradouro (se não existir usar ' s/n') + complemento (se houver)|
+|districtName|string|Sim|Bairro|
+|townName|string|Sim|Cidade|
+|countrySubDivision|string|Sim|Estado|
+|postCode|string|Sim|CEP|
 
 ## BranchAvailability 
 <a id="schemaBranchAvailability"></a>
