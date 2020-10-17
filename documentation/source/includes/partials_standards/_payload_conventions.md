@@ -113,4 +113,4 @@ Uma *string* vazia (`“”`) não será considerada equivalente a `null`.
 
 O valor booleano `false` não será considerado equivalente a `null`. Os atributos booleanos opcionais, por definição, possuirão três valores possíveis: verdadeiro (`true`), falso (`false`) e indeterminado (`null`).
 
-Na situação onde o campo a ser informado no payload seja obrigatório e a Instituição, seja consumidora no envio ou transmissora no retorno, não a possuir, deve-se implementar o valor padronizado: “NA” - Não se Aplica.
+Na situação onde o campo a ser informado no payload seja obrigatório e a Instituição, seja consumidora no envio ou transmissora no retorno, não a possuir, deve-se implementar o valor padronizado: “NA” - Não se Aplica, com exceção dos campos declarados como ENUM que deverão ser sempre preenchidos com os valores válidos para o ENUM correspondente.
