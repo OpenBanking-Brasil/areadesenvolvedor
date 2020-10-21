@@ -19,18 +19,33 @@ req.open("GET", "https://api.banco.com.br/open-banking/discovery/v1/status", tru
 req.send();
 ```
 
-> O comando acima retorna uma estrutura json como exemplificada abaixo, e no caso em que o status devolvido seja PARTIAL_FAILURE, o array unavailableEndpoints deve conter a lista de endpoints indisponíveis:
+> O comando acima retorna uma estrutura json como exemplificada abaixo, e no caso em que o status devolvido seja OK, o array unavailableEndpoints deve estar vazio:
 
 ```json
 {
   "data": {
-    "status": "OK",
-    "explanation": "Retorno com Sucesso",
-    "detectionTime": "2020-07-21T08:30:00Z",
-    "expectedResolutionTime": "2020-07-21T08:30:00Z",
-    "updateTime": "2020-01-02T01:00:00Z",
-    "unavailableEndpoints": []
-  },
+    "status":[
+      {
+         "code":"SCHEDULED_OUTAGE",
+         "explanation":"Manutenção Planejada",
+         "detectionTime":"2020-01-01T01:00:00Z",
+         "expectedResolutionTime":"2020-01-01T01:00:00Z",
+         "updateTime":"2020-01-02T01:00:00Z",
+         "unavailableEndpoints":[
+            "https://api.banco.com.br/open-banking/channels/v1/branches"
+         ]
+      },
+      {
+         "code":"PARTIAL_FAILURE",
+         "explanation":"Falha na execução do serviço",
+         "detectionTime":"2020-01-01T01:00:00Z",
+         "expectedResolutionTime":"2020-01-01T01:00:00Z",
+         "updateTime":"2020-01-02T01:00:00Z",
+         "unavailableEndpoints":[
+            "https://api.banco.com.br/open-banking/channels/v1/electronic-channels"
+         ]
+      }
+   ],
   "links": {
     "self": "https://api.banco.com.br/open-banking/discovery/v1/status"
   },
