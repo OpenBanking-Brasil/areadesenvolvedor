@@ -27,7 +27,6 @@ Para atender tanto as demandas de quem deseja estender as APIs (participantes) q
 <li>BNB - Banco do Nordeste do Brasil</li>
 <li>BND - BNDES</li>
 <li>CTB - Citibank</li>
-<li>CSS - Credit Suisse</li>
 <li>SFA - Safra</li>
 <li>VRT - Votorantim</li>
 </ul>
