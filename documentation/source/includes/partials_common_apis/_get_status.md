@@ -26,9 +26,9 @@ req.send();
   "data": {
     "status": "OK",
     "explanation": "Retorno com Sucesso",
-    "detectionTime": "2020-01-01T01:00:00+00:00",
-    "expectedResolutionTime": "2020-01-01T01:00:00+00:00",
-    "updateTime": "2020-01-02T01:00:00+00:00",
+    "detectionTime": "2020-07-21T08:30:00Z",
+    "expectedResolutionTime": "2020-07-21T08:30:00Z",
+    "updateTime": "2020-01-02T01:00:00Z",
     "unavailableEndpoints": []
   },
   "links": {

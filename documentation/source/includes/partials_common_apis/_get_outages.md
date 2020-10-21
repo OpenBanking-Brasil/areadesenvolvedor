@@ -25,7 +25,7 @@ req.send();
   "data": {
     "outages": [
       {
-        "outageTime": "2020-01-01T01:00:00+00:00",
+        "outageTime": "2020-07-21T08:30:00Z",
         "duration": "PT2H30M",
         "isPartial": false,
         "explanation": "Atualização do API Gateway",
