@@ -301,7 +301,7 @@
 
 |Nome|Tipo|Obrigatório|Descrição|
 |:---|:---|:---|:---|
-|address|string|Sim|informação referente ao endereço da Depêndência Bancária informada: Tipo de logradouro + Nome do logradouro + Número do Logradouro (se não existir usar ' s/n') + complemento (se houver)|
+|address|string|Sim|Informação referente ao endereço da Depêndência Bancária informada: Tipo de logradouro + Nome do logradouro + Número do Logradouro (se não existir usar ' s/n') + complemento (se houver)|
 |districtName|string|Sim|Bairro|
 |townName|string|Sim|Cidade|
 |countrySubDivision|string|Sim|Estado|
