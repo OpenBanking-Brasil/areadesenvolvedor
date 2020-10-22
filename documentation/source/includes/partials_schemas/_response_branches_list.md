@@ -46,7 +46,7 @@
                     }
                   ]
                 },
-                "services": {
+                "service": {
                   "codes": [
                     "string"
                   ],
@@ -101,15 +101,13 @@
             "checkDigit": "string",
             "name": "string"
           },
-          "postalAddresses": [
-            {
-              "address": "string",
-              "districtName": "string",
-              "townName": "string",
-              "countrySubDivision": "string",
-              "postCode": "string"
-            }
-          ],
+          "postalAddress": {
+            "address": "string",
+            "districtName": "string",
+            "townName": "string",
+            "countrySubDivision": "string",
+            "postCode": "string"
+          },
           "availability": {
             "standard": [
               {
@@ -129,7 +127,7 @@
               }
             ]
           },
-          "services": {
+          "service": {
             "codes": [
               "string"
             ],
@@ -163,15 +161,13 @@
         "checkDigit": "string",
         "name": "string"
       },
-      "postalAddresses": [
-        {
-          "address": "string",
-          "districtName": "string",
-          "townName": "string",
-          "countrySubDivision": "string",
-          "postCode": "string"
-        }
-      ],
+      "postalAddress": {
+        "address": "string",
+        "districtName": "string",
+        "townName": "string",
+        "countrySubDivision": "string",
+        "postCode": "string"
+      },
       "availability": {
         "standard": [
           {
@@ -191,7 +187,7 @@
           }
         ]
       },
-      "services": {
+      "service": {
         "codes": [
           "string"
         ],
@@ -220,15 +216,13 @@
     "checkDigit": "string",
     "name": "string"
   },
-  "postalAddresses": [
-    {
-      "address": "string",
-      "districtName": "string",
-      "townName": "string",
-      "countrySubDivision": "string",
-      "postCode": "string"
-    }
-  ],
+  "postalAddress": {
+    "address": "string",
+    "districtName": "string",
+    "townName": "string",
+    "countrySubDivision": "string",
+    "postCode": "string"
+  },
   "availability": {
     "standard": [
       {
@@ -248,7 +242,7 @@
       }
     ]
   },
-  "services": {
+  "service": {
     "codes": [
       "string"
     ],
@@ -260,9 +254,9 @@
 |Nome|Tipo|Obrigatório|Descrição|
 |---|---|---|---|---|
 |identification|[BranchIdentification](#schemaBranchIdentification)|Sim|Dados de identificação na dependência.|
-|postalAddresses|[BranchPostalAddress](#schemaBranchPostalAddress)|Sim|Endereço na dependência.|
+|postalAddress|[BranchPostalAddress](#schemaBranchPostalAddress)|Sim|Endereço na dependência.|
 |availability|[BranchAvailability](#schemaBranchAvailability)|Sim|Dias e horários de funcionamento na dependência.|
-|services|[BranchServices](#schemaBranchServices)|Sim|Serviços fornecidos na dependência.|
+|service|[BranchServices](#schemaBranchServices)|Sim|Serviços fornecidos na dependência.|
 
 ## BranchIdentification 
 <a id="schemaBranchIdentification"></a>

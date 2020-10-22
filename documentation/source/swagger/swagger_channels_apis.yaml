@@ -220,25 +220,25 @@ components:
                       townName: 'Marília'
                       countrySubDivision: 'SP'
                       postCode: '17500001'
-                      availability:
-                        standards:
-                          - weekday: SEGUNDA_FEIRA
-                            openingTime: '10:00:57Z'
-                            closingTime: '16:00:57Z'
-                          - weekday: TERCA_FEIRA
-                            openingTime: '10:00:57Z'
-                            closingTime: '16:00:57Z'
-                          - weekday: QUARTA_FEIRA
-                            openingTime: '10:00:57Z'
-                            closingTime: '16:00:57Z'
-                          - weekday: QUINTA_FEIRA
-                            openingTime: '10:00:57Z'
-                            closingTime: '16:00:57Z'
-                          - weekday: SEXTA_FEIRA
-                            openingTime: '10:00:57Z'
-                            closingTime: '16:00:57Z'
-                        exception: 'Exceto feriados municipais, estaduais e nacionais'
-                        allowPublicAccess: true
+                    availability:
+                      standards:
+                        - weekday: SEGUNDA_FEIRA
+                          openingTime: '10:00:57Z'
+                          closingTime: '16:00:57Z'
+                        - weekday: TERCA_FEIRA
+                          openingTime: '10:00:57Z'
+                          closingTime: '16:00:57Z'
+                        - weekday: QUARTA_FEIRA
+                          openingTime: '10:00:57Z'
+                          closingTime: '16:00:57Z'
+                        - weekday: QUINTA_FEIRA
+                          openingTime: '10:00:57Z'
+                          closingTime: '16:00:57Z'
+                        - weekday: SEXTA_FEIRA
+                          openingTime: '10:00:57Z'
+                          closingTime: '16:00:57Z'
+                      exception: 'Exceto feriados municipais, estaduais e nacionais'
+                      allowPublicAccess: true
                       phones:
                         - type: FIXO
                           countryCode: '55'
@@ -248,18 +248,18 @@ components:
                           countryCode: '55'
                           areaCode: '14'
                           number: '997865532'
-                      service:
-                        codes:
-                          - ABERTURA_CONTAS
-                          - RECEBIMENTOS_PAGAMENTOS_TRANSFERENCIAS_ELETRONICAS
-                          - RECEBIMENTOS_PAGAMENTOS_QUALQUER_NATUREZA
-                          - OPERACOES_CREDITO
-                          - CARTAO_CREDITO
-                          - OPERACOES_CAMBIO
-                          - INVESTIMENTOS
-                          - SEGUROS
-                          - OUTROS
-                        additionalInfo: "Renegociação, Previdência Privada" 
+                    service:
+                      codes:
+                        - ABERTURA_CONTAS
+                        - RECEBIMENTOS_PAGAMENTOS_TRANSFERENCIAS_ELETRONICAS
+                        - RECEBIMENTOS_PAGAMENTOS_QUALQUER_NATUREZA
+                        - OPERACOES_CREDITO
+                        - CARTAO_CREDITO
+                        - OPERACOES_CAMBIO
+                        - INVESTIMENTOS
+                        - SEGUROS
+                        - OUTROS
+                      additionalInfo: "Renegociação, Previdência Privada" 
         links:
           self: 'https://api.banco.com.br/open-banking/channels/v1/branches'
           first: 'https://api.banco.com.br/open-banking/channels/v1/branches'
@@ -406,8 +406,10 @@ components:
       properties:
         identification:
           $ref: '#/components/schemas/BankingAgentIdentification'
-        postalAddress:
-          $ref: '#/components/schemas/PostalAddresses'
+        postalAddresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/PostalAddress'
         services:
           $ref: '#/components/schemas/BankingAgentServices'
     BankingAgentIdentification:
@@ -459,14 +461,14 @@ components:
       type: object
       required:
         - identification
-        - postalAddresses
-        - services
+        - postalAddress
         - availability
+        - service
       properties:
         identification:
           $ref: '#/components/schemas/BranchIdentification'
         postalAddresses:
-          $ref: '#/components/schemas/PostalAddresses'
+          $ref: '#/components/schemas/PostalAddress'
         availability:
           $ref: '#/components/schemas/BranchAvailability'
         phones:
@@ -699,43 +701,37 @@ components:
           pattern: '^([0-9]{8,11})$'
           example: "35721199"
           description: "Número de telefone da dependência - se houver"
-    PostalAddresses:
-      type: array
-      items:
-        type: object
-        properties:
-          address:
-            type: string
-            description: |
-              Deverá trazer toda a informação referente ao endereço da dependência informada:
-              Tipo de logradouro + Nome do logradouro + Número do Logradouro (se não existir usar ' s/n') + complemento (se houver), como, p.ex.:
-              'R Diamatina, 59, bloco 35, fundos'
-              'Praça da Boa Vontade s/n'
-            maxLength: 150
-          districtName:
-            type: string
-            description: "Bairro é uma comunidade ou região localizada em uma cidade ou município de acordo com as suas subdivisões geográficas. p.ex: 'Paraíso'"
-            maxLength: 50
-          townName:
-            type: string
-            description: "Localidade: O nome da localidade corresponde à designação da cidade ou município no qual o endereço está localizado. p.ex. 'São Paulo'"
-            maxLength: 50
-          countrySubDivision:
-            type: string
-            description: "Enumeração referente a cada sigla da unidade da federação que identifica o estado ou o distrito federal, no qual o endereço está localizado. p.ex. 'AC'. São consideradas apenas as siglas para os estados brasileiros"
-            enum: [AC,AL,AP,AM,BA,CE,DF,ES,GO,MA,MT,MS,MG,PA,PB,PR,PE,PI,RJ,RN,RS,RO,RR,SC,SP,SE,TO]
-            maxLength: 2
-          postCode:
-            type: string
-            description: "Código de Endereçamento Postal: Composto por um conjunto numérico de oito dígitos, o objetivo principal do CEP é orientar e acelerar o encaminhamento, o tratamento e a entrega de objetos postados nos Correios, por meio da sua atribuição a localidades, logradouros, unidades dos Correios, serviços, órgãos públicos, empresas e edifícios. p.ex. '01311-000'"
-            pattern: ^\d{5}-\d{3}$
-            maxLength: 9
-        required: 
-          - districtName
-          - townName
-          - countrySubDivision
-          - postCode
-          - address
+    PostalAddress:
+      type: object
+      properties:
+        address:
+          type: string
+          description: "Deverá trazer toda a informação referente ao endereço da dependência informada: Tipo de logradouro + Nome do logradouro + Número do Logradouro (se não existir usar ' s/n') + complemento (se houver), como, p.ex.: 'R Diamatina, 59, bloco 35, fundos' 'Praça da Boa Vontade s/n'"
+          maxLength: 150
+        districtName:
+          type: string
+          description: "Bairro é uma comunidade ou região localizada em uma cidade ou município de acordo com as suas subdivisões geográficas. p.ex: 'Paraíso'"
+          maxLength: 50
+        townName:
+          type: string
+          description: "Localidade: O nome da localidade corresponde à designação da cidade ou município no qual o endereço está localizado. p.ex. 'São Paulo'"
+          maxLength: 50
+        countrySubDivision:
+          type: string
+          description: "Enumeração referente a cada sigla da unidade da federação que identifica o estado ou o distrito federal, no qual o endereço está localizado. p.ex. 'AC'. São consideradas apenas as siglas para os estados brasileiros"
+          enum: [AC,AL,AP,AM,BA,CE,DF,ES,GO,MA,MT,MS,MG,PA,PB,PR,PE,PI,RJ,RN,RS,RO,RR,SC,SP,SE,TO]
+          maxLength: 2
+        postCode:
+          type: string
+          description: "Código de Endereçamento Postal: Composto por um conjunto numérico de oito dígitos, o objetivo principal do CEP é orientar e acelerar o encaminhamento, o tratamento e a entrega de objetos postados nos Correios, por meio da sua atribuição a localidades, logradouros, unidades dos Correios, serviços, órgãos públicos, empresas e edifícios. p.ex. '01311-000'"
+          pattern: ^\d{5}-\d{3}$
+          maxLength: 9
+      required: 
+        - districtName
+        - townName
+        - countrySubDivision
+        - postCode
+        - address
   ####################
   ## Phone ElectronicChannels ##
   ####################
