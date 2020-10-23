@@ -36,16 +36,16 @@
                     }
                   ],
                   "exception": "string",
-                  "allowPublicAccess": "string",
-                  "phones": [
-                    {
-                      "type": "string",
-                      "countryCode" : "string",
-                      "areaCode": "string",
-                      "number": "string"
-                    }
-                  ]
+                  "allowPublicAccess": "string"
                 },
+                "phones": [
+                  {
+                    "type": "string",
+                    "countryCode" : "string",
+                    "areaCode": "string",
+                    "number": "string"
+                  }
+                ],
                 "service": {
                   "codes": [
                     "string"
@@ -117,16 +117,16 @@
               }
             ],
             "exceptionAvailability": "string",
-            "allowPublicAccess": "string",
-            "phones": [
-              {
-                "type": "string",
-                "countryCode" : "string",
-                "areaCode": "string",
-                "number": "string"
-              }
-            ]
+            "allowPublicAccess": "string"
           },
+          "phones": [
+            {
+              "type": "string",
+              "countryCode" : "string",
+              "areaCode": "string",
+              "number": "string"
+            }
+          ],
           "service": {
             "codes": [
               "string"
@@ -177,16 +177,16 @@
           }
         ],
         "exceptionAvailability": "string",
-        "allowPublicAccess": "string",
-        "phones": [
-          {
-            "type": "string",
-            "countryCode" : "string",
-            "areaCode": "string",
-            "number": "string"
-          }
-        ]
+        "allowPublicAccess": "string"
       },
+      "phones": [
+        {
+          "type": "string",
+          "countryCode" : "string",
+          "areaCode": "string",
+          "number": "string"
+        }
+      ],
       "service": {
         "codes": [
           "string"
@@ -232,16 +232,16 @@
       }
     ],
     "exceptionAvailability": "string",
-    "allowPublicAccess": "string",
-    "phones": [
-      {
-        "type": "string",
-        "countryCode" : "string",
-        "areaCode": "string",
-        "number": "string"
-      }
-    ]
+    "allowPublicAccess": "string"
   },
+  "phones": [
+    {
+      "type": "string",
+      "countryCode" : "string",
+      "areaCode": "string",
+      "number": "string"
+    }
+  ],
   "service": {
     "codes": [
       "string"
@@ -256,6 +256,7 @@
 |identification|[BranchIdentification](#schemaBranchIdentification)|Sim|Dados de identificação na dependência.|
 |postalAddress|[BranchPostalAddress](#schemaBranchPostalAddress)|Sim|Endereço na dependência.|
 |availability|[BranchAvailability](#schemaBranchAvailability)|Sim|Dias e horários de funcionamento na dependência.|
+|phones|[BranchPhone](#schemaBranchPhone)|Não|Lista de telefones para contato com a dependência.|
 |service|[BranchServices](#schemaBranchServices)|Sim|Serviços fornecidos na dependência.|
 
 ## BranchIdentification 
