@@ -17,18 +17,18 @@ Para atender tanto as demandas de quem deseja estender as APIs (participantes) q
 
 >Cada participantes terá um ID que representa a sua instituição. Os participantes da atual versão estão listados abaixo:
 <ul>
-<li>BBR - Banco do Brasil</li>
-<li>BDC - Bradesco</li>
-<li>BTG - BTG Pactual</li>
-<li>CEF - Caixa Econônica Federal</li>
-<li>ITA - Itau</li>
-<li>STD - Santander</li>
+<li>BBAS - Banco do Brasil</li>
+<li>BBCD - Bradesco</li>
+<li>BTGP - BTG Pactual</li>
+<li>CAIX - Caixa Econônica Federal</li>
+<li>ITAU - Itau</li>
+<li>STDR - Santander</li>
 <li>BRGS - Banrisul</li>
-<li>BNB - Banco do Nordeste do Brasil</li>
-<li>BND - BNDES</li>
-<li>CTB - Citibank</li>
-<li>SFA - Safra</li>
-<li>VRT - Votorantim</li>
+<li>BNBR - Banco do Nordeste do Brasil</li>
+<li>BNDS - BNDES</li>
+<li>CITI - Citibank</li>
+<li>SAFR - Safra</li>
+<li>BABV - Votorantim</li>
 </ul>
 
 Participantes que desejam estender os padrões devem adicionar seu prefixo para identificar todas as extensões.
