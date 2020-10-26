@@ -12,11 +12,11 @@ Os componentes desta estrutura de URI estão descritos abaixo:
 * **Recurso**: O recurso a ser consumido dentro de uma API. Utilizando como exemplo a API `channels`, a mesma possui 4 recursos:
 	- banking-agents
     - branches
-    - eletronic-channels
+    - electronic-channels
 	- phone-channels
 
 A versão minor será repassada apenas no *header* do *payload* de resposta, orientando a instituição receptora sobre quais serão os dados no retorno.	
 		
-Como exemplo, para realizar o consumo do método `eletronic-channels` da API `channels` na versão `1`, a URI ficaria com a seguinte estrutura:  
+Como exemplo, para realizar o consumo do método `electronic-channels` da API `channels` na versão `1`, a URI ficaria com a seguinte estrutura:  
 
-`<host>/open-banking/channels/v1/eletronic-channels`
+`<host>/open-banking/channels/v1/electronic-channels`

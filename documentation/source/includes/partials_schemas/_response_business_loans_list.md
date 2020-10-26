@@ -203,12 +203,12 @@
 }
 ```
 
-|     Nome        |  Tipo                                                         | Obrigatório  |                            Definição                                 |
-|:------------    |:---------------------------------                             |:-----------  |:----------------------------------------------------                 |
-| name            | string                                                        | Sim          | Nome da Instituição, pertencente à marca, responsável pela comercialização das modalidades de Empréstimos para Pessoas Jurídicas consultadas.  |
-| cnpjNumber      | string                                                        | Sim          | Número do CNPJ do conglomerado                                       |
-| urlComplementaryList  | [URIString](#commonFieldURIString)                          | Sim          | URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. |
-| businessLoans   | [BusinessLoan](#schemaBusinessLoan)                       | Sim          | Empréstimos Pessoas Jurídicas                                        |
+|     Nome             |  Tipo                               | Obrigatório |                            Definição                                                                                                                                                                                                 |
+|:-----------------    |:---------------------------------   |:----------- |:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| name                 | string                              | Sim         | Nome da Instituição, pertencente à marca, responsável pela comercialização das modalidades de Empréstimos para Pessoas Jurídicas consultadas.                                                                                        |
+| cnpjNumber           | string                              | Sim         | O responsável pela comercialização das modalidades de Empréstimos para Pessoas Jurídicas consultadas - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. Deve-se ter apenas os números do CNPJ, sem máscara. |
+| urlComplementaryList | [URIString](#commonFieldURIString)  | Sim         | URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços.                                              |
+| businessLoans        | [BusinessLoan](#schemaBusinessLoan) | Sim         | Empréstimos Pessoas Jurídicas                                                                                                                                                                                                        |
 
 ## BusinessLoan
 <a id="schemaBusinessLoan"></a>

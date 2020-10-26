@@ -191,12 +191,12 @@
 }
 ```
 
-|     Nome                  |  Tipo                                                         | Obrigatório    |                            Definição                       |
-|:------------              |:---------------------------------                             |:-------------- |:----------------------------------------------------       |
-| name                      | string                                                        | Sim            | Nome do conglomerado responsável  |
-| cnpjNumber                | string                                                        | Sim            | CNPJ da instituição responsável |
-| urlComplementaryList | [[URIString](#commonFieldURIString)]                               | Sim            | URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. |
-| personalInvoiceFinancings  | [[PersonalInvoiceFinancings](#schemaPersonalInvoiceFinancings)] | Sim            | Lista  de antecipação de recebíveis                  |
+|     Nome                  |  Tipo                                                           | Obrigatório |                            Definição                       |
+|:------------              |:-----------------------------------                             |:----------- |:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| name                      | string                                                          | Sim         | Nome da Instituição, pertencente à marca, responsável pela comercialização das modalidades de Financiamentos para Pessoas Físicas consultadas. p.ex.'Empresa da Organização A'.         |
+| cnpjNumber                | string                                                          | Sim         | CNPJ da instituição responsável                                                                                                                                                         |
+| urlComplementaryList      | [[URIString](#commonFieldURIString)]                            | Sim         | URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. |
+| personalInvoiceFinancings | [[PersonalInvoiceFinancings](#schemaPersonalInvoiceFinancings)] | Sim         | Lista  de antecipação de recebíveis                                                                                                                                                     |
 
 ## PersonalInvoiceFinancings
 <a id="schemaPersonalInvoiceFinancings"></a>

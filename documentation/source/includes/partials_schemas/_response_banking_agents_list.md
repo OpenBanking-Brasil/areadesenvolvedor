@@ -157,11 +157,11 @@
 }
 ```
 
-|     Nome        |  Tipo                                                         | Obrigatório  |                            Definição                                 |
-|:------------    |:---------------------------------                             |:-----------  |:----------------------------------------------------                 |
-| name            | string                                                        | Sim          | Nome do conglomerado responsável pela contratação do Correspondente.  |
-| cnpjNumber      | string                                                        | Sim          | Número do CNPJ do conglomerado.                                       |
-| contractors     | [[BankingAgentsContractor](#schemaBankingAgentsContractor)]   | Sim          | Lista de contratantes.                                                |
+|     Nome    |  Tipo                                                       | Obrigatório |                            Definição                                                                                                  |
+|:----------- |:---------------------------------                           |:----------- |:------------------------------------------------------------------------------------------------------------------------------------- |
+| name        | string                                                      | Sim         | Nome da Instituição, pertencente à Marca, responsável pela Dependência. p. ex. 'Empresa da Organização A'                             |
+| cnpjNumber  | string                                                      | Sim         | Número do CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. Deve-se ter apenas os números do CNPJ, sem máscara. |
+| contractors | [[BankingAgentsContractor](#schemaBankingAgentsContractor)] | Sim         | Lista de contratantes.                                                                                                                |
 
 
 ## BankingAgentsContractor

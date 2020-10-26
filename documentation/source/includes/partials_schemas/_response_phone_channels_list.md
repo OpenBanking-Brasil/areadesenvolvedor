@@ -136,12 +136,12 @@
 }
 ```
 
-|     Nome                |  Tipo                                           | Obrigatório    |                            Definição                       |
-|:------------            |:---------------------------------               |:-------------- |:----------------------------------------------------       |
-| name                    | string                                          | Sim            | Nome do conglomerado responsável pelo canal de atendimento telefônico. |
-| cnpjNumber              | string                                          | Sim            | CNPJ da instituição  responsável pelo canal de atendimento telefônico - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica.|
-| urlComplementaryList    | string                                          | Não            | URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber |
-| phoneChannels            | [[PhoneChannels](#schemaPhoneChannels)]         | Sim            | Lista de canais de atendimento telefônico.                  |
+|     Nome             |  Tipo                                   | Obrigatório |                            Definição                                                                                                             |
+|:------------         |:---------------------------------       |:----------- |:------------------------------------------------------------------------------------------------------------------------------------------------ |
+| name                 | string                                  | Sim         | Nome da Instituição, pertencente à organização, responsável pelo Canal Telefônico. Ex. 'Empresa da Organização A'.                               |
+| cnpjNumber           | string                                  | Sim         | CNPJ da instituição  responsável pelo canal de atendimento telefônico - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica.|
+| urlComplementaryList | string                                  | Não         | URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber                                               |
+| phoneChannels        | [[PhoneChannels](#schemaPhoneChannels)] | Sim         | Lista de canais de atendimento telefônico.                                                                                                       |
 
 ## PhoneChannels
 <a id="schemaPhoneChannels"></a>
