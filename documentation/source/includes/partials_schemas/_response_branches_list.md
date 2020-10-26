@@ -109,14 +109,14 @@
             "postCode": "string"
           },
           "availability": {
-            "standard": [
+            "standards": [
               {
                 "weekday": "string",
                 "openingTime": "string",
                 "closingTime": "string"
               }
             ],
-            "exceptionAvailability": "string",
+            "exception": "string",
             "allowPublicAccess": "string"
           },
           "phones": [
@@ -169,14 +169,14 @@
         "postCode": "string"
       },
       "availability": {
-        "standard": [
+        "standards": [
           {
             "weekday": "string",
             "openingTime": "string",
             "closingTime": "string"
           }
         ],
-        "exceptionAvailability": "string",
+        "exception": "string",
         "allowPublicAccess": "string"
       },
       "phones": [
@@ -224,14 +224,14 @@
     "postCode": "string"
   },
   "availability": {
-    "standard": [
+    "standards": [
       {
         "weekday": "string",
         "openingTime": "string",
         "closingTime": "string"
       }
     ],
-    "exceptionAvailability": "string",
+    "exception": "string",
     "allowPublicAccess": "string"
   },
   "phones": [
@@ -313,35 +313,26 @@
 
 ```json
 {
-  "standard": [
+  "standards": [
     {
       "weekday": "string",
       "openingTime": "string",
       "closingTime": "string"
     }
   ],
-  "exceptionAvailability": "string",
-  "allowPublicAccess": "string",
-  "phones": [
-    {
-      "type": "string",
-      "countryCode" : "string",
-      "areaCode": "string",
-      "number": "string"
-    }
-  ]
+  "exception": "string",
+  "allowPublicAccess": "string"
 }
 ```
 
-| Nome                       | Tipo                               | Obrigatório | Descrição                                                       |
-|:------------               |:------------------                 |:----------  |:----------------------------                                    |
-| standard                   | Array                              | Sim         | Lista com os dias da semana.                                     |
-| » weekday                  | [[Enum WeekDay](#schemaWeekDay)]                             | Sim         | Dia da semana.                                                   |
-| » openingTime              | [[TimeString](#commonFieldTimeString)]   | Sim         | Horário padrão de início de atendimento da Dependência.                              |
-| » closingTime              | [[TimeString](#commonFieldTimeString)]   | Sim         | Horário padrão de encerramento de atendimento da Dependência.                         |
-| exceptionAvailability      | string                             | Não         | Informações sobre as exceções de abertura.                       |
-| allowPublicAccess          | string                             | Sim         | Define se a dependência possui acesso ao público. True ou False. |
-| phones                     | [[BranchPhone(#schemaBranchPhone)]]| Não         | Lista de telefones para contato com a dependência.               | 
+| Nome              | Tipo                                   | Obrigatório | Descrição                                                        |
+|:------------      |:------------------                     |:----------  |:----------------------------                                     |
+| standards         | Array                                  | Sim         | Lista com os dias da semana.                                     |
+| weekday           | [[Enum WeekDay](#schemaWeekDay)]       | Sim         | Dia da semana.                                                   |
+| openingTime       | [[TimeString](#commonFieldTimeString)] | Sim         | Horário padrão de início de atendimento da Dependência.          |
+| closingTime       | [[TimeString](#commonFieldTimeString)] | Sim         | Horário padrão de encerramento de atendimento da Dependência.    |
+| exception         | string                                 | Não         | Informações sobre as exceções de abertura.                       |
+| allowPublicAccess | string                                 | Sim         | Define se a dependência possui acesso ao público. True ou False. |
 
 ## Enum WeekDay
 <a id="schemaWeekDay"></a>
