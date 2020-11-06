@@ -206,13 +206,24 @@
 
 ### Properties
 
-|Nome          |Tipo                                                                                   |Obrigatório|Description                                                      |
-|:------------ |:------------------------------------------------------------------------------------- |:--------- |:--------------------------------------------------------------- |
-|identification|object                                                                                 |Não        |                                                                 |
-|» ownerName   |string                                                                                 |Não        |Nome do proprietário do terminal de Autoatendimento Compartilhado|
-|address       |[PostalAddress](#schemaPostalAddress)                                                  |Não        |                                                                 |
-|availability  |[Availability](#schemaAvailability)                                                    |Não        |                                                                 |
-|services      |[[SharedAutomatedTellerMachinesServices](#schemaSharedAutomatedTellerMachinesServices)]|Não        |                                                                 |
+|Nome          |Tipo                                                                                             |Obrigatório|Description                                                      |
+|:------------ |:----------------------------------------------------------------------------------------------- |:--------- |:--------------------------------------------------------------- |
+|identification|[SharedAutomatedTellerMachinesIdentification](#schemaSharedAutomatedTellerMachinesIdentification)|Não        |                                                                 |
+|address       |[PostalAddress](#schemaPostalAddress)                                                            |Não        |                                                                 |
+|availability  |[Availability](#schemaAvailability)                                                              |Não        |                                                                 |
+|services      |[[SharedAutomatedTellerMachinesServices](#schemaSharedAutomatedTellerMachinesServices)]          |Não        |                                                                 |
+
+## SharedAutomatedTellerMachinesIdentification
+<a id="schemaSharedAutomatedTellerMachinesIdentification"></a>
+
+```json
+{
+  "ownerName": "string"
+}
+```
+|Nome     |Tipo  |Obrigatório|Descrição                                                        |
+|:------- |:---- |:--------- |:--------------------------------------------------------------- |
+|ownerName|string|Não        |Nome do proprietário do terminal de Autoatendimento Compartilhado|
 
 ## SharedAutomatedTellerMachinesServices
 <a id="schemaSharedAutomatedTellerMachinesServices"></a>
