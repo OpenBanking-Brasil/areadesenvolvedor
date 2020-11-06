@@ -17,14 +17,6 @@
 | totalRecords      | integer       | Número total de registros no resultado | Mandatório      |           |
 | totalPages        | integer       | Número total de páginas no resultado   | Mandatório      |           |
 
-## MetaPaginated
-<a id="schemaMetaPaginated"></a>
-
-|     Nome          |  Tipo         | Definição                              | Mandatoriedade  | Restrição |
-|:------------      |:--------------|:-------------------------------------- |:--------------  |:--------- |
-| totalRecords      | integer       | Número total de registros no resultado. | Mandatório      |           |
-| totalPages        | integer       | Número total de páginas no resultado.   | Mandatório      |           |
-
 ## Enum PriceInterval
 <a id="schemaPriceInterval"></a>
 
