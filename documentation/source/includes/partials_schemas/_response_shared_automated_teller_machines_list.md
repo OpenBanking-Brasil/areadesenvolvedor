@@ -64,8 +64,8 @@
 |:----- |:----------------------------------------------------------------------------- |---------- |------------------------------------------ |
 |data   |object                                                                         |Sim        |                                           |
 |» brand|[SharedAutomatedTellerMachinesBrand](#schemaSharedAutomatedTellerMachinesBrand)|Sim        |Nome da marca selecionada pela Organização.|
-|links  |[Links](#schemalinks)                                                          |Sim        |                                           |
-|meta   |[Meta](#schemameta)                                                            |Sim        |                                           |
+|links  |[Links](#schemaLinksPaginated)                                                 |Sim        |                                           |
+|meta   |[Meta](#schemaMetaPaginated)                                                   |Sim        |                                           |
 
 
 ## SharedAutomatedTellerMachinesBrand
@@ -166,7 +166,7 @@
 
 |Nome                         |Tipo                                                                   |Required|Description|
 |:--------------------------- |:--------------------------------------------------------------------- |:------ |:--------- |
-|sharedAutomatedTellerMachines|[[SharedAutomatedTellerMachines](#schemasharedautomatedtellermachines)]|Sim     |           |
+|sharedAutomatedTellerMachines|[[SharedAutomatedTellerMachines](#schemaSharedAutomatedTellerMachines)]|Sim     |           |
 
 ## SharedAutomatedTellerMachines
 <a id="schemaSharedAutomatedTellerMachines"></a>
@@ -210,7 +210,77 @@
 |:------------ |:------------------------------------------------------------------------------------- |:--------- |:--------------------------------------------------------------- |
 |identification|object                                                                                 |Não        |                                                                 |
 |» ownerName   |string                                                                                 |Não        |Nome do proprietário do terminal de Autoatendimento Compartilhado|
-|address       |[PostalAddress](#schemapostaladdress)                                                  |Não        |                                                                 |
-|availability  |[Availability](#schemaavailability)                                                    |Não        |                                                                 |
-|services      |[[SharedAutomatedTellerMachinesServices](#schemasharedautomatedtellermachinesservices)]|Não        |                                                                 |
+|address       |[PostalAddress](#schemaPostalAddress)                                                  |Não        |                                                                 |
+|availability  |[Availability](#schemaAvailability)                                                    |Não        |                                                                 |
+|services      |[[SharedAutomatedTellerMachinesServices](#schemaSharedAutomatedTellerMachinesServices)]|Não        |                                                                 |
 
+## SharedAutomatedTellerMachinesServices
+<a id="schemaSharedAutomatedTellerMachinesServices"></a>
+
+```json
+{
+  "name": "string",
+  "code": "string"
+}
+```
+
+|Nome|Tipo                                                                                                      |Obrigatório|Descrição                                  |
+|:-- |:-------------------------------------------------------------------------------------------------------- |:--------- |:----------------------------------------- |
+|name|[[Enum SharedAutomatedTellerMachinesServicesNames](#schemaEnumSharedAutomatedTellerMachinesServicesNames)]|Não        |Lista com os nomes de serviços prestados.  |
+|code|[[Enum BankingAgentsServicesCodes](#schemaEnumSharedAutomatedTellerMachinesServicesCodes)]                |Não        |Lista com os códigos de serviços prestados.|
+
+### Enum SharedAutomatedTellerMachinesServicesNames
+<a id="schemaEnumSharedAutomatedTellerMachinesServicesNames"></a>
+
+|Propriedade| Valor                                                                            |
+|:--------- |:-------------------------------------------------------------------------------- |
+| name      |ABERTURA_CONTAS_DEPOSITOS_OU_PAGAMENTO_PRE_PAGA                                   |
+| name      |SAQUE_MOEDA_EM_ESPECIE                                                            |
+| name      |RECEBIMENTOS_PAGAMENTOS_QUALQUER_NATUREZA                                         |
+| name      |TRANSFERENCIAS_ELETRONICAS_VISANDO_MOVIMENTACAO                                   |
+| name      |CONTAS_DEPOSITOS_OU_PAGAMENTO_TITULARIDADE_CLIENTES                               |
+| name      |CONSULTA_SALDOS_EXTRATOS_CONTAS_DEPOSITOS_E_CONTAS                                |
+| name      |PAGAMENTOS                                                                        |
+| name      |APLICACOES_RESGATES_INVESTIMENTOS                                                 |
+| name      |EXECUCAO_ATIVA_PASSIVA_ORDENS_PAGAMENTO_SOLICITACAO                               |
+| name      |CLIENTES_USUARIOS                                                                 |
+| name      |DEPOSITOS_MOEDA_ESPECIE_CHEQUE                                                    |
+| name      |OPERACOES_CREDITO_BEM_COMO_OUTROS_SERVICOS_PRESTADOS_ACOMPANHAMENTO_OPERACAO      |
+| name      |CARTAO_CREDITO                                                                    |
+| name      |SEGUROS                                                                           |
+| name      |OPERACOES_ARRENDAMENTO_MERCANTIL                                                  |
+| name      |ABERTURA_CONTA_PAGAMENTO_POS_PAGA                                                 |
+| name      |COMPRA_VENDA_MOEDA_ESTRANGEIRA_ESPECIE                                            |
+| name      |COMPRA_VENDA_CHEQUE_CHEQUE_VIAGEM_BEM_COMO_CARGA_MOEDA_ESTRANGEIRA_CARTAO_PRE_PAGO|
+| name      |COMPRA_VENDA_OURO                                                                 |
+| name      |OUTROS_PRODUTOS_SERVICOS                                                          |
+| name      |CANCELAMENTO                                                                      |
+| name      |INFORMACOES                                                                       |
+| name      |RECLAMACOES                                                                       |
+
+### Enum SharedAutomatedTellerMachinesServicesCodes
+<a id="schemaEnumSharedAutomatedTellerMachinesServicesCodes"></a>
+
+|Propriedade| Valor                                                                          |
+|:--------- |:------------------------------------------------------------------------------ |
+| code      |ABRE_CONTA_DEPOSITO_OU_PRE_PAGA                                                 |
+| code      |SAQUE_MOEDA_ESPECIE                                                             |
+| code      |RECEBE_PAGA_QUALQUER_NATUREZA                                                   |
+| code      |TRANSFERENCIAS_ELETRONICAS_MOVIMENTA_CONTAS_DEPOSITOS_OU_PAGA_TITULARES_CLIENTES|
+| code      |CONSULTA_SALDOS_EXTRATOS_CONTAS_DEPOSITOS                                       |
+| code      |PAGAMENTOS                                                                      |
+| code      |APLICA_RESGATA_INVESTIMENTOS                                                    |
+| code      |EXECUTA_ATIVA_PASSIVA_ORDENS_PAGAMENTO                                          |
+| code      |DEPOSITA_MOEDA_ESPECIE_CHEQUE                                                   |
+| code      |OPERA_CREDITO_OUTROS_SERVICOS_ACOMPANHA_OPERACAO                                |
+| code      |CARTAO_CREDITO                                                                  |
+| code      |SEGUROS                                                                         |
+| code      |OPERA_ARRENDAMENTO_MERCANTIL                                                    |
+| code      |ABERTURA_CONTA_PAGAMENTO_POS_PAGA                                               |
+| code      |COMPRA_VENDE_MOEDA_ESTRANGEIRA_ESPECIE                                          |
+| code      |COMPRA_VENDE_CHEQUE_CHEQUE_VIAGEM_CARGA_MOEDA_ESTRANGEIRA_CARTAO_PRE_PAGO       |
+| code      |COMPRA_VENDE_OURO                                                               |
+| code      |OUTROS_PRODUTOS_SERVICOS                                                        |
+| code      |CANCELAMENTO                                                                    |
+| code      |INFORMACOES                                                                     |
+| code      |RECLAMACOES                                                                     |

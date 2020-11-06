@@ -128,9 +128,54 @@
 }
 ```
 
-
-
 |     Nome     |  Tipo            | Obrigatório    |             Definição   |
 |:------------ |:------------------------------------------------ |:-------------- |:-----------------------------------------------------------------------------                                                                                                                                                                                                                                                                                   |
 | interval     | [Enum PriceInterval](#schemaPriceInterval)       | Sim            | Faixas para cobrança da taxa efetiva aplicada pela contratação do Empréstimo, no intervalo informado: 1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes |
 | rate        | [RateString](#commonFieldRateString)        | Sim            | Percentual que corresponde a mediana da taxa efetiva cobrada do cliente pela contratação do Empréstimo, no intervalo informado. p.ex. '9,8700%'. A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%) |
+
+## PostalAddress
+<a id="schemaPostalAddress"></a>
+
+```json
+{
+  "address": "string",
+  "districtName": "string",
+  "townName": "string",
+  "countrySubDivision": "string",
+  "postCode": "string"
+}
+```
+
+|Nome              |Tipo  |Obrigatório|Descrição                                                                |
+|:---------------- |:---- |:----------|:------------------------------------------------------------------------|
+|address           |string|Sim        |Informação referente ao endereço do terminal compartilhado de atendimento|
+|districtName      |string|Sim        |Bairro                                                                   |
+|townName          |string|Sim        |Cidade                                                                   |
+|countrySubDivision|string|Sim        |Estado                                                                   |
+|postCode          |string|Sim        |CEP                                                                      |
+
+## Availability
+<a id="schemaAvailability"></a>
+
+```json
+{
+  "standards": [
+    {
+      "weekday": "string",
+      "openingTime": "string",
+      "closingTime": "string"
+    }
+  ],
+  "exception": "string",
+  "allowPublicAccess": "string"
+}
+```
+
+| Nome              | Tipo                                   | Obrigatório | Descrição                                         |
+|:------------      |:------------------                     |:----------  |:------------------------------------------------- |
+| standards         | Array                                  | Sim         | Lista com os dias da semana.                      |
+| weekday           | [[Enum WeekDay](#schemaWeekDay)]       | Sim         | Dia da semana.                                    |
+| openingTime       | [[TimeString](#commonFieldTimeString)] | Sim         | Horário padrão de início de atendimento.          |
+| closingTime       | [[TimeString](#commonFieldTimeString)] | Sim         | Horário padrão de encerramento de atendimento.    |
+| exception         | string                                 | Não         | Informações sobre as exceções de abertura.        |
+| allowPublicAccess | string                                 | Sim         | Define se possui acesso ao público. True ou False.|
