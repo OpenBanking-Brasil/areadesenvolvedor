@@ -1401,18 +1401,25 @@ components:
         - fees
         - interestRate
         - requiredWarranties
+        - termsConditions
       properties:
         type:
           type: string
           enum:
-            - ADIANTAMENTO_DEPOSITANTE
             - EMPRESTIMO_MICROCREDITO_PRODUTIVO_ORIENTADO
             - EMPRESTIMO_CHEQUE_ESPECIAL
             - EMPRESTIMO_CONTA_GARANTIDA
             - EMPRESTIMO_CAPITAL_GIRO_PRAZO_VENCIMENTO_ATE_365_DIAS
             - EMPRESTIMO_CAPITAL_GIRO_PRAZO_VENCIMENTO_SUPERIOR_365_DIAS
             - EMPRESTIMO_CAPITAL_GIRO_ROTATIVO
-          description: Modalidades de empréstimos ofertados para pessoas jurídicas
+          description: |
+            Modalidades de empréstimos ofertados para pessoas Jurídicas, conforme Circular 4015-Bacen. Segundo cartilha do Bacen: Empréstimo é um contrato entre o cliente e uma instituição financeira (banco, cooperativa de crédito, caixa econômica) pelo qual o cliente recebe uma quantia em dinheiro que deverá ser devolvida em prazo determinado, acrescida dos juros acertados. Os recursos obtidos no empréstimo não tem destinação específica. 
+            Empréstimo-Microcrédito Produtivo Orientado - segundo PNMPO é o crédito concedido para financiamento das atividades produtivas, cuja metodologia será estabelecida em regulamento, observada a preferência do relacionamento direto com os empreendedores, admitido o uso de tecnologias digitais e eletrônicas que possam substituir o contato presencial
+            Empréstimo-Cheque especial - operações de crédito vinculadas à conta corrente, nas quais determinado limite de crédito é disponibilizado aos clientes para utilização de acordo com suas conveniências, sem necessidade de comunicação prévia à instituição financeira
+            Empréstimo-Conta garantida - operações de crédito rotativo, nas quais determinado limite de crédito é disponibilizado para utilização pelo cliente, através da simples movimentação da conta corrente e/ou solicitação formal à instituição financeira. As operações classificadas nessa modalidade não devem ter data definida para a amortização do saldo devedor, exceto a estabelecida para vigência do contrato
+            Empréstimo-Capital de giro com prazo de vencimento até 365 dias: operações de crédito voltadas para o financiamento de curto prazo (igual ou inferior a 365 dias) das pessoas jurídicas, vinculadas às necessidades de capital de giro e a um contrato específico que estabeleça prazos, taxas e garantias
+            Empréstimo-Capital de giro com prazo vencimento superior a 365 dias: operações de crédito voltadas para o financiamento de médio e longo prazo (superior a 365 dias) das pessoas jurídicas, vinculadas às necessidades de capital de giro e a um contrato específico que estabeleça prazos, taxas e garantias
+            Empréstimo-Capital de giro rotativo: operações de crédito voltadas para o financiamento de capital de giro, vinculadas a um contrato que estabeleça linha de crédito rotativo, de forma que, à medida que a empresa devedora amortize os empréstimos já tomados, o limite disponível para utilização seja restituído, e amortizações com datas predeterminadas, podendo ser facultado ao devedor repactuar o fluxo de pagamentos ao longo da vigência do contrato
           example: ADIANTAMENTO_DEPOSITANTE
         fees:
           type: array
@@ -1449,13 +1456,13 @@ components:
         name:
           type: string
           pattern: \w*\W*
-          maxLength: 50
+          maxLength: 250
           description: Nomes das Tarifas cobradas sobre Serviços relacionados à Modalidade informada do Empréstimo para pessoa física/jurídica.
           example: Adiantamento a Depositantes / Excesso Limite
         code:
           type: string
           pattern: \w*\W*
-          maxLength: 30
+          maxLength: 100
           description: Sigla de identificação do serviço relacionado à Modalidade informada de Empréstimo para pessoa física/jurídica.
           example: ADIANT. DEPOSITANTE DD/MM
         chargingTriggerInfo:
@@ -1475,18 +1482,22 @@ components:
     LoanInterestRate:
       type: object
       properties:
+        fees:
+          type: array
+          items:
+            $ref: '#/components/schemas/InterestRateFee'
         applications:
           type: array
           items:
             $ref: '#/components/schemas/ApplicationRate'
         minimumRate:
           type: string
-          format: '((-?[1-9]?\d{1,4}){1}(\.\d{1,4}){1}|NA)'
+          format: '(^[0-9](\.[0-9]{4})$|NA)'
           description: 'Percentual mínimo cobrado (taxa efetiva) no mês de referência, para o Empréstimo contratado  A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)'
           example: '0.0456'
         maximumRate:
           type: string
-          format: '((-?[1-9]?\d{1,4}){1}(\.\d{1,4}){1}|NA)'
+          format: '(^[0-9](\.[0-9]{4})$|NA)'
           description: 'Percentual máximo cobrado (taxa efetiva) no mês de referência, para o Empréstimo contratado  A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)'
           example: '0.6865'
     ApplicationRate:
@@ -1496,11 +1507,46 @@ components:
           $ref: '#/components/schemas/Intervals'
         rate:
           type: string
-          format: '((-?[1-9]?\d{1,4}){1}(\.\d{1,4}){1}|NA)'
+          format: '(^[0-9](\.[0-9]{4})$|NA)'
           description: 'Percentual que corresponde a mediana da taxa efetiva cobrada do cliente pela contratação do Empréstimo, no intervalo informado. p.ex. ''9,8700%'' A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)'
           example: '0.0987'
       required:
         - interval
+        - rate
+    InterestRateFee:
+      type: object
+      properties:
+        referentialRateOrIndexer:
+          type: string
+          enum:
+            - SEM_INDEXADOR_TAXA
+            - PRE_FIXADO
+            - POS_FIXADO_TR_TBF
+            - POS_FIXADO_TJLP
+            - POS_FIXADO_LIBOR
+            - POS_FIXADO_TLP
+            - OUTRAS_TAXAS_POS_FIXADAS
+            - FLUTUANTES_CDI
+            - FLUTUANTES_SELIC
+            - OUTRAS_TAXAS_FLUTUANTES
+            - INDICES_PRECOS_IGPM
+            - INDICES_PRECOS_IPCA
+            - INDICES_PRECOS_IPCC
+            - OUTROS_INDICES_PRECO
+            - CREDITO_RURAL_TCR_PRE
+            - CREDITO_RURAL_TCR_POS
+            - CREDITO_RURAL_TRFC_PRE
+            - CREDITO_RURAL_TRFC_POS
+            - OUTROS_INDEXADORES
+          description: 'Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial ou Indexador (Indx), do Documento 3040'
+        rate:
+          type: string
+          format: '(^[0-1](\.[0-9]{2})$|NA)'
+          description: |
+            Percentual que incide sobre a composição das taxas de juros remuneratórios. (representa uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O valor '1 'representa 100%) A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)
+          example: '0.15'
+      required:
+        - referentialRateOrIndexer
         - rate
     Intervals:
       type: string
@@ -1509,7 +1555,8 @@ components:
         - 2_QUARTIL_CLIENTES
         - 3_QUARTIL_CLIENTES
         - 4_QUARTIL_CLIENTES
-      description: 'Faixas para cobrança da taxa efetiva aplicada pela contratação do Empréstimo, no intervalo informado: 1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes'
+      description: |
+        Faixas para cobrança da taxa efetiva aplicada pela contratação do Empréstimo, no intervalo informado: 1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes. Segundo Normativa nº32 de 2020: 'Distribuição de frequência relativa dos valores de tarifas e taxas de juros cobrados dos clientes, de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana e o percentual de clientes em cada uma dessas faixas.
     RequiredWarranty:
       type: string
       enum:
@@ -2767,7 +2814,8 @@ components:
           pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
           maxLength: 12
           x-cds-type: AmountString
-          description: 'Valor da mediana da tarifa, relativa ao serviço ofertado, informado no período.'
+          description: |
+            Valor da mediana da tarifa, relativa ao serviço ofertado, para pessoa juridica informado no período, conforme Res nº32 BCB, 2020. p.ex. 45.00 (representa um valor monetário. p.ex: 1547368.92. Este valor, considerando que a moeda seja BRL, significa R$ 1.547.368,92. O único separador presente deve ser o '.' (ponto) para indicar a casa decimal. Não deve haver separador de milhar)
           example: '45.40'
         currency:
           type: string
