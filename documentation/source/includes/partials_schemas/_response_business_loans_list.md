@@ -203,12 +203,12 @@
 }
 ```
 
-|     Nome             |  Tipo                               | Obrigatório |                            Definição                                                                                                                                                                                                 |
-|:-----------------    |:---------------------------------   |:----------- |:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| name                 | string                              | Sim         | Nome da Instituição, pertencente à marca, responsável pela comercialização das modalidades de Empréstimos para Pessoas Jurídicas consultadas.                                                                                        |
-| cnpjNumber           | string                              | Sim         | O responsável pela comercialização das modalidades de Empréstimos para Pessoas Jurídicas consultadas - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. Deve-se ter apenas os números do CNPJ, sem máscara. |
-| urlComplementaryList | [URIString](#commonFieldURIString)  | Sim         | URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços.                                              |
-| businessLoans        | [BusinessLoan](#schemaBusinessLoan) | Sim         | Empréstimos Pessoas Jurídicas                                                                                                                                                                                                        |
+|     Nome             |  Tipo                               | Obrigatório |                         Definição                                                                                                                                                                                                    |  Restrições                                                                                             |
+|:-----------------    |:---------------------------------   |:----------- |:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |:--------------------------------------------------------------------------------------------------------|
+| name                 | string                              | Sim         | Nome da Instituição, pertencente à marca, responsável pela comercialização das modalidades de Empréstimos para Pessoas Jurídicas consultadas.                                                                                        |                                                                                                         |
+| cnpjNumber           | string                              | Sim         | O responsável pela comercialização das modalidades de Empréstimos para Pessoas Jurídicas consultadas - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. Deve-se ter apenas os números do CNPJ, sem máscara. |                                                                                                         |
+| urlComplementaryList | [URIString](#commonFieldURIString)  | Não         | URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços.                                              | Será obrigatorimente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada |
+| businessLoans        | [BusinessLoan](#schemaBusinessLoan) | Sim         | Empréstimos Pessoas Jurídicas                                                                                                                                                                                                        |                                                                                                         |
 
 ## BusinessLoan
 <a id="schemaBusinessLoan"></a>
@@ -242,6 +242,12 @@
   ],
   "interestRate": [
     {
+      "fees": [
+        {
+          "referentialRateOrIndexer": "string",
+          "rate": "string",
+        }
+      ],
       "applications": [
         {
           "interval": "string",
@@ -265,7 +271,7 @@
 | fees                | [LoanFee](#schemaLoanFee)                               | Sim          | Tarifas cobradas sobre Serviços ofertados à Modalidade de Empréstimo             |
 | interestRate        | [LoanInterestRate](#schemaLoanInterestRate)             | Sim          | Taxas de juros remuneratórias             |
 | requiredWarranties  | [Enum RequiredWarranty](#schemaEnumRequiredWarranty)  | Sim          | Relação de garantias exigidas, segundo documento <a href='https://www.bcb.gov.br/estabilidadefinanceira/scrdoc3040' target="_blank">3040 do Bacem</a>       |
-| termsConditions     | string                                                      | Não          | Campo aberto para informar as condições contratuais relativas ao produto ou serviço informado. Pode ser informada a URL ([[URIString](#commonFieldURIString)]) referente ao endereço onde constam as condições informadas.   |
+| termsConditions     | string                                                      | Sim          | Campo aberto para informar as condições contratuais relativas ao produto ou serviço informado. Pode ser informada a URL ([[URIString](#commonFieldURIString)]) referente ao endereço onde constam as condições informadas.   |
 
 ### Enum BusinessLoanType
 <a id="schemaEnumBusinessLoanType"></a>
