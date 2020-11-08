@@ -374,9 +374,27 @@
 
 |Nome|Tipo|Obrigatório|Definição|
 |---|---|---|---|
-|fees|[object]| Sim | Tarifas cobradas sobre Serviços ofertados à Modalidade de adiantamento a depositante |
-|» referentialRateOrIndexer|[ReferentialRateOrIndexer](#schemareferentialrateorindexer)| Sim |Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial ou Indexador (Indx), do Documento 3040|
-|» rate|string| Sim |Percentual que incide sobre a composição das taxas de juros remuneratórios. (representa uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O valor '1 'representa 100%). A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)|
+|fees|[FeeReferentialRateOrIndexer](#schemaFeeReferentialRateOrIndexer)| Sim | Lista de Tarifas cobradas sobre Serviços ofertados à Modalidade de adiantamento a depositante |
 |applications|[Application](#schemaApplication) |Sim| Valor da mediana da taxa de remuneração relativa ao serviço ofertado.|
 |minimumRate|string| Sim |Percentual mínimo cobrado (taxa efetiva) no mês de referência, para os Direitos Creditórios Descontados contratado  A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.15. Este valor representa 15%. O valor 1 representa 100%)|
 |maximumRate|string| Sim |Percentual máximo cobrado (taxa efetiva) no mês de referência, para os Direitos Creditórios Descontados contratado  A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.15. Este valor representa 15%. O valor 1 representa 100%)|
+
+
+## FeeReferentialRateOrIndexer
+
+<a id="schemaFeeReferentialRateOrIndexer"></a>
+
+```json
+{
+  "referentialRateOrIndexer": "string",
+  "rate": "string"
+}
+
+```
+
+### Properties
+
+|Nome|Tipo|Obrigatório|Definição|
+|---|---|---|---|
+| referentialRateOrIndexer|[ReferentialRateOrIndexer](#schemareferentialrateorindexer)| Sim |Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial ou Indexador (Indx), do Documento 3040|
+| rate|string| Sim |Percentual que incide sobre a composição das taxas de juros remuneratórios. (representa uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O valor '1 'representa 100%). A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)|
