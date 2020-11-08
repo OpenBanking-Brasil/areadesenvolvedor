@@ -39,6 +39,12 @@
                 }
               ],
               "interestRate": {
+                "fees": [
+                  {
+                    "referentialRateOrIndexer": "string",
+                    "rate": "string",
+                  }
+                ],
                 "applications": [
                   {
                     "interval": "string",
@@ -119,6 +125,12 @@
               }
             ],
             "interestRate": {
+              "fees": [
+                {
+                  "referentialRateOrIndexer": "string",
+                  "rate": "string",
+                }
+              ],
               "applications": [
                 {
                   "interval": "string",
@@ -181,6 +193,12 @@
         }
       ],
       "interestRate": {
+        "fees": [
+          {
+            "referentialRateOrIndexer": "string",
+            "rate": "string",
+          }
+        ],
         "applications": [
           {
             "interval": "string",
@@ -199,12 +217,12 @@
 }
 ```
 
-|     Nome             |  Tipo                                         | Obrigatório |    Definição                                                                                                                                                                            |
-|:------------         |:---------------------------------             |:----------- |:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| name                 | string                                        | Sim         | Nome da Instituição, pertencente à marca, responsável pela comercialização das modalidades de Financiamentos para Pessoas Físicas consultadas. p.ex.'Empresa da Organização A'.         |
-| cnpjNumber           | string                                        | Sim         | CNPJ da instituição responsável.                                                                                                                                                        |
-| urlComplementaryList | [URIString](#commonFieldURIString)            | Sim         | URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. |
-| personalFinancings   | [PersonalFinancing](#schemaPersonalFinancing) | Sim         | Lista de financiamentos.                                                                                                                                                                |
+|     Nome             |  Tipo                                         | Obrigatório |    Definição                                                                                                                                                                            | Restrições                                                                                             |
+|:------------         |:---------------------------------             |:----------- |:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |:-------------------------------------------------------------------------------------------------------|
+| name                 | string                                        | Sim         | Nome da Instituição, pertencente à marca, responsável pela comercialização das modalidades de Financiamentos para Pessoas Físicas consultadas. p.ex.'Empresa da Organização A'.         |                                                                                                        |
+| cnpjNumber           | string                                        | Sim         | CNPJ da instituição responsável.                                                                                                                                                        |                                                                                                        |
+| urlComplementaryList | [URIString](#commonFieldURIString)            | Não         | URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. |Será obrigatorimente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada |
+| personalFinancings   | [PersonalFinancing](#schemaPersonalFinancing) | Sim         | Lista de financiamentos.                                                                                                                                                                |                                                                                                        |
 
 ## PersonalFinancing
 <a id="schemaPersonalFinancing"></a>
@@ -237,6 +255,12 @@
     }
   ],
   "interestRate": {
+    "fees": [
+      {
+        "referentialRateOrIndexer": "string",
+        "rate": "string",
+      }
+    ],
     "applications": [
       {
         "interval": "string",
