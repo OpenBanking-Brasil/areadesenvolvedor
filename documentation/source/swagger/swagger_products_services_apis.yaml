@@ -169,6 +169,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ResponseBusinessUnarrangedAccountOverdraftList'
+security:
+  - name: []
+
 components:
   schemas:
     AccountsTermsConditions:
@@ -1529,8 +1532,9 @@ components:
           $ref: '#/components/schemas/ApplicationIntervals'
         rate:
           type: string
-          format: '(^[0-9](\.[0-9]{4})$|NA)'
-          description: 'Percentual que corresponde a mediana da taxa efetiva cobrada do cliente pela contratação do Empréstimo, no intervalo informado. p.ex. ''9,8700%'' A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)'
+          format: '(^[0-9](\.[0-9]{4})|NA)$'
+          description: |
+            Percentual que corresponde a mediana da taxa efetiva cobrada do cliente pela contratação serviço ou produto, no intervalo informado. p.ex. '9,8700%' A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.15. Este valor representa 15%. O valor 1 representa 100%)
           example: '0.0987'
       required:
         - interval
@@ -3029,34 +3033,12 @@ components:
           description: Tarifas cobradas sobre Serviços ofertados à Modalidade de adiantamento a depositante
           type: array
           items:
-            type: object
-            required:
-              - referentialRateOrIndexer
-              - rate
-            properties:
-              referentialRateOrIndexer:
-                $ref: '#/components/schemas/ReferentialRateOrIndexer'
-              rate:
-                type: string
-                description: |
-                  Percentual que incide sobre a composição das taxas de juros remuneratórios. (representa uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O valor '1 'representa 100%). A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)
-                pattern: '(^[0-9](\.[0-9]{2})|NA)$'
+            $ref: '#/components/schemas/FeeReferentialRateOrIndexer'
         applications:
           description:  Valor da mediana da taxa de remuneração relativa ao serviço ofertado.
           type: array
           items:
-            type: object
-            required:
-              - interval
-              - rate
-            properties:
-              interval:
-                $ref:  "#/components/schemas/ApplicationIntervals"
-              rate:
-                type: string
-                description: |
-                  Percentual que corresponde a mediana da taxa efetiva cobrada do cliente pela contratação dos Direitos Creditórios Descontados, no intervalo informado. p.ex. '9,8700%' A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.15. Este valor representa 15%. O valor 1 representa 100%)
-                pattern: '(^[0-9](\.[0-9]{4})|NA)$'
+            $ref: '#/components/schemas/ApplicationRate'
         minimumRate:
           type: string
           description: |
@@ -3067,7 +3049,20 @@ components:
           description: |
             Percentual máximo cobrado (taxa efetiva) no mês de referência, para os Direitos Creditórios Descontados contratado  A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.15. Este valor representa 15%. O valor 1 representa 100%)
           pattern: '(^[0-9](\.[0-9]{4})|NA)$'
-      
+    FeeReferentialRateOrIndexer:
+      description: Tarifas cobradas sobre Serviços ofertados à Modalidade de adiantamento a depositante
+      type: object
+      required:
+        - referentialRateOrIndexer
+        - rate
+      properties:
+        referentialRateOrIndexer:
+          $ref: '#/components/schemas/ReferentialRateOrIndexer'
+        rate:
+          type: string
+          description: |
+            Percentual que incide sobre a composição das taxas de juros remuneratórios. (representa uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O valor '1 'representa 100%). A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)
+          pattern: '(^[0-9](\.[0-9]{2})|NA)$'
     Price:
       type: object
       required:
