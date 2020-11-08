@@ -43,7 +43,7 @@
 
 |     Nome     |  Tipo                                        | Obrigatório |Definição                                                                      |
 |:------------ |:-------------------------------------------- |:----------- |:----------------------------------------------------------------------------- |
-| interval     | [Enum PriceInterval](#schemaPriceInterval)   | Sim         | Faixas de valor referentes a tarifa do Serviço informada: 1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes |
+| interval     | [Enum PriceInterval](#schemaPriceInterval)   | Sim         | Segundo Normativa nº32 de 29/10/2020: 'Distribuição de frequência relativa dos valores de tarifas e taxas de juros cobrados dos clientes, de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana e o percentual de clientes em cada uma dessas faixas.' Estas correspondem as faixas para cobrança da taxa efetiva aplicada pela contratação do serviço/produto, no intervalo informado: 1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes.|
 | value        | [AmountString](#commonFieldAmountString)     | Sim         | Valor da mediana da tarifa cobrada, relativa ao Serviço, para o tipo de faixa informada. |
 | currency     | [CurrencyString](#commonFieldCurrencyString) | Sim         | Moeda referente ao valor da Tarifa, segundo modelo ISO-4217. p.ex. 'BRL'                 |
 
@@ -115,7 +115,7 @@
 
 |     Nome     |  Tipo                                            | Obrigatório    |                            Definição                                                |
 |:------------ |:------------------------------------------------ |:-------------- |:-----------------------------------------------------------------------------       |
-| interval     | [Enum PriceInterval](#schemaPriceInterval)       | Sim            | Faixas para a cobrança da taxa de utilização do crédito rotativo, no intervalo informado: 1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes.           |
+| interval     | [Enum PriceInterval](#schemaPriceInterval)       | Sim            | Segundo Normativa nº32 de 29/10/2020: 'Distribuição de frequência relativa dos valores de tarifas e taxas de juros cobrados dos clientes, de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana e o percentual de clientes em cada uma dessas faixas.' Estas correspondem as faixas para cobrança da taxa efetiva aplicada pela contratação do serviço/produto, no intervalo informado: 1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes.           |
 | rate         | [RateString](#commonFieldRateString)             | Sim            | Percentual que corresponde a mediana da taxa efetiva cobrada do cliente pela contratação do Empréstimo, no intervalo informado. p.ex. '9,8700%'. A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%) |
 
 ## Application
@@ -130,7 +130,7 @@
 
 |     Nome     |  Tipo            | Obrigatório    |             Definição   |
 |:------------ |:------------------------------------------------ |:-------------- |:-----------------------------------------------------------------------------                                                                                                                                                                                                                                                                                   |
-| interval     | [Enum PriceInterval](#schemaPriceInterval)       | Sim            | Faixas para cobrança da taxa efetiva aplicada pela contratação do Empréstimo, no intervalo informado: 1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes |
+| interval     | [Enum PriceInterval](#schemaPriceInterval)       | Sim            | Segundo Normativa nº32 de 29/10/2020: 'Distribuição de frequência relativa dos valores de tarifas e taxas de juros cobrados dos clientes, de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana e o percentual de clientes em cada uma dessas faixas.' Estas correspondem as faixas para cobrança da taxa efetiva aplicada pela contratação do serviço/produto, no intervalo informado: 1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes. |
 | rate        | [RateString](#commonFieldRateString)        | Sim            | Percentual que corresponde a mediana da taxa efetiva cobrada do cliente pela contratação do Empréstimo, no intervalo informado. p.ex. '9,8700%'. A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%) |
 
 ## PostalAddress
@@ -179,3 +179,31 @@
 | closingTime       | [[TimeString](#commonFieldTimeString)] | Sim         | Horário padrão de encerramento de atendimento.    |
 | exception         | string                                 | Não         | Informações sobre as exceções de abertura.        |
 | allowPublicAccess | string                                 | Sim         | Define se possui acesso ao público. True ou False.|
+
+## ReferentialRateOrIndexer
+
+<a id="schemareferentialrateorindexer"></a>
+
+Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial ou Indexador (Indx), do Documento 3040
+
+|Nome|Código|Definição|
+|---|---|---|
+| referentialRateOrIndexer |SEM_INDEXADOR_TAXA      | SEM INDEXADOR TAXA|
+| referentialRateOrIndexer |PRE_FIXADO              | PRE FIXADO|
+| referentialRateOrIndexer |POS_FIXADO_TR_TBF       | POS FIXADO TR TBF|
+| referentialRateOrIndexer |POS_FIXADO_TJLP         | POS FIXADO TJLP|
+| referentialRateOrIndexer |POS_FIXADO_LIBOR        | POS FIXADO LIBOR|
+| referentialRateOrIndexer |POS_FIXADO_TLP          | POS FIXADO TLP|
+| referentialRateOrIndexer |OUTRAS_TAXAS_POS_FIXADAS        | OUTRAS TAXAS POS FIXADAS|
+| referentialRateOrIndexer |FLUTUANTES_CDI          | FLUTUANTES CDI|
+| referentialRateOrIndexer |FLUTUANTES_SELIC        | FLUTUANTES SELIC|
+| referentialRateOrIndexer |OUTRAS_TAXAS_FLUTUANTES | OUTRAS_TAXAS FLUTUANTES|
+| referentialRateOrIndexer |INDICES_PRECOS_IGPM     | INDICES PRECOS IGPM|
+| referentialRateOrIndexer |INDICES_PRECOS_IPCA     | INDICES PRECOS IPCA|
+| referentialRateOrIndexer |INDICES_PRECOS_IPCC     | INDICES PRECOS IPCC|
+| referentialRateOrIndexer |OUTROS_INDICES_PRECO    | OUTROS INDICES PRECO|
+| referentialRateOrIndexer |CREDITO_RURAL_TCR_PRE   | CREDITO RURAL TCR PRE|
+| referentialRateOrIndexer |CREDITO_RURAL_TCR_POS   | CREDITO RURAL TCR POS|
+| referentialRateOrIndexer |CREDITO_RURAL_TRFC_PRE  | CREDITO RURAL TRFC PRE|
+| referentialRateOrIndexer |CREDITO_RURAL_TRFC_POS  | CREDITO RURAL TRFC POS|
+| referentialRateOrIndexer |OUTROS_INDEXADORES      | OUTROS INDEXADORES|
