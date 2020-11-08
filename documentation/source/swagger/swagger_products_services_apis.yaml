@@ -1379,19 +1379,26 @@ components:
         - fees
         - interestRate
         - requiredWarranties
+        - termsConditions
       properties:
         type:
           type: string
           enum:
-            - ADIANTAMENTO_DEPOSITANTE
             - EMPRESTIMO_CREDITO_PESSOAL_CONSIGNADO
             - EMPRESTIMO_CREDITO_PESSOAL_NAO_CONSIGNADO
             - EMPRESTIMO_HOME_EQUITY
             - EMPRESTIMO_MICROCREDITO_PRODUTIVO_ORIENTADO
             - EMPRESTIMO_CHEQUE_ESPECIAL
             - EMPRESTIMO_CONTA_GARANTIDA
-          description: Modalidades de empréstimos ofertados para pessoas físicas
-          example: ADIANTAMENTO_DEPOSITANTE
+          description: |
+            Modalidades de empréstimos ofertados para pessoa Natural, conforme Circular 4015-Bacen. Segundo cartilha do Bacen: Empréstimo é um contrato entre o cliente e uma instituição financeira (banco, cooperativa de crédito, caixa econômica) pelo qual o cliente recebe uma quantia em dinheiro que deverá ser devolvida em prazo determinado, acrescida dos juros acertados. Os recursos obtidos no empréstimo não tem destinação específica. 
+            Empréstimo-Crédito pessoal consignado -  operações de crédito com retenção de parcela do salário ou benefício do tomador, para o pagamento das prestações do empréstimo – desconto em folha de pagamento – nos termos da legislação em vigor
+            Empréstimo-Home equity - empréstimos pessoa natural, garantidos por hipoteca ou por alienação fiduciária de bens imóveis residenciais, sem vinculação a aquisição de bens
+            Empréstimo-Microcrédito Produtivo Orientado - segundo PNMPO é o crédito concedido para financiamento das atividades produtivas, cuja metodologia será estabelecida em regulamento, observada a preferência do relacionamento direto com os empreendedores, admitido o uso de tecnologias digitais e eletrônicas que possam substituir o contato presencial
+            Empréstimo-Crédito pessoal não consignado -  operações de empréstimos às pessoa natural, sem vinculação com aquisição de bem ou serviço e sem retenção de parcela do salário ou benefício do tomador para o pagamento das prestações do empréstimo
+            Empréstimo-Cheque especial - operações de crédito vinculadas à conta corrente, nas quais determinado limite de crédito é disponibilizado aos clientes para utilização de acordo com suas conveniências, sem necessidade de comunicação prévia à instituição financeira
+            Empréstimo-Conta garantida - operações de crédito rotativo, nas quais determinado limite de crédito é disponibilizado para utilização pelo cliente, através da simples movimentação da conta corrente e/ou solicitação formal à instituição financeira. As operações classificadas nessa modalidade não devem ter data definida para a amortização do saldo devedor, exceto a estabelecida para vigência do contrato
+          example: EMPRESTIMO_CREDITO_PESSOAL_CONSIGNADO
         fees:
           type: array
           items:
@@ -1519,7 +1526,7 @@ components:
       type: object
       properties:
         interval:
-          $ref: '#/components/schemas/Intervals'
+          $ref: '#/components/schemas/ApplicationIntervals'
         rate:
           type: string
           format: '(^[0-9](\.[0-9]{4})$|NA)'
@@ -1563,7 +1570,7 @@ components:
       required:
         - referentialRateOrIndexer
         - rate
-    Intervals:
+    PriceIntervals:
       type: string
       enum:
         - 1_QUARTIL_CLIENTES
@@ -1571,7 +1578,16 @@ components:
         - 3_QUARTIL_CLIENTES
         - 4_QUARTIL_CLIENTES
       description: |
-        Segundo Normativa nº32 de 29/10/2020: 'Distribuição de frequência relativa dos valores de tarifas e taxas de juros cobrados dos clientes, de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana e o percentual de clientes em cada uma dessas faixas.' Estas correspondem as faixas para cobrança da taxa efetiva aplicada pela contratação do serviço/produto, no intervalo informado: 1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes.
+        Segundo Normativa nº32 de 2020: Distribuição de frequência relativa dos valores de tarifas e taxas de juros cobrados dos clientes, de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana e o percentual de clientes em cada uma dessas faixas. Informado:1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes
+    ApplicationIntervals:
+      type: string
+      enum:
+        - 1_QUARTIL_CLIENTES
+        - 2_QUARTIL_CLIENTES
+        - 3_QUARTIL_CLIENTES
+        - 4_QUARTIL_CLIENTES
+      description: |
+        Faixas para cobrança da taxa efetiva aplicada pela contratação do Empréstimo, no intervalo informado: 1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes. Segundo Normativa nº32 de 2020: 'Distribuição de frequência relativa dos valores de tarifas e taxas de juros cobrados dos clientes, de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana e o percentual de clientes em cada uma dessas faixas. 
     RequiredWarranty:
       type: string
       enum:
@@ -1758,7 +1774,7 @@ components:
                     - rate
                   properties:
                     interval:
-                      $ref: '#/components/schemas/Intervals'
+                      $ref: '#/components/schemas/PriceIntervals'
                     rate:
                       type: string
                       pattern: '((-?[1-9]?\d{1,4}){1}(\.\d{1,4}){1}|NA)$'
@@ -3035,7 +3051,7 @@ components:
               - rate
             properties:
               interval:
-                $ref:  "#/components/schemas/Intervals"
+                $ref:  "#/components/schemas/ApplicationIntervals"
               rate:
                 type: string
                 description: |
@@ -3060,14 +3076,14 @@ components:
         - currency
       properties:
         interval:
-          $ref: '#/components/schemas/Intervals'
+          $ref: '#/components/schemas/PriceIntervals'
         value:
           type: string
           pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
           maxLength: 12
           x-cds-type: AmountString
           description: |
-            Valor da mediana da tarifa, relativa ao serviço ofertado, para pessoa juridica informado no período, conforme Res nº32 BCB, 2020. p.ex. 45.00 (representa um valor monetário. p.ex: 1547368.92. Este valor, considerando que a moeda seja BRL, significa R$ 1.547.368,92. O único separador presente deve ser o '.' (ponto) para indicar a casa decimal. Não deve haver separador de milhar)
+            Valor da mediana da tarifa, relativa ao serviço ofertado, para pessoa natural informado no período, conforme Res nº32 BCB, 2020. p.ex. '45.00' (representa um valor monetário. p.ex: 1547368.92. Este valor, considerando que a moeda seja BRL, significa R$ 1.547.368,92. O único separador presente deve ser o '.' (ponto) para indicar a casa decimal. Não deve haver separador de milhar)
           example: '2000.00'
         currency:
           type: string
