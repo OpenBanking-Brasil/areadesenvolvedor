@@ -40,6 +40,12 @@
               ],
               "interestRate": [
                 {
+                  "fees": [
+                    {
+                      "referentialRateOrIndexer": "string",
+                      "rate": "string",
+                    }
+                  ],
                   "applications": [
                     {
                       "interval": "string",
@@ -121,6 +127,12 @@
           ],
           "interestRate": [
             {
+              "fees": [
+                {
+                  "referentialRateOrIndexer": "string",
+                  "rate": "string",
+                }
+              ],
               "applications": [
                 {
                   "interval": "string",
@@ -184,6 +196,12 @@
       ],
       "interestRate": [
         {
+          "fees": [
+            {
+              "referentialRateOrIndexer": "string",
+              "rate": "string",
+            }
+          ],          
           "applications": [
             {
               "interval": "string",
