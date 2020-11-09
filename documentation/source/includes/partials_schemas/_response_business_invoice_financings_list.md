@@ -37,6 +37,12 @@
                 }
               }],
               "interestRate": {
+                "fees": [
+                  {
+                    "referentialRateOrIndexer": "string",
+                    "rate": "string",
+                  }
+                ],
                 "applications": [                  
                   {
                     "interval": "string",
@@ -114,6 +120,12 @@
             }            
           }],
           "interestRate": {
+            "fees": [
+              {
+                "referentialRateOrIndexer": "string",
+                "rate": "string",
+              }
+            ],
             "applications": [                  
               {
                 "interval": "string",
@@ -173,6 +185,12 @@
         }
       }],
       "interestRate": {
+        "fees": [
+          {
+            "referentialRateOrIndexer": "string",
+            "rate": "string",
+          }
+        ],
         "applications": [                  
           {
             "interval": "string",
@@ -227,6 +245,12 @@
     }
   },
   "interestRate": {
+    "fees": [
+      {
+        "referentialRateOrIndexer": "string",
+        "rate": "string",
+      }
+    ],
     "applications": [                  
       {
         "interval": "string",
@@ -356,6 +380,12 @@
 
 ```json
 {
+  "fees": [
+    {
+      "referentialRateOrIndexer": "string",
+      "rate": "string",
+    }
+  ],
   "applications": [
     {
       "interval": "string",
