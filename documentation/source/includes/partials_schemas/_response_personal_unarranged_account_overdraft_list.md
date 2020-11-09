@@ -212,9 +212,9 @@
 |name|string|Sim | | Nome da Instituição, pertencente à marca, responsável pela modalidade de Adiantamento a depositante para Pessoa Natural. p.ex.'Empresa da Organização A'|
 |cnpjNumber | string| Sim | | O responsável pela comercialização das modalidades de Empréstimos para Pessoas Físicas consultadas - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. Deve-se ter apenas os números do CNPJ, sem máscara.|
 |urlComplementaryList|string| Não | Será obrigatorimente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada | URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. Endereço eletrônico de acesso ao canal. URLs são limitadas a 2048 caracteres mas, para o contexto do Sistema Financeiro aberto, será adotado a metade deste tamanho. Ex. 'https://example.com/mobile-banking'|
-|personalUnarrangedAccountOverdraft|[[personalUnarrangedAccountOverdraft](#schemapersonalunarrangedaccountoverdraft)]|Sim | | Lista de adiantamento de recebíveis|
+|personalUnarrangedAccountOverdraft|[[PersonalUnarrangedAccountOverdraft](#schemapersonalunarrangedaccountoverdraft)]|Sim | | Lista de adiantamento de recebíveis|
 
-## personalUnarrangedAccountOverdraft
+## PersonalUnarrangedAccountOverdraft
 
 <a id="schemapersonalunarrangedaccountoverdraft"></a>
 
