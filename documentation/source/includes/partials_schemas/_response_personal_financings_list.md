@@ -363,6 +363,12 @@
 
 ```json
 {
+  "fees": [
+    {
+      "referentialRateOrIndexer": "string",
+      "rate": "string",
+    }
+  ],
   "applications": [
     {
       "interval": "string",
