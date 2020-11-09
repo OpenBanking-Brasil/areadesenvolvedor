@@ -2557,12 +2557,14 @@ components:
               maxLength: 250
               description: 'Nomes das Tarifas cobradas sobre Serviços ofertados à Modalidade de direitos creditórios descontados, para pessoa física. (Campo Livre)'
             code:
+              type: string
               pattern: \w*\W*
               maxLength: 100
-              type: string
               description: 'Sigla de identificação do serviço relacionado à Modalidade de direitos creditórios descontados, para pessoa física. Campo aberto'
             chargingTriggerInfo:
               type: string
+              pattern: \w*\W*
+              maxLength: 2000
               description: 'Fatores geradores de cobrança que incidem sobre as Modalidades de direitos creditórios descontados, para pessoa física. Campo Livre'
             prices:
               type: array
@@ -2741,6 +2743,7 @@ components:
         - fees
         - interestRate
         - requiredWarranties
+        - termsConditions
       properties:
         type:
           type: string
@@ -2794,14 +2797,17 @@ components:
             name:
               type: string
               pattern: \w*\W*
+              maxLength: 250
               description: 'Nomes das Tarifas cobradas sobre Serviços ofertados à Modalidade de Direitos Creditórios Descontados, para pessoa jurídica. (Campo Livre). p.ex.  ''Avaliação de Garantia Hipotecária, Avaliação de Propriedade Rural e Parecer Técnico para Prorrogação de Operações Rurais'''
             code:
               type: string
               pattern: \w*\W*
+              maxLength: 100
               description: 'Sigla de identificação do serviço relacionado à Modalidade de direitos creditórios descontados, para pessoa jurídica. Campo aberto'
             chargingTriggerInfo:
               type: string
               pattern: \w*\W*
+              maxLength: 2000
               description: 'Fatores geradores de cobrança que incidem sobre as Modalidades de direitos creditórios descontados, para pessoa jurídica. Campo Livre'
             prices:
               type: array
@@ -2821,6 +2827,10 @@ components:
     BusinessInvoiceFinancingsInterestRates:
       type: object
       properties:
+        fees:
+          type: array
+          items:
+            $ref: '#/components/schemas/InterestRateFee'
         applications:
           type: array
           items:
@@ -2830,28 +2840,22 @@ components:
               - rate
             properties:
               interval:
-                type: string
-                enum:
-                  - 1_QUARTIL_CLIENTES
-                  - 2_QUARTIL_CLIENTES
-                  - 3_QUARTIL_CLIENTES
-                  - 4_QUARTIL_CLIENTES
-                example: 1_QUARTIL_CLIENTES
+                $ref: '#/components/schemas/ApplicationIntervals'
               rate:
                 type: string
                 description: |
                   Percentual que corresponde a mediana da taxa efetiva cobrada do cliente pela contratação dos Direitos Creditórios Descontados, no intervalo informado. p.ex. '9,8700%' A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.15. Este valor representa 15%. O valor 1 representa 100%)
-                pattern: '((-?[1-9]?\d{1,4}){1}(\.\d{1,4}){1}|NA)$'
+                pattern: '(^[0-9](\.[0-9]{4})$|^NA$)'
         minimumRate:
           type: string
           description: |
             Percentual mínimo cobrado (taxa efetiva) no mês de referência, para os Direitos Creditórios Descontados contratado  A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.15. Este valor representa 15%. O valor 1 representa 100%)
-          pattern: '((-?[1-9]?\d{1,4}){1}(\.\d{1,4}){1}|NA)$'
+          pattern: '(^[0-9](\.[0-9]{4})$|^NA$)'
         maximumRate:
           type: string
           description: |
             Percentual máximo cobrado (taxa efetiva) no mês de referência, para os Direitos Creditórios Descontados contratado  A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.15. Este valor representa 15%. O valor 1 representa 100%)
-          pattern: '((-?[1-9]?\d{1,4}){1}(\.\d{1,4}){1}|NA)$'
+          pattern: '(^[0-9](\.[0-9]{4})$|^NA$)'
       required:
         - applications
         - minimumRate
