@@ -28,7 +28,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PersonalAccountsResponse'
+                $ref: '#/components/schemas/ResponsePersonalAccounts'
   /business-accounts:
     get:
       tags:
@@ -266,7 +266,7 @@ components:
               description: 'Moeda referente ao valor máximo da tarifa de outros serviços, segundo modelo ISO-4217.'
               example: BRL
 
-    PersonalAccountsResponse:
+    ResponsePersonalAccounts:
       type: object
       required:
         - data
@@ -338,17 +338,7 @@ components:
         - incomeRates
       properties:
         type:
-          type: string
-          enum:
-            - CONTA_DEPOSITO_A_VISTA
-            - CONTA_POUPANCA
-            - CONTA_PAGAMENTO_PRE_PAGA
-          description: |
-            Tipos de contas ofertadas para pessoa natural, p.ex. 'CONTA_DEPOSITO_A_VISTA'.
-            Conta de depósito à vista ou Conta corrente - é o tipo mais comum. Nela, o dinheiro fica à sua disposição para ser sacado a qualquer momento. Essa conta não gera rendimentos para o depositante
-            Conta poupança - foi criada para estimular as pessoas a pouparem. O dinheiro que ficar na conta por trinta dias passa a gerar rendimentos, com isenção de imposto de renda para quem declara. Ou seja, o dinheiro “cresce” (rende) enquanto ficar guardado na conta. Cada depósito terá rendimentos de mês em mês, sempre no dia do mês em que o dinheiro tiver sido depositado
-            Conta de pagamento pré-paga: segundo CIRCULAR Nº 3.680, BCB de  2013, é a 'destinada à execução de transações de pagamento em moeda eletrônica realizadas com base em fundos denominados em reais previamente aportados' 
-          example: CONTA_DEPOSITO_A_VISTA
+          $ref: '#/components/schemas/PersonalAccountType'
         fees:
           type: array
           items:
@@ -433,17 +423,7 @@ components:
                 value: '87.00'
                 currency: 'BRL'
         openingClosingChannels:
-          type: string
-          enum:
-            - DEPENDENCIAS_PROPRIAS
-            - CORRESPONDENTES_BANCARIOS
-            - INTERNET_BANKING
-            - MOBILE_BANKING
-            - CENTRAL_TELEFONICA
-            - CHAT
-            - OUTROS
-          description: Canais disponíveis para abertura e encerramento de contas, p.ex. 'DEPENDENCIAS_PROPRIAS'
-          example: DEPENDENCIAS_PROPRIAS
+          $ref: '#/components/schemas/OpeningClosingChannels'
         additionalInfo:
           type: string
           maxLength: 100
@@ -453,14 +433,7 @@ components:
             Restrição: Campo de preenchimento obrigatório se 'openingCloseChannels' estiver preenchida a opção 'OUTROS'
           example: 'NA'
         transactionMethods:
-          type: string
-          enum:
-            - MOVIMENTACAO_ELETRONICA
-            - MOVIMENTACAO_CHEQUE
-            - MOVIMENTACAO_CARTAO
-            - MOVIMENTACAO_PRESENCIAL
-          description: Lista de formas de movimentação possíveis para a conta
-          example: MOVIMENTACAO_CARTAO
+          $ref: '#/components/schemas/TransactionMethods'
         termsConditions:
           $ref: '#/components/schemas/AccountsTermsConditions'
         incomeRate:
@@ -502,6 +475,39 @@ components:
           $ref: '#/components/schemas/MinimumPrice'
         maximum:
           $ref:  "#/components/schemas/MaximumPrice"
+    PersonalAccountType:
+      type: string
+      enum:
+        - CONTA_DEPOSITO_A_VISTA
+        - CONTA_POUPANCA
+        - CONTA_PAGAMENTO_PRE_PAGA
+      description: |
+        Tipos de contas ofertadas para pessoa natural, p.ex. 'CONTA_DEPOSITO_A_VISTA'.
+        Conta de depósito à vista ou Conta corrente - é o tipo mais comum. Nela, o dinheiro fica à sua disposição para ser sacado a qualquer momento. Essa conta não gera rendimentos para o depositante
+        Conta poupança - foi criada para estimular as pessoas a pouparem. O dinheiro que ficar na conta por trinta dias passa a gerar rendimentos, com isenção de imposto de renda para quem declara. Ou seja, o dinheiro “cresce” (rende) enquanto ficar guardado na conta. Cada depósito terá rendimentos de mês em mês, sempre no dia do mês em que o dinheiro tiver sido depositado
+        Conta de pagamento pré-paga: segundo CIRCULAR Nº 3.680, BCB de  2013, é a 'destinada à execução de transações de pagamento em moeda eletrônica realizadas com base em fundos denominados em reais previamente aportados' 
+      example: CONTA_DEPOSITO_A_VISTA
+    OpeningClosingChannels:
+      type: string
+      enum:
+        - DEPENDENCIAS_PROPRIAS
+        - CORRESPONDENTES_BANCARIOS
+        - INTERNET_BANKING
+        - MOBILE_BANKING
+        - CENTRAL_TELEFONICA
+        - CHAT
+        - OUTROS
+      description: Canais disponíveis para abertura e encerramento de contas, p.ex. 'DEPENDENCIAS_PROPRIAS'
+      example: DEPENDENCIAS_PROPRIAS
+    TransactionMethods:
+      type: string
+      enum:
+        - MOVIMENTACAO_ELETRONICA
+        - MOVIMENTACAO_CHEQUE
+        - MOVIMENTACAO_CARTAO
+        - MOVIMENTACAO_PRESENCIAL
+      description: Lista de formas de movimentação possíveis para a conta
+      example: MOVIMENTACAO_CARTAO
     PriorityServiceName:
       type: string
       enum:

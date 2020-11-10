@@ -1,5 +1,5 @@
-## ResponsePersonalAccountList
-<a id="schemaResponsePersonalAccountList"></a>
+## ResponsePersonalAccounts
+<a id="schemaResponsePersonalAccounts"></a>
 
 ```json
 { 
@@ -473,17 +473,17 @@
 
 |     Nome              |  Tipo                                          |  Obrigatório    |                            Descrição                  |
 |:----------------------|:-----------------------------------------------| :---------------|:------------------------------------------------------|
-| type                  | [Enum TypePersonalAccount](#schemaEnumTypePersonalAccount) | Sim             | Tipos de contas ofertadas para pessoas físicas, conforme Resolução 3.919 do Banco Central do Brasil.                                 |
-| fees                  | [FeesPersonalAccount](#schemaFeesPersonalAccount) | Sim             | Lista Tarifas cobradas.                             |
-| serviceBundle        | [ServiceBundlePersonalAccount](#schemaServiceBundlePersonalAccount) | Sim             | Nome dos pacotes de serviços.                          |
-| openingClosingChannels   | [Enum PersonalAccountOpeningClosingChannels ](#schemaEnumPersonalAccountOpeningClosingChannels) | Sim             | Canais disponíveis para abertura e encerramento de contas.      |
-| additionalInfo        | string                                         | Sim             | Texto livre para complementar informação relativa ao Canal disponível.    |
-| transactionMethods    | [Enum PersonalAccountOpeningTransactionMethods ](#schemaEnumPersonalAccountOpeningTransactionMethods)                                         | Sim             | Lista de formas de movimentação possíveis para a conta.  |
-| termsConditions       | [TermsConditionsPersonalAccount](#schemaTermsConditionsPersonalAccount) | Sim             | Termos e condições contratuais.                        |
-| incomeRates           | [IncomeRatesPersonalAccount](#schemaIncomeRatesPersonalAccount) | Sim             | Valores dos percentuais de taxas.                      |
+| type                  | [Enum PersonalAccountType](#schemaPersonalAccountType) | Sim             | Tipos de contas ofertadas para pessoa natural, p.ex. 'CONTA_DEPOSITO_A_VISTA'.<br>Conta de depósito à vista ou Conta corrente - é o tipo mais comum. Nela, o dinheiro fica à sua disposição para ser sacado a qualquer momento. Essa conta não gera rendimentos para o depositante<br>Conta poupança - foi criada para estimular as pessoas a pouparem. O dinheiro que ficar na conta por trinta dias passa a gerar rendimentos, com isenção de imposto de renda para quem declara. Ou seja, o dinheiro “cresce” (rende) enquanto ficar guardado na conta. Cada depósito terá rendimentos de mês em mês, sempre no dia do mês em que o dinheiro tiver sido depositado<br>Conta de pagamento pré-paga: segundo CIRCULAR Nº 3.680, BCB de  2013, é a 'destinada à execução de transações de pagamento em moeda eletrônica realizadas com base em fundos denominados em reais previamente aportados' |
+| fees                  | [AccountFee](#schemaAccountFee) | Sim             | Lista Tarifas cobradas.                             |
+| serviceBundle        | [ServiceBundle](#schemaServiceBundle) | Sim             | Nome dos pacotes de serviços.                          |
+| openingClosingChannels   | [Enum OpeningClosingChannels ](#schemaEnumOpeningClosingChannels) | Sim             | Canais disponíveis para abertura e encerramento de contas, p.ex. 'DEPENDENCIAS_PROPRIAS'      |
+| additionalInfo        | string                                         | Sim             | Texto livre para complementar informação relativa ao Canal disponível, quando no campo ''openingClosingChannels'' estiver preenchida a opção ''Outros''<br>Restrição: Campo de preenchimento obrigatório se 'openingCloseChannels' estiver preenchida a opção 'OUTROS' |
+| transactionMethods    | [Enum TransactionMethods ](#schemaEnumTransactionMethods)                                         | Sim             | Lista de formas de movimentação possíveis para a conta |
+| termsConditions       | [AccountsTermsConditions](#schemaAccountTermsConditions) | Sim             | Termos e condições contratuais.                        |
+| incomeRates           | [PersonalAccountsIncomeRate](#schemaPersonalAccount) | Sim             | Valores dos percentuais de taxas.                 IncomeRates     |
 
-### Enum TypePersonalAccount
-<a id="schemaEnumTypePersonalAccount"></a>
+### Enum PersonalAccountType
+<a id="schemaPersonalAccountType"></a>
 
 | Propriedade  | Valor                       | Definição                   |                
 |:-------------|:----------------------------|:----------------------------|
@@ -491,8 +491,8 @@
 | type         | CONTA_POUPANCA              | Conta Poupança.              |
 | type         | CONTA_PAGAMENTO_PRE_PAGA    | Conta de pagamento pré paga. |
 
-### Enum PersonalAccountOpeningClosingChannels 
-<a id="schemaEnumPersonalAccountOpeningClosingChannels"></a>
+### Enum OpeningClosingChannels 
+<a id="schemaEnumOpeningClosingChannels"></a>
 
 | Propriedade              | Valor                     | Definição                  |                     
 |:-------------------------|:--------------------------|:---------------------------|
@@ -504,8 +504,8 @@
 | openingClosingChannels   | CHAT                      | Chat.                       |
 | openingClosingChannels   | OUTROS                    | Outros (p.ex. website/appps de terceiros). |
 
-### Enum PersonalAccountOpeningTransactionMethods  
-<a id="schemaEnumPersonalAccountOpeningTransactionMethods"></a>
+### Enum TransactionMethods  
+<a id="schemaEnumTransactionMethods"></a>
 
 | Propriedade          | Valor                     | Definição                  |                     
 |:---------------------|:--------------------------|:---------------------------|
@@ -514,8 +514,8 @@
 | transactionMethods   | MOVIMENTACAO_CARTAO       | Movimentação com cartão.    |
 | transactionMethods   | MOVIMENTACAO_PRESENCIAL   | Movimentação presencial.    |
 
-## FeesPersonalAccount
-<a id="schemaFeesPersonalAccount"></a>
+## AccountFee
+<a id="schemaAccountFee"></a>
 
 ```json
 {
@@ -564,19 +564,19 @@
 
 |     Nome         |  Tipo                              |  Obrigatório    |                       Descrição                     |
 |:-----------------|:-----------------------------------|:----------------|:----------------------------------------------------|
-| priorityService | [PriorityServicePersonalAccount](#schemaPriorityServicePersonalAccount) | Sim             | Lista Tarifas de serviços prioritários da conta                                 |
-| otherService    | [OtherServicePersonalAccount](#schemaOtherServicePersonalAccount) | Sim             | Lista Tarifas de outros serviços da conta                                 |
+| priorityService | [AccountPriorityService](#schemaAccountPriorityService) | Sim             | Lista Tarifas de serviços prioritários da conta                                 |
+| otherService    | [AccountOtherService](#schemaAccountOtherService) | Sim             | Lista Tarifas de outros serviços da conta                                 |
 
 
-## PriorityServicePersonalAccount
-<a id="schemaPriorityServicePersonalAccount"></a>
+## AccountPriorityService
+<a id="schemaAccountPriorityService"></a>
 
 ```json
 {
   "name": "string",
   "code": "string",
   "chargingTriggerInfo": "string",
-  "price": [
+  "prices": [
     {
       "interval": "string",
       "value": "string",
@@ -584,25 +584,60 @@
     }
   ],
   "minimum": {
-      "value": "string",
-      "currency": "string"
-    },
+    "value": "string",
+    "currency": "string"
+  },
   "maximum": {
-      "value": "string",
-      "currency": "string"
-    }
+    "value": "string",
+    "currency": "string"
+  }
 }
 ```
+|Nome |Tipo | Obrigatório |Descrição |
+|---|---|---|---|
+|name|[Enum PriorityServiceName](#schemapriorityservicename)|true|Nome dos Serviços prioritários, segundo Resolução 3.919 do Bacen, para pessoa física.|
+|code|[AccountPriorityServiceCode](#schemaaccountpriorityservicecode)|true|Sigla de identificação do Serviço Prioritário, segundo Resolução 3.919 do Bacen.|
+|chargingTriggerInfo|string|true|Fatos geradores de cobrança que incidem sobre os serviços prioritários, segundo Resolução 3.919 do Bacen, para pessoa física.|
+|prices|[[Price](#schemaPrice)]|true|Valor da mediana da tarifa, relativa ao serviço ofertado, informado no período |
+|minimum|[MinimumPrice](#schemaMinimumPrice)|true|Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type |
+|maximum|[MaximumPrice](#schemaMaximumPrice)|true|Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type|
 
-|     Nome          |  Tipo                              |  Obrigatório    |                            Descrição                |
-|:------------------|:-----------------------------------|:----------------|:----------------------------------------------------|
-| name              |string                             | Sim             | Nome dos Serviços prioritários, segundo Resolução 3.919 do Bacen, para pessoa física  |
-| code              | [Enum CodePriorityServicePersonalAccount ](#schemaEnumCodePriorityServicePersonalAccount)                             | Sim             | Sigla de identificação do Serviço Prioritário, segundo Resolução 3.919 do Bacen  |
-| chargingTriggerInfo  |string                             | Sim             | Fatos geradores de cobrança que incidem sobre os serviços prioritários, segundo Resolução 3.919 do Bacen, para pessoa física.  |
-| prices             | [Price](#schemaPrice) | Sim             | Valor da mediana da tarifa, relativa ao serviço ofertado, informado no período       |
-| minimum             | [MinimumPrice](#schemaMinimumPrice)           | Sim          | Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
-| maximum             | [MaximumPrice](#schemaMaximumPrice)           | Sim          | Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
+## PriorityServiceName
+<a id="schemapriorityservicename"></a>
 
+|Propriedade | Valor | Definição
+|---|---|
+| name |CONFECCAO_CADASTRO_INICIO_RELACIONAMENTO                          | CONFECCAO_CADASTRO_INICIO_RELACIONAMENTO
+| name |FORNECIMENTO_2_VIA_CARTAO_FUNCAO_DEBITO                           | FORNECIMENTO_2_VIA_CARTAO_FUNCAO_DEBITO
+| name |FORNECIMENTO_2_VIA_CARTAO_FUNCAO_MOVIMENTACAO_CONTA_POUPANCA      | FORNECIMENTO_2_VIA_CARTAO_FUNCAO_MOVIMENTACAO_CONTA_POUPANCA
+| name |EXCLUSAO_CADASTRO_EMITENTES_CHEQUES_SEM_FUNDO_CCF                 | EXCLUSAO_CADASTRO_EMITENTES_CHEQUES_SEM_FUNDO_CCF
+| name |CONTRA_ORDEM_REVOGACAO_E_OPOSICAO_OU_SUSTACAO_PAGAMENTO_CHEQUE    | CONTRA_ORDEM_REVOGACAO_E_OPOSICAO_OU_SUSTACAO_PAGAMENTO_CHEQUE
+| name |FORNECIMENTO_FOLHAS_CHEQUE                                        | FORNECIMENTO_FOLHAS_CHEQUE
+| name |CHEQUE_ADMINISTRATIVO                                             | CHEQUE_ADMINISTRATIVO
+| name |CHEQUE_VISADO                                                     | CHEQUE_VISADO
+| name |SAQUE_CONTA_DEPOSITO_A_VISTA_POUPANCA_PRESENCIAL_OU_PESSOAL       | SAQUE_CONTA_DEPOSITO_A_VISTA_POUPANCA_PRESENCIAL_OU_PESSOAL
+| name |SAQUE_CONTA_DEPOSITO_A_VISTA_POUPANCA_TERMINAL_AUTOATENDIMENTO    | SAQUE_CONTA_DEPOSITO_A_VISTA_POUPANCA_TERMINAL_AUTOATENDIMENTO
+| name |SAQUE_CONTA_DEPOSITO_A_VISTA_POUPANCA_CORRESPONDENTES_PAIS        | SAQUE_CONTA_DEPOSITO_A_VISTA_POUPANCA_CORRESPONDENTES_PAIS
+| name |DEPOSITO_IDENTIFICADO                                             | DEPOSITO_IDENTIFICADO
+| name |FORNECIMENTO_EXTRATO_MENSAL_CONTA_DEPOSITOS_A_VISTA_E_POUPANCA_PRESENCIAL_OU_PESSOAL        | FORNECIMENTO_EXTRATO_MENSAL_CONTA_DEPOSITOS_A_VISTA_E_POUPANCA_PRESENCIAL_OU_PESSOAL
+| name |FORNECIMENTO_EXTRATO_MENSAL_CONTA_DEPOSITOS_A_VISTA_E_POUPANCA_TERMINAL_AUTOATENDIMENTO     | FORNECIMENTO_EXTRATO_MENSAL_CONTA_DEPOSITOS_A_VISTA_E_POUPANCA_TERMINAL_AUTOATENDIMENTO
+| name |FORNECIMENTO_EXTRATO_MENSAL_CONTA_DEPOSITOS_A_VISTA_E_POUPANCA_CORRESPONDENTES_PAIS         | FORNECIMENTO_EXTRATO_MENSAL_CONTA_DEPOSITOS_A_VISTA_E_POUPANCA_CORRESPONDENTES_PAIS
+| name |FORNECIMENTO_EXTRATO_DE_UM_PERIODO_CONTA_DEPOSITOS_A_VISTA_E_POUPANCA_PRESENCIAL_OU_PESSOAL | FORNECIMENTO_EXTRATO_DE_UM_PERIODO_CONTA_DEPOSITOS_A_VISTA_E_POUPANCA_PRESENCIAL_OU_PESSOAL
+| name |FORNECIMENTO_EXTRATO_DE_UM_PERIODO_CONTA_DEPOSITOS_A_VISTA_E_POUPANCA_TERMINAL_AUTOATENDIMENTO  | FORNECIMENTO_EXTRATO_DE_UM_PERIODO_CONTA_DEPOSITOS_A_VISTA_E_POUPANCA_TERMINAL_AUTOATENDIMENTO
+| name |FORNECIMENTO_EXTRATO_DE_UM_PERIODO_CONTA_DEPOSITOS_A_VISTA_E_POUPANCA_CORRESPONDENTES_PAIS      | FORNECIMENTO_EXTRATO_DE_UM_PERIODO_CONTA_DEPOSITOS_A_VISTA_E_POUPANCA_CORRESPONDENTES_PAIS
+| name |FORNECIMENTO_COPIA_MICROFILME_MICROFICHA_ASSEMELHADO                                            | FORNECIMENTO_COPIA_MICROFILME_MICROFICHA_ASSEMELHADO
+| name |TRANSFERENCIA_DOC_PESSOAL_OU_PRESENCIAL                                                         | TRANSFERENCIA_DOC_PESSOAL_OU_PRESENCIAL
+| name |TRANSFERENCIA_DOC_TERMINAL_AUTOATENDIMENTO_OUTROS_MEIOS_ELETRONICOS                             | TRANSFERENCIA_DOC_TERMINAL_AUTOATENDIMENTO_OUTROS_MEIOS_ELETRONICOS
+| name |TRANSFERENCIA_DOC_INTERNET                                                  | TRANSFERENCIA_DOC_INTERNET
+| name |TRANSFERENCIA_TED_PESSOAL_OU_PRESENCIAL                                     | TRANSFERENCIA_TED_PESSOAL_OU_PRESENCIAL
+| name |TRANSFERENCIA_TED_TERMINAL_AUTOATENDIMENTO_OUTROS_MEIOS_ELETRONICOS         | TRANSFERENCIA_TED_TERMINAL_AUTOATENDIMENTO_OUTROS_MEIOS_ELETRONICOS
+| name |TRANSFERENCIA_TED_INTERNET                                                  | TRANSFERENCIA_TED_INTERNET
+| name |TRANSFERENCIA_DOC_TED_PESSOAL_OU_PRESENCIAL                                 | TRANSFERENCIA_DOC_TED_PESSOAL_OU_PRESENCIAL
+| name |TRANSFERENCIA_DOC_TED_TERMINAL_AUTOATENDIMENTO_OUTROS_MEIOS_ELETRONICOS     | TRANSFERENCIA_DOC_TED_TERMINAL_AUTOATENDIMENTO_OUTROS_MEIOS_ELETRONICOS
+| name |TRANSFERENCIA_DOC_TED_INTERNET                                              | TRANSFERENCIA_DOC_TED_INTERNET
+| name |TRANSFERENCIA_ENTRE_CONTAS_PROPRIA_INSTITUICAO_PESSOAL_OU_PRESENCIAL        | TRANSFERENCIA_ENTRE_CONTAS_PROPRIA_INSTITUICAO_PESSOAL_OU_PRESENCIAL
+| name |TRANSFERENCIA_ENTRE_CONTAS_PROPRIA_INSTITUICAO_TERMINAL_AUTOATENDIMENTO_OUTROS_MEIOS_ELETRONICOS_INCLUSIVE_INTERNET  | TRANSFERENCIA_ENTRE_CONTAS_PROPRIA_INSTITUICAO_TERMINAL_AUTOATENDIMENTO_OUTROS_MEIOS_ELETRONICOS_INCLUSIVE_INTERNET
+| name |ORDEM_PAGAMENTO                           | ORDEM PAGAMENTO
 
 ### Enum CodePriorityServicePersonalAccount  
 <a id="schemaEnumCodePriorityServicePersonalAccount"></a>
@@ -642,8 +677,8 @@
 | code                 | ORDEM_PAGAMENTO                                  | Ordem de Pagamento                                                               |
 
 
-## OtherServicePersonalAccount
-<a id="schemaOtherServicePersonalAccount"></a>
+## AccountOtherService
+<a id="schemaAccountOtherService"></a>
 
 ```json
 {
@@ -678,8 +713,8 @@
 | maximum             | [[MaximumPrice](#schemaMaximumPrice)]           | Sim          | Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
 
 
-## ServiceBundlePersonalAccount
-<a id="schemaServiceBundlePersonalAccount"></a>
+## ServiceBundle
+<a id="schemaServiceBundle"></a>
 
 ```json
 {
@@ -775,8 +810,8 @@
 
 
 
-## TermsConditionsPersonalAccount
-<a id="schemaTermsConditionsPersonalAccount"></a>
+## AccountsTermsConditions
+<a id="schemaAccountTermsConditions"></a>
 
 ```json
 {
@@ -805,8 +840,8 @@
 | closingProcessInfo          | string                       | Sim          | Procedimentos de encerramento para o tipo de conta tratado.     |
 
 
-## IncomeRatesPersonalAccount
-<a id="schemaIncomeRatesPersonalAccount"></a>
+## PersonalAccountsIncomeRate
+<a id="schemaPersonalAccountIncomeRates"></a>
 
 ```json
  {
