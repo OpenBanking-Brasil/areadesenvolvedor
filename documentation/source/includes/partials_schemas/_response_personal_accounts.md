@@ -2,7 +2,7 @@
 <a id="schemaResponsePersonalAccounts"></a>
 
 ```json
-{ 
+{
   "data": {
     "brand": {
       "name": "string",
@@ -14,29 +14,9 @@
           "personalAccounts": [
             {
               "type": "string",
-              "fees": {
-                "priorityService": 
-                  {
-                    "name": "string",
-                    "code": "string",
-                    "chargingTriggerInfo": "string",
-                    "price": [
-                      {
-                        "interval": "string",
-                        "value": "string",
-                        "currency": "string"
-                      }
-                    ],
-                    "minimum": {
-                        "value": "string",
-                        "currency": "string"
-                      },
-                    "maximum": {
-                        "value": "string",
-                        "currency": "string"
-                      }
-                  },
-                "otherService": {
+              "fees": [
+                {
+                  "priorityService": {
                     "name": "string",
                     "code": "string",
                     "chargingTriggerInfo": "string",
@@ -48,21 +28,43 @@
                       }
                     ],
                     "minimum": {
-                        "value": "string",
-                        "currency": "string"
-                      },
+                      "value": "string",
+                      "currency": "string"
+                    },
                     "maximum": {
+                      "value": "string",
+                      "currency": "string"
+                    }
+                  },
+                  "otherService": {
+                    "name": "string",
+                    "code": "string",
+                    "chargingTriggerInfo": "string",
+                    "prices": [
+                      {
+                        "interval": "string",
                         "value": "string",
                         "currency": "string"
                       }
+                    ],
+                    "minimum": {
+                      "value": "string",
+                      "currency": "string"
+                    },
+                    "maximum": {
+                      "value": "string",
+                      "currency": "string"
+                    }
                   }
-              },
+                }
+              ],
               "serviceBundles": [
                 {
                   "name": "string",
-                  "service": [
+                  "services": [
                     {
                       "code": "string",
+                      "chargingTriggerInfo": "string",
                       "eventLimitQuantity": "string",
                       "freeEventQuantity": "string"
                     }
@@ -85,28 +87,20 @@
                 }
               ],
               "openingClosingChannels": "string",
-              "additionalInfo":"string",
+              "additionalInfo": "string",
               "transactionMethods": "string",
               "termsConditions": {
-              "minimumBalance": {
-                   "value": "string",
-                   "currency": "string"
-
+                "minimumBalance": {
+                  "value": "string",
+                  "currency": "string"
                 },
                 "elegibilityCriteriaInfo": "string",
                 "closingProcessInfo": "string"
               },
-              "incomeRates": [{
+              "incomeRate": {
                 "savingAccount": "string",
-                "prePaidPaymentAccount": {
-                    "applications":{
-                      "interval":"string",
-                      "rate":"string"
-                    },
-                    "minimumRate": "string",
-                    "maxiumRate": "string"
-                }
-              }]
+                "prepaidPaymentAccount": "string"
+              }
             }
           ]
         }
@@ -148,29 +142,9 @@
       "personalAccounts": [
         {
           "type": "string",
-          "fees": {
-            "priorityService": 
-              {
-                "name": "string",
-                "code": "string",
-                "chargingTriggerInfo": "string",
-                "price": [
-                  {
-                    "interval": "string",
-                    "value": "string",
-                    "currency": "string"
-                  }
-                ],
-                "minimum": {
-                    "value": "string",
-                    "currency": "string"
-                  },
-                "maximum": {
-                    "value": "string",
-                    "currency": "string"
-                  }
-              },
-            "otherService": {
+          "fees": [
+            {
+              "priorityService": {
                 "name": "string",
                 "code": "string",
                 "chargingTriggerInfo": "string",
@@ -182,21 +156,43 @@
                   }
                 ],
                 "minimum": {
-                    "value": "string",
-                    "currency": "string"
-                  },
+                  "value": "string",
+                  "currency": "string"
+                },
                 "maximum": {
+                  "value": "string",
+                  "currency": "string"
+                }
+              },
+              "otherService": {
+                "name": "string",
+                "code": "string",
+                "chargingTriggerInfo": "string",
+                "prices": [
+                  {
+                    "interval": "string",
                     "value": "string",
                     "currency": "string"
                   }
+                ],
+                "minimum": {
+                  "value": "string",
+                  "currency": "string"
+                },
+                "maximum": {
+                  "value": "string",
+                  "currency": "string"
+                }
               }
-          },
+            }
+          ],
           "serviceBundles": [
             {
               "name": "string",
-              "service": [
+              "services": [
                 {
                   "code": "string",
+                  "chargingTriggerInfo": "string",
                   "eventLimitQuantity": "string",
                   "freeEventQuantity": "string"
                 }
@@ -219,28 +215,20 @@
             }
           ],
           "openingClosingChannels": "string",
-          "additionalInfo":"string",
+          "additionalInfo": "string",
           "transactionMethods": "string",
           "termsConditions": {
-          "minimumBalance": {
-                "value": "string",
-                "currency": "string"
-
+            "minimumBalance": {
+              "value": "string",
+              "currency": "string"
             },
             "elegibilityCriteriaInfo": "string",
             "closingProcessInfo": "string"
           },
-          "incomeRates": [{
+          "incomeRate": {
             "savingAccount": "string",
-            "prePaidPaymentAccount": {
-                "applications":{
-                  "interval":"string",
-                  "rate":"string"
-                },
-                "minimumRate": "string",
-                "maxiumRate": "string"
-            }
-          }]
+            "prepaidPaymentAccount": "string"
+          }
         }
       ]
     }
@@ -264,29 +252,9 @@
   "personalAccounts": [
     {
       "type": "string",
-      "fees": {
-        "priorityService": 
-          {
-            "name": "string",
-            "code": "string",
-            "chargingTriggerInfo": "string",
-            "price": [
-              {
-                "interval": "string",
-                "value": "string",
-                "currency": "string"
-              }
-            ],
-            "minimum": {
-                "value": "string",
-                "currency": "string"
-              },
-            "maximum": {
-                "value": "string",
-                "currency": "string"
-              }
-          },
-        "otherService": {
+      "fees": [
+        {
+          "priorityService": {
             "name": "string",
             "code": "string",
             "chargingTriggerInfo": "string",
@@ -298,21 +266,43 @@
               }
             ],
             "minimum": {
-                "value": "string",
-                "currency": "string"
-              },
+              "value": "string",
+              "currency": "string"
+            },
             "maximum": {
+              "value": "string",
+              "currency": "string"
+            }
+          },
+          "otherService": {
+            "name": "string",
+            "code": "string",
+            "chargingTriggerInfo": "string",
+            "prices": [
+              {
+                "interval": "string",
                 "value": "string",
                 "currency": "string"
               }
+            ],
+            "minimum": {
+              "value": "string",
+              "currency": "string"
+            },
+            "maximum": {
+              "value": "string",
+              "currency": "string"
+            }
           }
-      },
+        }
+      ],
       "serviceBundles": [
         {
           "name": "string",
-          "service": [
+          "services": [
             {
               "code": "string",
+              "chargingTriggerInfo": "string",
               "eventLimitQuantity": "string",
               "freeEventQuantity": "string"
             }
@@ -335,28 +325,20 @@
         }
       ],
       "openingClosingChannels": "string",
-      "additionalInfo":"string",
+      "additionalInfo": "string",
       "transactionMethods": "string",
       "termsConditions": {
-      "minimumBalance": {
-            "value": "string",
-            "currency": "string"
-
+        "minimumBalance": {
+          "value": "string",
+          "currency": "string"
         },
         "elegibilityCriteriaInfo": "string",
         "closingProcessInfo": "string"
       },
-      "incomeRates": [{
+      "incomeRate": {
         "savingAccount": "string",
-        "prePaidPaymentAccount": {
-            "applications":{
-              "interval":"string",
-              "rate":"string"
-            },
-            "minimumRate": "string",
-            "maxiumRate": "string"
-        }
-      }]
+        "prepaidPaymentAccount": "string"
+      }
     }
   ]
 }
@@ -376,28 +358,9 @@
 ```json
 {
   "type": "string",
-  "fees": {
-    "priorityService": {
-      "name": "string",
-      "code": "string",
-      "chargingTriggerInfo": "string",
-      "price": [
-        {
-          "interval": "string",
-          "value": "string",
-          "currency": "string"
-        }
-      ],
-      "minimum": {
-          "value": "string",
-          "currency": "string"
-        },
-      "maximum": {
-          "value": "string",
-          "currency": "string"
-        }
-    },
-    "otherService": {
+  "fees": [
+    {
+      "priorityService": {
         "name": "string",
         "code": "string",
         "chargingTriggerInfo": "string",
@@ -409,21 +372,43 @@
           }
         ],
         "minimum": {
-            "value": "string",
-            "currency": "string"
-          },
+          "value": "string",
+          "currency": "string"
+        },
         "maximum": {
+          "value": "string",
+          "currency": "string"
+        }
+      },
+      "otherService": {
+        "name": "string",
+        "code": "string",
+        "chargingTriggerInfo": "string",
+        "prices": [
+          {
+            "interval": "string",
             "value": "string",
             "currency": "string"
           }
+        ],
+        "minimum": {
+          "value": "string",
+          "currency": "string"
+        },
+        "maximum": {
+          "value": "string",
+          "currency": "string"
+        }
       }
-  },
+    }
+  ],
   "serviceBundles": [
     {
       "name": "string",
-      "service": [
+      "services": [
         {
           "code": "string",
+          "chargingTriggerInfo": "string",
           "eventLimitQuantity": "string",
           "freeEventQuantity": "string"
         }
@@ -446,28 +431,20 @@
     }
   ],
   "openingClosingChannels": "string",
-  "additionalInfo":"string",
+  "additionalInfo": "string",
   "transactionMethods": "string",
   "termsConditions": {
-  "minimumBalance": {
-        "value": "string",
-        "currency": "string"
-
+    "minimumBalance": {
+      "value": "string",
+      "currency": "string"
     },
     "elegibilityCriteriaInfo": "string",
     "closingProcessInfo": "string"
   },
-  "incomeRates": [{
+  "incomeRate": {
     "savingAccount": "string",
-    "prePaidPaymentAccount": {
-        "applications":{
-          "interval":"string",
-          "rate":"string"
-        },
-        "minimumRate": "string",
-        "maxiumRate": "string"
-    }
-  }]
+    "prepaidPaymentAccount": "string"
+  }
 }
 ```
 
@@ -477,42 +454,11 @@
 | fees                  | [AccountFee](#schemaAccountFee) | Sim             | Lista Tarifas cobradas.                             |
 | serviceBundle        | [ServiceBundle](#schemaServiceBundle) | Sim             | Nome dos pacotes de serviços.                          |
 | openingClosingChannels   | [Enum OpeningClosingChannels ](#schemaEnumOpeningClosingChannels) | Sim             | Canais disponíveis para abertura e encerramento de contas, p.ex. 'DEPENDENCIAS_PROPRIAS'      |
-| additionalInfo        | string                                         | Sim             | Texto livre para complementar informação relativa ao Canal disponível, quando no campo ''openingClosingChannels'' estiver preenchida a opção ''Outros''<br>Restrição: Campo de preenchimento obrigatório se 'openingCloseChannels' estiver preenchida a opção 'OUTROS' |
+| additionalInfo        | string                                         | Não             | Texto livre para complementar informação relativa ao Canal disponível, quando no campo ''openingClosingChannels'' estiver preenchida a opção ''Outros''<br>Restrição: Campo de preenchimento obrigatório se 'openingCloseChannels' estiver preenchida a opção 'OUTROS' |
 | transactionMethods    | [Enum TransactionMethods ](#schemaEnumTransactionMethods)                                         | Sim             | Lista de formas de movimentação possíveis para a conta |
 | termsConditions       | [AccountsTermsConditions](#schemaAccountTermsConditions) | Sim             | Termos e condições contratuais.                        |
-| incomeRates           | [PersonalAccountsIncomeRate](#schemaPersonalAccount) | Sim             | Valores dos percentuais de taxas.                 IncomeRates     |
+| incomeRates           | [PersonalAccountsIncomeRate](#schemapersonalaccountsincomerate) | Sim             | Valores dos percentuais de taxas.     |
 
-### Enum PersonalAccountType
-<a id="schemaPersonalAccountType"></a>
-
-| Propriedade  | Valor                       | Definição                   |                
-|:-------------|:----------------------------|:----------------------------|
-| type         | CONTA_DEPOSITO_A_VISTA      | Conta de depósito à vista.              |
-| type         | CONTA_POUPANCA              | Conta Poupança.              |
-| type         | CONTA_PAGAMENTO_PRE_PAGA    | Conta de pagamento pré paga. |
-
-### Enum OpeningClosingChannels 
-<a id="schemaEnumOpeningClosingChannels"></a>
-
-| Propriedade              | Valor                     | Definição                  |                     
-|:-------------------------|:--------------------------|:---------------------------|
-| openingClosingChannels   | DEPENDENCIAS_PROPRIAS     | Dependências próprias.      |
-| openingClosingChannels   | CORRESPONDENTES_BANCARIOS | Correspondentes bancários.  |
-| openingClosingChannels   | INTERNET_BANKING          | Internet banking.           |
-| openingClosingChannels   | MOBILE_BANKING            | Mobile banking.             |
-| openingClosingChannels   | CENTRAL_TELEFONICA        | Central telefônica.         |
-| openingClosingChannels   | CHAT                      | Chat.                       |
-| openingClosingChannels   | OUTROS                    | Outros (p.ex. website/appps de terceiros). |
-
-### Enum TransactionMethods  
-<a id="schemaEnumTransactionMethods"></a>
-
-| Propriedade          | Valor                     | Definição                  |                     
-|:---------------------|:--------------------------|:---------------------------|
-| transactionMethods   | MOVIMENTACAO_ELETRONICA   | Movimentação eletrônica.    |
-| transactionMethods   | MOVIMENTACAO_CHEQUE       | Movimentação com cheque.    |
-| transactionMethods   | MOVIMENTACAO_CARTAO       | Movimentação com cartão.    |
-| transactionMethods   | MOVIMENTACAO_PRESENCIAL   | Movimentação presencial.    |
 
 ## AccountFee
 <a id="schemaAccountFee"></a>
@@ -523,7 +469,7 @@
     "name": "string",
     "code": "string",
     "chargingTriggerInfo": "string",
-    "price": [
+    "prices": [
       {
         "interval": "string",
         "value": "string",
@@ -531,34 +477,34 @@
       }
     ],
     "minimum": {
-        "value": "string",
-        "currency": "string"
-      },
+      "value": "string",
+      "currency": "string"
+    },
     "maximum": {
+      "value": "string",
+      "currency": "string"
+    }
+  },
+  "otherService": {
+    "name": "string",
+    "code": "string",
+    "chargingTriggerInfo": "string",
+    "prices": [
+      {
+        "interval": "string",
         "value": "string",
         "currency": "string"
       }
-  },
-  "otherService": {
-      "name": "string",
-      "code": "string",
-      "chargingTriggerInfo": "string",
-      "prices": [
-        {
-          "interval": "string",
-          "value": "string",
-          "currency": "string"
-        }
-      ],
-      "minimum": {
-          "value": "string",
-          "currency": "string"
-        },
-      "maximum": {
-          "value": "string",
-          "currency": "string"
-        }
+    ],
+    "minimum": {
+      "value": "string",
+      "currency": "string"
+    },
+    "maximum": {
+      "value": "string",
+      "currency": "string"
     }
+  }
 }
 ```
 
@@ -593,88 +539,15 @@
   }
 }
 ```
+
 |Nome |Tipo | Obrigatório |Descrição |
 |---|---|---|---|
-|name|[Enum PriorityServiceName](#schemapriorityservicename)|true|Nome dos Serviços prioritários, segundo Resolução 3.919 do Bacen, para pessoa física.|
-|code|[AccountPriorityServiceCode](#schemaaccountpriorityservicecode)|true|Sigla de identificação do Serviço Prioritário, segundo Resolução 3.919 do Bacen.|
-|chargingTriggerInfo|string|true|Fatos geradores de cobrança que incidem sobre os serviços prioritários, segundo Resolução 3.919 do Bacen, para pessoa física.|
-|prices|[[Price](#schemaPrice)]|true|Valor da mediana da tarifa, relativa ao serviço ofertado, informado no período |
-|minimum|[MinimumPrice](#schemaMinimumPrice)|true|Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type |
-|maximum|[MaximumPrice](#schemaMaximumPrice)|true|Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type|
-
-## PriorityServiceName
-<a id="schemapriorityservicename"></a>
-
-|Propriedade | Valor | Definição
-|---|---|
-| name |CONFECCAO_CADASTRO_INICIO_RELACIONAMENTO                          | CONFECCAO_CADASTRO_INICIO_RELACIONAMENTO
-| name |FORNECIMENTO_2_VIA_CARTAO_FUNCAO_DEBITO                           | FORNECIMENTO_2_VIA_CARTAO_FUNCAO_DEBITO
-| name |FORNECIMENTO_2_VIA_CARTAO_FUNCAO_MOVIMENTACAO_CONTA_POUPANCA      | FORNECIMENTO_2_VIA_CARTAO_FUNCAO_MOVIMENTACAO_CONTA_POUPANCA
-| name |EXCLUSAO_CADASTRO_EMITENTES_CHEQUES_SEM_FUNDO_CCF                 | EXCLUSAO_CADASTRO_EMITENTES_CHEQUES_SEM_FUNDO_CCF
-| name |CONTRA_ORDEM_REVOGACAO_E_OPOSICAO_OU_SUSTACAO_PAGAMENTO_CHEQUE    | CONTRA_ORDEM_REVOGACAO_E_OPOSICAO_OU_SUSTACAO_PAGAMENTO_CHEQUE
-| name |FORNECIMENTO_FOLHAS_CHEQUE                                        | FORNECIMENTO_FOLHAS_CHEQUE
-| name |CHEQUE_ADMINISTRATIVO                                             | CHEQUE_ADMINISTRATIVO
-| name |CHEQUE_VISADO                                                     | CHEQUE_VISADO
-| name |SAQUE_CONTA_DEPOSITO_A_VISTA_POUPANCA_PRESENCIAL_OU_PESSOAL       | SAQUE_CONTA_DEPOSITO_A_VISTA_POUPANCA_PRESENCIAL_OU_PESSOAL
-| name |SAQUE_CONTA_DEPOSITO_A_VISTA_POUPANCA_TERMINAL_AUTOATENDIMENTO    | SAQUE_CONTA_DEPOSITO_A_VISTA_POUPANCA_TERMINAL_AUTOATENDIMENTO
-| name |SAQUE_CONTA_DEPOSITO_A_VISTA_POUPANCA_CORRESPONDENTES_PAIS        | SAQUE_CONTA_DEPOSITO_A_VISTA_POUPANCA_CORRESPONDENTES_PAIS
-| name |DEPOSITO_IDENTIFICADO                                             | DEPOSITO_IDENTIFICADO
-| name |FORNECIMENTO_EXTRATO_MENSAL_CONTA_DEPOSITOS_A_VISTA_E_POUPANCA_PRESENCIAL_OU_PESSOAL        | FORNECIMENTO_EXTRATO_MENSAL_CONTA_DEPOSITOS_A_VISTA_E_POUPANCA_PRESENCIAL_OU_PESSOAL
-| name |FORNECIMENTO_EXTRATO_MENSAL_CONTA_DEPOSITOS_A_VISTA_E_POUPANCA_TERMINAL_AUTOATENDIMENTO     | FORNECIMENTO_EXTRATO_MENSAL_CONTA_DEPOSITOS_A_VISTA_E_POUPANCA_TERMINAL_AUTOATENDIMENTO
-| name |FORNECIMENTO_EXTRATO_MENSAL_CONTA_DEPOSITOS_A_VISTA_E_POUPANCA_CORRESPONDENTES_PAIS         | FORNECIMENTO_EXTRATO_MENSAL_CONTA_DEPOSITOS_A_VISTA_E_POUPANCA_CORRESPONDENTES_PAIS
-| name |FORNECIMENTO_EXTRATO_DE_UM_PERIODO_CONTA_DEPOSITOS_A_VISTA_E_POUPANCA_PRESENCIAL_OU_PESSOAL | FORNECIMENTO_EXTRATO_DE_UM_PERIODO_CONTA_DEPOSITOS_A_VISTA_E_POUPANCA_PRESENCIAL_OU_PESSOAL
-| name |FORNECIMENTO_EXTRATO_DE_UM_PERIODO_CONTA_DEPOSITOS_A_VISTA_E_POUPANCA_TERMINAL_AUTOATENDIMENTO  | FORNECIMENTO_EXTRATO_DE_UM_PERIODO_CONTA_DEPOSITOS_A_VISTA_E_POUPANCA_TERMINAL_AUTOATENDIMENTO
-| name |FORNECIMENTO_EXTRATO_DE_UM_PERIODO_CONTA_DEPOSITOS_A_VISTA_E_POUPANCA_CORRESPONDENTES_PAIS      | FORNECIMENTO_EXTRATO_DE_UM_PERIODO_CONTA_DEPOSITOS_A_VISTA_E_POUPANCA_CORRESPONDENTES_PAIS
-| name |FORNECIMENTO_COPIA_MICROFILME_MICROFICHA_ASSEMELHADO                                            | FORNECIMENTO_COPIA_MICROFILME_MICROFICHA_ASSEMELHADO
-| name |TRANSFERENCIA_DOC_PESSOAL_OU_PRESENCIAL                                                         | TRANSFERENCIA_DOC_PESSOAL_OU_PRESENCIAL
-| name |TRANSFERENCIA_DOC_TERMINAL_AUTOATENDIMENTO_OUTROS_MEIOS_ELETRONICOS                             | TRANSFERENCIA_DOC_TERMINAL_AUTOATENDIMENTO_OUTROS_MEIOS_ELETRONICOS
-| name |TRANSFERENCIA_DOC_INTERNET                                                  | TRANSFERENCIA_DOC_INTERNET
-| name |TRANSFERENCIA_TED_PESSOAL_OU_PRESENCIAL                                     | TRANSFERENCIA_TED_PESSOAL_OU_PRESENCIAL
-| name |TRANSFERENCIA_TED_TERMINAL_AUTOATENDIMENTO_OUTROS_MEIOS_ELETRONICOS         | TRANSFERENCIA_TED_TERMINAL_AUTOATENDIMENTO_OUTROS_MEIOS_ELETRONICOS
-| name |TRANSFERENCIA_TED_INTERNET                                                  | TRANSFERENCIA_TED_INTERNET
-| name |TRANSFERENCIA_DOC_TED_PESSOAL_OU_PRESENCIAL                                 | TRANSFERENCIA_DOC_TED_PESSOAL_OU_PRESENCIAL
-| name |TRANSFERENCIA_DOC_TED_TERMINAL_AUTOATENDIMENTO_OUTROS_MEIOS_ELETRONICOS     | TRANSFERENCIA_DOC_TED_TERMINAL_AUTOATENDIMENTO_OUTROS_MEIOS_ELETRONICOS
-| name |TRANSFERENCIA_DOC_TED_INTERNET                                              | TRANSFERENCIA_DOC_TED_INTERNET
-| name |TRANSFERENCIA_ENTRE_CONTAS_PROPRIA_INSTITUICAO_PESSOAL_OU_PRESENCIAL        | TRANSFERENCIA_ENTRE_CONTAS_PROPRIA_INSTITUICAO_PESSOAL_OU_PRESENCIAL
-| name |TRANSFERENCIA_ENTRE_CONTAS_PROPRIA_INSTITUICAO_TERMINAL_AUTOATENDIMENTO_OUTROS_MEIOS_ELETRONICOS_INCLUSIVE_INTERNET  | TRANSFERENCIA_ENTRE_CONTAS_PROPRIA_INSTITUICAO_TERMINAL_AUTOATENDIMENTO_OUTROS_MEIOS_ELETRONICOS_INCLUSIVE_INTERNET
-| name |ORDEM_PAGAMENTO                           | ORDEM PAGAMENTO
-
-### Enum CodePriorityServicePersonalAccount  
-<a id="schemaEnumCodePriorityServicePersonalAccount"></a>
-
-| Propriedade          | Valor                                            | Definição                                                                        |                     
-|:-------------------- |:------------------------------------------------ |:-------------------------------------------------------------------------------- |
-| code                 | CADASTRO                                         | CADASTRO                                                                         |
-| code                 | 2_VIA_CARTAO_DEBITO                              | 2ª via-CARTÃODEBITO                                                              |
-| code                 | 2_VIA_CARTAO_POUPANCA                            | 2ª via-CARTÃOPOUPANÇA                                                            |
-| code                 | EXCLUSAO_CCF                                     | EXCLUSÃO CCF                                                                     |
-| code                 | SUSTACAO_REVOGACAO                               | SUSTAÇÃO/REVOGAÇÃO                                                               |
-| code                 | FOLHA_CHEQUE                                     | Fornecimento Folha de cheque                                                     |
-| code                 | CHEQUE_ADMINISTRATIVO                            | Cheque Administrativo                                                            |
-| code                 | CHEQUE_VISADO                                    | Cheque Visado                                                                    |
-| code                 | SAQUE_PESSOAL                                    | Saque Pessoal ou Presencial                                                      |
-| code                 | SAQUE_TERMINAL                                   | Saque Terminal autoatendimento                                                   |
-| code                 | SAQUE_CORRESPONDENTE                             | Saque Correspondente no Pais                                                     |
-| code                 | DEPOSITO_IDENTIFICADO                            | Depósito identificado                                                            |
-| code                 | EXTRATO_MES_P                                    | Extrato mensal presencial                                                        |
-| code                 | EXTRATO_MES_E                                    | Extrato mensal meios eletrônicos                                                 |
-| code                 | EXTRATO_MES_C                                    | Extrato mensal Correspondente no Pais                                            |
-| code                 | EXTRATO_MOVIMENTO_P                              | Extrato por período presencial                                                   |
-| code                 | EXTRATO_MOVIMENTO_E                              | Extrato por período meio eletrônico                                              |
-| code                 | EXTRATO_MOVIMENTO_C                              | Extrato por período Correspondente no Pais                                       |
-| code                 | MICROFILME                                       | Fornecimento de cópia de microfilme, microficha ou assemelhado                   |
-| code                 | DOC_PESSOAL                                      | Transferência por DOC presencial ou pessoal                                      |
-| code                 | DOC_ELETRONICO                                   | Transferência por DOC meios eletrônicos                                          |
-| code                 | DOC_INTERNET                                     | Transferência por TED via Internet                                               |
-| code                 | TED_PESSOAL                                      | Transferência por TED pessoal ou presencial                                      |
-| code                 | TED_ELETRONICO                                   | Transferência por TED meio eletrônico                                            |
-| code                 | TED_INTERNET                                     | Transferência por TED via Internet                                               |
-| code                 | DOC_TED_AGENDADO_P                               | Transferência agendada TED ou DOC presencial ou pessoal                          |
-| code                 | DOC_TED_AGENDADO_E                               | Transferência agendada TED ou DOC meio eletrônico                                |
-| code                 | DOC_TED_AGENDADO_I                               | Transferência agendada TED ou DOC via Internet                                   |
-| code                 | TRANSF_RECURSO_P                                 | Transferência entre contas própria instituição presencial ou pessoal             |
-| code                 | TRANSF_RECURSO_E                                 | Transferência entre contas própria instituição por meios eletrônicos ou Internet |
-| code                 | ORDEM_PAGAMENTO                                  | Ordem de Pagamento                                                               |
+|name|[Enum PriorityServiceName](#schemapriorityservicename)|Sim |Nome dos Serviços prioritários, segundo Resolução 3.919 do Bacen, para pessoa física.|
+|code|[AccountPriorityServiceCode](#schemaaccountpriorityservicecode)|Sim |Sigla de identificação do Serviço Prioritário, segundo Resolução 3.919 do Bacen.|
+|chargingTriggerInfo|string|Sim |Fatos geradores de cobrança que incidem sobre os serviços prioritários, segundo Resolução 3.919 do Bacen, para pessoa física.|
+|prices|[[Price](#schemaPrice)]|Sim |Valor da mediana da tarifa, relativa ao serviço ofertado, informado no período |
+|minimum|[MinimumPrice](#schemaMinimumPrice)|Sim |Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type |
+|maximum|[MaximumPrice](#schemaMaximumPrice)|Sim |Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type|
 
 
 ## AccountOtherService
@@ -693,13 +566,13 @@
     }
   ],
   "minimum": {
-      "value": "string",
-      "currency": "string"
-    },
+    "value": "string",
+    "currency": "string"
+  },
   "maximum": {
-      "value": "string",
-      "currency": "string"
-    }
+    "value": "string",
+    "currency": "string"
+  }
 }
 ```
 
@@ -718,96 +591,59 @@
 
 ```json
 {
-"name":"string",
-    "service": [
-      {
-        "code": "string",
-        "eventLimitQuantity": "string",
-        "freeEventQuantity": "string"
-      }
-    ],
-    "prices":{
+  "name": "string",
+  "services": [
+    {
+      "code": "string",
+      "chargingTriggerInfo": "string",
+      "eventLimitQuantity": "string",
+      "freeEventQuantity": "string"
+    }
+  ],
+  "prices": [
+    {
       "interval": "string",
-      "monthlyFee":"string",
-      "currency":"string"
-      
-    },
-    "minimum": {
-            "value": "string",
-            "currency": "string"
-          },
-    "maximum": {
-            "value": "string",
-            "currency": "string"
-          }
-    
+      "monthlyFee": "string",
+      "currency": "string"
+    }
+  ],
+  "minimum": {
+    "value": "string",
+    "currency": "string"
+  },
+  "maximum": {
+    "value": "string",
+    "currency": "string"
   }
+}
 ```
 
 |     Nome           |  Tipo                                                               |  Obrigatório |                            Descrição                |
 |:-------------------|:-----------------------------                                       |:-------------|:----------------------------------------------------|
 | name               | string                                                              | Sim          | Nome do conjunto de serviços                        |
-| services           | [[ServicesPersonalAccount](#schemaServicesPersonalAccount)]         | Sim          | Lista de serviços       |
-| prices              | [ServiceBundlesPersonalAccountPrice](#schemaServiceBundlesPersonalAccountPrice) | Sim          | Valor mensal da tarifa referente ao Pacote de Serviços |
+| services           | [[ServiceBundleServiceDetail](#schemaservicebundleservicedetail)]         | Sim          | Lista de serviços       |
+| prices              | [MontlyPrice](#schemamontlyprice) | Sim          | Valor mensal da tarifa referente ao Pacote de Serviços |
 | minimum             | [[MinimumPrice](#schemaMinimumPrice)]           | Sim          | Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
 | maximum             | [[MaximumPrice](#schemaMaximumPrice)]           | Sim          | Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
 
-## ServicesPersonalAccount
-<a id="schemaServicesPersonalAccount"></a>
+## ServiceBundleServiceDetail
+<a id="schemaservicebundleservicedetail"></a>
 
 ```json
 {
   "code": "string",
+  "chargingTriggerInfo": "string",
   "eventLimitQuantity": "string",
   "freeEventQuantity": "string"
 }
 ```
 
-|     Nome           |  Tipo                        |  Obrigatório |                            Descrição                |
-|:-------------------|:-----------------------------|:-------------|:----------------------------------------------------|
-| code               | string                       | Sim          | Código que identifica o Serviço que compõe o Pacote de Serviços.   |
-| eventLimitQuantity | string                       | Sim          | Quantidade de eventos previstos no Pacote de Serviços.      |
-| freeEventQuantity  | string                       | Sim          | Quantidade de eventos previstos no Pacote de Serviços com isenção de Tarifa.      |
-
-## PriceServicesPersonalAccount
-<a id="schemaPriceServicesPersonalAccount"></a>
-
-```json
-{
-  "interval": "string",
-  "monthlyFee": "string",
-  "currency": "string"
-  
-}
-```
-
-|     Nome           |  Tipo                        |  Obrigatório |                            Descrição                |
-|:-------------------|:-----------------------------|:-------------|:----------------------------------------------------|
-| interval           | string                       | Sim          | Faixas de valor referentes ao Serviço que compõe o Pacote de Serviços informado:: 1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes. |
-| monthlyFee              | string                       | Sim          | Valor da mediana da tarifa cobrada, relativa ao Serviço Prioritário, para o tipo de faixa informada.    |
-| currency          | string                       | Sim          | Moeda referente ao valor máximo da tarifa, segundo modelo ISO-4217.                |
-
-
-
-## ServiceBundlesPersonalAccountPrice
-<a id="schemaServiceBundlesPersonalAccountPrice"></a>
-
-```json
-{
-  "interval": "string",
-  "monthlyFee": "string",
-  "currency": "string"
-  
-}
-```
-
-|     Nome           |  Tipo                        |  Obrigatório |                            Descrição                |
-|:-------------------|:-----------------------------|:-------------|:----------------------------------------------------|
-| interval           | string                       | Sim          | Faixas de valor referentes ao Serviço que compõe o Pacote de Serviços informado:: 1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes. |
-| monthlyFee         | string                       | Sim          | Valor da mediana da tarifa mensal referente ao Pacote de Serviços. |
-| currency           | string                       | Sim          | Moeda referente ao valor do Pacote de serviços, segundo modelo ISO-4217.      |
-
-
+|Nome |Tipo |Obrigatório |Definição|
+|:----|:----|:-----------|:--------|
+|code                 |string |Sim | Código que identifica o Serviço que compõe o Pacote de Serviços, podendo ser da lista de Serviços Prioritários ou Outros Serviços. p.ex. segundo Resolução 3.919 do Bacen: 'SAQUE_TERMINAL'.|
+|chargingTriggerInfo  |string |Sim | Fatos geradores de cobrança que incidem sobre serviço que compõe o Pacote de Serviços.|
+|eventLimitQuantity   |string |Sim | Segundo Resolução  4196, BCB, de 2013: Quantidade de eventos previstos no Pacote de Serviços (Número de eventos incluídos no mês) p.ex.'2'. No caso de quantidade ilimitada, reportar 999999|
+|freeEventQuantity    |string |Sim | Segundo Resolução  4196, BCB, de 2013: Quantidade de eventos previstos no Pacote de Serviços com isenção de Tarifa.p.ex.'1'  No caso de quantidade ilimitada, reportar 999999|
 
 
 ## AccountsTermsConditions
@@ -815,49 +651,142 @@
 
 ```json
 {
-  "openingClosingChannels": "string",
-  "additionalInfo":"string",
-  "transactionMethods": "string",
-  "termsConditions": {
   "minimumBalance": {
-        "value": "string",
-        "currency": "string"
-
-    },
-    "elegibilityCriteriaInfo": "string",
-    "closingProcessInfo": "string"
-  }
+    "value": "string",
+    "currency": "string"
+  },
+  "elegibilityCriteriaInfo": "string",
+  "closingProcessInfo": "string"
 }
 ```
 
 |     Nome                |  Tipo                        |  Obrigatório |                            Descrição                |
 |:------------------------|:-----------------------------|:-------------|:----------------------------------------------------|
-| openingClosingChannels          | string                       | Sim          | Canais disponíveis para abertura e encerramento de contas.     |
-| additionalInfo          | string                       | Sim          | Texto livre para complementar informação relativa ao Canal disponível, quando no campo 'openingClosingChannels' estiver preenchida a opção 'Outros'     |
-| transactionMethods          | string                       | Sim          | Lista de formas de movimentação possíveis para a conta.     |
-| minimumBalance          | string                       | Sim          | Saldo mínimo exigido nos Termos e condições contratuais, que regem as contas comercializadas.     |
-| elegibilityCriteriaInfo          | string                       | Sim          | Critérios de qualificação do cliente com a finalidade de definir sua elegibilidade para a aquisição do tipo de conta.     |
-| closingProcessInfo          | string                       | Sim          | Procedimentos de encerramento para o tipo de conta tratado.     |
+|minimumBalance|[MinimumBalance](#schemaminimumbalance)|Sim |Saldo mínimo exigido nos Termos e condições contratuais, que regem as contas comercializadas. |
+|elegibilityCriteriaInfo|string|Sim |Critérios de qualificação do cliente com a finalidade de definir sua elegibilidade para a aquisição do tipo de conta. Campo Aberto|
+|closingProcessInfo|string|Sim |Procedimentos de encerramento para o tipo de conta tratado. Possibilidade de inscrição da URL. Endereço eletrônico de acesso ao canal. URLs são limitadas a 2048 caracteres mas, para o contexto do Sistema Financeiro aberto, será adotado a metade deste tamanho.|
 
 
 ## PersonalAccountsIncomeRate
-<a id="schemaPersonalAccountIncomeRates"></a>
+<a id="schemapersonalaccountsincomerate"></a>
 
 ```json
- {
+{
   "savingAccount": "string",
-  "prePaidPaymentAccount": {
-      "applications":[{
-        "interval":"string",
-        "rate":"string"
-      }],
-      "minimumRate": "string",
-      "maxiumRate": "string"
-  }
+  "prepaidPaymentAccount": "string"
 }
 ```
 
 |     Nome          |  Tipo                                        |  Obrigatório | Descrição                                           |
 |:------------------|:---------------------------------------------|:-------------|:----------------------------------------------------|
-| savingAccount              | string                                       | Sim          |Descrição da Remuneração especificamente para Conta de Poupança. Deve ser preenchido com a determinação legal vigente.      |
-| prePaidPaymentAccount   | string                                       | Sim          | Remuneração efetivamente aplicada para CONTA_PAGAMENTO_PRE_PAGA          |
+|savingAccount          |string| Não |  Descrição da Remuneração especificamente para Conta de Poupança. Deve ser preenchido com a determinação legal vigente.<br>Restrição: De preenchimento obrigatório para CONTA_POUPANCA. Para os demais Tipos  preencher com NA|
+|prepaidPaymentAccount  |string| Não |  Percentual em favor do titular da conta de pagamento pré-paga. Campo Livre.<br>Restrição: De preenchimento obrigatório para Conta do Tipo CONTA_PAGAMENTO_PRE_PAGA. Para os demais Tipos preencher com NA|
+
+
+### Enum PersonalAccountType
+<a id="schemaPersonalAccountType"></a>
+
+| Propriedade  | Valor                       | Definição                   |                
+|:-------------|:----------------------------|:----------------------------|
+| type         | CONTA_DEPOSITO_A_VISTA      | Conta de depósito à vista.              |
+| type         | CONTA_POUPANCA              | Conta Poupança.              |
+| type         | CONTA_PAGAMENTO_PRE_PAGA    | Conta de pagamento pré paga. |
+
+### Enum OpeningClosingChannels 
+<a id="schemaEnumOpeningClosingChannels"></a>
+
+| Propriedade              | Valor                     | Definição                  |                     
+|:-------------------------|:--------------------------|:---------------------------|
+| openingClosingChannels   | DEPENDENCIAS_PROPRIAS     | Dependências próprias.      |
+| openingClosingChannels   | CORRESPONDENTES_BANCARIOS | Correspondentes bancários.  |
+| openingClosingChannels   | INTERNET_BANKING          | Internet banking.           |
+| openingClosingChannels   | MOBILE_BANKING            | Mobile banking.             |
+| openingClosingChannels   | CENTRAL_TELEFONICA        | Central telefônica.         |
+| openingClosingChannels   | CHAT                      | Chat.                       |
+| openingClosingChannels   | OUTROS                    | Outros (p.ex. website/appps de terceiros). |
+
+### Enum TransactionMethods  
+<a id="schemaEnumTransactionMethods"></a>
+
+| Propriedade          | Valor                     | Definição                  |                     
+|:---------------------|:--------------------------|:---------------------------|
+| transactionMethods   | MOVIMENTACAO_ELETRONICA   | Movimentação eletrônica.    |
+| transactionMethods   | MOVIMENTACAO_CHEQUE       | Movimentação com cheque.    |
+| transactionMethods   | MOVIMENTACAO_CARTAO       | Movimentação com cartão.    |
+| transactionMethods   | MOVIMENTACAO_PRESENCIAL   | Movimentação presencial.    |
+
+
+## PriorityServiceName
+<a id="schemapriorityservicename"></a>
+
+|Propriedade | Valor | Definição |
+|:-----------|:------|:----------|
+| name       |CONFECCAO_CADASTRO_INICIO_RELACIONAMENTO                          | Confecção de Cadastro Início de Relacionamento |
+| name       |FORNECIMENTO_2_VIA_CARTAO_FUNCAO_DEBITO                           | Fornecimento 2ª Via Cartão Função Débito |
+| name       |FORNECIMENTO_2_VIA_CARTAO_FUNCAO_MOVIMENTACAO_CONTA_POUPANCA      | Fornecimento 2ª Via Cartão Função Monimentação Conta Poupança |
+| name       |EXCLUSAO_CADASTRO_EMITENTES_CHEQUES_SEM_FUNDO_CCF                 | Exclusão Cadastro Emitentes Cheques Sem Fundo CCF |
+| name       |CONTRA_ORDEM_REVOGACAO_E_OPOSICAO_OU_SUSTACAO_PAGAMENTO_CHEQUE    | Contra Ordem Revogação e Oposição ou Sustação de Pagamento Cheque |
+| name       |FORNECIMENTO_FOLHAS_CHEQUE                                        | Fornecimento Folhas Cheque |
+| name       |CHEQUE_ADMINISTRATIVO                                             | Cheque Administrativo |
+| name       |CHEQUE_VISADO                                                     | Cheque Visado |
+| name       |SAQUE_CONTA_DEPOSITO_A_VISTA_POUPANCA_PRESENCIAL_OU_PESSOAL       | Saque Conta Deposito a Vista Poupança PRESENCIAL OU PESSOAL |
+| name       |SAQUE_CONTA_DEPOSITO_A_VISTA_POUPANCA_TERMINAL_AUTOATENDIMENTO    | Saque Conta Deposito a Vista Poupança TERMINAL AUTOATENDIMENTO |
+| name       |SAQUE_CONTA_DEPOSITO_A_VISTA_POUPANCA_CORRESPONDENTES_PAIS        | Saque Conta Deposito a Vista Poupança CORRESPONDENTES PAIS |
+| name       |DEPOSITO_IDENTIFICADO                                             | DEPOSITO_IDENTIFICADO |
+| name       |FORNECIMENTO_EXTRATO_MENSAL_CONTA_DEPOSITOS_A_VISTA_E_POUPANCA_PRESENCIAL_OU_PESSOAL            | Fornecimento Estrato Mensal Conta Depositos a Vista e Poupança PRESENCIAL ou PESSOAL |
+| name       |FORNECIMENTO_EXTRATO_MENSAL_CONTA_DEPOSITOS_A_VISTA_E_POUPANCA_TERMINAL_AUTOATENDIMENTO         | Fornecimento Estrato Mensal Conta Depositos a Vista e Poupança TERMINAL AUTOATENDIMENTO |
+| name       |FORNECIMENTO_EXTRATO_MENSAL_CONTA_DEPOSITOS_A_VISTA_E_POUPANCA_CORRESPONDENTES_PAIS             | Fornecimento Estrato Mensal Conta Depositos a Vista e Poupança CORRESPONDENTES PAIS |
+| name       |FORNECIMENTO_EXTRATO_DE_UM_PERIODO_CONTA_DEPOSITOS_A_VISTA_E_POUPANCA_PRESENCIAL_OU_PESSOAL     | Fornecimento Extrato de um Período Conta Depositos à Vista e Poupança PRESENCIAL OU PESSOAL |
+| name       |FORNECIMENTO_EXTRATO_DE_UM_PERIODO_CONTA_DEPOSITOS_A_VISTA_E_POUPANCA_TERMINAL_AUTOATENDIMENTO  | Fornecimento Extrato de um Período Conta Depositos à Vista e Poupança TERMINAL AUTOATENDIMENTO |
+| name       |FORNECIMENTO_EXTRATO_DE_UM_PERIODO_CONTA_DEPOSITOS_A_VISTA_E_POUPANCA_CORRESPONDENTES_PAIS      | Fornecimento Extrato de um Período Conta Depositos à Vista e Poupança CORRESPONDENTES PAIS |
+| name       |FORNECIMENTO_COPIA_MICROFILME_MICROFICHA_ASSEMELHADO                                            | FORNECIMENTO_COPIA_MICROFILME_MICROFICHA_ASSEMELHADO |
+| name       |TRANSFERENCIA_DOC_PESSOAL_OU_PRESENCIAL                                     | Transferência DOC Pessoal ou Presencial |
+| name       |TRANSFERENCIA_DOC_TERMINAL_AUTOATENDIMENTO_OUTROS_MEIOS_ELETRONICOS         | Transferência DOC Terminal Autoatendimento outros meios eletrônicos |
+| name       |TRANSFERENCIA_DOC_INTERNET                                                  | Transferência DOC INTERNET |
+| name       |TRANSFERENCIA_TED_PESSOAL_OU_PRESENCIAL                                     | Transferência TED Pessoal ou Presencial |
+| name       |TRANSFERENCIA_TED_TERMINAL_AUTOATENDIMENTO_OUTROS_MEIOS_ELETRONICOS         | Transferência TED Terminal Autoatendimento outros meios eletrônicos |
+| name       |TRANSFERENCIA_TED_INTERNET                                                  | Transferência TED INTERNET |
+| name       |TRANSFERENCIA_DOC_TED_PESSOAL_OU_PRESENCIAL                                 | Transferência DOC e TED Pessoal ou Presencial |
+| name       |TRANSFERENCIA_DOC_TED_TERMINAL_AUTOATENDIMENTO_OUTROS_MEIOS_ELETRONICOS     | Transferência DOC e TED Terminal Autoatendimento outros meios eletrônicos |
+| name       |TRANSFERENCIA_DOC_TED_INTERNET                                              | Transferência DOC e TED INTERNET |
+| name       |TRANSFERENCIA_ENTRE_CONTAS_PROPRIA_INSTITUICAO_PESSOAL_OU_PRESENCIAL        | Transferências entre contas própria instituição pessoal ou presencial |
+| name       |TRANSFERENCIA_ENTRE_CONTAS_PROPRIA_INSTITUICAO_TERMINAL_AUTOATENDIMENTO_OUTROS_MEIOS_ELETRONICOS_INCLUSIVE_INTERNET  |   Transferências entre contas própria instituição Terminal autoatendimento outros meios eletronicos inclusive Internet |
+| name       |ORDEM_PAGAMENTO                           | ORDEM PAGAMENTO |
+
+### Enum AccountPriorityServiceCode  
+<a id="schemaaccountpriorityservicecode"></a>
+
+| Propriedade  | Valor                                            | Definição                                                                        |                     
+|:-------------|:------------------------------------------------ |:-------------------------------------------------------------------------------- |
+| code  | CADASTRO                                         | CADASTRO                                                                         |
+| code  | 2_VIA_CARTAO_DEBITO                              | 2ª via-CARTÃODEBITO                                                              |
+| code  | 2_VIA_CARTAO_POUPANCA                            | 2ª via-CARTÃOPOUPANÇA                                                            |
+| code  | EXCLUSAO_CCF                                     | EXCLUSÃO CCF                                                                     |
+| code  | SUSTACAO_REVOGACAO                               | SUSTAÇÃO/REVOGAÇÃO                                                               |
+| code  | FOLHA_CHEQUE                                     | Fornecimento Folha de cheque                                                     |
+| code  | CHEQUE_ADMINISTRATIVO                            | Cheque Administrativo                                                            |
+| code  | CHEQUE_VISADO                                    | Cheque Visado                                                                    |
+| code  | SAQUE_PESSOAL                                    | Saque Pessoal ou Presencial                                                      |
+| code  | SAQUE_TERMINAL                                   | Saque Terminal autoatendimento                                                   |
+| code  | SAQUE_CORRESPONDENTE                             | Saque Correspondente no Pais                                                     |
+| code  | DEPOSITO_IDENTIFICADO                            | Depósito identificado                                                            |
+| code  | EXTRATO_MES_P                                    | Extrato mensal presencial                                                        |
+| code  | EXTRATO_MES_E                                    | Extrato mensal meios eletrônicos                                                 |
+| code  | EXTRATO_MES_C                                    | Extrato mensal Correspondente no Pais                                            |
+| code  | EXTRATO_MOVIMENTO_P                              | Extrato por período presencial                                                   |
+| code  | EXTRATO_MOVIMENTO_E                              | Extrato por período meio eletrônico                                              |
+| code  | EXTRATO_MOVIMENTO_C                              | Extrato por período Correspondente no Pais                                       |
+| code  | MICROFILME                                       | Fornecimento de cópia de microfilme, microficha ou assemelhado                   |
+| code  | DOC_PESSOAL                                      | Transferência por DOC presencial ou pessoal                                      |
+| code  | DOC_ELETRONICO                                   | Transferência por DOC meios eletrônicos                                          |
+| code  | DOC_INTERNET                                     | Transferência por TED via Internet                                               |
+| code  | TED_PESSOAL                                      | Transferência por TED pessoal ou presencial                                      |
+| code  | TED_ELETRONICO                                   | Transferência por TED meio eletrônico                                            |
+| code  | TED_INTERNET                                     | Transferência por TED via Internet                                               |
+| code  | DOC_TED_AGENDADO_P                               | Transferência agendada TED ou DOC presencial ou pessoal                          |
+| code  | DOC_TED_AGENDADO_E                               | Transferência agendada TED ou DOC meio eletrônico                                |
+| code  | DOC_TED_AGENDADO_I                               | Transferência agendada TED ou DOC via Internet                                   |
+| code  | TRANSF_RECURSO_P                                 | Transferência entre contas própria instituição presencial ou pessoal             |
+| code  | TRANSF_RECURSO_E                                 | Transferência entre contas própria instituição por meios eletrônicos ou Internet |
+| code  | ORDEM_PAGAMENTO                                  | Ordem de Pagamento                                                               |
+

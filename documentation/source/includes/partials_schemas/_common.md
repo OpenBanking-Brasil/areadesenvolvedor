@@ -17,7 +17,7 @@
 | totalRecords      | integer       | Número total de registros no resultado | Mandatório      |           |
 | totalPages        | integer       | Número total de páginas no resultado   | Mandatório      |           |
 
-## Enum PriceInterval
+## Enum PriceIntervals
 <a id="schemaPriceInterval"></a>
 
 | Nome         | Código                | Definição              |
@@ -46,6 +46,26 @@
 | interval     | [Enum PriceInterval](#schemaPriceInterval)   | Sim         | Segundo Normativa nº32 de 29/10/2020: 'Distribuição de frequência relativa dos valores de tarifas e taxas de juros cobrados dos clientes, de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana e o percentual de clientes em cada uma dessas faixas.' Estas correspondem as faixas para cobrança da taxa efetiva aplicada pela contratação do serviço/produto, no intervalo informado: 1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes.|
 | value        | [AmountString](#commonFieldAmountString)     | Sim         | Valor da mediana da tarifa cobrada, relativa ao Serviço, para o tipo de faixa informada. |
 | currency     | [CurrencyString](#commonFieldCurrencyString) | Sim         | Moeda referente ao valor da Tarifa, segundo modelo ISO-4217. p.ex. 'BRL'                 |
+
+
+## MontlyPrice
+<a id="schemamontlyprice"></a>
+
+```json
+{
+  "interval": "string",
+  "monthlyFee": "string",
+  "currency": "string"
+  
+}
+```
+
+|     Nome           |  Tipo                        |  Obrigatório |                            Descrição                |
+|:-------------------|:-----------------------------|:-------------|:----------------------------------------------------|
+| interval           | [PriceIntervals](#schemaPriceInterval) | Sim          | Faixas de valor referentes ao Serviço que compõe o Pacote de Serviços informado:: 1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes. |
+| monthlyFee         | string                       | Sim          | Valor da mediana da tarifa mensal referente ao Pacote de Serviços. |
+| currency           | [Currency](#schemacurrency)    | Sim          | Moeda referente ao valor do Pacote de serviços, segundo modelo ISO-4217.      |
+
 
 ## MinimumPrice
 <a id="schemaMinimumPrice"></a>
@@ -207,3 +227,34 @@ Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial o
 | referentialRateOrIndexer |CREDITO_RURAL_TRFC_PRE  | CREDITO RURAL TRFC PRE|
 | referentialRateOrIndexer |CREDITO_RURAL_TRFC_POS  | CREDITO RURAL TRFC POS|
 | referentialRateOrIndexer |OUTROS_INDEXADORES      | OUTROS INDEXADORES|
+
+
+## MinimumBalance
+<a id="schemaminimumbalance"></a>
+
+```json
+{
+  "value": "string",
+  "currency": "string"
+}
+
+```
+
+|Nome |Tipo |Obrigatório | Definição |
+|---|---|---|---|
+|value|string|Sim |Saldo mínimo exigido nos Termos e condições contratuais, que regem as contas comercializadas.|
+|currency|[Currency](#schemacurrency)|Sim |Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217|
+
+
+## Currency
+<a id="schemacurrency"></a>
+
+```json
+"BRL"
+
+```
+
+|Name|Type|Required|Description|
+|---|---|---|---|
+|currency|string|Sim|Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217|
+
