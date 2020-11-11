@@ -63,7 +63,13 @@
                     ]
                   ],
                   "minimumRate": "string",
-                  "maximumRate": "string"
+                  "maximumRate": "string",
+                  "fees": [
+                    {
+                      "referentialRateOrIndexer": "string",
+                      "rate": "string"
+                    }
+                  ]
                 },
                 "instalmentRate": {
                   "prices": [
@@ -75,22 +81,36 @@
                     ]
                   ],
                   "minimumRate": "string",
-                  "maximumRate": "string"
+                  "maximumRate": "string",
+                  "fees": [
+                    {
+                      "referentialRateOrIndexer": "string",
+                      "rate": "string"
+                    }
+                  ]
                 },
-                "interestRates": [{
-                  "code": "string",
-                  "additionalInfo": "string",
-                  "prices": [
-                    [
+                "interestRates": [
+                  {
+                    "code": "string",
+                    "additionalInfo": "string",
+                    "prices": [
+                      [
+                        {
+                          "interval": "string",
+                          "rate": "string"
+                        }
+                      ]
+                    ],
+                    "minimumRate": "string",
+                    "maximumRate": "string",
+                    "fees": [
                       {
-                        "interval": "string",
+                        "referentialRateOrIndexer": "string",
                         "rate": "string"
                       }
                     ]
-                  ],
-                  "minimumRate": "string",
-                  "maximumRate": "string"
-                }]
+                  }
+                ]
               },
               "termsConditions": {
                 "minimumFeeRate": "string",
@@ -188,7 +208,13 @@
                 ]
               ],
               "minimumRate": "string",
-              "maximumRate": "string"
+              "maximumRate": "string",
+              "fees": [
+                {
+                  "referentialRateOrIndexer": "string",
+                  "rate": "string"
+                }
+              ]
             },
             "instalmentRate": {
               "prices": [
@@ -200,7 +226,13 @@
                 ]
               ],
               "minimumRate": "string",
-              "maximumRate": "string"
+              "maximumRate": "string",
+              "fees": [
+                {
+                  "referentialRateOrIndexer": "string",
+                  "rate": "string"
+                }
+              ]
             },
             "interestRates": [{
               "code": "string",
@@ -214,7 +246,13 @@
                 ]
               ],
               "minimumRate": "string",
-              "maximumRate": "string"
+              "maximumRate": "string",
+              "fees": [
+                {
+                  "referentialRateOrIndexer": "string",
+                  "rate": "string"
+                }
+              ]
             }]
           },
           "termsConditions": {
@@ -295,7 +333,13 @@
             ]
           ],
           "minimumRate": "string",
-          "maximumRate": "string"
+          "maximumRate": "string",
+          "fees": [
+            {
+              "referentialRateOrIndexer": "string",
+              "rate": "string"
+            }
+          ]
         },
         "instalmentRate": {
           "prices": [
@@ -307,7 +351,13 @@
             ]
           ],
           "minimumRate": "string",
-          "maximumRate": "string"
+          "maximumRate": "string",
+          "fees": [
+            {
+              "referentialRateOrIndexer": "string",
+              "rate": "string"
+            }
+          ]
         },
         "interestRates": [{
           "code": "string",
@@ -321,7 +371,13 @@
             ]
           ],
           "minimumRate": "string",
-          "maximumRate": "string"
+          "maximumRate": "string",
+          "fees": [
+            {
+              "referentialRateOrIndexer": "string",
+              "rate": "string"
+            }
+          ]
         }]
       },
       "termsConditions": {
@@ -415,7 +471,13 @@
         ]
       ],
       "minimumRate": "string",
-      "maximumRate": "string"
+      "maximumRate": "string",
+      "fees": [
+        {
+          "referentialRateOrIndexer": "string",
+          "rate": "string"
+        }
+      ]
     },
     "interestRates": [{
       "code": "string",
@@ -429,7 +491,13 @@
         ]
       ],
       "minimumRate": "string",
-      "maximumRate": "string"
+      "maximumRate": "string",
+      "fees": [
+        {
+          "referentialRateOrIndexer": "string",
+          "rate": "string"
+        }
+      ]
     }]
   },
   "termsConditions": {
@@ -673,7 +741,13 @@
       }
     ],
     "minimumRate": "string",
-    "maximumRate": "string"
+    "maximumRate": "string",
+    "fees": [
+      {
+        "referentialRateOrIndexer": "string",
+        "rate": "string"
+      }
+    ]
   }]
 }
 ```
