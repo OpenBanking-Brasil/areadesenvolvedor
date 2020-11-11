@@ -17,7 +17,7 @@
 | totalRecords      | integer       | Número total de registros no resultado | Mandatório      |           |
 | totalPages        | integer       | Número total de páginas no resultado   | Mandatório      |           |
 
-## Enum PriceInterval
+## Enum PriceIntervals
 <a id="schemaPriceInterval"></a>
 
 | Nome         | Código                | Definição              |
@@ -46,6 +46,26 @@
 | interval     | [Enum PriceInterval](#schemaPriceInterval)   | Sim         | Segundo Normativa nº32 de 2020: Distribuição de frequência relativa dos valores de tarifas e taxas de juros cobrados dos clientes, de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana e o percentual de clientes em cada uma dessas faixas. Informado:1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes.|
 | value        | [AmountString](#commonFieldAmountString)     | Sim         | Valor da mediana da tarifa, relativa ao serviço ofertado, para pessoa natural informado no período, conforme Res nº32 BCB, 2020. p.ex. '45.00' (representa um valor monetário. p.ex: 1547368.92. Este valor, considerando que a moeda seja BRL, significa R$ 1.547.368,92. O único separador presente deve ser o '.' (ponto) para indicar a casa decimal. Não deve haver separador de milhar). |
 | currency     | [CurrencyString](#commonFieldCurrencyString) | Sim         | Moeda referente ao valor da Tarifa, segundo modelo ISO-4217. p.ex. 'BRL'                 |
+
+
+## MontlyPrice
+<a id="schemamontlyprice"></a>
+
+```json
+{
+  "interval": "string",
+  "monthlyFee": "string",
+  "currency": "string"
+  
+}
+```
+
+|     Nome           |  Tipo                        |  Obrigatório |                            Descrição                |
+|:-------------------|:-----------------------------|:-------------|:----------------------------------------------------|
+| interval           | [PriceIntervals](#schemaPriceInterval) | Sim          | Faixas de valor referentes ao Serviço que compõe o Pacote de Serviços informado:: 1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes. |
+| monthlyFee         | string                       | Sim          | Valor da mediana da tarifa mensal referente ao Pacote de Serviços. |
+| currency           | [Currency](#schemacurrency)    | Sim          | Moeda referente ao valor do Pacote de serviços, segundo modelo ISO-4217.      |
+
 
 ## MinimumPrice
 <a id="schemaMinimumPrice"></a>
@@ -208,6 +228,37 @@ Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial o
 | referentialRateOrIndexer |CREDITO_RURAL_TRFC_POS  | CREDITO RURAL TRFC POS|
 | referentialRateOrIndexer |OUTROS_INDEXADORES      | OUTROS INDEXADORES|
 
+
+## MinimumBalance
+<a id="schemaminimumbalance"></a>
+
+```json
+{
+  "value": "string",
+  "currency": "string"
+}
+
+```
+
+|Nome |Tipo |Obrigatório | Definição |
+|---|---|---|---|
+|value|string|Sim |Saldo mínimo exigido nos Termos e condições contratuais, que regem as contas comercializadas.|
+|currency|[Currency](#schemacurrency)|Sim |Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217|
+
+
+## Currency
+<a id="schemacurrency"></a>
+
+```json
+"BRL"
+
+```
+
+|Name|Type|Required|Description|
+|---|---|---|---|
+|currency|string|Sim|Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217|
+
+
 ## FeeReferentialRateOrIndexer
 
 <a id="schemaFeeReferentialRateOrIndexer"></a>
@@ -217,7 +268,6 @@ Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial o
   "referentialRateOrIndexer": "string",
   "rate": "string"
 }
-
 ```
 
 ### Properties
@@ -226,3 +276,4 @@ Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial o
 |---|---|---|---|
 | referentialRateOrIndexer|[ReferentialRateOrIndexer](#schemareferentialrateorindexer)| Sim |Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial ou Indexador (Indx), do Documento 3040|
 | rate|string| Sim |Percentual que incide sobre a composição das taxas de juros remuneratórios. (representa uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O valor '1 'representa 100%). A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)|
+
