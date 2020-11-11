@@ -732,14 +732,14 @@
 | name       |SAQUE_CONTA_DEPOSITO_A_VISTA_POUPANCA_PRESENCIAL_OU_PESSOAL       | Saque Conta Deposito a Vista Poupança PRESENCIAL OU PESSOAL |
 | name       |SAQUE_CONTA_DEPOSITO_A_VISTA_POUPANCA_TERMINAL_AUTOATENDIMENTO    | Saque Conta Deposito a Vista Poupança TERMINAL AUTOATENDIMENTO |
 | name       |SAQUE_CONTA_DEPOSITO_A_VISTA_POUPANCA_CORRESPONDENTES_PAIS        | Saque Conta Deposito a Vista Poupança CORRESPONDENTES PAIS |
-| name       |DEPOSITO_IDENTIFICADO                                             | DEPOSITO_IDENTIFICADO |
-| name       |FORNECIMENTO_EXTRATO_MENSAL_CONTA_DEPOSITOS_A_VISTA_E_POUPANCA_PRESENCIAL_OU_PESSOAL            | Fornecimento Estrato Mensal Conta Depositos a Vista e Poupança PRESENCIAL ou PESSOAL |
-| name       |FORNECIMENTO_EXTRATO_MENSAL_CONTA_DEPOSITOS_A_VISTA_E_POUPANCA_TERMINAL_AUTOATENDIMENTO         | Fornecimento Estrato Mensal Conta Depositos a Vista e Poupança TERMINAL AUTOATENDIMENTO |
-| name       |FORNECIMENTO_EXTRATO_MENSAL_CONTA_DEPOSITOS_A_VISTA_E_POUPANCA_CORRESPONDENTES_PAIS             | Fornecimento Estrato Mensal Conta Depositos a Vista e Poupança CORRESPONDENTES PAIS |
+| name       |DEPOSITO_IDENTIFICADO                                             | Deposito Identificado |
+| name       |FORNECIMENTO_EXTRATO_MENSAL_CONTA_DEPOSITOS_A_VISTA_E_POUPANCA_PRESENCIAL_OU_PESSOAL            | Fornecimento Extrato Mensal Conta Depositos a Vista e Poupança PRESENCIAL ou PESSOAL |
+| name       |FORNECIMENTO_EXTRATO_MENSAL_CONTA_DEPOSITOS_A_VISTA_E_POUPANCA_TERMINAL_AUTOATENDIMENTO         | Fornecimento Extrato Mensal Conta Depositos a Vista e Poupança TERMINAL AUTOATENDIMENTO |
+| name       |FORNECIMENTO_EXTRATO_MENSAL_CONTA_DEPOSITOS_A_VISTA_E_POUPANCA_CORRESPONDENTES_PAIS             | Fornecimento Extrato Mensal Conta Depositos a Vista e Poupança CORRESPONDENTES PAIS |
 | name       |FORNECIMENTO_EXTRATO_DE_UM_PERIODO_CONTA_DEPOSITOS_A_VISTA_E_POUPANCA_PRESENCIAL_OU_PESSOAL     | Fornecimento Extrato de um Período Conta Depositos à Vista e Poupança PRESENCIAL OU PESSOAL |
 | name       |FORNECIMENTO_EXTRATO_DE_UM_PERIODO_CONTA_DEPOSITOS_A_VISTA_E_POUPANCA_TERMINAL_AUTOATENDIMENTO  | Fornecimento Extrato de um Período Conta Depositos à Vista e Poupança TERMINAL AUTOATENDIMENTO |
 | name       |FORNECIMENTO_EXTRATO_DE_UM_PERIODO_CONTA_DEPOSITOS_A_VISTA_E_POUPANCA_CORRESPONDENTES_PAIS      | Fornecimento Extrato de um Período Conta Depositos à Vista e Poupança CORRESPONDENTES PAIS |
-| name       |FORNECIMENTO_COPIA_MICROFILME_MICROFICHA_ASSEMELHADO                                            | FORNECIMENTO_COPIA_MICROFILME_MICROFICHA_ASSEMELHADO |
+| name       |FORNECIMENTO_COPIA_MICROFILME_MICROFICHA_ASSEMELHADO                                            | Fornecimento Copia Microfilme Microficha Assemelhado |
 | name       |TRANSFERENCIA_DOC_PESSOAL_OU_PRESENCIAL                                     | Transferência DOC Pessoal ou Presencial |
 | name       |TRANSFERENCIA_DOC_TERMINAL_AUTOATENDIMENTO_OUTROS_MEIOS_ELETRONICOS         | Transferência DOC Terminal Autoatendimento outros meios eletrônicos |
 | name       |TRANSFERENCIA_DOC_INTERNET                                                  | Transferência DOC INTERNET |
@@ -756,37 +756,37 @@
 ### Enum AccountPriorityServiceCode  
 <a id="schemaaccountpriorityservicecode"></a>
 
-| Propriedade  | Valor                                            | Definição                                                                        |                     
-|:-------------|:------------------------------------------------ |:-------------------------------------------------------------------------------- |
-| code  | CADASTRO                                         | CADASTRO                                                                         |
-| code  | 2_VIA_CARTAO_DEBITO                              | 2ª via-CARTÃODEBITO                                                              |
-| code  | 2_VIA_CARTAO_POUPANCA                            | 2ª via-CARTÃOPOUPANÇA                                                            |
-| code  | EXCLUSAO_CCF                                     | EXCLUSÃO CCF                                                                     |
-| code  | SUSTACAO_REVOGACAO                               | SUSTAÇÃO/REVOGAÇÃO                                                               |
-| code  | FOLHA_CHEQUE                                     | Fornecimento Folha de cheque                                                     |
-| code  | CHEQUE_ADMINISTRATIVO                            | Cheque Administrativo                                                            |
-| code  | CHEQUE_VISADO                                    | Cheque Visado                                                                    |
-| code  | SAQUE_PESSOAL                                    | Saque Pessoal ou Presencial                                                      |
-| code  | SAQUE_TERMINAL                                   | Saque Terminal autoatendimento                                                   |
-| code  | SAQUE_CORRESPONDENTE                             | Saque Correspondente no Pais                                                     |
-| code  | DEPOSITO_IDENTIFICADO                            | Depósito identificado                                                            |
-| code  | EXTRATO_MES_P                                    | Extrato mensal presencial                                                        |
-| code  | EXTRATO_MES_E                                    | Extrato mensal meios eletrônicos                                                 |
-| code  | EXTRATO_MES_C                                    | Extrato mensal Correspondente no Pais                                            |
-| code  | EXTRATO_MOVIMENTO_P                              | Extrato por período presencial                                                   |
-| code  | EXTRATO_MOVIMENTO_E                              | Extrato por período meio eletrônico                                              |
-| code  | EXTRATO_MOVIMENTO_C                              | Extrato por período Correspondente no Pais                                       |
-| code  | MICROFILME                                       | Fornecimento de cópia de microfilme, microficha ou assemelhado                   |
-| code  | DOC_PESSOAL                                      | Transferência por DOC presencial ou pessoal                                      |
-| code  | DOC_ELETRONICO                                   | Transferência por DOC meios eletrônicos                                          |
-| code  | DOC_INTERNET                                     | Transferência por TED via Internet                                               |
-| code  | TED_PESSOAL                                      | Transferência por TED pessoal ou presencial                                      |
-| code  | TED_ELETRONICO                                   | Transferência por TED meio eletrônico                                            |
-| code  | TED_INTERNET                                     | Transferência por TED via Internet                                               |
-| code  | DOC_TED_AGENDADO_P                               | Transferência agendada TED ou DOC presencial ou pessoal                          |
-| code  | DOC_TED_AGENDADO_E                               | Transferência agendada TED ou DOC meio eletrônico                                |
-| code  | DOC_TED_AGENDADO_I                               | Transferência agendada TED ou DOC via Internet                                   |
-| code  | TRANSF_RECURSO_P                                 | Transferência entre contas própria instituição presencial ou pessoal             |
-| code  | TRANSF_RECURSO_E                                 | Transferência entre contas própria instituição por meios eletrônicos ou Internet |
-| code  | ORDEM_PAGAMENTO                                  | Ordem de Pagamento                                                               |
+| Propriedade  | Valor            | Definição                                                                        |                     
+|:-------------|:-----------------|:-------------------------------------------------------------------------------- |
+| code  | CADASTRO                | CADASTRO                                                                         |
+| code  | 2_VIA_CARTAO_DEBITO     | 2ª via-CARTÃODEBITO                                                              |
+| code  | 2_VIA_CARTAO_POUPANCA   | 2ª via-CARTÃOPOUPANÇA                                                            |
+| code  | EXCLUSAO_CCF            | EXCLUSÃO CCF                                                                     |
+| code  | SUSTACAO_REVOGACAO      | SUSTAÇÃO/REVOGAÇÃO                                                               |
+| code  | FOLHA_CHEQUE            | Fornecimento Folha de cheque                                                     |
+| code  | CHEQUE_ADMINISTRATIVO   | Cheque Administrativo                                                            |
+| code  | CHEQUE_VISADO           | Cheque Visado                                                                    |
+| code  | SAQUE_PESSOAL           | Saque Pessoal ou Presencial                                                      |
+| code  | SAQUE_TERMINAL          | Saque Terminal autoatendimento                                                   |
+| code  | SAQUE_CORRESPONDENTE    | Saque Correspondente no Pais                                                     |
+| code  | DEPOSITO_IDENTIFICADO   | Depósito identificado                                                            |
+| code  | EXTRATO_MES_P           | Extrato mensal presencial                                                        |
+| code  | EXTRATO_MES_E           | Extrato mensal meios eletrônicos                                                 |
+| code  | EXTRATO_MES_C           | Extrato mensal Correspondente no Pais                                            |
+| code  | EXTRATO_MOVIMENTO_P     | Extrato por período presencial                                                   |
+| code  | EXTRATO_MOVIMENTO_E     | Extrato por período meio eletrônico                                              |
+| code  | EXTRATO_MOVIMENTO_C     | Extrato por período Correspondente no Pais                                       |
+| code  | MICROFILME              | Fornecimento de cópia de microfilme, microficha ou assemelhado                   |
+| code  | DOC_PESSOAL             | Transferência por DOC presencial ou pessoal                                      |
+| code  | DOC_ELETRONICO          | Transferência por DOC meios eletrônicos                                          |
+| code  | DOC_INTERNET            | Transferência por TED via Internet                                               |
+| code  | TED_PESSOAL             | Transferência por TED pessoal ou presencial                                      |
+| code  | TED_ELETRONICO          | Transferência por TED meio eletrônico                                            |
+| code  | TED_INTERNET            | Transferência por TED via Internet                                               |
+| code  | DOC_TED_AGENDADO_P      | Transferência agendada TED ou DOC presencial ou pessoal                          |
+| code  | DOC_TED_AGENDADO_E      | Transferência agendada TED ou DOC meio eletrônico                                |
+| code  | DOC_TED_AGENDADO_I      | Transferência agendada TED ou DOC via Internet                                   |
+| code  | TRANSF_RECURSO_P        | Transferência entre contas própria instituição presencial ou pessoal             |
+| code  | TRANSF_RECURSO_E        | Transferência entre contas própria instituição por meios eletrônicos ou Internet |
+| code  | ORDEM_PAGAMENTO         | Ordem de Pagamento                                                               |
 
