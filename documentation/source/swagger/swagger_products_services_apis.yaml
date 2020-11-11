@@ -265,7 +265,6 @@ components:
               type: string
               description: 'Moeda referente ao valor máximo da tarifa de outros serviços, segundo modelo ISO-4217.'
               example: BRL
-
     ResponsePersonalAccounts:
       type: object
       required:
@@ -300,32 +299,18 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PersonalAccountCompany'
-    PersonalAccountCompany:  
+    PersonalAccountCompany:
       type: object
       required:
         - name
         - cnpjNumbers
+      allOf:
+        - $ref: '#/components/schemas/Company'
       properties:
-        name:
-          type: string
-          maxLength: 80
-          description: |
-            Nome da Instituição, pertencente à marca, responsável pelas modalidades de Contas  para Pessoa Natural. p.ex.'Empresa da Organização A'
-          example: Empresa A1
-        urlComplementaryList:
-          type: string
-          maxLength: 1024
-          pattern: \w*\W*
-          description: |
-            URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. Endereço eletrônico de acesso ao canal. URLs são limitadas a 2048 caracteres mas, para o contexto do Sistema Financeiro aberto, será adotado a metade deste tamanho.
-            Será obrigatorimente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada.
-          example: 'https://empresaa1.com/branches-banking'
         personalAccounts:
           type: array
           items:
             $ref: '#/components/schemas/PersonalAccount'
-      allOf:
-        - $ref: '#/components/schemas/CNPJ'
     PersonalAccount:
       type: object
       required:
@@ -485,7 +470,7 @@ components:
         Tipos de contas ofertadas para pessoa natural, p.ex. 'CONTA_DEPOSITO_A_VISTA'.
         Conta de depósito à vista ou Conta corrente - é o tipo mais comum. Nela, o dinheiro fica à sua disposição para ser sacado a qualquer momento. Essa conta não gera rendimentos para o depositante
         Conta poupança - foi criada para estimular as pessoas a pouparem. O dinheiro que ficar na conta por trinta dias passa a gerar rendimentos, com isenção de imposto de renda para quem declara. Ou seja, o dinheiro “cresce” (rende) enquanto ficar guardado na conta. Cada depósito terá rendimentos de mês em mês, sempre no dia do mês em que o dinheiro tiver sido depositado
-        Conta de pagamento pré-paga: segundo CIRCULAR Nº 3.680, BCB de  2013, é a 'destinada à execução de transações de pagamento em moeda eletrônica realizadas com base em fundos denominados em reais previamente aportados' 
+        Conta de pagamento pré-paga: segundo CIRCULAR Nº 3.680, BCB de  2013, é a 'destinada à execução de transações de pagamento em moeda eletrônica realizadas com base em fundos denominados em reais previamente aportados'
       example: CONTA_DEPOSITO_A_VISTA
     OpeningClosingChannels:
       type: string
@@ -517,7 +502,7 @@ components:
         - EXCLUSAO_CADASTRO_EMITENTES_CHEQUES_SEM_FUNDO_CCF
         - CONTRA_ORDEM_REVOGACAO_E_OPOSICAO_OU_SUSTACAO_PAGAMENTO_CHEQUE
         - FORNECIMENTO_FOLHAS_CHEQUE
-        - CHEQUE_ADMINISTRATIVO 
+        - CHEQUE_ADMINISTRATIVO
         - CHEQUE_VISADO
         - SAQUE_CONTA_DEPOSITO_A_VISTA_POUPANCA_PRESENCIAL_OU_PESSOAL
         - SAQUE_CONTA_DEPOSITO_A_VISTA_POUPANCA_TERMINAL_AUTOATENDIMENTO
@@ -657,7 +642,7 @@ components:
           description: |
             Código que identifica o Serviço que compõe o Pacote de Serviços, podendo ser da lista de Serviços Prioritários ou Outros Serviços. p.ex. segundo Resolução 3.919 do Bacen: 'SAQUE_TERMINAL'.
           example: SAQUE_TERMINAL
-        chargingTriggerInfo: 
+        chargingTriggerInfo:
           type: string
           maxLength: 2000
           format: \w*\W*
@@ -728,25 +713,9 @@ components:
                     required:
                       - name
                       - cnpjNumber
+                    allOf:
+                      - $ref: '#/components/schemas/Company'
                     properties:
-                      name:
-                        type: string
-                        maxLength: 80
-                        pattern: \w*\W*
-                        description: 'Nome da Instituição, pertencente à marca, responsável pela comercialização dos produtos e serviços'
-                        example: The Big Bank Company
-                      cnpjNumber:
-                        type: string
-                        minLength: 14
-                        maxLength: 14
-                        pattern: '^(\d{14})$'
-                        description: Número completo do CNPJ da instituição responsável pelos  tipos de contas de pessoas juridicas cosultadas.
-                        example: '54672317000101'
-                      urlComplementaryList:
-                        type: string
-                        description: URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber.
-                        pattern: \w*\W*
-                        example: 'https://empresaa1.com/branches-banking'
                       businessAccounts:
                         type: array
                         items:
@@ -1458,18 +1427,7 @@ components:
         - NAO_APLICAVEL
       maxLength: 50
       description: Campo aberto para informar as condições contratuais relativas à Modalidade de direitos creditórios descontados informada
-      example: CESSAO_DIREITOS_CREDITORIOS 
-    CNPJ:
-      type: object
-      properties:
-        cnpjNumber:
-          type: string
-          pattern: '(\d{2})(\d{3})(\d{3})'
-          description: CNPJ
-          maxLength: 14
-          example: '50685362000135'
-      required:
-        - cnpjNumber
+      example: CESSAO_DIREITOS_CREDITORIOS
     CreditCardIdentification:
       type: object
       required:
@@ -1537,7 +1495,7 @@ components:
               type: string
               maxLength: 50
               pattern: \w*\W*
-              description: "Texto livre para especificar categoria de bandeira marcada como 'OUTRAS'"
+              description: "Texto livre para especificar categoria de bandeira marcada como 'OUTRAS'. Campo deve ser obrigatoriamente preenchido se campo network vier selecionado como 'OUTROS'"
     CreditCardRewardsProgram:
       type: object
       required:
@@ -1551,8 +1509,8 @@ components:
           type: string
           maxLength: 2000
           pattern: \w*\W*
-          description: Informações de termos e condições do programa de fidelidade/recompensa. Pode ser informada a URL referente ao endereço onde constam as condições informadas
-          example: 'https://example.com/mobile-banking'
+          description: Informações de termos e condições do programa de fidelidade/recompensa. Pode ser informada a URL referente ao endereço onde constam as condições informadas. Será de preenchimento obrigatório caso o campo hasRewardProgram esteja preenchido como true
+          example: 'https://empresaa1.com/credit_cards_rewards'
     CreditCardTermsConditions:
       type: object
       required:
@@ -1696,7 +1654,6 @@ components:
                   rate: '0.15'
                 - referentialRateOrIndexer: POS_FIXADO_TR_TBF
                   rate: '0.10'
-
     PersonalCreditCardResponse:
       type: object
       required:
@@ -1723,59 +1680,23 @@ components:
                 companies:
                   type: array
                   items:
-                    required:
-                      - name
-                      - cnpjNumber
-                    properties:
-                      name:
-                        type: string
-                        maxLength: 80
-                        description: 'Nome da Instituição, pertencente à marca, responsável pela comercialização dos produtos e serviços'
-                        example: Empresa A1
-                      cnpjNumber:
-                        type: string
-                        minLength: 14
-                        maxLength: 14
-                        description: Número completo do CNPJ da instituição responsável pelas contas de pagamento pós-pagas (cartões de crédito)
-                        example: '45086338000178'
-                      urlComplementaryList:
-                        type: string
-                        pattern: \w*\W*
-                        maxLength: 1024
-                        description: URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. Endereço eletrônico de acesso ao canal.
-                        example: 'https://empresaa1.com/branches-banking'
-                      personalCreditCards:
-                        type: array
-                        items:
-                          required:
-                            - name
-                            - identification
-                            - rewardsProgram
-                            - fees
-                            - interest
-                            - termsConditions
-                          properties:
-                            name:
-                              type: string
-                              maxLength: 50
-                              description: Denominação/Identificação do nome da conta (cartão de crédito)
-                              example: Cartão Universitário
-                            identification:
-                              $ref: '#/components/schemas/CreditCardIdentification'
-                            rewardsProgram:
-                              $ref: '#/components/schemas/CreditCardRewardsProgram'
-                            fees:
-                              type: array
-                              items:
-                                $ref: '#/components/schemas/CreditCardService'
-                            interest:
-                              $ref: '#/components/schemas/CreditCardInterest'
-                            termsConditions:
-                              $ref: '#/components/schemas/CreditCardTermsConditions'
+                    $ref: '#/components/schemas/PersonalCreditCardCompany'
         links:
           $ref: '#/components/schemas/Links'
         meta:
           $ref: '#/components/schemas/Meta'
+    PersonalCreditCardCompany:
+      type: object
+      required:
+        - name
+        - cnpjNumber
+      allOf:
+        - $ref: '#/components/schemas/Company'
+      properties:
+        personalCreditCards:
+          type: array
+          items:
+            $ref: '#/components/schemas/CreditCard'
     BusinessCreditCardResponse:
       type: object
       required:
@@ -1803,62 +1724,23 @@ components:
                 companies:
                   type: array
                   items:
-                    required:
-                      - name
-                      - cnpjNumber
-                    properties:
-                      name:
-                        type: string
-                        maxLength: 80
-                        description: 'Nome da Instituição, pertencente à marca, responsável pela comercialização dos produtos e serviços'
-                        example: Empresa A1
-                      cnpjNumber:
-                        type: string
-                        minLength: 14
-                        maxLength: 14
-                        pattern: '^(\d{14})$'
-                        description: O CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica.
-                        example: '45086338000178'
-                      urlComplementaryList:
-                        type: string
-                        pattern: \w*\W*
-                        maxLength: 1024
-                        description: URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. Endereço eletrônico de acesso ao canal. Será obrigatoriamente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada.
-                        example: 'https://empresaa1.com/branches-banking'
-                      businessCreditCards:
-                        type: array
-                        items:
-                          required:
-                            - name
-                            - identification
-                            - rewardsProgram
-                            - fees
-                            - interest
-                            - termsConditions
-                          properties:
-                            name:
-                              type: string
-                              maxLength: 50
-                              description: Denominação/Identificação do nome da conta
-                              example: 'Cartão Microempreendedor Bem-Vindo'
-                            identification:
-                              $ref: '#/components/schemas/CreditCardIdentification'
-                            rewardsProgram:
-                              $ref: '#/components/schemas/CreditCardRewardsProgram'
-                            fees:
-                              type: array
-                              items:
-                                properties:
-                                  service:
-                                    $ref: '#/components/schemas/CreditCardService'
-                            interest:
-                              $ref: '#/components/schemas/CreditCardInterest'
-                            termsConditions:
-                              $ref: '#/components/schemas/CreditCardTermsConditions'
+                    $ref: '#/components/schemas/BusinessCreditCardCompany'
         links:
           $ref: '#/components/schemas/Links'
         meta:
           $ref: '#/components/schemas/Meta'
+    BusinessCreditCardCompany:
+      type: object
+      required:
+        - name
+        - cnpjNumber
+      allOf:
+        - $ref: '#/components/schemas/Company'
+      properties:
+        businessCreditCards:
+          type: array
+          items:
+            $ref: '#/components/schemas/CreditCard'
     CreditCardService:
       type: object
       required:
@@ -1959,26 +1841,14 @@ components:
         - name
         - cnpjNumber
         - personalFinancings
+      allOf:
+        - $ref: '#/components/schemas/Company'
       properties:
-        name:
-          type: string
-          pattern: \w*\W*
-          maxLength: 80
-          description: 'Nome da Instituição, pertencente à marca, responsável pela comercialização dos produtos e serviços'
-          example: Empresa A1
-        urlComplementaryList:
-          type: string
-          pattern: \w*\W*
-          maxLength: 1024
-          description: URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. Endereço eletrônico de acesso ao canal.
-          example: 'https://empresaa1.com/branches-banking'
         personalFinancings:
           type: array
           items:
             $ref: '#/components/schemas/PersonalFinancing'
           description: Lista de financiamentos
-      allOf:
-        - $ref: '#/components/schemas/CNPJ'
     PersonalFinancing:
       type: object
       required:
@@ -2161,26 +2031,14 @@ components:
         - name
         - cnpjNumber
         - businessFinancings
+      allOf:
+        - $ref: '#/components/schemas/Company'
       properties:
-        name:
-          type: string
-          pattern: \w*\W*
-          maxLength: 80
-          description: 'Nome da Instituição, pertencente à marca, responsável pela comercialização dos produtos e serviços'
-          example: Empresa A1
-        urlComplementaryList:
-          type: string
-          pattern: \w*\W*
-          maxLength: 1024
-          description: URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. Endereço eletrônico de acesso ao canal.
-          example: 'https://empresaa1.com/branches-banking'
         businessFinancings:
           type: array
           items:
             $ref: '#/components/schemas/BusinessFinancing'
           description: Lista de financiamentos
-      allOf:
-        - $ref: '#/components/schemas/CNPJ'
     BusinessFinancing:
       type: object
       required:
@@ -2340,26 +2198,14 @@ components:
         - name
         - cnpjNumber
         - personalInvoiceFinancings
+      allOf:
+        - $ref: '#/components/schemas/Company'
       properties:
-        name:
-          type: string
-          pattern: \w*\W*
-          maxLength: 30
-          description: 'Nome da Instituição, pertencente à marca, responsável pela comercialização dos produtos e serviços'
-          example: Empresa da Marca A
-        urlComplementaryList:
-          type: string
-          pattern: \w*\W*
-          maxLength: 1024
-          description: URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. Endereço eletrônico de acesso ao canal.
-          example: 'https://example.com/mobile-banking'
         personalInvoiceFinancings:
           type: array
           items:
             $ref: '#/components/schemas/PersonalInvoiceFinancings'
           description: Lista de adiantamento de recebíveis
-      allOf:
-        - $ref: '#/components/schemas/CNPJ'
     PersonalInvoiceFinancings:
       type: object
       required:
@@ -2585,27 +2431,14 @@ components:
         - name
         - cnpjNumber
         - businessInvoiceFinancings
+      allOf:
+        - $ref: '#/components/schemas/Company'
       properties:
-        name:
-          type: string
-          pattern: \w*\W*
-          maxLength: 30
-          description: 'Nome da Instituição, pertencente à marca, responsável pela comercialização das modalidades de Direitos Creditórios Descontados para Pessoas Jurídicas consultadas. p.ex.''Empresa da Organização A'''
-          example: Empresa da Marca A
-        urlComplementaryList:
-          type: string
-          pattern: \w*\W*
-          maxLength: 1024
-          description: |
-            URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. Endereço eletrônico de acesso ao canal. URLs são limitadas a 2048 caracteres mas, para o contexto do Sistema Financeiro aberto, será adotado a metade deste tamanho. Ex. 'https://example.com/mobile-banking'
-          example: 'https://example.com/mobile-banking'
         businessInvoiceFinancings:
           type: array
           items:
             $ref: '#/components/schemas/BusinessInvoiceFinancings'
           description: Lista de adiantamento de recebíveis
-      allOf:
-        - $ref: '#/components/schemas/CNPJ'
     BusinessInvoiceFinancings:
       type: object
       required:
@@ -2828,28 +2661,14 @@ components:
           - name
           - cnpjNumber
           - businessUnarrangedAccountOverdraft
+        allOf:
+          - $ref: '#/components/schemas/Company'
         properties:
-          name:
-            type: string
-            pattern: \w*\W*
-            maxLength: 30
-            description: 'Nome da Instituição, pertencente à marca, responsável pela comercialização das modalidades de Direitos Creditórios Descontados para Pessoas Jurídicas consultadas. p.ex.''Empresa da Organização A'''
-            example: Empresa da Marca A
-          urlComplementaryList:
-            type: string
-            pattern: \w*\W*
-            maxLength: 1024
-            description: |
-              URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. Endereço eletrônico de acesso ao canal. URLs são limitadas a 2048 caracteres mas, para o contexto do Sistema Financeiro aberto, será adotado a metade deste tamanho. Ex. 'https://example.com/mobile-banking'
-              Será obrigatorimente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada.
-            example: 'https://example.com/mobile-banking'
           businessUnarrangedAccountOverdraft:
             type: array
             items:
               $ref: '#/components/schemas/BusinessUnarrangedAccountOverdraft'
             description: Lista de adiantamento de recebíveis
-        allOf:
-          - $ref: '#/components/schemas/CNPJ'
     BusinessUnarrangedAccountOverdraft:
       type: object
       required:
@@ -3060,28 +2879,14 @@ components:
           - name
           - cnpjNumber
           - personalUnarrangedAccountOverdraft
+        allOf:
+          - $ref: '#/components/schemas/Company'
         properties:
-          name:
-            type: string
-            pattern: \w*\W*
-            maxLength: 30
-            description: 'Nome da Instituição, pertencente à marca, responsável pela comercialização das modalidades de Direitos Creditórios Descontados para Pessoas Jurídicas consultadas. p.ex.''Empresa da Organização A'''
-            example: Empresa da Marca A
-          urlComplementaryList:
-            type: string
-            pattern: \w*\W*
-            maxLength: 1024
-            description: |
-              URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. Endereço eletrônico de acesso ao canal. URLs são limitadas a 2048 caracteres mas, para o contexto do Sistema Financeiro aberto, será adotado a metade deste tamanho. Ex. 'https://example.com/mobile-banking'
-              Será obrigatorimente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada.
-            example: 'https://example.com/mobile-banking'
           personalUnarrangedAccountOverdraft:
             type: array
             items:
               $ref: '#/components/schemas/PersonalUnarrangedAccountOverdraft'
             description: Lista de adiantamento de recebíveis
-        allOf:
-          - $ref: '#/components/schemas/CNPJ'
     PersonalUnarrangedAccountOverdraft:
       type: object
       required:
@@ -3284,6 +3089,64 @@ components:
         - CREDITO_RURAL_TRFC_PRE
         - CREDITO_RURAL_TRFC_POS
         - OUTROS_INDEXADORES
+    CreditCard:
+      type: object
+      required:
+        - name
+        - identification
+        - rewardsProgram
+        - fees
+        - interest
+        - termsConditions
+      properties:
+        name:
+          type: string
+          maxLength: 50
+          description: Denominação/Identificação do nome da conta (cartão de crédito)
+          example: Cartão Universitário
+        identification:
+          $ref: '#/components/schemas/CreditCardIdentification'
+        rewardsProgram:
+          $ref: '#/components/schemas/CreditCardRewardsProgram'
+        fees:
+          type: array
+          items:
+            $ref: '#/components/schemas/CreditCardService'
+        interest:
+          $ref: '#/components/schemas/CreditCardInterest'
+        termsConditions:
+          $ref: '#/components/schemas/CreditCardTermsConditions'
+    Company:
+      type: object
+      required:
+        - name
+        - cnpjNumber
+      allOf:
+        - $ref: '#/components/schemas/CNPJ'
+      properties:
+        name:
+          type: string
+          description: Nome da Instituição, pertencente à Marca.
+          maxLength: 80
+          pattern: \w*\W*
+          example: 'Empresa da Organização A'
+        urlComplementaryList:
+          type: string
+          pattern: \w*\W*
+          maxLength: 1024
+          description: URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. Endereço eletrônico de acesso ao canal. Será obrigatoriamente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada.
+          example: 'https://empresadaorganizacaoa.com/complementarylist'
+    CNPJ:
+      type: object
+      required:
+        - cnpjNumber
+      properties:
+        cnpjNumber:
+          type: string
+          pattern: '^(\d{14})$'
+          description: CNPJ
+          maxLength: 14
+          example: "50685362000135"
     Links:
       type: object
       properties:
