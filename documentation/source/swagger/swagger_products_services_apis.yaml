@@ -1381,6 +1381,7 @@ components:
             - CREDITO_RURAL_TRFC_POS
             - OUTROS_INDEXADORES
           description: 'Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial ou Indexador (Indx), do Documento 3040'
+          example: PRE_FIXADO
         rate:
           type: string
           format: '(^[0-1](\.[0-9]{2})$|^NA$)'
@@ -1399,6 +1400,7 @@ components:
         - 4_QUARTIL_CLIENTES
       description: |
         Segundo Normativa nº32 de 2020: Distribuição de frequência relativa dos valores de tarifas e taxas de juros cobrados dos clientes, de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana e o percentual de clientes em cada uma dessas faixas. Informado:1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes
+      example: 1_QUARTIL_CLIENTES
     ApplicationIntervals:
       type: string
       enum:
@@ -1471,6 +1473,7 @@ components:
               maxLength: 50
               pattern: \w*\W*
               description: 'Informações complementares se tipo de Cartão ''OUTROS''. Campo deve ser obrigatoriamente preenchido se selecionado ''OUTROS'''
+              example: 'NA'
         creditCard:
           type: object
           required:
@@ -1496,6 +1499,7 @@ components:
               maxLength: 50
               pattern: \w*\W*
               description: "Texto livre para especificar categoria de bandeira marcada como 'OUTRAS'. Campo deve ser obrigatoriamente preenchido se campo network vier selecionado como 'OUTROS'"
+              example: 'NA'
     CreditCardRewardsProgram:
       type: object
       required:
@@ -1529,6 +1533,7 @@ components:
           maxLength: 500
           pattern: \w*\W*
           description: Campo aberto para detalhamento de taxas de juros
+          example: 'NA'
         elegibilityCriteriaInfo:
           type: string
           maxLength: 2000
@@ -1591,15 +1596,7 @@ components:
                       pattern: '((-?[1-9]?\d{1,4}){1}(\.\d{1,4}){1}|NA)$'
                       maxLength: 9
                       description: 'Percentual que corresponde a mediana (taxa efetiva) aplicada para  outras operações de crédito, no período informado.'
-                  example:
-                    - interval: 1_QUARTIL_CLIENTES
-                      rate: '0.1500'
-                    - interval: 2_QUARTIL_CLIENTES
-                      rate: '0.2000'
-                    - interval: 3_QUARTIL_CLIENTES
-                      rate: '0.3500'
-                    - interval: 4_QUARTIL_CLIENTES
-                      rate: '0.6800'
+                      example: '0.1500'
               minimumRate:
                 type: string
                 pattern: '((-?[1-9]?\d{1,4}){1}(\.\d{1,4}){1}|NA)$'
@@ -1617,43 +1614,6 @@ components:
                 description: Tarifas cobradas sobre Serviços ofertados
                 items:
                   $ref: '#/components/schemas/FeeReferentialRateOrIndexer'
-          example:
-            - code: "SAQUE_A_CREDITO"
-              additionalInfo: "NA"
-              prices:
-                - interval: "1_QUARTIL_CLIENTES"
-                  rate: "0.1500"
-                - interval: "2_QUARTIL_CLIENTES"
-                  rate: "0.2000"
-                - interval: "3_QUARTIL_CLIENTES"
-                  rate: "0.3500"
-                - interval: "4_QUARTIL_CLIENTES"
-                  rate: "0.6800"
-              minimumRate: "0.0450"
-              maximumRate: "0.7000"
-              fees:
-                - referentialRateOrIndexer: PRE_FIXADO
-                  rate: '0.15'
-                - referentialRateOrIndexer: POS_FIXADO_TR_TBF
-                  rate: '0.10'
-            - code: "PAGAMENTOS_CONTAS"
-              additionalInfo: "NA"
-              prices:
-                - interval: "1_QUARTIL_CLIENTES"
-                  rate: "0.1500"
-                - interval: "2_QUARTIL_CLIENTES"
-                  rate: "0.2700"
-                - interval: "3_QUARTIL_CLIENTES"
-                  rate: "0.4000"
-                - interval: "4_QUARTIL_CLIENTES"
-                  rate: "0.4100"
-              minimumRate: "0.0900"
-              maximumRate: "0.5500"
-              fees:
-                - referentialRateOrIndexer: PRE_FIXADO
-                  rate: '0.15'
-                - referentialRateOrIndexer: POS_FIXADO_TR_TBF
-                  rate: '0.10'
     PersonalCreditCardResponse:
       type: object
       required:
@@ -1783,19 +1743,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Price'
-          example:
-            - interval: 1_QUARTIL_CLIENTES
-              value: '45.40'
-              currency: BRL
-            - interval: 2_QUARTIL_CLIENTES
-              value: '57.00'
-              currency: BRL
-            - interval: 3_QUARTIL_CLIENTES
-              value: '62.00'
-              currency: BRL
-            - interval: 4_QUARTIL_CLIENTES
-              value: '69.00'
-              currency: BRL
         minimum:
           $ref: '#/components/schemas/MinimumPrice'
         maximum:
@@ -2778,9 +2725,7 @@ components:
           description: |
             Percentual que incide sobre a composição das taxas de juros remuneratórios. (representa uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O valor '1 'representa 100%). A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)
           pattern: '(^[0-9](\.[0-9]{2})|NA)$'
-      example:
-        referentialRateOrIndexer: PRE_FIXADO
-        rate: '0.15'
+          example: '0.15'
     ResponsePersonalUnarrangedAccountOverdraftList:
       type: object
       required:
@@ -3020,46 +2965,33 @@ components:
                   - 2_QUARTIL_CLIENTES
                   - 3_QUARTIL_CLIENTES
                   - 4_QUARTIL_CLIENTES
+                example: '1_QUARTIL_CLIENTES'
               rate:
                 type: string
                 maxLength: 6
                 description: |
                   Percentual que corresponde a mediana da taxa efetiva cobrada do cliente pela contratação dos Direitos Creditórios Descontados, no intervalo informado. A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.15. Este valor representa 15%. O valor 1 representa 100%)
                 pattern: '^([0-9](\.[0-9]{4})|NA)$'
+                example: '0.0987'
         minimumRate:
           type: string
           maxLength: 6
           description: |
             Percentual mínimo cobrado (taxa efetiva) no mês de referência, para os Direitos Creditórios Descontados contratado  A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.15. Este valor representa 15%. O valor 1 representa 100%)
           pattern: '^([0-9](\.[0-9]{4})|NA)$'
+          example: '0.0845'
         maximumRate:
           maxLength: 6
           type: string
           description: |
             Percentual máximo cobrado (taxa efetiva) no mês de referência, para os Direitos Creditórios Descontados contratado  A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.15. Este valor representa 15%. O valor 1 representa 100%)
           pattern: '^([0-9](\.[0-9]{4})|NA)$'
+          example: '0.9000'
         fees:
           type: array
           description: Tarifas cobradas sobre Serviços ofertados
           items:
             $ref: '#/components/schemas/FeeReferentialRateOrIndexer'
-      example:
-        prices:
-          - interval: 1_QUARTIL_CLIENTES
-            rate: '0.0987'
-          - interval: 2_QUARTIL_CLIENTES
-            rate: '0.1600'
-          - interval: 3_QUARTIL_CLIENTES
-            rate: '0.3600'
-          - interval: 4_QUARTIL_CLIENTES
-            rate: '0.5890'
-        minimumRate: '0.0845'
-        maximumRate: '0.9000'
-        fees:
-          - referentialRateOrIndexer: PRE_FIXADO
-            rate: '0.15'
-          - referentialRateOrIndexer: POS_FIXADO_TR_TBF
-            rate: '0.10'
       required:
         - prices
         - minimumRate
@@ -3089,6 +3021,7 @@ components:
         - CREDITO_RURAL_TRFC_PRE
         - CREDITO_RURAL_TRFC_POS
         - OUTROS_INDEXADORES
+      example: 'SEM_INDEXADOR_TAXA'
     CreditCard:
       type: object
       required:
@@ -3111,7 +3044,12 @@ components:
         fees:
           type: array
           items:
-            $ref: '#/components/schemas/CreditCardService'
+            type: object
+            required:
+              - service
+            properties:
+              service:
+                $ref: '#/components/schemas/CreditCardService'
         interest:
           $ref: '#/components/schemas/CreditCardInterest'
         termsConditions:
