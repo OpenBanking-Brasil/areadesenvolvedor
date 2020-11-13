@@ -66,7 +66,7 @@
                   "maximumRate": "string",
                   "fees": [
                     {
-                      "referentialRateOrIndexer": "string",
+                      "referentialRateIndexer": "string",
                       "rate": "string"
                     }
                   ]
@@ -84,7 +84,7 @@
                   "maximumRate": "string",
                   "fees": [
                     {
-                      "referentialRateOrIndexer": "string",
+                      "referentialRateIndexer": "string",
                       "rate": "string"
                     }
                   ]
@@ -104,7 +104,7 @@
                   "maximumRate": "string",
                   "fees": [
                     {
-                      "referentialRateOrIndexer": "string",
+                      "referentialRateIndexer": "string",
                       "rate": "string"
                     }
                   ]
@@ -209,7 +209,7 @@
               "maximumRate": "string",
               "fees": [
                 {
-                  "referentialRateOrIndexer": "string",
+                  "referentialRateIndexer": "string",
                   "rate": "string"
                 }
               ]
@@ -227,7 +227,7 @@
               "maximumRate": "string",
               "fees": [
                 {
-                  "referentialRateOrIndexer": "string",
+                  "referentialRateIndexer": "string",
                   "rate": "string"
                 }
               ]
@@ -247,7 +247,7 @@
               "maximumRate": "string",
               "fees": [
                 {
-                  "referentialRateOrIndexer": "string",
+                  "referentialRateIndexer": "string",
                   "rate": "string"
                 }
               ]
@@ -334,7 +334,7 @@
           "maximumRate": "string",
           "fees": [
             {
-              "referentialRateOrIndexer": "string",
+              "referentialRateIndexer": "string",
               "rate": "string"
             }
           ]
@@ -352,7 +352,7 @@
           "maximumRate": "string",
           "fees": [
             {
-              "referentialRateOrIndexer": "string",
+              "referentialRateIndexer": "string",
               "rate": "string"
             }
           ]
@@ -372,7 +372,7 @@
           "maximumRate": "string",
           "fees": [
             {
-              "referentialRateOrIndexer": "string",
+              "referentialRateIndexer": "string",
               "rate": "string"
             }
           ]
@@ -454,7 +454,7 @@
       "maximumRate": "string",
       "fees": [
         {
-          "referentialRateOrIndexer": "string",
+          "referentialRateIndexer": "string",
           "rate": "string"
         }
       ]
@@ -472,7 +472,7 @@
       "maximumRate": "string",
       "fees": [
         {
-          "referentialRateOrIndexer": "string",
+          "referentialRateIndexer": "string",
           "rate": "string"
         }
       ]
@@ -492,7 +492,7 @@
       "maximumRate": "string",
       "fees": [
         {
-          "referentialRateOrIndexer": "string",
+          "referentialRateIndexer": "string",
           "rate": "string"
         }
       ]
@@ -708,7 +708,7 @@
     "maximumRate": "string",
     "fees": [
       {
-        "referentialRateOrIndexer": "string",
+        "referentialRateIndexer": "string",
         "rate": "string"
       }
     ]
@@ -724,7 +724,7 @@
     "maximumRate": "string",
     "fees": [
       {
-        "referentialRateOrIndexer": "string",
+        "referentialRateIndexer": "string",
         "rate": "string"
       }
     ]
@@ -742,7 +742,7 @@
     "maximumRate": "string",
     "fees": [
       {
-        "referentialRateOrIndexer": "string",
+        "referentialRateIndexer": "string",
         "rate": "string"
       }
     ]
@@ -773,7 +773,7 @@
   "maximumRate": "string",
   "fees": [
     {
-      "referentialRateOrIndexer": "string",
+      "referentialRateIndexer": "string",
       "rate": "string"
     }
   ]
@@ -787,7 +787,7 @@
 | prices         | [[Rate](#schemaRate)]                                                                    | Sim         | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa física |
 | minimumRate    | String                                                                                   | Sim         | Percentual mínimo cobrado para a taxa do crédito rotativo no mês de referência                                                                 |
 | maximumRate    | String                                                                                   | Sim         | Percentual máximo cobrado para o pagamento parcelado do saldo devedor na fatura do mês de referência.                                          |
-| fees           | [FeeReferentialRateOrIndexer](#schemaFeeReferentialRateOrIndexer)                        | Sim         | Lista de Tarifas cobradas sobre Serviços ofertados                                                                                             |
+| fees           | [FeeReferentialRateIndexer](#schemaFeeReferentialRateIndexer)                        | Sim         | Lista de Tarifas cobradas sobre Serviços ofertados                                                                                             |
 
 ### Enum PersonalCreditCardInterestRateCode
 <a id="schemaEnumPersonalCreditCardInterestRateCode"></a>
@@ -815,7 +815,7 @@
   "maximumRate" : "string",
   "fees": [
     {
-      "referentialRateOrIndexer": "string",
+      "referentialRateIndexer": "string",
       "rate": "string"
     }
   ]
@@ -827,7 +827,7 @@
 | prices      | [[Rate](#schemaRate)]                                             | Sim         | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa física |
 | minimumRate | String                                                            | Sim         | Percentual mínimo cobrado para a taxa do crédito rotativo no mês de referência                                                                 |
 | maximumRate | String                                                            | Sim         | Percentual máximo cobrado para o pagamento parcelado do saldo devedor na fatura do mês de referência.                                          |
-| fees        | [FeeReferentialRateOrIndexer](#schemaFeeReferentialRateOrIndexer) | Sim         | Lista de Tarifas cobradas sobre Serviços ofertados                                                                                             |
+| fees        | [FeeReferentialRateIndexer](#schemaFeeReferentialRateIndexer) | Sim         | Lista de Tarifas cobradas sobre Serviços ofertados                                                                                             |
 
 ## PersonalCreditCardInstalmentRate
 <a id="schemaPersonalCreditCardInstalmentRate"></a>
@@ -845,7 +845,7 @@
   "maximumRate" : "string",
   "fees": [
     {
-      "referentialRateOrIndexer": "string",
+      "referentialRateIndexer": "string",
       "rate": "string"
     }
   ]
@@ -857,7 +857,7 @@
 | prices      | [[Rate](#schemaRate)]                                             | Sim         | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa física  |
 | minimumRate | String                                                            | Sim         | Percentual mínimo cobrado para a taxa do crédito rotativo no mês de referência                                                                  |
 | maximumRate | String                                                            | Sim         | Percentual máximo cobrado para o pagamento parcelado do saldo devedor na fatura do mês de referência.                                           |
-| fees        | [FeeReferentialRateOrIndexer](#schemaFeeReferentialRateOrIndexer) | Sim         | Lista de Tarifas cobradas sobre Serviços ofertados                                                                                              |
+| fees        | [FeeReferentialRateIndexer](#schemaFeeReferentialRateIndexer) | Sim         | Lista de Tarifas cobradas sobre Serviços ofertados                                                                                              |
 
 ## PersonalCreditCardTermsConditions
 <a id="schemaPersonalCreditCardTermsConditions"></a>

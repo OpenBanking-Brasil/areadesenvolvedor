@@ -200,7 +200,7 @@
 | exception         | string                                 | Não         | Informações sobre as exceções de abertura.        |
 | allowPublicAccess | string                                 | Sim         | Define se possui acesso ao público. True ou False.|
 
-## ReferentialRateOrIndexer
+## ReferentialRateIndexer
 
 <a id="schemareferentialrateorindexer"></a>
 
@@ -208,25 +208,25 @@ Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial o
 
 |Nome|Código|Definição|
 |---|---|---|
-| referentialRateOrIndexer |SEM_INDEXADOR_TAXA      | SEM INDEXADOR TAXA|
-| referentialRateOrIndexer |PRE_FIXADO              | PRE FIXADO|
-| referentialRateOrIndexer |POS_FIXADO_TR_TBF       | POS FIXADO TR TBF|
-| referentialRateOrIndexer |POS_FIXADO_TJLP         | POS FIXADO TJLP|
-| referentialRateOrIndexer |POS_FIXADO_LIBOR        | POS FIXADO LIBOR|
-| referentialRateOrIndexer |POS_FIXADO_TLP          | POS FIXADO TLP|
-| referentialRateOrIndexer |OUTRAS_TAXAS_POS_FIXADAS        | OUTRAS TAXAS POS FIXADAS|
-| referentialRateOrIndexer |FLUTUANTES_CDI          | FLUTUANTES CDI|
-| referentialRateOrIndexer |FLUTUANTES_SELIC        | FLUTUANTES SELIC|
-| referentialRateOrIndexer |OUTRAS_TAXAS_FLUTUANTES | OUTRAS_TAXAS FLUTUANTES|
-| referentialRateOrIndexer |INDICES_PRECOS_IGPM     | INDICES PRECOS IGPM|
-| referentialRateOrIndexer |INDICES_PRECOS_IPCA     | INDICES PRECOS IPCA|
-| referentialRateOrIndexer |INDICES_PRECOS_IPCC     | INDICES PRECOS IPCC|
-| referentialRateOrIndexer |OUTROS_INDICES_PRECO    | OUTROS INDICES PRECO|
-| referentialRateOrIndexer |CREDITO_RURAL_TCR_PRE   | CREDITO RURAL TCR PRE|
-| referentialRateOrIndexer |CREDITO_RURAL_TCR_POS   | CREDITO RURAL TCR POS|
-| referentialRateOrIndexer |CREDITO_RURAL_TRFC_PRE  | CREDITO RURAL TRFC PRE|
-| referentialRateOrIndexer |CREDITO_RURAL_TRFC_POS  | CREDITO RURAL TRFC POS|
-| referentialRateOrIndexer |OUTROS_INDEXADORES      | OUTROS INDEXADORES|
+| referentialRateIndexer |SEM_INDEXADOR_TAXA      | SEM INDEXADOR TAXA|
+| referentialRateIndexer |PRE_FIXADO              | PRE FIXADO|
+| referentialRateIndexer |POS_FIXADO_TR_TBF       | POS FIXADO TR TBF|
+| referentialRateIndexer |POS_FIXADO_TJLP         | POS FIXADO TJLP|
+| referentialRateIndexer |POS_FIXADO_LIBOR        | POS FIXADO LIBOR|
+| referentialRateIndexer |POS_FIXADO_TLP          | POS FIXADO TLP|
+| referentialRateIndexer |OUTRAS_TAXAS_POS_FIXADAS| OUTRAS TAXAS POS FIXADAS|
+| referentialRateIndexer |FLUTUANTES_CDI          | FLUTUANTES CDI|
+| referentialRateIndexer |FLUTUANTES_SELIC        | FLUTUANTES SELIC|
+| referentialRateIndexer |OUTRAS_TAXAS_FLUTUANTES | OUTRAS_TAXAS FLUTUANTES|
+| referentialRateIndexer |INDICES_PRECOS_IGPM     | INDICES PRECOS IGPM|
+| referentialRateIndexer |INDICES_PRECOS_IPCA     | INDICES PRECOS IPCA|
+| referentialRateIndexer |INDICES_PRECOS_IPCC     | INDICES PRECOS IPCC|
+| referentialRateIndexer |OUTROS_INDICES_PRECO    | OUTROS INDICES PRECO|
+| referentialRateIndexer |CREDITO_RURAL_TCR_PRE   | CREDITO RURAL TCR PRE|
+| referentialRateIndexer |CREDITO_RURAL_TCR_POS   | CREDITO RURAL TCR POS|
+| referentialRateIndexer |CREDITO_RURAL_TRFC_PRE  | CREDITO RURAL TRFC PRE|
+| referentialRateIndexer |CREDITO_RURAL_TRFC_POS  | CREDITO RURAL TRFC POS|
+| referentialRateIndexer |OUTROS_INDEXADORES      | OUTROS INDEXADORES|
 
 
 ## MinimumBalance
@@ -259,13 +259,13 @@ Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial o
 |currency|string|Sim|Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217|
 
 
-## FeeReferentialRateOrIndexer
+## FeeReferentialRateIndexer
 
-<a id="schemaFeeReferentialRateOrIndexer"></a>
+<a id="schemaFeeReferentialRateIndexer"></a>
 
 ```json
 {
-  "referentialRateOrIndexer": "string",
+  "referentialRateIndexer": "string",
   "rate": "string"
 }
 ```
@@ -274,6 +274,6 @@ Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial o
 
 |Nome|Tipo|Obrigatório|Definição|
 |---|---|---|---|
-| referentialRateOrIndexer|[ReferentialRateOrIndexer](#schemareferentialrateorindexer)| Sim |Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial ou Indexador (Indx), do Documento 3040|
+| referentialRateIndexer|string| Sim |Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial ou Indexador (Indx), do Documento 3040|
 | rate|string| Sim |Percentual que incide sobre a composição das taxas de juros remuneratórios. (representa uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O valor '1 'representa 100%). A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)|
 
