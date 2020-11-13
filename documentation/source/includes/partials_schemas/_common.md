@@ -20,12 +20,12 @@
 ## Enum PriceIntervals
 <a id="schemaPriceInterval"></a>
 
-| Nome         | Código                | Definição              |
-|:------------ |:------------------    |:-------------------    |
-| interval     | 1_QUARTIL_CLIENTES    | 1ª Quartil de clientes |
-| interval     | 2_QUARTIL_CLIENTES    | 2ª Quartil de clientes |
-| interval     | 3_QUARTIL_CLIENTES    | 3ª Quartil de clientes |
-| interval     | 4_QUARTIL_CLIENTES    | 4ª Quartil de clientes |
+| Nome         | Código           |
+|:------------ |:-------------    |
+| interval     | 1_FAIXA_VALOR    |
+| interval     | 2_FAIXA_VALOR    |
+| interval     | 3_FAIXA_VALOR    |
+| interval     | 4_FAIXA_VALOR    |
 
 
 ## Price
@@ -43,8 +43,8 @@
 
 |     Nome     |  Tipo                                        | Obrigatório |Definição                                                                      |
 |:------------ |:-------------------------------------------- |:----------- |:----------------------------------------------------------------------------- |
-| interval     | [Enum PriceInterval](#schemaPriceInterval)   | Sim         | Segundo Normativa nº32 de 2020: Distribuição de frequência relativa dos valores de tarifas e taxas de juros cobrados dos clientes, de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana e o percentual de clientes em cada uma dessas faixas. Informado:1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes.|
-| value        | [AmountString](#commonFieldAmountString)     | Sim         | Valor da mediana da tarifa, relativa ao serviço ofertado, para pessoa natural informado no período, conforme Res nº32 BCB, 2020. p.ex. '45.00' (representa um valor monetário. p.ex: 1547368.92. Este valor, considerando que a moeda seja BRL, significa R$ 1.547.368,92. O único separador presente deve ser o '.' (ponto) para indicar a casa decimal. Não deve haver separador de milhar). |
+| interval     | [Enum PriceInterval](#schemaPriceInterval)   | Sim         | Segundo Normativa nº 32, BCB, de 2020: Distribuição de frequência relativa dos valores de tarifas cobradas dos clientes, de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana em cada uma dessas faixas. Informando: 1ª faixa de valor, 2ª faixa de valor, 3ª faixa de valor e 4ª faixa de valor.|
+| value        | [AmountString](#commonFieldAmountString)     | Sim         | Valor da mediana de cada faixa relativa ao serviço ofertado, informado no período, conforme Res nº 32 BCB, 2020. p.ex. '45.00' (representa um valor monetário. p.ex: 1547368.92. Este valor, considerando que a moeda seja BRL, significa R$ 1.547.368,92. O único separador presente deve ser o '.' (ponto) para indicar a casa decimal. Não deve haver separador de milhar). |
 | currency     | [CurrencyString](#commonFieldCurrencyString) | Sim         | Moeda referente ao valor da Tarifa, segundo modelo ISO-4217. p.ex. 'BRL'                 |
 
 
@@ -77,10 +77,10 @@
 }
 ```
 
-|     Nome     |  Tipo                                            | Obrigatório    |                            Definição                                                           |
-|:------------ |:------------------------------------------------ |:-------------- |:-----------------------------------------------------------------------------                  |
-| value        | [AmountString](#commonFieldAmountString)         | Sim            | Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência   |
-| currency     | [CurrencyString](#commonFieldCurrencyString)     | Sim            | Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217. p.ex.'BRL'                 |
+|     Nome     |  Tipo                                            | Obrigatório    |                            Definição                                                         |
+|:------------ |:------------------------------------------------ |:-------------- |:-----------------------------------------------------------------------------                |
+| value        | [AmountString](#commonFieldAmountString)         | Sim            | Valor mínimo apurado para a tarifa de serviços sobre a base de clientes no mês de referência |
+| currency     | [CurrencyString](#commonFieldCurrencyString)     | Sim            | Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217. p.ex.'BRL'               |
 
 ## MaximumPrice
 <a id="schemaMaximumPrice"></a>
@@ -92,10 +92,10 @@
 }
 ```
 
-|     Nome     |  Tipo                                            | Obrigatório    |                            Definição                                                           |
-|:------------ |:------------------------------------------------ |:-------------- |:-----------------------------------------------------------------------------                  |
-| value        | [AmountString](#commonFieldAmountString)         | Sim            | Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência   |
-| currency     | [CurrencyString](#commonFieldCurrencyString)     | Sim            | Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217. p.ex.'BRL'                 |
+|     Nome     |  Tipo                                            | Obrigatório    |                            Definição                                                         |
+|:------------ |:------------------------------------------------ |:-------------- |:-----------------------------------------------------------------------------                |
+| value        | [AmountString](#commonFieldAmountString)         | Sim            | Valor máximo apurado para a tarifa de serviços sobre a base de clientes no mês de referência |
+| currency     | [CurrencyString](#commonFieldCurrencyString)     | Sim            | Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217. p.ex.'BRL'               |
 
 ## MinimumRate
 <a id="schemaMinimumRate"></a>

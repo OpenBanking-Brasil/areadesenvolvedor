@@ -266,10 +266,10 @@
 }
 ```
 
-|     Nome     |  Tipo                                                                    | Obrigatório  |                            Definição                 |
-|:-------------|:-------------------------------------------------------------------------|:-----------  |:---------------------------------------------------- |
-| name         | string                                                                   | Sim          | Nome da Marca selecionada pelas Organizações         |
-| companies    | [[PersonalCreditCardCompanies](#schemaPersonalCreditCardCompanies)]    | Sim          | Lista de instituições pertencentes a marca           |
+|     Nome     |  Tipo                                                               | Obrigatório  |                            Definição                 |
+|:-------------|:--------------------------------------------------------------------|:-----------  |:---------------------------------------------------- |
+| name         | string                                                              | Sim          | Nome da Marca selecionada pelas Organizações         |
+| companies    | [[PersonalCreditCardCompanies](#schemaPersonalCreditCardCompanies)] | Sim          | Lista de instituições pertencentes a marca           |
 
 ## PersonalCreditCardCompanies 
 <a id="schemaPersonalCreditCardCompanies"></a>
@@ -653,9 +653,9 @@
 }
 ```
 
-|     Nome    |  Tipo                                                               | Obrigatório     |    Definição                           |
-|:------------|:--------------------------------------------------------------------|:----------------|:-------------------------------------- |
-| services    | [[PersonalCreditCardService](#schemaPersonalCreditCardService)]     | Sim             | Informações de tarifas sobre serviços  |
+|     Nome   |  Tipo                                                               | Obrigatório     |    Definição                           |
+|:-----------|:--------------------------------------------------------------------|:----------------|:-------------------------------------- |
+| service    | [[PersonalCreditCardService](#schemaPersonalCreditCardService)]     | Sim             | Informações de tarifas sobre serviços  |
 
 ## PersonalCreditCardService
 <a id="schemaPersonalCreditCardService"></a>
@@ -665,7 +665,7 @@
   "name": "string",
   "code": "string",
   "chargingTriggerInfo": "string",
-  "price": [
+  "prices": [
     {
       "interval": "string",
       "value": "string",
@@ -688,7 +688,7 @@
 | name                | string                                | Sim | Nomes das Tarifas cobradas sobre Serviços relacionados à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa jurídica               |
 | code                | string                                | Sim | Fatos geradores de cobrança que incidem sobre as Modalidades de Contas de Pagamento Pós-Pagas informada, para pessoa jurídica.               |
 | chargingTriggerInfo | string                                | Sim | Fatos geradores de cobrança que incidem sobre as Modalidades inforrmadas de Contas de Pagamento Pós-Pagas para pessoa jurídica                  |
-| price               | [[Price](#schemaPrice)]               | Sim | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa jurídica  |
+| prices              | [[Price](#schemaPrice)]               | Sim | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa jurídica  |
 | minimum             | [[MinimumPrice](#schemaMinimumPrice)] | Sim | Valor mínimo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
 | maximum             | [[MaximumPrice](#schemaMaximumPrice)] | Sim | Valor máximo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type |
 
