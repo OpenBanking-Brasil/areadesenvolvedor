@@ -99,6 +99,12 @@
                       "referentialRateIndexer": "string",
                       "rate": "string"
                     }
+                  ],
+                  "customers": [
+                    {
+                      "frequency": "1_FAIXA_CLIENTE",
+                      "rate": "0.1500"
+                    }
                   ]
                 },
                 "interestRates": [{
@@ -254,6 +260,12 @@
                   "referentialRateIndexer": "string",
                   "rate": "string"
                 }
+              ],
+              "customers": [
+                {
+                  "frequency": "1_FAIXA_CLIENTE",
+                  "rate": "0.1500"
+                }
               ]
             },
             "interestRates": [{
@@ -391,6 +403,12 @@
               "referentialRateIndexer": "string",
               "rate": "string"
             }
+          ],
+          "customers": [
+            {
+              "frequency": "1_FAIXA_CLIENTE",
+              "rate": "0.1500"
+            }
           ]
         },
         "interestRates": [{
@@ -522,6 +540,12 @@
         {
           "referentialRateIndexer": "string",
           "rate": "string"
+        }
+      ],
+      "customers": [
+        {
+          "frequency": "1_FAIXA_CLIENTE",
+          "rate": "0.1500"
         }
       ]
     },
@@ -794,6 +818,12 @@
         "referentialRateIndexer": "string",
         "rate": "string"
       }
+    ],
+    "customers": [
+      {
+        "frequency": "1_FAIXA_CLIENTE",
+        "rate": "0.1500"
+      }
     ]
   },
   "interestRates": [{
@@ -922,16 +952,23 @@
       "referentialRateIndexer": "string",
       "rate": "string"
     }
+  ],
+  "customers": [
+    {
+      "frequency": "1_FAIXA_CLIENTE",
+      "rate": "0.1500"
+    }
   ]
 }
 ```
 
-|     Nome    |  Tipo                                                             | Obrigatório |    Definição                                                                                                                                    |
-|:------------|:----------------------------------------------------------------- |:----------- |:----------------------------------------------------------------------------------------------------------------------------------------------- |
-| prices      | [[Rate](#schemaRate)]                                             | Sim         | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa física  |
-| minimumRate | String                                                            | Sim         | Percentual mínimo cobrado para a taxa do crédito rotativo no mês de referência                                                                  |
-| maximumRate | String                                                            | Sim         | Percentual máximo cobrado para o pagamento parcelado do saldo devedor na fatura do mês de referência.                                           |
+|     Nome    |  Tipo                                                         | Obrigatório |    Definição                                                                                                                                    |
+|:------------|:--------------------------------------------------------------|:----------- |:----------------------------------------------------------------------------------------------------------------------------------------------- |
+| prices      | [[Rate](#schemaRate)]                                         | Sim         | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa física  |
+| minimumRate | String                                                        | Sim         | Percentual mínimo cobrado para a taxa do crédito rotativo no mês de referência                                                                  |
+| maximumRate | String                                                        | Sim         | Percentual máximo cobrado para o pagamento parcelado do saldo devedor na fatura do mês de referência.                                           |
 | fees        | [FeeReferentialRateIndexer](#schemaFeeReferentialRateIndexer) | Sim         | Lista de Tarifas cobradas sobre Serviços ofertados                                                                                              |
+| customers   | [[Customer](#schemaCustomer)]                                 | Sim         ||
 
 ## PersonalCreditCardTermsConditions
 <a id="schemaPersonalCreditCardTermsConditions"></a>
