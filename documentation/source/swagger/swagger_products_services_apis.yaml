@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: API's OpenData do Open Banking Brasil
   description: As API's descritas neste documento são referentes as API's da fase OpenData do Open Banking Brasil.
-  version: 1.0.0
+  version: 2.0.0
   contact:
     email: apiteam@swagger.io
 servers:
@@ -1358,7 +1358,7 @@ components:
     InterestRateFee:
       type: object
       properties:
-        referentialRateOrIndexer:
+        referentialRateIndexer:
           type: string
           enum:
             - SEM_INDEXADOR_TAXA
@@ -1389,18 +1389,18 @@ components:
             Percentual que incide sobre a composição das taxas de juros remuneratórios. (representa uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O valor '1 'representa 100%) A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)
           example: '0.15'
       required:
-        - referentialRateOrIndexer
+        - referentialRateIndexer
         - rate
     PriceIntervals:
       type: string
       enum:
-        - 1_QUARTIL_CLIENTES
-        - 2_QUARTIL_CLIENTES
-        - 3_QUARTIL_CLIENTES
-        - 4_QUARTIL_CLIENTES
+        - 1_FAIXA_VALOR
+        - 2_FAIXA_VALOR
+        - 3_FAIXA_VALOR
+        - 4_FAIXA_VALOR
       description: |
-        Segundo Normativa nº32 de 2020: Distribuição de frequência relativa dos valores de tarifas e taxas de juros cobrados dos clientes, de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana e o percentual de clientes em cada uma dessas faixas. Informado:1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes
-      example: 1_QUARTIL_CLIENTES
+        Segundo Normativa nº 32, BCB, de 2020: Distribuição de frequência relativa dos valores de tarifas cobradas dos clientes, de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana em cada uma dessas faixas. Informando: 1ª faixa de valor, 2ª faixa de valor, 3ª faixa de valor e 4ª faixa de valor
+      example: 1_FAIXA_VALOR
     ApplicationIntervals:
       type: string
       enum:
@@ -1538,13 +1538,13 @@ components:
           type: string
           maxLength: 2000
           pattern: \w*\W*
-          description: 'Informação sobre as condições e critérios de elegibilidade do emissor do cartão. Pode ser informada a URL referente ao endereço onde constam as condições informadas. URLs são limitadas a 2048 caracteres mas, para o contexto do Sistema Financeiro aberto, será adotado a metade deste tamanho.'
+          description: 'Informação sobre as condições e critérios de elegibilidade do emissor do cartão. Pode ser informada a URL referente ao endereço onde constam as condições informadas.'
           example: 'https://empresaa1.com/creditcards_elegibility_criteria'
         closingProcessInfo:
           type: string
           maxLength: 2000
           pattern: \w*\W*
-          description: 'Descrição dos procedimentos para encerramento da conta pós paga. Pode ser informada a URL referente ao endereço onde constam as condições informadas. URLs são limitadas a 2048 caracteres mas, para o contexto do Sistema Financeiro aberto, será adotado a metade deste tamanho.'
+          description: 'Descrição dos procedimentos para encerramento da conta de pagamento pós paga. Pode ser informada a URL referente ao endereço onde constam as condições informadas.'
           example: 'https://empresaa1.com/creditcards_closing_process'
     CreditCardInterest:
       type: object
@@ -1613,7 +1613,7 @@ components:
                 type: array
                 description: Tarifas cobradas sobre Serviços ofertados
                 items:
-                  $ref: '#/components/schemas/FeeReferentialRateOrIndexer'
+                  $ref: '#/components/schemas/FeeReferentialRateIndexer'
     PersonalCreditCardResponse:
       type: object
       required:
@@ -1627,29 +1627,26 @@ components:
             - brand
           properties:
             brand:
-              type: object
-              required:
-                - name
-                - companies
-              properties:
-                name:
-                  type: string
-                  maxLength: 30
-                  description: Nome da marca selecionada pela Organização responsável pelas contas de pagamento pós-pagas (cartão de crédito)
-                  example: Organização A
-                companies:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/PersonalCreditCardCompany'
+              $ref: '#/components/schemas/PersonalCreditCardBrand'
         links:
           $ref: '#/components/schemas/Links'
         meta:
           $ref: '#/components/schemas/Meta'
+    PersonalCreditCardBrand:
+      type: object
+      required:
+        - companies
+      allOf:
+        - $ref: '#/components/schemas/Brand'
+      properties:
+        companies:
+          $ref: '#/components/schemas/PersonalCreditCardCompany'
     PersonalCreditCardCompany:
       type: object
       required:
         - name
         - cnpjNumber
+        - personalCreditCards
       allOf:
         - $ref: '#/components/schemas/Company'
       properties:
@@ -1880,19 +1877,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Price'
-          example:
-            - interval: 1_QUARTIL_CLIENTES
-              value: '45.40'
-              currency: BRL
-            - interval: 2_QUARTIL_CLIENTES
-              value: '57.00'
-              currency: BRL
-            - interval: 3_QUARTIL_CLIENTES
-              value: '62.00'
-              currency: BRL
-            - interval: 4_QUARTIL_CLIENTES
-              value: '69.00'
-              currency: BRL
         minimum:
           $ref: '#/components/schemas/MinimumPrice'
         maximum:
@@ -2563,7 +2547,7 @@ components:
                             currency: BRL
                     interestRate:
                       fees:
-                        - referentialRateOrIndexer: SEM_INDEXADOR_TAXA
+                        - referentialRateIndexer: SEM_INDEXADOR_TAXA
                           rate: '0.65'
                       applications:
                         - interval: 1_QUARTIL_CLIENTES
@@ -2666,19 +2650,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Price'
-          example:
-            - interval: 1_QUARTIL_CLIENTES
-              value: '45.40'
-              currency: BRL
-            - interval: 2_QUARTIL_CLIENTES
-              value: '57.00'
-              currency: BRL
-            - interval: 3_QUARTIL_CLIENTES
-              value: '62.00'
-              currency: BRL
-            - interval: 4_QUARTIL_CLIENTES
-              value: '69.00'
-              currency: BRL
         minimum:
           $ref: '#/components/schemas/MinimumPrice'
         maximum:
@@ -2695,7 +2666,7 @@ components:
           description: Tarifas cobradas sobre Serviços ofertados à Modalidade de adiantamento a depositante
           type: array
           items:
-            $ref: '#/components/schemas/FeeReferentialRateOrIndexer'
+            $ref: '#/components/schemas/FeeReferentialRateIndexer'
         applications:
           description:  Valor da mediana da taxa de remuneração relativa ao serviço ofertado.
           type: array
@@ -2711,15 +2682,15 @@ components:
           description: |
             Percentual máximo cobrado (taxa efetiva) no mês de referência, para os Direitos Creditórios Descontados contratado  A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.15. Este valor representa 15%. O valor 1 representa 100%)
           pattern: '(^[0-9](\.[0-9]{4})|NA)$'
-    FeeReferentialRateOrIndexer:
+    FeeReferentialRateIndexer:
       description: Tarifas cobradas sobre Serviços ofertados
       type: object
       required:
-        - referentialRateOrIndexer
+        - referentialRateIndexer
         - rate
       properties:
-        referentialRateOrIndexer:
-          $ref: '#/components/schemas/ReferentialRateOrIndexer'
+        referentialRateIndexer:
+          $ref: '#/components/schemas/ReferentialRateIndexer'
         rate:
           type: string
           description: |
@@ -2779,7 +2750,7 @@ components:
                             currency: BRL
                     interestRate:
                       fees:
-                        - referentialRateOrIndexer: SEM_INDEXADOR_TAXA
+                        - referentialRateIndexer: SEM_INDEXADOR_TAXA
                           rate: '0.65'
                       applications:
                         - interval: 1_QUARTIL_CLIENTES
@@ -2871,7 +2842,7 @@ components:
           maxLength: 12
           x-cds-type: AmountString
           description: |
-            Valor da mediana da tarifa, relativa ao serviço ofertado, para pessoa natural informado no período, conforme Res nº32 BCB, 2020. p.ex. '45.00' (representa um valor monetário. p.ex: 1547368.92. Este valor, considerando que a moeda seja BRL, significa R$ 1.547.368,92. O único separador presente deve ser o '.' (ponto) para indicar a casa decimal. Não deve haver separador de milhar).
+            Valor da mediana de cada faixa relativa ao serviço ofertado, informado no período, conforme Res nº 32 BCB, 2020. p.ex. '45.00' (representa um valor monetário. p.ex: 1547368.92. Este valor, considerando que a moeda seja BRL, significa R$ 1.547.368,92. O único separador presente deve ser o '.' (ponto) para indicar a casa decimal. Não deve haver separador de milhar).
           example: '2000.00'
         currency:
           $ref:  "#/components/schemas/Currency"
@@ -2906,7 +2877,7 @@ components:
           pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
           maxLength: 12
           x-cds-type: AmountString
-          description: Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência
+          description: Valor mínimo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
           example: '1350.00'
         currency:
           $ref:  "#/components/schemas/Currency"
@@ -2921,7 +2892,7 @@ components:
           pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
           maxLength: 12
           x-cds-type: AmountString
-          description: Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência
+          description: Valor máximo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
           example: '8800.00'
         currency:
           $ref:  "#/components/schemas/Currency"
@@ -2991,13 +2962,13 @@ components:
           type: array
           description: Tarifas cobradas sobre Serviços ofertados
           items:
-            $ref: '#/components/schemas/FeeReferentialRateOrIndexer'
+            $ref: '#/components/schemas/FeeReferentialRateIndexer'
       required:
         - prices
         - minimumRate
         - maximumRate
         - fees
-    ReferentialRateOrIndexer:
+    ReferentialRateIndexer:
       type: string
       description: |
         Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial ou Indexador (Indx), do Documento 3040
@@ -3054,6 +3025,16 @@ components:
           $ref: '#/components/schemas/CreditCardInterest'
         termsConditions:
           $ref: '#/components/schemas/CreditCardTermsConditions'
+    Brand:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          maxLength: 80
+          description: Nome da marca selecionada pela Organização
+          example: Organização A
     Company:
       type: object
       required:

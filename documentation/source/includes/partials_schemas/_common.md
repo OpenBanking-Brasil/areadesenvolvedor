@@ -20,12 +20,12 @@
 ## Enum PriceIntervals
 <a id="schemaPriceInterval"></a>
 
-| Nome         | Código                | Definição              |
-|:------------ |:------------------    |:-------------------    |
-| interval     | 1_QUARTIL_CLIENTES    | 1ª Quartil de clientes |
-| interval     | 2_QUARTIL_CLIENTES    | 2ª Quartil de clientes |
-| interval     | 3_QUARTIL_CLIENTES    | 3ª Quartil de clientes |
-| interval     | 4_QUARTIL_CLIENTES    | 4ª Quartil de clientes |
+| Nome         | Código           |
+|:------------ |:-------------    |
+| interval     | 1_FAIXA_VALOR    |
+| interval     | 2_FAIXA_VALOR    |
+| interval     | 3_FAIXA_VALOR    |
+| interval     | 4_FAIXA_VALOR    |
 
 
 ## Price
@@ -43,8 +43,8 @@
 
 |     Nome     |  Tipo                                        | Obrigatório |Definição                                                                      |
 |:------------ |:-------------------------------------------- |:----------- |:----------------------------------------------------------------------------- |
-| interval     | [Enum PriceInterval](#schemaPriceInterval)   | Sim         | Segundo Normativa nº32 de 2020: Distribuição de frequência relativa dos valores de tarifas e taxas de juros cobrados dos clientes, de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana e o percentual de clientes em cada uma dessas faixas. Informado:1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes.|
-| value        | [AmountString](#commonFieldAmountString)     | Sim         | Valor da mediana da tarifa, relativa ao serviço ofertado, para pessoa natural informado no período, conforme Res nº32 BCB, 2020. p.ex. '45.00' (representa um valor monetário. p.ex: 1547368.92. Este valor, considerando que a moeda seja BRL, significa R$ 1.547.368,92. O único separador presente deve ser o '.' (ponto) para indicar a casa decimal. Não deve haver separador de milhar). |
+| interval     | [Enum PriceInterval](#schemaPriceInterval)   | Sim         | Segundo Normativa nº 32, BCB, de 2020: Distribuição de frequência relativa dos valores de tarifas cobradas dos clientes, de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana em cada uma dessas faixas. Informando: 1ª faixa de valor, 2ª faixa de valor, 3ª faixa de valor e 4ª faixa de valor.|
+| value        | [AmountString](#commonFieldAmountString)     | Sim         | Valor da mediana de cada faixa relativa ao serviço ofertado, informado no período, conforme Res nº 32 BCB, 2020. p.ex. '45.00' (representa um valor monetário. p.ex: 1547368.92. Este valor, considerando que a moeda seja BRL, significa R$ 1.547.368,92. O único separador presente deve ser o '.' (ponto) para indicar a casa decimal. Não deve haver separador de milhar). |
 | currency     | [CurrencyString](#commonFieldCurrencyString) | Sim         | Moeda referente ao valor da Tarifa, segundo modelo ISO-4217. p.ex. 'BRL'                 |
 
 
@@ -77,10 +77,10 @@
 }
 ```
 
-|     Nome     |  Tipo                                            | Obrigatório    |                            Definição                                                           |
-|:------------ |:------------------------------------------------ |:-------------- |:-----------------------------------------------------------------------------                  |
-| value        | [AmountString](#commonFieldAmountString)         | Sim            | Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência   |
-| currency     | [CurrencyString](#commonFieldCurrencyString)     | Sim            | Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217. p.ex.'BRL'                 |
+|     Nome     |  Tipo                                            | Obrigatório    |                            Definição                                                         |
+|:------------ |:------------------------------------------------ |:-------------- |:-----------------------------------------------------------------------------                |
+| value        | [AmountString](#commonFieldAmountString)         | Sim            | Valor mínimo apurado para a tarifa de serviços sobre a base de clientes no mês de referência |
+| currency     | [CurrencyString](#commonFieldCurrencyString)     | Sim            | Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217. p.ex.'BRL'               |
 
 ## MaximumPrice
 <a id="schemaMaximumPrice"></a>
@@ -92,10 +92,10 @@
 }
 ```
 
-|     Nome     |  Tipo                                            | Obrigatório    |                            Definição                                                           |
-|:------------ |:------------------------------------------------ |:-------------- |:-----------------------------------------------------------------------------                  |
-| value        | [AmountString](#commonFieldAmountString)         | Sim            | Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência   |
-| currency     | [CurrencyString](#commonFieldCurrencyString)     | Sim            | Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217. p.ex.'BRL'                 |
+|     Nome     |  Tipo                                            | Obrigatório    |                            Definição                                                         |
+|:------------ |:------------------------------------------------ |:-------------- |:-----------------------------------------------------------------------------                |
+| value        | [AmountString](#commonFieldAmountString)         | Sim            | Valor máximo apurado para a tarifa de serviços sobre a base de clientes no mês de referência |
+| currency     | [CurrencyString](#commonFieldCurrencyString)     | Sim            | Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217. p.ex.'BRL'               |
 
 ## MinimumRate
 <a id="schemaMinimumRate"></a>
@@ -200,7 +200,7 @@
 | exception         | string                                 | Não         | Informações sobre as exceções de abertura.        |
 | allowPublicAccess | string                                 | Sim         | Define se possui acesso ao público. True ou False.|
 
-## ReferentialRateOrIndexer
+## ReferentialRateIndexer
 
 <a id="schemareferentialrateorindexer"></a>
 
@@ -208,25 +208,25 @@ Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial o
 
 |Nome|Código|Definição|
 |---|---|---|
-| referentialRateOrIndexer |SEM_INDEXADOR_TAXA      | SEM INDEXADOR TAXA|
-| referentialRateOrIndexer |PRE_FIXADO              | PRE FIXADO|
-| referentialRateOrIndexer |POS_FIXADO_TR_TBF       | POS FIXADO TR TBF|
-| referentialRateOrIndexer |POS_FIXADO_TJLP         | POS FIXADO TJLP|
-| referentialRateOrIndexer |POS_FIXADO_LIBOR        | POS FIXADO LIBOR|
-| referentialRateOrIndexer |POS_FIXADO_TLP          | POS FIXADO TLP|
-| referentialRateOrIndexer |OUTRAS_TAXAS_POS_FIXADAS        | OUTRAS TAXAS POS FIXADAS|
-| referentialRateOrIndexer |FLUTUANTES_CDI          | FLUTUANTES CDI|
-| referentialRateOrIndexer |FLUTUANTES_SELIC        | FLUTUANTES SELIC|
-| referentialRateOrIndexer |OUTRAS_TAXAS_FLUTUANTES | OUTRAS_TAXAS FLUTUANTES|
-| referentialRateOrIndexer |INDICES_PRECOS_IGPM     | INDICES PRECOS IGPM|
-| referentialRateOrIndexer |INDICES_PRECOS_IPCA     | INDICES PRECOS IPCA|
-| referentialRateOrIndexer |INDICES_PRECOS_IPCC     | INDICES PRECOS IPCC|
-| referentialRateOrIndexer |OUTROS_INDICES_PRECO    | OUTROS INDICES PRECO|
-| referentialRateOrIndexer |CREDITO_RURAL_TCR_PRE   | CREDITO RURAL TCR PRE|
-| referentialRateOrIndexer |CREDITO_RURAL_TCR_POS   | CREDITO RURAL TCR POS|
-| referentialRateOrIndexer |CREDITO_RURAL_TRFC_PRE  | CREDITO RURAL TRFC PRE|
-| referentialRateOrIndexer |CREDITO_RURAL_TRFC_POS  | CREDITO RURAL TRFC POS|
-| referentialRateOrIndexer |OUTROS_INDEXADORES      | OUTROS INDEXADORES|
+| referentialRateIndexer |SEM_INDEXADOR_TAXA      | SEM INDEXADOR TAXA|
+| referentialRateIndexer |PRE_FIXADO              | PRE FIXADO|
+| referentialRateIndexer |POS_FIXADO_TR_TBF       | POS FIXADO TR TBF|
+| referentialRateIndexer |POS_FIXADO_TJLP         | POS FIXADO TJLP|
+| referentialRateIndexer |POS_FIXADO_LIBOR        | POS FIXADO LIBOR|
+| referentialRateIndexer |POS_FIXADO_TLP          | POS FIXADO TLP|
+| referentialRateIndexer |OUTRAS_TAXAS_POS_FIXADAS| OUTRAS TAXAS POS FIXADAS|
+| referentialRateIndexer |FLUTUANTES_CDI          | FLUTUANTES CDI|
+| referentialRateIndexer |FLUTUANTES_SELIC        | FLUTUANTES SELIC|
+| referentialRateIndexer |OUTRAS_TAXAS_FLUTUANTES | OUTRAS_TAXAS FLUTUANTES|
+| referentialRateIndexer |INDICES_PRECOS_IGPM     | INDICES PRECOS IGPM|
+| referentialRateIndexer |INDICES_PRECOS_IPCA     | INDICES PRECOS IPCA|
+| referentialRateIndexer |INDICES_PRECOS_IPCC     | INDICES PRECOS IPCC|
+| referentialRateIndexer |OUTROS_INDICES_PRECO    | OUTROS INDICES PRECO|
+| referentialRateIndexer |CREDITO_RURAL_TCR_PRE   | CREDITO RURAL TCR PRE|
+| referentialRateIndexer |CREDITO_RURAL_TCR_POS   | CREDITO RURAL TCR POS|
+| referentialRateIndexer |CREDITO_RURAL_TRFC_PRE  | CREDITO RURAL TRFC PRE|
+| referentialRateIndexer |CREDITO_RURAL_TRFC_POS  | CREDITO RURAL TRFC POS|
+| referentialRateIndexer |OUTROS_INDEXADORES      | OUTROS INDEXADORES|
 
 
 ## MinimumBalance
@@ -259,13 +259,13 @@ Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial o
 |currency|string|Sim|Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217|
 
 
-## FeeReferentialRateOrIndexer
+## FeeReferentialRateIndexer
 
-<a id="schemaFeeReferentialRateOrIndexer"></a>
+<a id="schemaFeeReferentialRateIndexer"></a>
 
 ```json
 {
-  "referentialRateOrIndexer": "string",
+  "referentialRateIndexer": "string",
   "rate": "string"
 }
 ```
@@ -274,6 +274,6 @@ Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial o
 
 |Nome|Tipo|Obrigatório|Definição|
 |---|---|---|---|
-| referentialRateOrIndexer|[ReferentialRateOrIndexer](#schemareferentialrateorindexer)| Sim |Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial ou Indexador (Indx), do Documento 3040|
+| referentialRateIndexer|string| Sim |Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial ou Indexador (Indx), do Documento 3040|
 | rate|string| Sim |Percentual que incide sobre a composição das taxas de juros remuneratórios. (representa uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O valor '1 'representa 100%). A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)|
 
