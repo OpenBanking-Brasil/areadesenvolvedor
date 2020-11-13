@@ -206,65 +206,6 @@ components:
           pattern: \w*\W*
           description: 'Procedimentos de encerramento para o tipo de conta tratado. Possibilidade de inscrição da URL. Endereço eletrônico de acesso ao canal. URLs são limitadas a 2048 caracteres mas, para o contexto do Sistema Financeiro aberto, será adotado a metade deste tamanho.'
           example: 'https://example.com/mobile-banking'
-    AccountOtherServicesPrice:
-      type: object
-      required:
-        - interval
-        - value
-        - currency
-      properties:
-        interval:
-          type: string
-          enum:
-            - 1_QUARTIL_CLIENTES
-            - 2_QUARTIL_CLIENTES
-            - 3_QUARTIL_CLIENTES
-            - 4_QUARTIL_CLIENTES
-          description: 'Faixas de valor referentes a tarifa de outro Serviços informada: 1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes'
-          example: 1_QUARTIL_CLIENTES
-        value:
-          type: string
-          description: 'Valor da mediana da tarifa cobrada referente a Outros Serviços, para o tipo de faixa informada'
-          example: '45.00'
-          maxLength: 12
-          pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
-        currency:
-          type: string
-          pattern: '^(\w{3}){1}$'
-          description: 'Moeda referente ao valor da mediana da tarifa de Outros Serviços no quartil informado, segundo modelo ISO-4217.'
-          example: BRL
-        minimum:
-          type: object
-          required:
-            - value
-            - currency
-          properties:
-            value:
-              type: string
-              maxLength: 12
-              description: Valor mínimo cobrado para a tarifa de Outros Serviços no mês de referência
-              pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
-              example: '45.00'
-            currency:
-              type: string
-              description: 'Moeda referente ao valor mínimo da tarifa de Outros Serviços, segundo modelo ISO-4217.'
-              example: BRL
-        maximum:
-          type: object
-          required:
-            - value
-            - currency
-          properties:
-            value:
-              type: string
-              maxLength: 12
-              pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
-              description: Valor máximo cobrado para a tarifa de Outros Serviços no mês de referência.
-              example: '45.00'
-            currency:
-              type: string
-              description: 'Moeda referente ao valor máximo da tarifa de outros serviços, segundo modelo ISO-4217.'
-              example: BRL
     ResponsePersonalAccounts:
       type: object
       required:
@@ -683,66 +624,49 @@ components:
                                 properties:
                                   name:
                                     type: string
-                                    maxLength: 70
+                                    maxLength: 250
                                     description: Nome do Pacote de Serviços dado pela instituição.
                                   service:
                                     type: array
                                     items:
                                       required:
                                         - code
+                                        - chargingTriggerInfo
                                         - eventLimitQuantity
                                         - freeEventQuantity
                                       properties:
                                         code:
                                           type: string
-                                          maxLength: 30
+                                          maxLength: 100
                                           description: 'Código que identifica o Serviço que compõe o Pacote de Serviços, podendo ser da lista de Serviços Prioritários ou Outros Serviços'
                                           example: SAQUE_TERMINAL
+                                        chargingTriggerInfo:
+                                          type: string
+                                          maxLength: 2000
+                                          description: Fatos geradores de cobrança que incidem sobre serviço que compõe o Pacote de Serviços.
+                                          example: Cobrança devido a evento personalizado
                                         eventLimitQuantity:
                                           type: string
                                           maxLength: 6
                                           pattern: '^(\d{1,6}){1}$'
-                                          description: Quantidade de eventos previstos no Pacote de Serviços (Número de eventos incluídos no mês)
+                                          description: |
+                                            Segundo Resolução  4196, BCB, de 2013: Quantidade de eventos previstos no Pacote de Serviços (Número de eventos incluídos no mês) p.ex.'2'. No caso de quantidade ilimitada, reportar 999999
                                           example: '2'
                                         freeEventQuantity:
                                           type: string
                                           maxLength: 6
                                           pattern: '^(\d{1,6}){1}$'
-                                          description: Quantidade de eventos previstos no Pacote de Serviços com isenção de Tarifa
-                                          example: '1'
-                                  prices:
-                                    type: array
-                                    items:
-                                      type: object
-                                      required:
-                                        - interval
-                                        - monthlyFee
-                                        - currency
-                                      properties:
-                                        interval:
-                                          type: string
-                                          enum:
-                                            - 1_QUARTIL_CLIENTES
-                                            - 2_QUARTIL_CLIENTES
-                                            - 3_QUARTIL_CLIENTES
-                                            - 4_QUARTIL_CLIENTES
-                                          description: 'Faixas de valor referentes ao pagamento mensal do Pacote de Serviços informado: 1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes'
-                                          example: 1_QUARTIL_CLIENTES
-                                        monthlyFee:
-                                          type: string
                                           description: |
-                                            Valor da mediana da tarifa, relativa ao serviço ofertado, informado no período, conforme Res nº32 BCB, 2020. p.ex. '45.00' (representa um valor monetário. p.ex: 1547368.92. Este valor, considerando que a moeda seja BRL, significa R$ 1.547.368,92. O único separador presente deve ser o '.' (ponto) para indicar a casa decimal. Não deve haver separador de milhar)
-                                          example: '50.00'
-                                        currency:
-                                          type: string
-                                          maxLength: 3
-                                          pattern: '^(\w{3}){1}$'
-                                          description: 'Moeda referente ao valor da mediana da tarifa mensal do Pacote de Serviços, segundo modelo ISO-4217.'
-                                          example: BRL
-                                  minimum:
-                                    $ref: '#/components/schemas/MinimumPrice'
-                                  maximum:
-                                    $ref: '#/components/schemas/MaximumPrice'
+                                            Segundo Resolução  4196, BCB, de 2013: Quantidade de eventos previstos no Pacote de Serviços com isenção de Tarifa.p.ex.'1'  No caso de quantidade ilimitada, reportar 999999
+                                          example: '1'
+                                        prices:
+                                          type: array
+                                          items:
+                                            $ref: '#/components/schemas/MontlyPrice'
+                                        minimum:
+                                          $ref: '#/components/schemas/MinimumPrice'
+                                        maximum:
+                                          $ref: '#/components/schemas/MaximumPrice'
                             openingClosingChannels:
                               type: string
                               enum:
@@ -753,7 +677,8 @@ components:
                                 - CENTRAL_TELEFONICA
                                 - CHAT
                                 - OUTROS
-                              description: Canais disponíveis para abertura e encerramento de contas
+                              description: |
+                                Canais disponíveis para abertura e encerramento de contas, p.ex. 'DEPENDENCIAS_PROPRIAS'
                               example: CENTRAL_TELEFONICA
                             additionalInfo:
                               type: string
@@ -775,58 +700,20 @@ components:
                             incomeRates:
                               type: array
                               items:
-                                required:
-                                  - savingAccount
-                                  - prepaidPaymentAccount
                                 properties:
                                   savingAccount:
                                     type: string
                                     maxLength: 2000
                                     pattern: \w*\W*
-                                    description: Descrição da Remuneração especificamente para Conta de Poupança. Deve ser preenchido com a determinação legal vigente.
+                                    description: |
+                                      Descrição da Remuneração especificamente para Conta de Poupança. Deve ser preenchido com a determinação legal vigente. Restrição: De preenchimento obrigatório para CONTA_POUPANCA. Para os demais Tipos  preencher com NA
                                     example: '''70% da Taxa Selic (6,5%) = 4,55%, que é o atual rendimento anual da poupança. O rendimento mensal é de 0,3715'
                                   prepaidPaymentAccount:
-                                    type: object
-                                    required:
-                                      - applications
-                                      - minimumRate
-                                      - maximumRate
-                                    properties:
-                                      applications:
-                                        type: array
-                                        items:
-                                          type: object
-                                          required:
-                                            - interval
-                                            - rate
-                                          properties:
-                                            interval:
-                                              type: string
-                                              enum:
-                                                - 1_QUARTIL_CLIENTES
-                                                - 2_QUARTIL_CLIENTES
-                                                - 3_QUARTIL_CLIENTES
-                                                - 4_QUARTIL_CLIENTES
-                                              description: 'Faixas do percentual de taxa de remuneração efetivamente aplicada no intervalo informado para Contas do Tipo CONTA_PAGAMENTO_PRE_PAGA :1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes'
-                                              example: 1_QUARTIL_CLIENTES
-                                            rate:
-                                              type: string
-                                              pattern: '((-?[1-9]?\d{1,4}){1}(\.\d{1,4}){1}|NA)$'
-                                              maxLength: 9
-                                              description: 'Percentual que corresponde a taxa mediana de remuneração efetivamente aplicada no intervalo informado para CONTA_PAGAMENTO_PRE_PAGA. A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, emso que venham preenchidas com zeros'
-                                              example: '0.1500'
-                                      mininumRate:
-                                        type: string
-                                        pattern: '((-?[1-9]?\d{1,4}){1}(\.\d{1,4}){1}|NA)$'
-                                        maxLength: 9
-                                        description: 'Percentual mínimo referente à taxa de remuneração efetivamente aplicada no mês de referência para CONTA_PAGAMENTO_PRE_PAGA. A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, emso que venham preenchidas com zeros'
-                                        example: '0.1500'
-                                      maximumRate:
-                                        type: string
-                                        pattern: '((-?[1-9]?\d{1,4}){1}(\.\d{1,4}){1}|NA)$'
-                                        maxLength: 9
-                                        description: 'Percentual máximo referente à taxa de remuneração efetivamente aplicada no mês de referência para VCONTA_PAGAMENTO_PRE_PAGA. A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, emso que venham preenchidas com zeros'
-                                        example: '0.1500'
+                                    type: string
+                                    maxLength: 2000
+                                    pattern: \w*\W*
+                                    description: |
+                                      Percentual em favor do titular da conta de pagamento pré-paga. Campo Livre. Restrição: De preenchimento obrigatório para Conta do Tipo CONTA_PAGAMENTO_PRE_PAGA. Para os demais Tipos preencher com NA
         links:
           $ref: '#/components/schemas/Links'
         meta:
@@ -943,59 +830,27 @@ components:
       properties:
         name:
           type: string
-          maxLength: 50
+          maxLength: 250
           description: Nome atribuído a Outros Serviços disponíveis para os tipos de contas informados. Outros Serviços são quaisquer serviços que a instituição ofereça para a modalidade de Contas e não estejam definidos na lista de Serviços Prioritários definidos na resolução 3.919 do Bacen.
           example: Evento personalizado
         code:
           type: string
-          maxLength: 30
+          maxLength: 100
           description: Sigla de identificação de Outros Serviços que incidem sobre os tipos de contas informados.
           example: EVENTO_PERSONALIZADO
         chargingTriggerInfo:
           type: string
           maxLength: 3000
-          description: Outros Fatores geradores de cobrança referentes aos Outros Serviços que incidem sobre as contas comercializadas.
+          description: Fatos geradores de cobrança que incidem sobre serviço que compõe o Pacote de Serviços.
           example: Cobrança devido a evento personalizado
         prices:
           type: array
           items:
-            $ref: '#/components/schemas/AccountOtherServicesPrice'
+            $ref: '#/components/schemas/Price'
         minimum:
-          type: object
-          required:
-            - value
-            - currency
-          properties:
-            value:
-              type: string
-              maxLength: 12
-              description: Valor mínimo cobrado para a tarifa do Outro Serviço no mês de referência.
-              pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
-              example: '45.00'
-            currency:
-              type: string
-              maxLength: 3
-              description: 'Moeda referente ao valor mínimo da tarifa do Outro Serviço  segundo modelo ISO-4217. '
-              pattern: '^([A-Z]{3})$'
-              example: BRL
+          $ref: '#/components/schemas/MinimumPrice'
         maximum:
-          type: object
-          required:
-            - value
-            - currency
-          properties:
-            value:
-              type: string
-              maxLength: 12
-              description: Valor máximo cobrado para a tarifa de Outros Serviços na base de clientes do mês de referência.
-              pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
-              example: '45.00'
-            currency:
-              type: string
-              maxLength: 3
-              description: 'Moeda referente ao valor máximo da tarifa de outros serviços, segundo modelo ISO-4217.'
-              pattern: '^([A-Z]{3})$'
-              example: BRL
+          $ref: '#/components/schemas/MaximumPrice'
     ResponsePersonalLoansList:
       type: object
       required:
