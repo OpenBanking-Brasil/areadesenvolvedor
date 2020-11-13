@@ -1628,6 +1628,7 @@ components:
         - name
         - code
         - chargingTriggerInfo
+        - customers
       properties:
         name:
           type: string
@@ -1668,6 +1669,10 @@ components:
           $ref: '#/components/schemas/MinimumPrice'
         maximum:
           $ref: '#/components/schemas/MaximumPrice'
+        customers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Customer'
     ResponsePersonalFinancingsList:
       type: object
       required:
@@ -2584,11 +2589,13 @@ components:
             - 2_FAIXA_CLIENTE
             - 3_FAIXA_CLIENTE
             - 4_FAIXA_CLIENTE
+          example: 1_FAIXA_CLIENTE
         rate:
           type: string
           description: |
             Percentual que corresponde a mediana da taxa efetiva cobrada do cliente pela contratação dos Direitos Creditórios Descontados, no intervalo informado. p.ex. '9,8700%' A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.15. Este valor representa 15%. O valor 1 representa 100%) Percentual dos clientes de cada faixa relativa ao serviço ofertado, para pessoa natural informado no período, conforme Res nº32, BCB, 2020. p.ex. '0.1500' (representa uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O valor '1 'representa 100%) A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)
           pattern: '(^[0-9](\.[0-9]{4})$|^NA$)'
+          example: '0.1500'
     MinimumBalance:
       type: object
       required:
@@ -2622,14 +2629,15 @@ components:
               - rate
             properties:
               interval:
-                description: 'Faixas para cobrança da taxa efetiva pela utilização do crédito rotativo, no intervalo informado: 1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes Segundo Normativa nº32 de 2020: Distribuição de frequência relativa dos valores de tarifas e taxas de juros cobrados dos clientes, de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana e o percentual de clientes em cada uma dessas faixas.'
+                description: |
+                  Faixas para cobrança da taxa efetiva aplicada pela contratação do do crédito rotativo, no intervalo informado: 1ª faixa de valor, 2ª faixa de valor, 3ª faixa de valor e 4ª faixa de valor. Segundo Normativa nº32 de 2020: 'Distribuição de frequência relativa dos valores de tarifas e taxas de juros cobrados dos clientes, de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana e o percentual de clientes em cada uma dessas faixas.
                 type: string
                 enum:
-                  - 1_QUARTIL_CLIENTES
-                  - 2_QUARTIL_CLIENTES
-                  - 3_QUARTIL_CLIENTES
-                  - 4_QUARTIL_CLIENTES
-                example: '1_QUARTIL_CLIENTES'
+                  - 1_FAIXA_VALOR
+                  - 2_FAIXA_VALOR
+                  - 3_FAIXA_VALOR
+                  - 4_FAIXA_VALOR
+                example: '1_FAIXA_VALOR'
               rate:
                 type: string
                 maxLength: 6
@@ -2656,6 +2664,10 @@ components:
           description: Tarifas cobradas sobre Serviços ofertados
           items:
             $ref: '#/components/schemas/FeeReferentialRateIndexer'
+        customers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Customer'
       required:
         - prices
         - minimumRate

@@ -48,7 +48,13 @@
                     "maximum": {
                       "value": "string",
                       "currency": "string"
-                    }
+                    },
+                    "customers": [
+                      {
+                        "frequency": "string",
+                        "rate": "string"
+                      }
+                    ]
                   }
                 }
               ],
@@ -69,6 +75,12 @@
                       "referentialRateIndexer": "string",
                       "rate": "string"
                     }
+                  ],
+                  "customers": [
+                    {
+                      "frequency": "1_FAIXA_CLIENTE",
+                      "rate": "0.1500"
+                    }
                   ]
                 },
                 "instalmentRate": {
@@ -86,6 +98,12 @@
                     {
                       "referentialRateIndexer": "string",
                       "rate": "string"
+                    }
+                  ],
+                  "customers": [
+                    {
+                      "frequency": "1_FAIXA_CLIENTE",
+                      "rate": "0.1500"
                     }
                   ]
                 },
@@ -106,6 +124,12 @@
                     {
                       "referentialRateIndexer": "string",
                       "rate": "string"
+                    }
+                  ],
+                  "customers": [
+                    {
+                      "frequency": "1_FAIXA_CLIENTE",
+                      "rate": "0.1500"
                     }
                   ]
                 }]
@@ -191,7 +215,13 @@
                 "maximum": {
                   "value": "string",
                   "currency": "string"
-                }
+                },
+                "customers": [
+                  {
+                    "frequency": "string",
+                    "rate": "string"
+                  }
+                ]
               }
             }
           ],
@@ -212,6 +242,12 @@
                   "referentialRateIndexer": "string",
                   "rate": "string"
                 }
+              ],
+              "customers": [
+                {
+                  "frequency": "1_FAIXA_CLIENTE",
+                  "rate": "0.1500"
+                }
               ]
             },
             "instalmentRate": {
@@ -229,6 +265,12 @@
                 {
                   "referentialRateIndexer": "string",
                   "rate": "string"
+                }
+              ],
+              "customers": [
+                {
+                  "frequency": "1_FAIXA_CLIENTE",
+                  "rate": "0.1500"
                 }
               ]
             },
@@ -249,6 +291,12 @@
                 {
                   "referentialRateIndexer": "string",
                   "rate": "string"
+                }
+              ],
+              "customers": [
+                {
+                  "frequency": "1_FAIXA_CLIENTE",
+                  "rate": "0.1500"
                 }
               ]
             }]
@@ -316,7 +364,13 @@
             "maximum": {
               "value": "string",
               "currency": "string"
-            }
+            },
+            "customers": [
+              {
+                "frequency": "string",
+                "rate": "string"
+              }
+            ]
           }
         }
       ],
@@ -337,6 +391,12 @@
               "referentialRateIndexer": "string",
               "rate": "string"
             }
+          ],
+          "customers": [
+            {
+              "frequency": "1_FAIXA_CLIENTE",
+              "rate": "0.1500"
+            }
           ]
         },
         "instalmentRate": {
@@ -354,6 +414,12 @@
             {
               "referentialRateIndexer": "string",
               "rate": "string"
+            }
+          ],
+          "customers": [
+            {
+              "frequency": "1_FAIXA_CLIENTE",
+              "rate": "0.1500"
             }
           ]
         },
@@ -374,6 +440,12 @@
             {
               "referentialRateIndexer": "string",
               "rate": "string"
+            }
+          ],
+          "customers": [
+            {
+              "frequency": "1_FAIXA_CLIENTE",
+              "rate": "0.1500"
             }
           ]
         }]
@@ -436,7 +508,13 @@
         "maximum": {
           "value": "string",
           "currency": "string"
-        }
+        },
+        "customers": [
+          {
+            "frequency": "string",
+            "rate": "string"
+          }
+        ]
       }
     }
   ],
@@ -457,6 +535,12 @@
           "referentialRateIndexer": "string",
           "rate": "string"
         }
+      ],
+      "customers": [
+        {
+          "frequency": "1_FAIXA_CLIENTE",
+          "rate": "0.1500"
+        }
       ]
     },
     "instalmentRate": {
@@ -474,6 +558,12 @@
         {
           "referentialRateIndexer": "string",
           "rate": "string"
+        }
+      ],
+      "customers": [
+        {
+          "frequency": "1_FAIXA_CLIENTE",
+          "rate": "0.1500"
         }
       ]
     },
@@ -494,6 +584,12 @@
         {
           "referentialRateIndexer": "string",
           "rate": "string"
+        }
+      ],
+      "customers": [
+        {
+          "frequency": "1_FAIXA_CLIENTE",
+          "rate": "0.1500"
         }
       ]
     }]
@@ -648,7 +744,13 @@
       "maximum": {
         "value": "string",
         "currency": "string"
-      }
+      },
+      "customers": [
+        {
+          "frequency": "string",
+          "rate": "string"
+        }
+      ]
   }
 }
 ```
@@ -679,7 +781,13 @@
   "maximum": {
     "value": "string",
     "currency": "string"
-  }
+  },
+  "customers": [
+    {
+      "frequency": "string",
+      "rate": "string"
+    }
+  ]
 }
 ```
 
@@ -691,6 +799,7 @@
 | prices              | [[Price](#schemaPrice)]               | Sim | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa jurídica  |
 | minimum             | [[MinimumPrice](#schemaMinimumPrice)] | Sim | Valor mínimo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
 | maximum             | [[MaximumPrice](#schemaMaximumPrice)] | Sim | Valor máximo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type |
+| customers           | [[Customer](#schemaCustomer)]         | Sim ||
 
 ## PersonalCreditCardInterest
 <a id="schemaPersonalCreditCardInterest"></a>
@@ -711,6 +820,12 @@
         "referentialRateIndexer": "string",
         "rate": "string"
       }
+    ],
+    "customers": [
+      {
+        "frequency": "1_FAIXA_CLIENTE",
+        "rate": "0.1500"
+      }
     ]
   },
   "instalmentRate": {
@@ -726,6 +841,12 @@
       {
         "referentialRateIndexer": "string",
         "rate": "string"
+      }
+    ],
+    "customers": [
+      {
+        "frequency": "1_FAIXA_CLIENTE",
+        "rate": "0.1500"
       }
     ]
   },
@@ -744,6 +865,12 @@
       {
         "referentialRateIndexer": "string",
         "rate": "string"
+      }
+    ],
+    "customers": [
+      {
+        "frequency": "1_FAIXA_CLIENTE",
+        "rate": "0.1500"
       }
     ]
   }]
@@ -776,6 +903,12 @@
       "referentialRateIndexer": "string",
       "rate": "string"
     }
+  ],
+  "customers": [
+    {
+      "frequency": "1_FAIXA_CLIENTE",
+      "rate": "0.1500"
+    }
   ]
 }
 ```
@@ -787,7 +920,8 @@
 | prices         | [[Rate](#schemaRate)]                                                                    | Sim         | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa física |
 | minimumRate    | String                                                                                   | Sim         | Percentual mínimo cobrado para a taxa do crédito rotativo no mês de referência                                                                 |
 | maximumRate    | String                                                                                   | Sim         | Percentual máximo cobrado para o pagamento parcelado do saldo devedor na fatura do mês de referência.                                          |
-| fees           | [FeeReferentialRateIndexer](#schemaFeeReferentialRateIndexer)                        | Sim         | Lista de Tarifas cobradas sobre Serviços ofertados                                                                                             |
+| fees           | [FeeReferentialRateIndexer](#schemaFeeReferentialRateIndexer)                            | Sim         | Lista de Tarifas cobradas sobre Serviços ofertados                                                                                             |
+| customers      | [[Customer](#schemaCustomer)]                                                            | Sim         ||
 
 ### Enum PersonalCreditCardInterestRateCode
 <a id="schemaEnumPersonalCreditCardInterestRateCode"></a>
@@ -818,16 +952,23 @@
       "referentialRateIndexer": "string",
       "rate": "string"
     }
+  ],
+  "customers": [
+    {
+      "frequency": "1_FAIXA_CLIENTE",
+      "rate": "0.1500"
+    }
   ]
 }
 ```
 
-|     Nome    |  Tipo                                                             | Obrigatório |    Definição                                                                                                                                   |
-|:------------|:------------------------------------------------------------------|:------------|:-----------------------------------------------------------------------------------------------------------------------------------------------|
-| prices      | [[Rate](#schemaRate)]                                             | Sim         | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa física |
-| minimumRate | String                                                            | Sim         | Percentual mínimo cobrado para a taxa do crédito rotativo no mês de referência                                                                 |
-| maximumRate | String                                                            | Sim         | Percentual máximo cobrado para o pagamento parcelado do saldo devedor na fatura do mês de referência.                                          |
+|     Nome    |  Tipo                                                         | Obrigatório |    Definição                                                                                                                                   |
+|:------------|:--------------------------------------------------------------|:------------|:-----------------------------------------------------------------------------------------------------------------------------------------------|
+| prices      | [[Rate](#schemaRate)]                                         | Sim         | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa física |
+| minimumRate | String                                                        | Sim         | Percentual mínimo cobrado para a taxa do crédito rotativo no mês de referência                                                                 |
+| maximumRate | String                                                        | Sim         | Percentual máximo cobrado para o pagamento parcelado do saldo devedor na fatura do mês de referência.                                          |
 | fees        | [FeeReferentialRateIndexer](#schemaFeeReferentialRateIndexer) | Sim         | Lista de Tarifas cobradas sobre Serviços ofertados                                                                                             |
+| customers   | [[Customer](#schemaCustomer)]                                 | Sim         ||
 
 ## PersonalCreditCardInstalmentRate
 <a id="schemaPersonalCreditCardInstalmentRate"></a>
@@ -848,16 +989,23 @@
       "referentialRateIndexer": "string",
       "rate": "string"
     }
+  ],
+  "customers": [
+    {
+      "frequency": "1_FAIXA_CLIENTE",
+      "rate": "0.1500"
+    }
   ]
 }
 ```
 
-|     Nome    |  Tipo                                                             | Obrigatório |    Definição                                                                                                                                    |
-|:------------|:----------------------------------------------------------------- |:----------- |:----------------------------------------------------------------------------------------------------------------------------------------------- |
-| prices      | [[Rate](#schemaRate)]                                             | Sim         | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa física  |
-| minimumRate | String                                                            | Sim         | Percentual mínimo cobrado para a taxa do crédito rotativo no mês de referência                                                                  |
-| maximumRate | String                                                            | Sim         | Percentual máximo cobrado para o pagamento parcelado do saldo devedor na fatura do mês de referência.                                           |
+|     Nome    |  Tipo                                                         | Obrigatório |    Definição                                                                                                                                    |
+|:------------|:--------------------------------------------------------------|:----------- |:----------------------------------------------------------------------------------------------------------------------------------------------- |
+| prices      | [[Rate](#schemaRate)]                                         | Sim         | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa física  |
+| minimumRate | String                                                        | Sim         | Percentual mínimo cobrado para a taxa do crédito rotativo no mês de referência                                                                  |
+| maximumRate | String                                                        | Sim         | Percentual máximo cobrado para o pagamento parcelado do saldo devedor na fatura do mês de referência.                                           |
 | fees        | [FeeReferentialRateIndexer](#schemaFeeReferentialRateIndexer) | Sim         | Lista de Tarifas cobradas sobre Serviços ofertados                                                                                              |
+| customers   | [[Customer](#schemaCustomer)]                                 | Sim         ||
 
 ## PersonalCreditCardTermsConditions
 <a id="schemaPersonalCreditCardTermsConditions"></a>
