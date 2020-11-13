@@ -222,7 +222,7 @@
 ```json
 {
   "type": "string",
-  "fees": {
+  "fees": [{
     "service": {
       "name": "string",
       "code": "string",
@@ -243,7 +243,7 @@
         "currency": "string"
       }
     }
-  },
+  }],
   "interestRate": {
     "fees": [
       {
@@ -285,7 +285,7 @@
 | type         | DESCONTO_CHEQUES                          | Desconto de cheques                                   |
 | type         | ANTECIPACAO_FATURA_CARTAO_CREDITO         | Antecipação de fatura de cartão de crédito            |
 | type         | OUTROS_DIREITOS_CREDITORIOS_DESCONTADOS   | Outros direitos creditórios descontados               |
-| type         | OUTROS_TÍTULOS_DESCONTADOS                | Outros títulos descontados                            |
+| type         | OUTROS_TITULOS_DESCONTADOS                | Outros títulos descontados                            |
 
 
 ### Enum BusinessInvoiceFinancingsRequiredWarranties
