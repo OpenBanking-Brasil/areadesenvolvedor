@@ -222,7 +222,7 @@
 ```json
 {
   "type": "string",
-  "fees": {
+  "fees": [{
     "service": {
       "name": "string",
       "code": "string",
@@ -243,7 +243,7 @@
         "currency": "string"
       }
     }
-  },
+  }],
   "interestRate": {
     "fees": [
       {
