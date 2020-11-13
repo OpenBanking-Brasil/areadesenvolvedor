@@ -48,7 +48,13 @@
                     "maximum": {
                       "value": "string",
                       "currency": "string"
-                    }
+                    },
+                    "customers": [
+                      {
+                        "frequency": "string",
+                        "rate": "string"
+                      }
+                    ]
                   }
                 }
               ],
@@ -191,7 +197,13 @@
                 "maximum": {
                   "value": "string",
                   "currency": "string"
-                }
+                },
+                "customers": [
+                  {
+                    "frequency": "string",
+                    "rate": "string"
+                  }
+                ]
               }
             }
           ],
@@ -316,7 +328,13 @@
             "maximum": {
               "value": "string",
               "currency": "string"
-            }
+            },
+            "customers": [
+              {
+                "frequency": "string",
+                "rate": "string"
+              }
+            ]
           }
         }
       ],
@@ -436,7 +454,13 @@
         "maximum": {
           "value": "string",
           "currency": "string"
-        }
+        },
+        "customers": [
+          {
+            "frequency": "string",
+            "rate": "string"
+          }
+        ]
       }
     }
   ],
@@ -648,7 +672,13 @@
       "maximum": {
         "value": "string",
         "currency": "string"
-      }
+      },
+      "customers": [
+        {
+          "frequency": "string",
+          "rate": "string"
+        }
+      ]
   }
 }
 ```
@@ -679,7 +709,13 @@
   "maximum": {
     "value": "string",
     "currency": "string"
-  }
+  },
+  "customers": [
+    {
+      "frequency": "string",
+      "rate": "string"
+    }
+  ]
 }
 ```
 
@@ -691,6 +727,7 @@
 | prices              | [[Price](#schemaPrice)]               | Sim | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa jurídica  |
 | minimum             | [[MinimumPrice](#schemaMinimumPrice)] | Sim | Valor mínimo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
 | maximum             | [[MaximumPrice](#schemaMaximumPrice)] | Sim | Valor máximo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type |
+| customers           | [[Customer](#schemaCustomer)]         | Sim ||
 
 ## PersonalCreditCardInterest
 <a id="schemaPersonalCreditCardInterest"></a>
