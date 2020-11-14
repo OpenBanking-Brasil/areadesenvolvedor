@@ -83,8 +83,8 @@
 |     Nome      |  Tipo                                                  | Obrigatório  |                            Definição                  |
 |:------------  |:---------------------------------                      |:-----------  |:----------------------------------------------------  |
 | data          | object                                                 | Sim          |                                                       |
-| » brand       | [PersonalLoanBrand](#schemaPersonalLoanBrand)      | Sim          | Organização titular das dependências                  |
-| links         | [LinksPaginated](#schemaLinksPaginated)              | Sim          |                                                       |
+|   brand       | [PersonalLoanBrand](#schemaPersonalLoanBrand)          | Sim          | Organização titular das dependências                                            |
+| links         | [LinksPaginated](#schemaLinksPaginated)                | Sim          |                                                       |
 | meta          | [MetaPaginated](#schemaMetaPaginated)                  | Sim          |                                                       |
 
 ## PersonalLoanBrand
