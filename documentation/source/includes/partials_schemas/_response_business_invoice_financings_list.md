@@ -14,43 +14,57 @@
           "businessInvoiceFinancings": [
             {
               "type": "string",
-              "fees": [{
-                "service": {
-                  "name": "string",
-                  "code": "string",
-                  "chargingTriggerInfo": "string",
-                  "prices": [
-                    {
-                      "interval": "string",
+              "fees": [
+                {
+                  "service": {
+                    "name": "string",
+                    "code": "string",
+                    "chargingTriggerInfo": "string",
+                    "prices": [
+                      {
+                        "interval": "string",
+                        "value": "string",
+                        "currency": "string"
+                      }
+                    ],
+                    "minimum": {
                       "value": "string",
                       "currency": "string"
-                    }
-                  ],
-                  "minimum": {
-                    "value": "string",
-                    "currency": "string"
-                  },
-                  "maximum": {
-                    "value": "string",
-                    "currency": "string"
+                    },
+                    "maximum": {
+                      "value": "string",
+                      "currency": "string"
+                    },
+                    "customers": [
+                      {
+                        "frequency": "string",
+                        "rate": "string"
+                      }
+                    ]
                   }
                 }
-              }],
+              ],
               "interestRate": {
                 "fees": [
                   {
-                    "referentialRateOrIndexer": "string",
-                    "rate": "string",
+                    "referentialRateIndexer": "string",
+                    "rate": "string"
                   }
                 ],
-                "applications": [                  
+                "applications": [
                   {
                     "interval": "string",
                     "rate": "string"
                   }
                 ],
                 "minimumRate": "string",
-                "maximumRate": "string"
+                "maximumRate": "string",
+                "customers": [
+                  {
+                    "frequency": "string",
+                    "rate": "string"
+                  }
+                ]
               },
               "requiredWarranties": [
                 "string"
@@ -97,43 +111,57 @@
       "businessInvoiceFinancings": [
         {
           "type": "string",
-          "fees": [{
-            "service": {
-              "name": "string",
-              "code": "string",
-              "chargingTriggerInfo": "string",
-              "prices": [
-                {
-                  "interval": "string",
+          "fees": [
+            {
+              "service": {
+                "name": "string",
+                "code": "string",
+                "chargingTriggerInfo": "string",
+                "prices": [
+                  {
+                    "interval": "string",
+                    "value": "string",
+                    "currency": "string"
+                  }
+                ],
+                "minimum": {
                   "value": "string",
                   "currency": "string"
-                }
-              ],
-              "minimum": {
-                "value": "string",
-                "currency": "string"
-              },
-              "maximum": {
-                "value": "string",
-                "currency": "string"
+                },
+                "maximum": {
+                  "value": "string",
+                  "currency": "string"
+                },
+                "customers": [
+                  {
+                    "frequency": "string",
+                    "rate": "string"
+                  }
+                ]
               }
-            }            
-          }],
+            }
+          ],
           "interestRate": {
             "fees": [
               {
-                "referentialRateOrIndexer": "string",
-                "rate": "string",
+                "referentialRateIndexer": "string",
+                "rate": "string"
               }
             ],
-            "applications": [                  
+            "applications": [
               {
                 "interval": "string",
                 "rate": "string"
               }
             ],
             "minimumRate": "string",
-            "maximumRate": "string"
+            "maximumRate": "string",
+            "customers": [
+              {
+                "frequency": "string",
+                "rate": "string"
+              }
+            ]
           },
           "requiredWarranties": [
             "string"
@@ -162,43 +190,57 @@
   "businessInvoiceFinancings": [
     {
       "type": "string",
-      "fees": [{
-        "service": {
-          "name": "string",
-          "code": "string",
-          "chargingTriggerInfo": "string",
-          "prices": [
-            {
-              "interval": "string",
+      "fees": [
+        {
+          "service": {
+            "name": "string",
+            "code": "string",
+            "chargingTriggerInfo": "string",
+            "prices": [
+              {
+                "interval": "string",
+                "value": "string",
+                "currency": "string"
+              }
+            ],
+            "minimum": {
               "value": "string",
               "currency": "string"
-            }
-          ],
-          "minimum": {
-            "value": "string",
-            "currency": "string"
-          },
-          "maximum": {
-            "value": "string",
-            "currency": "string"
+            },
+            "maximum": {
+              "value": "string",
+              "currency": "string"
+            },
+            "customers": [
+              {
+                "frequency": "string",
+                "rate": "string"
+              }
+            ]
           }
         }
-      }],
+      ],
       "interestRate": {
         "fees": [
           {
-            "referentialRateOrIndexer": "string",
-            "rate": "string",
+            "referentialRateIndexer": "string",
+            "rate": "string"
           }
         ],
-        "applications": [                  
+        "applications": [
           {
             "interval": "string",
             "rate": "string"
           }
         ],
         "minimumRate": "string",
-        "maximumRate": "string"
+        "maximumRate": "string",
+        "customers": [
+          {
+            "frequency": "string",
+            "rate": "string"
+          }
+        ]
       },
       "requiredWarranties": [
         "string"
@@ -222,43 +264,57 @@
 ```json
 {
   "type": "string",
-  "fees": [{
-    "service": {
-      "name": "string",
-      "code": "string",
-      "chargingTriggerInfo": "string",
-      "prices": [
-        {
-          "interval": "string",
+  "fees": [
+    {
+      "service": {
+        "name": "string",
+        "code": "string",
+        "chargingTriggerInfo": "string",
+        "prices": [
+          {
+            "interval": "string",
+            "value": "string",
+            "currency": "string"
+          }
+        ],
+        "minimum": {
           "value": "string",
           "currency": "string"
-        }
-      ],
-      "minimum": {
-        "value": "string",
-        "currency": "string"
-      },
-      "maximum": {
-        "value": "string",
-        "currency": "string"
+        },
+        "maximum": {
+          "value": "string",
+          "currency": "string"
+        },
+        "customers": [
+          {
+            "frequency": "string",
+            "rate": "string"
+          }
+        ]
       }
     }
-  }],
+  ],
   "interestRate": {
     "fees": [
       {
-        "referentialRateOrIndexer": "string",
-        "rate": "string",
+        "referentialRateIndexer": "string",
+        "rate": "string"
       }
     ],
-    "applications": [                  
+    "applications": [
       {
         "interval": "string",
         "rate": "string"
       }
     ],
     "minimumRate": "string",
-    "maximumRate": "string"
+    "maximumRate": "string",
+    "customers": [
+      {
+        "frequency": "string",
+        "rate": "string"
+      }
+    ]
   },
   "requiredWarranties": [
     "string"
@@ -331,8 +387,14 @@
     "maximum": {
       "value": "string",
       "currency": "string"
-    }
-  }                
+    },
+    "customers": [
+      {
+        "frequency": "string",
+        "rate": "string"
+      }
+    ]
+  }
 }
 ```
 
@@ -362,8 +424,14 @@
   "maximum": {
     "value": "string",
     "currency": "string"
-  }
-}   
+  },
+  "customers": [
+    {
+      "frequency": "string",
+      "rate": "string"
+    }
+  ]
+}
 ```
 
 |     Nome             |  Tipo                                  | Obrigatório    |                            Definição                                                                                                       |
@@ -374,6 +442,7 @@
 | prices               | [[Price](#schemaPrice)]                | Sim            | Valor da mediana, relativa ao serviço ofertado, informado no período.                                                                      |
 | minimum              | [[MinimumPrice](#schemaMinimumPrice)]  | Sim            | Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência.                                              | 
 | maximum              | [[MaximumPrice](#schemaMaximumPrice)]  | Sim            | Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência.                                              | 
+|customers|[[Customer](#schemaCustomer)]| Sim |Percentual dos clientes de cada faixa relativa ao serviço ofertado |
 
 ## BusinessInvoiceFinancingsInterestRate 
 <a id="schemaBusinessInvoiceFinancingsInterestRate"></a>
@@ -382,8 +451,8 @@
 {
   "fees": [
     {
-      "referentialRateOrIndexer": "string",
-      "rate": "string",
+      "referentialRateIndexer": "string",
+      "rate": "string"
     }
   ],
   "applications": [
@@ -393,12 +462,20 @@
     }
   ],
   "minimumRate": "string",
-  "maximumRate": "string"
+  "maximumRate": "string",
+  "customers": [
+    {
+      "frequency": "string",
+      "rate": "string"
+    }
+  ]
 }
 ```
 
 |  Nome           |  Tipo                   | Obrigatório |   Definição   |
 |:--------------- |:----------------------- |------------ |:--------------|
+| fees            | [FeeReferentialRateIndexer](#schemaFeeReferentialRateIndexer)    | Sim            | Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial ou Indexador (Indx), do Documento 3040 |
 | applications    | [[Price](#schemaPrice)] | Sim | Valor da mediana da taxa de remuneração relativa ao serviço ofertado, para pessoa física informado no período.     
 | minimumRate     | string                  | Sim | Valor mínimo cobrado para a taxa de remuneração relativa ao serviço ofertado, sobre a base de clientes,  no mês de referência | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
 | maximumRate     | string                  | Sim | Valor máximo cobrado para a taxa de remuneração relativa ao serviço ofertado, sobre a base de clientes,  no mês de referência | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
+|customers|[[Customer](#schemaCustomer)]| Sim |Percentual dos clientes de cada faixa relativa ao serviço ofertado |

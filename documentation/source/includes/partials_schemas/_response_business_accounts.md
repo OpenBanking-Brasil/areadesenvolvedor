@@ -34,16 +34,23 @@
                     "maximum": {
                       "value": "string",
                       "currency": "string"
-                    }
+                    },
+                    "customers": [
+                      {
+                        "frequency": "string",
+                        "rate": "string"
+                      }
+                    ]
                   }
                 }
               ],
               "serviceBundles": [
                 {
                   "name": "string",
-                  "service": [
+                  "services": [
                     {
                       "code": "string",
+                      "chargingTriggerInfo": "string",
                       "eventLimitQuantity": "string",
                       "freeEventQuantity": "string"
                     }
@@ -62,7 +69,13 @@
                   "maximum": {
                     "value": "string",
                     "currency": "string"
-                  }
+                  },
+                  "customers": [
+                    {
+                      "frequency": "string",
+                      "rate": "string"
+                    }
+                  ]
                 }
               ],
               "openingClosingChannels": [
@@ -78,19 +91,12 @@
                 "elegibilityCriteriaInfo": "string",
                 "closingProcessInfo": "string"
               },
-              "incomeRates": [{
-                "savingAccount": "string",
-                "prepaidPaymentAccount": {
-                  "applications": [                    
-                    {
-                      "interval": "string",
-                      "rate": "string"
-                    }
-                  ],
-                  "minimumRate": "string",
-                  "maximumRate": "string"
+              "incomeRates": [
+                {
+                  "savingAccount": "string",
+                  "prepaidPaymentAccount": "string"
                 }
-              }]
+              ]
             }
           ]
         }
@@ -152,16 +158,23 @@
                 "maximum": {
                   "value": "string",
                   "currency": "string"
-                }
+                },
+                "customers": [
+                  {
+                    "frequency": "string",
+                    "rate": "string"
+                  }
+                ]
               }
             }
           ],
           "serviceBundles": [
             {
               "name": "string",
-              "service": [
+              "services": [
                 {
                   "code": "string",
+                  "chargingTriggerInfo": "string",
                   "eventLimitQuantity": "string",
                   "freeEventQuantity": "string"
                 }
@@ -180,7 +193,13 @@
               "maximum": {
                 "value": "string",
                 "currency": "string"
-              }
+              },
+              "customers": [
+                {
+                  "frequency": "string",
+                  "rate": "string"
+                }
+              ]
             }
           ],
           "openingClosingChannels": [
@@ -196,19 +215,12 @@
             "elegibilityCriteriaInfo": "string",
             "closingProcessInfo": "string"
           },
-          "incomeRates": [{
-            "savingAccount": "string",
-            "prepaidPaymentAccount": {
-              "applications": [                    
-                {
-                  "interval": "string",
-                  "rate": "string"
-                }
-              ],
-              "minimumRate": "string",
-              "maximumRate": "string"
+          "incomeRates": [
+            {
+              "savingAccount": "string",
+              "prepaidPaymentAccount": "string"
             }
-          }]
+          ]
         }
       ]
     }
@@ -252,16 +264,23 @@
             "maximum": {
               "value": "string",
               "currency": "string"
-            }
+            },
+            "customers": [
+              {
+                "frequency": "string",
+                "rate": "string"
+              }
+            ]
           }
         }
       ],
       "serviceBundles": [
         {
           "name": "string",
-          "service": [
+          "services": [
             {
               "code": "string",
+              "chargingTriggerInfo": "string",
               "eventLimitQuantity": "string",
               "freeEventQuantity": "string"
             }
@@ -280,7 +299,13 @@
           "maximum": {
             "value": "string",
             "currency": "string"
-          }
+          },
+          "customers": [
+            {
+              "frequency": "string",
+              "rate": "string"
+            }
+          ]
         }
       ],
       "openingClosingChannels": [
@@ -296,19 +321,12 @@
         "elegibilityCriteriaInfo": "string",
         "closingProcessInfo": "string"
       },
-      "incomeRates": [{
-        "savingAccount": "string",
-        "prepaidPaymentAccount": {
-          "applications": [                    
-            {
-              "interval": "string",
-              "rate": "string"
-            }
-          ],
-          "minimumRate": "string",
-          "maximumRate": "string"
+      "incomeRates": [
+        {
+          "savingAccount": "string",
+          "prepaidPaymentAccount": "string"
         }
-      }]
+      ]
     }
   ]
 }
@@ -347,16 +365,23 @@
         "maximum": {
           "value": "string",
           "currency": "string"
-        }
+        },
+        "customers": [
+          {
+            "frequency": "string",
+            "rate": "string"
+          }
+        ]
       }
     }
   ],
   "serviceBundles": [
     {
       "name": "string",
-      "service": [
+      "services": [
         {
           "code": "string",
+          "chargingTriggerInfo": "string",
           "eventLimitQuantity": "string",
           "freeEventQuantity": "string"
         }
@@ -375,7 +400,13 @@
       "maximum": {
         "value": "string",
         "currency": "string"
-      }
+      },
+      "customers": [
+        {
+          "frequency": "string",
+          "rate": "string"
+        }
+      ]
     }
   ],
   "openingClosingChannels": [
@@ -391,19 +422,12 @@
     "elegibilityCriteriaInfo": "string",
     "closingProcessInfo": "string"
   },
-  "incomeRates": [{
-    "savingAccount": "string",
-    "prepaidPaymentAccount": {
-      "applications": [                    
-        {
-          "interval": "string",
-          "rate": "string"
-        }
-      ],
-      "minimumRate": "string",
-      "maximumRate": "string"
+  "incomeRates": [
+    {
+      "savingAccount": "string",
+      "prepaidPaymentAccount": "string"
     }
-  }]
+  ]
 }
 ```
 
@@ -438,7 +462,7 @@
 | openingClosingChannels   | MOBILE_BANKING            | Mobile banking.                            |
 | openingClosingChannels   | CENTRAL_TELEFONICA        | Central telefônica.                        |
 | openingClosingChannels   | CHAT                      | Chat.                                      |
-| openingClosingChannels   | OUTROS                    | Outros (p.ex. website/appps de terceiros). |
+| openingClosingChannels   | OUTROS                    | Outros (p.ex. website/apps de terceiros)   |
 
 ### Enum BusinessAccountTransactionMethod  
 <a id="schemaEnumBusinessAccounTransactionMethod"></a>
@@ -473,7 +497,13 @@
     "maximum": {
       "value": "string",
       "currency": "string"
-    }
+    },
+    "customers": [
+      {
+        "frequency": "string",
+        "rate": "string"
+      }
+    ]
   }
 }
 ```
@@ -504,7 +534,13 @@
   "maximum": {
     "value": "string",
     "currency": "string"
-  }
+  },
+  "customers": [
+    {
+      "frequency": "string",
+      "rate": "string"
+    }
+  ]
 }
 ```
 
@@ -514,8 +550,9 @@
 | code                | string | Não         | Sigla de identificação de Outros Serviços que incidem sobre os tipos de contas.   |
 | chargingTriggerInfo | string | Sim         | Outros fatos geradores de cobrança referentes aos Outros Serviços que incidem sobre as contas comercializadas.                                    |
 | prices               | [[Price](#schemaPrice)] | Sim      | Valor da tarifa cobrada referente aos Outros Serviços.                  |
-| minimum             | [[MinimumPrice](#schemaMinimumPrice)]           | Sim          | Valor mínimo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
-| maximum             | [[MaximumPrice](#schemaMaximumPrice)]           | Sim          | Valor máximo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
+| minimum             | [[MinimumPrice](#schemaMinimumPrice)]           | Sim          | Valor mínimo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. |
+| maximum             | [[MaximumPrice](#schemaMaximumPrice)]           | Sim          | Valor máximo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. |
+|customers|[[Customer](#schemaCustomer)]| Sim |Percentual dos clientes de cada faixa relativa ao serviço ofertado |
 
 ## ServiceBundleBusinessAccount
 <a id="schemaServiceBundleBusinessAccount"></a>
@@ -523,119 +560,65 @@
 ```json
 {
   "name": "string",
-  "service": [
+  "services": [
     {
       "code": "string",
+      "chargingTriggerInfo": "string",
       "eventLimitQuantity": "string",
-      "freeEventQuantity": "string",
-      "price": {
-        "interval": "string",
-        "value": "string",
-        "currency": "string"
-      },
-      "minimum": {
-            "value": "string",
-            "currency": "string"
-          },
-      "maximum": {
-          "value": "string",
-          "currency": "string"
-        },
+      "freeEventQuantity": "string"
     }
   ],
-  "price": {
-    "interval": "string",
-    "monthlyFee": "string",
+  "prices": [
+    {
+      "interval": "string",
+      "monthlyFee": "string",
+      "currency": "string"
+    }
+  ],
+  "minimum": {
+    "value": "string",
     "currency": "string"
   },
-  "minimum": {
-        "value": "string",
-        "currency": "string"
-      },
   "maximum": {
-      "value": "string",
-      "currency": "string"
-    },
+    "value": "string",
+    "currency": "string"
+  },
+  "customers": [
+    {
+      "frequency": "string",
+      "rate": "string"
+    }
+  ]
 }
 ```
 
 |     Nome           |  Tipo                        |  Obrigatório |                            Descrição                |
 |:-------------------|:-----------------------------|:-------------|:----------------------------------------------------|
 | name               | string                       | Sim          | Nome do conjunto de serviços.                        |
-| services           | [ServiceBusinessAccount](#schemaServiceBusinessAccount)| Sim          | Lista de serviços.       |
-| prices              | [ServiceBundleBusinessAccountPrice](#schemaServiceBundleBusinessAccountPrice) | Sim          | Valor mensal da tarifa referente ao Pacote de Serviços |
-| minimum             | [MinimumPrice](#schemaMinimumPrice)           | Sim          | Valor mínimo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
-| maximum             | [MaximumPrice](#schemaMaximumPrice)           | Sim          | Valor máximo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
+| services           | [ServiceBundleBusinessAccount](#schemaServiceBundleBusinessAccount)| Sim          | Lista de serviços.       |
+| prices              | [MontlyPrice](#schemamontlyprice) | Sim          | Valor mensal da tarifa referente ao Pacote de Serviços |
+| minimum             | [MinimumPrice](#schemaMinimumPrice)           | Sim          | Valor mínimo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | 
+| maximum             | [MaximumPrice](#schemaMaximumPrice)           | Sim          | Valor máximo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | 
+|customers|[[Customer](#schemaCustomer)]| Sim |Percentual dos clientes de cada faixa relativa ao serviço ofertado |
 
-## ServiceBusinessAccount
-<a id="schemaServiceBusinessAccount"></a>
+## ServiceBundleBusinessAccount
+<a id="schemaServiceBundleBusinessAccount"></a>
 
 ```json
 {
   "code": "string",
+  "chargingTriggerInfo": "string",
   "eventLimitQuantity": "string",
-  "freeEventQuantity": "string",
-  "price": {
-    "interval": "string",
-    "value": "string",
-    "currency": "string"
-  },
-  "minimum": {
-        "value": "string",
-        "currency": "string"
-    },
-  "maximum": {
-      "value": "string",
-      "currency": "string"
-    },
+  "freeEventQuantity": "string"
 }
 ```
 
 |     Nome           |  Tipo                        |  Obrigatório |                            Descrição                |
 |:-------------------|:-----------------------------|:-------------|:----------------------------------------------------|
 | code               | string                       | Sim          | Código que identifica o Serviço que compõe o Pacote de Serviços.   |
-| eventLimitQuantity | string                       | Sim          | Quantidade de eventos previstos no Pacote de Serviços.      |
-| freeEventQuantity  | string                       | Sim          | Quantidade de eventos previstos no Pacote de Serviços com isenção de Tarifa.      |
-| prices           |  [PriceServiceBusinessAccount](#schemaPriceServiceBusinessAccount)| Sim          | Indica o tipo de valor da tarifa do serviço que compõe o Pacote de Serviços.     |
-| minimum             | [MinimumPrice](#schemaMinimumPrice)           | Sim          | Valor mínimo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
-| maximum             | [MaximumPrice](#schemaMaximumPrice)           | Sim          | Valor máximo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
-
-
-## PriceServiceBusinessAccount
-<a id="schemaPriceServiceBusinessAccount"></a>
-
-```json
-{
-  "interval": "string",
-  "value": "string",
-  "currency": "string"
-}
-```
-
-|     Nome           |  Tipo                        |  Obrigatório |                            Descrição                |
-|:-------------------|:-----------------------------|:-------------|:----------------------------------------------------|
-| interval           | string                       | Sim          | Faixas de valor referentes a tarifa do Serviço Prioritário informada: 1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes. |
-| value              | string                       | Sim          | Valor da mediana da tarifa cobrada, relativa ao Serviço Prioritário, para o tipo de faixa informada.         |
-| currency           | string                       | Sim          | Moeda referente ao valor máximo da tarifa, segundo modelo ISO-4217.                |
-
-
-## ServiceBundleBusinessAccountPrice
-<a id="schemaServiceBundleBusinessAccountPrice"></a>
-
-```json
-{
-  "interval": "string",
-  "monthlyFee": "string",
-  "currency": "string"
-}
-```
-
-|     Nome           |  Tipo                        |  Obrigatório |                            Descrição                |
-|:-------------------|:-----------------------------|:-------------|:----------------------------------------------------|
-| interval           | string                       | Sim          | Faixas de valor referentes ao Serviço que compõe o Pacote de Serviços informado:: 1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes. |
-| monthlyFee         | string                       | Sim          | Valor da mediana da tarifa mensal referente ao Pacote de Serviços. |
-| currency           | [MinimumPrice](#schemaMinimumPrice) | Sim          | Moeda referente ao valor do Pacote de serviços, segundo modelo ISO-4217.      |
-
+| chargingTriggerInfo|string |Sim | Fatos geradores de cobrança que incidem sobre serviço que compõe o Pacote de Serviços. |
+| eventLimitQuantity | string                       | Sim          | Segundo Resolução  4196, BCB, de 2013: Quantidade de eventos previstos no Pacote de Serviços (Número de eventos incluídos no mês) p.ex.'2'. No caso de quantidade ilimitada, reportar 999999     |
+| freeEventQuantity  | string                       | Sim          | Segundo Resolução  4196, BCB, de 2013: Quantidade de eventos previstos no Pacote de Serviços com isenção de Tarifa.p.ex.'1'  No caso de quantidade ilimitada, reportar 999999 |
 
 ## TermConditionBusinessAccount
 <a id="schemaTermConditionBusinessAccount"></a>
@@ -659,46 +642,14 @@
 ```json
 {
   "savingAccount": "string",
-  "prepaidPaymentAccount": {
-    "applications": [                    
-      {
-        "interval": "string",
-        "rate": "string"
-      }
-    ],
-    "minimumRate": "string",
-    "maximumRate": "string"
-  }
+  "prepaidPaymentAccount": "string"
 }
 ```
 
 |     Nome          |  Tipo                                        |  Obrigatório | Descrição                                           |
 |:------------------|:---------------------------------------------|:-------------|:----------------------------------------------------|
-| savingAccount         | string                                                                                    | Sim          | Descrição da Remuneração especificamente para Conta de Poupança. Deve ser preenchida com a determinação legal vigente.                    |
-| prepaidPaymentAccount | [PrepaidPaymentIncomeRateBusinessAccount](#schemaPrepaidPaymentIncomeRateBusinessAccount) | Sim          | Taxa de remuneração para conta do tipo CONTA_PAGAMENTO_PRE_PAGA                  |
-
-## PrepaidPaymentIncomeRateBusinessAccount
-<a id="schemaPrepaidPaymentIncomeRateBusinessAccount"></a>
-
-```json
-{
-  "applications": [                    
-    {
-      "interval": "string",
-      "rate": "string"
-    }
-  ],
-  "minimumRate": "string",
-  "maximumRate": "string"
-}
-```
-
-|     Nome          |  Tipo                                        |  Obrigatório | Descrição                                           |
-|:------------------|:---------------------------------------------|:-------------|:----------------------------------------------------|
-| applications          | [Price](#schemaPrice) | Sim | Identifica o período referente ao percentual de taxa de remuneração efetivamente aplicada no intervalo informado. |
-| minimumRate           | String                | Sim | Percentual mínimo referente à taxa de remuneração efetivamente aplicada no mês de referência.                     |
-| maximumRate           | String                | Sim | Percentual máximo referente à taxa de remuneração efetivamente aplicada no mês de referência.                     |
-
+| savingAccount         | string                                   | Não          | Descrição da Remuneração especificamente para Conta de Poupança. Deve ser preenchido com a determinação legal vigente. p.ex. '70% da Taxa Selic (6,5%) = 4,55%, que é o atual rendimento anual da poupança. O rendimento mensal é de 0,3715'. Restrição: De preenchimento obrigatório para CONTA_POUPANCA. Para os demais Tipos  preencher com NA|
+|prepaidPaymentAccount  |string| Não |  Percentual em favor do titular da conta de pagamento pré-paga. Campo Livre.<br> De preenchimento obrigatório para Conta do Tipo CONTA_PAGAMENTO_PRE_PAGA. Para os demais Tipos preencher com NA |
 
 
 
