@@ -27,7 +27,6 @@
 | interval     | 3_FAIXA_VALOR    |
 | interval     | 4_FAIXA_VALOR    |
 
-
 ## Price
 <a id="schemaPrice"></a>
 
@@ -47,7 +46,6 @@
 | value        | [AmountString](#commonFieldAmountString)     | Sim         | Valor da mediana da tarifa, relativa ao serviço ofertado, informado no período, conforme Res nº32 BCB, 2020. p.ex. '45.00' (representa um valor monetário. p.ex: 1547368.92. Este valor, considerando que a moeda seja BRL, significa R$ 1.547.368,92. O único separador presente deve ser o '.' (ponto) para indicar a casa decimal. Não deve haver separador de milhar) |
 | currency     | [CurrencyString](#commonFieldCurrencyString) | Sim         | Moeda referente ao valor da Tarifa, segundo modelo ISO-4217. p.ex. 'BRL'                 |
 
-
 ## MontlyPrice
 <a id="schemamontlyprice"></a>
 
@@ -65,7 +63,6 @@
 | interval           | [PriceIntervals](#schemaPriceInterval) | Sim          | Segundo Normativa nº32 de 2020: Distribuição de frequência relativa dos valores de tarifas e taxas de juros cobrados dos clientes, de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana e o percentual de clientes em cada uma dessas faixas. Informado:1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes |
 | monthlyFee         | string                       | Sim          | Valor da mediana da tarifa, relativa ao serviço ofertado,informado no período, conforme Res nº32 BCB, 2020. p.ex. '45.00' (representa um valor monetário. p.ex: 1547368.92. Este valor, considerando que a moeda seja BRL, significa R$ 1.547.368,92. O único separador presente deve ser o '.' (ponto) para indicar a casa decimal. Não deve haver separador de milhar) |
 | currency           | [Currency](#schemacurrency)    | Sim          | Moeda referente ao valor do Pacote de serviços, segundo modelo ISO-4217.      |
-
 
 ## MinimumPrice
 <a id="schemaMinimumPrice"></a>
@@ -135,7 +132,7 @@
 
 |     Nome     |  Tipo                                            | Obrigatório    |                            Definição                                                |
 |:------------ |:------------------------------------------------ |:-------------- |:-----------------------------------------------------------------------------       |
-| interval     | [Enum PriceInterval](#schemaPriceInterval)       | Sim            | Faixas para cobrança da taxa efetiva pela utilização do crédito rotativo, no intervalo informado: 1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes Segundo Normativa nº32 de 2020: Distribuição de frequência relativa dos valores de tarifas e taxas de juros cobrados dos clientes, de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana e o percentual de clientes em cada uma dessas faixas. |
+| interval     | [Enum PriceInterval](#schemaPriceInterval)       | Sim            | Faixas para cobrança da taxa efetiva aplicada pela contratação do do crédito rotativo, no intervalo informado: 1ª faixa de valor, 2ª faixa de valor, 3ª faixa de valor e 4ª faixa de valor. Segundo Normativa nº32 de 2020: 'Distribuição de frequência relativa dos valores de tarifas e taxas de juros cobrados dos clientes, de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana e o percentual de clientes em cada uma dessas faixas. |
 | rate         | [RateString](#commonFieldRateString)             | Sim            | Percentual que corresponde a mediana da taxa efetiva cobrada do cliente pela contratação do Empréstimo, no intervalo informado. p.ex. '9,8700%'. A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%) |
 
 ## Application
@@ -228,7 +225,6 @@ Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial o
 | referentialRateIndexer |CREDITO_RURAL_TRFC_POS  | CREDITO RURAL TRFC POS|
 | referentialRateIndexer |OUTROS_INDEXADORES      | OUTROS INDEXADORES|
 
-
 ## MinimumBalance
 <a id="schemaminimumbalance"></a>
 
@@ -245,7 +241,6 @@ Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial o
 |value|string|Sim |Saldo mínimo exigido nos Termos e condições contratuais, que regem as contas comercializadas.|
 |currency|[Currency](#schemacurrency)|Sim |Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217|
 
-
 ## Currency
 <a id="schemacurrency"></a>
 
@@ -258,9 +253,7 @@ Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial o
 |---|---|---|---|
 |currency|string|Sim|Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217|
 
-
 ## FeeReferentialRateIndexer
-
 <a id="schemaFeeReferentialRateIndexer"></a>
 
 ```json
@@ -277,3 +270,249 @@ Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial o
 | referentialRateIndexer|string| Sim |Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial ou Indexador (Indx), do Documento 3040|
 | rate|string| Sim |Percentual que incide sobre a composição das taxas de juros remuneratórios. (representa uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O valor '1 'representa 100%). A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)|
 
+## Customer
+<a id="schemaCustomer"></a>
+
+### Properties
+
+|Nome     |Tipo                         |Obrigatório|Definição                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+|:--------|:----------------------------|:----------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|frequency|[Frequency](#schemaFrequency)|Sim        |Segundo Normativa nº 32, BCB,  de 2020: Distribuição de frequência relativa aos clientes que pagaram valores de tarifas , de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana e o percentual de clientes em cada uma dessas faixas. Informando:1ª faixa de cliente, 2ª faixa de cliente, 3ª faixa de cliente e 4ª faixa de cliente                                                 |
+|rate     |string                       |Sim        |Percentual dos clientes de cada faixa relativa ao serviço ofertado, para pessoa natural informado no período, conforme Res nº32, BCB, 2020. p.ex. '0.1500' (representa uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O valor '1 'representa 100%) A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)|
+
+## Enum Frequency
+<a id="schemaFrequency"></a>
+
+|Nome     |Código         |
+|:--------|:--------------|
+|frequency|1_FAIXA_CLIENTE|
+|frequency|2_FAIXA_CLIENTE|
+|frequency|3_FAIXA_CLIENTE|
+|frequency|4_FAIXA_CLIENTE|
+
+
+## CreditCardFeeRate
+<a id="schemaCreditCardFeeRate"></a>
+
+```json
+{
+  "prices": [
+    {
+      "interval": "string",
+      "rate": "string",
+      "frequency": "string"
+    }
+  ],
+  "minimumRate" : "string",
+  "maximumRate" : "string",
+  "fees": [
+    {
+      "referentialRateIndexer": "string",
+      "rate": "string"
+    }
+  ],
+  "customers": [
+    {
+      "frequency": "1_FAIXA_CLIENTE",
+      "rate": "0.1500"
+    }
+  ]
+}
+```
+
+|     Nome    |  Tipo                                                         | Obrigatório |    Definição                                                                                         |
+|:------------|:--------------------------------------------------------------|:------------|:-----------------------------------------------------------------------------------------------------|
+| prices      | [[Rate](#schemaRate)]                                         | Sim         | Informações sobre a tarifa cobrada, relativa ao serviço relacionado.                                 |
+| minimumRate | String                                                        | Sim         | Percentual mínimo cobrado para a taxa do crédito rotativo no mês de referência.                      |
+| maximumRate | String                                                        | Sim         | Percentual máximo cobrado para o pagamento parcelado do saldo devedor na fatura do mês de referência.|
+| fees        | [FeeReferentialRateIndexer](#schemaFeeReferentialRateIndexer) | Sim         | Lista de Tarifas cobradas sobre Serviços ofertados.                                                  |
+| customers   | [[Customer](#schemaCustomer)]                                 | Sim         |                                                                                                      |
+
+
+### Enum CreditCardInterestRateCode
+<a id="schemaEnumCreditCardInterestRateCode"></a>
+
+| Propriedade                 | Código               | Definição           |
+|:----------------------------|:---------------------|:------------------- |
+| code                        | SAQUE_CREDITO        | Saque a crédito     |
+| code                        | PAGAMENTO_CONTA      | Pagamento de contas |
+| code                        | OUTROS               | Outros              |
+
+## CreditCardInterestRate
+<a id="schemaCreditCardInterestRate"></a>
+
+```json
+{
+  "code": "string",
+  "additionalInfo": "string",
+  "prices": [
+    {
+      "interval": "string",
+      "rate": "string"
+    }
+  ],
+  "minimumRate": "string",
+  "maximumRate": "string",
+  "fees": [
+    {
+      "referentialRateIndexer": "string",
+      "rate": "string"
+    }
+  ],
+  "customers": [
+    {
+      "frequency": "1_FAIXA_CLIENTE",
+      "rate": "0.1500"
+    }
+  ]
+}
+```
+
+|     Nome       |  Tipo                                                                    | Obrigatório |    Definição                                                                                         |
+|:---------------|:-------------------------------------------------------------------------|:------------|:-----------------------------------------------------------------------------------------------------|
+| code           | [Enum CreditCardInterestRateCode](#schemaEnumCreditCardInterestRateCode) | Sim         | Lista de outras operações de crédito.                                                                |
+| additionalInfo | string                                                                   | Sim         | Campo Texto para descrever outras operações de crédito marcadas como 'OUTROS'.                       |
+| prices         | [[Rate](#schemaRate)]                                                    | Sim         | Informações sobre a tarifa cobrada, relativa ao serviço relacionado.                                 |
+| minimumRate    | String                                                                   | Sim         | Percentual mínimo cobrado para a taxa do crédito rotativo no mês de referência.                      |
+| maximumRate    | String                                                                   | Sim         | Percentual máximo cobrado para o pagamento parcelado do saldo devedor na fatura do mês de referência.|
+| fees           | [FeeReferentialRateIndexer](#schemaFeeReferentialRateIndexer)            | Sim         | Lista de Tarifas cobradas sobre Serviços ofertados.                                                  |
+| customers      | [[Customer](#schemaCustomer)]                                            | Sim         |                                                                                                      |
+
+## CreditCardInstalmentRate
+<a id="schemaCreditCardInstalmentRate"></a>
+
+```json
+{
+  "prices": [
+    {
+      "interval": "string",
+      "rate": "string",
+      "frequency": "string"
+    }
+  ],
+  "minimumRate" : "string",
+  "maximumRate" : "string",
+  "fees": [
+    {
+      "referentialRateIndexer": "string",
+      "rate": "string"
+    }
+  ],
+  "customers": [
+    {
+      "frequency": "1_FAIXA_CLIENTE",
+      "rate": "0.1500"
+    }
+  ]
+}
+```
+
+|     Nome    |  Tipo                                                         | Obrigatório |    Definição                                                                                          |
+|:------------|:--------------------------------------------------------------|:----------- |:------------------------------------------------------------------------------------------------------|
+| prices      | [[Rate](#schemaRate)]                                         | Sim         | Informações sobre a tarifa cobrada, relativa ao serviço relacionado.                                  |
+| minimumRate | String                                                        | Sim         | Percentual mínimo cobrado para a taxa do crédito rotativo no mês de referência.                       |
+| maximumRate | String                                                        | Sim         | Percentual máximo cobrado para o pagamento parcelado do saldo devedor na fatura do mês de referência. |
+| fees        | [FeeReferentialRateIndexer](#schemaFeeReferentialRateIndexer) | Sim         | Lista de Tarifas cobradas sobre Serviços ofertados.                                                   |
+| customers   | [[Customer](#schemaCustomer)]                                 | Sim         |                                                                                                       |
+
+## CreditCardInterest
+<a id="schemaCreditCardInterest"></a>
+
+```json
+{
+  "feeRate": {
+    "prices": [
+      {
+        "interval": "string",
+        "rate": "string"
+      }
+    ],
+    "minimumRate": "string",
+    "maximumRate": "string",
+    "fees": [
+      {
+        "referentialRateIndexer": "string",
+        "rate": "string"
+      }
+    ],
+    "customers": [
+      {
+        "frequency": "1_FAIXA_CLIENTE",
+        "rate": "0.1500"
+      }
+    ]
+  },
+  "instalmentRate": {
+    "prices": [
+      {
+        "interval": "string",
+        "rate": "string"
+      }
+    ],
+    "minimumRate": "string",
+    "maximumRate": "string",
+    "fees": [
+      {
+        "referentialRateIndexer": "string",
+        "rate": "string"
+      }
+    ],
+    "customers": [
+      {
+        "frequency": "1_FAIXA_CLIENTE",
+        "rate": "0.1500"
+      }
+    ]
+  },
+  "interestRates": [{
+    "code": "string",
+    "additionalInfo": "string",
+    "prices": [
+      {
+        "interval": "string",
+        "rate": "string"
+      }
+    ],
+    "minimumRate": "string",
+    "maximumRate": "string",
+    "fees": [
+      {
+        "referentialRateIndexer": "string",
+        "rate": "string"
+      }
+    ],
+    "customers": [
+      {
+        "frequency": "1_FAIXA_CLIENTE",
+        "rate": "0.1500"
+      }
+    ]
+  }]
+}
+```
+
+|     Nome       |  Tipo                       | Obrigatório      |    Definição                                                 |
+|:-------------- |:--------------------------- |:---------------- |:------------------------------------------------------------ |
+| feeRate        | [CreditCardFeeRate](#schemaCreditCardFeeRate)               | Sim | Percentual que corresponde a taxa aplicada para utilização de Crédito Rotativo              |
+| instalmentRate | [CreditCardInstalmentRate](#schemaCreditCardInstalmentRate) | Sim | Percentual que corresponde a taxa aplicada para pagamento parcelado do saldo devedor quando não realizado pagamento integral da fatura |
+| interestRates  | [CreditCardInterestRate](#schemaCreditCardInterestRate) | Sim | Percentual que corresponde a taxa aplicada para pagamento parcelado do saldo devedor quando não realizado pagamento integral da fatura |
+
+
+## CreditCardTermsConditions
+<a id="schemaCreditCardTermsConditions"></a>
+
+```json
+{
+  "minimumFeeRate": "string",
+  "additionalInfo": "string",
+  "elegibilityCriteriaInfo": "string",
+  "closingProcessInfo": "string"
+}
+```
+
+|     Nome                |  Tipo                                 | Obrigatório     |    Definição                                                                                                                                                          |
+|:------------------------|:------------                          |:----------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| minimumFeeRate          | [RateString](#commonFieldRateString)  | Sim             | Percentual para pagamento mínimo sobre o saldo devedor da fatura                                                                                                      |
+| additionalInfo          | string                                | Sim             | Campo aberto para detalhamento de taxas de juros                                                                                                                      |
+| elegibilityCriteriaInfo | string                                | Sim             | Informação sobre as condições e critérios de elegibilidade do emissor do cartão. Pode ser informada a URL referente ao endereço onde constam as condições informadas. |
+| closingProcessInfo      | string                                | Sim             | Descrição dos procedimentos para encerramento da conta de pagamento pós paga. Pode ser informada a URL referente ao endereço onde constam as condições informadas.    |
