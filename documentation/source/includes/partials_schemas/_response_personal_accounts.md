@@ -401,9 +401,9 @@
 |     Nome        |  Tipo                                          | Obrigatório  |                            Definição                                 |
 |:------------    |:---------------------------------              |:-----------  |:----------------------------------------------------                 |
 | name            | string                                         | Sim          | Nome da Instituição, pertencente à marca, responsável pelas modalidades de Contas  para Pessoa Natural. p.ex.'Empresa da Organização A'   |
-| cnpjNumber      | string                                         | Sim          | O responsável pela comercialização das modalidades de Contas para Pessoas Física consultadas.                                       |
+| cnpjNumber      | string                                         | Sim          | O responsável pela comercialização das modalidades de Contas.                                                                             |
 | urlComplementaryList | string                                    | Não          | URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. Restrição: Será obrigatorimente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada |
-| PersonalAccounts| [PersonalAccount](#schemaPersonalAccount)      | Sim          | Lista de contas pessoa física.                                      |
+| PersonalAccounts| [PersonalAccount](#schemaPersonalAccount)      | Sim          | Lista de contas pessoa natural.                                      |
 
 
 ## PersonalAccount
@@ -863,11 +863,11 @@
 
 | Propriedade  | Valor            | Definição                                                                        |                     
 |:-------------|:-----------------|:-------------------------------------------------------------------------------- |
-| code  | CADASTRO                | CADASTRO                                                                         |
-| code  | 2_VIA_CARTAO_DEBITO     | 2ª via-CARTÃODEBITO                                                              |
-| code  | 2_VIA_CARTAO_POUPANCA   | 2ª via-CARTÃOPOUPANÇA                                                            |
-| code  | EXCLUSAO_CCF            | EXCLUSÃO CCF                                                                     |
-| code  | SUSTACAO_REVOGACAO      | SUSTAÇÃO/REVOGAÇÃO                                                               |
+| code  | CADASTRO                | Cadastro                                                                         |
+| code  | 2_VIA_CARTAO_DEBITO     | 2ª via cartão de débito                                                          |
+| code  | 2_VIA_CARTAO_POUPANCA   | 2ª via cartão poupança                                                           |
+| code  | EXCLUSAO_CCF            | Exclusão CCF                                                                     |
+| code  | SUSTACAO_REVOGACAO      | Sustação / Revogação                                                             |
 | code  | FOLHA_CHEQUE            | Fornecimento Folha de cheque                                                     |
 | code  | CHEQUE_ADMINISTRATIVO   | Cheque Administrativo                                                            |
 | code  | CHEQUE_VISADO           | Cheque Visado                                                                    |
