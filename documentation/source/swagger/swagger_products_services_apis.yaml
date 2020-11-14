@@ -2310,7 +2310,7 @@ components:
         name:
           type: string
           pattern: \w*\W*
-          maxLength: 30
+          maxLength: 80
           description: Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a 'marca' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes.
         companies:
           type: array
@@ -2334,21 +2334,19 @@ components:
     BusinessUnarrangedAccountOverdraft:
       type: object
       required:
-        - fees
+        - fee
         - interestRate
         - termsConditions
       properties:
-        fees:
-          type: array
-          items:
-            $ref: '#/components/schemas/BusinessUnarrangedAccountOverdraftFee'
+        fee:
+          $ref: '#/components/schemas/BusinessUnarrangedAccountOverdraftFee'
         interestRate:
           $ref: '#/components/schemas/UnarrangedAccountOverdraftRate'
         termsConditions:
           type: string
           pattern: \w*\W*
           maxLength: 2000
-          description: Campo aberto para informar as condições contratuais relativas ao produto ou serviço informado. Pode ser informada a URL referente ao endereço onde constam as condições informadas.
+          description: Campo aberto para informar as condições contratuais relativas à Modalidade de Adiantamento a depositante para pessoa natural. Pode ser informada a URL referente ao endereço onde constam as condições informadas. Endereço eletrônico de acesso ao canal.
           example: ''
     BusinessUnarrangedAccountOverdraftFee:
       type: object
@@ -2385,6 +2383,8 @@ components:
           $ref: '#/components/schemas/MinimumPrice'
         maximum:
           $ref: '#/components/schemas/MaximumPrice'
+        customers:
+          $ref: '#/components/schemas/Customer'
     UnarrangedAccountOverdraftRate:
       type: object
       required:
@@ -2402,17 +2402,19 @@ components:
           description:  Valor da mediana da taxa de remuneração relativa ao serviço ofertado.
           type: array
           items:
-            $ref: '#/components/schemas/ApplicationRate'
+            $ref: '#/components/schemas/InterestRateApplication'
         minimumRate:
           type: string
           description: |
-            Percentual mínimo cobrado (taxa efetiva) no mês de referência, para os Direitos Creditórios Descontados contratado  A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.15. Este valor representa 15%. O valor 1 representa 100%)
+            Percentual mínimo cobrado (taxa efetiva) no mês de referência, para o crédito contratado A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)
           pattern: '(^[0-9](\.[0-9]{4})|NA)$'
         maximumRate:
           type: string
           description: |
-            Percentual máximo cobrado (taxa efetiva) no mês de referência, para os Direitos Creditórios Descontados contratado  A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.15. Este valor representa 15%. O valor 1 representa 100%)
+            Percentual máximo cobrado (taxa efetiva) no mês de referência, para o crédito contratado A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)
           pattern: '(^[0-9](\.[0-9]{4})|NA)$'
+        customers:
+          $ref: '#/components/schemas/Customer'
     FeeReferentialRateIndexer:
       description: Tarifas cobradas sobre Serviços ofertados
       type: object
@@ -2428,6 +2430,19 @@ components:
             Percentual que incide sobre a composição das taxas de juros remuneratórios. (representa uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O valor '1 'representa 100%). A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)
           pattern: '(^[0-9](\.[0-9]{2})|NA)$'
           example: '0.15'
+    InterestRateApplication:
+      type: object
+      properties:
+        interval:
+          $ref: '#/components/schemas/PriceIntervals'
+        rate:
+          type: string
+          format: '(^[0-9](\.[0-9]{4})$|^NA$)'
+          description: 'Percentual que corresponde a mediana da taxa efetiva cobrada do cliente pela contratação do serviço/produto, no intervalo informado. p.ex. ''9,8700%'' A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)'
+          example: '0.0987'
+      required:
+        - interval
+        - rate
     ResponsePersonalUnarrangedAccountOverdraftList:
       type: object
       required:
@@ -2578,7 +2593,7 @@ components:
         frequency:
           type: string
           description: |
-
+            Segundo Normativa nº 32, BCB,  de 2020: Distribuição de frequência relativa aos clientes que pagaram valores de tarifas , de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana e o percentual de clientes em cada uma dessas faixas. Informando:1ª faixa de cliente, 2ª faixa de cliente, 3ª faixa de cliente e 4ª faixa de cliente.
           enum:
             - 1_FAIXA_CLIENTE
             - 2_FAIXA_CLIENTE
