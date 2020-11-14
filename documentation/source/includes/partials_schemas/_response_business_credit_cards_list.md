@@ -48,7 +48,13 @@
                     "maximum": {
                       "value": "string",
                       "currency": "string"
-                    }
+                    },
+                    "customers": [
+                      {
+                        "frequency": "string",
+                        "rate": "string"
+                      }
+                    ]
                   }
                 }
               ],
@@ -69,6 +75,12 @@
                       "referentialRateOrIndexer": "string",
                       "rate": "string"
                     }
+                  ],
+                  "customers": [
+                    {
+                      "frequency": "string",
+                      "rate": "string"
+                    }
                   ]
                 },
                 "instalmentRate": {
@@ -85,6 +97,12 @@
                   "fees": [
                     {
                       "referentialRateOrIndexer": "string",
+                      "rate": "string"
+                    }
+                  ],
+                  "customers": [
+                    {
+                      "frequency": "string",
                       "rate": "string"
                     }
                   ]
@@ -106,6 +124,12 @@
                     "fees": [
                       {
                         "referentialRateOrIndexer": "string",
+                        "rate": "string"
+                      }
+                    ],
+                    "customers": [
+                      {
+                        "frequency": "string",
                         "rate": "string"
                       }
                     ]
@@ -193,7 +217,13 @@
                 "maximum": {
                   "value": "string",
                   "currency": "string"
-                }
+                },
+                "customers": [
+                  {
+                    "frequency": "string",
+                    "rate": "string"
+                  }
+                ]
               }
             }
           ],
@@ -214,6 +244,12 @@
                   "referentialRateOrIndexer": "string",
                   "rate": "string"
                 }
+              ],
+              "customers": [
+                {
+                  "frequency": "string",
+                  "rate": "string"
+                }
               ]
             },
             "instalmentRate": {
@@ -230,6 +266,12 @@
               "fees": [
                 {
                   "referentialRateOrIndexer": "string",
+                  "rate": "string"
+                }
+              ],
+              "customers": [
+                {
+                  "frequency": "string",
                   "rate": "string"
                 }
               ]
@@ -250,6 +292,12 @@
               "fees": [
                 {
                   "referentialRateOrIndexer": "string",
+                  "rate": "string"
+                }
+              ],
+              "customers": [
+                {
+                  "frequency": "string",
                   "rate": "string"
                 }
               ]
@@ -318,7 +366,13 @@
             "maximum": {
               "value": "string",
               "currency": "string"
-            }
+            },
+            "customers": [
+              {
+                "frequency": "string",
+                "rate": "string"
+              }
+            ]
           }
         }
       ],
@@ -339,6 +393,12 @@
               "referentialRateOrIndexer": "string",
               "rate": "string"
             }
+          ],
+          "customers": [
+            {
+              "frequency": "string",
+              "rate": "string"
+            }
           ]
         },
         "instalmentRate": {
@@ -355,6 +415,12 @@
           "fees": [
             {
               "referentialRateOrIndexer": "string",
+              "rate": "string"
+            }
+          ],
+          "customers": [
+            {
+              "frequency": "string",
               "rate": "string"
             }
           ]
@@ -375,6 +441,12 @@
           "fees": [
             {
               "referentialRateOrIndexer": "string",
+              "rate": "string"
+            }
+          ],
+          "customers": [
+            {
+              "frequency": "string",
               "rate": "string"
             }
           ]
@@ -438,7 +510,13 @@
         "maximum": {
           "value": "string",
           "currency": "string"
-        }
+        },
+        "customers": [
+          {
+            "frequency": "string",
+            "rate": "string"
+          }
+        ]
       }
     }
   ],
@@ -459,6 +537,12 @@
           "referencialRateOrIndexer": "string",
           "rate": "string"
         }
+      ],
+      "customers": [
+        {
+          "frequency": "string",
+          "rate": "string"
+        }
       ]
     },
     "instalmentRate": {
@@ -475,6 +559,12 @@
       "fees": [
         {
           "referentialRateOrIndexer": "string",
+          "rate": "string"
+        }
+      ],
+      "customers": [
+        {
+          "frequency": "string",
           "rate": "string"
         }
       ]
@@ -497,6 +587,12 @@
           "referentialRateOrIndexer": "string",
           "rate": "string"
         }
+      ],
+      "customers": [
+        {
+          "frequency": "string",
+          "rate": "string"
+        }
       ]
     }]
   },
@@ -515,8 +611,8 @@
 | identification        | [BusinessCreditCardIdentification](#schemaBusinessCreditCardIdentification)                     | Sim         | Informações de identificação do cartão de crédito                         |
 | rewardsProgram        | [BusinessCreditCardRewardProgram](#schemaBusinessCreditCardRewardProgram)     | Sim         | Informações sobre programas de recompensa presentes no cartão de crédito  |
 | fees                  | [BusinessCreditCardFee](#schemaBusinessCreditCardFee)                         | Sim         | Informações sobre tarifas cobradas sobre o produto e serviços             |
-| interest              | [BusinessCreditCardInterest](#schemaBusinessCreditCardInterest)       | Sim         | Informações sobre taxas de juros                                          |
-| termsConditions       | [BusinessCreditCardTermsConditions](#schemaBusinessCreditCardTermsConditions)   | Sim         | Informações sobre termos e condições para aquisição e cancelamento        |
+| interest              | [CreditCardInterest](#schemaCreditCardInterest)       | Sim         | Informações sobre taxas de juros                                          |
+| termsConditions       | [CreditCardTermsConditions](#schemaCreditCardTermsConditions)   | Sim         | Informações sobre termos e condições para aquisição e cancelamento        |
 
 
 ## BusinessCreditCardIdentification
@@ -650,7 +746,13 @@
       "maximum": {
         "value": "string",
         "currency": "string"
-      }
+      },
+      "customers": [
+        {
+          "frequency": "string",
+          "rate": "string"
+        }
+      ]
   }
 }
 ```
@@ -681,7 +783,13 @@
   "maximum": {
     "value": "string",
     "currency": "string"
-  }
+  },
+  "customers": [
+    {
+      "frequency": "string",
+      "rate": "string"
+    }
+  ]
 }
 ```
 
@@ -693,192 +801,7 @@
 | price               | [[Price](#schemaPrice)]                                                                | Sim         | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa jurídica  |
 | minimum             | [[MinimumPrice](#schemaMinimumPrice)]                                                  | Sim         | Valor mínimo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type |
 | maximum             | [[MaximumPrice](#schemaMaximumPrice)]                                                  | Sim         | Valor máximo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type |
-
-## BusinessCreditCardInterest
-<a id="schemaBusinessCreditCardInterest"></a>
-
-```json
-{
-  "feeRate": {
-    "prices": [
-      {
-        "interval": "string",
-        "rate": "string"
-      }
-    ],
-    "minimumRate": "string",
-    "maximumRate": "string",
-    "fees": [
-      {
-        "referencialRateOrIndexer": "string",
-        "rate": "string"
-      }
-    ]
-  },
-  "instalmentRate": {
-    "prices": [
-      {
-        "interval": "string",
-        "rate": "string"
-      }
-    ],
-    "minimumRate": "string",
-    "maximumRate": "string",
-    "fees": [
-      {
-        "referencialRateOrIndexer": "string",
-        "rate": "string"
-      }
-    ]
-  },
-  "interestRates": [{
-    "code": "string",
-    "additionalInfo": "string",
-    "prices": [
-      {
-        "interval": "string",
-        "rate": "string"
-      }
-    ],
-    "minimumRate": "string",
-    "maximumRate": "string",
-    "fees": [
-      {
-        "referentialRateOrIndexer": "string",
-        "rate": "string"
-      }
-    ]
-  }]
-}
-```
-
-|     Nome       |  Tipo                       | Obrigatório      |    Definição                                                 |
-|:-------------- |:--------------------------- |:---------------- |:------------------------------------------------------------ |
-| feeRate        | [BusinessCreditCardFeeRate](#schemaBusinessCreditCardFeeRate)               | Sim | Percentual que corresponde a taxa aplicada para utilização de Crédito Rotativo              |
-| instalmentRate | [BusinessCreditCardInstalmentRate](#schemaBusinessCreditCardInstalmentRate) | Sim | Percentual que corresponde a taxa aplicada para pagamento parcelado do saldo devedor quando não realizado pagamento integral da fatura |
-| interestRates   | [BusinessCreditCardInterestRate](#schemaBusinessCreditCardInterestRate) | Sim | Percentual que corresponde a taxa aplicada para pagamento parcelado do saldo devedor quando não realizado pagamento integral da fatura |
-
-## BusinessCreditCardInterestRate
-<a id="schemaBusinessCreditCardInterestRate"></a>
-
-```json
-{
-  "code": "string",
-  "additionalInfo": "string",
-  "prices": [
-    {
-      "interval": "string",
-      "rate": "string"
-    }
-  ],
-  "minimumRate": "string",
-  "maximumRate": "string",
-  "fees": [
-    {
-      "referencialRateOrIndexer": "string",
-      "rate": "string"
-    }
-  ]
-}
-```
-
-|     Nome       |  Tipo                                                                                    | Obrigatório |    Restrição                                                                                    |    Definição                                                                                                                                   |
-|:---------------|:-----------------------------------------------------------------------------------------|:------------|:----------------------------------------------------------------------------------------------- |:-----------------------------------------------------------------------------------------------------------------------------------------------|
-| code           | [Enum BusinessCreditCardInterestRateCode](#schemaEnumBusinessCreditCardInterestRateCode) | Sim         |                                                                                                 | Lista de outras operações de crédito. p.ex. 'SAQUE_A_CREDITO'                                                                                  |
-| additionalInfo | string                                                                                   | Sim         | Se o campo 'code' vier selecionado com 'OUTROS' é obrigatório o preenchimento do additionalInfo | Campo Texto para descrever outras operações de crédito marcadas como 'OUTROS'                                                                  |
-| prices         | [[Rate](#schemaRate)]                                                                    | Sim         |                                                                                                 | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa física |
-| minimumRate    | String                                                                                   | Sim         |                                                                                                 | Percentual mínimo cobrado para a taxa do crédito rotativo no mês de referência                                                                 |
-| maximumRate    | String                                                                                   | Sim         |                                                                                                 | Percentual máximo cobrado para o pagamento parcelado do saldo devedor na fatura do mês de referência.                                          |
-| fees            |[FeeReferentialRateOrIndexer](#schemaFeeReferentialRateOrIndexer)                        | Sim         |                                                                                                 | Lista de Tarifas cobradas sobre Serviços ofertados à Modalidade de adiantamento a depositante                                                  |
-
-### Enum BusinessCreditCardInterestRateCode
-<a id="schemaEnumBusinessCreditCardInterestRateCode"></a>
-
-| Propriedade                 | Código               | Definição        |
-|:----------------------------|:---------------------|:------------------- |
-| code                        | SAQUE_CREDITO        | Saque a crédito     |
-| code                        | PAGAMENTO_CONTA      | Pagamento de contas |
-| code                        | OUTROS               | Outros              |
-
-
-## BusinessCreditCardFeeRate
-<a id="schemaBusinessCreditCardFeeRate"></a>
-
-```json
-{
-  "prices": [
-    {
-      "interval": "string",
-      "rate": "string",
-      "frequency": "string"
-    }
-  ],
-  "minimumRate" : "string",
-  "maximumRate" : "string",
-  "fees": [
-    {
-      "referencialRateOrIndexer": "string",
-      "rate": "string"
-    }
-  ]
-}
-```
-
-|     Nome    |  Tipo                                                           | Obrigatório |    Definição                                                                                                                |
-|:------------|:----------------------------------------------------------------|:------------|:--------------------------------------------------------------------------------------------------------------------------- |
-| prices      |[[Rate](#schemaRate)]                                            | Sim         | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas |
-| minimumRate | String                                                          | Sim         | Percentual mínimo cobrado para a taxa do crédito rotativo no mês de referência                                              |
-| maximumRate | String                                                          | Sim         | Percentual máximo cobrado para o pagamento parcelado do saldo devedor na fatura do mês de referência.                       |
-| fees        |[FeeReferentialRateOrIndexer](#schemaFeeReferentialRateOrIndexer)| Sim         | Lista de Tarifas cobradas sobre Serviços ofertados à Modalidade de adiantamento a depositante                               |
-
-## BusinessCreditCardInstalmentRate
-<a id="schemaBusinessCreditCardInstalmentRate"></a>
-
-```json
-{
-  "prices": [
-    {
-      "interval": "string",
-      "rate": "string",
-      "frequency": "string"
-    }
-  ],
-  "minimumRate" : "string",
-  "maximumRate" : "string",
-  "fees": [
-    {
-      "referencialRateOrIndexer": "string",
-      "rate": "string"
-    }
-  ]
-}
-```
-
-|     Nome     |  Tipo       | Obrigatório     |    Definição        |
-|:------------ |:----------- |:--------------- |:------------------- |
-| prices       | [[Rate](#schemaRate)] | Sim    | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa física  |
-| minimumRate  | String                | Sim    | Percentual mínimo cobrado para a taxa do crédito rotativo no mês de referência                                                                  |
-| maximumRate  | String                | Sim    | Percentual máximo cobrado para o pagamento parcelado do saldo devedor na fatura do mês de referência.                                           |
-| fees         |[FeeReferentialRateOrIndexer](#schemaFeeReferentialRateOrIndexer)| Sim         | Lista de Tarifas cobradas sobre Serviços ofertados à Modalidade de adiantamento a depositante                               |
-
-## BusinessCreditCardTermsConditions
-<a id="schemaBusinessCreditCardTermsConditions"></a>
-
-```json
-{
-  "minimumFeeRate": "string",
-  "additionalInfo": "string",
-  "elegibilityCriteriaInfo": "string",
-  "closingProcessInfo": "string"
-}
-```
-
-|     Nome                |  Tipo                                 | Obrigatório     |    Definição                                                                                                                                                          |
-|:------------------------|:------------                          |:----------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| minimumFeeRate          | [RateString](#commonFieldRateString)  | Sim             | Percentual para pagamento mínimo sobre o saldo devedor da fatura                                                                                                      |
-| additionalInfo          | string                                | Sim             | Campo aberto para detalhamento de taxas de juros                                                                                                                      |
-| elegibilityCriteriaInfo | string                                | Sim             | Informação sobre as condições e critérios de elegibilidade do emissor do cartão. Pode ser informada a URL referente ao endereço onde constam as condições informadas  |
-| closingProcessInfo      | string                                | Sim             | Descrição dos procedimentos para encerramento da conta pós paga. Pode ser informada a URL referente ao endereço onde constam as condições informadas                  |
+| customers           | [[Customer](#schemaCustomer)]                                                          | Sim         ||
 
 ### Enum BusinessCreditCardFeesServiceName
 <a id="schemaEnumBusinessCreditCardFeesServiceName"></a>

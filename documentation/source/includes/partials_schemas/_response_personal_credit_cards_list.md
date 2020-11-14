@@ -48,7 +48,13 @@
                     "maximum": {
                       "value": "string",
                       "currency": "string"
-                    }
+                    },
+                    "customers": [
+                      {
+                        "frequency": "string",
+                        "rate": "string"
+                      }
+                    ]
                   }
                 }
               ],
@@ -63,7 +69,19 @@
                     ]
                   ],
                   "minimumRate": "string",
-                  "maximumRate": "string"
+                  "maximumRate": "string",
+                  "fees": [
+                    {
+                      "referentialRateIndexer": "string",
+                      "rate": "string"
+                    }
+                  ],
+                  "customers": [
+                    {
+                      "frequency": "1_FAIXA_CLIENTE",
+                      "rate": "0.1500"
+                    }
+                  ]
                 },
                 "instalmentRate": {
                   "prices": [
@@ -75,7 +93,19 @@
                     ]
                   ],
                   "minimumRate": "string",
-                  "maximumRate": "string"
+                  "maximumRate": "string",
+                  "fees": [
+                    {
+                      "referentialRateIndexer": "string",
+                      "rate": "string"
+                    }
+                  ],
+                  "customers": [
+                    {
+                      "frequency": "1_FAIXA_CLIENTE",
+                      "rate": "0.1500"
+                    }
+                  ]
                 },
                 "interestRates": [{
                   "code": "string",
@@ -89,7 +119,19 @@
                     ]
                   ],
                   "minimumRate": "string",
-                  "maximumRate": "string"
+                  "maximumRate": "string",
+                  "fees": [
+                    {
+                      "referentialRateIndexer": "string",
+                      "rate": "string"
+                    }
+                  ],
+                  "customers": [
+                    {
+                      "frequency": "1_FAIXA_CLIENTE",
+                      "rate": "0.1500"
+                    }
+                  ]
                 }]
               },
               "termsConditions": {
@@ -173,7 +215,13 @@
                 "maximum": {
                   "value": "string",
                   "currency": "string"
-                }
+                },
+                "customers": [
+                  {
+                    "frequency": "string",
+                    "rate": "string"
+                  }
+                ]
               }
             }
           ],
@@ -188,7 +236,19 @@
                 ]
               ],
               "minimumRate": "string",
-              "maximumRate": "string"
+              "maximumRate": "string",
+              "fees": [
+                {
+                  "referentialRateIndexer": "string",
+                  "rate": "string"
+                }
+              ],
+              "customers": [
+                {
+                  "frequency": "1_FAIXA_CLIENTE",
+                  "rate": "0.1500"
+                }
+              ]
             },
             "instalmentRate": {
               "prices": [
@@ -200,7 +260,19 @@
                 ]
               ],
               "minimumRate": "string",
-              "maximumRate": "string"
+              "maximumRate": "string",
+              "fees": [
+                {
+                  "referentialRateIndexer": "string",
+                  "rate": "string"
+                }
+              ],
+              "customers": [
+                {
+                  "frequency": "1_FAIXA_CLIENTE",
+                  "rate": "0.1500"
+                }
+              ]
             },
             "interestRates": [{
               "code": "string",
@@ -214,7 +286,19 @@
                 ]
               ],
               "minimumRate": "string",
-              "maximumRate": "string"
+              "maximumRate": "string",
+              "fees": [
+                {
+                  "referentialRateIndexer": "string",
+                  "rate": "string"
+                }
+              ],
+              "customers": [
+                {
+                  "frequency": "1_FAIXA_CLIENTE",
+                  "rate": "0.1500"
+                }
+              ]
             }]
           },
           "termsConditions": {
@@ -230,10 +314,10 @@
 }
 ```
 
-|     Nome     |  Tipo                                                                    | Obrigatório  |                            Definição                 |
-|:-------------|:-------------------------------------------------------------------------|:-----------  |:---------------------------------------------------- |
-| name         | string                                                                   | Sim          | Nome da Marca selecionada pelas Organizações         |
-| companies    | [[PersonalCreditCardCompanies](#schemaPersonalCreditCardCompanies)]    | Sim          | Lista de instituições pertencentes a marca           |
+|     Nome     |  Tipo                                                               | Obrigatório  |                            Definição                 |
+|:-------------|:--------------------------------------------------------------------|:-----------  |:---------------------------------------------------- |
+| name         | string                                                              | Sim          | Nome da Marca selecionada pelas Organizações         |
+| companies    | [[PersonalCreditCardCompanies](#schemaPersonalCreditCardCompanies)] | Sim          | Lista de instituições pertencentes a marca           |
 
 ## PersonalCreditCardCompanies 
 <a id="schemaPersonalCreditCardCompanies"></a>
@@ -280,7 +364,13 @@
             "maximum": {
               "value": "string",
               "currency": "string"
-            }
+            },
+            "customers": [
+              {
+                "frequency": "string",
+                "rate": "string"
+              }
+            ]
           }
         }
       ],
@@ -295,7 +385,19 @@
             ]
           ],
           "minimumRate": "string",
-          "maximumRate": "string"
+          "maximumRate": "string",
+          "fees": [
+            {
+              "referentialRateIndexer": "string",
+              "rate": "string"
+            }
+          ],
+          "customers": [
+            {
+              "frequency": "1_FAIXA_CLIENTE",
+              "rate": "0.1500"
+            }
+          ]
         },
         "instalmentRate": {
           "prices": [
@@ -307,7 +409,19 @@
             ]
           ],
           "minimumRate": "string",
-          "maximumRate": "string"
+          "maximumRate": "string",
+          "fees": [
+            {
+              "referentialRateIndexer": "string",
+              "rate": "string"
+            }
+          ],
+          "customers": [
+            {
+              "frequency": "1_FAIXA_CLIENTE",
+              "rate": "0.1500"
+            }
+          ]
         },
         "interestRates": [{
           "code": "string",
@@ -321,7 +435,19 @@
             ]
           ],
           "minimumRate": "string",
-          "maximumRate": "string"
+          "maximumRate": "string",
+          "fees": [
+            {
+              "referentialRateIndexer": "string",
+              "rate": "string"
+            }
+          ],
+          "customers": [
+            {
+              "frequency": "1_FAIXA_CLIENTE",
+              "rate": "0.1500"
+            }
+          ]
         }]
       },
       "termsConditions": {
@@ -382,7 +508,13 @@
         "maximum": {
           "value": "string",
           "currency": "string"
-        }
+        },
+        "customers": [
+          {
+            "frequency": "string",
+            "rate": "string"
+          }
+        ]
       }
     }
   ],
@@ -397,7 +529,19 @@
         ]
       ],
       "minimumRate": "string",
-      "maximumRate": "string"
+      "maximumRate": "string",
+      "fees": [
+        {
+          "referentialRateIndexer": "string",
+          "rate": "string"
+        }
+      ],
+      "customers": [
+        {
+          "frequency": "1_FAIXA_CLIENTE",
+          "rate": "0.1500"
+        }
+      ]
     },
     "instalmentRate": {
       "prices": [
@@ -409,7 +553,19 @@
         ]
       ],
       "minimumRate": "string",
-      "maximumRate": "string"
+      "maximumRate": "string",
+      "fees": [
+        {
+          "referentialRateIndexer": "string",
+          "rate": "string"
+        }
+      ],
+      "customers": [
+        {
+          "frequency": "1_FAIXA_CLIENTE",
+          "rate": "0.1500"
+        }
+      ]
     },
     "interestRates": [{
       "code": "string",
@@ -423,7 +579,19 @@
         ]
       ],
       "minimumRate": "string",
-      "maximumRate": "string"
+      "maximumRate": "string",
+      "fees": [
+        {
+          "referentialRateIndexer": "string",
+          "rate": "string"
+        }
+      ],
+      "customers": [
+        {
+          "frequency": "1_FAIXA_CLIENTE",
+          "rate": "0.1500"
+        }
+      ]
     }]
   },
   "termsConditions": {
@@ -435,14 +603,14 @@
 }
 ```
 
-|     Nome              |  Tipo                                                                             | Obrigatório |                            Definição                                      |
-|:----------------------|:----------------------------------------------------------------------------------|:------------|:--------------------------------------------------------------------------|
-| name                  | string                                                                            | Sim         | Denominação/Identificação do nome da conta (cartão de crédito)            |
-| identification        | [PersonalCreditCardIdentification](#schemaPersonalCreditCardIdentification)                     | Sim         | Informações de identificação do cartão de crédito                         |
-| rewardsProgram        | [PersonalCreditCardRewardProgram](#schemaPersonalCreditCardRewardProgram)     | Sim         | Informações sobre programas de recompensa presentes no cartão de crédito  |
-| fees                  | [PersonalCreditCardFee](#schemaPersonalCreditCardFee)                         | Sim         | Informações sobre tarifas cobradas sobre o produto e serviços             |
-| interest              | [PersonalCreditCardInterest](#schemaPersonalCreditCardInterest)       | Sim         | Informações sobre taxas de juros                                          |
-| termsConditions       | [PersonalCreditCardTermsConditions](#schemaPersonalCreditCardTermsConditions)   | Sim         | Informações sobre termos e condições para aquisição e cancelamento        |
+|     Nome              |  Tipo                                                                       | Obrigatório |                            Definição                                      |
+|:----------------------|:----------------------------------------------------------------------------|:------------|:--------------------------------------------------------------------------|
+| name                  | string                                                                      | Sim         | Denominação/Identificação do nome da conta (cartão de crédito)            |
+| identification        | [PersonalCreditCardIdentification](#schemaPersonalCreditCardIdentification) | Sim         | Informações de identificação do cartão de crédito                         |
+| rewardsProgram        | [PersonalCreditCardRewardProgram](#schemaPersonalCreditCardRewardProgram)   | Sim         | Informações sobre programas de recompensa presentes no cartão de crédito  |
+| fees                  | [PersonalCreditCardFee](#schemaPersonalCreditCardFee)                       | Sim         | Informações sobre tarifas cobradas sobre o produto e serviços             |
+| interest              | [CreditCardInterest](#schemaCreditCardInterest)                             | Sim         | Informações sobre taxas de juros                                          |
+| termsConditions       | [CreditCardTermsConditions](#schemaCreditCardTermsConditions)               | Sim         | Informações sobre termos e condições para aquisição e cancelamento        |
 
 
 ## PersonalCreditCardIdentification
@@ -456,7 +624,7 @@
   },
   "creditCard":{
     "network": "string",
-    "additionalInfo": "string",
+    "additionalInfo": "string"
   }
 }
 ```
@@ -514,7 +682,7 @@
 ```json
 {
   "network": "string",
-  "additionalInfo": "string",
+  "additionalInfo": "string"
 }
 ```
 
@@ -576,14 +744,20 @@
       "maximum": {
         "value": "string",
         "currency": "string"
-      }
+      },
+      "customers": [
+        {
+          "frequency": "string",
+          "rate": "string"
+        }
+      ]
   }
 }
 ```
 
-|     Nome    |  Tipo                                                               | Obrigatório     |    Definição                           |
-|:------------|:--------------------------------------------------------------------|:----------------|:-------------------------------------- |
-| services    | [[PersonalCreditCardService](#schemaPersonalCreditCardService)]     | Sim             | Informações de tarifas sobre serviços  |
+|     Nome   |  Tipo                                                               | Obrigatório     |    Definição                           |
+|:-----------|:--------------------------------------------------------------------|:----------------|:-------------------------------------- |
+| service    | [[PersonalCreditCardService](#schemaPersonalCreditCardService)]     | Sim             | Informações de tarifas sobre serviços  |
 
 ## PersonalCreditCardService
 <a id="schemaPersonalCreditCardService"></a>
@@ -593,7 +767,7 @@
   "name": "string",
   "code": "string",
   "chargingTriggerInfo": "string",
-  "price": [
+  "prices": [
     {
       "interval": "string",
       "value": "string",
@@ -607,7 +781,13 @@
   "maximum": {
     "value": "string",
     "currency": "string"
-  }
+  },
+  "customers": [
+    {
+      "frequency": "string",
+      "rate": "string"
+    }
+  ]
 }
 ```
 
@@ -615,154 +795,8 @@
 |:---------- |:-------|:----------------|:-------------- |
 | name                | string                                | Sim | Nomes das Tarifas cobradas sobre Serviços relacionados à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa jurídica               |
 | code                | string                                | Sim | Fatos geradores de cobrança que incidem sobre as Modalidades de Contas de Pagamento Pós-Pagas informada, para pessoa jurídica.               |
-| chargingTriggerInfo | string                                | Sim | Fatos geradores de cobrança que incidem sobre as Modalidades inforrmadas de Contas de Pagamento Pós-Pagas para pessoa jurídica                  |
-| price               | [[Price](#schemaPrice)]               | Sim | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa jurídica  |
+| chargingTriggerInfo | string                                | Sim | Fatos geradores de cobrança que incidem sobre as Modalidades informadas de Contas de Pagamento Pós-Pagas para pessoa jurídica                  |
+| prices              | [[Price](#schemaPrice)]               | Sim | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa jurídica  |
 | minimum             | [[MinimumPrice](#schemaMinimumPrice)] | Sim | Valor mínimo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
 | maximum             | [[MaximumPrice](#schemaMaximumPrice)] | Sim | Valor máximo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type |
-
-## PersonalCreditCardInterest
-<a id="schemaPersonalCreditCardInterest"></a>
-
-```json
-{
-  "feeRate": {
-    "prices": [
-      {
-        "interval": "string",
-        "rate": "string"
-      }
-    ],
-    "minimumRate": "string",
-    "maximumRate": "string"
-  },
-  "instalmentRate": {
-    "prices": [
-      {
-        "interval": "string",
-        "rate": "string"
-      }
-    ],
-    "minimumRate": "string",
-    "maximumRate": "string"
-  },
-  "interestRates": [{
-    "code": "string",
-    "additionalInfo": "string",
-    "prices": [
-      {
-        "interval": "string",
-        "rate": "string"
-      }
-    ],
-    "minimumRate": "string",
-    "maximumRate": "string"
-  }]
-}
-```
-
-|     Nome       |  Tipo                       | Obrigatório      |    Definição                                                 |
-|:-------------- |:--------------------------- |:---------------- |:------------------------------------------------------------ |
-| feeRate        | [PersonalCreditCardFeeRate](#schemaPersonalCreditCardFeeRate)               | Sim | Percentual que corresponde a taxa aplicada para utilização de Crédito Rotativo              |
-| instalmentRate | [PersonalCreditCardInstalmentRate](#schemaPersonalCreditCardInstalmentRate) | Sim | Percentual que corresponde a taxa aplicada para pagamento parcelado do saldo devedor quando não realizado pagamento integral da fatura |
-| interestRates   | [PersonalCreditCardInterestRate](#schemaPersonalCreditCardInterestRate) | Sim | Percentual que corresponde a taxa aplicada para pagamento parcelado do saldo devedor quando não realizado pagamento integral da fatura |
-
-## PersonalCreditCardInterestRate
-<a id="schemaPersonalCreditCardInterestRate"></a>
-
-```json
-{
-  "code": "string",
-  "additionalInfo": "string",
-  "prices": [
-    {
-      "interval": "string",
-      "rate": "string"
-    }
-  ],
-  "minimumRate": "string",
-  "maximumRate": "string"
-}
-```
-
-|     Nome        |  Tipo                                                                                       | Obrigatório     |    Definição        |
-|:----------------|:--------------------------------------------------------------------------------------------|:----------------|:--------------------|
-| code            | [Enum PersonalCreditCardInterestRateCode](#schemaEnumPersonalCreditCardInterestRateCode) | Sim    | Lista de outras operações de crédito                                          |
-| additionalInfo  | string                                                                                       | Sim    | Campo Texto para descrever outras operações de crédito marcadas como 'Outros' |
-| prices           | [[Rate](#schemaRate)]               | Sim    | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa física  |
-| minimumRate     | String                              | Sim    | Percentual mínimo cobrado para a taxa do crédito rotativo no mês de referência                                                                  |
-| maximumRate     | String                              | Sim    | Percentual máximo cobrado para o pagamento parcelado do saldo devedor na fatura do mês de referência.                                           |
-
-### Enum PersonalCreditCardInterestRateCode
-<a id="schemaEnumPersonalCreditCardInterestRateCode"></a>
-
-| Propriedade                 | Código               | Definição        |
-|:----------------------------|:---------------------|:------------------- |
-| code                        | SAQUE_CREDITO        | Saque a crédito     |
-| code                        | PAGAMENTO_CONTA      | Pagamento de contas |
-| code                        | OUTROS               | Outros              |
-
-
-## PersonalCreditCardFeeRate
-<a id="schemaPersonalCreditCardFeeRate"></a>
-
-```json
-{
-  "prices": [
-    {
-      "interval": "string",
-      "rate": "string",
-      "frequency": "string"
-    }
-  ],
-  "minimumRate" : "string",
-  "maximumRate" : "string"
-}
-```
-
-|     Nome                |  Tipo       | Obrigatório     |    Definição                                                                                                                                                          |
-|:------------------------|:------------|:----------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| prices                 [[Rate](#schemaRate)]                                                                 | Sim             | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa física  |
-| minimumRate     | String                                                                                      | Sim             | Percentual mínimo cobrado para a taxa do crédito rotativo no mês de referência                                                                |
-| maximumRate     | String                                                                                      | Sim             | Percentual máximo cobrado para o pagamento parcelado do saldo devedor na fatura do mês de referência.                                                                   |
-
-## PersonalCreditCardInstalmentRate
-<a id="schemaPersonalCreditCardInstalmentRate"></a>
-
-```json
-{
-  "prices": [
-    {
-      "interval": "string",
-      "rate": "string",
-      "frequency": "string"
-    }
-  ],
-  "minimumRate" : "string",
-  "maximumRate" : "string"
-}
-```
-
-|     Nome     |  Tipo       | Obrigatório     |    Definição        |
-|:------------ |:----------- |:--------------- |:------------------- |
-| prices        | [[Rate](#schemaRate)] | Sim    | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa física  |
-| minimumRate  | String                | Sim    | Percentual mínimo cobrado para a taxa do crédito rotativo no mês de referência                                                                  |
-| maximumRate  | String                | Sim    | Percentual máximo cobrado para o pagamento parcelado do saldo devedor na fatura do mês de referência.                                           |
-
-## PersonalCreditCardTermsConditions
-<a id="schemaPersonalCreditCardTermsConditions"></a>
-
-```json
-{
-  "minimumFeeRate": "string",
-  "additionalInfo": "string",
-  "elegibilityCriteriaInfo": "string",
-  "closingProcessInfo": "string"
-}
-```
-
-|     Nome                |  Tipo                                 | Obrigatório     |    Definição                                                                                                                                                          |
-|:------------------------|:------------                          |:----------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| minimumFeeRate          | [RateString](#commonFieldRateString)  | Sim             | Percentual para pagamento mínimo sobre o saldo devedor da fatura                                                                                                      |
-| additionalInfo          | string                                | Sim             | Campo aberto para detalhamento de taxas de juros                                                                                                                      |
-| elegibilityCriteriaInfo | string                                | Sim             | Informação sobre as condições e critérios de elegibilidade do emissor do cartão. Pode ser informada a URL referente ao endereço onde constam as condições informadas  |
-| closingProcessInfo      | string                                | Sim             | Descrição dos procedimentos para encerramento da conta pós paga. Pode ser informada a URL referente ao endereço onde constam as condições informadas                  |
+| customers           | [[Customer](#schemaCustomer)]         | Sim |                                                                                              |
