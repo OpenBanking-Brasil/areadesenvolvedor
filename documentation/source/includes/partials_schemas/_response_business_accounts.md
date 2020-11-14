@@ -435,7 +435,7 @@
 |:----------------------|:-------------------------------------------------------------| :--------------- |:------------------------------------------------------------------------------------------------------- |
 | type                  | [Enum TypeBusinessAccount](#schemaEnumTypeBusinessAccount) | Sim              | Tipos de contas ofertadas para pessoas jurídicas, conforme Resolução 3.919 do Banco Central do Brasil.  |
 | fees                  | [FeesBusinessAccount](#schemaFeeBusinessAccount)          | Sim              | Lista Tarifas cobradas.                                                                                 |
-| serviceBundles        | [ServiceBundleBusinessAccount](#schemaServiceBundleBusinessAccount)] | Sim   | Nome dos pacotes de serviços.                                                                           |
+| serviceBundles        | [ServiceBundleBusinessAccount](#schemaServiceBundleBusinessAccount) | Sim   | Nome dos pacotes de serviços.                                                                           |
 | openingClosingChannels| [Enum BusinessAccountOpeningClosingChannel ](#schemaEnumBusinessAccountOpeningClosingChannel)       | Sim             | Canais disponíveis para abertura e encerramento de contas.    |
 | additionalInfo        | string                                         | Sim             | Texto livre para complementar informação relativa ao Canal disponível.                                                 |
 | transactionMethods    | [Enum BusinessAccountTransactionMethod ](#schemaEnumBusinessAccounTransactionMethod) | Sim             | Lista de formas de movimentação possíveis para a conta. |
