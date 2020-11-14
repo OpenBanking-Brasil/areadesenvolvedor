@@ -34,7 +34,13 @@
                     "maximum": {
                       "value": "string",
                       "currency": "string"
-                    }
+                    },
+                    "customers": [
+                      {
+                        "frequency": "string",
+                        "rate": "string"
+                      }
+                    ]
                   },
                   "otherService": {
                     "name": "string",
@@ -54,7 +60,13 @@
                     "maximum": {
                       "value": "string",
                       "currency": "string"
-                    }
+                    },
+                    "customers": [
+                      {
+                        "frequency": "string",
+                        "rate": "string"
+                      }
+                    ]
                   }
                 }
               ],
@@ -83,7 +95,13 @@
                   "maximum": {
                     "value": "string",
                     "currency": "string"
-                  }
+                  },
+                  "customers": [
+                    {
+                      "frequency": "string",
+                      "rate": "string"
+                    }
+                  ]
                 }
               ],
               "openingClosingChannels": "string",
@@ -162,7 +180,13 @@
                 "maximum": {
                   "value": "string",
                   "currency": "string"
-                }
+                },
+                "customers": [
+                  {
+                    "frequency": "string",
+                    "rate": "string"
+                  }
+                ]
               },
               "otherService": {
                 "name": "string",
@@ -182,7 +206,13 @@
                 "maximum": {
                   "value": "string",
                   "currency": "string"
-                }
+                },
+                "customers": [
+                  {
+                    "frequency": "string",
+                    "rate": "string"
+                  }
+                ]
               }
             }
           ],
@@ -211,7 +241,13 @@
               "maximum": {
                 "value": "string",
                 "currency": "string"
-              }
+              },
+              "customers": [
+                {
+                  "frequency": "string",
+                  "rate": "string"
+                }
+              ]
             }
           ],
           "openingClosingChannels": "string",
@@ -272,7 +308,13 @@
             "maximum": {
               "value": "string",
               "currency": "string"
-            }
+            },
+            "customers": [
+              {
+                "frequency": "string",
+                "rate": "string"
+              }
+            ]
           },
           "otherService": {
             "name": "string",
@@ -292,7 +334,13 @@
             "maximum": {
               "value": "string",
               "currency": "string"
-            }
+            },
+            "customers": [
+              {
+                "frequency": "string",
+                "rate": "string"
+              }
+            ]
           }
         }
       ],
@@ -321,7 +369,13 @@
           "maximum": {
             "value": "string",
             "currency": "string"
-          }
+          },
+          "customers": [
+            {
+              "frequency": "string",
+              "rate": "string"
+            }
+          ]
         }
       ],
       "openingClosingChannels": "string",
@@ -378,7 +432,13 @@
         "maximum": {
           "value": "string",
           "currency": "string"
-        }
+        },
+        "customers": [
+          {
+            "frequency": "string",
+            "rate": "string"
+          }
+        ]
       },
       "otherService": {
         "name": "string",
@@ -398,7 +458,13 @@
         "maximum": {
           "value": "string",
           "currency": "string"
-        }
+        },
+        "customers": [
+          {
+            "frequency": "string",
+            "rate": "string"
+          }
+        ]
       }
     }
   ],
@@ -427,7 +493,13 @@
       "maximum": {
         "value": "string",
         "currency": "string"
-      }
+      },
+      "customers": [
+        {
+          "frequency": "string",
+          "rate": "string"
+        }
+      ]
     }
   ],
   "openingClosingChannels": "string",
@@ -483,7 +555,13 @@
     "maximum": {
       "value": "string",
       "currency": "string"
-    }
+    },
+    "customers": [
+      {
+        "frequency": "string",
+        "rate": "string"
+      }
+    ]
   },
   "otherService": {
     "name": "string",
@@ -503,7 +581,13 @@
     "maximum": {
       "value": "string",
       "currency": "string"
-    }
+    },
+    "customers": [
+      {
+        "frequency": "string",
+        "rate": "string"
+      }
+    ]
   }
 }
 ```
@@ -536,7 +620,13 @@
   "maximum": {
     "value": "string",
     "currency": "string"
-  }
+  },
+  "customers": [
+    {
+      "frequency": "string",
+      "rate": "string"
+    }
+  ]
 }
 ```
 
@@ -546,8 +636,9 @@
 |code|[AccountPriorityServiceCode](#schemaaccountpriorityservicecode)|Sim |Sigla de identificação do Serviço Prioritário, segundo Resolução 3.919 do Bacen.|
 |chargingTriggerInfo|string|Sim |Fatos geradores de cobrança que incidem sobre os serviços prioritários, segundo Resolução 3.919 do Bacen, para pessoa física.|
 |prices|[[Price](#schemaPrice)]|Sim |Valor da mediana da tarifa, relativa ao serviço ofertado, informado no período |
-|minimum|[MinimumPrice](#schemaMinimumPrice)|Sim |Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type |
-|maximum|[MaximumPrice](#schemaMaximumPrice)|Sim |Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type|
+|minimum|[MinimumPrice](#schemaMinimumPrice)|Sim |Valor mínimo apurado para a tarifa de serviços sobre a base de clientes no mês de referência |
+|maximum|[MaximumPrice](#schemaMaximumPrice)|Sim |Valor máximo apurado para a tarifa de serviços sobre a base de clientes no mês de referência|
+|customers|[[Customer](#schemaCustomer)]| Sim |Percentual dos clientes de cada faixa relativa ao serviço ofertado |
 
 
 ## AccountOtherService
@@ -572,7 +663,13 @@
   "maximum": {
     "value": "string",
     "currency": "string"
-  }
+  },
+  "customers": [
+    {
+      "frequency": "string",
+      "rate": "string"
+    }
+  ]
 }
 ```
 
@@ -582,8 +679,9 @@
 | code                | string | Não         | Sigla de identificação de Outros Serviços que incidem sobre os tipos de contas.   |
 | chargingTriggerInfo | string | Sim         | Outros Fatos geradores de cobrança referentes aos Outros Serviços que incidem sobre as contas comercializadas.                                    |
 | prices               | [[Price](#schemaPrice)] | Sim      | Valor da tarifa cobrada referente aos Outros Serviços.                  |
-| minimum             | [[MinimumPrice](#schemaMinimumPrice)]           | Sim          | Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
-| maximum             | [[MaximumPrice](#schemaMaximumPrice)]           | Sim          | Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
+| minimum             | [[MinimumPrice](#schemaMinimumPrice)]           | Sim          | Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. |
+| maximum             | [[MaximumPrice](#schemaMaximumPrice)]           | Sim          | Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. |
+|customers|[[Customer](#schemaCustomer)]| Sim |Percentual dos clientes de cada faixa relativa ao serviço ofertado |
 
 
 ## ServiceBundle
@@ -614,7 +712,13 @@
   "maximum": {
     "value": "string",
     "currency": "string"
-  }
+  },
+  "customers": [
+    {
+      "frequency": "string",
+      "rate": "string"
+    }
+  ]
 }
 ```
 
@@ -623,8 +727,9 @@
 | name               | string                                                              | Sim          | Nome do conjunto de serviços                        |
 | services           | [[ServiceBundleServiceDetail](#schemaservicebundleservicedetail)]         | Sim          | Lista de serviços       |
 | prices              | [MontlyPrice](#schemamontlyprice) | Sim          | Valor mensal da tarifa referente ao Pacote de Serviços |
-| minimum             | [[MinimumPrice](#schemaMinimumPrice)]           | Sim          | Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
-| maximum             | [[MaximumPrice](#schemaMaximumPrice)]           | Sim          | Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
+| minimum             | [[MinimumPrice](#schemaMinimumPrice)]           | Sim          | Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. |
+| maximum             | [[MaximumPrice](#schemaMaximumPrice)]           | Sim          | Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. |
+|customers|[[Customer](#schemaCustomer)]| Sim |Percentual dos clientes de cada faixa relativa ao serviço ofertado |
 
 ## ServiceBundleServiceDetail
 <a id="schemaservicebundleservicedetail"></a>
@@ -664,7 +769,7 @@
 |:------------------------|:-----------------------------|:-------------|:----------------------------------------------------|
 |minimumBalance|[MinimumBalance](#schemaminimumbalance)|Sim |Saldo mínimo exigido nos Termos e condições contratuais, que regem as contas comercializadas. |
 |elegibilityCriteriaInfo|string|Sim |Critérios de qualificação do cliente com a finalidade de definir sua elegibilidade para a aquisição do tipo de conta. Campo Aberto|
-|closingProcessInfo|string|Sim |Procedimentos de encerramento para o tipo de conta tratado. Possibilidade de inscrição da URL. Endereço eletrônico de acesso ao canal. URLs são limitadas a 2048 caracteres mas, para o contexto do Sistema Financeiro aberto, será adotado a metade deste tamanho.|
+|closingProcessInfo|string|Sim |Procedimentos de encerramento para o tipo de conta tratado. Possibilidade de inscrição da URL. Endereço eletrônico de acesso ao canal. p.ex. 'https://example.com/mobile-banking'|
 
 
 ## PersonalAccountsIncomeRate
