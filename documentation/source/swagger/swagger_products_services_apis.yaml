@@ -204,7 +204,7 @@ components:
           type: string
           maxLength: 2000
           pattern: \w*\W*
-          description: 'Procedimentos de encerramento para o tipo de conta tratado. Possibilidade de inscrição da URL. Endereço eletrônico de acesso ao canal. URLs são limitadas a 2048 caracteres mas, para o contexto do Sistema Financeiro aberto, será adotado a metade deste tamanho.'
+          description: 'Procedimentos de encerramento para o tipo de conta tratado. Possibilidade de inscrição da URL. Endereço eletrônico de acesso ao canal. p.ex. ''https://example.com/mobile-banking'' '
           example: 'https://example.com/mobile-banking'
     ResponsePersonalAccounts:
       type: object
@@ -232,9 +232,9 @@ components:
       properties:
         name:
           type: string
-          maxLength: 30
+          maxLength: 80
           pattern: \w*\W*
-          description: 'Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes.'
+          description: 'Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes'
           example: Organização A
         companies:
           type: array
@@ -281,7 +281,7 @@ components:
           pattern: \w*\W*
           description: |
             Texto livre para complementar informação relativa ao Canal disponível, quando no campo ''openingClosingChannels'' estiver preenchida a opção ''Outros''
-            Restrição: Campo de preenchimento obrigatório se 'openingCloseChannels' estiver preenchida a opção 'OUTROS'
+            Restrição: Campo de preenchimento obrigatório se ''openingCloseChannels'' estiver preenchida a opção ''OUTROS''
           example: 'NA'
         transactionMethods:
           $ref: '#/components/schemas/TransactionMethods'
@@ -307,6 +307,7 @@ components:
         - prices
         - minimum
         - maximum
+        - customers
       properties:
         name:
           $ref: '#/components/schemas/PriorityServiceName'
@@ -326,6 +327,10 @@ components:
           $ref: '#/components/schemas/MinimumPrice'
         maximum:
           $ref:  "#/components/schemas/MaximumPrice"
+        customers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Customer'
     PersonalAccountType:
       type: string
       enum:
@@ -410,12 +415,12 @@ components:
         name:
           type: string
           maxLength: 250
-          description: 'Nome de Outro Serviço para pessoa física (Campo Livre)'
+          description: 'Nome do Serviço que incide sobre tipo de conta (Campo Livre)'
           example: Evento personalizado
         code:
           type: string
           maxLength: 100
-          description: ' Siglas de identificação de Outro Serviço (Campo Livre)'
+          description: 'Siglas de identificação do Serviço (Campo Livre)'
           example: TALAO_DOMICILIO
         chargingTriggerInfo:
           type: string
@@ -569,7 +574,7 @@ components:
               properties:
                 name:
                   type: string
-                  maxLength: 30
+                  maxLength: 80
                   pattern: \w*\W*
                   description: 'Nome da Instituição, pertencente à marca, responsável pela comercialização dos produtos e serviços'
                   example: Organização A
@@ -621,6 +626,7 @@ components:
                                   - prices
                                   - minimum
                                   - maximum
+                                  - customers
                                 properties:
                                   name:
                                     type: string
@@ -659,14 +665,18 @@ components:
                                           description: |
                                             Segundo Resolução  4196, BCB, de 2013: Quantidade de eventos previstos no Pacote de Serviços com isenção de Tarifa.p.ex.'1'  No caso de quantidade ilimitada, reportar 999999
                                           example: '1'
-                                        prices:
-                                          type: array
-                                          items:
-                                            $ref: '#/components/schemas/MontlyPrice'
-                                        minimum:
-                                          $ref: '#/components/schemas/MinimumPrice'
-                                        maximum:
-                                          $ref: '#/components/schemas/MaximumPrice'
+                                  prices:
+                                    type: array
+                                    items:
+                                      $ref: '#/components/schemas/MontlyPrice'
+                                  minimum:
+                                    $ref: '#/components/schemas/MinimumPrice'
+                                  maximum:
+                                    $ref: '#/components/schemas/MaximumPrice'
+                                  customers:
+                                    type: array
+                                    items:
+                                      $ref: '#/components/schemas/Customer'
                             openingClosingChannels:
                               type: string
                               enum:
@@ -734,16 +744,16 @@ components:
                           code: "NA"
                           chargingTriggerInfo: "NA"
                           prices:
-                            - interval: 1_QUARTIL_CLIENTES
+                            - interval: 1_FAIXA_CLIENTE
                               value: '55.40'
                               currency: BRL
-                            - interval: 2_QUARTIL_CLIENTES
+                            - interval: 2_FAIXA_CLIENTE
                               value: '65.00'
                               currency: BRL
-                            - interval: 3_QUARTIL_CLIENTES
+                            - interval: 3_FAIXA_CLIENTE
                               value: '69.00'
                               currency: BRL
-                            - interval: 4_QUARTIL_CLIENTES
+                            - interval: 4_FAIXA_CLIENTE
                               value: '72.00'
                               currency: BRL
                           minimum:
@@ -768,16 +778,16 @@ components:
                             eventLimitQuantity: '999999'
                             freeEventQuantity: '2'
                         prices:
-                          - interval: 1_QUARTIL_CLIENTES
+                          - interval: 1_FAIXA_CLIENTE
                             monthlyFee: '50.00'
                             currency: BRL
-                          - interval: 2_QUARTIL_CLIENTES
+                          - interval: 2_FAIXA_CLIENTE
                             monthlyFee: '65.40'
                             currency: BRL
-                          - interval: 3_QUARTIL_CLIENTES
+                          - interval: 3_FAIXA_CLIENTE
                             monthlyFee: '75.40'
                             currency: BRL
-                          - interval: 4_QUARTIL_CLIENTES
+                          - interval: 4_FAIXA_CLIENTE
                             monthlyFee: '83.00'
                             currency: BRL
                         minimum:
@@ -799,13 +809,13 @@ components:
                       - savingAccount: NA
                         prepaidPaymentAccount:
                           applications:
-                            - interval: 1_QUARTIL_CLIENTES
+                            - interval: 1_FAIXA_CLIENTE
                               rate: NA
-                            - interval: 2_QUARTIL_CLIENTES
+                            - interval: 2_FAIXA_CLIENTE
                               rate: NA
-                            - interval: 3_QUARTIL_CLIENTES
+                            - interval: 3_FAIXA_CLIENTE
                               rate: NA
-                            - interval: 4_QUARTIL_CLIENTES
+                            - interval: 4_FAIXA_CLIENTE
                               rate: NA
                           minimumRate: NA
                           maximumRate: NA
@@ -827,11 +837,12 @@ components:
         - prices
         - minimum
         - maximum
+        - customers
       properties:
         name:
           type: string
           maxLength: 250
-          description: Nome atribuído a Outros Serviços disponíveis para os tipos de contas informados. Outros Serviços são quaisquer serviços que a instituição ofereça para a modalidade de Contas e não estejam definidos na lista de Serviços Prioritários definidos na resolução 3.919 do Bacen.
+          description: 'Nome do Serviço que incide sobre tipo de conta selecionado para pessoa jurídica(Campo Livre)'
           example: Evento personalizado
         code:
           type: string
@@ -851,6 +862,10 @@ components:
           $ref: '#/components/schemas/MinimumPrice'
         maximum:
           $ref: '#/components/schemas/MaximumPrice'
+        customers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Customer'
     ResponsePersonalLoansList:
       type: object
       required:
@@ -1185,12 +1200,12 @@ components:
     ApplicationIntervals:
       type: string
       enum:
-        - 1_QUARTIL_CLIENTES
-        - 2_QUARTIL_CLIENTES
-        - 3_QUARTIL_CLIENTES
-        - 4_QUARTIL_CLIENTES
+        - 1_FAIXA_CLIENTE
+        - 2_FAIXA_CLIENTE
+        - 3_FAIXA_CLIENTE
+        - 4_FAIXA_CLIENTE
       description: |
-        Faixas para cobrança da taxa efetiva aplicada pela contratação do Empréstimo, no intervalo informado: 1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes. Segundo Normativa nº32 de 2020: 'Distribuição de frequência relativa dos valores de tarifas e taxas de juros cobrados dos clientes, de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana e o percentual de clientes em cada uma dessas faixas.
+        Faixas para cobrança da taxa efetiva aplicada pela contratação do crédito, no intervalo informado: 1ª faixa de valor, 2ª faixa de valor, 3ª faixa de valor e 4ª faixa de valor. Segundo Normativa nº32 de 2020: 'Distribuição de frequência relativa dos valores de tarifas e taxas de juros cobrados dos clientes, de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana e o percentual de clientes em cada uma dessas faixas. 
     RequiredWarranty:
       type: string
       enum:
@@ -1671,6 +1686,7 @@ components:
         - prices
         - minimum
         - maximum
+        - customers
     FinancingInterestRate:
       type: object
       properties:
@@ -1683,13 +1699,13 @@ components:
           items:
             $ref: '#/components/schemas/ApplicationRate'
           example:
-            - interval: 1_QUARTIL_CLIENTES
+            - interval: 1_FAIXA_CLIENTE
               rate: '0.0987'
-            - interval: 2_QUARTIL_CLIENTES
+            - interval: 2_FAIXA_CLIENTE
               rate: '0.1600'
-            - interval: 3_QUARTIL_CLIENTES
+            - interval: 3_FAIXA_CLIENTE
               rate: '0.3600'
-            - interval: 4_QUARTIL_CLIENTES
+            - interval: 4_FAIXA_CLIENTE
               rate: '0.5890'
         minimumRate:
           type: string
@@ -1709,6 +1725,7 @@ components:
         - applications
         - minimumRate
         - maximumRate
+        - customers
     ResponseBusinessFinancingsList:
       type: object
       required:
@@ -1736,7 +1753,7 @@ components:
         name:
           type: string
           pattern: \w*\W*
-          maxLength: 30
+          maxLength: 80
           description: Nome da marca.
           example: Organização A
         companies:
@@ -2370,8 +2387,7 @@ components:
           pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
           maxLength: 12
           x-cds-type: AmountString
-          description: |
-            Valor da mediana da tarifa, relativa ao serviço ofertado, informado no período, conforme Res nº32 BCB, 2020. p.ex. '45.00' (representa um valor monetário. p.ex: 1547368.92. Este valor, considerando que a moeda seja BRL, significa R$ 1.547.368,92. O único separador presente deve ser o '.' (ponto) para indicar a casa decimal. Não deve haver separador de milhar)
+          description: 'Segundo Normativa nº 32, BCB, de 2020: Distribuição de frequência relativa dos valores de tarifas cobradas dos clientes, de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana em cada uma dessas faixas. Informando: 1ª faixa de valor, 2ª faixa de valor, 3ª faixa de valor e 4ª faixa de valor'
           example: '2000.00'
         currency:
           $ref:  "#/components/schemas/Currency"
@@ -2390,8 +2406,8 @@ components:
           maxLength: 12
           x-cds-type: AmountString
           description: |
-            Valor da mediana da tarifa, relativa ao serviço ofertado, para pessoa natural informado no período, conforme Res nº32 BCB, 2020. p.ex. '45.00'
-            (representa um valor monetário. p.ex: 1547368.92. Este valor, considerando que a moeda seja BRL, significa R$ 1.547.368,92. O único separador presente deve ser o '.' (ponto) para indicar a casa decimal. Não deve haver separador de milhar)
+            Valor da mediana de cada faixa relativa ao serviço ofertado, informado no período, conforme Res nº 32 BCB, 2020. p.ex. ''45.00''
+            (representa um valor monetário. p.ex: 1547368.92. Este valor, considerando que a moeda seja BRL, significa R$ 1.547.368,92. O único separador presente deve ser o ''.'' (ponto) para indicar a casa decimal. Não deve haver separador de milhar)
           example: '2000.00'
         currency:
           $ref:  "#/components/schemas/Currency"
