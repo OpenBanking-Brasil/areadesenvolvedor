@@ -2312,6 +2312,7 @@ components:
           pattern: \w*\W*
           maxLength: 80
           description: Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a 'marca' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes.
+          example: "Organização A"
         companies:
           type: array
           items:
@@ -2347,7 +2348,7 @@ components:
           pattern: \w*\W*
           maxLength: 2000
           description: Campo aberto para informar as condições contratuais relativas à Modalidade de Adiantamento a depositante para pessoa natural. Pode ser informada a URL referente ao endereço onde constam as condições informadas. Endereço eletrônico de acesso ao canal.
-          example: ''
+          example: 'https://empresaa1.com/business_unarranged_account_overdraft'
     BusinessUnarrangedAccountOverdraftFee:
       type: object
       properties:
@@ -2362,19 +2363,17 @@ components:
         - prices
         - minimum
         - maximum
+        - customers
       properties:
         name:
           type: string
           description: 'Nome da Tarifa cobrada sobre Serviço que incide sobre Adiantamento a depositante, para pessoa jurídica.'
-          example: 'CONCESSAO_ADIANTAMENTO_DEPOSITANTE'
         code:
           type: string
           description: 'Sigla de identificação do serviço relacionado à Modalidade de Adiantamento a depositante, para pessoa jurídica.'
-          example: ADIANT_DEPOSITANTE
         chargingTriggerInfo:
           type: string
           description: 'Fato gerador de cobrança que incide sobre a Modalidade de Adiantamento a depositante informada, para pessoa jurídica.'
-          example: '570.00'
         prices:
           type: array
           items:
@@ -2384,7 +2383,42 @@ components:
         maximum:
           $ref: '#/components/schemas/MaximumPrice'
         customers:
-          $ref: '#/components/schemas/Customer'
+          type: array
+          description: Distribuição de frequência relativa aos clientes que pagaram valores de tarifas.
+          items:
+            $ref: '#/components/schemas/Customer'
+      example:
+        name: CONCESSAO_ADIANTAMENTO_DEPOSITANTE
+        code: ADIANT_DEPOSITANTE
+        chargingTriggerInfo: Levantamento de informações e avaliação de viabilidade e de riscos para a concessão de crédito em caráter emergencial para cobertura de saldo devedor em conta de depósitos à vista e de excesso sobre o limite previamente pactuado de cheque especial, cobrada no máximo uma vez nos últimos trinta dias
+        prices: 
+          - interval: 1_FAIXA_VALOR
+            value: "500.00"
+            currency: BRL
+          - interval: 2_FAIXA_VALOR
+            value: "860.00"
+            currency: BRL
+          - interval: 3_FAIXA_VALOR
+            value: "1090.40"
+            currency: "BRL"
+          - interval: 4_FAIXA_VALOR
+            value: "2100.00"
+            currency: BRL
+        minimum:
+          value: "430.00"
+          currency: "BRL"
+        maximum:
+          value: "2200.00"
+          currency: "BRL"
+        customers: 
+          - frequency: "1_FAIXA_CLIENTE"
+            rate: "0.1500"
+          - frequency: "2_FAIXA_CLIENTE"
+            rate: "0.3500"
+          - frequency: "3_FAIXA_CLIENTE"
+            rate: "0.2000"
+          - frequency: "4_FAIXA_CLIENTE"
+            rate: "0.3000"
     UnarrangedAccountOverdraftRate:
       type: object
       required:
@@ -2392,6 +2426,7 @@ components:
         - applications
         - minimumRate
         - maximumRate
+        - customers
       properties:
         fees:
           description: Tarifas cobradas sobre Serviços ofertados à Modalidade de adiantamento a depositante
@@ -2414,7 +2449,34 @@ components:
             Percentual máximo cobrado (taxa efetiva) no mês de referência, para o crédito contratado A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)
           pattern: '(^[0-9](\.[0-9]{4})|NA)$'
         customers:
-          $ref: '#/components/schemas/Customer'
+          type: array
+          description: Distribuição de frequência relativa aos clientes que pagaram valores de tarifas
+          items:
+            $ref: '#/components/schemas/Customer'
+      example:
+          fees: 
+              - referentialRateIndexer: "SEM_INDEXADOR_TAXA"
+                rate: "0.65"
+          applications: 
+              - interval: "1_FAIXA_VALOR"
+                rate: "0.0187"
+              - interval: "2_FAIXA_VALOR"
+                rate: "0.2900"
+              - interval: "3_FAIXA_VALOR"
+                rate: "0.3600"
+              - interval: "4_FAIXA_VALOR"
+                rate: "0.7990"          
+          minimumRate: "0.0056"
+          maximumRate: "0.8565"
+          customers: 
+            - frequency: "1_FAIXA_CLIENTE"
+              rate: "0.1500"
+            - frequency: "2_FAIXA_CLIENTE"
+              rate: "0.3500"
+            - frequency: "3_FAIXA_CLIENTE"
+              rate: "0.2000"
+            - frequency: "4_FAIXA_CLIENTE"
+              rate: "0.3000"
     FeeReferentialRateIndexer:
       description: Tarifas cobradas sobre Serviços ofertados
       type: object
