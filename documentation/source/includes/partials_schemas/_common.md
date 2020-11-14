@@ -214,7 +214,7 @@ Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial o
 | referentialRateIndexer |OUTRAS_TAXAS_POS_FIXADAS| OUTRAS TAXAS POS FIXADAS|
 | referentialRateIndexer |FLUTUANTES_CDI          | FLUTUANTES CDI|
 | referentialRateIndexer |FLUTUANTES_SELIC        | FLUTUANTES SELIC|
-| referentialRateIndexer |OUTRAS_TAXAS_FLUTUANTES | OUTRAS_TAXAS FLUTUANTES|
+| referentialRateIndexer |OUTRAS_TAXAS_FLUTUANTES | OUTRAS TAXAS FLUTUANTES|
 | referentialRateIndexer |INDICES_PRECOS_IGPM     | INDICES PRECOS IGPM|
 | referentialRateIndexer |INDICES_PRECOS_IPCA     | INDICES PRECOS IPCA|
 | referentialRateIndexer |INDICES_PRECOS_IPCC     | INDICES PRECOS IPCC|
