@@ -447,7 +447,7 @@
 
 | Propriedade   | Valor                        | Definição                    |                
 |:------------- |:---------------------------- |:---------------------------- |
-| type          | CONTA_CORRENTE               | Conta corrente - é o tipo mais comum. Nela, o dinheiro fica à sua disposição para ser sacado a qualquer momento. Essa conta não gera rendimentos para o depositante              |
+| type          | CONTA_DEPOSITO_A_VISTA       | Conta depósito à vista ou conta corrente - é o tipo mais comum. Nela, o dinheiro fica à sua disposição para ser sacado a qualquer momento. Essa conta não gera rendimentos para o depositante              |
 | type          | CONTA_POUPANCA               | Conta poupança - foi criada para estimular as pessoas a pouparem. O dinheiro que ficar na conta por trinta dias passa a gerar rendimentos, com isenção de imposto de renda para quem declara. Ou seja, o dinheiro “cresce” (rende) enquanto ficar guardado na conta. Cada depósito terá rendimentos de mês em mês, sempre no dia do mês em que o dinheiro tiver sido depositado              |
 | type          | CONTA_PAGAMENTO_PRE_PAGA     | Conta de pagamento pré-paga: destinada à execução de transações de pagamento em moeda eletrônica realizadas com base em fundos denominados em reais previamente aportados |
 
@@ -595,14 +595,14 @@
 |     Nome           |  Tipo                        |  Obrigatório |                            Descrição                |
 |:-------------------|:-----------------------------|:-------------|:----------------------------------------------------|
 | name               | string                       | Sim          | Nome do conjunto de serviços.                        |
-| services           | [ServiceBundleBusinessAccount](#schemaServiceBundleBusinessAccount)| Sim          | Lista de serviços.       |
+| services           | [ServiceBundleBusinessAccountDetail](#schemaServiceBundleBusinessAccountDetail)| Sim          | Lista de serviços.       |
 | prices              | [MontlyPrice](#schemamontlyprice) | Sim          | Valor mensal da tarifa referente ao Pacote de Serviços |
 | minimum             | [MinimumPrice](#schemaMinimumPrice)           | Sim          | Valor mínimo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | 
 | maximum             | [MaximumPrice](#schemaMaximumPrice)           | Sim          | Valor máximo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | 
 |customers|[[Customer](#schemaCustomer)]| Sim |Percentual dos clientes de cada faixa relativa ao serviço ofertado |
 
-## ServiceBundleBusinessAccount
-<a id="schemaServiceBundleBusinessAccount"></a>
+## ServiceBundleBusinessAccountDetail
+<a id="schemaServiceBundleBusinessAccountDetail"></a>
 
 ```json
 {
