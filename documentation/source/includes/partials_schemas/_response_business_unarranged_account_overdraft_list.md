@@ -396,7 +396,7 @@
 |prices|[[Price](#schemaPrice)]|Sim | Valor da mediana da tarifa, relativa ao serviço ofertado, informado no período.|
 |minimum|[MinimumPrice](#schemaMinimumPrice)|Sim | Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. |
 |maximum|[MaximumPrice](#schemaMaximumPrice)|Sim | Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. |
-| customers   | [Customer](#schemaCustomer) | Sim   |  Distribuição de frequência relativa aos clientes que pagaram valores de tarifas. |
+|customers | [FeeServiceCustomer](#schemaFeeServiceCustomer) | Sim   |  Distribuição de frequência relativa aos clientes que pagaram valores de tarifas. |
 
 ## UnarrangedAccountOverdraftRate
 
