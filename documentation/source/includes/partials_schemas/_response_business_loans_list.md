@@ -42,7 +42,7 @@
                 {
                   "fees": [
                     {
-                      "referentialRateOrIndexer": "string",
+                      "referentialRateIndexer": "string",
                       "rate": "string",
                     }
                   ],
@@ -83,7 +83,7 @@
 |     Nome          |  Tipo                                                   | Obrigatório  |                            Definição                  |
 |:------------      |:---------------------------------                       |:-----------  |:----------------------------------------------------  |
 | data              | object                                                  | Sim          |                                                       |
-| » brand           | [BusinessLoanBrand](#schemaBusinessLoanBrand)       | Sim          | organização titular das dependências                  |
+| brand             | [BusinessLoanBrand](#schemaBusinessLoanBrand)       | Sim          | Organização controladora do grupo de instituições financeiras                  |
 | links             | [LinksPaginated](#schemaLinksPaginated)                 | Sim          |                                                       |
 | meta              | [MetaPaginated](#schemaMetaPaginated)                   | Sim          |                                                       |
 
@@ -129,7 +129,7 @@
             {
               "fees": [
                 {
-                  "referentialRateOrIndexer": "string",
+                  "referentialRateIndexer": "string",
                   "rate": "string",
                 }
               ],
@@ -198,7 +198,7 @@
         {
           "fees": [
             {
-              "referentialRateOrIndexer": "string",
+              "referentialRateIndexer": "string",
               "rate": "string",
             }
           ],          
@@ -262,7 +262,7 @@
     {
       "fees": [
         {
-          "referentialRateOrIndexer": "string",
+          "referentialRateIndexer": "string",
           "rate": "string",
         }
       ],
@@ -296,10 +296,96 @@
 
 | Propriedade  | Código                        | Definição
 |:------------ |:------                       |:------
-| type         | ADIANTAMENTO_DEPOSITANTE    | Adiantamento a depositante
 | type         | EMPRESTIMO_MICROCREDITO_PRODUTIVO_ORIENTADO  | Microcrédito produtivo orientado
 | type         | EMPRESTIMO_CHEQUE_ESPECIAL  | Cheque especial
 | type         | EMPRESTIMO_CONTA_GARANTIDA  | Conta garantida
 | type         | EMPRESTIMO_CAPITAL_GIRO_PRAZO_VENCIMENTO_ATE_365_DIAS | Capital de giro com prazo de vencimento até 365 dias
 | type         | EMPRESTIMO_CAPITAL_GIRO_PRAZO_VENCIMENTO_SUPERIOR_365_DIAS | Capital de giro com prazo de vencimento superior a 365 dias
 | type         | EMPRESTIMO_CAPITAL_GIRO_ROTATIVO | Capital de giro rotativo
+
+### Enum RequiredWarranty
+<a id="schemaEnumRequiredWarranty"></a>
+
+| Propriedade  | Código                                        | Definição                                    
+|:------------ |:------                                       |:------
+| requiredWarranty        | CESSAO_DIREITOS_CREDITORIOS     | Cessão de direitos creditórios
+| requiredWarranty        | CAUCAO                          | Caução
+| requiredWarranty        | PENHOR                          | Penhor
+| requiredWarranty        | ALIENACAO_FIDUCIARIA            | Alienação fiduciária
+| requiredWarranty        | HIPOTECA                        | Hipoteca
+| requiredWarranty        | OPERACOES_GARANTIDAS_PELO_GOVERNO    | Operações garantidas pelo governo
+| requiredWarranty        | OUTRAS_GARANTIAS_NAO_FIDEJUSSORIAS  | Outras garantias não fidejussórias
+| requiredWarranty        | SEGUROS_ASSEMELHADOS            | Seguros e assemelhados
+| requiredWarranty        | GARANTIA_FIDEJUSSORIA           | Garantia fidejussória
+| requiredWarranty        | BENS_ARRENDADOS                 | Bens arrendados
+| requiredWarranty        | GARANTIAS_INTERNACIONAIS        | Garantias internacionais
+| requiredWarranty        | OPERACOES_GARANTIDAS_OUTRAS_ENTIDADES
+  | Operações garantidas por outras entidades
+| requiredWarranty        | ACORDOS_COMPENSACAO             | Acordos de compensação
+| requiredWarranty        | NAO_APLICAVEL                   | Não aplicável
+
+## LoanFee
+<a id="schemaLoanFee"></a>
+
+```json
+{
+  "service":{
+    "name": "string",
+    "code": "string",
+    "chargingTriggerInfo": "string",
+    "prices": [
+      {
+        "interval": "string",
+        "value": "string",
+        "currency": "string"
+      }
+    ],
+    "minimum": {
+      "value": "string",
+      "currency": "string"
+    },
+    "maximum": {
+      "value": "string",
+      "currency": "string"
+    }
+  }
+}
+```
+|     Nome            |  Tipo                                           | Obrigatório  |                            Definição                         | Restrições
+|:------------        |:---------------------------------               |:-----------  |:----------------------------------------------------         | :------
+| name         | string                                          | Sim          | Nomes das Tarifas cobradas sobre Serviços relacionados à Modalidade informada do Empréstimo para pessoa física/jurídica.    | NA
+| code         | string                                          | Sim          | Sigla de identificação do serviço relacionado à Modalidade informada de Empréstimo para pessoa física/jurídica.             | NA
+| chargingTriggerInfo | string                                          | Sim          | Fatos geradores de cobrança que incidem sobre as Modalidades informada de Empréstimos para pessoa física/jurídica.        | NA
+| prices               | [Price](#schemaPrice)                         | Sim          | Valor da mediana da tarifa, relativa ao serviço ofertado, informado no período.                                                       | NA
+| minimum             | [MinimumPrice](#schemaMinimumPrice)           | Sim          | Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. | NA
+| maximum             | [MaximumPrice](#schemaMaximumPrice)           | Sim          | Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. | NA
+
+## LoanInterestRate
+<a id="schemaLoanInterestRate"></a>
+
+```json
+{
+  "fees": [
+    {
+      "referentialRateIndexer": "string",
+      "rate": "string"
+    }
+  ],
+  "applications": [
+    {
+      "interval": "string",
+      "rate": "string",
+    }
+  ],
+  "minimumRate": "string",
+  "maximumRate": "string"
+}
+```
+
+| Nome                | Tipo                                            | Obrigatório | Definição                                                 |
+|:----------------    |:------                                          |:----------- |:-------------------------------                           |
+| fees            | [FeeReferentialRateIndexer](#schemaFeeReferentialRateIndexer)    | Sim            | Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial ou Indexador (Indx), do Documento 3040 |
+| applications        | [Application](#schemaApplication)                         | Sim          | Valor da mediana da taxa de remuneração relativa ao serviço ofertado.                                                       | 
+| minimumRate         | string     | Sim          | Percentual mínimo cobrado (taxa efetiva) no mês de referência, para o Empréstimo contratado. A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%) | 
+| maximumRate         | string     | Sim          | Percentual máximo cobrado (taxa efetiva) no mês de referência, para o Empréstimo contratado. A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%) | 
+
