@@ -462,7 +462,7 @@
 | openingClosingChannels   | MOBILE_BANKING            | Mobile banking.                            |
 | openingClosingChannels   | CENTRAL_TELEFONICA        | Central telefônica.                        |
 | openingClosingChannels   | CHAT                      | Chat.                                      |
-| openingClosingChannels   | OUTROS                    | Outros (p.ex. website/appps de terceiros). |
+| openingClosingChannels   | OUTROS                    | Outros (p.ex. website/apps de terceiros)   |
 
 ### Enum BusinessAccountTransactionMethod  
 <a id="schemaEnumBusinessAccounTransactionMethod"></a>
