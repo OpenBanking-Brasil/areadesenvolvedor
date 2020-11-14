@@ -28,7 +28,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ResponsePersonalAccounts'
+                $ref: '#/components/schemas/ResponsePersonalAccountsList'
   /business-accounts:
     get:
       tags:
@@ -206,7 +206,66 @@ components:
           pattern: \w*\W*
           description: 'Procedimentos de encerramento para o tipo de conta tratado. Possibilidade de inscrição da URL. Endereço eletrônico de acesso ao canal. p.ex. ''https://example.com/mobile-banking'' '
           example: 'https://example.com/mobile-banking'
-    ResponsePersonalAccounts:
+    AccountOtherServicesPrice:
+      type: object
+      required:
+        - interval
+        - value
+        - currency
+      properties:
+        interval:
+          type: string
+          enum:
+            - 1_QUARTIL_CLIENTES
+            - 2_QUARTIL_CLIENTES
+            - 3_QUARTIL_CLIENTES
+            - 4_QUARTIL_CLIENTES
+          description: 'Faixas de valor referentes a tarifa de outro Serviços informada: 1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes'
+          example: 1_QUARTIL_CLIENTES
+        value:
+          type: string
+          description: 'Valor da mediana da tarifa cobrada referente a Outros Serviços, para o tipo de faixa informada'
+          example: '45.00'
+          maxLength: 12
+          pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
+        currency:
+          type: string
+          pattern: '^(\w{3}){1}$'
+          description: 'Moeda referente ao valor da mediana da tarifa de Outros Serviços no quartil informado, segundo modelo ISO-4217.'
+          example: BRL
+        minimum:
+          type: object
+          required:
+            - value
+            - currency
+          properties:
+            value:
+              type: string
+              maxLength: 12
+              description: Valor mínimo cobrado para a tarifa de Outros Serviços no mês de referência
+              pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
+              example: '45.00'
+            currency:
+              type: string
+              description: 'Moeda referente ao valor mínimo da tarifa de Outros Serviços, segundo modelo ISO-4217.'
+              example: BRL
+        maximum:
+          type: object
+          required:
+            - value
+            - currency
+          properties:
+            value:
+              type: string
+              maxLength: 12
+              pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
+              description: Valor máximo cobrado para a tarifa de Outros Serviços no mês de referência.
+              example: '45.00'
+            currency:
+              type: string
+              description: 'Moeda referente ao valor máximo da tarifa de outros serviços, segundo modelo ISO-4217.'
+              example: BRL
+    ResponsePersonalAccountsList:
       type: object
       required:
         - data
