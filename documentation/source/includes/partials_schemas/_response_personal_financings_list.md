@@ -42,7 +42,7 @@
                 "fees": [
                   {
                     "referentialRateOrIndexer": "string",
-                    "rate": "string",
+                    "rate": "string"
                   }
                 ],
                 "applications": [
