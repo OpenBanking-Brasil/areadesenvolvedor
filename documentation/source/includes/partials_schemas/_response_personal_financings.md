@@ -1,5 +1,5 @@
-## ResponsePersonalFinancingsList
-<a id="schemaResponsePersonalFinancingsList"></a>
+## ResponsePersonalFinancings
+<a id="schemaResponsePersonalFinancings"></a>
 
 ```json
 {

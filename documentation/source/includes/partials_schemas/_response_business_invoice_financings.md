@@ -1,5 +1,5 @@
-## ResponsePersonalInvoiceFinancingsList
-<a id="schemaResponsePersonalInvoiceFinancingsList"></a>
+## ResponseBusinessInvoiceFinancings
+<a id="schemaResponseBusinessInvoiceFinancings"></a>
 
 ```json
 {
@@ -11,7 +11,7 @@
           "name": "string",
           "cnpjNumber": "string",
           "urlComplementaryList": "string",
-          "personalInvoiceFinancings": [
+          "businessInvoiceFinancings": [
             {
               "type": "string",
               "fees": [
@@ -90,15 +90,15 @@
 }
 ```
 
-|     Nome      |  Tipo                                                                     | Obrigatório  |                            Definição                  |
-|:------------  |:---------------------------------                                         |:-----------  |:----------------------------------------------------  |
-| data          | object                                                                    | Sim          |                                                       |
-| brand       | [[PersonalInvoiceFinancingsBrand](#schemaPersonalInvoiceFinancingsBrand)] | Sim          | Lista das organizaçõs titulares das dependências      |
-| links         | [[LinksPaginated](#schemaLinksPaginated)]                                 | Sim          |                                                       |
-| meta          | [MetaPaginated](#schemaMetaPaginated)                                     | Sim          |                                                       |
+|     Nome          |  Tipo                                                                     | Obrigatório  |                            Definição                  |
+|:------------      |:---------------------------------                                         |:-----------  |:----------------------------------------------------  |
+| data              | object                                                                    | Sim          |                                                       |
+| brand           | [[BusinessInvoiceFinancingsBrand](#schemaBusinessInvoiceFinancingsBrand)]   | Sim          | Organização controladora do grupo de instituições financeiras      |
+| links             | [[LinksPaginated](#schemaLinksPaginated)]                                 | Sim          |                                                       |
+| meta              | [MetaPaginated](#schemaMetaPaginated)                                   | Sim          |                                                       |
 
-## PersonalInvoiceFinancingsBrand
-<a id="schemaPersonalInvoiceFinancingsBrand"></a>
+## BusinessInvoiceFinancingsBrand
+<a id="schemaBusinessInvoiceFinancingsBrand"></a>
 
 ```json
 {
@@ -108,7 +108,7 @@
       "name": "string",
       "cnpjNumber": "string",
       "urlComplementaryList": "string",
-      "personalInvoiceFinancings": [
+      "businessInvoiceFinancings": [
         {
           "type": "string",
           "fees": [
@@ -177,17 +177,17 @@
 |     Nome     |  Tipo                                                                            | Obrigatório  |                            Definição                         |
 |:------------ |:---------------------------------                                                |:-----------  |:----------------------------------------------------         |
 | name         | string                                                                           | Sim          | Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a 'marca' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes  |
-| companies    | [[PersonalInvoiceFinancingsCompanies](#schemaPersonalInvoiceFinancingsCompanies)]  | Sim          | Lista de instituições pertencentes à marca             |
+| companies    | [[BusinessInvoiceFinancingsCompanies](#schemaBusinessInvoiceFinancingsCompanies)]  | Sim          | Lista de instituições pertencentes à marca             |
 
-## PersonalInvoiceFinancingsCompanies 
-<a id="schemaPersonalInvoiceFinancingsCompanies"></a>
+## BusinessInvoiceFinancingsCompanies 
+<a id="schemaBusinessInvoiceFinancingsCompanies"></a>
 
 ```json
 {
   "name": "string",
   "cnpjNumber": "string",
   "urlComplementaryList": "string",
-  "personalInvoiceFinancings": [
+  "businessInvoiceFinancings": [
     {
       "type": "string",
       "fees": [
@@ -251,15 +251,15 @@
 }
 ```
 
-|     Nome                  |  Tipo                                                           | Obrigatório |                            Definição                                                                                                                                                    |  Restrições                                                                                             |
-|:------------              |:-----------------------------------                             |:----------- |:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |:--------------------------------------------------------------------------------------------------------|
-| cnpjNumber                | string                                                          | Sim         | CNPJ da instituição responsável                                                                                                                                                         |                                                                                                         |
-| name                      | string                                                          | Sim         | Nome da Instituição, pertencente à marca, responsável pela modalidade de Direitos Creditórios Descontados para Pessoa Natural. p.ex.'Empresa da Organização A'         |                                                                                                         |
-| urlComplementaryList      | [[URIString](#commonFieldURIString)]                            | Não         | URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. | Será obrigatorimente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada |
-| personalInvoiceFinancings | [[PersonalInvoiceFinancings](#schemaPersonalInvoiceFinancings)] | Sim         | Lista  de antecipação de recebíveis                                                                                                                                                     |                                                                                                         |
+|     Nome                  |  Tipo                                                           | Obrigatório |                            Definição                                                                                                                                                              |  Restrições |
+|:------------              |:-----------------------------------                             |:----------- |:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |:------------|
+| name                      | string                                                          | Sim         | Nome da Instituição, pertencente à marca, responsável pela modalidade de Direitos Creditórios Descontados para Pessoa Natural. p.ex.'Empresa da Organização A' |             |
+| cnpjNumber                | string                                                          | Sim         | CNPJ da instituição responsável                                                                                                                                                                   |             |
+| urlComplementaryList      | [[URIString](#commonFieldURIString)]                            | Não         | URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços.           | Será obrigatorimente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada            |
+| businessInvoiceFinancings | [[BusinessInvoiceFinancings](#schemaBusinessInvoiceFinancings)] | Sim         | Lista  de antecipação de recebíveis                                                                                                                                                               |             |
 
-## PersonalInvoiceFinancings
-<a id="schemaPersonalInvoiceFinancings"></a>
+## BusinessInvoiceFinancings
+<a id="schemaBusinessInvoiceFinancings"></a>
 
 ```json
 {
@@ -325,15 +325,15 @@
 
 |     Nome              |  Tipo                                                                                                       | Obrigatório |                            Definição                                                                                                                                                                                                                                                  |
 |:------------          |:---------------------------------------------------------------------------                                 |:----------- |:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------         |
-| type                  | [Enum PersonalInvoiceFinancingsType](#schemaEnumPersonalInvoiceFinancingsType)                                | Sim         | Modalidades de direitos creditórios descontados ofertados, conforme Circular 4015-Bacen. Direito creditório descontado é a antecipação de créditos relativos p.ex.: desconto de duplicatas, desconto de cheques, antecipação de fatura de cartão de crédito  |
-| fees                  | [[PersonalInvoiceFinancingsFees](#schemaPersonalInvoiceFinancingsFees)]                                       | Sim         | Lista das Tarifas cobradas sobre Serviços ofertados à Modalidade de direitos creditórios descontados, para pessoa natural                                                                                                                                                              |
-| interestRate         | [[PersonalInvoiceFinancingsInterestRates](#schemaPersonalInvoiceFinancingsInterestRates)]                     | Sim         | Lista de taxas de juros remuneratórias                                                                                                                                                                                                                                                |
-| requiredWarranties    | [[Enum PersonalInvoiceFinancingsRequiredWarranties](#schemaEnumPersonalInvoiceFinancingsRequiredWarranties)]  | Sim         | Relação de garantias exigidas                                                                                                                                                                                                                                                         |
+| type                  | [Enum BusinessInvoiceFinancingsType](#schemaEnumBusinessInvoiceFinancingsType)                                | Sim         | Modalidades de direitos creditórios descontados ofertados, conforme Circular 4015-Bacen. Direito creditório descontado é a antecipação de créditos relativos p.ex.: desconto de duplicatas, desconto de cheques,antecipação de fatura de cartão de crédito  |
+| fees                  | [[BusinessInvoiceFinancingsFees](#schemaBusinessInvoiceFinancingsFees)]                                       | Sim         | Lista das Tarifas cobradas sobre Serviços ofertados à Modalidade de direitos creditórios descontados, para pessoa jurídica                                                                                                                                                              |
+| interestRate          | [[BusinessInvoiceFinancingsInterestRates](#schemaBusinessInvoiceFinancingsInterestRate)]                     | Sim         | Lista de taxas de juros remuneratórias                                                                                                                                                                                                                                                |
+| requiredWarranties    | [[Enum BusinessInvoiceFinancingsRequiredWarranties](#schemaEnumBusinessInvoiceFinancingsRequiredWarranties)]  | Sim         | Relação de garantias exigidas                                                                                                                                                                                                                                                         |
 | termsConditions       | string                                                                                                        | Sim          | Campo aberto para informar as condições contratuais relativas ao produto ou serviço informado. Pode ser informada a URL ([[URIString](#commonFieldURIString)]) referente ao endereço onde constam as condições informadas.   |
 
 
-### Enum PersonalInvoiceFinancingsType
-<a id="schemaEnumPersonalInvoiceFinancingsType"></a>
+### Enum BusinessInvoiceFinancingsType
+<a id="schemaEnumBusinessInvoiceFinancingsType"></a>
 
 | Propriedade  | Código                                    | Definição                                             |
 |:------------ |:----------------------------------------- |:----------------------------------------------------- |
@@ -344,8 +344,8 @@
 | type         | OUTROS_TITULOS_DESCONTADOS                | Outros títulos descontados                            |
 
 
-### Enum PersonalInvoiceFinancingsRequiredWarranties
-<a id="schemaEnumPersonalInvoiceFinancingsRequiredWarranties"></a>
+### Enum BusinessInvoiceFinancingsRequiredWarranties
+<a id="schemaEnumBusinessInvoiceFinancingsRequiredWarranties"></a>
 
 | Propriedade        | Código                                     | Definição                                             |
 |:------------------ |:------------------------------------------ |:----------------------------------------------------- |
@@ -364,8 +364,8 @@
 | requiredWarranties | ACORDOS_COMPENSACAO                        | Acordos de compensação                                |
 | requiredWarranties | NAO_APLICAVEL                              | Não aplicável                                         |
 
-## PersonalInvoiceFinancingsFees 
-<a id="schemaPersonalInvoiceFinancingsFees"></a>
+## BusinessInvoiceFinancingsFees 
+<a id="schemaBusinessInvoiceFinancingsFees"></a>
 
 ```json
 {
@@ -400,10 +400,10 @@
 
 | Nome         |  Tipo                                                                                 | Obrigatório    |  Definição                                                                                                                                 |
 |:------------ |:------------------------------------------------------------------------------------- |:-------------- |:------------------------------------------------------------------------------------------------------------------------------------------ |
-| service      | [[PersonalInvoiceFinancingsFeesService](#schemaPersonalInvoiceFinancingsFeesService)] | Sim            | Nomes das Tarifas cobradas sobre Serviços ofertados à Modalidade de direitos creditórios descontados    |
+| service      | [[BusinessInvoiceFinancingsFeesService](#schemaBusinessInvoiceFinancingsFeesService)] | Sim            | Nomes das Tarifas cobradas sobre Serviços ofertados à Modalidade de direitos creditórios descontados    |
 
-## PersonalInvoiceFinancingsFeesService 
-<a id="schemaPersonalInvoiceFinancingsFeesService"></a>
+## BusinessInvoiceFinancingsFeesService 
+<a id="schemaBusinessInvoiceFinancingsFeesService"></a>
 
 ```json
 {
@@ -444,8 +444,8 @@
 | maximum              | [[MaximumPrice](#schemaMaximumPrice)]  | Sim            | Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência.                                              | 
 |customers|[[Customer](#schemaCustomer)]| Sim |Percentual dos clientes de cada faixa relativa ao serviço ofertado |
 
-## PersonalInvoiceFinancingsInterestRates 
-<a id="schemaPersonalInvoiceFinancingsInterestRates"></a>
+## BusinessInvoiceFinancingsInterestRate 
+<a id="schemaBusinessInvoiceFinancingsInterestRate"></a>
 
 ```json
 {
@@ -475,7 +475,7 @@
 |  Nome           |  Tipo                   | Obrigatório |   Definição   |
 |:--------------- |:----------------------- |------------ |:--------------|
 | fees            | [FeeReferentialRateIndexer](#schemaFeeReferentialRateIndexer)    | Sim            | Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial ou Indexador (Indx), do Documento 3040 |
-| applications    | [[Price](#schemaPrice)] | Sim | Valor da mediana da taxa de remuneração relativa ao serviço ofertado, para pessoa natural informado no período.     
+| applications    | [[Price](#schemaPrice)] | Sim | Valor da mediana da taxa de remuneração relativa ao serviço ofertado informado no período.     
 | minimumRate     | string                  | Sim | Valor mínimo cobrado para a taxa de remuneração relativa ao serviço ofertado, sobre a base de clientes,  no mês de referência | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
 | maximumRate     | string                  | Sim | Valor máximo cobrado para a taxa de remuneração relativa ao serviço ofertado, sobre a base de clientes,  no mês de referência | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
 |customers|[[Customer](#schemaCustomer)]| Sim |Percentual dos clientes de cada faixa relativa ao serviço ofertado |
