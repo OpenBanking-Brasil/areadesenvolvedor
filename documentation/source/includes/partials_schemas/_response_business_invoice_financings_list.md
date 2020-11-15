@@ -93,7 +93,7 @@
 |     Nome          |  Tipo                                                                     | Obrigatório  |                            Definição                  |
 |:------------      |:---------------------------------                                         |:-----------  |:----------------------------------------------------  |
 | data              | object                                                                    | Sim          |                                                       |
-| » brand           | [[BusinessInvoiceFinancingsBrand](#schemaBusinessInvoiceFinancingsBrand)]   | Sim          | Lista das organizaçõs titulares das dependências      |
+| brand           | [[BusinessInvoiceFinancingsBrand](#schemaBusinessInvoiceFinancingsBrand)]   | Sim          | Organização controladora do grupo de instituições financeiras      |
 | links             | [[LinksPaginated](#schemaLinksPaginated)]                                 | Sim          |                                                       |
 | meta              | [MetaPaginated](#schemaMetaPaginated)                                   | Sim          |                                                       |
 
@@ -176,7 +176,7 @@
 
 |     Nome     |  Tipo                                                                            | Obrigatório  |                            Definição                         |
 |:------------ |:---------------------------------                                                |:-----------  |:----------------------------------------------------         |
-| name         | string                                                                           | Sim          | Nome da marca proprietária da dependência (titular).  |
+| name         | string                                                                           | Sim          | Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a 'marca' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes  |
 | companies    | [[BusinessInvoiceFinancingsCompanies](#schemaBusinessInvoiceFinancingsCompanies)]  | Sim          | Lista de instituições pertencentes à marca             |
 
 ## BusinessInvoiceFinancingsCompanies 
@@ -253,7 +253,7 @@
 
 |     Nome                  |  Tipo                                                           | Obrigatório |                            Definição                                                                                                                                                              |  Restrições |
 |:------------              |:-----------------------------------                             |:----------- |:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |:------------|
-| name                      | string                                                          | Sim         | Nome da Instituição, pertencente à marca, responsável pela comercialização das modalidades de Direitos Creditórios Descontados para Pessoas Físicas consultadas. p.ex.'Empresa da Organização A'. |             |
+| name                      | string                                                          | Sim         | Nome da Instituição, pertencente à marca, responsável pela modalidade de Direitos Creditórios Descontados para Pessoa Natural. p.ex.'Empresa da Organização A' |             |
 | cnpjNumber                | string                                                          | Sim         | CNPJ da instituição responsável                                                                                                                                                                   |             |
 | urlComplementaryList      | [[URIString](#commonFieldURIString)]                            | Não         | URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços.           | Será obrigatorimente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada            |
 | businessInvoiceFinancings | [[BusinessInvoiceFinancings](#schemaBusinessInvoiceFinancings)] | Sim         | Lista  de antecipação de recebíveis                                                                                                                                                               |             |
@@ -325,7 +325,7 @@
 
 |     Nome              |  Tipo                                                                                                       | Obrigatório |                            Definição                                                                                                                                                                                                                                                  |
 |:------------          |:---------------------------------------------------------------------------                                 |:----------- |:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------         |
-| type                  | [Enum BusinessInvoiceFinancingsType](#schemaEnumBusinessInvoiceFinancingsType)                                | Sim         | Modalidades de direitos creditórios descontados ofertados para pessoas Jurídicas, conforme Circular 4015-Bacen. Direito creditório descontado é a antecipação de créditos relativos p.ex.: desconto de duplicatas, desconto de cheques,antecipação de fatura de cartão de crédito  |
+| type                  | [Enum BusinessInvoiceFinancingsType](#schemaEnumBusinessInvoiceFinancingsType)                                | Sim         | Modalidades de direitos creditórios descontados ofertados, conforme Circular 4015-Bacen. Direito creditório descontado é a antecipação de créditos relativos p.ex.: desconto de duplicatas, desconto de cheques,antecipação de fatura de cartão de crédito  |
 | fees                  | [[BusinessInvoiceFinancingsFees](#schemaBusinessInvoiceFinancingsFees)]                                       | Sim         | Lista das Tarifas cobradas sobre Serviços ofertados à Modalidade de direitos creditórios descontados, para pessoa jurídica                                                                                                                                                              |
 | interestRate          | [[BusinessInvoiceFinancingsInterestRates](#schemaBusinessInvoiceFinancingsInterestRate)]                     | Sim         | Lista de taxas de juros remuneratórias                                                                                                                                                                                                                                                |
 | requiredWarranties    | [[Enum BusinessInvoiceFinancingsRequiredWarranties](#schemaEnumBusinessInvoiceFinancingsRequiredWarranties)]  | Sim         | Relação de garantias exigidas                                                                                                                                                                                                                                                         |
@@ -400,7 +400,7 @@
 
 | Nome         |  Tipo                                                                                 | Obrigatório    |  Definição                                                                                                                                 |
 |:------------ |:------------------------------------------------------------------------------------- |:-------------- |:------------------------------------------------------------------------------------------------------------------------------------------ |
-| service      | [[BusinessInvoiceFinancingsFeesService](#schemaBusinessInvoiceFinancingsFeesService)] | Sim            | Nomes das Tarifas cobradas sobre Serviços ofertados à Modalidade de direitos creditórios descontados, para pessoa física. (Campo Livre)    |
+| service      | [[BusinessInvoiceFinancingsFeesService](#schemaBusinessInvoiceFinancingsFeesService)] | Sim            | Nomes das Tarifas cobradas sobre Serviços ofertados à Modalidade de direitos creditórios descontados    |
 
 ## BusinessInvoiceFinancingsFeesService 
 <a id="schemaBusinessInvoiceFinancingsFeesService"></a>
@@ -436,7 +436,7 @@
 
 |     Nome             |  Tipo                                  | Obrigatório    |                            Definição                                                                                                       |
 |:------------         |:-------------------------------------- |:-------------- |:------------------------------------------------------------------------------------------------------------------------------------------ |
-| name                 | string                                 | Sim            | Nomes das Tarifas cobradas sobre Serviços ofertados à Modalidade de direitos creditórios descontados, para pessoa física. (Campo Livre)    |
+| name                 | string                                 | Sim            | Nomes das Tarifas cobradas sobre Serviços ofertados à Modalidade de direitos creditórios descontados. (Campo Livre)    |
 | code                 | string                                 | Sim            | Sigla de identificação do serviço relacionado à Modalidade de direitos creditórios descontados, para pessoa física. Campo aberto           |
 | chargingTriggerInfo  | string                                 | Não            | Fatos geradores de cobrança que incidem sobre as Modalidades de direitos creditórios descontados, para pessoa física. Campo Livre          |
 | prices               | [[Price](#schemaPrice)]                | Sim            | Valor da mediana, relativa ao serviço ofertado, informado no período.                                                                      |
