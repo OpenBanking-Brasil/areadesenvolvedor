@@ -12,15 +12,15 @@ Os nomes dos atributos devem:
 
 * Para garantir o entendimento e a padronização, nos casos de atributos que tratem dados específicos, sempre devem ser usados termos complementares no fim dos nomes. São esses:
 
-	- nomes = Name (Ex: streetName)
+	- nomes = Name (p.ex. ownerName)
 
-	- datas = Date (Ex: paymentDate)
+	- datas = Date (p.ex. openingDate)
 
-	- horários = Time (Ex: openingTime)
+	- horários = Time (p.ex. openingTime)
 
-	- quantidades = Quantity (Ex: eventLimitQuantity)
+	- quantidades = Quantity (p.ex. eventLimitQuantity)
 
-	- textos explicativos = Info* (Ex: additionalInfo)
+	- textos explicativos = Info* (p.ex. additionalInfo)
 
 	  `*Para textos explicativos de informações complementares, o nome completo do atributo é “additionalInfo”`
 
