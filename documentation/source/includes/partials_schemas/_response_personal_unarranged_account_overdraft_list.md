@@ -12,9 +12,9 @@
           "name": "string",
           "cnpjNumber": "string",
           "urlComplementaryList": "string",
-          "personalUnarrangedAccountOverdraft": {
-            "fees": [
-              {
+          "personalUnarrangedAccountOverdraft": [
+            {
+              "fee": {
                 "priorityService": {
                   "name": "string",
                   "code": "string",
@@ -33,28 +33,40 @@
                   "maximum": {
                     "value": "string",
                     "currency": "string"
+                  },
+                  "customers": [
+                    {
+                      "frequency": "string",
+                      "rate": "string"
+                    }
+                  ]
+                }
+              },
+              "interestRate": {
+                "fees": [
+                  {
+                    "referentialRateIndexer": "string",
+                    "rate": "string"
                   }
-                }
-              }
-            ],
-            "interestRate": {
-              "fees": [
-                {
-                  "referentialRateOrIndexer": "string",
-                  "rate": "string"
-                }
-              ],
-              "applications": [
-                {
-                  "interval": "string",
-                  "rate": "string"
-                }
-              ],
-              "minimumRate": "string",
-              "maximumRate": "string"
-            },
-            "termsConditions": "string"
-          }
+                ],
+                "applications": [
+                  {
+                    "interval": "string",
+                    "rate": "string"
+                  }
+                ],
+                "minimumRate": "string",
+                "maximumRate": "string",
+                "customers": [
+                  {
+                    "frequency": "string",
+                    "rate": "string"
+                  }
+                ]
+              },
+              "termsConditions": "string"
+            }
+          ]
         }
       ]
     }
@@ -88,57 +100,69 @@
 
 ```json
 {
-    "name": "string",
-    "companies": [
+  "name": "string",
+  "companies": [
     {
-        "name": "string",
-        "cnpjNumber": "string",
-        "urlComplementaryList": "string",
-        "personalUnarrangedAccountOverdraft": {
-        "fees": [
-            {
+      "name": "string",
+      "cnpjNumber": "string",
+      "urlComplementaryList": "string",
+      "personalUnarrangedAccountOverdraft": [
+        {
+          "fee": {
             "priorityService": {
-                "name": "string",
-                "code": "string",
-                "chargingTriggerInfo": "string",
-                "prices": [
+              "name": "string",
+              "code": "string",
+              "chargingTriggerInfo": "string",
+              "prices": [
                 {
-                    "interval": "string",
-                    "value": "string",
-                    "currency": "string"
+                  "interval": "string",
+                  "value": "string",
+                  "currency": "string"
                 }
-                ],
-                "minimum": {
+              ],
+              "minimum": {
                 "value": "string",
                 "currency": "string"
-                },
-                "maximum": {
+              },
+              "maximum": {
                 "value": "string",
                 "currency": "string"
+              },
+              "customers": [
+                {
+                  "frequency": "string",
+                  "rate": "string"
                 }
+              ]
             }
-            }
-        ],
-        "interestRate": {
+          },
+          "interestRate": {
             "fees": [
-            {
-                "referentialRateOrIndexer": "string",
+              {
+                "referentialRateIndexer": "string",
                 "rate": "string"
-            }
+              }
             ],
             "applications": [
-            {
+              {
                 "interval": "string",
                 "rate": "string"
-            }
+              }
             ],
             "minimumRate": "string",
-            "maximumRate": "string"
-        },
-        "termsConditions": "string"
+            "maximumRate": "string",
+            "customers": [
+              {
+                "frequency": "string",
+                "rate": "string"
+              }
+            ]
+          },
+          "termsConditions": "string"
         }
+      ]
     }
-    ]
+  ]
 }
 
 ```
@@ -155,52 +179,64 @@
 
 ```json
 {
-    "name": "string",
-    "cnpjNumber": "string",
-    "urlComplementaryList": "string",
-    "personalUnarrangedAccountOverdraft": {
-    "fees": [
-        {
+  "name": "string",
+  "cnpjNumber": "string",
+  "urlComplementaryList": "string",
+  "personalUnarrangedAccountOverdraft": [
+    {
+      "fee": {
         "priorityService": {
-            "name": "string",
-            "code": "string",
-            "chargingTriggerInfo": "string",
-            "prices": [
+          "name": "string",
+          "code": "string",
+          "chargingTriggerInfo": "string",
+          "prices": [
             {
-                "interval": "string",
-                "value": "string",
-                "currency": "string"
+              "interval": "string",
+              "value": "string",
+              "currency": "string"
             }
-            ],
-            "minimum": {
+          ],
+          "minimum": {
             "value": "string",
             "currency": "string"
-            },
-            "maximum": {
+          },
+          "maximum": {
             "value": "string",
             "currency": "string"
+          },
+          "customers": [
+            {
+              "frequency": "string",
+              "rate": "string"
             }
+          ]
         }
-        }
-    ],
-    "interestRate": {
+      },
+      "interestRate": {
         "fees": [
-        {
-            "referentialRateOrIndexer": "string",
+          {
+            "referentialRateIndexer": "string",
             "rate": "string"
-        }
+          }
         ],
         "applications": [
-        {
+          {
             "interval": "string",
             "rate": "string"
-        }
+          }
         ],
         "minimumRate": "string",
-        "maximumRate": "string"
-    },
-    "termsConditions": "string"
+        "maximumRate": "string",
+        "customers": [
+          {
+            "frequency": "string",
+            "rate": "string"
+          }
+        ]
+      },
+      "termsConditions": "string"
     }
+  ]
 }
 
 ```
@@ -220,47 +256,57 @@
 
 ```json
 {
+  "fee": {
+    "priorityService": {
+      "name": "string",
+      "code": "string",
+      "chargingTriggerInfo": "string",
+      "prices": [
+        {
+          "interval": "string",
+          "value": "string",
+          "currency": "string"
+        }
+      ],
+      "minimum": {
+        "value": "string",
+        "currency": "string"
+      },
+      "maximum": {
+        "value": "string",
+        "currency": "string"
+      },
+      "customers": [
+        {
+          "frequency": "string",
+          "rate": "string"
+        }
+      ]
+    }
+  },
+  "interestRate": {
     "fees": [
-        {
-        "priorityService": {
-            "name": "string",
-            "code": "string",
-            "chargingTriggerInfo": "string",
-            "prices": [
-            {
-                "interval": "string",
-                "value": "string",
-                "currency": "string"
-            }
-            ],
-            "minimum": {
-            "value": "string",
-            "currency": "string"
-            },
-            "maximum": {
-            "value": "string",
-            "currency": "string"
-            }
-        }
-        }
+      {
+        "referentialRateIndexer": "string",
+        "rate": "string"
+      }
     ],
-    "interestRate": {
-        "fees": [
-        {
-            "referentialRateOrIndexer": "string",
-            "rate": "string"
-        }
-        ],
-        "applications": [
-        {
-            "interval": "string",
-            "rate": "string"
-        }
-        ],
-        "minimumRate": "string",
-        "maximumRate": "string"
-    },
-    "termsConditions": "string"
+    "applications": [
+      {
+        "interval": "string",
+        "rate": "string"
+      }
+    ],
+    "minimumRate": "string",
+    "maximumRate": "string",
+    "customers": [
+      {
+        "frequency": "string",
+        "rate": "string"
+      }
+    ]
+  },
+  "termsConditions": "string"
 }
 
 ```
@@ -269,35 +315,41 @@
 
 |Nome|Tipo|Obrigatório|Definição|
 |---|---|---|---|
-|fees|[[PersonalUnarrangedAccountOverdraftFee](#schemapersonalunarrangedaccountoverdraftfee)]|Sim| Tarifas cobradas sobre Serviços ofertados à Modalidade de adiantamento a depositante |
+|fee|[PersonalUnarrangedAccountOverdraftFee](#schemapersonalunarrangedaccountoverdraftfee)|Sim| Tarifas cobradas sobre Serviços ofertados à Modalidade de adiantamento a depositante |
 |interestRate|[UnarrangedAccountOverdraftRate](#schemaunarrangedaccountoverdraftrate)|Sim| Taxas de juros remuneratórias |
-|termsConditions|string|Sim|Campo aberto para informar as condições contratuais relativas ao produto ou serviço informado. Pode ser informada a URL referente ao endereço onde constam as condições informadas.|
+|termsConditions|string|Sim| Campo aberto para informar as condições contratuais relativas à Modalidade de Adiantamento a depositante para pessoa natural. Pode ser informada a URL referente ao endereço onde constam as condições informadas. Endereço eletrônico de acesso ao canal.|
 
 ## PersonalUnarrangedAccountOverdraftFee
 <a id="schemapersonalunarrangedaccountoverdraftfee"></a>
 
 ```json
 {
-    "priorityService": {
-        "name": "string",
-        "code": "string",
-        "chargingTriggerInfo": "string",
-        "prices": [
-        {
-            "interval": "string",
-            "value": "string",
-            "currency": "string"
-        }
-        ],
-        "minimum": {
-            "value": "string",
-            "currency": "string"
-        },
-        "maximum": {
-            "value": "string",
-            "currency": "string"
-        }
-    }
+  "priorityService": {
+    "name": "string",
+    "code": "string",
+    "chargingTriggerInfo": "string",
+    "prices": [
+      {
+        "interval": "string",
+        "value": "string",
+        "currency": "string"
+      }
+    ],
+    "minimum": {
+      "value": "string",
+      "currency": "string"
+    },
+    "maximum": {
+      "value": "string",
+      "currency": "string"
+    },
+    "customers": [
+      {
+        "frequency": "string",
+        "rate": "string"
+      }
+    ]
+  }
 }
 
 ```
@@ -306,4 +358,4 @@
 
 |Nome|Tipo|Obrigatório|Definição|
 |---|---|---|---|
-|priorityService|[UnarrangedAccountOverdraftService](#schemaunarrangedaccountoverdraftservice)|Não| Informações sobre os serviços|
+|priorityService|[UnarrangedAccountOverdraftService](#schemaunarrangedaccountoverdraftservice)|Sim| Informações sobre os serviços|

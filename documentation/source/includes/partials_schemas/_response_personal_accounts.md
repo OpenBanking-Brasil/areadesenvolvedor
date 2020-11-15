@@ -401,9 +401,9 @@
 |     Nome        |  Tipo                                          | Obrigatório  |                            Definição                                 |
 |:------------    |:---------------------------------              |:-----------  |:----------------------------------------------------                 |
 | name            | string                                         | Sim          | Nome da Instituição, pertencente à marca, responsável pelas modalidades de Contas  para Pessoa Natural. p.ex.'Empresa da Organização A'   |
-| cnpjNumber      | string                                         | Sim          | O responsável pela comercialização das modalidades de Contas para Pessoas Física consultadas.                                       |
+| cnpjNumber      | string                                         | Sim          | O responsável pela comercialização das modalidades de Contas.                                                                             |
 | urlComplementaryList | string                                    | Não          | URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. Restrição: Será obrigatorimente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada |
-| PersonalAccounts| [PersonalAccount](#schemaPersonalAccount)      | Sim          | Lista de contas pessoa física.                                      |
+| PersonalAccounts| [PersonalAccount](#schemaPersonalAccount)      | Sim          | Lista de contas pessoa natural.                                      |
 
 
 ## PersonalAccount
@@ -524,7 +524,7 @@
 |:----------------------|:-----------------------------------------------| :---------------|:------------------------------------------------------|
 | type                  | [Enum PersonalAccountType](#schemaPersonalAccountType) | Sim             | Tipos de contas ofertadas para pessoa natural, p.ex. 'CONTA_DEPOSITO_A_VISTA'. Conta de depósito à vista ou Conta corrente - é o tipo mais comum. Nela, o dinheiro fica à sua disposição para ser sacado a qualquer momento. Essa conta não gera rendimentos para o depositante Conta poupança - foi criada para estimular as pessoas a pouparem. O dinheiro que ficar na conta por trinta dias passa a gerar rendimentos, com isenção de imposto de renda para quem declara. Ou seja, o dinheiro “cresce” (rende) enquanto ficar guardado na conta. Cada depósito terá rendimentos de mês em mês, sempre no dia do mês em que o dinheiro tiver sido depositado Conta de pagamento pré-paga: segundo CIRCULAR Nº 3.680, BCB de  2013, é a 'destinada à execução de transações de pagamento em moeda eletrônica realizadas com base em fundos denominados em reais previamente aportados'  |
 | fees                  | [AccountFee](#schemaAccountFee) | Sim             | Lista Tarifas cobradas.                             |
-| serviceBundle         | [ServiceBundle](#schemaServiceBundle) | Sim             | Nome dos pacotes de serviços.                          |
+| serviceBundles         | [ServiceBundle](#schemaServiceBundle) | Sim             | Nome dos pacotes de serviços.                          |
 | openingClosingChannels   | [Enum OpeningClosingChannels ](#schemaEnumOpeningClosingChannels) | Sim             | Canais disponíveis para abertura e encerramento de contas, p.ex. 'DEPENDENCIAS_PROPRIAS' |
 | additionalInfo        | string                                         | Não             | Texto livre para complementar informação relativa ao Canal disponível, quando no campo ''openingClosingChannels'' estiver preenchida a opção ''Outros''<br>Restrição: Campo de preenchimento obrigatório se 'openingCloseChannels' estiver preenchida a opção 'OUTROS' |
 | transactionMethods    | [Enum TransactionMethods ](#schemaEnumTransactionMethods)                                         | Sim             | Lista de formas de movimentação possíveis para a conta |
@@ -863,11 +863,11 @@
 
 | Propriedade  | Valor            | Definição                                                                        |                     
 |:-------------|:-----------------|:-------------------------------------------------------------------------------- |
-| code  | CADASTRO                | CADASTRO                                                                         |
-| code  | 2_VIA_CARTAO_DEBITO     | 2ª via-CARTÃODEBITO                                                              |
-| code  | 2_VIA_CARTAO_POUPANCA   | 2ª via-CARTÃOPOUPANÇA                                                            |
-| code  | EXCLUSAO_CCF            | EXCLUSÃO CCF                                                                     |
-| code  | SUSTACAO_REVOGACAO      | SUSTAÇÃO/REVOGAÇÃO                                                               |
+| code  | CADASTRO                | Cadastro                                                                         |
+| code  | 2_VIA_CARTAO_DEBITO     | 2ª via cartão de débito                                                          |
+| code  | 2_VIA_CARTAO_POUPANCA   | 2ª via cartão poupança                                                           |
+| code  | EXCLUSAO_CCF            | Exclusão CCF                                                                     |
+| code  | SUSTACAO_REVOGACAO      | Sustação / Revogação                                                             |
 | code  | FOLHA_CHEQUE            | Fornecimento Folha de cheque                                                     |
 | code  | CHEQUE_ADMINISTRATIVO   | Cheque Administrativo                                                            |
 | code  | CHEQUE_VISADO           | Cheque Visado                                                                    |
