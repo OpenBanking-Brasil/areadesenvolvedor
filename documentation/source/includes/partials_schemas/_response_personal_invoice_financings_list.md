@@ -93,7 +93,7 @@
 |     Nome      |  Tipo                                                                     | Obrigatório  |                            Definição                  |
 |:------------  |:---------------------------------                                         |:-----------  |:----------------------------------------------------  |
 | data          | object                                                                    | Sim          |                                                       |
-| » brand       | [[PersonalInvoiceFinancingsBrand](#schemaPersonalInvoiceFinancingsBrand)] | Sim          | Organização controladora do grupo de instituições financeiras      |
+| brand       | [[PersonalInvoiceFinancingsBrand](#schemaPersonalInvoiceFinancingsBrand)] | Sim          | Lista das organizaçõs titulares das dependências      |
 | links         | [[LinksPaginated](#schemaLinksPaginated)]                                 | Sim          |                                                       |
 | meta          | [MetaPaginated](#schemaMetaPaginated)                                     | Sim          |                                                       |
 
@@ -254,7 +254,7 @@
 |     Nome                  |  Tipo                                                           | Obrigatório |                            Definição                                                                                                                                                    |  Restrições                                                                                             |
 |:------------              |:-----------------------------------                             |:----------- |:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |:--------------------------------------------------------------------------------------------------------|
 | cnpjNumber                | string                                                          | Sim         | CNPJ da instituição responsável                                                                                                                                                         |                                                                                                         |
-| name                      | string                                                          | Sim         | Nome da Instituição, pertencente à marca, responsável pela comercialização das modalidades de Financiamentos. p.ex.'Empresa da Organização A'.         |                                                                                                         |
+| name                      | string                                                          | Sim         | Nome da Instituição, pertencente à marca, responsável pela modalidade de Direitos Creditórios Descontados para Pessoa Natural. p.ex.'Empresa da Organização A'         |                                                                                                         |
 | urlComplementaryList      | [[URIString](#commonFieldURIString)]                            | Não         | URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. | Será obrigatorimente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada |
 | personalInvoiceFinancings | [[PersonalInvoiceFinancings](#schemaPersonalInvoiceFinancings)] | Sim         | Lista  de antecipação de recebíveis                                                                                                                                                     |                                                                                                         |
 
@@ -400,7 +400,7 @@
 
 | Nome         |  Tipo                                                                                 | Obrigatório    |  Definição                                                                                                                                 |
 |:------------ |:------------------------------------------------------------------------------------- |:-------------- |:------------------------------------------------------------------------------------------------------------------------------------------ |
-| service      | [[PersonalInvoiceFinancingsFeesService](#schemaPersonalInvoiceFinancingsFeesService)] | Sim            | Nomes das Tarifas cobradas sobre Serviços ofertados à Modalidade de direitos creditórios descontados, para pessoa física. (Campo Livre)    |
+| service      | [[PersonalInvoiceFinancingsFeesService](#schemaPersonalInvoiceFinancingsFeesService)] | Sim            | Nomes das Tarifas cobradas sobre Serviços ofertados à Modalidade de direitos creditórios descontados    |
 
 ## PersonalInvoiceFinancingsFeesService 
 <a id="schemaPersonalInvoiceFinancingsFeesService"></a>
@@ -436,7 +436,7 @@
 
 |     Nome             |  Tipo                                  | Obrigatório    |                            Definição                                                                                                       |
 |:------------         |:-------------------------------------- |:-------------- |:------------------------------------------------------------------------------------------------------------------------------------------ |
-| name                 | string                                 | Sim            | Nomes das Tarifas cobradas sobre Serviços ofertados à Modalidade de direitos creditórios descontados, para pessoa física. (Campo Livre)    |
+| name                 | string                                 | Sim            | Nomes das Tarifas cobradas sobre Serviços ofertados à Modalidade de direitos creditórios descontados. (Campo Livre)    |
 | code                 | string                                 | Sim            | Sigla de identificação do serviço relacionado à Modalidade de direitos creditórios descontados, para pessoa física. Campo aberto           |
 | chargingTriggerInfo  | string                                 | Não            | Fatos geradores de cobrança que incidem sobre as Modalidades de direitos creditórios descontados, para pessoa física. Campo Livre          |
 | prices               | [[Price](#schemaPrice)]                | Sim            | Valor da mediana, relativa ao serviço ofertado, informado no período.                                                                      |
