@@ -390,13 +390,27 @@
 
 |Nome|Tipo|Obrigatório|Definição|
 |---|---|---|---|
-|name|string|Sim | Nome da Tarifa cobrada sobre Serviço que incide sobre Adiantamento a depositante, para pessoa jurídica.|
-|code|string|Sim | Sigla de identificação do serviço relacionado à Modalidade de Adiantamento a depositante, para pessoa jurídica.|
+|name|[Enum UnarrangedAccountOverdraftFeeName](#schemaUnarrangedAccountOverdraftFeeName)|Sim | Nome da Tarifa cobrada sobre Serviço que incide sobre Adiantamento a depositante, para pessoa jurídica.|
+|code|[Enum UnarrangedAccountOverdraftFeeCode](#schemaUnarrangedAccountOverdraftFeeCode)|Sim | Sigla de identificação do serviço relacionado à Modalidade de Adiantamento a depositante, para pessoa jurídica.|
 |chargingTriggerInfo|string|Sim | Fato gerador de cobrança que incide sobre a Modalidade de Adiantamento a depositante informada, para pessoa jurídica.|
 |prices|[[Price](#schemaPrice)]|Sim | Valor da mediana da tarifa, relativa ao serviço ofertado, informado no período.|
 |minimum|[MinimumPrice](#schemaMinimumPrice)|Sim | Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. |
 |maximum|[MaximumPrice](#schemaMaximumPrice)|Sim | Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. |
 |customers | [FeeServiceCustomer](#schemaFeeServiceCustomer) | Sim   |  Distribuição de frequência relativa aos clientes que pagaram valores de tarifas. |
+
+## Enum UnarrangedAccountOverdraftFeeName
+<a id="schemaUnarrangedAccountOverdraftFeeName"></a>
+
+|Nome     |Código         |
+|:--------|:--------------|
+|name     |CONCESSAO_ADIANTAMENTO_DEPOSITANTE|
+
+## Enum UnarrangedAccountOverdraftFeeCode
+<a id="schemaUnarrangedAccountOverdraftFeeCode"></a>
+
+|Nome     |Código         |
+|:--------|:--------------|
+|code     | ADIANT_DEPOSITANTE |
 
 ## UnarrangedAccountOverdraftRate
 
@@ -455,5 +469,5 @@
 
 |Nome |Tipo |Obrigatório |Definição|
 |---|---|---|---|
-|interval|[PriceIntervals](#schemaPriceInterval)|Sim| Segundo Normativa nº 32, BCB, de 2020: Distribuição de frequência relativa dos valores de tarifas cobradas dos clientes, de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana em cada uma dessas faixas. Informando: 1ª faixa de valor, 2ª faixa de valor, 3ª faixa de valor e 4ª faixa de valor|
+|interval|[Enum PriceIntervals](#schemaPriceInterval)|Sim| Segundo Normativa nº 32, BCB, de 2020: Distribuição de frequência relativa dos valores de tarifas cobradas dos clientes, de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana em cada uma dessas faixas. Informando: 1ª faixa de valor, 2ª faixa de valor, 3ª faixa de valor e 4ª faixa de valor|
 |rate|string |Sim| Percentual que corresponde a mediana da taxa efetiva cobrada do cliente pela contratação do serviço/produto, no intervalo informado. p.ex. '9,8700%' A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)|
