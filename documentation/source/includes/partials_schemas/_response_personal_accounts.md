@@ -632,9 +632,9 @@
 
 |Nome |Tipo | Obrigatório |Descrição |
 |---|---|---|---|
-|name|[Enum PriorityServiceName](#schemapriorityservicename)|Sim |Nome dos Serviços prioritários, segundo Resolução 3.919 do Bacen, para pessoa física.|
+|name|[Enum PriorityServiceName](#schemapriorityservicename)|Sim |Nome dos Serviços prioritários, segundo Resolução 3.919 do Bacen, para pessoa natural.|
 |code|[AccountPriorityServiceCode](#schemaaccountpriorityservicecode)|Sim |Sigla de identificação do Serviço Prioritário, segundo Resolução 3.919 do Bacen.|
-|chargingTriggerInfo|string|Sim |Fatos geradores de cobrança que incidem sobre os serviços prioritários, segundo Resolução 3.919 do Bacen, para pessoa física.|
+|chargingTriggerInfo|string|Sim |Fatos geradores de cobrança que incidem sobre os serviços prioritários, segundo Resolução 3.919 do Bacen, para pessoa natural.|
 |prices|[[Price](#schemaPrice)]|Sim |Valor da mediana da tarifa, relativa ao serviço ofertado, informado no período |
 |minimum|[MinimumPrice](#schemaMinimumPrice)|Sim |Valor mínimo apurado para a tarifa de serviços sobre a base de clientes no mês de referência |
 |maximum|[MaximumPrice](#schemaMaximumPrice)|Sim |Valor máximo apurado para a tarifa de serviços sobre a base de clientes no mês de referência|
