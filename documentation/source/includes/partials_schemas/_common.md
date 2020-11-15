@@ -17,7 +17,7 @@
 | totalRecords      | integer       | Número total de registros no resultado | Mandatório      |           |
 | totalPages        | integer       | Número total de páginas no resultado   | Mandatório      |           |
 
-## Enum PriceIntervals
+## Enum PriceInterval
 <a id="schemaPriceInterval"></a>
 
 | Nome         | Código           |
@@ -60,7 +60,7 @@
 
 |     Nome           |  Tipo                        |  Obrigatório |                            Descrição                |
 |:-------------------|:-----------------------------|:-------------|:----------------------------------------------------|
-| interval           | [PriceIntervals](#schemaPriceInterval) | Sim          | Segundo Normativa nº32 de 2020: Distribuição de frequência relativa dos valores de tarifas e taxas de juros cobrados dos clientes, de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana e o percentual de clientes em cada uma dessas faixas. Informado:1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes |
+| interval           | [Enum PriceInterval](#schemaPriceInterval) | Sim          | Segundo Normativa nº32 de 2020: Distribuição de frequência relativa dos valores de tarifas e taxas de juros cobrados dos clientes, de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana e o percentual de clientes em cada uma dessas faixas. Informado:1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes |
 | monthlyFee         | string                       | Sim          | Valor da mediana da tarifa, relativa ao serviço ofertado,informado no período, conforme Res nº32 BCB, 2020. p.ex. '45.00' (representa um valor monetário. p.ex: 1547368.92. Este valor, considerando que a moeda seja BRL, significa R$ 1.547.368,92. O único separador presente deve ser o '.' (ponto) para indicar a casa decimal. Não deve haver separador de milhar) |
 | currency           | [Currency](#schemacurrency)    | Sim          | Moeda referente ao valor do Pacote de serviços, segundo modelo ISO-4217.      |
 
@@ -267,7 +267,7 @@ Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial o
 
 |Nome|Tipo|Obrigatório|Definição|
 |---|---|---|---|
-| referentialRateIndexer|[Enum ReferentialRateIndexer](#schemareferentialrateorindexer)| Sim |Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial ou Indexador (Indx), do Documento 3040|
+| referentialRateIndexer|[ReferentialRateIndexer](#schemareferentialrateorindexer)| Sim |Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial ou Indexador (Indx), do Documento 3040|
 | rate|[RateString](#commonFieldRateString)| Sim |Percentual que incide sobre a composição das taxas de juros remuneratórios. (representa uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O valor '1 'representa 100%). A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)|
 
 ## Customer
@@ -288,7 +288,7 @@ Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial o
 
 |Nome     |Tipo    |Obrigatório|Definição  |
 |:--------|:-------|:----------|:-------------------------------------------------------------------------------|
-|frequency|[Frequency](#schemaFrequency)|Sim        | Segundo Normativa nº 32, BCB, de 2020: Distribuição de frequência relativa aos clientes que pagaram valores de tarifas , de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana e o percentual de clientes em cada uma dessas faixas. Informando:1ª faixa de cliente, 2ª faixa de cliente, 3ª faixa de cliente e 4ª faixa de cliente |
+|frequency|[Enum Frequency](#schemaFrequency)|Sim        | Segundo Normativa nº 32, BCB, de 2020: Distribuição de frequência relativa aos clientes que pagaram valores de tarifas , de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana e o percentual de clientes em cada uma dessas faixas. Informando:1ª faixa de cliente, 2ª faixa de cliente, 3ª faixa de cliente e 4ª faixa de cliente |
 |rate     |string                       |Sim        | Percentual dos clientes de cada faixa relativa ao serviço ofertado, para pessoa natural informado no período, conforme Res nº32, BCB, 2020. p.ex. '0.1500' (representa uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O valor '1 'representa 100%) A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)|
 
 ## Enum Frequency
