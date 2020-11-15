@@ -1,6 +1,6 @@
-## ResponseBusinessUnarrangedAccountOverdraftList
+## ResponseBusinessUnarrangedAccountOverdraft
 
-<a id="schemaResponseBusinessUnarrangedAccountOverdraftList"></a>
+<a id="schemaResponseBusinessUnarrangedAccountOverdraft"></a>
 
 ```json
 {

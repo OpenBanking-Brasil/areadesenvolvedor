@@ -1,5 +1,5 @@
-## ResponseBusinessAccountsList
-<a id="schemaResponseBusinessAccountsList"></a>
+## ResponseBusinessAccounts
+<a id="schemaResponseBusinessAccounts"></a>
 
 ```json
 {
