@@ -99,11 +99,11 @@ Cada atributo deverá estar associado a um tipo de dado. A lista de tipos de dad
 
 <b>Atributos Obrigatórios / Opcionais</b>
 
-Cada atributo definido deverá ter um status indicando se o mesmo é obrigatório ou opcional.
+Segundo Instrução Normativa nº 34, BCB de 2020: ‘Todos os elementos que compõem as especificações das APIs (endpoints, operações, parâmetros, propriedades de respostas etc.) devem ser explicitamente declarados como “Obrigatório”, “Opcional” ou “Condicional”, caso sejam obrigatórios apenas em certas condições’.
 
 Os atributos obrigatórios devem estar presentes e ter um valor não nulo, seja em uma requisição ou resposta, para que payload seja considerado válido.
 
-Os atributos opcionais podem ter uma restrição vinculada à eles, tornando-os obrigatórios conforme a situação descrita na coluna 'restrição' do dicionário de dados.
+Os atributos condicionais podem ter uma restrição vinculada a eles, tornando-os obrigatórios conforme a situação descrita na coluna 'restrição' do dicionário de dados.
 
 <b>Atributos vazios / nulos</b>
 

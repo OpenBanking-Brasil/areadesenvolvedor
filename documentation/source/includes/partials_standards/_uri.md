@@ -9,11 +9,12 @@ Os componentes desta estrutura de URI estão descritos abaixo:
 * **“open-banking”**: Esta é uma string constante que representa a finalidade desta API.
 * **API**: A API que será consumida (p.ex. channels).
 * **Versão**: O número da versão da API. Na URI a versão deve ser precedida pela letra "v" seguida pelo número da versão a ser consumida (p.ex. v1, v2, v25).
-* **Recurso**: O recurso a ser consumido dentro de uma API. Utilizando como exemplo a API `channels`, a mesma possui 4 recursos:
-	- banking-agents
+* **Recurso**: O recurso a ser consumido dentro de uma API. Utilizando como exemplo a API `channels`, a mesma possui 5 recursos:
     - branches
+    - banking-agents
     - electronic-channels
 	- phone-channels
+    - shared-automated-teller-machines
 
 A versão minor será repassada apenas no *header* do *payload* de resposta, orientando a instituição receptora sobre quais serão os dados no retorno.	
 		
