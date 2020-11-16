@@ -793,10 +793,38 @@
 
 |     Nome   |  Tipo  | Obrigatório     |    Definição   |
 |:---------- |:-------|:----------------|:-------------- |
-| name                | string                                | Sim | Nomes das Tarifas cobradas sobre Serviços relacionados à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa jurídica               |
-| code                | string                                | Sim | Fatos geradores de cobrança que incidem sobre as Modalidades de Contas de Pagamento Pós-Pagas informada, para pessoa jurídica.               |
+| name                | [Enum PersonalCreditCardFeesServiceName](#schemaEnumPersonalCreditCardFeesServiceName) | Sim         | Denominação de Serviços relacionados à Modalidade de Contas de Pagamento Pós-Pagas (Vide ENUM) |
+| code                | [Enum PersonalCreditCardFeesServiceCode](#schemaEnumPersonalCreditCardFeesServiceCode) | Sim         | Códigos de Serviços relacionados à Modalidade de Contas de Pagamento Pós-Pagas (Vide ENUM)               |
 | chargingTriggerInfo | string                                | Sim | Fatos geradores de cobrança que incidem sobre as Modalidades informadas de Contas de Pagamento Pós-Pagas para pessoa jurídica                  |
 | prices              | [[Price](#schemaPrice)]               | Sim | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa jurídica  |
 | minimum             | [[MinimumPrice](#schemaMinimumPrice)] | Sim | Valor mínimo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
 | maximum             | [[MaximumPrice](#schemaMaximumPrice)] | Sim | Valor máximo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type |
 | customers           | [[Customer](#schemaCustomer)]         | Sim |                                                                                              |
+
+### Enum PersonalCreditCardFeesServiceName
+<a id="schemaEnumPersonalCreditCardFeesServiceName"></a>
+
+| Propriedade                 | Código                                                  |
+|:----------------------------|:--------------------------------------------------------|
+| name                        | ANUIDADE_CARTAO_BASICO_NACIONAL                         |
+| name                        | ANUIDADE_CARTAO_BASICO_INTERNACIONAL                    |
+| name                        | UTILIZACAO_CANAIS_ATENDIMENTO_RETIRADA_ESPECIE_BRASIL   |
+| name                        | UTILIZACAO_CANAIS_ATENDIMENTO_RETIRADA_ESPECIE_EXTERIOR |
+| name                        | AVALIACAO_EMERGENCIAL_CREDITO                           |
+| name                        | FORNECIMENTO_SEGUNDA_VIA_FUNCAO_CREDITO                 |
+| name                        | PAGAMENTO_CONTAS_UTILIZANDO_FUNCAO_CREDITO              |
+| name                        | SMS                                                     |
+
+### Enum PersonalCreditCardFeesServiceCode
+<a id="schemaEnumPersonalCreditCardFeesServiceCode"></a>
+
+| Propriedade                 | Código                        |
+|:----------------------------|:------------------------------|
+| code                        | ANUIDADE_NACIONAL             |
+| code                        | ANUIDADE_INTERNACIONAL        |
+| code                        | SAQUE_CARTAO_BRASIL           |
+| code                        | SAQUE_CARTAO_EXTERIOR         |
+| code                        | AVALIACAO_EMERGENCIAL_CREDITO |
+| code                        | EMISSAO_SEGUNDA_VIA           |
+| code                        | TARIFA_PAGAMENTO_CONTAS       |
+| code                        | SMS                           |
