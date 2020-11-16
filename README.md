@@ -4,3 +4,8 @@
 
 # openbanking-febraban
 Repositório - Febraban para o Open Banking
+
+## Como contribuir?
+
+Se você precisa realizar manutenção ou acrescentar novas funcionalidades, por favor consulte o [guia de contribuição](CONTRIBUTING.md) deste projeto.
+
