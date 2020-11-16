@@ -63,7 +63,7 @@
 |Nome   |Tipo                                                                           |Obrigatório|Definição                                  |
 |:----- |:----------------------------------------------------------------------------- |---------- |------------------------------------------ |
 |data   |object                                                                         |Sim        |                                           |
-|» brand|[SharedAutomatedTellerMachinesBrand](#schemaSharedAutomatedTellerMachinesBrand)|Sim        |Nome da marca selecionada pela Organização.|
+|» brand|[SharedAutomatedTellerMachinesBrand](#schemaSharedAutomatedTellerMachinesBrand)|Não        |Nome da marca selecionada pela Organização.|
 |links  |[Links](#schemaLinksPaginated)                                                 |Sim        |                                           |
 |meta   |[Meta](#schemaMetaPaginated)                                                   |Sim        |                                           |
 
@@ -117,8 +117,8 @@
 
 |Nome     |Tipo                                                                                     |Obrigatório|Definição                                  |
 |:------- |:--------------------------------------------------------------------------------------- |:--------- |:----------------------------------------- |
-|name     |string                                                                                   |Sim        |Nome da marca selecionada pela Organização.|
-|companies|[[SharedAutomatedTellerMachinesCompanies](#schemaSharedAutomatedTellerMachinesCompanies)]|Sim        |Lista de instituições pertencentes à marca |
+|name     |string                                                                                   |Não        |Nome da marca selecionada pela Organização.|
+|companies|[[SharedAutomatedTellerMachinesCompanies](#schemaSharedAutomatedTellerMachinesCompanies)]|Não        |Lista de instituições pertencentes à marca |
 
 ## SharedAutomatedTellerMachinesCompanies
 <a id="schemaSharedAutomatedTellerMachinesCompanies"></a>
@@ -164,9 +164,9 @@
 
 ### Properties
 
-|Nome                         |Tipo                                                                   |Required|Description|
-|:--------------------------- |:--------------------------------------------------------------------- |:------ |:--------- |
-|sharedAutomatedTellerMachines|[[SharedAutomatedTellerMachines](#schemaSharedAutomatedTellerMachines)]|Sim     |           |
+|Nome                         |Tipo                                                                   |Obrigatório|
+|:--------------------------- |:--------------------------------------------------------------------- |:--------- |
+|sharedAutomatedTellerMachines|[[SharedAutomatedTellerMachines](#schemaSharedAutomatedTellerMachines)]|Não        |
 
 ## SharedAutomatedTellerMachines
 <a id="schemaSharedAutomatedTellerMachines"></a>
