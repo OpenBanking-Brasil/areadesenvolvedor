@@ -1,5 +1,5 @@
-## ResponseBusinessCreditCardsList
-<a id="schemaResponseBusinessCreditCardsList"></a>
+## ResponseBusinessCreditCards
+<a id="schemaResponseBusinessCreditCards"></a>
 
 ```json
 {
@@ -48,7 +48,13 @@
                     "maximum": {
                       "value": "string",
                       "currency": "string"
-                    }
+                    },
+                    "customers": [
+                      {
+                        "frequency": "string",
+                        "rate": "string"
+                      }
+                    ]
                   }
                 }
               ],
@@ -63,7 +69,19 @@
                     ]
                   ],
                   "minimumRate": "string",
-                  "maximumRate": "string"
+                  "maximumRate": "string",
+                  "fees": [
+                    {
+                      "referentialRateOrIndexer": "string",
+                      "rate": "string"
+                    }
+                  ],
+                  "customers": [
+                    {
+                      "frequency": "string",
+                      "rate": "string"
+                    }
+                  ]
                 },
                 "instalmentRate": {
                   "prices": [
@@ -75,22 +93,48 @@
                     ]
                   ],
                   "minimumRate": "string",
-                  "maximumRate": "string"
+                  "maximumRate": "string",
+                  "fees": [
+                    {
+                      "referentialRateOrIndexer": "string",
+                      "rate": "string"
+                    }
+                  ],
+                  "customers": [
+                    {
+                      "frequency": "string",
+                      "rate": "string"
+                    }
+                  ]
                 },
-                "interestRates": [{
-                  "code": "string",
-                  "additionalInfo": "string",
-                  "prices": [
-                    [
+                "interestRates": [
+                  {
+                    "code": "string",
+                    "additionalInfo": "string",
+                    "prices": [
+                      [
+                        {
+                          "interval": "string",
+                          "rate": "string"
+                        }
+                      ]
+                    ],
+                    "minimumRate": "string",
+                    "maximumRate": "string",
+                    "fees": [
                       {
-                        "interval": "string",
+                        "referentialRateOrIndexer": "string",
+                        "rate": "string"
+                      }
+                    ],
+                    "customers": [
+                      {
+                        "frequency": "string",
                         "rate": "string"
                       }
                     ]
-                  ],
-                  "minimumRate": "string",
-                  "maximumRate": "string"
-                }]
+                  }
+                ]
               },
               "termsConditions": {
                 "minimumFeeRate": "string",
@@ -173,7 +217,13 @@
                 "maximum": {
                   "value": "string",
                   "currency": "string"
-                }
+                },
+                "customers": [
+                  {
+                    "frequency": "string",
+                    "rate": "string"
+                  }
+                ]
               }
             }
           ],
@@ -188,7 +238,19 @@
                 ]
               ],
               "minimumRate": "string",
-              "maximumRate": "string"
+              "maximumRate": "string",
+              "fees": [
+                {
+                  "referentialRateOrIndexer": "string",
+                  "rate": "string"
+                }
+              ],
+              "customers": [
+                {
+                  "frequency": "string",
+                  "rate": "string"
+                }
+              ]
             },
             "instalmentRate": {
               "prices": [
@@ -200,7 +262,19 @@
                 ]
               ],
               "minimumRate": "string",
-              "maximumRate": "string"
+              "maximumRate": "string",
+              "fees": [
+                {
+                  "referentialRateOrIndexer": "string",
+                  "rate": "string"
+                }
+              ],
+              "customers": [
+                {
+                  "frequency": "string",
+                  "rate": "string"
+                }
+              ]
             },
             "interestRates": [{
               "code": "string",
@@ -214,7 +288,19 @@
                 ]
               ],
               "minimumRate": "string",
-              "maximumRate": "string"
+              "maximumRate": "string",
+              "fees": [
+                {
+                  "referentialRateOrIndexer": "string",
+                  "rate": "string"
+                }
+              ],
+              "customers": [
+                {
+                  "frequency": "string",
+                  "rate": "string"
+                }
+              ]
             }]
           },
           "termsConditions": {
@@ -280,7 +366,13 @@
             "maximum": {
               "value": "string",
               "currency": "string"
-            }
+            },
+            "customers": [
+              {
+                "frequency": "string",
+                "rate": "string"
+              }
+            ]
           }
         }
       ],
@@ -295,7 +387,19 @@
             ]
           ],
           "minimumRate": "string",
-          "maximumRate": "string"
+          "maximumRate": "string",
+          "fees": [
+            {
+              "referentialRateOrIndexer": "string",
+              "rate": "string"
+            }
+          ],
+          "customers": [
+            {
+              "frequency": "string",
+              "rate": "string"
+            }
+          ]
         },
         "instalmentRate": {
           "prices": [
@@ -307,7 +411,19 @@
             ]
           ],
           "minimumRate": "string",
-          "maximumRate": "string"
+          "maximumRate": "string",
+          "fees": [
+            {
+              "referentialRateOrIndexer": "string",
+              "rate": "string"
+            }
+          ],
+          "customers": [
+            {
+              "frequency": "string",
+              "rate": "string"
+            }
+          ]
         },
         "interestRates": [{
           "code": "string",
@@ -321,7 +437,19 @@
             ]
           ],
           "minimumRate": "string",
-          "maximumRate": "string"
+          "maximumRate": "string",
+          "fees": [
+            {
+              "referentialRateOrIndexer": "string",
+              "rate": "string"
+            }
+          ],
+          "customers": [
+            {
+              "frequency": "string",
+              "rate": "string"
+            }
+          ]
         }]
       },
       "termsConditions": {
@@ -335,12 +463,12 @@
 }
 ```
 
-|     Nome             |  Tipo                                                | Obrigatório    |    Definição                       |
-|:---------------------|:-----------------------------------------------------|:-------------- |:-----------------------------------|
-| name                 | string                                               | Sim            | Nome da instituição financeira     |
-| cnpjNumber           | string                                               | Sim            | CNPJ da instituição financeira     |
-| urlComplementaryList | string                                               | Não            | URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber |
-| businessCreditCards  | [[BusinessCreditCard](#schemaBusinessCreditCard)]  | Sim            | Lista  de cartões de crédito       |
+|     Nome             |  Tipo                                                | Obrigatório    | Restrição                                                                                                 |    Definição                                                                                       |
+|:---------------------|:-----------------------------------------------------|:-------------- |:--------------------------------------------------------------------------------------------------------- |:-------------------------------------------------------------------------------------------------- |
+| name                 | string                                               | Sim            |                                                                                                           | Nome da instituição financeira                                                                     |
+| cnpjNumber           | string                                               | Sim            |                                                                                                           | CNPJ da instituição financeira                                                                     |
+| urlComplementaryList | string                                               | Não            | Será obrigatoriamente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada. | URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber |
+| businessCreditCards  | [[BusinessCreditCard](#schemaBusinessCreditCard)]    | Sim            |                                                                                                           | Lista  de cartões de crédito                                                                       |
 
 ## BusinessCreditCard
 <a id="schemaBusinessCreditCard"></a>
@@ -382,7 +510,13 @@
         "maximum": {
           "value": "string",
           "currency": "string"
-        }
+        },
+        "customers": [
+          {
+            "frequency": "string",
+            "rate": "string"
+          }
+        ]
       }
     }
   ],
@@ -397,7 +531,19 @@
         ]
       ],
       "minimumRate": "string",
-      "maximumRate": "string"
+      "maximumRate": "string",
+      "fees": [
+        {
+          "referencialRateOrIndexer": "string",
+          "rate": "string"
+        }
+      ],
+      "customers": [
+        {
+          "frequency": "string",
+          "rate": "string"
+        }
+      ]
     },
     "instalmentRate": {
       "prices": [
@@ -409,7 +555,19 @@
         ]
       ],
       "minimumRate": "string",
-      "maximumRate": "string"
+      "maximumRate": "string",
+      "fees": [
+        {
+          "referentialRateOrIndexer": "string",
+          "rate": "string"
+        }
+      ],
+      "customers": [
+        {
+          "frequency": "string",
+          "rate": "string"
+        }
+      ]
     },
     "interestRates": [{
       "code": "string",
@@ -423,7 +581,19 @@
         ]
       ],
       "minimumRate": "string",
-      "maximumRate": "string"
+      "maximumRate": "string",
+      "fees": [
+        {
+          "referentialRateOrIndexer": "string",
+          "rate": "string"
+        }
+      ],
+      "customers": [
+        {
+          "frequency": "string",
+          "rate": "string"
+        }
+      ]
     }]
   },
   "termsConditions": {
@@ -441,8 +611,8 @@
 | identification        | [BusinessCreditCardIdentification](#schemaBusinessCreditCardIdentification)                     | Sim         | Informações de identificação do cartão de crédito                         |
 | rewardsProgram        | [BusinessCreditCardRewardProgram](#schemaBusinessCreditCardRewardProgram)     | Sim         | Informações sobre programas de recompensa presentes no cartão de crédito  |
 | fees                  | [BusinessCreditCardFee](#schemaBusinessCreditCardFee)                         | Sim         | Informações sobre tarifas cobradas sobre o produto e serviços             |
-| interest              | [BusinessCreditCardInterest](#schemaBusinessCreditCardInterest)       | Sim         | Informações sobre taxas de juros                                          |
-| termsConditions       | [BusinessCreditCardTermsConditions](#schemaBusinessCreditCardTermsConditions)   | Sim         | Informações sobre termos e condições para aquisição e cancelamento        |
+| interest              | [CreditCardInterest](#schemaCreditCardInterest)       | Sim         | Informações sobre taxas de juros                                          |
+| termsConditions       | [CreditCardTermsConditions](#schemaCreditCardTermsConditions)   | Sim         | Informações sobre termos e condições para aquisição e cancelamento        |
 
 
 ## BusinessCreditCardIdentification
@@ -456,7 +626,7 @@
   },
   "creditCard":{
     "network": "string",
-    "additionalInfo": "string",
+    "additionalInfo": "string"
   }
 }
 ```
@@ -514,14 +684,14 @@
 ```json
 {
   "network": "string",
-  "additionalInfo": "string",
+  "additionalInfo": "string"
 }
 ```
 
-|     Nome          |  Tipo        | Obrigatório    |    Definição                   |
-|:----------------- |:------------ |:-------------- |:------------------------------ |
-| network           | [Enum BusinessCreditCardBrandCode](#schemaEnumBusinessCreditCardBrandCode) | Sim            | Categoria de Bandeiras de Cartões. Bandeira é a detentora de todos os direitos e deveres da utilização da marca estampada no cartão, inclusive as bandeiras pertencentes aos emissores. Essas bandeiras estão definidas em documento do BACEN de nome 'Elaboração e Remessa de Informações Relativas aos Cartões de Pagamento  Emissores' |
-| additionalInfo    | string                                                                     | Sim            | Texto livre para especificar categoria de bandeira marcada como 'Outras' |
+|     Nome       |  Tipo                                                                     | Obrigatório |    Restrição                                                                                                                          |    Definição                                                                                                                                                                                                                                                                                                                                                                                                                       |
+|:-------------- |:------------------------------------------------------------------------- |:----------- |:------------------------------------------------------------------------------------------------------------------------------------- |:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| network        | [Enum BusinessCreditCardBrandCode](#schemaEnumBusinessCreditCardBrandCode)| Sim         |                                                                                                                                       | Categoria de Bandeiras de Cartões de Crédito (Instituidor do arranjo de pagamento). Bandeira é a detentora de todos os direitos e deveres da utilização da marca estampada no cartão, inclusive as bandeiras pertencentes aos emissores. p.ex. "American Express", "Diners Club" Essas bandeiras estão definidas em documento do BACEN de nome "Elaboração e Remessa de Informações Relativas aos Cartões de Pagamento  Emissores" |
+| additionalInfo | string                                                                    | Sim         | Se no campo 'network' vier selecionado o campo 'OUTRAS' é mandatório que esteja preenchido o 'additionalInfo' com o nome da bandeira. | Texto livre para especificar categoria de bandeira marcada como 'OUTRAS'                                                                                                                                                                                                                                                                                                                                                           |
 
 ### Enum BusinessCreditCardBrandCode
 <a id="schemaEnumBusinessCreditCardBrandCode"></a>
@@ -548,10 +718,10 @@
 }
 ```
 
-|     Nome            |  Tipo           | Obrigatório     |    Definição                                                                                                                                                  |
-|:--------------------|:--------------- |:--------------  |:------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| hasRewardProgram    | boolean         | Sim             | Indicador da existência de programa de fidelidade/recompensa associado à conta                                                                                |
-| rewardProgramInfo   | string          | Não             | Informações de termos e condições do programa de fidelidade/recompensa. Pode ser informada a URL referente ao endereço onde constam as condições informadas   |
+|     Nome            |  Tipo           | Obrigatório     |    Definição                                                                                                                                                |
+|:--------------------|:--------------- |:--------------  |:----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| hasRewardProgram    | boolean         | Sim             | Indicador da existência de programa de fidelidade/recompensa associado à conta de pagamento pós-paga (cartão) FALSO VERDADEIRO                              |
+| rewardProgramInfo   | string          | Não             | Informações de termos e condições do programa de fidelidade/recompensa. Pode ser informada a URL referente ao endereço onde constam as condições informadas |
 
 ## BusinessCreditCardFee
 <a id="schemaBusinessCreditCardFee"></a>
@@ -576,14 +746,20 @@
       "maximum": {
         "value": "string",
         "currency": "string"
-      }
+      },
+      "customers": [
+        {
+          "frequency": "string",
+          "rate": "string"
+        }
+      ]
   }
 }
 ```
 
-|     Nome    |  Tipo                                                               | Obrigatório     |    Definição                           |
-|:------------|:--------------------------------------------------------------------|:----------------|:-------------------------------------- |
-| services    | [[BusinessCreditCardService](#schemaBusinessCreditCardService)]     | Sim             | Informações de tarifas sobre serviços  |
+|     Nome   |  Tipo                                                               | Obrigatório     |    Definição                           |
+|:-----------|:--------------------------------------------------------------------|:----------------|:-------------------------------------- |
+| service    | [[BusinessCreditCardService](#schemaBusinessCreditCardService)]     | Sim             | Informações de tarifas sobre serviços  |
 
 ## BusinessCreditCardService
 <a id="schemaBusinessCreditCardService"></a>
@@ -607,162 +783,53 @@
   "maximum": {
     "value": "string",
     "currency": "string"
-  }
-}
-```
-
-|     Nome   |  Tipo  | Obrigatório     |    Definição   |
-|:---------- |:-------|:----------------|:-------------- |
-| name                | string                                | Sim | Nomes das Tarifas cobradas sobre Serviços relacionados à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa jurídica               |
-| code                | string                                | Sim | Fatos geradores de cobrança que incidem sobre as Modalidades de Contas de Pagamento Pós-Pagas informada, para pessoa jurídica.               |
-| chargingTriggerInfo | string                                | Sim | Fatos geradores de cobrança que incidem sobre as Modalidades inforrmadas de Contas de Pagamento Pós-Pagas para pessoa jurídica                  |
-| price               | [[Price](#schemaPrice)]               | Sim | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa jurídica  |
-| minimum             | [[MinimumPrice](#schemaMinimumPrice)] | Sim | Valor mínimo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
-| maximum             | [[MaximumPrice](#schemaMaximumPrice)] | Sim | Valor máximo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type |
-
-## BusinessCreditCardInterest
-<a id="schemaBusinessCreditCardInterest"></a>
-
-```json
-{
-  "feeRate": {
-    "prices": [
-      {
-        "interval": "string",
-        "rate": "string"
-      }
-    ],
-    "minimumRate": "string",
-    "maximumRate": "string"
   },
-  "instalmentRate": {
-    "prices": [
-      {
-        "interval": "string",
-        "rate": "string"
-      }
-    ],
-    "minimumRate": "string",
-    "maximumRate": "string"
-  },
-  "interestRates": [{
-    "code": "string",
-    "additionalInfo": "string",
-    "prices": [
-      {
-        "interval": "string",
-        "rate": "string"
-      }
-    ],
-    "minimumRate": "string",
-    "maximumRate": "string"
-  }]
-}
-```
-
-|     Nome       |  Tipo                       | Obrigatório      |    Definição                                                 |
-|:-------------- |:--------------------------- |:---------------- |:------------------------------------------------------------ |
-| feeRate        | [BusinessCreditCardFeeRate](#schemaBusinessCreditCardFeeRate)               | Sim | Percentual que corresponde a taxa aplicada para utilização de Crédito Rotativo              |
-| instalmentRate | [BusinessCreditCardInstalmentRate](#schemaBusinessCreditCardInstalmentRate) | Sim | Percentual que corresponde a taxa aplicada para pagamento parcelado do saldo devedor quando não realizado pagamento integral da fatura |
-| interestRates   | [BusinessCreditCardInterestRate](#schemaBusinessCreditCardInterestRate) | Sim | Percentual que corresponde a taxa aplicada para pagamento parcelado do saldo devedor quando não realizado pagamento integral da fatura |
-
-## BusinessCreditCardInterestRate
-<a id="schemaBusinessCreditCardInterestRate"></a>
-
-```json
-{
-  "code": "string",
-  "additionalInfo": "string",
-  "prices": [
+  "customers": [
     {
-      "interval": "string",
+      "frequency": "string",
       "rate": "string"
     }
-  ],
-  "minimumRate": "string",
-  "maximumRate": "string"
+  ]
 }
 ```
 
-|     Nome        |  Tipo                                                                                       | Obrigatório     |    Definição        |
-|:----------------|:--------------------------------------------------------------------------------------------|:----------------|:--------------------|
-| code            | [Enum BusinessCreditCardInterestRateCode](#schemaEnumBusinessCreditCardInterestRateCode) | Sim    | Lista de outras operações de crédito                                          |
-| additionalInfo  | string                                                                                       | Sim    | Campo Texto para descrever outras operações de crédito marcadas como 'Outros' |
-| prices           | [[Rate](#schemaRate)]               | Sim    | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa física  |
-| minimumRate     | String                              | Sim    | Percentual mínimo cobrado para a taxa do crédito rotativo no mês de referência                                                                  |
-| maximumRate     | String                              | Sim    | Percentual máximo cobrado para o pagamento parcelado do saldo devedor na fatura do mês de referência.                                           |
+|     Nome            |  Tipo                                                                                  | Obrigatório |    Definição   |
+|:------------------- |:---------------------------------------------------------------------------------------|:------------|:-------------- |
+| name                | [Enum BusinessCreditCardFeesServiceName](#schemaEnumBusinessCreditCardFeesServiceName) | Sim         | Denominação de Serviços relacionados à Modalidade de Contas de Pagamento Pós-Pagas (Vide ENUM) |
+| code                | [Enum BusinessCreditCardFeesServiceCode](#schemaEnumBusinessCreditCardFeesServiceCode) | Sim         | Códigos de Serviços relacionados à Modalidade de Contas de Pagamento Pós-Pagas (Vide ENUM)               |
+| chargingTriggerInfo | string                                                                                 | Sim         | Fatos geradores de cobrança que incidem sobre as Modalidades inforrmadas de Contas de Pagamento Pós-Pagas para pessoa jurídica                  |
+| price               | [[Price](#schemaPrice)]                                                                | Sim         | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa jurídica  |
+| minimum             | [[MinimumPrice](#schemaMinimumPrice)]                                                  | Sim         | Valor mínimo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type |
+| maximum             | [[MaximumPrice](#schemaMaximumPrice)]                                                  | Sim         | Valor máximo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type |
+| customers           | [[Customer](#schemaCustomer)]                                                          | Sim         ||
 
-### Enum BusinessCreditCardInterestRateCode
-<a id="schemaEnumBusinessCreditCardInterestRateCode"></a>
+### Enum BusinessCreditCardFeesServiceName
+<a id="schemaEnumBusinessCreditCardFeesServiceName"></a>
 
-| Propriedade                 | Código               | Definição        |
-|:----------------------------|:---------------------|:------------------- |
-| code                        | SAQUE_CREDITO        | Saque a crédito     |
-| code                        | PAGAMENTO_CONTA      | Pagamento de contas |
-| code                        | OUTROS               | Outros              |
+| Propriedade                 | Código                                                  |
+|:----------------------------|:--------------------------------------------------------|
+| name                        | ANUIDADE_CARTAO_BASICO_NACIONAL                         |
+| name                        | ANUIDADE_CARTAO_BASICO_INTERNACIONAL                    |
+| name                        | UTILIZACAO_CANAIS_ATENDIMENTO_RETIRADA_ESPECIE_BRASIL   |
+| name                        | UTILIZACAO_CANAIS_ATENDIMENTO_RETIRADA_ESPECIE_EXTERIOR |
+| name                        | AVALIACAO_EMERGENCIAL_CREDITO                           |
+| name                        | FORNECIMENTO_SEGUNDA_VIA_FUNCAO_CREDITO                 |
+| name                        | PAGAMENTO_CONTAS_UTILIZANDO_FUNCAO_CREDITO              |
+| name                        | SMS                                                     |
+
+### Enum BusinessCreditCardFeesServiceCode
+<a id="schemaEnumBusinessCreditCardFeesServiceCode"></a>
+
+| Propriedade                 | Código                        |
+|:----------------------------|:------------------------------|
+| code                        | ANUIDADE_NACIONAL             |
+| code                        | ANUIDADE_INTERNACIONAL        |
+| code                        | SAQUE_CARTAO_BRASIL           |
+| code                        | SAQUE_CARTAO_EXTERIOR         |
+| code                        | AVALIACAO_EMERGENCIAL_CREDITO |
+| code                        | EMISSAO_SEGUNDA_VIA           |
+| code                        | TARIFA_PAGAMENTO_CONTAS       |
+| code                        | SMS                           |
 
 
-## BusinessCreditCardFeeRate
-<a id="schemaBusinessCreditCardFeeRate"></a>
 
-```json
-{
-  "prices": [
-    {
-      "interval": "string",
-      "rate": "string",
-      "frequency": "string"
-    }
-  ],
-  "minimumRate" : "string",
-  "maximumRate" : "string"
-}
-```
-
-|     Nome                |  Tipo       | Obrigatório     |    Definição                                                                                                                                                          |
-|:------------------------|:------------|:----------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| prices                 [[Rate](#schemaRate)]                                                                 | Sim             | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa física  |
-| minimumRate     | String                                                                                      | Sim             | Percentual mínimo cobrado para a taxa do crédito rotativo no mês de referência                                                                |
-| maximumRate     | String                                                                                      | Sim             | Percentual máximo cobrado para o pagamento parcelado do saldo devedor na fatura do mês de referência.                                                                   |
-
-## BusinessCreditCardInstalmentRate
-<a id="schemaBusinessCreditCardInstalmentRate"></a>
-
-```json
-{
-  "prices": [
-    {
-      "interval": "string",
-      "rate": "string",
-      "frequency": "string"
-    }
-  ],
-  "minimumRate" : "string",
-  "maximumRate" : "string"
-}
-```
-
-|     Nome     |  Tipo       | Obrigatório     |    Definição        |
-|:------------ |:----------- |:--------------- |:------------------- |
-| prices        | [[Rate](#schemaRate)] | Sim    | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa física  |
-| minimumRate  | String                | Sim    | Percentual mínimo cobrado para a taxa do crédito rotativo no mês de referência                                                                  |
-| maximumRate  | String                | Sim    | Percentual máximo cobrado para o pagamento parcelado do saldo devedor na fatura do mês de referência.                                           |
-
-## BusinessCreditCardTermsConditions
-<a id="schemaBusinessCreditCardTermsConditions"></a>
-
-```json
-{
-  "minimumFeeRate": "string",
-  "additionalInfo": "string",
-  "elegibilityCriteriaInfo": "string",
-  "closingProcessInfo": "string"
-}
-```
-
-|     Nome                |  Tipo                                 | Obrigatório     |    Definição                                                                                                                                                          |
-|:------------------------|:------------                          |:----------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| minimumFeeRate          | [RateString](#commonFieldRateString)  | Sim             | Percentual para pagamento mínimo sobre o saldo devedor da fatura                                                                                                      |
-| additionalInfo          | string                                | Sim             | Campo aberto para detalhamento de taxas de juros                                                                                                                      |
-| elegibilityCriteriaInfo | string                                | Sim             | Informação sobre as condições e critérios de elegibilidade do emissor do cartão. Pode ser informada a URL referente ao endereço onde constam as condições informadas  |
-| closingProcessInfo      | string                                | Sim             | Descrição dos procedimentos para encerramento da conta pós paga. Pode ser informada a URL referente ao endereço onde constam as condições informadas                  |

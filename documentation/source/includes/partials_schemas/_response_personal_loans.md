@@ -1,5 +1,5 @@
-## ResponsePersonalLoansList
-<a id="schemaResponsePersonalLoansList"></a>
+## ResponsePersonalLoans
+<a id="schemaResponsePersonalLoans"></a>
 
 ```json
 {
@@ -40,6 +40,12 @@
               ],
               "interestRate": [
                 {
+                  "fees": [
+                    {
+                      "referentialRateOrIndexer": "string",
+                      "rate": "string",
+                    }
+                  ],
                   "applications": [
                     {
                       "interval": "string",
@@ -77,8 +83,8 @@
 |     Nome      |  Tipo                                                  | Obrigatório  |                            Definição                  |
 |:------------  |:---------------------------------                      |:-----------  |:----------------------------------------------------  |
 | data          | object                                                 | Sim          |                                                       |
-| » brand       | [PersonalLoanBrand](#schemaPersonalLoanBrand)      | Sim          | Organização titular das dependências                  |
-| links         | [LinksPaginated](#schemaLinksPaginated)              | Sim          |                                                       |
+|   brand       | [PersonalLoanBrand](#schemaPersonalLoanBrand)          | Sim          | Organização titular das dependências                                            |
+| links         | [LinksPaginated](#schemaLinksPaginated)                | Sim          |                                                       |
 | meta          | [MetaPaginated](#schemaMetaPaginated)                  | Sim          |                                                       |
 
 ## PersonalLoanBrand
@@ -121,6 +127,12 @@
           ],
           "interestRate": [
             {
+              "fees": [
+                {
+                  "referentialRateOrIndexer": "string",
+                  "rate": "string",
+                }
+              ],
               "applications": [
                 {
                   "interval": "string",
@@ -184,6 +196,12 @@
       ],
       "interestRate": [
         {
+          "fees": [
+            {
+              "referentialRateOrIndexer": "string",
+              "rate": "string",
+            }
+          ],
           "applications": [
             {
               "interval": "string",
@@ -203,12 +221,12 @@
 }
 ```
 
-|     Nome             |  Tipo                               | Obrigatório |                            Definição                                                                                                                                                                                               |
-|:------------         |:---------------------------------   |:----------- |:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| name                 | string                              | Sim         | Nome da Instituição, pertencente à marca, responsável pela comercialização das modalidades de Empréstimos para Pessoas Físicas consultadas.                                                                                        |
-| cnpjNumber           | string                              | Sim         | O responsável pela comercialização das modalidades de Empréstimos para Pessoas Físicas consultadas - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. Deve-se ter apenas os números do CNPJ, sem máscara. |
-| urlComplementaryList | [URIString](#commonFieldURIString)  | Sim         | URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços.                                            |
-| personalLoans        | [PersonalLoan](#schemaPersonalLoan) | Sim         | Empréstimos Pessoas Físicas                                                                                                                                                                                                        |
+|     Nome             |  Tipo                               | Obrigatório |                            Definição                                                                                                                                                                                               |  Restrição                                                                                              |
+|:------------         |:---------------------------------   |:----------- |:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |:--------------------------------------------------------------------------------------------------------|
+| name                 | string                              | Sim         | Nome da Instituição, pertencente à marca, responsável pela comercialização das modalidades de Empréstimos para Pessoas Físicas consultadas.                                                                                        |                                                                                                         | 
+| cnpjNumber           | string                              | Sim         | O responsável pela comercialização das modalidades de Empréstimos para Pessoas Físicas consultadas - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. Deve-se ter apenas os números do CNPJ, sem máscara. |                                                                                                         |
+| urlComplementaryList | [URIString](#commonFieldURIString)  | Não         | URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços.                                            | Será obrigatorimente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada |
+| personalLoans        | [PersonalLoan](#schemaPersonalLoan) | Sim         | Empréstimos Pessoas Físicas                                                                                                                                                                                                        |                                                                                                         |
 
 ## PersonalLoan
 <a id="schemaPersonalLoan"></a>
@@ -242,6 +260,12 @@
   ],
   "interestRate": [
     {
+      "fees": [
+        {
+          "referentialRateOrIndexer": "string",
+          "rate": "string",
+        }
+      ],
       "applications": [
         {
           "interval": "string",
@@ -261,11 +285,11 @@
 
 |     Nome            |  Tipo                                                       | Obrigatório  |                            Definição                         |
 |:------------        |:---------------------------------                           |:-----------  |:----------------------------------------------------         |
-| type                | [Enum PersonalLoanType](#schemaEnumPersonalLoanType)     | Sim          | Modalidades de empréstimos ofertados para pessoas Físicas, conforme Circular <a href='https://www.bcb.gov.br/pre/normativos/busca/downloadNormativo.asp?arquivo=/Lists/Normativos/Attachments/51025/Circ_4015_v1_O.pdf' target="_blank">4015-Bacem</a>|
+| type                | [Enum PersonalLoanType](#schemaEnumPersonalLoanType)     | Sim          | Modalidades de empréstimos ofertados para pessoas Físicas, conforme Circular <a href='https://www.bcb.gov.br/pre/normativos/busca/downloadNormativo.asp?arquivo=/Lists/Normativos/Attachments/51025/Circ_4015_v1_O.pdf' target="_blank">4015-Bacen</a>|
 | fees                | [LoanFee](#schemaLoanFee)                               | Sim          | Tarifas cobradas sobre Serviços ofertados à Modalidade de Empréstimo                                                                                                                                                                                  |
 | interestRate       | [LoanInterestRate](#schemaLoanInterestRate)             | Sim          | Taxas de juros remuneratórias                                                                                                                                                                                                                         |
-| requiredWarranties  | [Enum RequiredWarranty](#schemaEnumRequiredWarranty)  | Sim          | Relação de garantias exigidas, segundo documento <a href='https://www.bcb.gov.br/estabilidadefinanceira/scrdoc3040' target="_blank">3040 do Bacem</a>                                                                                                 |
-| termsConditions     | string                                                      | Não          | Campo aberto para informar as condições contratuais relativas ao produto ou serviço informado. Pode ser informada a URL ([URIString](#commonFieldURIString)) referente ao endereço onde constam as condições informadas.   |
+| requiredWarranties  | [Enum RequiredWarranty](#schemaEnumRequiredWarranty)  | Sim          | Relação de garantias exigidas, segundo documento <a href='https://www.bcb.gov.br/estabilidadefinanceira/scrdoc3040' target="_blank">3040 do Bacen</a>                                                                                                 |
+| termsConditions     | string                                                      | Sim          | Campo aberto para informar as condições contratuais relativas ao produto ou serviço informado. Pode ser informada a URL ([URIString](#commonFieldURIString)) referente ao endereço onde constam as condições informadas.   |
 
 ### Enum PersonalLoanType
 <a id="schemaEnumPersonalLoanType"></a>
@@ -330,9 +354,9 @@
 ```
 |     Nome            |  Tipo                                           | Obrigatório  |                            Definição                         | Restrições
 |:------------        |:---------------------------------               |:-----------  |:----------------------------------------------------         | :------
-| name         | string                                          | Sim          | Nomes das Tarifas cobradas sobre Serviços relacionados à Modalidade informada do Empréstimo para pessoa física/jurídica.    | NA
-| code         | string                                          | Sim          | Sigla de identificação do serviço relacionado à Modalidade informada de Empréstimo para pessoa física/jurídica.             | NA
-| chargingTriggerInfo | string                                          | Sim          | Fatos geradores de cobrança que incidem sobre as Modalidades informada de Empréstimos para pessoa física/jurídica.        | NA
+| name         | string                                          | Sim          | Nomes das Tarifas cobradas sobre Serviços relacionados à Modalidade informada do Empréstimo para pessoa natural/jurídica.    | NA
+| code         | string                                          | Sim          | Sigla de identificação do serviço relacionado à Modalidade informada de Empréstimo para pessoa natural/jurídica.             | NA
+| chargingTriggerInfo | string                                          | Sim          | Fatos geradores de cobrança que incidem sobre as Modalidades informada de Empréstimos para pessoa natural/jurídica.        | NA
 | prices               | [Price](#schemaPrice)                         | Sim          | Valor da mediana da tarifa, relativa ao serviço ofertado, informado no período.                                                       | NA
 | minimum             | [MinimumPrice](#schemaMinimumPrice)           | Sim          | Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. | NA
 | maximum             | [MaximumPrice](#schemaMaximumPrice)           | Sim          | Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. | NA
@@ -342,6 +366,12 @@
 
 ```json
 {
+  "fees": [
+    {
+      "referentialRateIndexer": "string",
+      "rate": "string"
+    }
+  ],
   "applications": [
     {
       "interval": "string",
@@ -355,6 +385,7 @@
 
 | Nome                | Tipo                                            | Obrigatório | Definição                                                 |
 |:----------------    |:------                                          |:----------- |:-------------------------------                           |
+| fees            | [FeeReferentialRateIndexer](#schemaFeeReferentialRateIndexer)    | Sim            | Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial ou Indexador (Indx), do Documento 3040 |
 | applications        | [Application](#schemaApplication)                         | Sim          | Valor da mediana da taxa de remuneração relativa ao serviço ofertado.                                                       | 
 | minimumRate         | string     | Sim          | Percentual mínimo cobrado (taxa efetiva) no mês de referência, para o Empréstimo contratado. A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%) | 
 | maximumRate         | string     | Sim          | Percentual máximo cobrado (taxa efetiva) no mês de referência, para o Empréstimo contratado. A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%) | 
