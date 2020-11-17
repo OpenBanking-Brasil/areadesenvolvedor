@@ -146,7 +146,7 @@
 |:------------         |:---------------------------------       |:----------- |:------------------------------------------------------------------------------------------------------------------------------------------------ |
 | name                 | string                                  | Sim         | Nome da Instituição, pertencente à organização, responsável pelo Canal Telefônico. Ex. 'Empresa da Organização A'.                               |
 | cnpjNumber           | string                                  | Sim         | CNPJ da instituição  responsável pelo canal de atendimento telefônico - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica.|
-| urlComplementaryList | string                                  | Não         | URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber                                               |
+| urlComplementaryList | string                                  | Não         | Se aplicável informar: URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. Endereço eletrônico de acesso ao canal. URLs são limitadas a 2048 caracteres mas, para o contexto do Sistema Financeiro aberto, será adotado a metade deste tamanho. p.ex. 'https://example.com/mobile-banking'                                               |
 | phoneChannels        | [[PhoneChannels](#schemaPhoneChannels)] | Sim         | Lista de canais de atendimento telefônico.                                                                                                       |
 
 ## PhoneChannels
@@ -196,15 +196,15 @@
       "number": "string",
       "additionalInfo": "string"
     }
-  ],
+  ]
 }
 ```
 
 |     Nome        |  Tipo                                                   | Obrigatório |                            Definição                                                  | Restrições                           |
 |:------------    |:---------------------------------                       |:----------- |:--------------------------------------------------                                    |:------------------------------------ |
 | type            | [Enum PhoneChannelsType](#schemaPhoneChannelsType)      | Sim         | Tipo de canal telefônico de atendimento.                                              |  O Tipo de Canal determina o Tipo de Acesso a ele relacionado:  telefone da central, telefone do SAC, telefone da ouvidoria. |
-| additionalInfo  | string                                                  | Não         | Campo de texto livre para descrever quando o tipo de canal de atendimento for Outros  | Só será preenchido quando o tipo de canal de atendimento for Outros |
-| phones          | [[PhoneChannelsPhones](#schemaPhoneChannelsPhones)]    | Não         | Telefones de contato com o canal de atendimento.                                      |   |
+| additionalInfo  | string                                                  | Não         | Texto livre para complementar informação relativa ao Serviço disponível, quando for selecionada a opção p preenchida a opção 'OUTROS_PRODUTOS_SERVICOS'  | Só será preenchido quando o tipo de canal de atendimento for Outros |
+| phones          | [[PhoneChannelsPhones](#schemaPhoneChannelsPhones)]]    | Não         | Telefones de contato com o canal de atendimento.                                      |   |
 
 ### Enum PhoneChannelsType
 <a id="schemaPhoneChannelsType"></a>
