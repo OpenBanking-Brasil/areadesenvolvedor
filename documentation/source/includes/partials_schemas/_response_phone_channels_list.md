@@ -19,7 +19,7 @@
                   "additionalInfo": "string",
                   "phones": [
                     {
-                      "countryCode": "string",
+                      "countryCallingCode": "string",
                       "areaCode": "string",
                       "number": "string",
                       "additionalInfo": "string"
@@ -80,7 +80,7 @@
             "additionalInfo": "string",
             "phones": [
               {
-                "countryCode": "string",
+                "countryCallingCode": "string",
                 "areaCode": "string",
                 "number": "string",
                 "additionalInfo": "string"
@@ -122,7 +122,7 @@
         "additionalInfo": "string",
         "phones": [
           {
-            "countryCode": "string",
+            "countryCallingCode": "string",
             "areaCode": "string",
             "number": "string",
             "additionalInfo": "string"
@@ -159,7 +159,7 @@
     "additionalInfo": "string",
     "phones": [
       {
-        "countryCode": "string",
+        "countryCallingCode": "string",
         "areaCode": "string",
         "number": "string",
         "additionalInfo": "string"
@@ -191,7 +191,7 @@
   "additionalInfo": "string",
   "phones": [
     {
-      "countryCode": "string",
+      "countryCallingCode": "string",
       "areaCode": "string",
       "number": "string",
       "additionalInfo": "string"
@@ -221,7 +221,7 @@
 
 |     Nome        |  Tipo  | Obrigatório |     Definição                                                                     |
 |:---------       |:------ |:----------- |:-------------------------                                                         |
-| countryCode     | string | Não         | DDI.                                                                              |
+| countryCallingCode     | string | Não         | DDI.                                                                              |
 | areaCode        | string | Não         | DDD.                                                                              |
 | number          | string | Sim         | Telefone para contato com o canal.                                                |
 | additionalInfo  | string | Não         | Mensagem complementar necessária para o agrupamento da identificação do telefone. |
