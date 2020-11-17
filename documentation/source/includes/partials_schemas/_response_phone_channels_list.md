@@ -196,14 +196,14 @@
 |:------------    |:---------------------------------                       |:----------- |:--------------------------------------------------                                    |:------------------------------------ |
 | type            | [Enum PhoneChannelsType](#schemaPhoneChannelsType)      | Sim         | Tipo de canal telefônico de atendimento.                                              |  O Tipo de Canal determina o Tipo de Acesso a ele relacionado:  telefone da central, telefone do SAC, telefone da ouvidoria. |
 | additionalInfo  | string                                                  | Não         | Campo de texto livre para descrever quando o tipo de canal de atendimento for Outros  | Só será preenchido quando o tipo de canal de atendimento for Outros |
-| phones          | [[PhoneChannelsPhones](#schemaPhoneChannelsPhones)]]    | Não         | Telefones de contato com o canal de atendimento.                                      |   |
+| phones          | [[PhoneChannelsPhones](#schemaPhoneChannelsPhones)]    | Não         | Telefones de contato com o canal de atendimento.                                      |   |
 
 ### Enum PhoneChannelsType
 <a id="schemaPhoneChannelsType"></a>
 
 |     Propriedade  | Código                      |                            Definição                            |
 |:------------     |:--------------------------- |:--------------------------------------------------------------  |
-| type             | CENTRAL_TELEFONICA_BANKING  | Central telefônica banking.                                     |
+| type             | CENTRAL_TELEFONICA  | Central telefônica banking.                                     |
 | type             | SAC                         | SAC.                                                            |
 | type             | OUVIDORIA                   | Ouvidoria.                                                      |
 | type             | OUTROS                      | Outros.                                                         |
