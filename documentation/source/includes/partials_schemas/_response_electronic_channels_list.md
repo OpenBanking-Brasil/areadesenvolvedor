@@ -182,11 +182,11 @@
 ## ElectronicChannelsServices
 <a id="schemaElectronicChannelsServices"></a>
 
-|     Nome         |  Tipo                                                                              | Obrigatório |                            Definição               |
-|:------------     |:---------------------------------------------------------------------------------  |:----------- |:-------------------------------------------------- |
-| name             | [Enum ElectronicChannelsServicesName](#schemaEnumElectronicChannelsServicesName) | Sim         | Nome dos Serviços efetivamente prestados pelo Canal de Atendimento. |
-| code             | [Enum ElectronicChannelsServicesCode](#schemaEnumElectronicChannelsServicesCode) | Sim         | Código dos Serviços efetivamente prestados pelo Canal de Atendimento. |
-| additionalInfo   | string                                                                           | Não         | Descrição adicional sobre os serviços prestados.    |
+|     Nome         |  Tipo                                                                              | Obrigatório |                            Definição               | Restrições             |
+|:------------     |:---------------------------------------------------------------------------------  |:----------- |:-------------------------------------------------- | :---------------------- |
+| name             | [Enum ElectronicChannelsServicesName](#schemaEnumElectronicChannelsServicesName) | Sim         | Nome dos Serviços efetivamente prestados pelo Canal de Atendimento. |  |
+| code             | [Enum ElectronicChannelsServicesCode](#schemaEnumElectronicChannelsServicesCode) | Sim         | Código dos Serviços efetivamente prestados pelo Canal de Atendimento. |  |
+| additionalInfo   | string                                                                           | Não         | Texto livre para complementar informação relativa ao Serviço disponível, quando for selecionada a opção p preenchida a opção 'OUTROS_PRODUTOS_SERVICOS' | Só será preenchido quando o tipo de serviço for OUTROS_PRODUTOS_SERVICOS |
 
 ### Enum ElectronicChannelsServicesName
 <a id="schemaEnumElectronicChannelsServicesName"></a>
