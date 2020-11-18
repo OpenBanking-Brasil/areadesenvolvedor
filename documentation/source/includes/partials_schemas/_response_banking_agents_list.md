@@ -31,12 +31,14 @@
                         "postCode": "string"
                       }
                     ],
-                    "services": {
-                      "codes": [
-                        "string"
-                      ],
-                      "additionalInfo": "string"
-                    }
+                    "services": [
+                      {
+                        "codes": [
+                          "string"
+                        ],
+                        "additionalInfo": "string"
+                      }
+                    ]
                   }
                 ]
               }
@@ -97,12 +99,14 @@
                   "postCode": "string"
                 }
               ],
-              "services": {
-                "codes": [
-                  "string"
-                ],
-                "additionalInfo": "string"
-              }
+              "services": [
+                {
+                  "codes": [
+                    "string"
+                  ],
+                  "additionalInfo": "string"
+                }
+              ]
             }
           ]
         }
@@ -144,12 +148,14 @@
               "postCode": "string"
             }
           ],
-          "services": {
-            "codes": [
-              "string"
-            ],
-            "additionalInfo": "string"
-          }
+          "services": [
+            {
+              "codes": [
+                "string"
+              ],
+              "additionalInfo": "string"
+            }
+          ]
         }
       ]
     }
@@ -187,12 +193,14 @@
           "postCode": "string"
         }
       ],
-      "services": {
-        "codes": [
-          "string"
-        ],
-        "additionalInfo": "string"
-      }
+      "services": [
+        {
+          "codes": [
+            "string"
+          ],
+          "additionalInfo": "string"
+        }
+      ]
     }
   ]
 }
@@ -223,12 +231,14 @@
       "postCode": "string"
     }
   ],
-  "services": {
-    "codes": [
-      "string"
-    ],
-    "additionalInfo": "string"
-  }
+  "services": [
+    {
+      "codes": [
+        "string"
+      ],
+      "additionalInfo": "string"
+    }
+  ]
 }
 ```
 
@@ -236,7 +246,7 @@
 |:---- |:---|:---|:---|:---|
 | identification |[BankingAgentsIdentification](#schemaBankingAgentsIdentification)|Sim|Dados de identificação do correspondente.|
 | postalAddresses |[BankingAgentsPostalAddress](#schemaBankingAgentsPostalAddress)|Sim|Endereço do correspondente.|
-| services |[BankingAgentsServices](#schemaBankingAgentsServices)|Sim|Serviços fornecidos pelo correspondente.|
+| services |[[BankingAgentsService](#schemaBankingAgentsService)]|Sim|Serviços fornecidos pelo correspondente.|
 
 ## BankingAgentsIdentification
 <a id="schemaBankingAgentsIdentification"></a>
@@ -276,8 +286,8 @@
 | countrySubDivision | string | Sim         | Estado.                                                       |
 | postCode           | string | Sim         | CEP.                                                          |                                                       
 
-## BankingAgentsServices
-<a id="schemaBankingAgentsServices"></a>
+## BankingAgentsService
+<a id="schemaBankingAgentsService"></a>
 
 ```json
 {
