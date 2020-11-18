@@ -156,6 +156,7 @@
 ```json
 {
   "address": "string",
+  "additionalInfo": "string",
   "districtName": "string",
   "townName": "string",
   "countrySubDivision": "string",
@@ -163,13 +164,14 @@
 }
 ```
 
-|Nome              |Tipo  |Obrigatório|Descrição                                                                |
-|:---------------- |:---- |:----------|:------------------------------------------------------------------------|
-|address           |string|Sim        |Informação referente ao endereço do terminal compartilhado de atendimento|
-|districtName      |string|Sim        |Bairro                                                                   |
-|townName          |string|Sim        |Cidade                                                                   |
-|countrySubDivision|string|Sim        |Estado                                                                   |
-|postCode          |string|Sim        |CEP                                                                      |
+|Nome              |Tipo  |Obrigatório|Descrição                        |
+|:---------------- |:---- |:----------|:--------------------------------|
+|address           |string|Sim        |Informação referente ao endereço |
+|additionalInfo    |string|Não        |Complemento                      |
+|districtName      |string|Sim        |Bairro                           |
+|townName          |string|Sim        |Cidade                           |
+|countrySubDivision|string|Sim        |Estado                           |
+|postCode          |string|Sim        |CEP                              |
 
 ## Availability
 <a id="schemaAvailability"></a>

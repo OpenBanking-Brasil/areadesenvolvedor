@@ -15,10 +15,18 @@
               },
               "address": {
                 "address": "string",
+                "additionalInfo": "string",
                 "districtName": "string",
                 "townName": "string",
+                "ibgeCode": "string",
                 "countrySubDivision": "string",
-                "postCode": "string"
+                "postCode": "string",
+                "country": "string",
+                "countryCode": "string",
+                "geographicCoordinates": {
+                  "latitude": "string",
+                  "longitude": "string"
+                }
               },
               "availability": {
                 "standards": [
@@ -34,13 +42,15 @@
               "services": [
                 {
                   "name": "string",
-                  "code": "string"
+                  "code": "string",
+                  "additionalInfo": "string"
                 }
               ]
             }
           ],
           "name": "string",
-          "cnpjNumber": "string"
+          "cnpjNumber": "string",
+          "urlComplementaryList": "string"
         }
       ]
     }
@@ -83,10 +93,18 @@
           },
           "address": {
             "address": "string",
+            "additionalInfo": "string",
             "districtName": "string",
             "townName": "string",
+            "ibgeCode": "string",
             "countrySubDivision": "string",
-            "postCode": "string"
+            "postCode": "string",
+            "country": "string",
+            "countryCode": "string",
+            "geographicCoordinates": {
+              "latitude": "string",
+              "longitude": "string"
+            }
           },
           "availability": {
             "standards": [
@@ -102,13 +120,15 @@
           "services": [
             {
               "name": "string",
-              "code": "string"
+              "code": "string",
+              "additionalInfo": "string"
             }
           ]
         }
       ],
       "name": "string",
-      "cnpjNumber": "string"
+      "cnpjNumber": "string",
+      "urlComplementaryList": "string"
     }
   ]
 }
@@ -132,10 +152,18 @@
       },
       "address": {
         "address": "string",
+        "additionalInfo": "string",
         "districtName": "string",
         "townName": "string",
+        "ibgeCode": "string",
         "countrySubDivision": "string",
-        "postCode": "string"
+        "postCode": "string",
+        "country": "string",
+        "countryCode": "string",
+        "geographicCoordinates": {
+          "latitude": "string",
+          "longitude": "string"
+        }
       },
       "availability": {
         "standards": [
@@ -151,22 +179,27 @@
       "services": [
         {
           "name": "string",
-          "code": "string"
+          "code": "string",
+          "additionalInfo": "string"
         }
       ]
     }
   ],
   "name": "string",
-  "cnpjNumber": "string"
+  "cnpjNumber": "string",
+  "urlComplementaryList": "string"
 }
 
 ```
 
 ### Properties
 
-|Nome                         |Tipo                                                                   |Obrigatório|
-|:--------------------------- |:--------------------------------------------------------------------- |:--------- |
-|sharedAutomatedTellerMachines|[[SharedAutomatedTellerMachines](#schemaSharedAutomatedTellerMachines)]|Não        |
+|Nome                         |Tipo                                                                   |Obrigatório| Descrição                                                                                                                                                   |
+|:--------------------------- |:--------------------------------------------------------------------- |:--------- |:----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|sharedAutomatedTellerMachines|[[SharedAutomatedTellerMachines](#schemaSharedAutomatedTellerMachines)]|Não        |                                                                                                                                                             |
+|name                         |string                                                                 |Não        | Nome da Instituição, pertencente à Marca.                                                                                                                   |
+|cnpjNumber                   |string                                                                 |Não        | Número completo do CNPJ da instituição.                                                                                                                     |
+|urlComplementaryList         |string                                                                 |Não        | URL de link para lista complementar com os nomes e CNPJs agrupados para o caso instituições ofertantes de produtos e serviços com as mesmas características.|
 
 ## SharedAutomatedTellerMachines
 <a id="schemaSharedAutomatedTellerMachines"></a>
@@ -178,10 +211,18 @@
   },
   "address": {
     "address": "string",
+    "additionalInfo": "string",
     "districtName": "string",
     "townName": "string",
+    "ibgeCode": "string",
     "countrySubDivision": "string",
-    "postCode": "string"
+    "postCode": "string",
+    "country": "string",
+    "countryCode": "string",
+    "geographicCoordinates": {
+      "latitude": "string",
+      "longitude": "string"
+    }
   },
   "availability": {
     "standards": [
@@ -197,7 +238,8 @@
   "services": [
     {
       "name": "string",
-      "code": "string"
+      "code": "string",
+      "additionalInfo": "string"
     }
   ]
 }
@@ -209,7 +251,7 @@
 |Nome          |Tipo                                                                                             |Obrigatório|Description                                                      |
 |:------------ |:----------------------------------------------------------------------------------------------- |:--------- |:--------------------------------------------------------------- |
 |identification|[SharedAutomatedTellerMachinesIdentification](#schemaSharedAutomatedTellerMachinesIdentification)|Não        |                                                                 |
-|address       |[PostalAddress](#schemaPostalAddress)                                                            |Não        |                                                                 |
+|address       |[PostalAddress](#schemaSharedAutomatedTellerMachinesPostalAddress)                                                            |Não        |                                                                 |
 |availability  |[Availability](#schemaAvailability)                                                              |Não        |                                                                 |
 |services      |[[SharedAutomatedTellerMachinesServices](#schemaSharedAutomatedTellerMachinesServices)]          |Não        |                                                                 |
 
@@ -225,20 +267,66 @@
 |:------- |:---- |:--------- |:--------------------------------------------------------------- |
 |ownerName|string|Não        |Nome do proprietário do terminal de Autoatendimento Compartilhado|
 
+## SharedAutomatedTellerMachinesPostalAddress
+<a id="schemaSharedAutomatedTellerMachinesPostalAddress"></a>
+
+```json
+{
+  "address": "string",
+  "additionalInfo": "string",
+  "districtName": "string",
+  "townName": "string",
+  "ibgeCode": "string",
+  "countrySubDivision": "string",
+  "postCode": "string",
+  "country": "string",
+  "countryCode": "string",
+  "geographicCoordinates": {
+    "latitude": "string",
+    "longitude": "string"
+  }
+}
+```
+
+|Nome                 |Tipo                                                 |Obrigatório|Descrição                                                                        |
+|:------------------- |:--------------------------------------------------- |:----------|:------------------------------------------------------------------------------- |
+|address              |string                                               |Não        |Informação referente ao endereço da máquina compartilhada de autoatendimento     |
+|additionalInfo       |string                                               |Não        |Complemento                                                                      |
+|districtName         |string                                               |Não        |Bairro                                                                           |
+|townName             |string                                               |Não        |Cidade                                                                           |
+|ibgeCode             |string                                               |Não        |Código IBGE do município                                                         |
+|countrySubDivision   |string                                               |Não        |Estado                                                                           |
+|postCode             |string                                               |Não        |CEP                                                                              |
+|country              |string                                               |Não        |País                                                                             |
+|countryCode          |string                                               |Não        |Código do país                                                                   |
+|geographicCoordinates|[GeographicCoordinates](#schemaGeographicCoordinates)|Não        |Informação referente a geolocalização da máquina compartilhada de autoatendimento|
+
+## GeographicCoordinates
+<a id="schemaGeographicCoordinates"></a>
+
+```json
+{
+  "latitude": "string",
+  "longitude": "string"
+}
+```
+
 ## SharedAutomatedTellerMachinesServices
 <a id="schemaSharedAutomatedTellerMachinesServices"></a>
 
 ```json
 {
   "name": "string",
-  "code": "string"
+  "code": "string",
+  "additionalInfo": "string"
 }
 ```
 
-|Nome|Tipo                                                                                                      |Obrigatório|Descrição                                  |
-|:-- |:-------------------------------------------------------------------------------------------------------- |:--------- |:----------------------------------------- |
-|name|[[Enum SharedAutomatedTellerMachinesServicesNames](#schemaEnumSharedAutomatedTellerMachinesServicesNames)]|Não        |Lista com os nomes de serviços prestados.  |
-|code|[[Enum BankingAgentsServicesCodes](#schemaEnumSharedAutomatedTellerMachinesServicesCodes)]                |Não        |Lista com os códigos de serviços prestados.|
+|Nome          |Tipo                                                                                                      |Obrigatório|Descrição                                                                                                                        |
+|:------------ |:-------------------------------------------------------------------------------------------------------- |:--------- |:------------------------------------------------------------------------------------------------------------------------------- |
+|name          |[[Enum SharedAutomatedTellerMachinesServicesNames](#schemaEnumSharedAutomatedTellerMachinesServicesNames)]|Não        |Lista com os nomes de serviços prestados.                                                                                        |
+|code          |[[Enum BankingAgentsServicesCodes](#schemaEnumSharedAutomatedTellerMachinesServicesCodes)]                |Não        |Lista com os códigos de serviços prestados.                                                                                      |
+|additionalInfo|string                                                                                                    |Não        |Texto livre para complementar informação relativa ao Serviço disponível, quando for preenchida a opção 'OUTROS_PRODUTOS_SERVICOS'|
 
 ### Enum SharedAutomatedTellerMachinesServicesNames
 <a id="schemaEnumSharedAutomatedTellerMachinesServicesNames"></a>
