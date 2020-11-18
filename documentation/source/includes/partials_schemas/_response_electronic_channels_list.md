@@ -22,9 +22,7 @@
                 "services": [
                   {
                     "name": "string",
-                    "codes": [
-                      "string"
-                    ],
+                    "code": "string",
                     "additionalInfo": "string"
                   }
                 ]
@@ -77,9 +75,7 @@
           "services": [
             {
               "name": "string",
-              "codes": [
-                "string"
-              ],
+              "code": "string",
               "additionalInfo": "string"
             }
           ]
@@ -113,9 +109,7 @@
       "services": [
         {
           "name": "string",
-          "codes": [
-            "string"
-          ],
+          "code": "string",
           "additionalInfo": "string"
         }
       ]
@@ -144,9 +138,7 @@
   "services": [
     {
       "name": "string",
-      "codes": [
-        "string"
-      ],
+      "code": "string",
       "additionalInfo": "string"
     }
   ]
@@ -192,9 +184,9 @@
 
 |     Nome         |  Tipo                                                                              | Obrigatório |                            Definição               |
 |:------------     |:---------------------------------------------------------------------------------  |:----------- |:-------------------------------------------------- |
-| name            | [Enum ElectronicChannelsServicesName](#schemaEnumElectronicChannelsServicesName) | Sim         | Nome dos Serviços efetivamente prestados pelo Canal de Atendimento. |
-| codes            | [[Enum ElectronicChannelsServicesCodes](#schemaEnumElectronicChannelsServicesCodes)] | Sim         | Lista com a lista de serviços prestados pelo canal. |
-| additionalInfo   | string                                                                             | Não         | Descrição adicional sobre os serviços prestados.    |
+| name             | [Enum ElectronicChannelsServicesName](#schemaEnumElectronicChannelsServicesName) | Sim         | Nome dos Serviços efetivamente prestados pelo Canal de Atendimento. |
+| code             | [Enum ElectronicChannelsServicesCode](#schemaEnumElectronicChannelsServicesCode) | Sim         | Código dos Serviços efetivamente prestados pelo Canal de Atendimento. |
+| additionalInfo   | string                                                                           | Não         | Descrição adicional sobre os serviços prestados.    |
 
 ### Enum ElectronicChannelsServicesName
 <a id="schemaEnumElectronicChannelsServicesName"></a>
@@ -223,18 +215,30 @@
 | name         | RECLAMACOES                                                                                         |
 
 
-### Enum ElectronicChannelsServicesCodes
-<a id="schemaEnumElectronicChannelsServicesCodes"></a>
+### Enum ElectronicChannelsServicesCode
+<a id="schemaEnumElectronicChannelsServicesCode"></a>
 
-| Propriedade  | Código                                               | Definição                                             |
-|:------------ |:---------------------------------------------------- |:----------------------------------------------------- |
-| codes        | ABERTURA_CONTAS                                      | Abertura de contas.                                   |
-| codes        | RECEBIMENTOS_PAGAMENTOS_TRANSFERENCIAS_ELETRONICAS   | Recebimentos, pagamentos e transferências eletrônicas.|
-| codes        | OPERACOES_CREDITO                                    | Operações de crédito.                                 |
-| codes        | CARTAO_CREDITO                                       | Cartão de crédito.                                    |
-| codes        | OPERACOES_CAMBIO                                     | Operações de câmbio.                                  |
-| codes        | INVESTIMENTOS                                        | Investimentos.                                        |
-| codes        | SEGUROS                                              | Seguros.                                              |
-| codes        | ATENDIMENTO_DEMANDAS_CLIENTES                        | Atendimento de demandas a clientes.                   |
-| codes        | OUTROS                                               | Outros.                                               |
+| Propriedade  | Código                                                                             |
+|:------------ |:---------------------------------------------------------------------------------- |
+| code         | ABRE_CONTA_DEPOSITO_OU_PRE_PAGA                                                    |
+| code         | SAQUE_MOEDA_ESPECIE                                                                |
+| code         | RECEBE_PAGA_QUALQUER_NATUREZA                                                      |
+| code         | TRANSFERENCIAS_ELETRONICAS_MOVIMENTA_CONTAS_DEPOSITOS_OU_PAGTO_TITULARES_CLIENTES  |
+| code         | CONSULTA_SALDOS_EXTRATOS_CONTAS_DEPOSITOS_PAGTOS                                   |
+| code         | APLICA_RESGATA_INVESTIMENTOS                                                       |
+| code         | EXECUCAO_ATIVA_PASSIVA_ORDENS_PAGTO                                                |
+| code         | DEPOSITO_MOEDA_ESPECIE_CHEQUE                                                      |
+| code         | OPERA_CREDITO_OUTROS_SERVICOS_ACOMPANHA_OPERACAO                                   |
+| code         | CARTAO_CREDITO                                                                     |
+| code         | SEGUROS                                                                            |
+| code         | OPERA_ARRENDAMENTO_MERCANTIL                                                       |
+| code         | ABERTURA_CONTA_PAGAMENTO_POS_PAGA                                                  |
+| code         | COMPRA_VENDA_MOEDA_ESTRANGEIRA_ESPECIE                                             |
+| code         | COMPRA_VENDA_CHEQUE_CHEQUE_VIAGEM_CARGA_MOEDA_ESTRANGEIRA_CARTAO_PRE_PAGO          |
+| code         | COMPRA_VENDA_OURO                                                                  |
+| code         | OUTROS_PRODUTOS_SERVICOS                                                           |
+| code         | CANCELAMENTO                                                                       |
+| code         | INFORMACOES                                                                        |
+| code         | RECLAMACOES                                                                        |
+
 
