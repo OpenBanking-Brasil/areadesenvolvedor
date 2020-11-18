@@ -19,12 +19,14 @@
                   "additionalInfo": "string",
                   "url": "string"
                 },
-                "service": {
-                  "codes": [
-                    "string"
-                  ],
-                  "additionalInfo": "string"
-                }
+                "services": [
+                  {
+                    "codes": [
+                      "string"
+                    ],
+                    "additionalInfo": "string"
+                  }
+                ]
               }
             ]
           }
@@ -71,12 +73,14 @@
             "additionalInfo": "string",
             "url": "string"
           },
-          "service": {
-            "codes": [
-              "string"
-            ],
-            "additionalInfo": "string"
-          }
+          "services": [
+            {
+              "codes": [
+                "string"
+              ],
+              "additionalInfo": "string"
+            }
+          ]
         }
       ]
     }
@@ -104,12 +108,14 @@
         "additionalInfo": "string",
         "url": "string"
       },
-      "service": {
-        "codes": [
-          "string"
-        ],
-        "additionalInfo": "string"
-      }
+      "services": [
+        {
+          "codes": [
+            "string"
+          ],
+          "additionalInfo": "string"
+        }
+      ]
     }
   ]
 }
@@ -132,19 +138,21 @@
     "additionalInfo": "string",
     "url": "string"
   },
-  "service": {
-    "codes": [
-      "string"
-    ],
-    "additionalInfo": "string"
-  }
+  "services": [
+    {
+      "codes": [
+        "string"
+      ],
+      "additionalInfo": "string"
+    }
+  ]
 }
 ```
 
 |     Nome              |  Tipo                                                                       | Obrigatório |                            Definição                                                                                                                                                                                                                                          | Restrições                                                                               |
 |:------------          |:--------------------------------------------------------------------------- |:----------- |:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |:-----------------                                                                        |
 | identification        | [ElectronicChannelsIdentification](#schemaElectronicChannelsIdentification)   | Sim         |                                                                                                                                                                                                                                                                               |                                                                                          |
-| services              | [ElectronicChannelsServices](#schemaElectronicChannelsServices)               | Sim         | Informações sobre os serviços prestados.                                                                                                                                                                                                                                       |                                                                                          |
+| services              | [[ElectronicChannelsServices](#schemaElectronicChannelsServices)]               | Sim         | Traz a relação de serviços disponbilizados pelo Canal de Atendimento                                                                                                                                                                                                                                       |                                                                                          |
 
 ## ElectronicChannelsIdentification
 <a id="schemaElectronicChannelsIdentification"></a>
