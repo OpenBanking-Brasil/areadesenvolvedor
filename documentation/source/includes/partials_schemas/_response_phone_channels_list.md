@@ -205,32 +205,32 @@
 ### Enum PhoneChannelsType
 <a id="schemaPhoneChannelsType"></a>
 
-|     Propriedade  | Código                      |                            Definição                            |
-|:------------     |:--------------------------- |:--------------------------------------------------------------  |
-| type             | CENTRAL_TELEFONICA  | Central telefônica banking.                                     |
-| type             | SAC                         | SAC.                                                            |
-| type             | OUVIDORIA                   | Ouvidoria.                                                      |
-| type             | OUTROS                      | Outros.                                                         |
+| Propriedade  | Código             | Definição                   |
+|:------------ |:------------------ |:--------------------------- |
+| type         | CENTRAL_TELEFONICA | Central telefônica banking. |
+| type         | SAC                | SAC.                        |
+| type         | OUVIDORIA          | Ouvidoria.                  |
+| type         | OUTROS             | Outros.                     |
 
 ## PhoneChannelsPhones
 <a id="schemaPhoneChannelsPhones"></a>
 
-|     Nome        |  Tipo  | Obrigatório |     Definição                                                                     |
-|:---------       |:------ |:----------- |:-------------------------                                                         |
-| countryCallingCode     | string | Não         | DDI.                                                                              |
-| areaCode        | string | Não         | DDD.                                                                              |
-| number          | string | Sim         | Telefone para contato com o canal.                                                |
-| additionalInfo  | string | Não         | Mensagem complementar necessária para o agrupamento da identificação do telefone. |
+|     Nome           | Tipo   | Obrigatório | Definição                                                                         |
+|:------------------ |:------ |:----------- |:--------------------------------------------------------------------------------- |
+| countryCallingCode | string | Não         | DDI.                                                                              |
+| areaCode           | string | Não         | DDD.                                                                              |
+| number             | string | Sim         | Telefone para contato com o canal.                                                |
+| additionalInfo     | string | Não         | Mensagem complementar necessária para o agrupamento da identificação do telefone. |
 
 
 ## PhoneChannelsServices
 <a id="schemaPhoneChannelsServices"></a>
 
-|     Nome         |  Tipo                                                                              | Obrigatório | Definição                    | Restrições                                                   |
-|:------------     |:---------------------------------------------------------------------------------  |:----------- |:-------------------------------------------------- | :-------------------------------------------------------------- |
-| name             | [Enum PhoneChannelsServicesName](#schemaEnumPhoneChannelsServicesName)             | Sim         | Nome dos Serviços efetivamente prestados pelo Canal de Atendimento. |  |
-| code             | [Enum PhoneChannelsServicesCode](#schemaEnumPhoneChannelsServicesCode)             | Sim         | Código dos Serviços efetivamente prestados pelo Canal de Atendimento. |  |
-| additionalInfo   | string                                                                             | Não         | Texto livre para complementar informação relativa ao Serviço disponível, quando for selecionada a opção p preenchida a opção 'OUTROS_PRODUTOS_SERVICOS'  | Só será preenchido quando o tipo de serviço for OUTROS_PRODUTOS_SERVICOS |
+| Nome           | Tipo                                                                   | Obrigatório | Definição                                                               | Restrições                                                               |
+|:-------------- |:---------------------------------------------------------------------- |:----------- |:----------------------------------------------------------------------- | :----------------------------------------------------------------------- |
+| name           | [Enum PhoneChannelsServicesName](#schemaEnumPhoneChannelsServicesName) | Sim         | Nome dos Serviços efetivamente prestados pelo Canal de Atendimento.     | 
+| code           | [Enum PhoneChannelsServicesCode](#schemaEnumPhoneChannelsServicesCode) | Sim         | Código dos Serviços efetivamente prestados pelo Canal de Atendimento.   |
+| additionalInfo | string                                                                 | Não         | Texto livre para complementar informação relativa ao Serviço disponível, quando for selecionada a opção p preenchida a opção 'OUTROS_PRODUTOS_SERVICOS' | Só será preenchido quando o tipo de serviço for OUTROS_PRODUTOS_SERVICOS |
 
 
 ### Enum PhoneChannelsServicesName
