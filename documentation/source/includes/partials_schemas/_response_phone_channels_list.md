@@ -26,12 +26,14 @@
                     }
                   ]
                 },
-                "services": {
-                  "codes": [
-                    "string"
-                  ],
-                  "additionalInfo": "string"
-                }
+                "services": [
+                  {
+                    "codes": [
+                      "string"
+                    ],
+                    "additionalInfo": "string"
+                  }
+                ]
               }
             ]
           }
@@ -85,12 +87,14 @@
               }
             ]
           },
-          "services": {
-            "codes": [
-              "string"
-            ],
-            "additionalInfo": "string"
-          }
+          "services": [
+            {
+              "codes": [
+                "string"
+              ],
+              "additionalInfo": "string"
+            }
+          ]
         }
       ]
     }
@@ -125,12 +129,14 @@
           }
         ]
       },
-      "services": {
-        "codes": [
-          "string"
-        ],
-        "additionalInfo": "string"
-      }
+      "services": [
+        {
+          "codes": [
+            "string"
+          ],
+          "additionalInfo": "string"
+        }
+      ]
     }
   ]
 }
@@ -160,19 +166,21 @@
       }
     ]
   },
-  "services": {
-    "codes": [
-      "string"
-    ],
-    "additionalInfo": "string"
-  }
+  "services": [
+    {
+      "codes": [
+        "string"
+      ],
+      "additionalInfo": "string"
+    }
+  ]
 }
 ```
 
 |     Nome              |  Tipo                                                                       | Obrigatório |                            Definição                                                                                                                                                                                                                                          | Restrições                                                                               |
 |:------------          |:--------------------------------------------------------------------------- |:----------- |:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |:-----------------                                                                        |
 | identification        | [PhoneChannelsIdentification](#schemaPhoneChannelsIdentification)   | Sim         |                                                                                                                                                                                                                                                                               |                                                                                          |
-| services              | [PhoneChannelsServices](#schemaPhoneChannelsServices)               | Sim         | Informações sobre os serviços prestados.                                                                                                                                                                                                                                       |                                                                                          |
+| services              | [[PhoneChannelsServices](#schemaPhoneChannelsServices)]               | Sim         | Traz a relação de serviços disponbilizados pelo Canal de Atendimento                                                                                                                                                                                                                                       |                                                                                          |
 
 ## PhoneChannelsIdentification
 <a id="schemaPhoneChannelsIdentification"></a>
