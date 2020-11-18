@@ -21,6 +21,7 @@
                 },
                 "services": [
                   {
+                    "name": "string",
                     "codes": [
                       "string"
                     ],
@@ -75,6 +76,7 @@
           },
           "services": [
             {
+              "name": "string",
               "codes": [
                 "string"
               ],
@@ -110,6 +112,7 @@
       },
       "services": [
         {
+          "name": "string",
           "codes": [
             "string"
           ],
@@ -140,6 +143,7 @@
   },
   "services": [
     {
+      "name": "string",
       "codes": [
         "string"
       ],
@@ -188,8 +192,36 @@
 
 |     Nome         |  Tipo                                                                              | Obrigatório |                            Definição               |
 |:------------     |:---------------------------------------------------------------------------------  |:----------- |:-------------------------------------------------- |
+| name            | [Enum ElectronicChannelsServicesName](#schemaEnumElectronicChannelsServicesName) | Sim         | Nome dos Serviços efetivamente prestados pelo Canal de Atendimento. |
 | codes            | [[Enum ElectronicChannelsServicesCodes](#schemaEnumElectronicChannelsServicesCodes)] | Sim         | Lista com a lista de serviços prestados pelo canal. |
 | additionalInfo   | string                                                                             | Não         | Descrição adicional sobre os serviços prestados.    |
+
+### Enum ElectronicChannelsServicesName
+<a id="schemaEnumElectronicChannelsServicesName"></a>
+
+| Propriedade  | Código                                                                                              |
+|:------------ |:--------------------------------------------------------------------------------------------------- |
+| name         | ABERTURA_CONTAS_DEPOSITOS_OU_PAGAMENTO_PRE_PAGA                                                     |
+| name         | SAQUE_MOEDA_EM_ESPECIE                                                                              |
+| name         | RECEBIMENTOS_PAGAMENTOS_QUALQUER_NATUREZA                                                           |
+| name         | TRANSFERENCIAS_ELETRONICAS_VISANDO_MOVIMENTACAO_CONTAS_DEPOSITOS_OU_PAGAMENTO_TITULARIDADE_CLIENTES |
+| name         | CONSULTA_SALDOS_EXTRATOS_CONTAS_DEPOSITOS_CONTAS_PAGAMENTOS                                         |
+| name         | APLICACOES_RESGATES_INVESTIMENTOS                                                                   |
+| name         | EXECUCAO_ATIVA_PASSIVA_ORDENS_PAGAMENTO_SOLICITACAO_CLIENTES_USUARIOS                               |
+| name         | DEPOSITOS_MOEDA_ESPECIE_CHEQUE                                                                      |
+| name         | OPERACOES_CREDITO_BEM_COMO_OUTROS_SERVICOS_PRESTADOS_ACOMPANHAMENTO_OPERACAO                        |
+| name         | CARTAO_CREDITO                                                                                      |
+| name         | SEGUROS                                                                                             |
+| name         | OPERACOES_ARRENDAMENTO_MERCANTIL                                                                    |
+| name         | ABERTURA_CONTA_PAGAMENTO_POS_PAGA                                                                   |
+| name         | COMPRA_VENDA_MOEDA_ESTRANGEIRA_ESPECIE                                                              |
+| name         | COMPRA_VENDA_CHEQUE_CHEQUE_VIAGEM_BEM_COMO_CARGA_MOEDA_ESTRANGEIRA_CARTAO_PRE_PAGO                  |
+| name         | COMPRA_VENDA_OURO                                                                                   |
+| name         | OUTROS_PRODUTOS_SERVICOS                                                                            |
+| name         | CANCELAMENTO                                                                                        |
+| name         | INFORMACOES                                                                                         |
+| name         | RECLAMACOES                                                                                         |
+
 
 ### Enum ElectronicChannelsServicesCodes
 <a id="schemaEnumElectronicChannelsServicesCodes"></a>
