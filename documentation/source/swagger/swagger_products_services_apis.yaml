@@ -332,13 +332,13 @@ components:
         prices:
           type: array
           items:
-            $ref: '#/components/schemas/Price'
+            $ref: '#/components/schemas/AccountPrice'
           minItems: 4
           maxItems: 4
         minimum:
-          $ref: '#/components/schemas/MinimumPrice'
+          $ref: '#/components/schemas/AccountMinimumPrice'
         maximum:
-          $ref:  "#/components/schemas/MaximumPrice"
+          $ref:  "#/components/schemas/AccountMaximumPrice"
         customers:
           type: array
           items:
@@ -521,7 +521,7 @@ components:
         maximum:
           $ref:  "#/components/schemas/MaximumPrice"
         customers:
-          type: object
+          type: array
           items:
             $ref:  "#/components/schemas/FeeServiceCustomer"
           minItems: 4
@@ -677,6 +677,7 @@ components:
                                         chargingTriggerInfo:
                                           type: string
                                           maxLength: 2000
+                                          pattern: \w*\W*
                                           description: Fatos geradores de cobrança que incidem sobre serviço que compõe o Pacote de Serviços.
                                           example: Cobrança devido a evento personalizado
                                         eventLimitQuantity:
@@ -725,14 +726,11 @@ components:
                               description: 'Texto livre para complementar informação relativa ao Canal disponível, quando no campo ''openingClosingChannels'' estiver preenchida a opção ''Outros'''
                               example: NA
                             transactionMethods:
-                              type: string
-                              enum:
-                                - MOVIMENTACAO_ELETRONICA
-                                - MOVIMENTACAO_CHEQUE
-                                - MOVIMENTACAO_CARTAO
-                                - MOVIMENTACAO_PRESENCIAL
-                              description: Lista de formas de movimentação possíveis para a conta
-                              example: MOVIMENTACAO_CARTAO
+                              type: array
+                              items:
+                                $ref: '#/components/schemas/TransactionMethods'
+                              minItems: 1
+                              maxItems: 4
                             termsConditions:
                               $ref: '#/components/schemas/AccountsTermsConditions'
                             incomeRates:
@@ -848,7 +846,7 @@ components:
                             rate: '0.3000'
                     openingClosingChannels: CENTRAL_TELEFONICA
                     additionalInfo: NA
-                    transactionMethods: MOVIMENTACAO_CARTAO
+                    transactionMethods: [MOVIMENTACAO_CARTAO]
                     termsConditions:
                       minimumBalance:
                         value: '500.00'
@@ -890,17 +888,18 @@ components:
           example: EVENTO_PERSONALIZADO
         chargingTriggerInfo:
           type: string
-          maxLength: 3000
+          maxLength: 2000
+          pattern: \w*\W*
           description: Fatos geradores de cobrança que incidem sobre serviço que compõe o Pacote de Serviços.
           example: Cobrança devido a evento personalizado
         prices:
           type: array
           items:
-            $ref: '#/components/schemas/Price'
+            $ref: '#/components/schemas/AccountPrice'
         minimum:
-          $ref: '#/components/schemas/MinimumPrice'
+          $ref: '#/components/schemas/AccountMinimumPrice'
         maximum:
-          $ref: '#/components/schemas/MaximumPrice'
+          $ref: '#/components/schemas/AccountMaximumPrice'
         customers:
           type: array
           items:
@@ -1574,6 +1573,7 @@ components:
         chargingTriggerInfo:
           type: string
           maxLength: 2000
+          pattern: \w*\W*
           description: 'Fatos geradores de cobrança que incidem sobre as Modalidades de Contas de Pagamento Pós-Pagas informada, para pessoa jurídica. (Campo Livre)'
           example: 'Disponibilização de rede de estabelecimentos afiliados, instalada no País, para pagamentos de bens e serviços, cobrada no máximo uma vez a cada doze meses, admitido o parcelamento da cobrança'
         prices:
@@ -1644,6 +1644,7 @@ components:
         - fees
         - interestRate
         - requiredWarranties
+        - termsConditions
       properties:
         type:
           type: string
@@ -1695,6 +1696,8 @@ components:
           example: 'https://empresaa1.com/personal_financing'
     PersonalFinancingFee:
       type: object
+      required:
+        - service
       properties:
         service:
           $ref: '#/components/schemas/FinancingService'
@@ -1715,6 +1718,8 @@ components:
           example: AQBAM009
         chargingTriggerInfo:
           type: string
+          maxLength: 2000
+          pattern: \w*\W*
           description: 'Fatores geradores de cobrança que incidem sobre as Modalidades de Financiamentos, para pessoa natural. Campo Livre'
           example: '570.00'
         prices:
@@ -1736,6 +1741,7 @@ components:
         - minimum
         - maximum
         - customers
+        - chargingTriggerInfo
     FinancingInterestRate:
       type: object
       properties:
@@ -1831,6 +1837,7 @@ components:
         - fees
         - interestRate
         - requiredWarranties
+        - termsConditions
       properties:
         type:
           type: string
@@ -1997,7 +2004,7 @@ components:
                 "interestRate": {
                   "fees": [
                     {
-                      "referentialRateOrIndexer": "POS_FIXADO_TR_TBF",
+                      "referentialRateIndexer": "POS_FIXADO_TR_TBF",
                       "rate": "0.15"
                     }
                   ],
@@ -2107,7 +2114,7 @@ components:
                 "interestRate": {
                   "fees": [
                     {
-                      "referentialRateOrIndexer": "POS_FIXADO_TR_TBF",
+                      "referentialRateIndexer": "POS_FIXADO_TR_TBF",
                       "rate": "0.10"
                     }
                   ],
@@ -2272,11 +2279,11 @@ components:
                 "interestRate": {
                   "fees": [
                     {
-                      "referentialRateOrIndexer": "POS_FIXADO_TR_TBF",
+                      "referentialRateIndexer": "POS_FIXADO_TR_TBF",
                       "rate": "0.13"
                     },
                     {
-                      "referentialRateOrIndexer": "POS_FIXADO_TR_TBF",
+                      "referentialRateIndexer": "POS_FIXADO_TR_TBF",
                       "rate": "0.10"
                     }
                   ],
@@ -2386,7 +2393,7 @@ components:
                 "interestRate": {
                   "fees": [
                     {
-                      "referentialRateOrIndexer": "OUTRAS_TAXAS_POS_FIXADAS",
+                      "referentialRateIndexer": "OUTRAS_TAXAS_POS_FIXADAS",
                       "rate": "0.20"
                     }
                   ],
@@ -2496,7 +2503,7 @@ components:
                 "interestRate": {
                   "fees": [
                     {
-                      "referentialRateOrIndexer": "OUTRAS_TAXAS_POS_FIXADAS",
+                      "referentialRateIndexer": "OUTRAS_TAXAS_POS_FIXADAS",
                       "rate": "0.20"
                     }
                   ],
@@ -2937,6 +2944,8 @@ components:
           description: 'Sigla de identificação do serviço relacionado à Modalidade de Adiantamento a depositante, para pessoa jurídica.'
         chargingTriggerInfo:
           type: string
+          maxLength: 2000
+          pattern: \w*\W*
           description: 'Fato gerador de cobrança que incide sobre a Modalidade de Adiantamento a depositante informada, para pessoa jurídica.'
         prices:
           type: array
@@ -3170,6 +3179,24 @@ components:
           example: '2000.00'
         currency:
           $ref:  "#/components/schemas/Currency"
+    AccountPrice:
+        type: object
+        required:
+          - interval
+          - value
+          - currency
+        properties:
+          interval:
+            $ref: '#/components/schemas/PriceIntervals'
+          value:
+            type: string
+            pattern: '^((\d{1,9}\.\d{2}){1})$'
+            maxLength: 12
+            x-cds-type: AmountString
+            description: 'Segundo Normativa nº 32, BCB, de 2020: Distribuição de frequência relativa dos valores de tarifas cobradas dos clientes, de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana em cada uma dessas faixas. Informando: 1ª faixa de valor, 2ª faixa de valor, 3ª faixa de valor e 4ª faixa de valor'
+            example: '2000.00'
+          currency:
+            $ref:  "#/components/schemas/Currency"
     MontlyPrice:
       type: object
       required:
@@ -3220,6 +3247,37 @@ components:
           example: '8800.00'
         currency:
           $ref:  "#/components/schemas/Currency"
+    AccountMinimumPrice:
+      type: object
+      required:
+        - value
+        - currency
+      properties:
+        value:
+          type: string
+          pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
+          maxLength: 12
+          x-cds-type: AmountString
+          description: Valor mínimo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
+          example: '1350.00'
+        currency:
+          $ref:  "#/components/schemas/Currency"
+    AccountMaximumPrice:
+      type: object
+      required:
+        - value
+        - currency
+      properties:
+        value:
+          type: string
+          pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
+          maxLength: 12
+          x-cds-type: AmountString
+          description: Valor máximo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
+          example: '8800.00'
+        currency:
+          $ref:  "#/components/schemas/Currency"
+
     Customer:
       type: object
       required:
