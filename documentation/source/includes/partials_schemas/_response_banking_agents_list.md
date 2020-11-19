@@ -34,9 +34,7 @@
                     "services": [
                       {
                         "name": "string",
-                        "codes": [
-                          "string"
-                        ],
+                        "code": "string",
                         "additionalInfo": "string"
                       }
                     ]
@@ -103,9 +101,7 @@
               "services": [
                 {
                   "name": "string",
-                  "codes": [
-                    "string"
-                  ],
+                  "code": "string",
                   "additionalInfo": "string"
                 }
               ]
@@ -153,9 +149,7 @@
           "services": [
             {
               "name": "string",
-              "codes": [
-                "string"
-              ],
+              "code": "string",
               "additionalInfo": "string"
             }
           ]
@@ -199,9 +193,7 @@
       "services": [
         {
           "name": "string",
-          "codes": [
-            "string"
-          ],
+          "code": "string",
           "additionalInfo": "string"
         }
       ]
@@ -238,9 +230,7 @@
   "services": [
     {
       "name": "string",
-      "codes": [
-        "string"
-      ],
+      "code": "string",
       "additionalInfo": "string"
     }
   ]
@@ -297,18 +287,16 @@
 ```json
 {
   "name": "string",
-  "codes": [
-    "string"
-  ],
+  "code": "string",
   "additionalInfo": "string"
 }
 ```
 
-| Nome             | Tipo                                                                      | Obrigatório | Descrição                                                    |
-| :--------------- | :------------------------------------------------------------------------ |:----------- |:------------------------------------------------------------ |
-| name             | [Enum BankingAgentsServicesName](#schemaEnumBankingAgentsServicesName)    | Sim         | Relação dos Nomes de serviços prestados pelo Correspondente. |
-| codes            | [[Enum BankingAgentsServicesCodes](#schemaEnumBankingAgentsServicesCodes)]| Sim         | Lista de serviços prestados.                                 |
-| additionalInfo   | string                                                                    | Não         | Detalhes adicionais sobre os serviços prestados.             |
+| Nome           | Tipo                                                                   | Obrigatório | Descrição                                                                |
+| :------------- | :--------------------------------------------------------------------- |:----------- |:------------------------------------------------------------------------ |
+| name           | [Enum BankingAgentsServicesName](#schemaEnumBankingAgentsServicesName) | Sim         | Relação dos Nomes de serviços prestados pelo Correspondente.             |
+| code           | [Enum BankingAgentsServicesCode](#schemaEnumBankingAgentsServicesCode) | Sim         | Relação dos Códigos relativos aos serviços prestados pelo Correspondente |
+| additionalInfo | string                                                                 | Não         | Detalhes adicionais sobre os serviços prestados.                         |
 
 ### Enum BankingAgentsServicesName
 <a id="schemaEnumBankingAgentsServicesName"></a>
@@ -326,16 +314,18 @@
 | name        | OUTROS                                                                                                                                                      | Outros                                                                                      |
 
 
-### Enum BankingAgentsServicesCodes
-<a id="schemaEnumBankingAgentsServicesCodes"></a>
+### Enum BankingAgentsServicesCode
+<a id="schemaEnumBankingAgentsServicesCode"></a>
 
-| Propriedade  | Código                                               | Definição                                                                                   |
-|:------------ |:---------------------------------------------------- |:------------------------------------------------------------------------------------------- |
-| codes        | RECEPCAO_ENCAMINHAMENTO_PROPOSTAS_ABERTURA_CONTAS    | Recepção e encaminhamento de propostas de abertura de contas.                                |
-| codes        | REALIZACAO_RECEBIMENTOS_PAGAMENTOS_TRANSFERENCIA_ELETRONICAS   | Realização de recebimentos, pagamentos e transferências eletrônicas.                         |
-| codes        | RECEBIMENTOS_PAGAMENTOS_QUALQUER_NATUREZA   | Recebimentos e pagamentos de qualquer natureza.                                              |
-| codes        | EXECUCAO_ATIVA_PASSIVA_ORDENS_PAGAMENTO      | Execução ativa e passiva de ordens de pagamento.                                             |
-| codes        | RECEPCAO_ENCAMINHAMENTO_PROPOSTAS_CREDITO_ARRENDAMENTO_MERCANTIL  | Recepção e encaminhamento de propostas de operações de crédito e de arrendamento mercantil.  |
-| codes        | RECEBIMENTO_PAGAMENTOS_RELACIONADOS_LETRAS_CAMBIO_ACEITE_INSTITUICAO | Recebimento e pagamentos relacionados a letras de câmbio de aceite da instituição.           |
-| codes        | RECEPCAO_ENCAMINHAMENTO_PROPOSTAS_FORNECEIMENTO_CARTAO_CREDITO | Recepção e encaminhamento de propostas de fornecimento de cartões de crédito.                |
-| codes        | REALIZACAO_OPERACOES_CAMBIO                 | Realização de operações de câmbio.                                                           |
+| Propriedade | Código                                                                | Definição                                                                                    |
+|:----------- |:--------------------------------------------------------------------- |:-------------------------------------------------------------------------------------------- |
+| code        | RECEBE_ENCAMINHA_PROPOSTAS_ABERTURA_CONTAS                            | Recepção e encaminhamento de propostas de abertura de contas.                                |
+| code        | REALIZA_RECEBIMENTOS_PAGAMENTOS_TRANSFERENCIAS_ELETRONICAS            | Realização de recebimentos, pagamentos e transferências eletrônicas.                         |
+| code        | RECEBIMENTOS_PAGAMENTOS_QUALQUER_NATUREZA_EXECUCAO_CONTRATOS_CONVENIO | Recebimentos e pagamentos de qualquer natureza.                                              |
+| code        | EXECUCAO_ATIVA_PASSIVA_ORDENS_PAGAMENTO                               | Execução ativa e passiva de ordens de pagamento.                                             |
+| code        | RECEBE_ENCAMINHA_PROPOSTAS_CREDITO_ARRENDAMENTO_MERCANTIL             | Recepção e encaminhamento de propostas de operações de crédito e de arrendamento mercantil.  |
+| code        | RECEBE_PAGAMENTOS_RELACIONADOS_LETRAS_CAMBIO_ACEITE_INSTITUICAO       | Recebimento e pagamentos relacionados a letras de câmbio de aceite da instituição.           |
+| code        | RECEBE_ENCAMINHA_PROPOSTAS_FORNECIMENTO_CARTAO_CREDITO                | Recepção e encaminhamento de propostas de fornecimento de cartões de crédito.                |
+| code        | REALIZA_OPERACOES_CAMBIO                                              | Realização de operações de câmbio.                                                           |
+| code        | OUTROS                                                                | Outros.                                                                                      |
+
