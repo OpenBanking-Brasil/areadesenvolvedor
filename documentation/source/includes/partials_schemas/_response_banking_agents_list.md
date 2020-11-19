@@ -37,7 +37,15 @@
                           "countryCode": "string",
                           "latitude": "string",
                           "longitude": "string"
-                        }
+                        },
+                        "phones": [
+                          {
+                            "type": "string",
+                            "countryCallingCode": "string",
+                            "areaCode": "string",
+                            "number": "string"
+                          }
+                        ]
                       }
                     ],
                     "services": [
@@ -113,7 +121,15 @@
                     "countryCode": "string",
                     "latitude": "string",
                     "longitude": "string"
-                  }
+                  },
+                  "phones": [
+                    {
+                      "type": "string",
+                      "countryCallingCode": "string",
+                      "areaCode": "string",
+                      "number": "string"
+                    }
+                  ]
                 }
               ],
               "services": [
@@ -170,7 +186,15 @@
                 "countryCode": "string",
                 "latitude": "string",
                 "longitude": "string"
-              }
+              },
+              "phones": [
+                {
+                  "type": "string",
+                  "countryCallingCode": "string",
+                  "areaCode": "string",
+                  "number": "string"
+                }
+              ]
             }
           ],
           "services": [
@@ -223,7 +247,15 @@
             "countryCode": "string",
             "latitude": "string",
             "longitude": "string"
-          }
+          },
+          "phones": [
+            {
+              "type": "string",
+              "countryCallingCode": "string",
+              "areaCode": "string",
+              "number": "string"
+            }
+          ]
         }
       ],
       "services": [
@@ -269,7 +301,15 @@
         "countryCode": "string",
         "latitude": "string",
         "longitude": "string"
-      }
+      },
+      "phones": [
+        {
+          "type": "string",
+          "countryCallingCode": "string",
+          "areaCode": "string",
+          "number": "string"
+        }
+      ]
     }
   ],
   "services": [
@@ -324,13 +364,22 @@
         "countryCode": "string",
         "latitude": "string",
         "longitude": "string"
-      }
+      },
+      "phones": [
+        {
+          "type": "string",
+          "countryCallingCode": "string",
+          "areaCode": "string",
+          "number": "string"
+        }
+      ]
     }
 ```
 
 | Nome           | Tipo                                                              | Obrigatório | Descrição                                                                       |
 |:-------------- |:----------------------------------------------------------------- |:----------- |:------------------------------------------------------------------------------- |
 | postalAddress  | [BankingAgentsPostalAddress](#schemaBankingAgentsPostalAddress)   | Sim         | Endereço do correspondente.                                                     |
+| phones         | [[BankingAgentsPhone](#schemaBankingAgentsPhone)]                 | Não         | Lista de telefones do correspondente.                                           |
 
 ## BankingAgentsPostalAddress
 <a id="schemaBankingAgentsPostalAddress"></a>
@@ -364,6 +413,26 @@
 | countryCode        | string | Não         | Código do pais de acordo com o código “alpha3” do ISO-3166.p.ex.'BRA' |
 | latitude           | string | Não         | Informação da Latitude referente a geolocalização informada. Entre -90 e 90.p.ex. '-90.8365180' |
 | longitude          | string | Não         | Informação da Longitude referente a geolocalização informada. Entre -180 e 180.p.ex. '-180.836519' |
+
+## BankingAgentsPhone
+<a id="schemaBankingAgentsPhone"></a>
+
+```json
+    {
+      "type": "string",
+      "countryCallingCode": "string",
+      "areaCode": "string",
+      "number": "string"
+    }
+```
+
+| Nome               | Tipo   | Obrigatório |Descrição                                                                                                |
+|:------------------ |:------ |:----------- |:------------------------------------------------------------------------------------------------------- |
+| type               | string | Não         | Identificação do Tipo de telefone da dependência. p.ex.FIXO, MOVEL                                      |
+| countryCallingCode | string | Não         | Número de DDI (Discagem Direta Internacional) para  telefone de acesso ao Canal - se houver. p.ex. '55' |
+| areaCode           | string | Não         | Número de DDD (Discagem Direta à Distância) do telefone da dependência - se houver. p.ex. '19'          |
+| number             | string | Não         | Número de telefone da dependência - se houver                                                           |
+
 
 ## BankingAgentsService
 <a id="schemaBankingAgentsService"></a>
