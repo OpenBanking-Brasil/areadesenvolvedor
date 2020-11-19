@@ -33,6 +33,7 @@
                     ],
                     "services": [
                       {
+                        "name": "string",
                         "codes": [
                           "string"
                         ],
@@ -101,6 +102,7 @@
               ],
               "services": [
                 {
+                  "name": "string",
                   "codes": [
                     "string"
                   ],
@@ -150,6 +152,7 @@
           ],
           "services": [
             {
+              "name": "string",
               "codes": [
                 "string"
               ],
@@ -195,6 +198,7 @@
       ],
       "services": [
         {
+          "name": "string",
           "codes": [
             "string"
           ],
@@ -233,6 +237,7 @@
   ],
   "services": [
     {
+      "name": "string",
       "codes": [
         "string"
       ],
@@ -291,6 +296,7 @@
 
 ```json
 {
+  "name": "string",
   "codes": [
     "string"
   ],
@@ -298,10 +304,27 @@
 }
 ```
 
-|Nome|Tipo|Obrigatório|Descrição|
-|:---|:---|:---|:---|:---|
-|codes|[[Enum BankingAgentsServicesCodes](#schemaEnumBankingAgentsServicesCodes)]|Sim| Lista de serviços prestados. |
-|additionalInfo|string|Não| Detalhes adicionais sobre os serviços prestados. |
+| Nome             | Tipo                                                                      | Obrigatório | Descrição                                                    |
+| :--------------- | :------------------------------------------------------------------------ |:----------- |:------------------------------------------------------------ |
+| name             | [Enum BankingAgentsServicesName](#schemaEnumBankingAgentsServicesName)    | Sim         | Relação dos Nomes de serviços prestados pelo Correspondente. |
+| codes            | [[Enum BankingAgentsServicesCodes](#schemaEnumBankingAgentsServicesCodes)]| Sim         | Lista de serviços prestados.                                 |
+| additionalInfo   | string                                                                    | Não         | Detalhes adicionais sobre os serviços prestados.             |
+
+### Enum BankingAgentsServicesName
+<a id="schemaEnumBankingAgentsServicesName"></a>
+
+| Propriedade | Código                                                                                                                                                      | Definição                                                                                   |
+|:----------- |:----------------------------------------------------------------------------------------------------------------------------------------------------------- |:------------------------------------------------------------------------------------------- |
+| name        | RECEPCAO_ENCAMINHAMENTO_PROPOSTAS_ABERTURA_CONTAS_DEPOSITOS_VISTA_PRAZO_POUPANCA_MANTIDOS_INSTITUICAO_CONTRATANTE                                           | Recepção e encaminhamento de propostas de abertura de contas.                               | 
+| name        | REALIZACAO_RECEBIMENTOS_PAGAMENTOS_TRANSFERENCIAS_ELETRONICAS_VISANDO_MOVIMENTACAO_CONTAS_DEPOSITOS_TITULARIDADE_CLIENTES_MANTIDAS_INSTITUICAO_CONTRATANTE  | Realização de recebimentos, pagamentos e transferências eletrônicas.                        |
+| name        | RECEBIMENTOS_PAGAMENTOS_QUALQUER_NATUREZA_OUTRAS_ATIVIDADES_DECORRENTES_EXECUCAO_CONTRATOS_CONVENIOS_PRESTACAO_SERVICOS                                     | Recebimentos e pagamentos de qualquer natureza.                                             |
+| name        | EXECUCAO_ATIVA_PASSIVA_ORDENS_PAGAMENTO_CURSADAS_INTERMEDIO_INSTITUICAO_CONTRATANTE_SOLICITACAO_CLIENTES_USUARIOS                                           | Execução ativa e passiva de ordens de pagamento.                                            |
+| name        | RECEPCAO_ENCAMINHAMENTO_PROPOSTAS_OPERACAO_CREDITO_ARRENDAMENTO_MERCANTIL_CONCESSAO_INSTITUICAO_CONTRATANTE                                                 | Recepção e encaminhamento de propostas de operações de crédito e de arrendamento mercantil. |
+| name        | RECEBIMENTOS_PAGAMENTOS_RELACIONADOS_LETRAS_CAMBIO_ACEITE_INSTITUICAO_CONTRATANTE                                                                           | Recebimento e pagamentos relacionados a letras de câmbio de aceite da instituição.          |
+| name        | RECEPCAO_ENCAMINHAMENTO_PROPOSTAS_FORNECIMENTO_CARTAO_CREDITO_RESPONSABILIDADE_INSTITUICAO_CONTRATANTE                                                      | Recepção e encaminhamento de propostas de fornecimento de cartões de crédito.               |
+| name        | REALIZACAO_OPERACOES_CAMBIO_RESPONSABILIDADE_INSTITUICAO_CONTRATANTE                                                                                        | Realização de operações de câmbio.                                                          |
+| name        | OUTROS                                                                                                                                                      | Outros                                                                                      |
+
 
 ### Enum BankingAgentsServicesCodes
 <a id="schemaEnumBankingAgentsServicesCodes"></a>
