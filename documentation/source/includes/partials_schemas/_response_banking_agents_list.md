@@ -160,11 +160,11 @@
 }
 ```
 
-|     Nome    |  Tipo                                                       | Obrigatório |                            Definição                                                                                                  |
-|:----------- |:---------------------------------                           |:----------- |:------------------------------------------------------------------------------------------------------------------------------------- |
-| name        | string                                                      | Sim         | Nome da Instituição, pertencente à Marca, responsável pela Dependência. p. ex. 'Empresa da Organização A'                             |
-| cnpjNumber  | string                                                      | Sim         | Número completo do CNPJ da instituição responsável pelo Correspondente Bancário no pais - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. Deve-se ter apenas os números do CNPJ, sem máscara |
-| contractors | [[BankingAgentsContractor](#schemaBankingAgentsContractor)] | Sim         | Lista de contratantes.                                                                                                                |
+|     Nome    |  Tipo                                                       | Obrigatório |                            Definição                                                                                                                                                                                   |
+|:----------- |:----------------------------------------------------------- |:----------- |:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| name        | string                                                      | Sim         | Nome da Instituição, pertencente à marca, responsável pelo Correspondente Bancário no país. p.ex.'Empresa da Organização A'                                                                                            |
+| cnpjNumber  | string                                                      | Sim         | Número completo do CNPJ da instituição responsável pelo Correspondente Bancário no país - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. Deve-se ter apenas os números do CNPJ, sem máscara |
+| contractors | [[BankingAgentsContractor](#schemaBankingAgentsContractor)] | Sim         | Lista de contratantes.                                                                                                                                                                                                 |
 
 
 ## BankingAgentsContractor
