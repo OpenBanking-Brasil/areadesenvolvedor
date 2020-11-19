@@ -292,11 +292,11 @@
 }
 ```
 
-| Nome           | Tipo                                                                   | Obrigatório | Descrição                                                                |
-| :------------- | :--------------------------------------------------------------------- |:----------- |:------------------------------------------------------------------------ |
-| name           | [Enum BankingAgentsServicesName](#schemaEnumBankingAgentsServicesName) | Sim         | Relação dos Nomes de serviços prestados pelo Correspondente.             |
-| code           | [Enum BankingAgentsServicesCode](#schemaEnumBankingAgentsServicesCode) | Sim         | Relação dos Códigos relativos aos serviços prestados pelo Correspondente |
-| additionalInfo | string                                                                 | Não         | Detalhes adicionais sobre os serviços prestados.                         |
+| Nome           | Tipo                                                                   | Obrigatório | Descrição                                                                | Restrições                                               |
+| :------------- | :--------------------------------------------------------------------- |:----------- |:------------------------------------------------------------------------ | :------------------------------------------------------- |
+| name           | [Enum BankingAgentsServicesName](#schemaEnumBankingAgentsServicesName) | Sim         | Relação dos Nomes de serviços prestados pelo Correspondente.             |                                                          |
+| code           | [Enum BankingAgentsServicesCode](#schemaEnumBankingAgentsServicesCode) | Sim         | Relação dos Códigos relativos aos serviços prestados pelo Correspondente |                                                          |
+| additionalInfo | string                                                                 | Não         | Detalhes adicionais sobre os serviços prestados.                         | Será preenchido se selecionada a opção "OUTROS' serviços |
 
 ### Enum BankingAgentsServicesName
 <a id="schemaEnumBankingAgentsServicesName"></a>
