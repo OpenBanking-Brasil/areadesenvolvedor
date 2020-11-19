@@ -50,9 +50,9 @@
 |     Nome        |  Tipo                                                       | Obrigatório  |                            Definição                  |
 |:------------    |:---------------------------------                           |:-----------  |:----------------------------------------------------  |
 | data            | object                                                      | Sim          |                                                       |
-| brand           | [[ElectronicChannelsBrand](#schemaElectronicChannelsBrand)] | Sim          | Lista das organizações titulares das dependências.  |
+| brand           | [[ElectronicChannelsBrand](#schemaElectronicChannelsBrand)] | Sim          | Lista das organizações titulares das dependências.    |
 | links           | [[LinksPaginated](#schemaLinksPaginated)]                   | Sim          |                                                       |
-| meta            | [MetaPaginated](#schemaMetaPaginated)                     | Sim          |                                                         |
+| meta            | [MetaPaginated](#schemaMetaPaginated)                       | Sim          |                                                       |
 
 ## ElectronicChannelsBrand
 <a id="schemaElectronicChannelsBrand"></a>
@@ -86,10 +86,10 @@
 }
 ```
 
-|     Nome     |  Tipo                                                              | Obrigatório  |                            Definição                         |
-|:------------ |:---------------------------------                                  |:-----------  |:----------------------------------------------------         |
-| name         | string                                                             | Sim          | Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a 'marca' utilizada está em definição pelos participantes.  |
-| companies    | [[ElectronicChannelsCompanies](#schemaElectronicChannelsCompanies)]  | Sim          | Lista de instituições pertencentes à marca.             |
+|     Nome     |  Tipo                                                                | Obrigatório  |                            Definição                                                                                                             |
+|:------------ |:---------------------------------                                    |:-----------  |:----------------------------------------------------                                                                                             |
+| name         | string                                                               | Sim          | Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a 'marca' utilizada está em definição pelos participantes. |
+| companies    | [[ElectronicChannelsCompanies](#schemaElectronicChannelsCompanies)]  | Sim          | Lista de instituições pertencentes à marca.                                                                                                        |
 
 ## ElectronicChannelsCompanies
 <a id="schemaElectronicChannelsCompanies"></a>
@@ -122,7 +122,7 @@
 |:------------         |:---------------------------------                 |:------------|:------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------- |
 | name                 | string                                            | Sim         | Nome da Instituição, pertencente à Marca, responsável pelos  Canais de Atendimento Eletrônico (titular). p.ex. 'Empresa da Organização A'. |                                                                           |
 | cnpjNumber           | string                                            | Sim         | CNPJ da instituição responsável pelo canal de atendimento - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica.      |                                                                           |
-| urlComplementaryList | string                                            | Não         | Se aplicável informar: URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. Endereço eletrônico de acesso ao canal. URLs são limitadas a 2048 caracteres mas, para o contexto do Sistema Financeiro aberto, será adotado a metade deste tamanho. p.ex. 'https://example.com/mobile-banking' | Informar se aplicável |
+| urlComplementaryList | string                                            | Não         | URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber.                                        | Informar se aplicável                                                     |
 | electronicChannels   | [[ElectronicChannels](#schemaElectronicChannels)] | Sim         | Lista  de canais de atendimento eletrônico.                                                                                                |                                                                           |
 
 ## ElectronicChannels
@@ -147,8 +147,8 @@
 
 |     Nome              |  Tipo                                                                       | Obrigatório |                            Definição                                                                                                                                                                                                                                          | Restrições                                                                               |
 |:------------          |:--------------------------------------------------------------------------- |:----------- |:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |:-----------------                                                                        |
-| identification        | [ElectronicChannelsIdentification](#schemaElectronicChannelsIdentification)   | Sim         |                                                                                                                                                                                                                                                                               |                                                                                          |
-| services              | [[ElectronicChannelsServices](#schemaElectronicChannelsServices)]               | Sim         | Traz a relação de serviços disponbilizados pelo Canal de Atendimento                                                                                                                                                                                                                                       |                                                                                          |
+| identification        | [ElectronicChannelsIdentification](#schemaElectronicChannelsIdentification) | Sim         |                                                                                                                                                                                                                                                                               |                                                                                          |
+| services              | [[ElectronicChannelsServices](#schemaElectronicChannelsServices)]           | Sim         | Traz a relação de serviços disponbilizados pelo Canal de Atendimento                                                                                                                                                                                                          |                                                                                          |
 
 ## ElectronicChannelsIdentification
 <a id="schemaElectronicChannelsIdentification"></a>
@@ -161,11 +161,11 @@
 }
 ```
 
-|     Nome        |  Tipo                                                             | Obrigatório |                            Definição                                                  | Restrições                           |
-|:------------    |:---------------------------------                                 |:----------- |:--------------------------------------------------                                    |:------------------------------------ |
-| type            | [Enum ElectronicChannelsType](#schemaElectronicChannelsType)      | Sim         | Tipo de canal de atendimento.                                                         | O Tipo de Canal determina o Tipo de Acesso a ele relacionado: URL para acesso ao internet banking, URL para aquisição do app, URL da central,URL do SAC, URL da ouvidoria, URL para chat.    |
-| additionalInfo  | string                                                            | Não         | Campo de texto livre para descrever quando o tipo de canal de atendimento for Outros  | Só será preenchido quando o tipo de canal de atendimento for Outros .                                                                                                                         |
-| url             | string                                                            | Sim         | Endereço eletrônico de acesso ao canal.                                               |                                                                                                                                                                                              |
+|     Nome        |  Tipo                                                             | Obrigatório |                            Definição                                                  | Restrições                                                                                                                                                                                |
+|:------------    |:---------------------------------                                 |:----------- |:--------------------------------------------------                                    |:------------------------------------                                                                                                                                                      |
+| type            | [Enum ElectronicChannelsType](#schemaElectronicChannelsType)      | Sim         | Tipo de canal de atendimento.                                                         | O Tipo de Canal determina o Tipo de Acesso a ele relacionado: URL para acesso ao internet banking, URL para aquisição do app, URL da central,URL do SAC, URL da ouvidoria, URL para chat. |
+| additionalInfo  | string                                                            | Não         | Campo de texto livre para descrever quando o tipo de canal de atendimento for Outros  | Só será preenchido quando o tipo de canal de atendimento for Outros .                                                                                                                     |
+| url             | string                                                            | Sim         | Endereço eletrônico de acesso ao canal.                                               |                                                                                                                                                                                           |
 
 ### Enum ElectronicChannelsType
 <a id="schemaElectronicChannelsType"></a>
@@ -182,11 +182,11 @@
 ## ElectronicChannelsServices
 <a id="schemaElectronicChannelsServices"></a>
 
-|     Nome         |  Tipo                                                                              | Obrigatório |                            Definição               | Restrições             |
-|:------------     |:---------------------------------------------------------------------------------  |:----------- |:-------------------------------------------------- | :---------------------- |
-| name             | [Enum ElectronicChannelsServicesName](#schemaEnumElectronicChannelsServicesName) | Sim         | Nome dos Serviços efetivamente prestados pelo Canal de Atendimento. |  |
-| code             | [Enum ElectronicChannelsServicesCode](#schemaEnumElectronicChannelsServicesCode) | Sim         | Código dos Serviços efetivamente prestados pelo Canal de Atendimento. |  |
-| additionalInfo   | string                                                                           | Não         | Texto livre para complementar informação relativa ao Serviço disponível, quando for selecionada a opção p preenchida a opção 'OUTROS_PRODUTOS_SERVICOS' | Só será preenchido quando o tipo de serviço for OUTROS_PRODUTOS_SERVICOS |
+|     Nome         |  Tipo                                                                             | Obrigatório |                            Definição                                                                                               | Restrições                                                               |
+|:------------     |:--------------------------------------------------------------------------------- |:----------- |:--------------------------------------------------                                                                                 | :----------------------                                                  |
+| name             | [Enum ElectronicChannelsServicesName](#schemaEnumElectronicChannelsServicesName)  | Sim         | Nome dos Serviços efetivamente prestados pelo Canal de Atendimento.                                                                |                                                                          |
+| code             | [Enum ElectronicChannelsServicesCode](#schemaEnumElectronicChannelsServicesCode)  | Sim         | Código dos Serviços efetivamente prestados pelo Canal de Atendimento.                                                              |                                                                          |
+| additionalInfo   | string                                                                            | Não         | Texto livre para complementar informação relativa ao Serviço disponível, quando for selecionada a opção 'OUTROS_PRODUTOS_SERVICOS' | Só será preenchido quando o tipo de serviço for OUTROS_PRODUTOS_SERVICOS |
 
 ### Enum ElectronicChannelsServicesName
 <a id="schemaEnumElectronicChannelsServicesName"></a>
