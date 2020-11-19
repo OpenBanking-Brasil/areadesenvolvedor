@@ -163,7 +163,7 @@
 |     Nome    |  Tipo                                                       | Obrigatório |                            Definição                                                                                                  |
 |:----------- |:---------------------------------                           |:----------- |:------------------------------------------------------------------------------------------------------------------------------------- |
 | name        | string                                                      | Sim         | Nome da Instituição, pertencente à Marca, responsável pela Dependência. p. ex. 'Empresa da Organização A'                             |
-| cnpjNumber  | string                                                      | Sim         | Número do CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. Deve-se ter apenas os números do CNPJ, sem máscara. |
+| cnpjNumber  | string                                                      | Sim         | Número completo do CNPJ da instituição responsável pelo Correspondente Bancário no pais - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. Deve-se ter apenas os números do CNPJ, sem máscara |
 | contractors | [[BankingAgentsContractor](#schemaBankingAgentsContractor)] | Sim         | Lista de contratantes.                                                                                                                |
 
 
@@ -269,7 +269,13 @@
   "districtName": "string",
   "townName": "string",
   "countrySubDivision": "string",
-  "postCode": "string"
+  "postCode": "string",
+  "additionalInfo": "string",
+  "ibgeCode": "string",
+  "country": "string",
+  "countryCode": "string",
+  "latitude": "string",
+  "longitude": "string"
 }
 ```
 
@@ -280,6 +286,12 @@
 | townName           | string | Sim         | Cidade.                                                       |
 | countrySubDivision | string | Sim         | Estado.                                                       |
 | postCode           | string | Sim         | CEP.                                                          |                                                       
+| additionalInfo     | string | Não         | Alguns logradouros ainda necessitam ser especificados por meio de complemento, conforme o exemplo a seguir: 'Loja B', 'Fundos', 'Casa 2', 'Lote C'  |
+| ibgeCode           | string | Não         | Código IBGE de Município. A Tabela de Códigos de Municípios do IBGE apresenta a lista dos municípios brasileiros associados a um código composto de 7 dígitos, sendo os dois primeiros referentes ao código da Unidade da Federação. p.ex.'3550308' |
+| country            | string | Não         | Nome do país. p.ex. Brasil  |
+| countryCode        | string | Não         | Código do pais de acordo com o código “alpha3” do ISO-3166.p.ex.'BRA' |
+| latitude           | string | Não         | Informação da Latitude referente a geolocalização informada. Entre -90 e 90.p.ex. '-90.8365180' |
+| longitude          | string | Não         | Informação da Longitude referente a geolocalização informada. Entre -180 e 180.p.ex. '-180.836519' |
 
 ## BankingAgentsService
 <a id="schemaBankingAgentsService"></a>
