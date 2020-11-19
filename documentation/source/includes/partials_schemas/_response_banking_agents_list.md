@@ -20,7 +20,8 @@
                     "identification": {
                       "corporationName": "string",
                       "groupName": "string",
-                      "cnpjNumber": "string"
+                      "cnpjNumber": "string",
+                      "isUnderestablishment": boolean
                     },
                     "postalAddresses": [
                       {
@@ -87,7 +88,8 @@
               "identification": {
                 "corporationName": "string",
                 "groupName": "string",
-                "cnpjNumber": "string"
+                "cnpjNumber": "string",
+                "isUnderestablishment": boolean
               },
               "postalAddresses": [
                 {
@@ -135,7 +137,8 @@
           "identification": {
             "corporationName": "string",
             "groupName": "string",
-            "cnpjNumber": "string"
+            "cnpjNumber": "string",
+            "isUnderestablishment": boolean
           },
           "postalAddresses": [
             {
@@ -179,7 +182,8 @@
       "identification": {
         "corporationName": "string",
         "groupName": "string",
-        "cnpjNumber": "string"
+        "cnpjNumber": "string",
+        "isUnderestablishment": boolean
       },
       "postalAddresses": [
         {
@@ -216,7 +220,8 @@
   "identification": {
     "corporationName": "string",
     "groupName": "string",
-    "cnpjNumber": "string"
+    "cnpjNumber": "string",
+    "isUnderestablishment": boolean
   },
   "postalAddresses": [
     {
@@ -250,15 +255,17 @@
 {
   "corporationName": "string",
   "groupName": "string",
-  "cnpjNumber": "string"
+  "cnpjNumber": "string",
+  "isUnderestablishment": boolean
 }
 ```
 
-| Nome                   | Tipo   | Obrigatório | Descrição                                                 |
-|:----------------       |:------ |:----------- |:-------------------------------                           |
-| corporationName        | string | Sim         | Nome do Correspondente Bancário.                          |
-| groupName              | string | Não         | Nome do conglomerado ao qual pertence o agente bancário.  |
-| cnpjNumber             | string | Sim         | CNPJ do Correspondente.                                   |
+| Nome                   | Tipo    | Obrigatório | Descrição                                                                                                                                                                                                                                                                                                          |
+|:----------------       |:------- |:----------- |:-------------------------------                                                                                                                                                                                                                                                                                    |
+| corporationName        | string  | Sim         | Nome do Correspondente Bancário.                                                                                                                                                                                                                                                                                   |
+| groupName              | string  | Não         | Nome do conglomerado ao qual pertence o agente bancário.                                                                                                                                                                                                                                                           |
+| cnpjNumber             | string  | Sim         | CNPJ do Correspondente.                                                                                                                                                                                                                                                                                            |
+| isUnderestablishment   | boolean | Não         | Indicador do Correspondente Bancário ser um Substabelecimento (são empresas  que foram contratadas por um correspondente bancário para prestar serviços. A empresa substabelecida é tratada como um correspondente do banco e tem praticamente os mesmos direitos e obrigações que possui o correspondente direto) |
 
 ## BankingAgentsPostalAddress
 <a id="schemaBankingAgentsPostalAddress"></a>
