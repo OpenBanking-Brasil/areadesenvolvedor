@@ -23,13 +23,21 @@
                       "cnpjNumber": "string",
                       "isUnderestablishment": boolean
                     },
-                    "postalAddresses": [
+                    "locations": [
                       {
-                        "address": "string",
-                        "districtName": "string",
-                        "townName": "string",
-                        "countrySubDivision": "string",
-                        "postCode": "string"
+                        "postalAddress": {
+                          "address": "string",
+                          "districtName": "string",
+                          "townName": "string",
+                          "countrySubDivision": "string",
+                          "postCode": "string",
+                          "additionalInfo": "string",
+                          "ibgeCode": "string",
+                          "country": "string",
+                          "countryCode": "string",
+                          "latitude": "string",
+                          "longitude": "string"
+                        }
                       }
                     ],
                     "services": [
@@ -91,13 +99,21 @@
                 "cnpjNumber": "string",
                 "isUnderestablishment": boolean
               },
-              "postalAddresses": [
+              "locations": [
                 {
-                  "address": "string",
-                  "districtName": "string",
-                  "townName": "string",
-                  "countrySubDivision": "string",
-                  "postCode": "string"
+                  "postalAddress": {
+                    "address": "string",
+                    "districtName": "string",
+                    "townName": "string",
+                    "countrySubDivision": "string",
+                    "postCode": "string",
+                    "additionalInfo": "string",
+                    "ibgeCode": "string",
+                    "country": "string",
+                    "countryCode": "string",
+                    "latitude": "string",
+                    "longitude": "string"
+                  }
                 }
               ],
               "services": [
@@ -140,13 +156,21 @@
             "cnpjNumber": "string",
             "isUnderestablishment": boolean
           },
-          "postalAddresses": [
+          "locations": [
             {
-              "address": "string",
-              "districtName": "string",
-              "townName": "string",
-              "countrySubDivision": "string",
-              "postCode": "string"
+              "postalAddress": {
+                "address": "string",
+                "districtName": "string",
+                "townName": "string",
+                "countrySubDivision": "string",
+                "postCode": "string",
+                "additionalInfo": "string",
+                "ibgeCode": "string",
+                "country": "string",
+                "countryCode": "string",
+                "latitude": "string",
+                "longitude": "string"
+              }
             }
           ],
           "services": [
@@ -185,13 +209,21 @@
         "cnpjNumber": "string",
         "isUnderestablishment": boolean
       },
-      "postalAddresses": [
+      "locations": [
         {
-          "address": "string",
-          "districtName": "string",
-          "townName": "string",
-          "countrySubDivision": "string",
-          "postCode": "string"
+          "postalAddress": {
+            "address": "string",
+            "districtName": "string",
+            "townName": "string",
+            "countrySubDivision": "string",
+            "postCode": "string",
+            "additionalInfo": "string",
+            "ibgeCode": "string",
+            "country": "string",
+            "countryCode": "string",
+            "latitude": "string",
+            "longitude": "string"
+          }
         }
       ],
       "services": [
@@ -223,13 +255,21 @@
     "cnpjNumber": "string",
     "isUnderestablishment": boolean
   },
-  "postalAddresses": [
+  "locations": [
     {
-      "address": "string",
-      "districtName": "string",
-      "townName": "string",
-      "countrySubDivision": "string",
-      "postCode": "string"
+      "postalAddress": {
+        "address": "string",
+        "districtName": "string",
+        "townName": "string",
+        "countrySubDivision": "string",
+        "postCode": "string",
+        "additionalInfo": "string",
+        "ibgeCode": "string",
+        "country": "string",
+        "countryCode": "string",
+        "latitude": "string",
+        "longitude": "string"
+      }
     }
   ],
   "services": [
@@ -242,11 +282,11 @@
 }
 ```
 
-| Nome | Tipo|Obrigatório|Descrição|
-|:---- |:---|:---|:---|:---|
-| identification |[BankingAgentsIdentification](#schemaBankingAgentsIdentification)|Sim|Dados de identificação do correspondente.|
-| postalAddresses |[BankingAgentsPostalAddress](#schemaBankingAgentsPostalAddress)|Sim|Endereço do correspondente.|
-| services |[[BankingAgentsService](#schemaBankingAgentsService)]|Sim|Serviços fornecidos pelo correspondente.|
+| Nome           | Tipo                                                              | Obrigatório | Descrição                                                                       |
+|:-------------- |:----------------------------------------------------------------- |:----------- |:------------------------------------------------------------------------------- |
+| identification | [BankingAgentsIdentification](#schemaBankingAgentsIdentification) | Sim         | Dados de identificação do correspondente.                                       |
+| locations      | [[BankingAgentLocation](#schemaBankingAgentLocation)]             | Sim         | Relação de informações referentes as localizações dos Correspondentes bancários |
+| services       | [[BankingAgentsService](#schemaBankingAgentsService)]             | Sim         | Serviços fornecidos pelo correspondente.                                        |
 
 ## BankingAgentsIdentification
 <a id="schemaBankingAgentsIdentification"></a>
@@ -266,6 +306,31 @@
 | groupName              | string  | Não         | Nome do conglomerado ao qual pertence o agente bancário.                                                                                                                                                                                                                                                           |
 | cnpjNumber             | string  | Sim         | CNPJ do Correspondente.                                                                                                                                                                                                                                                                                            |
 | isUnderestablishment   | boolean | Não         | Indicador do Correspondente Bancário ser um Substabelecimento (são empresas  que foram contratadas por um correspondente bancário para prestar serviços. A empresa substabelecida é tratada como um correspondente do banco e tem praticamente os mesmos direitos e obrigações que possui o correspondente direto) |
+
+## BankingAgentLocation
+<a id="schemaBankingAgentLocation"></a>
+
+```json
+    {
+      "postalAddress": {
+        "address": "string",
+        "districtName": "string",
+        "townName": "string",
+        "countrySubDivision": "string",
+        "postCode": "string",
+        "additionalInfo": "string",
+        "ibgeCode": "string",
+        "country": "string",
+        "countryCode": "string",
+        "latitude": "string",
+        "longitude": "string"
+      }
+    }
+```
+
+| Nome           | Tipo                                                              | Obrigatório | Descrição                                                                       |
+|:-------------- |:----------------------------------------------------------------- |:----------- |:------------------------------------------------------------------------------- |
+| postalAddress  | [BankingAgentsPostalAddress](#schemaBankingAgentsPostalAddress)   | Sim         | Endereço do correspondente.                                                     |
 
 ## BankingAgentsPostalAddress
 <a id="schemaBankingAgentsPostalAddress"></a>
