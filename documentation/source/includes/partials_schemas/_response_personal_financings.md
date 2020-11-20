@@ -1,4 +1,5 @@
 ## ResponsePersonalFinancings
+
 <a id="schemaResponsePersonalFinancings"></a>
 
 ```json
@@ -14,9 +15,9 @@
           "personalFinancings": [
             {
               "type": "string",
-              "fees": [
-                {
-                  "service": {
+              "fees": {
+                "services": [
+                  {
                     "name": "string",
                     "code": "string",
                     "chargingTriggerInfo": "string",
@@ -34,14 +35,20 @@
                     "maximum": {
                       "value": "string",
                       "currency": "string"
-                    }
+                    },
+                    "customers": [
+                      {
+                        "frequency": "string",
+                        "rate": "string"
+                      }
+                    ]
                   }
-                }
-              ],
+                ]
+              },
               "interestRate": {
                 "fees": [
                   {
-                    "referentialRateOrIndexer": "string",
+                    "referentialRateIndexer": "string",
                     "rate": "string"
                   }
                 ],
@@ -49,10 +56,28 @@
                   {
                     "interval": "string",
                     "rate": "string"
+                  },
+                  {
+                    "interval": "string",
+                    "rate": "string"
+                  },
+                  {
+                    "interval": "string",
+                    "rate": "string"
+                  },
+                  {
+                    "interval": "string",
+                    "rate": "string"
                   }
                 ],
                 "minimumRate": "string",
-                "maximumRate": "string"
+                "maximumRate": "string",
+                "customers": [
+                  {
+                    "frequency": "string",
+                    "rate": "string"
+                  }
+                ]
               },
               "requiredWarranties": [
                 "string"
@@ -86,69 +111,92 @@
 | meta          | [MetaPaginated](#schemaMetaPaginated)                     | Sim          |                                                       |
 
 ## PersonalFinancingBrand
+
 <a id="schemaPersonalFinancingBrand"></a>
 
 ```json
 {
-  "brand": {
-    "name": "string",
-    "companies": [
-      {
-        "cnpjNumber": "string",
-        "name": "string",
-        "urlComplementaryList": "string",
-        "personalFinancings": [
-          {
-            "type": "string",
-            "fees": [
+  "name": "string",
+  "companies": [
+    {
+      "cnpjNumber": "string",
+      "name": "string",
+      "urlComplementaryList": "string",
+      "personalFinancings": [
+        {
+          "type": "string",
+          "fees": {
+            "services": [
               {
-                "service": {
-                  "name": "string",
-                  "code": "string",
-                  "chargingTriggerInfo": "string",
-                  "prices": [
-                    {
-                      "interval": "string",
-                      "value": "string",
-                      "currency": "string"
-                    }
-                  ],
-                  "minimum": {
-                    "value": "string",
-                    "currency": "string"
-                  },
-                  "maximum": {
+                "name": "string",
+                "code": "string",
+                "chargingTriggerInfo": "string",
+                "prices": [
+                  {
+                    "interval": "string",
                     "value": "string",
                     "currency": "string"
                   }
-                }
+                ],
+                "minimum": {
+                  "value": "string",
+                  "currency": "string"
+                },
+                "maximum": {
+                  "value": "string",
+                  "currency": "string"
+                },
+                "customers": [
+                  {
+                    "frequency": "string",
+                    "rate": "string"
+                  }
+                ]
+              }
+            ]
+          },
+          "interestRate": {
+            "fees": [
+              {
+                "referentialRateIndexer": "string",
+                "rate": "string"
               }
             ],
-            "interestRate": {
-              "fees": [
-                {
-                  "referentialRateOrIndexer": "string",
-                  "rate": "string",
-                }
-              ],
-              "applications": [
-                {
-                  "interval": "string",
-                  "rate": "string"
-                }
-              ],
-              "minimumRate": "string",
-              "maximumRate": "string"
-            },
-            "requiredWarranties": [
-              "string"
+            "applications": [
+              {
+                "interval": "string",
+                "rate": "string"
+              },
+              {
+                "interval": "string",
+                "rate": "string"
+              },
+              {
+                "interval": "string",
+                "rate": "string"
+              },
+              {
+                "interval": "string",
+                "rate": "string"
+              }
             ],
-            "termsConditions": "string"
-          }
-        ]
-      }
-    ]
-  }
+            "minimumRate": "string",
+            "maximumRate": "string",
+            "customers": [
+              {
+                "frequency": "string",
+                "rate": "string"
+              }
+            ]
+          },
+          "requiredWarranties": [
+            "string"
+          ],
+          "termsConditions": "string"
+        }
+      ]
+    }
+  ]
 }
 ```
 
@@ -157,7 +205,8 @@
 | name         | string                                                               | Sim          | Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a 'marca' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes. |
 | companies    | [PersonalFinancingCompany](#schemaPersonalFinancingCompany)  | Sim          | Lista de instituições pertencentes à marca.             |
 
-## PersonalFinancingCompany 
+## PersonalFinancingCompany
+
 <a id="schemaPersonalFinancingCompany"></a>
 
 ```json
@@ -168,9 +217,9 @@
   "personalFinancings": [
     {
       "type": "string",
-      "fees": [
-        {
-          "service": {
+      "fees": {
+        "services": [
+          {
             "name": "string",
             "code": "string",
             "chargingTriggerInfo": "string",
@@ -188,25 +237,49 @@
             "maximum": {
               "value": "string",
               "currency": "string"
-            }
+            },
+            "customers": [
+              {
+                "frequency": "string",
+                "rate": "string"
+              }
+            ]
           }
-        }
-      ],
+        ]
+      },
       "interestRate": {
         "fees": [
           {
-            "referentialRateOrIndexer": "string",
-            "rate": "string",
+            "referentialRateIndexer": "string",
+            "rate": "string"
           }
         ],
         "applications": [
           {
             "interval": "string",
             "rate": "string"
+          },
+          {
+            "interval": "string",
+            "rate": "string"
+          },
+          {
+            "interval": "string",
+            "rate": "string"
+          },
+          {
+            "interval": "string",
+            "rate": "string"
           }
         ],
         "minimumRate": "string",
-        "maximumRate": "string"
+        "maximumRate": "string",
+        "customers": [
+          {
+            "frequency": "string",
+            "rate": "string"
+          }
+        ]
       },
       "requiredWarranties": [
         "string"
@@ -225,14 +298,15 @@
 | personalFinancings   | [PersonalFinancing](#schemaPersonalFinancing) | Sim         | Lista de financiamentos.                                                                                                                                                                |                                                                                                        |
 
 ## PersonalFinancing
+
 <a id="schemaPersonalFinancing"></a>
 
 ```json
 {
   "type": "string",
-  "fees": [
-    {
-      "service": {
+  "fees": {
+    "services": [
+      {
         "name": "string",
         "code": "string",
         "chargingTriggerInfo": "string",
@@ -250,25 +324,49 @@
         "maximum": {
           "value": "string",
           "currency": "string"
-        }
+        },
+        "customers": [
+          {
+            "frequency": "string",
+            "rate": "string"
+          }
+        ]
       }
-    }
-  ],
+    ]
+  },
   "interestRate": {
     "fees": [
       {
-        "referentialRateOrIndexer": "string",
-        "rate": "string",
+        "referentialRateIndexer": "string",
+        "rate": "string"
       }
     ],
     "applications": [
       {
         "interval": "string",
         "rate": "string"
+      },
+      {
+        "interval": "string",
+        "rate": "string"
+      },
+      {
+        "interval": "string",
+        "rate": "string"
+      },
+      {
+        "interval": "string",
+        "rate": "string"
       }
     ],
     "minimumRate": "string",
-    "maximumRate": "string"
+    "maximumRate": "string",
+    "customers": [
+      {
+        "frequency": "string",
+        "rate": "string"
+      }
+    ]
   },
   "requiredWarranties": [
     "string"
@@ -285,8 +383,8 @@
 | requiredWarranties    | [Enum PersonalFinancingRequiredWarranty](#schemaEnumPersonalFinancingRequiredWarranty)  | Sim         | Relação de garantias exigidas.                                                                                                                                                                                                                                                                                                           |
 | termsConditions       | string                                                                                          | Sim          | Campo aberto para informar as condições contratuais relativas ao produto ou serviço informado. Pode ser informada a URL ([URIString](#commonFieldURIString)) referente ao endereço onde constam as condições informadas.   |
 
-
 ### Enum PersonalFinancingType
+
 <a id="schemaEnumPersonalFinancingType"></a>
 
 | Propriedade  | Código                                 | Definição                                                        |
@@ -302,6 +400,7 @@
 | type         | FINANCIAMENTO_IMOBILIARIO_SISTEMA_FINANCIERO_HABILITACAO_SFI   | Financimento imobiliário - Sistema Financeiro da Imobiliário (SFI). |
 
 ### Enum PersonalFinancingRequiredWarranty
+
 <a id="schemaEnumPersonalFinancingRequiredWarranty"></a>
 
 | Propriedade        | Código                                     | Definição                                             |
@@ -321,31 +420,77 @@
 | requiredWarranty | ACORDOS_COMPENSACAO                        | Acordos de compensação.                                |
 | requiredWarranty | NAO_APLICAVEL                              | Não aplicável.                                         |
 
-## PersonalFinancingFee 
+## PersonalFinancingFee
+
 <a id="schemaPersonalFinancingFee"></a>
 
 ```json
 {
-  "service": {
-    "name": "string",
-    "code": "string",
-    "chargingTriggerInfo": "string",
-    "prices": [
-      {
-        "interval": "string",
+  "services": [
+    {
+      "name": "string",
+      "code": "string",
+      "chargingTriggerInfo": "string",
+      "prices": [
+        {
+          "interval": "string",
+          "value": "string",
+          "currency": "string"
+        }
+      ],
+      "minimum": {
         "value": "string",
         "currency": "string"
-      }
-    ],
-    "minimum": {
-      "value": "string",
-      "currency": "string"
-    },
-    "maximum": {
+      },
+      "maximum": {
+        "value": "string",
+        "currency": "string"
+      },
+      "customers": [
+        {
+          "frequency": "string",
+          "rate": "string"
+        }
+      ]
+    }
+  ]
+}
+```
+
+|  Nome  |  Tipo                                                           |Obrigatório|                            Definição     |
+|:-------|:--------------------------------------------------------------- |:--------- |:---------------------------------------- |
+|services|[PersonalFinancingFeeService](#schemaPersonalFinancingFeeService)|Sim        | Lista das Tarifas cobradas sobre Serviços|
+
+## PersonalFinancingFeeService
+
+<a id="schemaPersonalFinancingFeeService"></a>
+
+```json
+{
+  "name": "string",
+  "code": "string",
+  "chargingTriggerInfo": "string",
+  "prices": [
+    {
+      "interval": "string",
       "value": "string",
       "currency": "string"
     }
-  }
+  ],
+  "minimum": {
+    "value": "string",
+    "currency": "string"
+  },
+  "maximum": {
+    "value": "string",
+    "currency": "string"
+  },
+  "customers": [
+    {
+      "frequency": "string",
+      "rate": "string"
+    }
+  ]
 }
 ```
 
@@ -358,7 +503,8 @@
 | minimum              | [[MinimumPrice](#schemaMinimumPrice)]             | Sim           | Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
 | maximum              | [[MaximumPrice](#schemaMaximumPrice)]             | Sim           | Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
 
-## PersonalFinancingInterestRate 
+## PersonalFinancingInterestRate
+
 <a id="schemaPersonalFinancingInterestRate"></a>
 
 ```json
@@ -366,7 +512,7 @@
   "fees": [
     {
       "referentialRateOrIndexer": "string",
-      "rate": "string",
+      "rate": "string"
     }
   ],
   "applications": [
