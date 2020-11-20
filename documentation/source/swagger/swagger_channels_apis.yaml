@@ -177,12 +177,20 @@ components:
                       code: '0001'
                       checkDigit: '9'
                       name: 'Marília'
+                      relatedBranch: '0001'
+                      openingDate: '2010-01-02'
                     postalAddress:
                       address: 'Av Naburo Ykesaki, 1270'
+                      additionalInfo: 'Loja B'
                       districtName: 'Centro'
                       townName: 'Marília'
+                      ibgeCode: '3550308'
                       countrySubDivision: 'SP'
                       postCode: '17500-001'
+                      country: 'Brasil'
+                      countryCode: 'BRA'
+                      latitude: '-90.8365180'
+                      longitude: '-180.836519'
                     availability:
                       standards:
                         - weekday: SEGUNDA_FEIRA
@@ -201,7 +209,7 @@ components:
                           openingTime: '10:00:57Z'
                           closingTime: '16:00:57Z'
                       exception: 'Exceto feriados municipais, estaduais e nacionais'
-                      allowPublicAccess: true
+                      isPublicAccessAllowed: true
                     phones:
                       - type: FIXO
                         countryCallingCode: '55'
@@ -211,18 +219,13 @@ components:
                         countryCallingCode: '55'
                         areaCode: '14'
                         number: '997865532'
-                    service:
-                      codes:
-                        - ABERTURA_CONTAS
-                        - RECEBIMENTOS_PAGAMENTOS_TRANSFERENCIAS_ELETRONICAS
-                        - RECEBIMENTOS_PAGAMENTOS_QUALQUER_NATUREZA
-                        - OPERACOES_CREDITO
-                        - CARTAO_CREDITO
-                        - OPERACOES_CAMBIO
-                        - INVESTIMENTOS
-                        - SEGUROS
-                        - OUTROS
-                      additionalInfo: "Renegociação, Previdência Privada"
+                    services:
+                      - name: "RECEBIMENTOS_PAGAMENTOS_QUALQUER_NATUREZA"
+                        code: "RECEBE_PAGA_QUALQUER_NATUREZA"
+                        additionalInfo: "Renegociação, Previdência Privada"
+                      - name: "ABERTURA_CONTAS_DEPOSITOS_OU_PAGAMENTO_PRE_PAGA"
+                        code: "ABRE_CONTA_DEPOSITO_OU_PRE_PAGA"
+                        additionalInfo: "Renegociação, Previdência Privada"
         links:
           self: 'https://api.banco.com.br/open-banking/channels/v1/branches'
           first: 'https://api.banco.com.br/open-banking/channels/v1/branches'
@@ -435,7 +438,7 @@ components:
         - identification
         - postalAddress
         - availability
-        - service
+        - services
       properties:
         identification:
           $ref: '#/components/schemas/BranchIdentification'
@@ -447,8 +450,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Phone'
-        service:
-          $ref: '#/components/schemas/BranchServices'
+        services:
+          type: array
+          items:
+            $ref: '#/components/schemas/BranchServices'
     BranchPostalAddress:
       type: object
       required:
@@ -468,12 +473,14 @@ components:
             - AGENCIA
             - POSTO_ATENDIMENTO
             - POSTO_ATENDIMENTO_ELETRONICO
+            - UNIDADE_ADMINISTRATIVA_DESMEMBRADA
           description: >
             Tipo da dependência, segundo a regulamentação do Bacen,  na Resolução Nº 4072, de 26 de abril de 2012:
             Agência é a dependência destinada ao atendimento aos clientes e ao público em geral no exercício de atividades da instituição, não podendo ser móvel ou transitória;
-              Dependência de instituições financeiras e demais instituições, autorizadas a funcionar pelo Banco Central do Brasil, destinada à prática das atividades para as quais a instituição esteja regularmente habilitada.
+            Dependência de instituições financeiras e demais instituições, autorizadas a funcionar pelo Banco Central do Brasil, destinada à prática das atividades para as quais a instituição esteja regularmente habilitada.
             Posto de Atendimento é a dependência subordinada a agência  ou à sede da instituição financeira, destinada ao atendimento ao público no exercício de uma ou mais de suas atividades, podendo ser fixo ou móvel. Segundo Art.15. Os Postos de Atendimento Bancário (PAB), Postos Avançados de Atendimento (PAA), Postos de Atendimento Transitórios (PAT), Postos de Compra de Ouro (PCO), Postos de Atendimento Cooperativo (PAC), Postos de Atendimento de Microcrédito (PAM), Postos Bancários de Arrecadação e Pagamento (PAP) e os Postos de Câmbio atualmente em funcionamento serão considerados PA.
             Posto de Atendimento Eletrônico é a dependência constituída por um ou mais terminais de autoatendimento, subordinada a agência ou à sede da instituição, destinada à prestação de serviços por meio eletrônico, podendo ser fixo ou móvel, permanente ou transitório
+            Unidade Administrativa Desmembrada (UAD) segundo a Resolução 4072 , BCB, 2012, no Art. 8º "... é dependência destinada à execução de atividades administrativas da instituição, vedado o atendimento ao público"
         code:
           type: string
           maxLength: 4
@@ -485,6 +492,15 @@ components:
         name:
           type: string
           maxLength: 100
+          pattern: \w*\W*
+        relatedBranch:
+          type: string
+          maxLength: 4
+          pattern: ^\d{4}$
+        openingDate:
+          type: string
+          maxLength: 10
+          pattern: ^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$
       required:
         - type
         - code
@@ -525,46 +541,66 @@ components:
         exception:
           type: string
           maxLength: 2000
-        allowPublicAccess:
+        isPublicAccessAllowed:
           type: boolean
       required:
         - standards
         - exception
-        - allowPublicAccess
     BranchServices:
       type: object
       properties:
-        codes:
-          type: array
-          items:
-            type: string
-            enum:
-              - ABERTURA_CONTAS
-              - RECEBIMENTOS_PAGAMENTOS_TRANSFERENCIAS_ELETRONICAS
-              - RECEBIMENTOS_PAGAMENTOS_QUALQUER_NATUREZA
-              - OPERACOES_CREDITO
-              - CARTAO_CREDITO
-              - OPERACOES_CAMBIO
-              - INVESTIMENTOS
-              - SEGUROS
-              - OUTROS
-          description: >
-            Serviços prestados pela dependência consultada:
-            * Abertura de contas
-            * Recebimentos, pagamentos e transferências eletrônicas
-            * Recebimentos e pagamentos de qualquer natureza
-            * Operações de crédito
-            * Cartão de crédito
-            * Operações de câmbio
-            * Investimentos
-            * Seguros
-            * Outros
+        name:
+          type: string
+          enum:
+            - ABERTURA_CONTAS_DEPOSITOS_OU_PAGAMENTO_PRE_PAGA
+            - SAQUE_MOEDA_EM_ESPECIE
+            - RECEBIMENTOS_PAGAMENTOS_QUALQUER_NATUREZA
+            - TRANSFERENCIAS_ELETRONICAS_VISANDO_MOVIMENTACAO_CONTAS_DEPOSITOS_OU_PAGAMENTO_TITULARIDADE_CLIENTES
+            - CONSULTA_SALDOS_EXTRATOS_CONTAS_DEPOSITOS_CONTAS_PAGAMENTOS
+            - APLICACOES_RESGATES_INVESTIMENTOS
+            - EXECUCAO_ATIVA_PASSIVA_ORDENS_PAGAMENTO_SOLICITACAO_CLIENTES_USUARIOS
+            - DEPOSITOS_MOEDA_ESPECIE_CHEQUE
+            - OPERACOES_CREDITO_BEM_COMO_OUTROS_SERVICOS_PRESTADOS_ACOMPANHAMENTO_OPERACAO
+            - CARTAO_CREDITO
+            - SEGUROS
+            - OPERACOES_ARRENDAMENTO_MERCANTIL
+            - ABERTURA_CONTA_PAGAMENTO_POS_PAGA
+            - COMPRA_VENDA_MOEDA_ESTRANGEIRA_ESPECIE
+            - COMPRA_VENDA_CHEQUE_CHEQUE_VIAGEM_BEM_COMO_CARGA_MOEDA_ESTRANGEIRA_CARTAO_PRE_PAGO
+            - COMPRA_VENDA_OURO
+            - OUTROS_PRODUTOS_SERVICOS
+            - CANCELAMENTO
+            - INFORMACOES
+            - RECLAMACOES
+        code:
+          type: string
+          enum:
+            - ABRE_CONTA_DEPOSITO_OU_PRE_PAGA
+            - SAQUE_MOEDA_ESPECIE
+            - RECEBE_PAGA_QUALQUER_NATUREZA
+            - TRANSFERENCIAS_ELETRONICAS_MOVIMENTA_CONTAS_DEPOSITOS_OU_PAGTO_TITULARES_CLIENTES
+            - CONSULTA_SALDOS_EXTRATOS_CONTAS_DEPOSITOS_PAGTOS
+            - APLICA_RESGATA_INVESTIMENTOS
+            - EXECUCAO_ATIVA_PASSIVA_ORDENS_PAGTO
+            - DEPOSITO_MOEDA_ESPECIE_CHEQUE
+            - OPERA_CREDITO_OUTROS_SERVICOS_ACOMPANHA_OPERACAO
+            - CARTAO_CREDITO
+            - SEGUROS
+            - OPERA_ARRENDAMENTO_MERCANTIL
+            - ABERTURA_CONTA_PAGAMENTO_POS_PAGA
+            - COMPRA_VENDA_MOEDA_ESTRANGEIRA_ESPECIE
+            - COMPRA_VENDA_CHEQUE_CHEQUE_VIAGEM_CARGA_MOEDA_ESTRANGEIRA_CARTAO_PRE_PAGO
+            - COMPRA_VENDA_OURO
+            - OUTROS_PRODUTOS_SERVICOS
+            - CANCELAMENTO
+            - INFORMACOES
+            - RECLAMACOES
         additionalInfo:
           type: string
-          description: Campo de texto livre para descrever mais sobre os serviços
+          description: Texto livre para complementar informação relativa ao Serviço disponível, quando for selecionada a opção p preenchida a opção 'OUTROS_PRODUTOS_SERVICOS'
           maxLength: 2000
       required:
-        - codes
+      - code
     ElectronicChannel:
       type: object
       properties:
@@ -668,6 +704,7 @@ components:
     Phone:
       type: object
       required:
+        - type
         - countryCallingCode
         - areaCode
         - number
