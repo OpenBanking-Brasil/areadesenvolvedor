@@ -343,7 +343,7 @@
 | name                 | string                                     | Sim  | Nome da Instituição, pertencente à marca, responsável pela comercialização dos tipos de contas de pessoas jurídicas consultadas.                      |
 | cnpjNumber           | string                                     | Sim  | O responsável pela comercialização das modalidades de Contas para Pessoas Jurídicas consultadas.                                                      |
 | urlComplementaryList | string                                     | Sim  | URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. |
-| businessAccounts     | [BusinessAccounts](#schemaBusinessAccountss)| Sim  | lista de tipos de conta          |
+| businessAccounts     | [BusinessAccounts](#schemaBusinessAccounts)| Sim  | lista de tipos de conta          |
 
 ## BusinessAccounts
 <a id="schemaBusinessAccounts"></a>
