@@ -269,7 +269,7 @@ components:
         - incomeRates
       properties:
         type:
-          $ref: '#/components/schemas/PersonalAccountType'
+          $ref: '#/components/schemas/AccountType'
         fees:
           $ref: '#/components/schemas/AccountFee'
         serviceBundles:
@@ -362,7 +362,7 @@ components:
           minItems: 4
           maxItems: 4
           description: Lista percentual de clientes por faixa de preço
-    PersonalAccountType:
+    AccountType:
       type: string
       enum:
         - CONTA_DEPOSITO_A_VISTA
@@ -621,161 +621,7 @@ components:
             - brand
           properties:
             brand:
-              type: object
-              required:
-                - name
-                - companies
-              properties:
-                name:
-                  type: string
-                  maxLength: 80
-                  pattern: \w*\W*
-                  description: 'Nome da Instituição, pertencente à marca, responsável pela comercialização dos produtos e serviços'
-                  example: Organização A
-                companies:
-                  type: array
-                  items:
-                    required:
-                      - name
-                      - cnpjNumber
-                    allOf:
-                      - $ref: '#/components/schemas/Company'
-                    properties:
-                      businessAccounts:
-                        type: array
-                        items:
-                          required:
-                            - type
-                            - fees
-                            - serviceBundles
-                            - openingClosingChannels
-                            - transactionMethods
-                            - termsConditions
-                            - incomeRates
-                          properties:
-                            type:
-                              type: string
-                              enum:
-                                - CONTA_DEPOSITO_A_VISTA
-                                - CONTA_POUPANCA
-                                - CONTA_PAGAMENTO_PRE_PAGA
-                              description: 'Tipos de contas ofertadas para pessoas jurídicas, conforme Resolução 3.919 do Bacen.'
-                              example: CONTA_DEPOSITO_A_VISTA
-                            fees:
-                              type: array
-                              items:
-                                type: object
-                                required:
-                                  - service
-                                properties:
-                                  service:
-                                    $ref: '#/components/schemas/BusinessAccountsServices'
-                            serviceBundles:
-                              type: array
-                              items:
-                                type: object
-                                required:
-                                  - name
-                                  - service
-                                  - prices
-                                  - minimum
-                                  - maximum
-                                  - customers
-                                properties:
-                                  name:
-                                    type: string
-                                    maxLength: 250
-                                    description: Nome do Pacote de Serviços dado pela instituição.
-                                  service:
-                                    type: array
-                                    items:
-                                      required:
-                                        - code
-                                        - chargingTriggerInfo
-                                        - eventLimitQuantity
-                                        - freeEventQuantity
-                                      properties:
-                                        code:
-                                          type: string
-                                          maxLength: 100
-                                          description: 'Código que identifica o Serviço que compõe o Pacote de Serviços, podendo ser da lista de Serviços Prioritários ou Outros Serviços'
-                                          example: SAQUE_TERMINAL
-                                        chargingTriggerInfo:
-                                          type: string
-                                          maxLength: 2000
-                                          pattern: \w*\W*
-                                          description: Fatos geradores de cobrança que incidem sobre serviço que compõe o Pacote de Serviços.
-                                          example: Cobrança devido a evento personalizado
-                                        eventLimitQuantity:
-                                          type: string
-                                          maxLength: 6
-                                          pattern: '^(\d{1,6}){1}$'
-                                          description: |
-                                            Segundo Resolução  4196, BCB, de 2013: Quantidade de eventos previstos no Pacote de Serviços (Número de eventos incluídos no mês) p.ex.'2'. No caso de quantidade ilimitada, reportar 999999
-                                          example: '2'
-                                        freeEventQuantity:
-                                          type: string
-                                          maxLength: 6
-                                          pattern: '^(\d{1,6}){1}$'
-                                          description: |
-                                            Segundo Resolução  4196, BCB, de 2013: Quantidade de eventos previstos no Pacote de Serviços com isenção de Tarifa.p.ex.'1'  No caso de quantidade ilimitada, reportar 999999
-                                          example: '1'
-                                  prices:
-                                    type: array
-                                    items:
-                                      $ref: '#/components/schemas/MontlyPrice'
-                                  minimum:
-                                    $ref: '#/components/schemas/MinimumPrice'
-                                  maximum:
-                                    $ref: '#/components/schemas/MaximumPrice'
-                                  customers:
-                                    type: array
-                                    items:
-                                      $ref: '#/components/schemas/Customer'
-                            openingClosingChannels:
-                              type: string
-                              enum:
-                                - DEPENDENCIAS_PROPRIAS
-                                - CORRESPONDENTES_BANCARIOS
-                                - INTERNET_BANKING
-                                - MOBILE_BANKING
-                                - CENTRAL_TELEFONICA
-                                - CHAT
-                                - OUTROS
-                              description: |
-                                Canais disponíveis para abertura e encerramento de contas, p.ex. 'DEPENDENCIAS_PROPRIAS'
-                              example: CENTRAL_TELEFONICA
-                            additionalInfo:
-                              type: string
-                              maxLength: 100
-                              pattern: \w*\W*
-                              description: 'Texto livre para complementar informação relativa ao Canal disponível, quando no campo ''openingClosingChannels'' estiver preenchida a opção ''Outros'''
-                              example: NA
-                            transactionMethods:
-                              type: array
-                              items:
-                                $ref: '#/components/schemas/TransactionMethods'
-                              minItems: 1
-                              maxItems: 4
-                            termsConditions:
-                              $ref: '#/components/schemas/AccountsTermsConditions'
-                            incomeRates:
-                              type: array
-                              items:
-                                properties:
-                                  savingAccount:
-                                    type: string
-                                    maxLength: 2000
-                                    pattern: \w*\W*
-                                    description: |
-                                      Descrição da Remuneração especificamente para Conta de Poupança. Deve ser preenchido com a determinação legal vigente. Restrição: De preenchimento obrigatório para CONTA_POUPANCA. Para os demais Tipos  preencher com NA
-                                    example: '''70% da Taxa Selic (6,5%) = 4,55%, que é o atual rendimento anual da poupança. O rendimento mensal é de 0,3715'
-                                  prepaidPaymentAccount:
-                                    type: string
-                                    maxLength: 2000
-                                    pattern: \w*\W*
-                                    description: |
-                                      Percentual em favor do titular da conta de pagamento pré-paga. Campo Livre. Restrição: De preenchimento obrigatório para Conta do Tipo CONTA_PAGAMENTO_PRE_PAGA. Para os demais Tipos preencher com NA
+              $ref: '#/components/schemas/BusinessAccountsBrand'
         links:
           $ref: '#/components/schemas/Links'
         meta:
@@ -891,7 +737,96 @@ components:
         meta:
           totalRecords: 1
           totalPages: 1
-    BusinessAccountsServices:
+    BusinessAccountsBrand:
+      type: object
+      required:
+        - name
+        - companies
+      properties:
+        name:
+          type: string
+          maxLength: 80
+          pattern: \w*\W*
+          description: 'Nome da Instituição, pertencente à marca, responsável pela comercialização dos produtos e serviços'
+          example: Organização A
+        companies:
+          type: array
+          items:
+            $ref: '#/components/schemas/BusinessAccountsCompany'
+          minItems: 1
+          description: Companies traz uma lista de todas as instituições da Marca
+    BusinessAccountsCompany:
+      type: object
+      required:
+        - name
+        - cnpjNumber
+      allOf:
+        - $ref: '#/components/schemas/Company'
+      properties:
+        businessAccounts:
+          type: array
+          items:
+            $ref:  "#/components/schemas/BusinessAccounts"
+          minItems: 1
+          maxItems: 3
+          description: lista de tipos de conta
+    BusinessAccounts:
+      type: object
+      required:
+        - type
+        - fees
+        - serviceBundles
+        - openingClosingChannels
+        - transactionMethods
+        - termsConditions
+        - incomeRate
+      properties:
+        type:
+          $ref:  "#/components/schemas/AccountType"
+        fees:
+          type: object
+          required:
+            - services
+          properties:
+            services:
+              type: array
+              items:
+                $ref: '#/components/schemas/BusinessAccountsService'
+              minItems: 1
+              description: Lista das Tarifas cobradas sobre Serviços
+        serviceBundles:
+          type: array
+          items:
+            $ref:  "#/components/schemas/ServiceBundle"
+          minItems: 1
+          description: Lista dos serviços que compõe o pacote de serviços
+        openingClosingChannels:
+          type: array
+          items:
+            $ref: '#/components/schemas/OpeningClosingChannels'
+          minItems: 1
+          maxItems: 7
+          description: Lista dos canais para aberturas e encerramento
+        additionalInfo:
+          type: string
+          maxLength: 100
+          pattern: \w*\W*
+          description: |
+            Texto livre para complementar informação relativa ao Canal disponível, quando no campo ''openingClosingChannels'' estiver preenchida a opção ''Outros''
+            Restrição: Campo de preenchimento obrigatório se ''openingCloseChannels'' estiver preenchida a opção ''OUTROS''
+          example: 'NA'
+        transactionMethods:
+          type: array
+          items:
+            $ref: '#/components/schemas/TransactionMethods'
+          minItems: 1
+          maxItems: 4
+          description: Lista de formas de movimentação
+        termsConditions:
+          $ref: '#/components/schemas/AccountsTermsConditions'
+        incomeRate:
+          $ref: '#/components/schemas/AccountsIncomeRate'
+    BusinessAccountsService:
       type: object
       required:
         - name
@@ -922,6 +857,9 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AccountPrice'
+          minItems: 4
+          maxItems: 4
+          description: Lista distribuição preços tarifas de serviços
         minimum:
           $ref: '#/components/schemas/AccountMinimumPrice'
         maximum:
@@ -930,6 +868,9 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Customer'
+          minItems: 4
+          maxItems: 4
+          description: Lista percentual de clientes por faixa de preço
     ResponsePersonalLoans:
       type: object
       required:
