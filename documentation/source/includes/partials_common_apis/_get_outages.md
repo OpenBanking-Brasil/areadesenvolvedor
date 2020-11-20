@@ -29,7 +29,9 @@ req.send();
         "duration": "PT2H30M",
         "isPartial": false,
         "explanation": "Atualização do API Gateway",
-        "unavailableEndpoints": []
+        "unavailableEndpoints": [
+          "https://api.banco.com.br/open-banking/discovery/v1/outages"
+        ]
       }
     ]
   },
