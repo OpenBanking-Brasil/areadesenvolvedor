@@ -21,7 +21,7 @@
                       "corporationName": "string",
                       "groupName": "string",
                       "cnpjNumber": "string",
-                      "isUnderestablishment": boolean
+                      "isUnderestablishment": "boolean"
                     },
                     "locations": [
                       {
@@ -45,7 +45,18 @@
                             "areaCode": "string",
                             "number": "string"
                           }
-                        ]
+                        ],
+                        "availability":{
+                          "standards": [
+                            {
+                              "weekday": "string",
+                              "openingTime": "string",
+                              "closingTime": "string"
+                            }
+                          ],
+                          "exception": "string",
+                          "isPublicAccessAllow": "boolean"
+                        }
                       }
                     ],
                     "services": [
@@ -81,9 +92,9 @@
 |     Nome          |  Tipo                                                  | Obrigatório  |                            Definição                  |
 |:------------      |:---------------------------------                      |:-----------  |:----------------------------------------------------  |
 | data              | object                                                 | Sim          |                                                       |
-| brand           | [[BankingAgentsBrand](#schemaBankingAgentsBrand)]      | Sim          | Lista das organizações titulares das dependência.      |
+| brand             | [[BankingAgentsBrand](#schemaBankingAgentsBrand)]      | Sim          | Lista das organizações titulares das dependência.     |
 | links             | [[LinksPaginated](#schemaLinksPaginated)]              | Sim          |                                                       |
-| meta              | [MetaPaginated](#schemaMetaPaginated)                | Sim          |                                                       |
+| meta              | [MetaPaginated](#schemaMetaPaginated)                  | Sim          |                                                       |
 
 ## BankingAgentsBrand
 <a id="schemaBankingAgentsBrand"></a>
@@ -105,7 +116,7 @@
                 "corporationName": "string",
                 "groupName": "string",
                 "cnpjNumber": "string",
-                "isUnderestablishment": boolean
+                "isUnderestablishment": "boolean"
               },
               "locations": [
                 {
@@ -129,7 +140,18 @@
                       "areaCode": "string",
                       "number": "string"
                     }
-                  ]
+                  ],
+                  "availability":{
+                    "standards": [
+                      {
+                        "weekday": "string",
+                        "openingTime": "string",
+                        "closingTime": "string"
+                      }
+                    ],
+                    "exception": "string",
+                    "isPublicAccessAllow": "boolean"
+                  }
                 }
               ],
               "services": [
@@ -153,7 +175,7 @@
 | name         | string                                                     | Sim          | Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a 'marca' utilizada está em definição pelos participantes.  |
 | companies    | [[BankingAgentsCompanies](#schemaBankingAgentsCompanies)]  | Sim          | Lista de instituições pertencentes à marca.               |
 
-## BankingAgentsCompanies 
+## BankingAgentsCompanies
 <a id="schemaBankingAgentsCompanies"></a>
 
 ```json
@@ -170,7 +192,7 @@
             "corporationName": "string",
             "groupName": "string",
             "cnpjNumber": "string",
-            "isUnderestablishment": boolean
+            "isUnderestablishment": "boolean"
           },
           "locations": [
             {
@@ -194,7 +216,18 @@
                   "areaCode": "string",
                   "number": "string"
                 }
-              ]
+              ],
+              "availability":{
+                "standards": [
+                  {
+                    "weekday": "string",
+                    "openingTime": "string",
+                    "closingTime": "string"
+                  }
+                ],
+                "exception": "string",
+                "isPublicAccessAllow": "boolean"
+              }
             }
           ],
           "services": [
@@ -231,7 +264,7 @@
         "corporationName": "string",
         "groupName": "string",
         "cnpjNumber": "string",
-        "isUnderestablishment": boolean
+        "isUnderestablishment": "boolean"
       },
       "locations": [
         {
@@ -255,7 +288,18 @@
               "areaCode": "string",
               "number": "string"
             }
-          ]
+          ],
+          "availability":{
+            "standards": [
+              {
+                "weekday": "string",
+                "openingTime": "string",
+                "closingTime": "string"
+              }
+            ],
+            "exception": "string",
+            "isPublicAccessAllow": "boolean"
+          }
         }
       ],
       "services": [
@@ -285,7 +329,7 @@
     "corporationName": "string",
     "groupName": "string",
     "cnpjNumber": "string",
-    "isUnderestablishment": boolean
+    "isUnderestablishment": "boolean"
   },
   "locations": [
     {
@@ -309,7 +353,18 @@
           "areaCode": "string",
           "number": "string"
         }
-      ]
+      ],
+      "availability":{
+        "standards": [
+          {
+            "weekday": "string",
+            "openingTime": "string",
+            "closingTime": "string"
+          }
+        ],
+        "exception": "string",
+        "isPublicAccessAllow": "boolean"
+      }
     }
   ],
   "services": [
@@ -336,7 +391,7 @@
   "corporationName": "string",
   "groupName": "string",
   "cnpjNumber": "string",
-  "isUnderestablishment": boolean
+  "isUnderestablishment": "boolean"
 }
 ```
 
@@ -352,34 +407,46 @@
 
 ```json
     {
-      "postalAddress": {
-        "address": "string",
-        "districtName": "string",
-        "townName": "string",
-        "countrySubDivision": "string",
-        "postCode": "string",
-        "additionalInfo": "string",
-        "ibgeCode": "string",
-        "country": "string",
-        "countryCode": "string",
-        "latitude": "string",
-        "longitude": "string"
-      },
-      "phones": [
-        {
-          "type": "string",
-          "countryCallingCode": "string",
-          "areaCode": "string",
-          "number": "string"
-        }
-      ]
+  "postalAddress": {
+    "address": "string",
+    "districtName": "string",
+    "townName": "string",
+    "countrySubDivision": "string",
+    "postCode": "string",
+    "additionalInfo": "string",
+    "ibgeCode": "string",
+    "country": "string",
+    "countryCode": "string",
+    "latitude": "string",
+    "longitude": "string"
+  },
+  "phones": [
+    {
+      "type": "string",
+      "countryCallingCode": "string",
+      "areaCode": "string",
+      "number": "string"
     }
+  ],
+  "availability":{
+    "standards": [
+      {
+        "weekday": "string",
+        "openingTime": "string",
+        "closingTime": "string"
+      }
+    ],
+    "exception": "string",
+    "isPublicAccessAllow": "boolean"
+  }
+}
 ```
 
 | Nome           | Tipo                                                              | Obrigatório | Descrição                                                                       |
 |:-------------- |:----------------------------------------------------------------- |:----------- |:------------------------------------------------------------------------------- |
 | postalAddress  | [BankingAgentsPostalAddress](#schemaBankingAgentsPostalAddress)   | Sim         | Endereço do correspondente.                                                     |
 | phones         | [[BankingAgentsPhone](#schemaBankingAgentsPhone)]                 | Não         | Lista de telefones do correspondente.                                           |
+| availability   | [BankingAgentsAvailability](#schemaBankingAvailabityService)      |             |                                                                                 |
 
 ## BankingAgentsPostalAddress
 <a id="schemaBankingAgentsPostalAddress"></a>
@@ -432,6 +499,47 @@
 | countryCallingCode | string | Não         | Número de DDI (Discagem Direta Internacional) para  telefone de acesso ao Canal - se houver. p.ex. '55' |
 | areaCode           | string | Não         | Número de DDD (Discagem Direta à Distância) do telefone da dependência - se houver. p.ex. '19'          |
 | number             | string | Não         | Número de telefone da dependência - se houver                                                           |
+
+## BankingAgentsAvailability
+<a id="schemaBankingAvailabityService"></a>
+
+```json
+{
+  "availability":{
+    "standards": [
+      {
+        "weekday": "string",
+        "openingTime": "string",
+        "closingTime": "string"
+      }
+    ],
+    "exception": "string",
+    "isPublicAccessAllow": "boolean"
+  }
+}
+```
+| Nome                | Tipo                                                          | Obrigatório | Descrição                                                                                                                                |
+|:--------------------|:--------------------------------------------------------------|:----------- |:-----------------------------------------------------------------------------------------------------------------------------------------|
+| standards           | [BankingAgentsStandard](#bankingAgentsStandard)               |             | Relação da disponbilidade de atendimento                                                                                                 |
+| exception           | string                                                        | Não         | Em campo texto devem ser registradas todas as Exceções para o não atendimento. p.ex. 'Exceto feriados municipais, nacionais e estaduais' |
+| isPublicAccessAllow | boolean                                                       | Não         | Indica se a instalação do Correspondente Bancário tem acesso restrito a clientes, por exemplo. p.ex. 'FALSO' (restrito)                  |
+
+## BankingAgentsStandard
+<a id="bankingAgentsStandard"></a>
+
+```json
+"standards": [
+{
+"weekday": "string",
+"openingTime": "string",
+"closingTime": "string"
+}
+```  
+| Nome               | Tipo                                                          | Obrigatório | Descrição                                                                               |
+|:------------------ |:--------------------------------------------------------------|:----------- |:----------------------------------------------------------------------------------------|
+| weekday            | string                                                        | Sim         | Em formato texto, seguindo o domínio apresentado, devem ser colocados os dias da semana |
+| openingTime        | string                                                        | Não         | Horário padrão de início de atendimento pelo Correspondente Bancário.(Uma string que representa a hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format). p.ex. '10:00:57Z') |
+| closingTime        | string                                                        | Não         | Horário padrão de encerramento de atendimento pelo Correspondente Bancário.(Uma string que representa a hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format). p.ex. '16:00:57Z') |
 
 
 ## BankingAgentsService
