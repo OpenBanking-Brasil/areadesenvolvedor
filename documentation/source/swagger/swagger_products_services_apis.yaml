@@ -238,8 +238,10 @@ components:
           example: Organização A
         companies:
           type: array
+          description: 'Companies traz uma lista de todas as instituições da Marca'
           items:
             $ref: '#/components/schemas/PersonalAccountCompany'
+          minItems: 1
     PersonalAccountCompany:
       type: object
       required:
@@ -252,6 +254,9 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PersonalAccount'
+          description: Lista de tipos de conta
+          minItems: 1
+          maxItems: 3
     PersonalAccount:
       type: object
       required:
@@ -266,21 +271,20 @@ components:
         type:
           $ref: '#/components/schemas/PersonalAccountType'
         fees:
-          type: array
-          items:
-            $ref: '#/components/schemas/AccountFee'
-          minItems: 1
-          maxItems: 31
+          $ref: '#/components/schemas/AccountFee'
         serviceBundles:
           type: array
           items:
             $ref: '#/components/schemas/ServiceBundle'
+          minItems: 1
+          description: Lista dos Pacotes de serviços
         openingClosingChannels:
           type: array
           items:
             $ref: '#/components/schemas/OpeningClosingChannels'
           minItems: 1
           maxItems: 7
+          description: Lista dos canais para aberturas e encerramento
         additionalInfo:
           type: string
           maxLength: 100
@@ -295,19 +299,30 @@ components:
             $ref: '#/components/schemas/TransactionMethods'
           minItems: 1
           maxItems: 4
+          description: Lista de formas de movimentação
         termsConditions:
           $ref: '#/components/schemas/AccountsTermsConditions'
         incomeRate:
           $ref: '#/components/schemas/AccountsIncomeRate'
     AccountFee:
       type: object
+      description: Objeto que reúne informações de tarifas de serviços
       required:
-        - priorityService
+        - priorityServices
       properties:
-        priorityService:
-          $ref: '#/components/schemas/AccountPriorityService'
-        otherService:
-          $ref: '#/components/schemas/AccountOtherService'
+        priorityServices:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountPriorityService'
+          minItems: 1
+          maxItems: 31
+          description: Lista das Tarifas cobradas sobre Serviços Prioritários
+        otherServices:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountOtherService'
+          minItems: 1
+          description: Lista das Tarifas cobradas sobre outros Serviços, que não prioritários
     AccountPriorityService:
       type: object
       required:
@@ -335,6 +350,7 @@ components:
             $ref: '#/components/schemas/AccountPrice'
           minItems: 4
           maxItems: 4
+          description: Lista distribuição preços tarifas de serviços
         minimum:
           $ref: '#/components/schemas/AccountMinimumPrice'
         maximum:
@@ -345,6 +361,7 @@ components:
             $ref: '#/components/schemas/FeeServiceCustomer'
           minItems: 4
           maxItems: 4
+          description: Lista percentual de clientes por faixa de preço
     PersonalAccountType:
       type: string
       enum:
@@ -448,6 +465,7 @@ components:
             $ref: "#/components/schemas/Price"
           minItems: 4
           maxItems: 4
+          description: Lista distribuição preços tarifas de serviços
         minimum:
           $ref: "#/components/schemas/MinimumPrice"
         maximum:
@@ -458,6 +476,7 @@ components:
             $ref: '#/components/schemas/FeeServiceCustomer'
           minItems: 4
           maxItems: 4
+          description: Lista percentual de clientes por faixa de preço
     AccountPriorityServiceCode:
       type: string
       description: 'Sigla de identificação do Serviço Prioritário, segundo Resolução 3.919 do Bacen.'
@@ -501,6 +520,7 @@ components:
         - prices
         - minimum
         - maximum
+        - customers
       properties:
         name:
           type: string
@@ -512,10 +532,15 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ServiceBundleServiceDetail'
+          minItems: 1
+          description: Lista dos serviços que compõe o pacote de serviços
         prices:
           type: array
           items:
             $ref:  "#/components/schemas/MontlyPrice"
+          minItems: 4
+          maxItems: 4
+          description: Lista distribuição preços tarifas de serviços
         minimum:
           $ref:  "#/components/schemas/MinimumPrice"
         maximum:
@@ -526,6 +551,7 @@ components:
             $ref:  "#/components/schemas/FeeServiceCustomer"
           minItems: 4
           maxItems: 4
+          description: Lista percentual de clientes por faixa de preço
     ServiceBundleServiceDetail:
       type: object
       required:
