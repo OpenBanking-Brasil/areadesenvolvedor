@@ -1,3 +1,4 @@
+## ResponsePhoneChannelsList
 <a id="schemaResponsePhoneChannelsList"></a>
 
 ```json
