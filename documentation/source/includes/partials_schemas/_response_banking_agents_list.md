@@ -562,7 +562,8 @@
 "openingTime": "string",
 "closingTime": "string"
 }
-```  
+```
+
 | Nome               | Tipo                                                          | Obrigatório | Descrição                                                                               |
 |:------------------ |:--------------------------------------------------------------|:----------- |:----------------------------------------------------------------------------------------|
 | weekday            | string                                                        | Sim         | Em formato texto, seguindo o domínio apresentado, devem ser colocados os dias da semana |
