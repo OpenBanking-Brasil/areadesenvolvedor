@@ -24,35 +24,36 @@ req.send();
 ```json
 {
   "data": {
-    "status":[
+    "status": [
       {
-         "code":"SCHEDULED_OUTAGE",
-         "explanation":"Manutenção Planejada",
-         "detectionTime":"2020-01-01T01:00:00Z",
-         "expectedResolutionTime":"2020-01-01T01:00:00Z",
-         "updateTime":"2020-01-02T01:00:00Z",
-         "unavailableEndpoints":[
-            "https://api.banco.com.br/open-banking/channels/v1/branches"
-         ]
+        "code": "SCHEDULED_OUTAGE",
+        "explanation": "Manutenção Planejada",
+        "detectionTime": "2020-01-01T01:00:00Z",
+        "expectedResolutionTime": "2020-01-01T01:00:00Z",
+        "updateTime": "2020-01-02T01:00:00Z",
+        "unavailableEndpoints": [
+          "https://api.banco.com.br/open-banking/channels/v1/branches"
+        ]
       },
       {
-         "code":"PARTIAL_FAILURE",
-         "explanation":"Falha na execução do serviço",
-         "detectionTime":"2020-01-01T01:00:00Z",
-         "expectedResolutionTime":"2020-01-01T01:00:00Z",
-         "updateTime":"2020-01-02T01:00:00Z",
-         "unavailableEndpoints":[
-            "https://api.banco.com.br/open-banking/channels/v1/electronic-channels"
-         ]
+        "code": "PARTIAL_FAILURE",
+        "explanation": "Falha na execução do serviço",
+        "detectionTime": "2020-01-01T01:00:00Z",
+        "expectedResolutionTime": "2020-01-01T01:00:00Z",
+        "updateTime": "2020-01-02T01:00:00Z",
+        "unavailableEndpoints": [
+          "https://api.banco.com.br/open-banking/channels/v1/electronic-channels"
+        ]
       }
-   ],
-  "links": {
-    "self": "https://api.banco.com.br/open-banking/discovery/v1/status"
-  },
-  "meta": {
-    "totalRecords": 1,
-    "totalPages": 1
-  }
+    ],
+    "links": {
+      "self": "https://api.banco.com.br/open-banking/discovery/v1/status"
+    },
+    "meta": {
+      "totalRecords": 1,
+      "totalPages": 1
+    }
+  }  
 }
 ```
 
@@ -60,17 +61,12 @@ Obtém a descrição referente ao código de status retornado pelas APIs.
 
 Versão |
 ------ |
-1 |
-
-### Parâmetros
-
-| Nome   | Local | Tipo  | Obrigatório | Descrição                               |
-|--------|-------|-------|-------------|-----------------------------------------|
+1      |
 
 ### Resposta
 
-|Status |Significado|Descrição  |Schema                                                                 |
-|-------|-----------|-----------|-----------------------------------------------------------------------|
-|200    |OK         |Sucesso    |[ResponseDiscoveryStatusList](#schemaResponseDiscoveryStatusList)    |
+|Status |Significado|Descrição  |Schema                                                            |
+|-------|-----------|-----------|------------------------------------------------------------------|
+|200    |OK         |Sucesso    |[ResponseDiscoveryStatusList](#schemaResponseDiscoveryStatusList) |
 
 
