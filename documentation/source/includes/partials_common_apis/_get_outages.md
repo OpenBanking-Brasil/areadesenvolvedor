@@ -30,7 +30,7 @@ req.send();
         "isPartial": false,
         "explanation": "Atualização do API Gateway",
         "unavailableEndpoints": [
-          "https://api.banco.com.br/open-banking/channels/v1/branches"
+          "https://api.banco.com.br/open-banking/discovery/v1/outages"
         ]
       }
     ]
