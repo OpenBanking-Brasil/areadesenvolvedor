@@ -84,8 +84,8 @@
     "last": "string"
   },
   "meta": {
-    "totalRecords": 1,
-    "totalPages": 1
+    "totalRecords": "integer",
+    "totalPages": "integer"
   }
 }
 ```
