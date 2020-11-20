@@ -14,9 +14,9 @@
           "businessFinancings": [
             {
               "type": "string",
-              "fees": [
-                {
-                  "service": {
+              "fees": {
+                "services": [
+                  {
                     "name": "string",
                     "code": "string",
                     "chargingTriggerInfo": "string",
@@ -42,8 +42,8 @@
                       }
                     ]
                   }
-                }
-              ],
+                ]
+              },
               "interestRate": {
                 "fees": [
                   {
@@ -84,8 +84,8 @@
     "last": "string"
   },
   "meta": {
-    "totalRecords": "integer",
-    "totalPages": "integer"
+    "totalRecords": 1,
+    "totalPages": 1
   }
 }
 ```
@@ -111,9 +111,9 @@
       "businessFinancings": [
         {
           "type": "string",
-          "fees": [
-            {
-              "service": {
+          "fees": {
+            "services": [
+              {
                 "name": "string",
                 "code": "string",
                 "chargingTriggerInfo": "string",
@@ -139,8 +139,8 @@
                   }
                 ]
               }
-            }
-          ],
+            ]
+          },
           "interestRate": {
             "fees": [
               {
@@ -190,9 +190,9 @@
   "businessFinancings": [
     {
       "type": "string",
-      "fees": [
-        {
-          "service": {
+      "fees": {
+        "services": [
+          {
             "name": "string",
             "code": "string",
             "chargingTriggerInfo": "string",
@@ -218,8 +218,8 @@
               }
             ]
           }
-        }
-      ],
+        ]
+      },
       "interestRate": {
         "fees": [
           {
@@ -264,9 +264,9 @@
 ```json
 {
   "type": "string",
-  "fees": [
-    {
-      "service": {
+  "fees": {
+    "services": [
+      {
         "name": "string",
         "code": "string",
         "chargingTriggerInfo": "string",
@@ -292,8 +292,8 @@
           }
         ]
       }
-    }
-  ],
+    ]
+  },
   "interestRate": {
     "fees": [
       {
@@ -373,38 +373,40 @@
 
 ```json
 {
-  "service": {
-    "name": "string",
-    "code": "string",
-    "chargingTriggerInfo": "string",
-    "prices": [
-      {
-        "interval": "string",
+  "services": [
+    {
+      "name": "string",
+      "code": "string",
+      "chargingTriggerInfo": "string",
+      "prices": [
+        {
+          "interval": "string",
+          "value": "string",
+          "currency": "string"
+        }
+      ],
+      "minimum": {
         "value": "string",
         "currency": "string"
-      }
-    ],
-    "minimum": {
-      "value": "string",
-      "currency": "string"
-    },
-    "maximum": {
-      "value": "string",
-      "currency": "string"
-    },
-    "customers": [
-      {
-        "frequency": "string",
-        "rate": "string"
-      }
-    ]
-  }
+      },
+      "maximum": {
+        "value": "string",
+        "currency": "string"
+      },
+      "customers": [
+        {
+          "frequency": "string",
+          "rate": "string"
+        }
+      ]
+    }
+  ]
 }
 ```
 
-|     Nome             |  Tipo                                                            | Obrigatório    |    Definição |
-|:------------         |:---------------------------------------------------------------- |:-------------- |:------------ |
-| service          | [BusinessFinancingFeeService](#schemaBusinessFinancingFeeService)    | Sim            | Serviço      |
+|     Nome |  Tipo                                                            | Obrigatório    |    Definição |
+|:---------|:---------------------------------------------------------------- |:-------------- |:------------ |
+| services | [BusinessFinancingFeeService](#schemaBusinessFinancingFeeService)| Sim            | Serviço      |
 
 ## BusinessFinancingFeeService 
 <a id="schemaBusinessFinancingFeeService"></a>
