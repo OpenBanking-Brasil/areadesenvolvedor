@@ -556,12 +556,11 @@
 <a id="bankingAgentsStandard"></a>
 
 ```json
-"standards": [
-{
-"weekday": "string",
-"openingTime": "string",
-"closingTime": "string"
-}
+    {
+      "weekday": "string",
+      "openingTime": "string",
+      "closingTime": "string"
+    }
 ```
 
 | Nome               | Tipo                                                          | Obrigatório | Descrição                                                                               |
