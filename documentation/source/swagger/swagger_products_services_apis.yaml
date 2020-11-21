@@ -1034,7 +1034,7 @@ components:
             Empréstimo-Conta garantida - operações de crédito rotativo, nas quais determinado limite de crédito é disponibilizado para utilização pelo cliente, através da simples movimentação da conta corrente e/ou solicitação formal à instituição financeira. As operações classificadas nessa modalidade não devem ter data definida para a amortização do saldo devedor, exceto a estabelecida para vigência do contrato
           example: EMPRESTIMO_CREDITO_PESSOAL_CONSIGNADO
         fees:
-          $ref: '#/components/schemas/LoanFees'
+          $ref: '#/components/schemas/PersonalLoanFees'
         interestRate:
           $ref: '#/components/schemas/LoanInterestRate'
         requiredWarranties:
@@ -1098,6 +1098,42 @@ components:
           minItems: 1
           description: Lista das Tarifas cobradas sobre Serviços
       description: Objeto que reúne informações de tarifas de serviços
+    PersonalLoanFees:
+      allOf:
+        - $ref: '#/components/schemas/LoanFees'
+      example:
+        service:
+          - name: Crédito pessoal consignado
+            code: NA
+            chargingTriggerInfo: Tarifa cobrada sobre demanda
+            prices:
+              - interval: 1_FAIXA_VALOR
+                value: "500.00"
+                currency: BRL
+              - interval: 2_FAIXA_VALOR
+                value: "860.00"
+                currency: BRL
+              - interval: 3_FAIXA_VALOR
+                value: "1090.40"
+                currency: "BRL"
+              - interval: 4_FAIXA_VALOR
+                value: "2100.00"
+                currency: BRL
+            minimum:
+              value: "430.00"
+              currency: "BRL"
+            maximum:
+              value: "2200.00"
+              currency: "BRL"
+            customers:
+              - frequency: "1_FAIXA_CLIENTE"
+                rate: "0.1500"
+              - frequency: "2_FAIXA_CLIENTE"
+                rate: "0.3500"
+              - frequency: "3_FAIXA_CLIENTE"
+                rate: "0.2000"
+              - frequency: "4_FAIXA_CLIENTE"
+                rate: "0.3000"
     LoanService:
       type: object
       required:
@@ -1131,6 +1167,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Price'
+          minItems: 4
+          maxItems: 4
         minimum:
           $ref: '#/components/schemas/MinimumPrice'
         maximum:
