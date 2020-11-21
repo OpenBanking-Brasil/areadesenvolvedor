@@ -14,30 +14,28 @@
           "personalLoans": [
             {
               "type": "string",
-              "fees": [
-                {
-                  "service":{
-                    "name": "string",
-                    "code": "string",
-                    "chargingTriggerInfo": "string",
-                    "prices": [
-                      {
-                        "interval": "string",
-                        "value": "string",
-                        "currency": "string"
-                      }
-                    ],
-                    "minimum": {
-                      "value": "string",
-                      "currency": "string"
-                    },
-                    "maximum": {
+              "fees": {
+                "service":{
+                  "name": "string",
+                  "code": "string",
+                  "chargingTriggerInfo": "string",
+                  "prices": [
+                    {
+                      "interval": "string",
                       "value": "string",
                       "currency": "string"
                     }
+                  ],
+                  "minimum": {
+                    "value": "string",
+                    "currency": "string"
+                  },
+                  "maximum": {
+                    "value": "string",
+                    "currency": "string"
                   }
                 }
-              ],
+              },
               "interestRate": [
                 {
                   "fees": [
@@ -101,30 +99,28 @@
       "personalLoans": [
         {
           "type": "string",
-          "fees": [
-            {
-              "service":{
-                "name": "string",
-                "code": "string",
-                "chargingTriggerInfo": "string",
-                "prices": [
-                  {
-                    "interval": "string",
-                    "value": "string",
-                    "currency": "string"
-                  }
-                ],
-                "minimum": {
-                  "value": "string",
-                  "currency": "string"
-                },
-                "maximum": {
+          "fees": {
+            "service":{
+              "name": "string",
+              "code": "string",
+              "chargingTriggerInfo": "string",
+              "prices": [
+                {
+                  "interval": "string",
                   "value": "string",
                   "currency": "string"
                 }
+              ],
+              "minimum": {
+                "value": "string",
+                "currency": "string"
+              },
+              "maximum": {
+                "value": "string",
+                "currency": "string"
               }
             }
-          ],
+          },
           "interestRate": [
             {
               "fees": [
@@ -170,30 +166,28 @@
   "personalLoans": [
     {
       "type": "string",
-      "fees": [
-        {
-          "service":{
-            "name": "string",
-            "code": "string",
-            "chargingTriggerInfo": "string",
-            "prices": [
-              {
-                "interval": "string",
-                "value": "string",
-                "currency": "string"
-              }
-            ],
-            "minimum": {
-              "value": "string",
-              "currency": "string"
-            },
-            "maximum": {
+      "fees": {
+        "service":{
+          "name": "string",
+          "code": "string",
+          "chargingTriggerInfo": "string",
+          "prices": [
+            {
+              "interval": "string",
               "value": "string",
               "currency": "string"
             }
+          ],
+          "minimum": {
+            "value": "string",
+            "currency": "string"
+          },
+          "maximum": {
+            "value": "string",
+            "currency": "string"
           }
         }
-      ],
+      },
       "interestRate": [
         {
           "fees": [
@@ -234,30 +228,28 @@
 ```json
  {
   "type": "string",
-  "fees": [
-    {
-      "service":{
-        "name": "string",
-        "code": "string",
-        "chargingTriggerInfo": "string",
-        "prices": [
-          {
-            "interval": "string",
-            "value": "string",
-            "currency": "string"
-          }
-        ],
-        "minimum": {
-          "value": "string",
-          "currency": "string"
-        },
-        "maximum": {
+  "fees": {
+    "service":{
+      "name": "string",
+      "code": "string",
+      "chargingTriggerInfo": "string",
+      "prices": [
+        {
+          "interval": "string",
           "value": "string",
           "currency": "string"
         }
+      ],
+      "minimum": {
+        "value": "string",
+        "currency": "string"
+      },
+      "maximum": {
+        "value": "string",
+        "currency": "string"
       }
     }
-  ],
+  },
   "interestRate": [
     {
       "fees": [
@@ -285,11 +277,11 @@
 
 |     Nome            |  Tipo                                                       | Obrigatório  |                            Definição                         |
 |:------------        |:---------------------------------                           |:-----------  |:----------------------------------------------------         |
-| type                | [Enum PersonalLoanType](#schemaEnumPersonalLoanType)     | Sim          | Modalidades de empréstimos ofertados para pessoas Físicas, conforme Circular <a href='https://www.bcb.gov.br/pre/normativos/busca/downloadNormativo.asp?arquivo=/Lists/Normativos/Attachments/51025/Circ_4015_v1_O.pdf' target="_blank">4015-Bacen</a>|
-| fees                | [LoanFee](#schemaLoanFee)                               | Sim          | Tarifas cobradas sobre Serviços ofertados à Modalidade de Empréstimo                                                                                                                                                                                  |
-| interestRate       | [LoanInterestRate](#schemaLoanInterestRate)             | Sim          | Taxas de juros remuneratórias                                                                                                                                                                                                                         |
-| requiredWarranties  | [Enum RequiredWarranty](#schemaEnumRequiredWarranty)  | Sim          | Relação de garantias exigidas, segundo documento <a href='https://www.bcb.gov.br/estabilidadefinanceira/scrdoc3040' target="_blank">3040 do Bacen</a>                                                                                                 |
-| termsConditions     | string                                                      | Sim          | Campo aberto para informar as condições contratuais relativas ao produto ou serviço informado. Pode ser informada a URL ([URIString](#commonFieldURIString)) referente ao endereço onde constam as condições informadas.   |
+| type                | [Enum PersonalLoanType](#schemaEnumPersonalLoanType)        | Sim          | Modalidades de empréstimos ofertados para pessoas Físicas, conforme Circular <a href='https://www.bcb.gov.br/pre/normativos/busca/downloadNormativo.asp?arquivo=/Lists/Normativos/Attachments/51025/Circ_4015_v1_O.pdf' target="_blank">4015-Bacen</a> |
+| fees                | [LoanFees](#schemaLoanFees)                                 | Sim          | Objeto que reúne informações de tarifas de serviços                                                                                                                                                                                                    |
+| interestRate        | [LoanInterestRate](#schemaLoanInterestRate)                 | Sim          | Taxas de juros remuneratórias                                                                                                                                                                                                                          |
+| requiredWarranties  | [Enum RequiredWarranty](#schemaEnumRequiredWarranty)        | Sim          | Relação de garantias exigidas, segundo documento <a href='https://www.bcb.gov.br/estabilidadefinanceira/scrdoc3040' target="_blank">3040 do Bacen</a>                                                                                                  |
+| termsConditions     | string                                                      | Sim          | Campo aberto para informar as condições contratuais relativas ao produto ou serviço informado. Pode ser informada a URL ([URIString](#commonFieldURIString)) referente ao endereço onde constam as condições informadas.                               |
 
 ### Enum PersonalLoanType
 <a id="schemaEnumPersonalLoanType"></a>
@@ -325,8 +317,8 @@
 | requiredWarranty        | ACORDOS_COMPENSACAO             | Acordos de compensação
 | requiredWarranty        | NAO_APLICAVEL                   | Não aplicável
 
-## LoanFee
-<a id="schemaLoanFee"></a>
+## LoanFees
+<a id="schemaLoanFees"></a>
 
 ```json
 {
