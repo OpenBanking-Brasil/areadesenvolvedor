@@ -915,7 +915,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PersonalLoanCompany'
-          description: Lista de instituições pertencentes à marca
+          minItems: 1
+          description: Companies traz uma lista de todas as instituições da Marca
     PersonalLoanCompany:
       type: object
       required:
@@ -939,7 +940,9 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PersonalLoan'
-          description: Lista
+          minItems: 1
+          maxItems: 6
+          description: Lista de modalidades de empréstimos
       allOf:
         - $ref: '#/components/schemas/CNPJ'
     ResponseBusinessLoans:
@@ -976,7 +979,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/BusinessLoanCompany'
-          description: Lista de instituições pertencentes à marca
+          minItems: 1
+          description: Companies traz uma lista de todas as instituições da Marca
     BusinessLoanCompany:
       type: object
       required:
@@ -1000,7 +1004,9 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/BusinessLoan'
-          description: Lista
+          minItems: 1
+          maxItems: 6
+          description: Lista de modalidades de empréstimos
       allOf:
         - $ref: '#/components/schemas/CNPJ'
     PersonalLoan:
@@ -1031,16 +1037,16 @@ components:
             Empréstimo-Conta garantida - operações de crédito rotativo, nas quais determinado limite de crédito é disponibilizado para utilização pelo cliente, através da simples movimentação da conta corrente e/ou solicitação formal à instituição financeira. As operações classificadas nessa modalidade não devem ter data definida para a amortização do saldo devedor, exceto a estabelecida para vigência do contrato
           example: EMPRESTIMO_CREDITO_PESSOAL_CONSIGNADO
         fees:
-          type: array
-          items:
-            $ref: '#/components/schemas/LoanFee'
-          description: Lista
+          $ref: '#/components/schemas/LoanFees'
         interestRate:
           $ref: '#/components/schemas/LoanInterestRate'
         requiredWarranties:
           type: array
           items:
             $ref: '#/components/schemas/RequiredWarranty'
+          minItems: 1
+          maxItems: 14
+          description: Lista das garantias exigidas
         termsConditions:
           type: string
           pattern: \w*\W*
@@ -1075,27 +1081,32 @@ components:
             Empréstimo-Capital de giro rotativo: operações de crédito voltadas para o financiamento de capital de giro, vinculadas a um contrato que estabeleça linha de crédito rotativo, de forma que, à medida que a empresa devedora amortize os empréstimos já tomados, o limite disponível para utilização seja restituído, e amortizações com datas predeterminadas, podendo ser facultado ao devedor repactuar o fluxo de pagamentos ao longo da vigência do contrato
           example: EMPRESTIMO_MICROCREDITO_PRODUTIVO_ORIENTADO
         fees:
-          type: array
-          items:
-            $ref: '#/components/schemas/LoanFee'
-          description: Lista
+          $ref: '#/components/schemas/LoanFees'
         interestRate:
           $ref: '#/components/schemas/LoanInterestRate'
         requiredWarranties:
           type: array
           items:
             $ref: '#/components/schemas/RequiredWarranty'
+          minItems: 1
+          maxItems: 14
+          description: Lista das garantias exigidas
         termsConditions:
           type: string
           pattern: \w*\W*
           maxLength: 2000
           description: Campo aberto para informar as condições contratuais relativas à Modalidade de Empréstimo para pessoa jurídica informada. Pode ser informada a URL referente ao endereço onde constam as condições informadas. Endereço eletrônico de acesso ao canal.
           example: 'https://empresaa1.com/personal_loans'
-    LoanFee:
+    LoanFees:
       type: object
       properties:
-        service:
-          $ref: '#/components/schemas/LoanService'
+        services:
+          type: array
+          items:
+            $ref: '#/components/schemas/LoanService'
+          minItems: 1
+          description: Lista das Tarifas cobradas sobre Serviços
+      description: Objeto que reúne informações de tarifas de serviços
     LoanService:
       type: object
       required:
@@ -1129,6 +1140,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Price'
+          minItems: 4
+          maxItems: 4
         minimum:
           $ref: '#/components/schemas/MinimumPrice'
         maximum:
@@ -1137,6 +1150,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Customer'
+          minItems: 4
+          maxItems: 4
     LoanInterestRate:
       type: object
       properties:
@@ -1144,10 +1159,16 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/InterestRateFee'
+          minItems: 1
+          maxItems: 19
+          description: Lista das taxas referenciais ou indexadores
         applications:
           type: array
           items:
             $ref: '#/components/schemas/ApplicationRate'
+          minItems: 4
+          maxItems: 4
+          description: Lista  das faixas de cobrança da taxa efetiva aplicada pela contratação de crédito
         minimumRate:
           type: string
           format: '(^[0-9](\.[0-9]{4})$|^NA$)'
@@ -1162,6 +1183,9 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Customer'
+          minItems: 4
+          maxItems: 4
+          description: Lista percentual de cliente por faixa referente a contratação do financiamento
     ApplicationRate:
       type: object
       properties:
