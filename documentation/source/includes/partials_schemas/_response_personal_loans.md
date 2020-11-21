@@ -59,7 +59,13 @@
                     }
                   ],
                   "minimumRate": "string",
-                  "maximumRate": "string"
+                  "maximumRate": "string",
+                  "customers": [
+                    {
+                      "frequency": "string",
+                      "rate": "string"
+                    }
+                  ]
                 }
               ],
               "requiredWarranties": [
@@ -152,7 +158,13 @@
                 }
               ],
               "minimumRate": "string",
-              "maximumRate": "string"
+              "maximumRate": "string",
+              "customers": [
+                {
+                  "frequency": "string",
+                  "rate": "string"
+                }
+              ]
             }
           ],
           "requiredWarranties": [
@@ -227,7 +239,13 @@
             }
           ],
           "minimumRate": "string",
-          "maximumRate": "string"
+          "maximumRate": "string",
+          "customers": [
+            {
+              "frequency": "string",
+              "rate": "string"
+            }
+          ]
         }
       ],
       "requiredWarranties": [
@@ -297,7 +315,13 @@
         }
       ],
       "minimumRate": "string",
-      "maximumRate": "string"
+      "maximumRate": "string",
+      "customers": [
+        {
+          "frequency": "string",
+          "rate": "string"
+        }
+      ]
     }
   ],
   "requiredWarranties": [
@@ -426,10 +450,10 @@
 | name                | string                                          | Sim          | Nomes das Tarifas cobradas sobre Serviços relacionados à Modalidade informada do Empréstimo para pessoa natural/jurídica.    | NA
 | code                | string                                          | Sim          | Sigla de identificação do serviço relacionado à Modalidade informada de Empréstimo para pessoa natural/jurídica.             | NA
 | chargingTriggerInfo | string                                          | Sim          | Fatos geradores de cobrança que incidem sobre as Modalidades informada de Empréstimos para pessoa natural/jurídica.          | NA
-| prices              | [Price](#schemaPrice)                           | Sim          | Valor da mediana da tarifa, relativa ao serviço ofertado, informado no período.                                              | NA
+| prices              | [[Price](#schemaPrice)]                         | Sim          | Valor da mediana da tarifa, relativa ao serviço ofertado, informado no período.                                              | NA
 | minimum             | [MinimumPrice](#schemaMinimumPrice)             | Sim          | Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência.                                | NA
 | maximum             | [MaximumPrice](#schemaMaximumPrice)             | Sim          | Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência.                                | NA
-| customers           | [Customer](#schemaCustomer)                     | Sim          | Lista percentual de clientes por faixa de valores de tarifas pagos                                                           | NA
+| customers           | [[Customer](#schemaCustomer)]                   | Sim          | Lista percentual de clientes por faixa de valores de tarifas pagos                                                           | NA
 
 ## LoanInterestRate
 <a id="schemaLoanInterestRate"></a>
@@ -449,7 +473,13 @@
     }
   ],
   "minimumRate": "string",
-  "maximumRate": "string"
+  "maximumRate": "string",
+  "customers": [
+    {
+      "frequency": "string",
+      "rate": "string"
+    }
+  ]
 }
 ```
 
@@ -459,4 +489,5 @@
 | applications        | [[Application](#schemaApplication)]                             | Sim         | Lista  das faixas de cobrança da taxa efetiva aplicada pela contratação de crédito.                                                                                                                                                                                                                                                           | 
 | minimumRate         | string                                                          | Sim         | Percentual mínimo cobrado (taxa efetiva) no mês de referência, para o Empréstimo contratado. A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%) | 
 | maximumRate         | string                                                          | Sim         | Percentual máximo cobrado (taxa efetiva) no mês de referência, para o Empréstimo contratado. A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%) | 
+| customers           | [[Customer](#schemaCustomer)]                                   | Sim          | Lista percentual de clientes por faixa de valores de tarifas pagos                                                           | NA
 
