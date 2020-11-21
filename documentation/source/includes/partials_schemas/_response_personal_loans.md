@@ -34,7 +34,13 @@
                     "maximum": {
                       "value": "string",
                       "currency": "string"
-                    }
+                    },
+                    "customers": [
+                      {
+                        "frequency": "string",
+                        "rate": "string"
+                      }
+                    ]
                   }
                 ]
               },
@@ -121,7 +127,13 @@
                 "maximum": {
                   "value": "string",
                   "currency": "string"
-                }
+                },
+                "customers": [
+                  {
+                    "frequency": "string",
+                    "rate": "string"
+                  }
+                ]
               }
             ]
           },
@@ -190,7 +202,13 @@
             "maximum": {
               "value": "string",
               "currency": "string"
-            }
+            },
+            "customers": [
+              {
+                "frequency": "string",
+                "rate": "string"
+              }
+            ]
           }
         ]
       },
@@ -254,7 +272,13 @@
         "maximum": {
           "value": "string",
           "currency": "string"
-        }
+        },
+        "customers": [
+          {
+            "frequency": "string",
+            "rate": "string"
+          }
+        ]
       }
     ]
   },
@@ -349,7 +373,13 @@
       "maximum": {
         "value": "string",
         "currency": "string"
-      }
+      },
+      "customers": [
+        {
+          "frequency": "string",
+          "rate": "string"
+        }
+      ]
     }
   ]
 }
@@ -381,18 +411,25 @@
   "maximum": {
     "value": "string",
     "currency": "string"
-  }
+  },
+  "customers": [
+    {
+      "frequency": "string",
+      "rate": "string"
+    }
+  ]
 }
 ```
 
-|     Nome            |  Tipo                                           | Obrigatório  |                            Definição                         | Restrições
-|:------------        |:---------------------------------               |:-----------  |:----------------------------------------------------         | :------
-| name         | string                                          | Sim          | Nomes das Tarifas cobradas sobre Serviços relacionados à Modalidade informada do Empréstimo para pessoa natural/jurídica.    | NA
-| code         | string                                          | Sim          | Sigla de identificação do serviço relacionado à Modalidade informada de Empréstimo para pessoa natural/jurídica.             | NA
-| chargingTriggerInfo | string                                          | Sim          | Fatos geradores de cobrança que incidem sobre as Modalidades informada de Empréstimos para pessoa natural/jurídica.        | NA
-| prices               | [Price](#schemaPrice)                         | Sim          | Valor da mediana da tarifa, relativa ao serviço ofertado, informado no período.                                                       | NA
-| minimum             | [MinimumPrice](#schemaMinimumPrice)           | Sim          | Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. | NA
-| maximum             | [MaximumPrice](#schemaMaximumPrice)           | Sim          | Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. | NA
+|     Nome            |  Tipo                                           | Obrigatório  |                            Definição                                                                                         | Restrições
+|:------------        |:---------------------------------               |:-----------  |:----------------------------------------------------                                                                         | :------
+| name                | string                                          | Sim          | Nomes das Tarifas cobradas sobre Serviços relacionados à Modalidade informada do Empréstimo para pessoa natural/jurídica.    | NA
+| code                | string                                          | Sim          | Sigla de identificação do serviço relacionado à Modalidade informada de Empréstimo para pessoa natural/jurídica.             | NA
+| chargingTriggerInfo | string                                          | Sim          | Fatos geradores de cobrança que incidem sobre as Modalidades informada de Empréstimos para pessoa natural/jurídica.          | NA
+| prices              | [Price](#schemaPrice)                           | Sim          | Valor da mediana da tarifa, relativa ao serviço ofertado, informado no período.                                              | NA
+| minimum             | [MinimumPrice](#schemaMinimumPrice)             | Sim          | Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência.                                | NA
+| maximum             | [MaximumPrice](#schemaMaximumPrice)             | Sim          | Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência.                                | NA
+| customers           | [Customer](#schemaCustomer)                     | Sim          | Lista percentual de clientes por faixa de valores de tarifas pagos                                                           | NA
 
 ## LoanInterestRate
 <a id="schemaLoanInterestRate"></a>
