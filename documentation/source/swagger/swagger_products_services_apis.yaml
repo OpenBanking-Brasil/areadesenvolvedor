@@ -1939,11 +1939,11 @@ components:
           type: array
           description: Lista das Tarifas cobradas sobre Serviços
           items:
-            $ref:  "#/components/schemas/InvoiceFinancingsServices"
+            $ref:  "#/components/schemas/InvoiceFinancingsService"
           minItems: 1
       required:
         - services
-    InvoiceFinancingsServices:
+    InvoiceFinancingsService:
       type: object
       required:
         - name
@@ -1996,6 +1996,7 @@ components:
           description: Lista percentual de clientes por faixa de preço
     PersonalInvoiceFinancingsInterestRates:
       type: object
+      description: Taxas de juros remuneratórias
       properties:
         fees:
           type: array
@@ -2071,7 +2072,7 @@ components:
           items:
             $ref: '#/components/schemas/BusinessInvoiceFinancingsCompanies'
           minItems: 1
-          description: LCompanies traz uma lista de todas as instituições da Marca
+          description: Companies traz uma lista de todas as instituições da Marca
     BusinessInvoiceFinancingsCompanies:
       type: object
       required:
@@ -2109,12 +2110,14 @@ components:
         fees:
           $ref: '#/components/schemas/BusinessInvoiceFinancingsFees'
         interestRate:
-          $ref: '#/components/schemas/BusinessInvoiceFinancingsInterestRates'
+          $ref: '#/components/schemas/BusinessInvoiceFinancingsInterestRate'
         requiredWarranties:
           type: array
           items:
             $ref: '#/components/schemas/RequiredWarranty'
-          description: Relação de garantias exigidas
+          description: Lista das  garantias exigidas
+          minItems: 1
+          maxItems: 14
         termsConditions:
           type: string
           pattern: \w*\W*
@@ -2130,31 +2133,26 @@ components:
         services:
           type: array
           items:
-            $ref:  "#/components/schemas/InvoiceFinancingsServices"
+            $ref:  "#/components/schemas/InvoiceFinancingsService"
           minItems: 1
           description: Lista das Tarifas cobradas sobre Serviços
-    BusinessInvoiceFinancingsInterestRates:
+    BusinessInvoiceFinancingsInterestRate:
       type: object
       properties:
         fees:
           type: array
+          description: Lista das taxas referenciais ou indexadores
           items:
             $ref: '#/components/schemas/InterestRateFee'
+          minItems: 1
+          maxItems: 19
         applications:
           type: array
+          description: Lista  das faixas de cobrança da taxa efetiva de remuneração
           items:
-            type: object
-            required:
-              - interval
-              - rate
-            properties:
-              interval:
-                $ref: '#/components/schemas/ApplicationIntervals'
-              rate:
-                type: string
-                description: |
-                  Percentual que corresponde a mediana da taxa efetiva cobrada do cliente pela contratação dos Direitos Creditórios Descontados, no intervalo informado. p.ex. '9,8700%' A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.15. Este valor representa 15%. O valor 1 representa 100%)
-                pattern: '(^[0-9](\.[0-9]{4})$|^NA$)'
+            $ref:  "#/components/schemas/ApplicationRate"
+          minItems: 4
+          maxItems: 4
         minimumRate:
           type: string
           description: |
@@ -2167,9 +2165,13 @@ components:
           pattern: '(^[0-9](\.[0-9]{4})$|^NA$)'
         customers:
           type: array
+          description: Lista percentual de cliente por faixa referente a  taxa remuneratória
           items:
             $ref: '#/components/schemas/Customer'
+          minItems: 4
+          maxItems: 4
       required:
+        - fees
         - applications
         - minimumRate
         - maximumRate
