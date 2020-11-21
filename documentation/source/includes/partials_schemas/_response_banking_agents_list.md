@@ -416,7 +416,7 @@
 <a id="schemaBankingAgentLocation"></a>
 
 ```json
-    {
+{
   "postalAddress": {
     "address": "string",
     "districtName": "string",
@@ -533,18 +533,17 @@
 
 ```json
 {
-  "availability":{
-    "standards": [
-      {
-        "weekday": "string",
-        "openingTime": "string",
-        "closingTime": "string"
-      }
-    ],
-    "exception": "string",
-    "isPublicAccessAllow": "boolean"
-  }
+  "standards": [
+    {
+      "weekday": "string",
+      "openingTime": "string",
+      "closingTime": "string"
+    }
+  ],
+  "exception": "string",
+  "isPublicAccessAllow": "boolean"
 }
+
 ```
 | Nome                | Tipo                                                          | Obrigatório | Descrição                                                                                                                                |
 |:--------------------|:--------------------------------------------------------------|:----------- |:-----------------------------------------------------------------------------------------------------------------------------------------|
@@ -563,12 +562,11 @@
     }
 ```
 
-| Nome               | Tipo                                                          | Obrigatório | Descrição                                                                               |
-|:------------------ |:--------------------------------------------------------------|:----------- |:----------------------------------------------------------------------------------------|
-| weekday            | string                                                        | Sim         | Em formato texto, seguindo o domínio apresentado, devem ser colocados os dias da semana |
-| openingTime        | string                                                        | Não         | Horário padrão de início de atendimento pelo Correspondente Bancário.(Uma string que representa a hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format). p.ex. '10:00:57Z') |
-| closingTime        | string                                                        | Não         | Horário padrão de encerramento de atendimento pelo Correspondente Bancário.(Uma string que representa a hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format). p.ex. '16:00:57Z') |
-
+| Nome                  | Tipo                                   | Obrigatório | Descrição                                                                                                                                                                                                                   |
+| :-------------------- | :------------------------------------- | :---------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------               |
+| weekday               | [[Enum WeekDay](#schemaWeekDay)]       | Sim         | Em formato texto, seguindo o domínio apresentado, devem ser colocados os dias da semana                                                                                                                                     |
+| openingTime           | [[TimeString](#commonFieldTimeString)] | Sim         | Horário padrão de início de atendimento pelo Correspondente Bancário. (Uma string que representa a hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format). p.ex. '10:00:57Z')       |
+| closingTime           | [[TimeString](#commonFieldTimeString)] | Sim         | Horário padrão de encerramento de atendimento pelo Correspondente Bancário. (Uma string que representa a hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format). p.ex. '16:00:57Z') |
 
 ## BankingAgentsService
 <a id="schemaBankingAgentsService"></a>
