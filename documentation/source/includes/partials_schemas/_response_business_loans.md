@@ -156,8 +156,8 @@
 
 |     Nome     |  Tipo                                                      | Obrigatório  |                            Definição                         |
 |:------------ |:---------------------------------                          |:-----------  |:----------------------------------------------------         |
-| name         | string                                                     | Sim          | Nome da marca proprietária da dependência (titular).  |
-| companies    | [BusinessLoanCompany](#schemaBusinessLoanCompany)  | Sim          | Lista de instituições pertencentes à marca             |
+| name         | string                                                     | Sim          | Nome da marca proprietária da dependência (titular).         |
+| companies    | [[BusinessLoanCompany](#schemaBusinessLoanCompany)]        | Sim          | Companies traz uma lista de todas as instituições da Marca   |
 
 ## BusinessLoanCompany
 <a id="schemaBusinessLoanCompany"></a>
