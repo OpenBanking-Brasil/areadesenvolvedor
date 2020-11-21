@@ -1272,7 +1272,22 @@ components:
         - OPERACOES_GARANTIDAS_OUTRAS_ENTIDADES
         - ACORDOS_COMPENSACAO
         - NAO_APLICAVEL
-      description: Campo aberto para informar as condições contratuais relativas à Modalidade de direitos creditórios descontados informada
+      description: |
+        Relação de garantias exigidas, segundo documento 3040 do Bacen: 
+        cessão de direitos creditórios: o cedente transfere ao credor/cessionário a titularidade de direitos creditórios, até a liquidação da dívida. O credor/cessionário passa a recebê-los diretamente dos devedores e credita o produto da operação para o cedente na operação que originou a cessão, até a sua liquidação 
+        caução: garantia instituída sobre créditos do garantidor 
+        penhor: direito real que consiste na tradição de uma coisa móvel ou mobilizável, suscetível de alienação, realizada pelo devedor ou por terceiro ao credor, a fim de garantir o pagamento do débito 
+        alienação fiduciária: transferência ao credor, ou fiduciário, da propriedade do bem 
+        hipoteca: direito real de garantia que afeta um bem imóvel para o cumprimento da obrigação 
+        operações garantidas pelo governo: nas instâncias federal, estadual ou municipal
+        outras garantias não fidejussórias: as garantias reais não descritas como: cessão de direitos creditórios, caução, penhor, alienação fiduciária, hipoteca ou operação garantida pelo governo 
+        seguros e assemelhados: os seguros (e assemelhados) contratados para garantir o pagamento da operação em circunstâncias adversas
+        garantia fidejussória: baseada na fidelidade do garantidor em cumprir as obrigações, caso o devedor não o faça
+        bens arrendados: bem objeto do arrendamento financeiro
+        garantias internacionais: declarar se a garantia é mitigadora ou não, observados os critérios definidos pela Circular 3.644, de 4 de março de 2013 
+        operações garantidas por outras entidade: declarar as garantias prestadas pelas entidades descritas no item 3. Informações de Garantias (i) do documento 3040 - Bacen 
+        acordos de compensação: operações que sejam abrangidas por acordos para a compensação e liquidação de obrigações no âmbito do SFN, nos termos da Resolução 3.263, de 24 de fevereiro de 2005
+        não aplicável
       example: CESSAO_DIREITOS_CREDITORIOS
     CreditCardIdentification:
       type: object
@@ -1886,7 +1901,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PersonalInvoiceFinancingsCompanies'
-          description: Lista de instituições pertencentes à marga
+          minItems: 1
+          description: Companies traz uma lista de todas as instituições da Marca
     PersonalInvoiceFinancingsCompanies:
       type: object
       required:
@@ -1900,7 +1916,9 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PersonalInvoiceFinancings'
-          description: Lista de adiantamento de recebíveis
+          minItems: 1
+          maxItems: 5
+          description: Lista de Modalidades de Direitos Creditórios Descontados ofertados
     PersonalInvoiceFinancings:
       type: object
       required:
@@ -1921,16 +1939,16 @@ components:
           description: 'Modalidades de direitos creditórios descontados ofertados para pessoas naturais, conforme Circular 4015-Bacen. Direito creditório descontado é a antecipação de créditos relativos por ex. ao: desconto de duplicatas, desconto de cheques,antecipação de fatura de cartão de crédito'
           example: DESCONTO_DUPLICATAS
         fees:
-          type: array
-          items:
-            $ref: '#/components/schemas/PersonalInvoiceFinancingsFees'
+          $ref: '#/components/schemas/PersonalInvoiceFinancingsFees'
         interestRate:
           $ref: '#/components/schemas/PersonalInvoiceFinancingsInterestRates'
         requiredWarranties:
           type: array
           items:
             $ref: '#/components/schemas/RequiredWarranty'
-          description: Relação de garantias exigidas
+          minItems: 1
+          maxItems: 14
+          description: Lista das  garantias exigidas
         termsConditions:
           type: string
           pattern: \w*\W*
@@ -1939,77 +1957,85 @@ components:
           example: 'https://empresaa1.com/personal_invoice_financings'
     PersonalInvoiceFinancingsFees:
       type: object
+      description: Objeto que reúne informações de tarifas de serviços
       properties:
-        service:
-          type: object
-          required:
-            - name
-            - code
-            - chargingTriggerInfo
-            - prices
-            - minimum
-            - maximum
-            - customers
-          properties:
-            name:
-              type: string
-              pattern: \w*\W*
-              maxLength: 250
-              description: 'Nomes das Tarifas cobradas sobre Serviços ofertados à Modalidade de direitos creditórios descontados, para pessoa natural. (Campo Livre)'
-              example: 'Custódia de Duplicatas'
-            code:
-              type: string
-              pattern: \w*\W*
-              maxLength: 100
-              description: 'Sigla de identificação do serviço relacionado à Modalidade de direitos creditórios descontados, para pessoa natural. Campo aberto'
-              example: 'NA'
-            chargingTriggerInfo:
-              type: string
-              pattern: \w*\W*
-              maxLength: 2000
-              description: 'Fatores geradores de cobrança que incidem sobre as Modalidades de direitos creditórios descontados, para pessoa natural. Campo Livre'
-              example: '5% do valor do contrato'
-            prices:
-              type: array
-              items:
-                $ref: '#/components/schemas/Price'
-            minimum:
-              type: object
-              items:
-                $ref: '#/components/schemas/MinimumPrice'
-            maximum:
-              type: object
-              items:
-                $ref: '#/components/schemas/MaximumPrice'
-            customers:
-              type: array
-              items:
-                $ref: '#/components/schemas/Customer'
+        services:
+          type: array
+          description: Lista das Tarifas cobradas sobre Serviços
+          items:
+            $ref:  "#/components/schemas/InvoiceFinancingsService"
+          minItems: 1
       required:
-        - service
+        - services
+    InvoiceFinancingsService:
+      type: object
+      required:
+        - name
+        - code
+        - chargingTriggerInfo
+        - prices
+        - minimum
+        - maximum
+        - customers
+      properties:
+        name:
+          type: string
+          pattern: \w*\W*
+          maxLength: 250
+          description: 'Nomes das Tarifas cobradas sobre Serviços ofertados à Modalidade de direitos creditórios descontados, para pessoa natural. (Campo Livre)'
+          example: 'Custódia de Duplicatas'
+        code:
+          type: string
+          pattern: \w*\W*
+          maxLength: 100
+          description: 'Sigla de identificação do serviço relacionado à Modalidade de direitos creditórios descontados, para pessoa natural. Campo aberto'
+          example: 'NA'
+        chargingTriggerInfo:
+          type: string
+          pattern: \w*\W*
+          maxLength: 2000
+          description: 'Fatores geradores de cobrança que incidem sobre as Modalidades de direitos creditórios descontados, para pessoa natural. Campo Livre'
+          example: '5% do valor do contrato'
+        prices:
+          type: array
+          items:
+            $ref: '#/components/schemas/Price'
+          minItems: 4
+          maxItems: 4
+          description: Lista distribuição preços tarifas de serviços
+        minimum:
+          type: object
+          items:
+            $ref: '#/components/schemas/MinimumPrice'
+        maximum:
+          type: object
+          items:
+            $ref: '#/components/schemas/MaximumPrice'
+        customers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Customer'
+          minItems: 4
+          maxItems: 4
+          description: Lista percentual de clientes por faixa de preço
     PersonalInvoiceFinancingsInterestRates:
       type: object
+      description: Taxas de juros remuneratórias
       properties:
         fees:
           type: array
           items:
             $ref: '#/components/schemas/InterestRateFee'
+          minItems: 1
+          maxItems: 19
+          description: Lista das taxas referenciais ou indexadores
         applications:
           type: array
+          description: Lista  das faixas de cobrança da taxa efetiva de remuneração
           items:
-            type: object
-            required:
-              - interval
-              - rate
-            properties:
-              interval:
-                $ref: '#/components/schemas/ApplicationIntervals'
-              rate:
-                type: string
-                description: |
-                  Percentual que corresponde a mediana da taxa efetiva cobrada do cliente pela contratação dos Direitos Creditórios Descontados, no intervalo informado. p.ex. '9,8700%' A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.15. Este valor representa 15%. O valor 1 representa 100%)
-                pattern: '(^[0-9](\.[0-9]{4})$|^NA$)'
-                example: '0.0987'
+            $ref:  "#/components/schemas/ApplicationRate"
+          minItems: 4
+          maxItems: 4
         minimumRate:
           type: string
           description: |
@@ -2024,9 +2050,13 @@ components:
           example: '0.6865'
         customers:
           type: array
+          description: Lista percentual de cliente por faixa referente a  taxa remuneratória
           items:
             $ref: '#/components/schemas/Customer'
+          minItems: 4
+          maxItems: 4
       required:
+        - fees
         - applications
         - minimumRate
         - maximumRate
@@ -2065,7 +2095,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/BusinessInvoiceFinancingsCompanies'
-          description: Lista de instituições pertencentes à marga
+          minItems: 1
+          description: Companies traz uma lista de todas as instituições da Marca
     BusinessInvoiceFinancingsCompanies:
       type: object
       required:
@@ -2079,7 +2110,9 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/BusinessInvoiceFinancings'
-          description: Lista de adiantamento de recebíveis
+          minItems: 1
+          maxItems: 5
+          description: Lista de Modalidades de Direitos Creditórios
     BusinessInvoiceFinancings:
       type: object
       required:
@@ -2099,16 +2132,16 @@ components:
             - OUTROS_TITULOS_DESCONTADOS
           description: 'Modalidades de direitos creditórios descontados ofertados para pessoas Jurídicas, conforme Circular 4015-Bacen. Direito creditório descontado é a antecipação de créditos relativos por ex. ao: desconto de duplicatas, desconto de cheques,antecipação de fatura de cartão de crédito'
         fees:
-          type: array
-          items:
-            $ref: '#/components/schemas/BusinessInvoiceFinancingsFees'
+          $ref: '#/components/schemas/BusinessInvoiceFinancingsFees'
         interestRate:
-          $ref: '#/components/schemas/BusinessInvoiceFinancingsInterestRates'
+          $ref: '#/components/schemas/BusinessInvoiceFinancingsInterestRate'
         requiredWarranties:
           type: array
           items:
             $ref: '#/components/schemas/RequiredWarranty'
-          description: Relação de garantias exigidas
+          description: Lista das  garantias exigidas
+          minItems: 1
+          maxItems: 14
         termsConditions:
           type: string
           pattern: \w*\W*
@@ -2117,69 +2150,33 @@ components:
           example: 'https://empresaa1.com/personal_invoice_financings'
     BusinessInvoiceFinancingsFees:
       type: object
+      description: Objeto que reúne informações relativas a Termos e Condições para as modalidades tratadas
       required:
-        - service
+        - services
       properties:
-        service:
-          type: object
-          properties:
-            name:
-              type: string
-              pattern: \w*\W*
-              maxLength: 250
-              description: 'Nomes das Tarifas cobradas sobre Serviços ofertados à Modalidade de Direitos Creditórios Descontados, para pessoa jurídica. (Campo Livre). p.ex.  ''Avaliação de Garantia Hipotecária, Avaliação de Propriedade Rural e Parecer Técnico para Prorrogação de Operações Rurais'''
-            code:
-              type: string
-              pattern: \w*\W*
-              maxLength: 100
-              description: 'Sigla de identificação do serviço relacionado à Modalidade de direitos creditórios descontados, para pessoa jurídica. Campo aberto'
-            chargingTriggerInfo:
-              type: string
-              pattern: \w*\W*
-              maxLength: 2000
-              description: 'Fatores geradores de cobrança que incidem sobre as Modalidades de direitos creditórios descontados, para pessoa jurídica. Campo Livre'
-            prices:
-              type: array
-              items:
-                $ref: '#/components/schemas/Price'
-            minimum:
-              $ref: '#/components/schemas/MinimumPrice'
-            maximum:
-              $ref: '#/components/schemas/MaximumPrice'
-            customers:
-              type: array
-              items:
-                $ref: '#/components/schemas/Customer'
-          required:
-            - name
-            - code
-            - chargingTriggerInfo
-            - prices
-            - minimum
-            - maximum
-            - customers
-    BusinessInvoiceFinancingsInterestRates:
+        services:
+          type: array
+          items:
+            $ref:  "#/components/schemas/InvoiceFinancingsService"
+          minItems: 1
+          description: Lista das Tarifas cobradas sobre Serviços
+    BusinessInvoiceFinancingsInterestRate:
       type: object
       properties:
         fees:
           type: array
+          description: Lista das taxas referenciais ou indexadores
           items:
             $ref: '#/components/schemas/InterestRateFee'
+          minItems: 1
+          maxItems: 19
         applications:
           type: array
+          description: Lista  das faixas de cobrança da taxa efetiva de remuneração
           items:
-            type: object
-            required:
-              - interval
-              - rate
-            properties:
-              interval:
-                $ref: '#/components/schemas/ApplicationIntervals'
-              rate:
-                type: string
-                description: |
-                  Percentual que corresponde a mediana da taxa efetiva cobrada do cliente pela contratação dos Direitos Creditórios Descontados, no intervalo informado. p.ex. '9,8700%' A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.15. Este valor representa 15%. O valor 1 representa 100%)
-                pattern: '(^[0-9](\.[0-9]{4})$|^NA$)'
+            $ref:  "#/components/schemas/ApplicationRate"
+          minItems: 4
+          maxItems: 4
         minimumRate:
           type: string
           description: |
@@ -2192,9 +2189,13 @@ components:
           pattern: '(^[0-9](\.[0-9]{4})$|^NA$)'
         customers:
           type: array
+          description: Lista percentual de cliente por faixa referente a  taxa remuneratória
           items:
             $ref: '#/components/schemas/Customer'
+          minItems: 4
+          maxItems: 4
       required:
+        - fees
         - applications
         - minimumRate
         - maximumRate
