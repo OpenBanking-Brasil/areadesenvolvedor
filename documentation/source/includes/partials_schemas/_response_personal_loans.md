@@ -15,26 +15,28 @@
             {
               "type": "string",
               "fees": {
-                "service":{
-                  "name": "string",
-                  "code": "string",
-                  "chargingTriggerInfo": "string",
-                  "prices": [
-                    {
-                      "interval": "string",
+                "services": [
+                  {
+                    "name": "string",
+                    "code": "string",
+                    "chargingTriggerInfo": "string",
+                    "prices": [
+                      {
+                        "interval": "string",
+                        "value": "string",
+                        "currency": "string"
+                      }
+                    ],
+                    "minimum": {
+                      "value": "string",
+                      "currency": "string"
+                    },
+                    "maximum": {
                       "value": "string",
                       "currency": "string"
                     }
-                  ],
-                  "minimum": {
-                    "value": "string",
-                    "currency": "string"
-                  },
-                  "maximum": {
-                    "value": "string",
-                    "currency": "string"
                   }
-                }
+                ]
               },
               "interestRate": [
                 {
@@ -100,26 +102,28 @@
         {
           "type": "string",
           "fees": {
-            "service":{
-              "name": "string",
-              "code": "string",
-              "chargingTriggerInfo": "string",
-              "prices": [
-                {
-                  "interval": "string",
+            "services": [
+              {
+                "name": "string",
+                "code": "string",
+                "chargingTriggerInfo": "string",
+                "prices": [
+                  {
+                    "interval": "string",
+                    "value": "string",
+                    "currency": "string"
+                  }
+                ],
+                "minimum": {
+                  "value": "string",
+                  "currency": "string"
+                },
+                "maximum": {
                   "value": "string",
                   "currency": "string"
                 }
-              ],
-              "minimum": {
-                "value": "string",
-                "currency": "string"
-              },
-              "maximum": {
-                "value": "string",
-                "currency": "string"
               }
-            }
+            ]
           },
           "interestRate": [
             {
@@ -167,26 +171,28 @@
     {
       "type": "string",
       "fees": {
-        "service":{
-          "name": "string",
-          "code": "string",
-          "chargingTriggerInfo": "string",
-          "prices": [
-            {
-              "interval": "string",
+        "services": [
+          {
+            "name": "string",
+            "code": "string",
+            "chargingTriggerInfo": "string",
+            "prices": [
+              {
+                "interval": "string",
+                "value": "string",
+                "currency": "string"
+              }
+            ],
+            "minimum": {
+              "value": "string",
+              "currency": "string"
+            },
+            "maximum": {
               "value": "string",
               "currency": "string"
             }
-          ],
-          "minimum": {
-            "value": "string",
-            "currency": "string"
-          },
-          "maximum": {
-            "value": "string",
-            "currency": "string"
           }
-        }
+        ]
       },
       "interestRate": [
         {
@@ -229,26 +235,28 @@
  {
   "type": "string",
   "fees": {
-    "service":{
-      "name": "string",
-      "code": "string",
-      "chargingTriggerInfo": "string",
-      "prices": [
-        {
-          "interval": "string",
+    "services": [
+      {
+        "name": "string",
+        "code": "string",
+        "chargingTriggerInfo": "string",
+        "prices": [
+          {
+            "interval": "string",
+            "value": "string",
+            "currency": "string"
+          }
+        ],
+        "minimum": {
+          "value": "string",
+          "currency": "string"
+        },
+        "maximum": {
           "value": "string",
           "currency": "string"
         }
-      ],
-      "minimum": {
-        "value": "string",
-        "currency": "string"
-      },
-      "maximum": {
-        "value": "string",
-        "currency": "string"
       }
-    }
+    ]
   },
   "interestRate": [
     {
@@ -322,28 +330,61 @@
 
 ```json
 {
-  "service":{
-    "name": "string",
-    "code": "string",
-    "chargingTriggerInfo": "string",
-    "prices": [
-      {
-        "interval": "string",
+  "services": [
+    {
+      "name": "string",
+      "code": "string",
+      "chargingTriggerInfo": "string",
+      "prices": [
+        {
+          "interval": "string",
+          "value": "string",
+          "currency": "string"
+        }
+      ],
+      "minimum": {
+        "value": "string",
+        "currency": "string"
+      },
+      "maximum": {
         "value": "string",
         "currency": "string"
       }
-    ],
-    "minimum": {
-      "value": "string",
-      "currency": "string"
-    },
-    "maximum": {
+    }
+  ]
+}
+```
+
+|     Nome         |  Tipo                                        | Obrigatório  |                            Definição                         |
+|:------------     |:---------------------------------            |:-----------  |:----------------------------------------------------         |
+| services         | [[LoanService](#schemaLoanService)]          | Sim          | Lista das Tarifas cobradas sobre Serviços                    |
+
+## LoanService
+<a id="schemaLoanService"></a>
+
+```json
+{
+  "name": "string",
+  "code": "string",
+  "chargingTriggerInfo": "string",
+  "prices": [
+    {
+      "interval": "string",
       "value": "string",
       "currency": "string"
     }
+  ],
+  "minimum": {
+    "value": "string",
+    "currency": "string"
+  },
+  "maximum": {
+    "value": "string",
+    "currency": "string"
   }
 }
 ```
+
 |     Nome            |  Tipo                                           | Obrigatório  |                            Definição                         | Restrições
 |:------------        |:---------------------------------               |:-----------  |:----------------------------------------------------         | :------
 | name         | string                                          | Sim          | Nomes das Tarifas cobradas sobre Serviços relacionados à Modalidade informada do Empréstimo para pessoa natural/jurídica.    | NA
