@@ -14,9 +14,9 @@
           "personalInvoiceFinancings": [
             {
               "type": "string",
-              "fees": [
-                {
-                  "service": {
+              "fees": {
+                "services": [
+                  {
                     "name": "string",
                     "code": "string",
                     "chargingTriggerInfo": "string",
@@ -42,8 +42,8 @@
                       }
                     ]
                   }
-                }
-              ],
+                ]
+              },
               "interestRate": {
                 "fees": [
                   {
@@ -111,9 +111,9 @@
       "personalInvoiceFinancings": [
         {
           "type": "string",
-          "fees": [
-            {
-              "service": {
+          "fees": {
+            "services": [
+              {
                 "name": "string",
                 "code": "string",
                 "chargingTriggerInfo": "string",
@@ -139,8 +139,8 @@
                   }
                 ]
               }
-            }
-          ],
+            ]
+          },
           "interestRate": {
             "fees": [
               {
@@ -190,9 +190,9 @@
   "personalInvoiceFinancings": [
     {
       "type": "string",
-      "fees": [
-        {
-          "service": {
+      "fees": {
+        "services": [
+          {
             "name": "string",
             "code": "string",
             "chargingTriggerInfo": "string",
@@ -218,8 +218,8 @@
               }
             ]
           }
-        }
-      ],
+        ]
+      },
       "interestRate": {
         "fees": [
           {
@@ -264,9 +264,9 @@
 ```json
 {
   "type": "string",
-  "fees": [
-    {
-      "service": {
+  "fees": {
+    "services": [
+      {
         "name": "string",
         "code": "string",
         "chargingTriggerInfo": "string",
@@ -292,8 +292,8 @@
           }
         ]
       }
-    }
-  ],
+    ]
+  },
   "interestRate": {
     "fees": [
       {
@@ -369,38 +369,40 @@
 
 ```json
 {
-  "service": {
-    "name": "string",
-    "code": "string",
-    "chargingTriggerInfo": "string",
-    "prices": [
-      {
-        "interval": "string",
+  "services": [
+    {
+      "name": "string",
+      "code": "string",
+      "chargingTriggerInfo": "string",
+      "prices": [
+        {
+          "interval": "string",
+          "value": "string",
+          "currency": "string"
+        }
+      ],
+      "minimum": {
         "value": "string",
         "currency": "string"
-      }
-    ],
-    "minimum": {
-      "value": "string",
-      "currency": "string"
-    },
-    "maximum": {
-      "value": "string",
-      "currency": "string"
-    },
-    "customers": [
-      {
-        "frequency": "string",
-        "rate": "string"
-      }
-    ]
-  }
+      },
+      "maximum": {
+        "value": "string",
+        "currency": "string"
+      },
+      "customers": [
+        {
+          "frequency": "string",
+          "rate": "string"
+        }
+      ]
+    }
+  ]
 }
 ```
 
 | Nome         |  Tipo                                                                                 | Obrigatório    |  Definição                                                                                                                                 |
 |:------------ |:------------------------------------------------------------------------------------- |:-------------- |:------------------------------------------------------------------------------------------------------------------------------------------ |
-| service      | [[PersonalInvoiceFinancingsFeesService](#schemaPersonalInvoiceFinancingsFeesService)] | Sim            | Nomes das Tarifas cobradas sobre Serviços ofertados à Modalidade de direitos creditórios descontados    |
+| services      | [[PersonalInvoiceFinancingsFeesService](#schemaPersonalInvoiceFinancingsFeesService)] | Sim            | Nomes das Tarifas cobradas sobre Serviços ofertados à Modalidade de direitos creditórios descontados    |
 
 ## PersonalInvoiceFinancingsFeesService 
 <a id="schemaPersonalInvoiceFinancingsFeesService"></a>
@@ -475,7 +477,7 @@
 |  Nome           |  Tipo                   | Obrigatório |   Definição   |
 |:--------------- |:----------------------- |------------ |:--------------|
 | fees            | [FeeReferentialRateIndexer](#schemaFeeReferentialRateIndexer)    | Sim            | Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial ou Indexador (Indx), do Documento 3040 |
-| applications    | [[Price](#schemaPrice)] | Sim | Valor da mediana da taxa de remuneração relativa ao serviço ofertado, para pessoa natural informado no período.     
+| applications    | [[Rate](#schemaRate)] | Sim | Valor da mediana da taxa de remuneração relativa ao serviço ofertado, para pessoa natural informado no período.     
 | minimumRate     | string                  | Sim | Valor mínimo cobrado para a taxa de remuneração relativa ao serviço ofertado, sobre a base de clientes,  no mês de referência | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
 | maximumRate     | string                  | Sim | Valor máximo cobrado para a taxa de remuneração relativa ao serviço ofertado, sobre a base de clientes,  no mês de referência | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
 |customers|[[Customer](#schemaCustomer)]| Sim |Percentual dos clientes de cada faixa relativa ao serviço ofertado |
