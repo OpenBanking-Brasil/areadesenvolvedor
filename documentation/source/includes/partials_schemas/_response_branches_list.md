@@ -440,9 +440,9 @@
 
 | Nome           | Tipo                                                         | Obrigatório | Descrição                                                                                                                                               |
 | :------------- | :----------------------------------------------------------- | :---------- | :------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| name           | [[Enum BranchServicesNames](#schemaEnumBranchServicesNames)] | Sim         | Nome dos Serviços efetivamente prestados pelo Canal de Atendimento, discriminados na Seção 4.2 da Resolução nº 35, BCB, 2020: (Vide Enum)               |
-| code           | [[Enum BranchServicesCodes](#schemaEnumBranchServicesCodes)] | Sim         | Código dos Serviços efetivamente prestados pelo Canal de Atendimento: ABRE_CONTA_DEPOSITO_OU_PRE_PAGA (Vide Enum)                                       |
-| additionalInfo | string                                                       | Não         | Texto livre para complementar informação relativa ao Serviço disponível, quando for selecionada a opção p preenchida a opção 'OUTROS_PRODUTOS_SERVICOS' |
+| name           | [[Enum BranchServicesNames](#schemaEnumBranchServicesNames)] | Sim         | Nome dos Serviços efetivamente prestados pelo Canal de Atendimento, discriminados na Seção 4.2 da Resolução nº 35, BCB, 2020               |
+| code           | [[Enum BranchServicesCodes](#schemaEnumBranchServicesCodes)] | Sim         | Código dos Serviços efetivamente prestados pelo Canal de Atendimento                                     |
+| additionalInfo | string                                                       | Não         | Texto livre para complementar informação relativa ao Serviço disponível, quando for selecionada a opção 'OUTROS_PRODUTOS_SERVICOS' |
 
 ### Enum BranchServicesNames 
 <a id="schemaEnumBranchServicesNames"></a>
