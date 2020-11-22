@@ -344,9 +344,8 @@
 
 | Propriedade  | Código                        | Definição
 |:------------ |:------                       |:------
-| type         | ADIANTAMENTO_DEPOSITANTE    | Adiantamento a depositante
 | type         | EMPRESTIMO_CREDITO_PESSOAL_CONSIGNADO  | Crédito pessoal consignado
-| type         | EMPRESTIMO_CREDITO_PESSOAL_NAO_CONSIGNADO  | Crédito pessoal não consignado
+| type         | EMPRESTIMO_CREDITO_PESSOAL_SEM_CONSIGNACAO  | Crédito pessoal não consignado
 | type         | EMPRESTIMO_HOME_EQUITY | Home equity
 | type         | EMPRESTIMO_MICROCREDITO_PRODUTIVO_ORIENTADO | Microcrédito produtivo orientado
 | type         | EMPRESTIMO_CHEQUE_ESPECIAL | Cheque especial
