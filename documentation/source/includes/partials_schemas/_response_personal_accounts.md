@@ -753,7 +753,7 @@
 |     Nome           |  Tipo                                                               |  Obrigatório |                            Descrição                |
 |:-------------------|:-----------------------------                                       |:-------------|:----------------------------------------------------|
 | name               | string                                                              | Sim          | Nome do Pacote de Serviços dado pela instituição.  |
-| services           | [[ServiceBundleServiceDetail](#schemaservicebundleservicedetail)]         | Sim          | Lista dos serviços que compõe o pacote de serviços. |
+| services           | [[ServiceBundleServiceDetail](#schemaservicebundleservicedetail)]         | Sim          | Lista dos serviços que compõem o pacote de serviços. |
 | prices              | [MontlyPrice](#schemamontlyprice) | Sim          | Lista distribuição preços tarifas de serviços |
 | minimum             | [[MinimumPrice](#schemaMinimumPrice)]           | Sim          | Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. |
 | maximum             | [[MaximumPrice](#schemaMaximumPrice)]           | Sim          | Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. |

@@ -37,7 +37,7 @@
                   }
                 ],
                 "exception": "string",
-                "allowPublicAccess": "string"
+                "isPublicAccessAllowed": "string"
               },
               "services": [
                 {
@@ -115,7 +115,7 @@
               }
             ],
             "exception": "string",
-            "allowPublicAccess": "string"
+            "isPublicAccessAllowed": "string"
           },
           "services": [
             {
@@ -174,7 +174,7 @@
           }
         ],
         "exception": "string",
-        "allowPublicAccess": "string"
+        "isPublicAccessAllowed": "string"
       },
       "services": [
         {
@@ -233,7 +233,7 @@
       }
     ],
     "exception": "string",
-    "allowPublicAccess": "string"
+    "isPublicAccessAllowed": "string"
   },
   "services": [
     {
