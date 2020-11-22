@@ -57,7 +57,7 @@
                             }
                           ],
                           "exception": "string",
-                          "isPublicAccessAllow": "boolean"
+                          "isPublicAccessAllowed": "boolean"
                         }
                       }
                     ],
@@ -154,7 +154,7 @@
                       }
                     ],
                     "exception": "string",
-                    "isPublicAccessAllow": "boolean"
+                    "isPublicAccessAllowed": "boolean"
                   }
                 }
               ],
@@ -232,7 +232,7 @@
                   }
                 ],
                 "exception": "string",
-                "isPublicAccessAllow": "boolean"
+                "isPublicAccessAllowed": "boolean"
               }
             }
           ],
@@ -306,7 +306,7 @@
               }
             ],
             "exception": "string",
-            "isPublicAccessAllow": "boolean"
+            "isPublicAccessAllowed": "boolean"
           }
         }
       ],
@@ -373,7 +373,7 @@
           }
         ],
         "exception": "string",
-        "isPublicAccessAllow": "boolean"
+        "isPublicAccessAllowed": "boolean"
       }
     }
   ],
@@ -449,7 +449,7 @@
       }
     ],
     "exception": "string",
-    "isPublicAccessAllow": "boolean"
+    "isPublicAccessAllowed": "boolean"
   }
 }
 ```
@@ -541,15 +541,15 @@
     }
   ],
   "exception": "string",
-  "isPublicAccessAllow": "boolean"
+  "isPublicAccessAllowed": "boolean"
 }
 
 ```
-| Nome                | Tipo                                                          | Obrigatório | Descrição                                                                                                                                |
-|:--------------------|:--------------------------------------------------------------|:----------- |:-----------------------------------------------------------------------------------------------------------------------------------------|
-| standards           | [BankingAgentsStandard](#bankingAgentsStandard)               |             | Relação da disponbilidade de atendimento                                                                                                 |
-| exception           | string                                                        | Não         | Em campo texto devem ser registradas todas as Exceções para o não atendimento. p.ex. 'Exceto feriados municipais, nacionais e estaduais' |
-| isPublicAccessAllow | boolean                                                       | Não         | Indica se a instalação do Correspondente Bancário tem acesso restrito a clientes, por exemplo. p.ex. 'FALSO' (restrito)                  |
+| Nome                  | Tipo                                                          | Obrigatório | Descrição                                                                                                                                |
+|:--------------------  |:------------------------------------------------------------- |:----------- |:-----------------------------------------------------------------------------------------------------------------------------------------|
+| standards             | [BankingAgentsStandard](#bankingAgentsStandard)               |             | Relação da disponbilidade de atendimento                                                                                                 |
+| exception             | string                                                        | Não         | Em campo texto devem ser registradas todas as Exceções para o não atendimento. p.ex. 'Exceto feriados municipais, nacionais e estaduais' |
+| isPublicAccessAllowed | boolean                                                       | Não         | Indica se a instalação do Correspondente Bancário tem acesso restrito a clientes, por exemplo. p.ex. 'FALSO' (restrito)                  |
 
 ## BankingAgentsStandard
 <a id="bankingAgentsStandard"></a>
