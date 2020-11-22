@@ -1407,6 +1407,7 @@ components:
           example: 'https://empresaa1.com/creditcards_closing_process'
     CreditCardInterest:
       type: object
+      description: Informações sobre taxas de juros
       required:
         - feeRate
         - instalmentRate
@@ -1418,61 +1419,36 @@ components:
           $ref: '#/components/schemas/InterestRate'
         interestRates:
           type: array
+          description: Lista de outras operações de crédito
           items:
-            type: object
-            required:
-              - code
-              - prices
-              - minimumRate
-              - maximumRate
-              - fees
-            properties:
-              code:
-                type: string
-                enum:
-                  - SAQUE_A_CREDITO
-                  - PAGAMENTOS_CONTAS
-                  - OUTROS
-                description: Lista de outras operações de crédito
-                example: SAQUE_A_CREDITO
-              additionalInfo:
-                type: string
-                maxLength: 50
-                pattern: \w*\W*
-                description: Campo Texto para descrever outras operações de crédito marcadas como 'OUTROS'. Se o campo 'code' vier selecionado com 'OUTROS' é obrigatório o preenchimento do additionalInfo
-                example: NA
-              prices:
-                type: array
-                items:
-                  required:
-                    - interval
-                    - rate
-                  properties:
-                    interval:
-                      $ref: '#/components/schemas/PriceIntervals'
-                    rate:
-                      type: string
-                      pattern: '((-?[1-9]?\d{1,4}){1}(\.\d{1,4}){1}|NA)$'
-                      maxLength: 9
-                      description: 'Percentual que corresponde a mediana (taxa efetiva) aplicada para  outras operações de crédito, no período informado.'
-                      example: '0.1500'
-              minimumRate:
-                type: string
-                pattern: '((-?[1-9]?\d{1,4}){1}(\.\d{1,4}){1}|NA)$'
-                maxLength: 9
-                description: Percentual mínimo cobrado (taxa efetiva) para  outras operações de crédito do mês de referência.
-                example: '0.0450'
-              maximumRate:
-                type: string
-                pattern: '((-?[1-9]?\d{1,4}){1}(\.\d{1,4}){1}|NA)$'
-                maxLength: 9
-                description: Percentual máximo cobrado (taxa efetiva) para  outras operações de crédito do mês de referência.
-                example: '0.8000'
-              fees:
-                type: array
-                description: Tarifas cobradas sobre Serviços ofertados
-                items:
-                  $ref: '#/components/schemas/FeeReferentialRateIndexer'
+            $ref:  "#/components/schemas/CreditCardInterestRate"
+          minItems: 1
+          maxItems: 3
+    CreditCardInterestRate:
+      type: object
+      required:
+        - code
+        - prices
+        - minimumRate
+        - maximumRate
+        - fees
+      properties:
+        code:
+          type: string
+          enum:
+            - SAQUE_A_CREDITO
+            - PAGAMENTOS_CONTAS
+            - OUTROS
+          description: Lista de outras operações de crédito
+          example: SAQUE_A_CREDITO
+        additionalInfo:
+          type: string
+          maxLength: 50
+          pattern: \w*\W*
+          description: Campo Texto para descrever outras operações de crédito marcadas como 'OUTROS'. Se o campo 'code' vier selecionado com 'OUTROS' é obrigatório o preenchimento do additionalInfo
+          example: NA
+      allOf: 
+      - $ref: '#/components/schemas/InterestRate'
     PersonalCreditCardResponse:
       type: object
       required:
@@ -1499,7 +1475,11 @@ components:
         - $ref: '#/components/schemas/Brand'
       properties:
         companies:
-          $ref: '#/components/schemas/PersonalCreditCardCompany'
+          type: array
+          description: Companies traz uma lista de todas as instituições da Marca
+          items:
+            $ref: '#/components/schemas/PersonalCreditCardCompany'
+          minItems: 1
     PersonalCreditCardCompany:
       type: object
       required:
@@ -1511,8 +1491,10 @@ components:
       properties:
         personalCreditCards:
           type: array
+          description: Lista das contas de pagamento pós-paga
           items:
             $ref: '#/components/schemas/CreditCard'
+          minItems: 1
     BusinessCreditCardResponse:
       type: object
       required:
@@ -1539,7 +1521,11 @@ components:
         - $ref: '#/components/schemas/Brand'
       properties:
         companies:
-          $ref: '#/components/schemas/BusinessCreditCardCompany'
+          type: array
+          description: Companies traz uma lista de todas as instituições da Marca
+          items:
+            $ref: '#/components/schemas/BusinessCreditCardCompany'
+          minItems: 1
     BusinessCreditCardCompany:
       type: object
       required:
@@ -1550,14 +1536,19 @@ components:
       properties:
         businessCreditCards:
           type: array
+          description: Lista dos nomes de conta de pagamento pós-paga
           items:
             $ref: '#/components/schemas/CreditCard'
+          minItems: 1
     CreditCardService:
       type: object
       required:
         - name
         - code
         - chargingTriggerInfo
+        - prices
+        - minimum
+        - maximum
         - customers
       properties:
         name:
@@ -1594,16 +1585,22 @@ components:
           example: 'Disponibilização de rede de estabelecimentos afiliados, instalada no País, para pagamentos de bens e serviços, cobrada no máximo uma vez a cada doze meses, admitido o parcelamento da cobrança'
         prices:
           type: array
+          description: Lista distribuição preços tarifas de serviços
           items:
             $ref: '#/components/schemas/Price'
+          minItems: 4
+          maxItems: 4
         minimum:
           $ref: '#/components/schemas/MinimumPrice'
         maximum:
           $ref: '#/components/schemas/MaximumPrice'
         customers:
           type: array
+          description: Lista percentual de clientes por faixa de preço
           items:
             $ref: '#/components/schemas/Customer'
+          minItems: 4
+          maxItems: 4
     ResponsePersonalFinancings:
       type: object
       required:
@@ -2667,60 +2664,44 @@ components:
       example: BRL
     InterestRate:
       type: object
-      properties:
-        prices:
-          type: array
-          items:
-            type: object
-            required:
-              - interval
-              - rate
-            properties:
-              interval:
-                description: |
-                  Faixas para cobrança da taxa efetiva aplicada pela contratação do do crédito rotativo, no intervalo informado: 1ª faixa de valor, 2ª faixa de valor, 3ª faixa de valor e 4ª faixa de valor. Segundo Normativa nº32 de 2020: 'Distribuição de frequência relativa dos valores de tarifas e taxas de juros cobrados dos clientes, de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana e o percentual de clientes em cada uma dessas faixas.
-                type: string
-                enum:
-                  - 1_FAIXA_VALOR
-                  - 2_FAIXA_VALOR
-                  - 3_FAIXA_VALOR
-                  - 4_FAIXA_VALOR
-                example: '1_FAIXA_VALOR'
-              rate:
-                type: string
-                maxLength: 6
-                description: |
-                  Percentual que corresponde a mediana da taxa efetiva cobrada do cliente pela contratação dos Direitos Creditórios Descontados, no intervalo informado. A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.15. Este valor representa 15%. O valor 1 representa 100%)
-                pattern: '^([0-9](\.[0-9]{4})|NA)$'
-                example: '0.0987'
-        minimumRate:
-          type: string
-          maxLength: 6
-          description: |
-            Percentual mínimo cobrado (taxa efetiva) no mês de referência, para os Direitos Creditórios Descontados contratado  A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.15. Este valor representa 15%. O valor 1 representa 100%)
-          pattern: '^([0-9](\.[0-9]{4})|NA)$'
-          example: '0.0845'
-        maximumRate:
-          maxLength: 6
-          type: string
-          description: |
-            Percentual máximo cobrado (taxa efetiva) no mês de referência, para os Direitos Creditórios Descontados contratado  A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.15. Este valor representa 15%. O valor 1 representa 100%)
-          pattern: '^([0-9](\.[0-9]{4})|NA)$'
-          example: '0.9000'
-        fees:
-          type: array
-          description: Tarifas cobradas sobre Serviços ofertados
-          items:
-            $ref: '#/components/schemas/FeeReferentialRateIndexer'
-        customers:
-          type: array
-          items:
-            $ref: '#/components/schemas/Customer'
       required:
+        - fees
         - prices
         - minimumRate
         - maximumRate
-        - fees
+        - customers
+      properties:
+        fees:
+          type: array
+          description: Lista das taxas referenciais ou indexadores
+          items:
+            $ref: '#/components/schemas/FeeReferentialRateIndexer'
+          minItems: 1
+          maxItems: 19
+        prices:
+          type: array
+          description: Lista distribuição preços tarifas de serviços
+          items:
+            $ref:   "#/components/schemas/InterestRateApplication"
+          minItems: 4
+          maxItems: 4 
+        minimumRate:
+          type: string
+          format: '(^[0-9](\.[0-9]{4})$|^NA$)'
+          description: 'Percentual mínimo cobrado (taxa efetiva) no mês de referência, para o Financiamento contratado  A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)'
+          example: '0.0456'
+        maximumRate:
+          type: string
+          format: '(^[0-9](\.[0-9]{4})$|^NA$)'
+          description: 'Percentual máximo cobrado (taxa efetiva) no mês de referência, para o Financiamento contratado  A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)'
+          example: '0.6865'
+        customers:
+          type: array
+          description: Lista percentual de clientes por faixa de preço
+          items:
+            $ref: '#/components/schemas/Customer'
+          minItems: 4
+          maxItems: 4
     ReferentialRateIndexer:
       type: string
       description: |
@@ -2767,14 +2748,18 @@ components:
         rewardsProgram:
           $ref: '#/components/schemas/CreditCardRewardsProgram'
         fees:
-          type: array
-          items:
-            type: object
-            required:
-              - service
-            properties:
-              service:
+          type: object
+          description: Objeto que reúne informações de tarifas de serviços
+          required:
+            - services
+          properties:
+            services:
+              type: array
+              description: Lista das Tarifas cobradas sobre Serviço relacionadas a Modalidade de Pagamento Pós-Pagas
+              items:
                 $ref: '#/components/schemas/CreditCardService'
+              minItems: 1
+              maxItems: 8  
         interest:
           $ref: '#/components/schemas/CreditCardInterest'
         termsConditions:
