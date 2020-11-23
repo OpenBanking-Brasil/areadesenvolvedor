@@ -122,7 +122,7 @@
 |     Nome     |  Tipo                                                  | Obrigatório |                            Definição               |
 |:------------ |:------------------------------------------------------ |:----------- |:-------------------------------------------------- |
 | data         | object                                                 | Sim         |                                                    |
-| » brand      | [BusinessAccountsBrand](#schemaBusinessAccountsBrand)  | Sim         | Lista das organizações responsáveis pelas contas.  |
+| » brand      | [BusinessAccountsBrand](#schemaBusinessAccountsBrand)  | Sim         | Organização controladora do grupo de instituições financeiras.  |
 | links        | [LinksPaginated](#schemaLinksPaginated)             | Sim         |                                                    |
 | meta         | [MetaPaginated](#schemaMetaPaginated)                  | Sim         |                                                    |
 

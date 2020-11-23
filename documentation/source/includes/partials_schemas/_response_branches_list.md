@@ -86,7 +86,7 @@
 | Nome  | Tipo                                      | Obrigatório | Definição                                          |
 | :---- | :---------------------------------------- | :---------- | :------------------------------------------------- |
 | data  | object                                    | Sim         |                                                    |
-| brand | [[BranchesBrand](#schemaBranchesBrand)]   | Sim         | Lista das organizações titulares das dependências. |
+| brand | [[BranchesBrand](#schemaBranchesBrand)]   | Sim         | Organização controladora do grupo de instituições financeiras. |
 | links | [[LinksPaginated](#schemaLinksPaginated)] | Sim         |                                                    |
 | meta  | [MetaPaginated](#schemaMetaPaginated)     | Sim         |                                                    |
 
