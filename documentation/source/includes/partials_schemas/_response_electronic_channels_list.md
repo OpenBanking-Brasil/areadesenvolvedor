@@ -17,7 +17,9 @@
                 "identification": {
                   "type": "string",
                   "additionalInfo": "string",
-                  "url": "string"
+                  "url": [
+                    "string"
+                  ]
                 },
                 "services": [
                   {
@@ -70,7 +72,9 @@
           "identification": {
             "type": "string",
             "additionalInfo": "string",
-            "url": "string"
+            "url": [
+              "string"
+            ]
           },
           "services": [
             {
@@ -104,7 +108,9 @@
       "identification": {
         "type": "string",
         "additionalInfo": "string",
-        "url": "string"
+        "url": [
+          "string"
+        ]
       },
       "services": [
         {
@@ -133,7 +139,9 @@
   "identification": {
     "type": "string",
     "additionalInfo": "string",
-    "url": "string"
+    "url": [
+      "string"
+    ]
   },
   "services": [
     {
@@ -157,7 +165,9 @@
 {
   "type": "string",
   "additionalInfo": "string",
-  "url": "string"
+  "url": [
+    "string"
+  ]
 }
 ```
 
