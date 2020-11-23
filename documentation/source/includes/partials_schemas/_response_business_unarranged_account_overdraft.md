@@ -12,59 +12,63 @@
           "name": "string",
           "cnpjNumber": "string",
           "urlComplementaryList": "string",
-          "businessUnarrangedAccountOverdraft": {
-            "fee": {
-              "service": {
-                "name": "string",
-                "code": "string",
-                "chargingTriggerInfo": "string",
-                "prices": [
+          "businessUnarrangedAccountOverdraft": [
+            {
+              "fees": {
+                "services": [
                   {
-                    "interval": "string",
-                    "value": "string",
-                    "currency": "string"
+                    "name": "string",
+                    "code": "string",
+                    "chargingTriggerInfo": "string",
+                    "prices": [
+                      {
+                        "interval": "string",
+                        "value": "string",
+                        "currency": "string"
+                      }
+                    ],
+                    "minimum": {
+                      "value": "string",
+                      "currency": "string"
+                    },
+                    "maximum": {
+                      "value": "string",
+                      "currency": "string"
+                    },
+                    "customers": [
+                      {
+                        "frequency": "string",
+                        "rate": "string"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "interestRate": {
+                "fees": [
+                  {
+                    "referentialRateIndexer": "string",
+                    "rate": "string"
                   }
                 ],
-                "minimum": {
-                  "value": "string",
-                  "currency": "string"
-                },
-                "maximum": {
-                  "value": "string",
-                  "currency": "string"
-                },
+                "applications": [
+                  {
+                    "interval": "string",
+                    "rate": "string"
+                  }
+                ],
+                "minimumRate": "string",
+                "maximumRate": "string",
                 "customers": [
-                  {
-                    "frequency": "string",
-                    "rate": "string"
-                  }
-                ]
-              }
-            },
-            "interestRate": {
-              "fees": [
-                {
-                  "referentialRateIndexer": "string",
-                  "rate": "string"
-                }
-              ],
-              "applications": [
-                {
-                  "interval": "string",
-                  "rate": "string"
-                }
-              ],
-              "minimumRate": "string",
-              "maximumRate": "string",
-              "customers": [
-                  {
-                    "frequency": "string",
-                    "rate": "string"
-                  }
-                ]
-            },
-            "termsConditions": "string"
-          }
+                    {
+                      "frequency": "string",
+                      "rate": "string"
+                    }
+                  ]
+              },
+              "termsConditions": "string"
+            }
+          ]
         }
       ]
     }
@@ -104,9 +108,89 @@
       "name": "string",
       "cnpjNumber": "string",
       "urlComplementaryList": "string",
-      "businessUnarrangedAccountOverdraft": {
-        "fee": {
-          "service": {
+      "businessUnarrangedAccountOverdraft": [
+        {
+          "fees": {
+            "services": [
+              {
+                "name": "string",
+                "code": "string",
+                "chargingTriggerInfo": "string",
+                "prices": [
+                  {
+                    "interval": "string",
+                    "value": "string",
+                    "currency": "string"
+                  }
+                ],
+                "minimum": {
+                  "value": "string",
+                  "currency": "string"
+                },
+                "maximum": {
+                  "value": "string",
+                  "currency": "string"
+                },
+                "customers": [
+                  {
+                    "frequency": "string",
+                    "rate": "string"
+                  }
+                ]
+              }
+            ]
+          },
+          "interestRate": {
+            "fees": [
+              {
+                "referentialRateIndexer": "string",
+                "rate": "string"
+              }
+            ],
+            "applications": [
+              {
+                "interval": "string",
+                "rate": "string"
+              }
+            ],
+            "minimumRate": "string",
+            "maximumRate": "string",
+            "customers": [
+                {
+                  "frequency": "string",
+                  "rate": "string"
+                }
+              ]
+          },
+          "termsConditions": "string"
+        }
+      ]
+    }
+  ]
+}
+
+```
+
+### Properties
+
+|Nome|Tipo|Obrigatório|Definição|
+|---|---|---|---|
+|name|string|Sim| Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a 'marca' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes.|
+|companies|[[BusinessUnarrangedAccountOverdraftCompany](#schemabusinessunarrangedaccountoverdraftcompany)]|Sim | Companies traz uma lista de todas as instituições da Marca |
+
+## BusinessUnarrangedAccountOverdraftCompany
+<a id="schemabusinessunarrangedaccountoverdraftcompany"></a>
+
+```json
+{
+  "name": "string",
+  "cnpjNumber": "string",
+  "urlComplementaryList": "string",
+  "businessUnarrangedAccountOverdraft": [
+    {
+      "fees": {
+        "services": [
+          {
             "name": "string",
             "code": "string",
             "chargingTriggerInfo": "string",
@@ -132,55 +216,54 @@
               }
             ]
           }
-        },
-        "interestRate": {
-          "fees": [
+        ]
+      },
+      "interestRate": {
+        "fees": [
+          {
+            "referentialRateIndexer": "string",
+            "rate": "string"
+          }
+        ],
+        "applications": [
+          {
+            "interval": "string",
+            "rate": "string"
+          }
+        ],
+        "minimumRate": "string",
+        "maximumRate": "string",
+        "customers": [
             {
-              "referentialRateIndexer": "string",
+              "frequency": "string",
               "rate": "string"
             }
-          ],
-          "applications": [
-            {
-              "interval": "string",
-              "rate": "string"
-            }
-          ],
-          "minimumRate": "string",
-          "maximumRate": "string",
-          "customers": [
-              {
-                "frequency": "string",
-                "rate": "string"
-              }
-            ]
-        },
-        "termsConditions": "string"
-      }
+          ]
+      },
+      "termsConditions": "string"
     }
   ]
 }
-
 ```
 
 ### Properties
 
-|Nome|Tipo|Obrigatório|Definição|
-|---|---|---|---|
-|name|string|Sim| Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a 'marca' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes.|
-|companies|[[BusinessUnarrangedAccountOverdraftCompany](#schemabusinessunarrangedaccountoverdraftcompany)]|Sim | Lista de instituições pertencentes à marca|
+|Nome|Tipo |Obrigatório|Restrição |Definição|
+|---|---|---|---|---|
+|name|string|Sim | | Nome da Instituição, pertencente à marca, responsável pela comercialização das modalidades de Direitos Creditórios Descontados para Pessoas Jurídicas consultadas. p.ex.'Empresa da Organização A'|
+|cnpjNumber | string| Sim | | O responsável pela comercialização das modalidades de Empréstimos para Pessoas Físicas consultadas - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. Deve-se ter apenas os números do CNPJ, sem máscara.|
+|urlComplementaryList|string| Não | Será obrigatorimente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada | URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. Endereço eletrônico de acesso ao canal. URLs são limitadas a 2048 caracteres mas, para o contexto do Sistema Financeiro aberto, será adotado a metade deste tamanho. Ex. 'https://example.com/mobile-banking'|
+|businessUnarrangedAccountOverdraft|[[BusinessUnarrangedAccountOverdraft](#schemabusinessunarrangedaccountoverdraft)]|Sim | | Lista de adiantamento a depositante |
 
-## BusinessUnarrangedAccountOverdraftCompany
-<a id="schemabusinessunarrangedaccountoverdraftcompany"></a>
+## BusinessUnarrangedAccountOverdraft
+
+<a id="schemabusinessunarrangedaccountoverdraft"></a>
 
 ```json
 {
-  "name": "string",
-  "cnpjNumber": "string",
-  "urlComplementaryList": "string",
-  "businessUnarrangedAccountOverdraft": {
-    "fee": {
-      "service": {
+  "fees": {
+    "services": [
+      {
         "name": "string",
         "code": "string",
         "chargingTriggerInfo": "string",
@@ -206,76 +289,7 @@
           }
         ]
       }
-    },
-    "interestRate": {
-      "fees": [
-        {
-          "referentialRateIndexer": "string",
-          "rate": "string"
-        }
-      ],
-      "applications": [
-        {
-          "interval": "string",
-          "rate": "string"
-        }
-      ],
-      "minimumRate": "string",
-      "maximumRate": "string",
-      "customers": [
-          {
-            "frequency": "string",
-            "rate": "string"
-          }
-        ]
-    },
-    "termsConditions": "string"
-  }
-}
-```
-
-### Properties
-
-|Nome|Tipo |Obrigatório|Restrição |Definição|
-|---|---|---|---|---|
-|name|string|Sim | | Nome da Instituição, pertencente à marca, responsável pela comercialização das modalidades de Direitos Creditórios Descontados para Pessoas Jurídicas consultadas. p.ex.'Empresa da Organização A'|
-|cnpjNumber | string| Sim | | O responsável pela comercialização das modalidades de Empréstimos para Pessoas Físicas consultadas - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. Deve-se ter apenas os números do CNPJ, sem máscara.|
-|urlComplementaryList|string| Não | Será obrigatorimente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada | URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. Endereço eletrônico de acesso ao canal. URLs são limitadas a 2048 caracteres mas, para o contexto do Sistema Financeiro aberto, será adotado a metade deste tamanho. Ex. 'https://example.com/mobile-banking'|
-|businessUnarrangedAccountOverdraft|[[BusinessUnarrangedAccountOverdraft](#schemabusinessunarrangedaccountoverdraft)]|Sim | | Lista de adiantamento a depositante |
-
-## BusinessUnarrangedAccountOverdraft
-
-<a id="schemabusinessunarrangedaccountoverdraft"></a>
-
-```json
-{
-  "fee": {
-    "service": {
-      "name": "string",
-      "code": "string",
-      "chargingTriggerInfo": "string",
-      "prices": [
-        {
-          "interval": "string",
-          "value": "string",
-          "currency": "string"
-        }
-      ],
-      "minimum": {
-        "value": "string",
-        "currency": "string"
-      },
-      "maximum": {
-        "value": "string",
-        "currency": "string"
-      },
-      "customers": [
-        {
-          "frequency": "string",
-          "rate": "string"
-        }
-      ]
-    }
+    ]
   },
   "interestRate": {
     "fees": [
@@ -301,14 +315,13 @@
   },
   "termsConditions": "string"
 }
-
 ```
 
 ### Properties
 
 |Nome|Tipo|Obrigatório|Definição|
 |---|---|---|---|
-|fee|[[BusinessUnarrangedAccountOverdraftFee](#schemabusinessunarrangedaccountoverdraftfee)]|Sim| Tarifas cobradas sobre Serviços ofertados à Modalidade de adiantamento a depositante |
+|fees|[[BusinessUnarrangedAccountOverdraftFee](#schemabusinessunarrangedaccountoverdraftfee)]|Sim| Objeto que reúne informações de tarifas de serviços |
 |interestRate|[UnarrangedAccountOverdraftRate](#schemaunarrangedaccountoverdraftrate)|Sim| Taxas de juros remuneratórias |
 |termsConditions|string|Sim|Campo aberto para informar as condições contratuais relativas ao produto ou serviço informado. Pode ser informada a URL referente ao endereço onde constam as condições informadas.|
 
@@ -317,32 +330,34 @@
 
 ```json
 {
-  "service": {
-    "name": "string",
-    "code": "string",
-    "chargingTriggerInfo": "string",
-    "prices": [
-      {
-        "interval": "string",
+  "services": [
+    {
+      "name": "string",
+      "code": "string",
+      "chargingTriggerInfo": "string",
+      "prices": [
+        {
+          "interval": "string",
+          "value": "string",
+          "currency": "string"
+        }
+      ],
+      "minimum": {
         "value": "string",
         "currency": "string"
-      }
-    ],
-    "minimum": {
-      "value": "string",
-      "currency": "string"
-    },
-    "maximum": {
-      "value": "string",
-      "currency": "string"
-    },
-    "customers": [
-      {
-        "frequency": "string",
-        "rate": "string"
-      }
-    ]
-  }
+      },
+      "maximum": {
+        "value": "string",
+        "currency": "string"
+      },
+      "customers": [
+        {
+          "frequency": "string",
+          "rate": "string"
+        }
+      ]
+    }
+  ]
 }
 
 ```
@@ -351,7 +366,7 @@
 
 |Nome|Tipo|Obrigatório|Definição|
 |---|---|---|---|
-|service|[UnarrangedAccountOverdraftService](#schemaunarrangedaccountoverdraftservice)|Sim| Informações sobre os serviços|
+|services|[UnarrangedAccountOverdraftService](#schemaunarrangedaccountoverdraftservice)|Sim| Lista das Tarifas cobradas sobre Serviços Prioritários |
 
 ## UnarrangedAccountOverdraftService
 
@@ -393,10 +408,10 @@
 |name|[Enum UnarrangedAccountOverdraftFeeName](#schemaUnarrangedAccountOverdraftFeeName)|Sim | Nome da Tarifa cobrada sobre Serviço que incide sobre Adiantamento a depositante, para pessoa jurídica.|
 |code|[Enum UnarrangedAccountOverdraftFeeCode](#schemaUnarrangedAccountOverdraftFeeCode)|Sim | Sigla de identificação do serviço relacionado à Modalidade de Adiantamento a depositante, para pessoa jurídica.|
 |chargingTriggerInfo|string|Sim | Fato gerador de cobrança que incide sobre a Modalidade de Adiantamento a depositante informada, para pessoa jurídica.|
-|prices|[[Price](#schemaPrice)]|Sim | Valor da mediana da tarifa, relativa ao serviço ofertado, informado no período.|
+|prices|[[Price](#schemaPrice)]|Sim | Lista das faixas dos  valores de tarfas cobradas. |
 |minimum|[MinimumPrice](#schemaMinimumPrice)|Sim | Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. |
 |maximum|[MaximumPrice](#schemaMaximumPrice)|Sim | Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. |
-|customers | [FeeServiceCustomer](#schemaFeeServiceCustomer) | Sim   |  Distribuição de frequência relativa aos clientes que pagaram valores de tarifas. |
+|customers | [FeeServiceCustomer](#schemaFeeServiceCustomer) | Sim   |  Lista percentual de clientes por faixa de preço. |
 
 ## Enum UnarrangedAccountOverdraftFeeName
 <a id="schemaUnarrangedAccountOverdraftFeeName"></a>
@@ -446,11 +461,11 @@
 
 |Nome|Tipo|Obrigatório|Definição|
 |---|---|---|---|
-|fees|[FeeReferentialRateIndexer](#schemaFeeReferentialRateIndexer)| Sim | Tarifas cobradas sobre Serviços ofertados à Modalidade de adiantamento a depositante |
-|applications|[[InterestRateApplication](#schemainterestrateapplication)] |Sim| Valor da mediana da taxa de remuneração relativa ao serviço ofertado.|
+|fees|[FeeReferentialRateIndexer](#schemaFeeReferentialRateIndexer)| Sim | Lista de tipos de taxas referenciais ou indexadores |
+|applications|[[InterestRateApplication](#schemainterestrateapplication)] |Sim| Lista  das faixas de cobrança da taxa efetiva de remuneração.|
 |minimumRate|string| Sim |Percentual mínimo cobrado (taxa efetiva) no mês de referência, para os Direitos Creditórios Descontados contratado  A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.15. Este valor representa 15%. O valor 1 representa 100%)|
 |maximumRate|string| Sim |Percentual máximo cobrado (taxa efetiva) no mês de referência, para os Direitos Creditórios Descontados contratado  A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.15. Este valor representa 15%. O valor 1 representa 100%)|
-| customers   | [Customer](#schemaCustomer) | Sim   |  Distribuição de frequência relativa aos clientes que pagaram valores de tarifas. |
+| customers   | [Customer](#schemaCustomer) | Sim   | Lista percentual de cliente por faixa referente a  taxa remuneratória. |
 
 ## InterestRateApplication
 

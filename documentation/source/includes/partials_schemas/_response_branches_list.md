@@ -18,14 +18,22 @@
                   "type": "string",
                   "code": "string",
                   "checkDigit": "string",
-                  "name": "string"
+                  "name": "string",
+                  "relatedBranch": "string",
+                  "openingDate": "string"
                 },
                 "postalAddress": {
                   "address": "string",
+                  "additionalInfo": "string",
                   "districtName": "string",
                   "townName": "string",
+                  "ibgeCode": "string",
                   "countrySubDivision": "string",
-                  "postCode": "string"
+                  "postCode": "string",
+                  "country": "string",
+                  "countryCode": "string",
+                  "latitude": "string",
+                  "longitude": "string"
                 },
                 "availability": {
                   "standards": [
@@ -36,22 +44,23 @@
                     }
                   ],
                   "exception": "string",
-                  "allowPublicAccess": "string"
+                  "isPublicAccessAllowed": "string"
                 },
                 "phones": [
                   {
                     "type": "string",
-                    "countryCode" : "string",
+                    "countryCallingCode" : "string",
                     "areaCode": "string",
                     "number": "string"
                   }
                 ],
-                "service": {
-                  "codes": [
-                    "string"
-                  ],
-                  "additionalInfo": "string"
-                }
+                "services": [
+                  {
+                    "name": "string",
+                    "code": "string",
+                    "additionalInfo": "string"
+                  }
+                ]
               }
             ]
           }
@@ -74,12 +83,12 @@
 ```
 
 
-|     Nome          |  Tipo                                                     | Obrigatório  |                            Definição                  |
-|:------------      |:---------------------------------                         |:-----------  |:----------------------------------------------------  |
-| data              | object                                                    | Sim          |                                                       |
-| brand             | [[BranchesBrand](#schemaBranchesBrand)]     | Sim          | Lista das organizações titulares das dependências.      |
-| links             | [[LinksPaginated](#schemaLinksPaginated)]                 | Sim          |                                                       |
-| meta              | [MetaPaginated](#schemaMetaPaginated)                   | Sim          |                                                       |
+| Nome  | Tipo                                      | Obrigatório | Definição                                          |
+| :---- | :---------------------------------------- | :---------- | :------------------------------------------------- |
+| data  | object                                    | Sim         |                                                    |
+| brand | [[BranchesBrand](#schemaBranchesBrand)]   | Sim         | Organização controladora do grupo de instituições financeiras. |
+| links | [[LinksPaginated](#schemaLinksPaginated)] | Sim         |                                                    |
+| meta  | [MetaPaginated](#schemaMetaPaginated)     | Sim         |                                                    |
 
 
 ## BranchesBrand
@@ -99,14 +108,22 @@
             "type": "string",
             "code": "string",
             "checkDigit": "string",
-            "name": "string"
+            "name": "string",
+            "relatedBranch": "string",
+            "openingDate": "string"
           },
           "postalAddress": {
             "address": "string",
+            "additionalInfo": "string",
             "districtName": "string",
             "townName": "string",
+            "ibgeCode": "string",
             "countrySubDivision": "string",
-            "postCode": "string"
+            "postCode": "string",
+            "country": "string",
+            "countryCode": "string",
+            "latitude": "string",
+            "longitude": "string"
           },
           "availability": {
             "standards": [
@@ -117,22 +134,23 @@
               }
             ],
             "exception": "string",
-            "allowPublicAccess": "string"
+            "isPublicAccessAllowed": "string"
           },
           "phones": [
             {
               "type": "string",
-              "countryCode" : "string",
+              "countryCallingCode" : "string",
               "areaCode": "string",
               "number": "string"
             }
           ],
-          "service": {
-            "codes": [
-              "string"
-            ],
-            "additionalInfo": "string"
-          }
+          "services": [
+            {
+              "name": "string",
+              "code": "string",
+              "additionalInfo": "string"
+            }
+          ]
         }
       ]
     }
@@ -140,10 +158,10 @@
 }
 ```
 
-|     Nome     |  Tipo                                            | Obrigatório  |                            Definição                     |
-|:------------ |:---------------------------------                |:-----------  |:----------------------------------------------------     |
-| name         | string                                           | Sim          | Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a 'marca' utilizada está em definição pelos participantes.  |
-| companies    | [[BranchesCompanies](#schemaBranchesCompanies)]  | Sim          | Lista de instituições pertencentes à marca.         |
+| Nome      | Tipo                                            | Obrigatório | Definição                                                                                                                                                                                                                         |
+| :-------- | :---------------------------------------------- | :---------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| name      | string                                          | Sim         | Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a 'marca' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes |
+| companies | [[BranchesCompanies](#schemaBranchesCompanies)] | Sim         | Companies traz uma lista de todas as instuituições da Marca                                                                                                                                                                       |
 
 ## BranchesCompanies 
 <a id="schemaBranchesCompanies"></a>
@@ -159,14 +177,22 @@
         "type": "string",
         "code": "string",
         "checkDigit": "string",
-        "name": "string"
+        "name": "string",
+        "relatedBranch": "string",
+        "openingDate": "string"
       },
       "postalAddress": {
         "address": "string",
+        "additionalInfo": "string",
         "districtName": "string",
         "townName": "string",
+        "ibgeCode": "string",
         "countrySubDivision": "string",
-        "postCode": "string"
+        "postCode": "string",
+        "country": "string",
+        "countryCode": "string",
+        "latitude": "string",
+        "longitude": "string"
       },
       "availability": {
         "standards": [
@@ -177,33 +203,34 @@
           }
         ],
         "exception": "string",
-        "allowPublicAccess": "string"
+        "isPublicAccessAllowed": "string"
       },
       "phones": [
         {
           "type": "string",
-          "countryCode" : "string",
+          "countryCallingCode" : "string",
           "areaCode": "string",
           "number": "string"
         }
       ],
-      "service": {
-        "codes": [
-          "string"
-        ],
-        "additionalInfo": "string"
-      }
+      "services": [
+        {
+          "name": "string",
+          "code": "string",
+          "additionalInfo": "string"
+        }
+      ]
     }
   ]
 }
 ```
 
-|     Nome               |  Tipo                         | Obrigatório    |                            Descrição                                                                                        |
-|:------------           |:----------------------------- |:-------------  |:----------------------------------------------------                                                                        |
-| name                   | string                        | Sim            | Nome da Instituição, pertencente à marca, responsável pela Dependência.                                                |
-| cnpjNumber             | string                        | Sim            | CNPJ da instituição responsável pela dependência - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. |
-| urlComplementaryList   | string                        | Não            | URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber |
-| branches               | [[Branch](#schemaBranch)]     | Sim            | Lista de dependências próprias da instituição.                                                                               |
+| Nome                 | Tipo                      | Obrigatório | Descrição                                                                                                                                                                                                                                                                                                                                                                                               |
+| :------------------- | :------------------------ | :---------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| name                 | string                    | Sim         | Nome da Instituição, pertencente à Marca, responsável pela Dependência. p. ex. 'Empresa da Organização A'                                                                                                                                                                                                                                                                                               |
+| cnpjNumber           | string                    | Sim         | Número completo do CNPJ da instituição responsável pela dependência - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. Deve-se ter apenas os números do CNPJ, sem máscara                                                                                                                                                                                                      |
+| urlComplementaryList | string                    | Não         | URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. Endereço eletrônico de acesso ao canal. URLs são limitadas a 2048 caracteres mas, para o contexto do Sistema Financeiro aberto, será adotado a metade deste tamanho. p.ex. 'https://example.com/mobile-banking' |
+| branches             | [[Branch](#schemaBranch)] | Sim         | Lista de dependências próprias da instituição.                                                                                                                                                                                                                                                                                                                                                          |
 
 ## Branch 
 <a id="schemaBranch"></a>
@@ -214,14 +241,22 @@
     "type": "string",
     "code": "string",
     "checkDigit": "string",
-    "name": "string"
+    "name": "string",
+    "relatedBranch": "string",
+    "openingDate": "string"
   },
   "postalAddress": {
     "address": "string",
+    "additionalInfo": "string",
     "districtName": "string",
     "townName": "string",
+    "ibgeCode": "string",
     "countrySubDivision": "string",
-    "postCode": "string"
+    "postCode": "string",
+    "country": "string",
+    "countryCode": "string",
+    "latitude": "string",
+    "longitude": "string"
   },
   "availability": {
     "standards": [
@@ -232,32 +267,33 @@
       }
     ],
     "exception": "string",
-    "allowPublicAccess": "string"
+    "isPublicAccessAllowed": "string"
   },
   "phones": [
     {
       "type": "string",
-      "countryCode" : "string",
+      "countryCallingCode" : "string",
       "areaCode": "string",
       "number": "string"
     }
   ],
-  "service": {
-    "codes": [
-      "string"
-    ],
-    "additionalInfo": "string"
-  }
+  "services": [
+    {
+      "name": "string",
+      "code": "string",
+      "additionalInfo": "string"
+    }
+  ]
 }
 ```
 
-|Nome|Tipo|Obrigatório|Descrição|
-|---|---|---|---|---|
-|identification|[BranchIdentification](#schemaBranchIdentification)|Sim|Dados de identificação na dependência.|
-|postalAddress|[BranchPostalAddress](#schemaBranchPostalAddress)|Sim|Endereço na dependência.|
-|availability|[BranchAvailability](#schemaBranchAvailability)|Sim|Dias e horários de funcionamento na dependência.|
-|phones|[BranchPhone](#schemaBranchPhone)|Não|Lista de telefones para contato com a dependência.|
-|service|[BranchServices](#schemaBranchServices)|Sim|Serviços fornecidos na dependência.|
+| Propriedade | Código                             | Definição                              |
+| :---------- | :--------------------------------- | :------------------------------------- |
+| identification | [BranchIdentification](#schemaBranchIdentification) | Sim         | Dados de identificação na dependência.             |
+| postalAddress  | [BranchPostalAddress](#schemaBranchPostalAddress)   | Sim         | Endereço na dependência.                           |
+| availability   | [BranchAvailability](#schemaBranchAvailability)     | Sim         | Dias e horários de funcionamento na dependência.   |
+| phones         | [BranchPhone](#schemaBranchPhone)                   | Não         | Lista de telefones para contato com a dependência. |
+| services        | [BranchServices](#schemaBranchServices)             | Sim         | Serviços fornecidos na dependência.                |
 
 ## BranchIdentification 
 <a id="schemaBranchIdentification"></a>
@@ -267,25 +303,30 @@
   "type": "string",
   "code": "string",
   "checkDigit": "string",
-  "name": "string"
+  "name": "string",
+  "relatedBranch": "string",
+  "openingDate": "string"
 }
 ```
 
-|Nome|Tipo|Obrigatório|Descrição|
-|:---|:---|:---|:---|:---|
-|type|[Enum BranchIdentificationType](#schemaEnumBranchIdentificationType)|Sim|Tipo de dependência própria.|
-|code|string|Sim|Código identificador da dependência.|
-|checkDigit|string|Sim|Dígito verificador do código da dependência.|
-|name|string|Sim|Nome da dependência bancária.|
+| Propriedade | Código                             | Definição                              |
+| :---------- | :--------------------------------- | :------------------------------------- |
+| type          | [Enum BranchIdentificationType](#schemaEnumBranchIdentificationType) | Sim         | Tipo da dependência, segundo a regulamentação do Bacen,  na Resolução Nº 4072, de 26 de abril de 2012: Agência é a dependência destinada ao atendimento aos clientes e ao público em geral no exercício de atividades da instituição, não podendo ser móvel ou transitória; Dependência de instituições financeiras e demais instituições, autorizadas a funcionar pelo Banco Central do Brasil, destinada à prática das atividades para as quais a instituição esteja regularmente habilitada. Posto de Atendimento é a dependência subordinada a agência  ou à sede da instituição financeira, destinada ao atendimento ao público no exercício de uma ou mais de suas atividades, podendo ser fixo ou móvel. Segundo Art.15. Os Postos de Atendimento Bancário (PAB), Postos Avançados de Atendimento (PAA), Postos de Atendimento Transitórios (PAT), Postos de Compra de Ouro (PCO), Postos de Atendimento Cooperativo (PAC), Postos de Atendimento de Microcrédito (PAM), Postos Bancários de Arrecadação e Pagamento (PAP) e os Postos de Câmbio atualmente em funcionamento serão considerados PA. Posto de Atendimento Eletrônico é a dependência constituída por um ou mais terminais de autoatendimento, subordinada a agência ou à sede da instituição, destinada à prestação de serviços por meio eletrônico, podendo ser fixo ou móvel, permanente ou transitório Unidade Administrativa Desmembrada (UAD) segundo a Resolução 4072 , BCB, 2012, no Art. 8º "... é dependência destinada à execução de atividades administrativas da instituição, vedado o atendimento ao público" |
+| code          | string                                                               | Sim         | Código identificador da dependência. Ex. '3006','3035', '1382', '2516', '2856'.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| checkDigit    | string                                                               | Sim         | Dígito verificador do código da dependência.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| name          | string                                                               | Sim         | Nome da dependência, exemplos: 3006, 'SP Ponte Morumbi', 3035, 'Uberaba São Benedito', 1382, 'ALPHAVILLE-BARUERI', 2516, 'PRIME-ALPHAVILLE', 2856, 'CID.DE DEUS-U.OSASCO'                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| relatedBranch | string                                                               | Não         | Código da agência vinculada ao Posto de Atendimento - se aplicável*.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| openingDate   | string                                                               | Não         | Data de abertura da dependência (uma string com data conforme especificação RFC-3339. p.ex. 2014-03-19).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 
 ### Enum BranchIdentificationType 
 <a id="schemaEnumBranchIdentificationType"></a>
 
-| Propriedade  | Código                         | Definição                           |
-|:------------ |:------------------------------ |:----------------------------------- |
-| type         | AGENCIA                        | Agências.                           |
-| type         | POSTO_ATENDIMENTO              | Postos de atendimento.              |
-| type         | POSTO_ATENDIMENTO_ELETRONICO   | Postos de atendimento eletrônico.   |
+| Propriedade | Código                             | Definição                              |
+| :---------- | :--------------------------------- | :------------------------------------- |
+| type        | AGENCIA                            | Agências.                              |
+| type        | POSTO_ATENDIMENTO                  | Postos de atendimento.                 |
+| type        | POSTO_ATENDIMENTO_ELETRONICO       | Postos de atendimento eletrônico.      |
+| type        | UNIDADE_ADMINISTRATIVA_DESMEMBRADA | Unidades Administrativas Desmembradas. |
 
 ## BranchPostalAddress 
 <a id="schemaBranchPostalAddress"></a>
@@ -293,20 +334,32 @@
 ```json
 {
   "address": "string",
+  "additionalInfo": "string",
   "districtName": "string",
   "townName": "string",
+  "ibgeCode": "string",
   "countrySubDivision": "string",
-  "postCode": "string"
+  "postCode": "string",
+  "country": "string",
+  "countryCode": "string",
+  "latitude": "string",
+  "longitude": "string"
 }
 ```
 
-|Nome|Tipo|Obrigatório|Descrição|
-|:---|:---|:---|:---|
-|address|string|Sim|Informação referente ao endereço da Depêndência Bancária informada: Tipo de logradouro + Nome do logradouro + Número do Logradouro (se não existir usar ' s/n') + complemento (se houver)|
-|districtName|string|Sim|Bairro|
-|townName|string|Sim|Cidade|
-|countrySubDivision|string|Sim|Estado|
-|postCode|string|Sim|CEP|
+| Nome               | Tipo   | Obrigatório | Descrição                                                                                                                                                                                                                                                                                                                                                          |
+| :----------------- | :----- | :---------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| address            | string | Sim         | Deverá trazer toda a informação referente ao endereço da dependência informada: Tipo de logradouro + Nome do logradouro + Número do Logradouro (se não existir usar ' s/n') + complemento (se houver), como, p.ex.: 'R Diamatina, 59, bloco 35, fundos', 'Praça da Boa Vontade s/n'                                                                                |
+| additionalInfo     | string | Não         | Alguns logradouros ainda necessitam ser especificados por meio de complemento, conforme o exemplo a seguir: 'Loja B', 'Fundos', 'Casa 2', 'Lote C'                                                                                                                                                                                                                 |
+| districtName       | string | Sim         | Bairro é uma comunidade ou região localizada em uma cidade ou município de acordo com as suas subdivisões geográficas. p.ex: 'Paraíso'                                                                                                                                                                                                                             |
+| townName           | string | Sim         | O nome da localidade corresponde à designação da cidade ou município no qual o endereço está localizado. p.ex. 'São Paulo'                                                                                                                                                                                                                                         |
+| ibgeCode           | string | Não         | Código IBGE de Município. A Tabela de Códigos de Municípios do IBGE apresenta a lista dos municípios brasileiros associados a um código composto de 7 dígitos, sendo os dois primeiros referentes ao código da Unidade da Federação. p.ex.'3550308'                                                                                                                |
+| countrySubDivision | string | Sim         | Enumeração referente a cada sigla da unidade da federação que identifica o estado ou o distrito federal, no qual o endereço está localizado. p.ex. 'AC'. São consideradas apenas as siglas para os estados brasileiros                                                                                                                                             |
+| postCode           | string | Sim         | Código de Endereçamento Postal: Composto por um conjunto numérico de oito dígitos, o objetivo principal do CEP é orientar e acelerar o encaminhamento, o tratamento e a entrega de objetos postados nos Correios, por meio da sua atribuição a localidades, logradouros, unidades dos Correios, serviços, órgãos públicos, empresas e edifícios. p.ex. '01311-000' |
+| country            | string | Não         | Nome do país. p.ex. Brasil                                                                                                                                                                                                                                                                                                                                         |
+| countryCode        | string | Não         | Código do pais de acordo com o código “alpha3” do ISO-3166.p.ex.'BRA'                                                                                                                                                                                                                                                                                              |
+| latitude           | string | Não         | Informação da Latitude referente a geolocalização informada. Entre -90 e 90.p.ex. '-90.8365180'                                                                                                                                                                                                                                                                    |
+| longitude          | string | Não         | Informação da Longitude referente a geolocalização informada. Entre -180 e 180.p.ex '-180.836519.'                                                                                                                                                                                                                                                                 |
 
 ## BranchAvailability 
 <a id="schemaBranchAvailability"></a>
@@ -321,31 +374,31 @@
     }
   ],
   "exception": "string",
-  "allowPublicAccess": "string"
+  "isPublicAccessAllowed": "boolean"
 }
 ```
 
-| Nome              | Tipo                                   | Obrigatório | Descrição                                                        |
-|:------------      |:------------------                     |:----------  |:----------------------------                                     |
-| standards         | Array                                  | Sim         | Lista com os dias da semana.                                     |
-| weekday           | [[Enum WeekDay](#schemaWeekDay)]       | Sim         | Dia da semana.                                                   |
-| openingTime       | [[TimeString](#commonFieldTimeString)] | Sim         | Horário padrão de início de atendimento da Dependência.          |
-| closingTime       | [[TimeString](#commonFieldTimeString)] | Sim         | Horário padrão de encerramento de atendimento da Dependência.    |
-| exception         | string                                 | Não         | Informações sobre as exceções de abertura.                       |
-| allowPublicAccess | string                                 | Sim         | Define se a dependência possui acesso ao público. True ou False. |
+| Nome                  | Tipo                                   | Obrigatório | Descrição                                                                                                                                                                                                     |
+| :-------------------- | :------------------------------------- | :---------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| standards             | Array                                  | Sim         | Lista com os dias da semana.                                                                                                                                                                                  |
+| weekday               | [[Enum WeekDay](#schemaWeekDay)]       | Sim         | Em formato texto, seguindo o domínio apresentado, devem ser colocados os dias da semana                                                                                                                       |
+| openingTime           | [[TimeString](#commonFieldTimeString)] | Sim         | Horário padrão de início de atendimento da Dependência. (Uma string que representa a hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format). p.ex. '10:00:57Z')       |
+| closingTime           | [[TimeString](#commonFieldTimeString)] | Sim         | Horário padrão de encerramento de atendimento da Dependência. (Uma string que representa a hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format). p.ex. '16:00:57Z') |
+| exception             | string                                 | Sim         | Em campo texto devem ser registradas todas as Exceções para o não atendimento. p.ex. 'Exceto feriados municipais, nacionais e estaduais'                                                                      |
+| isPublicAccessAllowed | boolean                                | Sim         | Indica se a instalação do Correspondente Bancário tem acesso restrito a clientes, por exemplo. p.ex. false (restrito)                                                                                         |
 
 ## Enum WeekDay
 <a id="schemaWeekDay"></a>
 
-| Dia         | Código | 
-|:------------ |:------ |
-| Domingo   | DOMINGO        | 
-| Segunda Feira   | SEGUNDA_FEIRA  | 
-| Terça Feira   | TERCA_FEIRA    | 
-| Quarta Feira   | QUARTA_FEIRA   | 
-| Quinta Feira   | QUINTA_FEIRA   | 
-| Sexta Feira   | SEXTA_FEIRA    |
-| Sábado   | SABADO         | 
+| Dia           | Código        |
+| :------------ | :------------ |
+| Domingo       | DOMINGO       |
+| Segunda Feira | SEGUNDA_FEIRA |
+| Terça Feira   | TERCA_FEIRA   |
+| Quarta Feira  | QUARTA_FEIRA  |
+| Quinta Feira  | QUINTA_FEIRA  |
+| Sexta Feira   | SEXTA_FEIRA   |
+| Sábado        | SABADO        |
 
 ## BranchPhone 
 <a id="schemaBranchPhone"></a>
@@ -353,25 +406,25 @@
 ```json
 {
   "type": "string",
-  "countryCode" : "string",
+  "countryCallingCode" : "string",
   "areaCode": "string",
   "number": "string"
 }
 ```
-| Nome        | Tipo                                               | Obrigatório | Descrição           |
-|:----------  |:-------------------------------------------------- |:----------- |:---------------     |
-| type        | [Enum BranchPhoneType](#schemaEnumBranchPhoneType) | Sim         | Tipo de telefone.    |
-| countryCode | string                                             | Sim         | DDI.                 |
-| areaCode    | string                                             | Sim         | DDD.                 |
-| number      | string                                             | Sim         | Número do telefone.  |
+| Nome               | Tipo                                               | Obrigatório | Descrição                                                                                               |
+| :----------------- | :------------------------------------------------- | :---------- | :------------------------------------------------------------------------------------------------------ |
+| type               | [Enum BranchPhoneType](#schemaEnumBranchPhoneType) | Sim         | Identificação do Tipo de telefone da dependência. p.ex.FIXO, MOVEL                                      |
+| countryCallingCode | string                                             | Não         | Número de DDI (Discagem Direta Internacional) para  telefone de acesso ao Canal - se houver. p.ex. '55' |
+| areaCode           | string                                             | Não         | Número de DDD (Discagem Direta à Distância) do telefone da dependência - se houver. p.ex. '19'          |
+| number             | string                                             | Não         | Número de telefone da dependência - se houver                                                           |
 
 ## Enum BranchPhoneType 
 <a id="schemaEnumBranchPhoneType"></a>
 
-| Propriedade  | Código    | Definição        |
-|:------------ |:--------- |:---------------- |
-| type         | FIXO      | Telefone fixo.    |
-| type         | MOVEL     | Telefone móvel.   |
+| Propriedade | Código | Definição       |
+| :---------- | :----- | :-------------- |
+| type        | FIXO   | Telefone fixo.  |
+| type        | MOVEL  | Telefone móvel. |
 
 
 ## BranchServices 
@@ -379,30 +432,68 @@
 
 ```json
 {
-  "codes": [
-    "string"
-  ],
+  "name": "string",
+  "code": "string",
   "additionalInfo": "string"
 }
 ```
 
-|Nome|Tipo|Obrigatório|Descrição|
-|:---|:---|:---|:---|:---|
-|codes|[[Enum BranchServicesCodes](#schemaEnumBranchServicesCodes)]|Sim| Lista de serviços prestados. |
-|additionalInfo|string|Não| Campo de texto livre para descrever mais sobre os serviços. |
+| Nome           | Tipo                                                         | Obrigatório | Descrição                                                                                                                                               |
+| :------------- | :----------------------------------------------------------- | :---------- | :------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| name           | [[Enum BranchServicesNames](#schemaEnumBranchServicesNames)] | Sim         | Nome dos Serviços efetivamente prestados pelo Canal de Atendimento, discriminados na Seção 4.2 da Resolução nº 35, BCB, 2020               |
+| code           | [[Enum BranchServicesCodes](#schemaEnumBranchServicesCodes)] | Sim         | Código dos Serviços efetivamente prestados pelo Canal de Atendimento                                     |
+| additionalInfo | string                                                       | Não         | Texto livre para complementar informação relativa ao Serviço disponível, quando for selecionada a opção 'OUTROS_PRODUTOS_SERVICOS' |
+
+### Enum BranchServicesNames 
+<a id="schemaEnumBranchServicesNames"></a>
+
+| Propriedade | Código                                                                                              | Definição                                                                             |
+| :---------- | :-------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------ |
+| name        | ABERTURA_CONTAS_DEPOSITOS_OU_PAGAMENTO_PRE_PAGA                                                     | Abertura de Contas, depósitos ou Pagamento Pré Paga                                   |
+| name        | SAQUE_MOEDA_EM_ESPECIE                                                                              | Saques de Moedas em Espécie                                                           |
+| name        | RECEBIMENTOS_PAGAMENTOS_QUALQUER_NATUREZA                                                           | Recebimentos e pagamentos de qualquer natureza                                        |
+| name        | TRANSFERENCIAS_ELETRONICAS_VISANDO_MOVIMENTACAO_CONTAS_DEPOSITOS_OU_PAGAMENTO_TITULARIDADE_CLIENTES | Transferências Eletrônicas                                                            |
+| name        | CONSULTA_SALDOS_EXTRATOS_CONTAS_DEPOSITOS_CONTAS_PAGAMENTOS                                         | Consulta de Saldos e Extratos                                                         |
+| name        | APLICACOES_RESGATES_INVESTIMENTOS                                                                   | Aplicações, Resgates e Investimentos                                                  |
+| name        | EXECUCAO_ATIVA_PASSIVA_ORDENS_PAGAMENTO_SOLICITACAO_CLIENTES_USUARIOS                               | Execução Ativa e Passiva, Ordens de Pagamento e Solicitações de Clientes e Usuários.  |
+| name        | DEPOSITOS_MOEDA_ESPECIE_CHEQUE                                                                      | Depósitos de Moeda em Espécie ou Cheque                                               |
+| name        | OPERACOES_CREDITO_BEM_COMO_OUTROS_SERVICOS_PRESTADOS_ACOMPANHAMENTO_OPERACAO                        | Operações de Crédito                                                                  |
+| name        | CARTAO_CREDITO                                                                                      | Cartão de Crédito                                                                     |
+| name        | SEGUROS                                                                                             | Seguros                                                                               |
+| name        | OPERACOES_ARRENDAMENTO_MERCANTIL                                                                    | Operações de Arrendamento Mercantil                                                   |
+| name        | ABERTURA_CONTA_PAGAMENTO_POS_PAGA                                                                   | Abertura de Conta Pagamento Pós Paga                                                  |
+| name        | COMPRA_VENDA_MOEDA_ESTRANGEIRA_ESPECIE                                                              | Compra e Venda de Moeda Estrangeira em Espécie                                        |
+| name        | COMPRA_VENDA_CHEQUE_CHEQUE_VIAGEM_BEM_COMO_CARGA_MOEDA_ESTRANGEIRA_CARTAO_PRE_PAGO                  | Compra e Venda em Cheque, Cheque Viagem, Cartão Pré-Pago e Carga em Moeda Entrangeira |
+| name        | COMPRA_VENDA_OURO                                                                                   | Compra e Venda de Ouro                                                                |
+| name        | OUTROS_PRODUTOS_SERVICOS                                                                            | Outros Produtos e Serviços                                                            |
+| name        | CANCELAMENTO                                                                                        | Cancelamento                                                                          |
+| name        | INFORMACOES                                                                                         | Informações                                                                           |
+| name        | RECLAMACOES                                                                                         | Reclamações                                                                           |
+
 
 ### Enum BranchServicesCodes 
 <a id="schemaEnumBranchServicesCodes"></a>
 
-| Propriedade  | Código                                               | Definição                                             |
-|:------------ |:---------------------------------------------------- |:----------------------------------------------------- |
-| codes        | ABERTURA_CONTAS                                      | Abertura de contas.                                    |
-| codes        | RECEBIMENTOS_PAGAMENTOS_TRANSFERENCIAS_ELETRONICAS   | Recebimentos, pagamentos e transferências eletrônicas. |
-| codes        | RECEBIMENTOS_PAGAMENTOS_QUALQUER_NATUREZA            | Recebimentos e pagamentos de qualquer natureza.        |
-| codes        | OPERACOES_CREDITO                                    | Operações de crédito.                                  |
-| codes        | CARTAO_CREDITO                                       | Cartão de crédito.                                     |
-| codes        | OPERACOES_CAMBIO                                     | Operações de câmbio.                                   |
-| codes        | INVESTIMENTOS                                        | Investimentos.                                         |
-| codes        | SEGUROS                                              | Seguros.                                               |
-| codes        | FALAR_ATENDENTE                                      | Falar com atendente.                                   |
-| codes        | OUTROS                                               | Outros.                                                |
+| Propriedade | Código                                                                            | Definição                                                                             |
+| :---------- | :-------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------ |
+| code        | ABRE_CONTA_DEPOSITO_OU_PRE_PAGA                                                   | Abertura de Contas, depósitos ou Pagamento Pré Paga                                   |
+| code        | SAQUE_MOEDA_ESPECIE                                                               | Saques de Moedas em Espécie                                                           |
+| code        | RECEBE_PAGA_QUALQUER_NATUREZA                                                     | Recebimentos e pagamentos de qualquer natureza                                        |
+| code        | TRANSFERENCIAS_ELETRONICAS_MOVIMENTA_CONTAS_DEPOSITOS_OU_PAGTO_TITULARES_CLIENTES | Transferências Eletrônicas                                                            |
+| code        | CONSULTA_SALDOS_EXTRATOS_CONTAS_DEPOSITOS_PAGTOS                                  | Consulta de Saldos e Extratos                                                         |
+| code        | APLICA_RESGATA_INVESTIMENTOS                                                      | Aplicações, Resgates e Investimentos                                                  |
+| code        | EXECUCAO_ATIVA_PASSIVA_ORDENS_PAGTO                                               | Execução Ativa e Passiva, Ordens de Pagamento e Solicitações de Clientes e Usuários.  |
+| code        | DEPOSITO_MOEDA_ESPECIE_CHEQUE                                                     | Depósitos de Moeda em Espécie ou Cheque                                               |
+| code        | OPERA_CREDITO_OUTROS_SERVICOS_ACOMPANHA_OPERACAO                                  | Operações de Crédito                                                                  |
+| code        | CARTAO_CREDITO                                                                    | Cartão de Crédito                                                                     |
+| code        | SEGUROS                                                                           | Seguros                                                                               |
+| code        | OPERA_ARRENDAMENTO_MERCANTIL                                                      | Operações de Arrendamento Mercantil                                                   |
+| code        | ABERTURA_CONTA_PAGAMENTO_POS_PAGA                                                 | Abertura de Conta Pagamento Pós Paga                                                  |
+| code        | COMPRA_VENDA_MOEDA_ESTRANGEIRA_ESPECIE                                            | Compra e Venda de Moeda Estrangeira em Espécie                                        |
+| code        | COMPRA_VENDA_CHEQUE_CHEQUE_VIAGEM_CARGA_MOEDA_ESTRANGEIRA_CARTAO_PRE_PAGO         | Compra e Venda em Cheque, Cheque Viagem, Cartão Pré-Pago e Carga em Moeda Entrangeira |
+| code        | COMPRA_VENDA_OURO                                                                 | Compra e Venda de Ouro                                                                |
+| code        | OUTROS_PRODUTOS_SERVICOS                                                          | Outros Produtos e Serviços                                                            |
+| code        | CANCELAMENTO                                                                      | Cancelamento                                                                          |
+| code        | INFORMACOES                                                                       | Informações                                                                           |
+| code        | RECLAMACOES                                                                       | Reclamações                                                                           |  |
+

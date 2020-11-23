@@ -14,9 +14,9 @@
           "businessAccounts": [
             {
               "type": "string",
-              "fees": [
-                {
-                  "service": {
+              "fees": {
+                "services": [
+                  {
                     "name": "string",
                     "code": "string",
                     "chargingTriggerInfo": "string",
@@ -42,8 +42,8 @@
                       }
                     ]
                   }
-                }
-              ],
+                ]
+              },
               "serviceBundles": [
                 {
                   "name": "string",
@@ -82,7 +82,9 @@
                 "string"
               ],
               "additionalInfo": "string",
-              "transactionMethods": "string",
+              "transactionMethods": [
+                "string"
+              ],
               "termsConditions": {
                 "minimumBalance": {
                   "value": "string",
@@ -91,7 +93,7 @@
                 "elegibilityCriteriaInfo": "string",
                 "closingProcessInfo": "string"
               },
-              "incomeRates": [
+              "incomeRate": [
                 {
                   "savingAccount": "string",
                   "prepaidPaymentAccount": "string"
@@ -120,12 +122,12 @@
 |     Nome     |  Tipo                                                  | Obrigatório |                            Definição               |
 |:------------ |:------------------------------------------------------ |:----------- |:-------------------------------------------------- |
 | data         | object                                                 | Sim         |                                                    |
-| » brand      | [BusinessAccountBrand](#schemaBusinessAccountBrand)  | Sim         | Lista das organizações responsáveis pelas contas.  |
+| » brand      | [BusinessAccountsBrand](#schemaBusinessAccountsBrand)  | Sim         | Organização controladora do grupo de instituições financeiras.  |
 | links        | [LinksPaginated](#schemaLinksPaginated)             | Sim         |                                                    |
 | meta         | [MetaPaginated](#schemaMetaPaginated)                  | Sim         |                                                    |
 
-## BusinessAccountBrand
-<a id="schemaBusinessAccountBrand"></a>
+## BusinessAccountsBrand
+<a id="schemaBusinessAccountsBrand"></a>
 
 ```json
 {
@@ -138,9 +140,9 @@
       "businessAccounts": [
         {
           "type": "string",
-          "fees": [
-            {
-              "service": {
+          "fees": {
+            "services": [
+              {
                 "name": "string",
                 "code": "string",
                 "chargingTriggerInfo": "string",
@@ -166,8 +168,8 @@
                   }
                 ]
               }
-            }
-          ],
+            ]
+          },
           "serviceBundles": [
             {
               "name": "string",
@@ -206,7 +208,9 @@
             "string"
           ],
           "additionalInfo": "string",
-          "transactionMethods": "string",
+          "transactionMethods": [
+            "string"
+          ],
           "termsConditions": {
             "minimumBalance": {
               "value": "string",
@@ -215,7 +219,7 @@
             "elegibilityCriteriaInfo": "string",
             "closingProcessInfo": "string"
           },
-          "incomeRates": [
+          "incomeRate": [
             {
               "savingAccount": "string",
               "prepaidPaymentAccount": "string"
@@ -230,11 +234,11 @@
 
 |     Nome     |  Tipo                                                     | Obrigatório  |                            Definição                                                                                                              |
 |:------------ |:--------------------------------------------------------- |:-----------  |:------------------------------------------------------------------------------------------------------------------------------------------------- |
-| name         | string                                                    | Sim          | Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a 'marca' utilizada está em definição pelos participantes.  |
-| companies    | [BusinessAccountCompany](#schemaBusinessAccountCompany)   | Sim          | Lista de instituições pertencentes à marca.                                                                                                       |
+| name         | string                                                    | Sim          | Nome da Instituição, pertencente à marca, responsável pela comercialização dos produtos e serviços  |
+| companies    | [BusinessAccountsCompany](#schemaBusinessAccountsCompany)   | Sim        | Companies traz uma lista de todas as instituições da Marca |
 
-## BusinessAccountCompany 
-<a id="schemaBusinessAccountCompany"></a>
+## BusinessAccountsCompany 
+<a id="schemaBusinessAccountsCompany"></a>
 
 ```json
 {
@@ -244,9 +248,9 @@
   "businessAccounts": [
     {
       "type": "string",
-      "fees": [
-        {
-          "service": {
+      "fees": {
+        "services": [
+          {
             "name": "string",
             "code": "string",
             "chargingTriggerInfo": "string",
@@ -272,8 +276,8 @@
               }
             ]
           }
-        }
-      ],
+        ]
+      },
       "serviceBundles": [
         {
           "name": "string",
@@ -312,7 +316,9 @@
         "string"
       ],
       "additionalInfo": "string",
-      "transactionMethods": "string",
+      "transactionMethods": [
+        "string"
+      ],
       "termsConditions": {
         "minimumBalance": {
           "value": "string",
@@ -321,7 +327,7 @@
         "elegibilityCriteriaInfo": "string",
         "closingProcessInfo": "string"
       },
-      "incomeRates": [
+      "incomeRate": [
         {
           "savingAccount": "string",
           "prepaidPaymentAccount": "string"
@@ -337,17 +343,17 @@
 | name                 | string                                     | Sim  | Nome da Instituição, pertencente à marca, responsável pela comercialização dos tipos de contas de pessoas jurídicas consultadas.                      |
 | cnpjNumber           | string                                     | Sim  | O responsável pela comercialização das modalidades de Contas para Pessoas Jurídicas consultadas.                                                      |
 | urlComplementaryList | string                                     | Sim  | URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. |
-| businessAccounts     | [BusinessAccount](#schemaBusinessAccount)| Sim  | Lista de contas pessoa jurídica.          |
+| businessAccounts     | [BusinessAccounts](#schemaBusinessAccounts)| Sim  | lista de tipos de conta          |
 
-## BusinessAccount
-<a id="schemaBusinessAccount"></a>
+## BusinessAccounts
+<a id="schemaBusinessAccounts"></a>
 
 ```json
 {
   "type": "string",
-  "fees": [
-    {
-      "service": {
+  "fees": {
+    "services": [
+      {
         "name": "string",
         "code": "string",
         "chargingTriggerInfo": "string",
@@ -373,8 +379,8 @@
           }
         ]
       }
-    }
-  ],
+    ]
+  },
   "serviceBundles": [
     {
       "name": "string",
@@ -413,7 +419,9 @@
     "string"
   ],
   "additionalInfo": "string",
-  "transactionMethods": "string",
+  "transactionMethods": [
+    "string"
+  ],
   "termsConditions": {
     "minimumBalance": {
       "value": "string",
@@ -422,7 +430,7 @@
     "elegibilityCriteriaInfo": "string",
     "closingProcessInfo": "string"
   },
-  "incomeRates": [
+  "incomeRate": [
     {
       "savingAccount": "string",
       "prepaidPaymentAccount": "string"
@@ -433,87 +441,58 @@
 
 |     Nome              |  Tipo                                                        |  Obrigatório  |                            Descrição                                                                       |
 |:----------------------|:-------------------------------------------------------------| :--------------- |:------------------------------------------------------------------------------------------------------- |
-| type                  | [Enum TypeBusinessAccount](#schemaEnumTypeBusinessAccount) | Sim              | Tipos de contas ofertadas para pessoas jurídicas, conforme Resolução 3.919 do Banco Central do Brasil.  |
-| fees                  | [FeesBusinessAccount](#schemaFeeBusinessAccount)          | Sim              | Lista Tarifas cobradas.                                                                                 |
-| serviceBundles        | [ServiceBundleBusinessAccount](#schemaServiceBundleBusinessAccount) | Sim   | Nome dos pacotes de serviços.                                                                           |
-| openingClosingChannels| [Enum BusinessAccountOpeningClosingChannel ](#schemaEnumBusinessAccountOpeningClosingChannel)       | Sim             | Canais disponíveis para abertura e encerramento de contas.    |
-| additionalInfo        | string                                         | Sim             | Texto livre para complementar informação relativa ao Canal disponível.                                                 |
-| transactionMethods    | [Enum BusinessAccountTransactionMethod ](#schemaEnumBusinessAccounTransactionMethod) | Sim             | Lista de formas de movimentação possíveis para a conta. |
-| termsConditions       | [TermConditionsBusinessAccount](#schemaTermConditionBusinessAccount) | Sim             | Termos e condições contratuais.                   |
-| incomeRates           | [IncomeRateBusinessAccount](#schemaIncomeRateBusinessAccount) | Sim             | Valores dos percentuais de taxas.                         |
+| type                  | [Enum AccountType](#schemaAccountType) | Sim              | Tipos de contas ofertadas para pessoa natual ou jurídica.  |
+| fees                  | [FeesBusinessAccount](#schemaFeeBusinessAccount)          | Sim              | Objeto que reúne informações de tarifas de serviços  |
+| serviceBundles        | [ServiceBundle](#schemaServiceBundle) | Sim   | Lista dos serviços que compõe o pacote de serviços    |
+| openingClosingChannels| [Enum OpeningClosingChannels ](#schemaEnumOpeningClosingChannels)       | Sim             | Lista dos canais para aberturas e encerramento. |
+| additionalInfo        | string                                         | Sim             | Texto livre para complementar informação relativa ao Canal disponível, quando no campo ''openingClosingChannels'' estiver preenchida a opção ''Outros''. <br>Restrição: Campo de preenchimento obrigatório se ''openingCloseChannels'' estiver preenchida a opção ''OUTROS''|
+| transactionMethods    | [Enum TransactionMethods ](#schemaEnumTransactionMethods) | Sim             | Lista de formas de movimentação |
+| termsConditions       | [AccountsTermsConditions](#schemaAccountTermsConditions) | Sim             | Objeto que reúne informações relativas a Termos e Condições para as modalidades tratadas                   |
+| incomeRate           | [AccountsIncomeRate](#schemaAccountsIncomeRate) | Sim             | Valores dos percentuais de taxas.                         |
 
-### Enum TypeBusinessAccount
-<a id="schemaEnumTypeBusinessAccount"></a>
-
-| Propriedade   | Valor                        | Definição                    |                
-|:------------- |:---------------------------- |:---------------------------- |
-| type          | CONTA_DEPOSITO_A_VISTA       | Conta depósito à vista ou conta corrente - é o tipo mais comum. Nela, o dinheiro fica à sua disposição para ser sacado a qualquer momento. Essa conta não gera rendimentos para o depositante              |
-| type          | CONTA_POUPANCA               | Conta poupança - foi criada para estimular as pessoas a pouparem. O dinheiro que ficar na conta por trinta dias passa a gerar rendimentos, com isenção de imposto de renda para quem declara. Ou seja, o dinheiro “cresce” (rende) enquanto ficar guardado na conta. Cada depósito terá rendimentos de mês em mês, sempre no dia do mês em que o dinheiro tiver sido depositado              |
-| type          | CONTA_PAGAMENTO_PRE_PAGA     | Conta de pagamento pré-paga: destinada à execução de transações de pagamento em moeda eletrônica realizadas com base em fundos denominados em reais previamente aportados |
-
-### Enum BusinessAccountOpeningClosingChannel 
-<a id="schemaEnumBusinessAccountOpeningClosingChannel"></a>
-
-| Propriedade              | Valor                     | Definição                                  |                     
-|:-------------------------|:--------------------------|:------------------------------------------ |
-| openingClosingChannels   | DEPENDENCIAS_PROPRIAS     | Dependências próprias.                     |
-| openingClosingChannels   | CORRESPONDENTES_BANCARIOS | Correspondentes bancários.                 |
-| openingClosingChannels   | INTERNET_BANKING          | Internet banking.                          |
-| openingClosingChannels   | MOBILE_BANKING            | Mobile banking.                            |
-| openingClosingChannels   | CENTRAL_TELEFONICA        | Central telefônica.                        |
-| openingClosingChannels   | CHAT                      | Chat.                                      |
-| openingClosingChannels   | OUTROS                    | Outros (p.ex. website/apps de terceiros)   |
-
-### Enum BusinessAccountTransactionMethod  
-<a id="schemaEnumBusinessAccounTransactionMethod"></a>
-
-| Propriedade          | Valor                     | Definição                  |                     
-|:---------------------|:--------------------------|:---------------------------|
-| transactionMethods   | MOVIMENTACAO_ELETRONICA   | Movimentação eletrônica.    |
-| transactionMethods   | MOVIMENTACAO_CHEQUE       | Movimentação com cheque.    |
-| transactionMethods   | MOVIMENTACAO_CARTAO       | Movimentação com cartão.    |
-| transactionMethods   | MOVIMENTACAO_PRESENCIAL   | Movimentação presencial.    |
 
 ## FeesBusinessAccount
 <a id="schemaFeeBusinessAccount"></a>
 
 ```json
 {
-  "service": {
-    "name": "string",
-    "code": "string",
-    "chargingTriggerInfo": "string",
-    "prices": [
-      {
-        "interval": "string",
+  "services": [
+    {
+      "name": "string",
+      "code": "string",
+      "chargingTriggerInfo": "string",
+      "prices": [
+        {
+          "interval": "string",
+          "value": "string",
+          "currency": "string"
+        }
+      ],
+      "minimum": {
         "value": "string",
         "currency": "string"
-      }
-    ],
-    "minimum": {
-      "value": "string",
-      "currency": "string"
-    },
-    "maximum": {
-      "value": "string",
-      "currency": "string"
-    },
-    "customers": [
-      {
-        "frequency": "string",
-        "rate": "string"
-      }
-    ]
-  }
+      },
+      "maximum": {
+        "value": "string",
+        "currency": "string"
+      },
+      "customers": [
+        {
+          "frequency": "string",
+          "rate": "string"
+        }
+      ]
+    }
+  ]
 }
 ```
 
 |     Nome         |  Tipo                              |  Obrigatório    |                            Descrição                |
 |:-----------------|:-----------------------------------|:----------------|:----------------------------------------------------|
-| service          | [ServiceBusinessAccount](#schemaServiceBusinessAccount) | Sim             | Tarifas de serviços da conta.                                 |
+| services          | [BusinessAccountsService](#schemaBusinessAccountsService) | Sim             |  Lista das Tarifas cobradas sobre Serviços |
 
-## ServiceBusinessAccount
-<a id="schemaServiceBusinessAccount"></a>
+## BusinessAccountsService
+<a id="schemaBusinessAccountsService"></a>
 
 ```json
 {
@@ -546,111 +525,13 @@
 
 | Nome                | Tipo   | Obrigatório | Descrição                                                 |
 |:--------------------|:------ |:----------- |:----------------------------------------------------------|
-| name                | string | Sim         | Nome atribuído a Outros Serviços disponíveis para os tipos de contas.                          |
-| code                | string | Não         | Sigla de identificação de Outros Serviços que incidem sobre os tipos de contas.   |
-| chargingTriggerInfo | string | Sim         | Outros fatos geradores de cobrança referentes aos Outros Serviços que incidem sobre as contas comercializadas.                                    |
-| prices               | [[Price](#schemaPrice)] | Sim      | Valor da tarifa cobrada referente aos Outros Serviços.                  |
+| name                | string | Sim         | Nome do Serviço que incide sobre tipo de conta selecionado para pessoa jurídica(Campo Livre).                       |
+| code                | string | Sim         | Sigla de identificação de Outros Serviços que incidem sobre os tipos de contas informados.   |
+| chargingTriggerInfo | string | Sim         | Fatos geradores de cobrança que incidem sobre serviço que compõe o Pacote de Serviços.     |
+| prices               | [[Price](#schemaPrice)] | Sim      | Lista distribuição preços tarifas de serviços               |
 | minimum             | [[MinimumPrice](#schemaMinimumPrice)]           | Sim          | Valor mínimo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. |
 | maximum             | [[MaximumPrice](#schemaMaximumPrice)]           | Sim          | Valor máximo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. |
-|customers|[[Customer](#schemaCustomer)]| Sim |Percentual dos clientes de cada faixa relativa ao serviço ofertado |
-
-## ServiceBundleBusinessAccount
-<a id="schemaServiceBundleBusinessAccount"></a>
-
-```json
-{
-  "name": "string",
-  "services": [
-    {
-      "code": "string",
-      "chargingTriggerInfo": "string",
-      "eventLimitQuantity": "string",
-      "freeEventQuantity": "string"
-    }
-  ],
-  "prices": [
-    {
-      "interval": "string",
-      "monthlyFee": "string",
-      "currency": "string"
-    }
-  ],
-  "minimum": {
-    "value": "string",
-    "currency": "string"
-  },
-  "maximum": {
-    "value": "string",
-    "currency": "string"
-  },
-  "customers": [
-    {
-      "frequency": "string",
-      "rate": "string"
-    }
-  ]
-}
-```
-
-|     Nome           |  Tipo                        |  Obrigatório |                            Descrição                |
-|:-------------------|:-----------------------------|:-------------|:----------------------------------------------------|
-| name               | string                       | Sim          | Nome do conjunto de serviços.                        |
-| services           | [ServiceBundleBusinessAccountDetail](#schemaServiceBundleBusinessAccountDetail)| Sim          | Lista de serviços.       |
-| prices              | [MontlyPrice](#schemamontlyprice) | Sim          | Valor mensal da tarifa referente ao Pacote de Serviços |
-| minimum             | [MinimumPrice](#schemaMinimumPrice)           | Sim          | Valor mínimo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | 
-| maximum             | [MaximumPrice](#schemaMaximumPrice)           | Sim          | Valor máximo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. | 
-|customers|[[Customer](#schemaCustomer)]| Sim |Percentual dos clientes de cada faixa relativa ao serviço ofertado |
-
-## ServiceBundleBusinessAccountDetail
-<a id="schemaServiceBundleBusinessAccountDetail"></a>
-
-```json
-{
-  "code": "string",
-  "chargingTriggerInfo": "string",
-  "eventLimitQuantity": "string",
-  "freeEventQuantity": "string"
-}
-```
-
-|     Nome           |  Tipo                        |  Obrigatório |                            Descrição                |
-|:-------------------|:-----------------------------|:-------------|:----------------------------------------------------|
-| code               | string                       | Sim          | Código que identifica o Serviço que compõe o Pacote de Serviços.   |
-| chargingTriggerInfo|string |Sim | Fatos geradores de cobrança que incidem sobre serviço que compõe o Pacote de Serviços. |
-| eventLimitQuantity | string                       | Sim          | Segundo Resolução  4196, BCB, de 2013: Quantidade de eventos previstos no Pacote de Serviços (Número de eventos incluídos no mês) p.ex.'2'. No caso de quantidade ilimitada, reportar 999999     |
-| freeEventQuantity  | string                       | Sim          | Segundo Resolução  4196, BCB, de 2013: Quantidade de eventos previstos no Pacote de Serviços com isenção de Tarifa.p.ex.'1'  No caso de quantidade ilimitada, reportar 999999 |
-
-## TermConditionBusinessAccount
-<a id="schemaTermConditionBusinessAccount"></a>
-
-```json
-{
-  "minimumBalance": "string",
-  "elegibilityCriteriaInfo": "string",
-  "closingProcessInfo": "string"
-}
-```
-
-|     Nome                |  Tipo                        |  Obrigatório |                            Descrição                |
-|:------------------------|:-----------------------------|:-------------|:----------------------------------------------------|
-| minimumBalance          | string                       | Sim          | Saldo mínimo exigido nos Termos e condições contratuais, que regem as contas comercializadas.     |
-| closingProcessInfo      | string                       | Sim          | Procedimentos de encerramento para o tipo de conta tratado.        |
-
-## IncomeRateBusinessAccount
-<a id="schemaIncomeRateBusinessAccount"></a>
-
-```json
-{
-  "savingAccount": "string",
-  "prepaidPaymentAccount": "string"
-}
-```
-
-|     Nome          |  Tipo                                        |  Obrigatório | Descrição                                           |
-|:------------------|:---------------------------------------------|:-------------|:----------------------------------------------------|
-| savingAccount         | string                                   | Não          | Descrição da Remuneração especificamente para Conta de Poupança. Deve ser preenchido com a determinação legal vigente. p.ex. '70% da Taxa Selic (6,5%) = 4,55%, que é o atual rendimento anual da poupança. O rendimento mensal é de 0,3715'. Restrição: De preenchimento obrigatório para CONTA_POUPANCA. Para os demais Tipos  preencher com NA|
-|prepaidPaymentAccount  |string| Não |  Percentual em favor do titular da conta de pagamento pré-paga. Campo Livre.<br> De preenchimento obrigatório para Conta do Tipo CONTA_PAGAMENTO_PRE_PAGA. Para os demais Tipos preencher com NA |
-
+|customers|[[Customer](#schemaCustomer)]| Sim | Lista percentual de clientes por faixa de preço |
 
 
 

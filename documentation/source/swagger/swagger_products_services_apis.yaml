@@ -187,6 +187,7 @@ components:
   schemas:
     AccountsTermsConditions:
       type: object
+      description: Objeto que reúne informações relativas a Termos e Condições para as modalidades tratadas
       required:
         - minimumBalance
         - elegibilityCriteriaInfo
@@ -238,8 +239,10 @@ components:
           example: Organização A
         companies:
           type: array
+          description: 'Companies traz uma lista de todas as instituições da Marca'
           items:
             $ref: '#/components/schemas/PersonalAccountCompany'
+          minItems: 1
     PersonalAccountCompany:
       type: object
       required:
@@ -252,6 +255,9 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PersonalAccount'
+          description: Lista de tipos de conta
+          minItems: 1
+          maxItems: 3
     PersonalAccount:
       type: object
       required:
@@ -264,23 +270,22 @@ components:
         - incomeRates
       properties:
         type:
-          $ref: '#/components/schemas/PersonalAccountType'
+          $ref: '#/components/schemas/AccountType'
         fees:
-          type: array
-          items:
-            $ref: '#/components/schemas/AccountFee'
-          minItems: 1
-          maxItems: 31
+          $ref: '#/components/schemas/AccountFee'
         serviceBundles:
           type: array
           items:
             $ref: '#/components/schemas/ServiceBundle'
+          minItems: 1
+          description: Lista dos Pacotes de serviços
         openingClosingChannels:
           type: array
           items:
             $ref: '#/components/schemas/OpeningClosingChannels'
           minItems: 1
           maxItems: 7
+          description: Lista dos canais para aberturas e encerramento
         additionalInfo:
           type: string
           maxLength: 100
@@ -295,19 +300,30 @@ components:
             $ref: '#/components/schemas/TransactionMethods'
           minItems: 1
           maxItems: 4
+          description: Lista de formas de movimentação
         termsConditions:
           $ref: '#/components/schemas/AccountsTermsConditions'
         incomeRate:
           $ref: '#/components/schemas/AccountsIncomeRate'
     AccountFee:
       type: object
+      description: Objeto que reúne informações de tarifas de serviços
       required:
-        - priorityService
+        - priorityServices
       properties:
-        priorityService:
-          $ref: '#/components/schemas/AccountPriorityService'
-        otherService:
-          $ref: '#/components/schemas/AccountOtherService'
+        priorityServices:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountPriorityService'
+          minItems: 1
+          maxItems: 31
+          description: Lista das Tarifas cobradas sobre Serviços Prioritários
+        otherServices:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountOtherService'
+          minItems: 1
+          description: Lista das Tarifas cobradas sobre outros Serviços, que não prioritários
     AccountPriorityService:
       type: object
       required:
@@ -332,30 +348,32 @@ components:
         prices:
           type: array
           items:
-            $ref: '#/components/schemas/AccountPrice'
+            $ref: '#/components/schemas/Price'
           minItems: 4
           maxItems: 4
+          description: Lista distribuição preços tarifas de serviços
         minimum:
-          $ref: '#/components/schemas/AccountMinimumPrice'
+          $ref: '#/components/schemas/MinimumPrice'
         maximum:
-          $ref:  "#/components/schemas/AccountMaximumPrice"
+          $ref:  "#/components/schemas/MaximumPrice"
         customers:
           type: array
           items:
             $ref: '#/components/schemas/FeeServiceCustomer'
           minItems: 4
           maxItems: 4
-    PersonalAccountType:
+          description: Lista percentual de clientes por faixa de preço
+    AccountType:
       type: string
       enum:
         - CONTA_DEPOSITO_A_VISTA
         - CONTA_POUPANCA
         - CONTA_PAGAMENTO_PRE_PAGA
       description: |
-        Tipos de contas ofertadas para pessoa natural, p.ex. 'CONTA_DEPOSITO_A_VISTA'.
+        Tipos de contas ofertadas para pessoa natural ou jurídica, p.ex. 'CONTA_DEPOSITO_A_VISTA'.
         Conta de depósito à vista ou Conta corrente - é o tipo mais comum. Nela, o dinheiro fica à sua disposição para ser sacado a qualquer momento. Essa conta não gera rendimentos para o depositante
         Conta poupança - foi criada para estimular as pessoas a pouparem. O dinheiro que ficar na conta por trinta dias passa a gerar rendimentos, com isenção de imposto de renda para quem declara. Ou seja, o dinheiro “cresce” (rende) enquanto ficar guardado na conta. Cada depósito terá rendimentos de mês em mês, sempre no dia do mês em que o dinheiro tiver sido depositado
-        Conta de pagamento pré-paga: segundo CIRCULAR Nº 3.680, BCB de  2013, é a 'destinada à execução de transações de pagamento em moeda eletrônica realizadas com base em fundos denominados em reais previamente aportados' 
+        Conta de pagamento pré-paga: segundo CIRCULAR Nº 3.680, BCB de  2013, é a 'destinada à execução de transações de pagamento em moeda eletrônica realizadas com base em fundos denominados em reais previamente aportados'
       example: CONTA_DEPOSITO_A_VISTA
     OpeningClosingChannels:
       type: string
@@ -387,7 +405,7 @@ components:
         - EXCLUSAO_CADASTRO_EMITENTES_CHEQUES_SEM_FUNDO_CCF
         - CONTRA_ORDEM_REVOGACAO_E_OPOSICAO_OU_SUSTACAO_PAGAMENTO_CHEQUE
         - FORNECIMENTO_FOLHAS_CHEQUE
-        - CHEQUE_ADMINISTRATIVO 
+        - CHEQUE_ADMINISTRATIVO
         - CHEQUE_VISADO
         - SAQUE_CONTA_DEPOSITO_A_VISTA_POUPANCA_PRESENCIAL_OU_PESSOAL
         - SAQUE_CONTA_DEPOSITO_A_VISTA_POUPANCA_TERMINAL_AUTOATENDIMENTO
@@ -448,6 +466,7 @@ components:
             $ref: "#/components/schemas/Price"
           minItems: 4
           maxItems: 4
+          description: Lista distribuição preços tarifas de serviços
         minimum:
           $ref: "#/components/schemas/MinimumPrice"
         maximum:
@@ -458,6 +477,7 @@ components:
             $ref: '#/components/schemas/FeeServiceCustomer'
           minItems: 4
           maxItems: 4
+          description: Lista percentual de clientes por faixa de preço
     AccountPriorityServiceCode:
       type: string
       description: 'Sigla de identificação do Serviço Prioritário, segundo Resolução 3.919 do Bacen.'
@@ -501,6 +521,7 @@ components:
         - prices
         - minimum
         - maximum
+        - customers
       properties:
         name:
           type: string
@@ -512,10 +533,15 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ServiceBundleServiceDetail'
+          minItems: 1
+          description: Lista dos serviços que compõe o pacote de serviços
         prices:
           type: array
           items:
             $ref:  "#/components/schemas/MontlyPrice"
+          minItems: 4
+          maxItems: 4
+          description: Lista distribuição preços tarifas de serviços
         minimum:
           $ref:  "#/components/schemas/MinimumPrice"
         maximum:
@@ -523,9 +549,10 @@ components:
         customers:
           type: array
           items:
-            $ref:  "#/components/schemas/FeeServiceCustomer"
+            $ref:  "#/components/schemas/Customer"
           minItems: 4
           maxItems: 4
+          description: Lista percentual de clientes por faixa de preço
     ServiceBundleServiceDetail:
       type: object
       required:
@@ -595,160 +622,7 @@ components:
             - brand
           properties:
             brand:
-              type: object
-              required:
-                - name
-                - companies
-              properties:
-                name:
-                  type: string
-                  maxLength: 80
-                  pattern: \w*\W*
-                  description: 'Nome da Instituição, pertencente à marca, responsável pela comercialização dos produtos e serviços'
-                  example: Organização A
-                companies:
-                  type: array
-                  items:
-                    required:
-                      - name
-                      - cnpjNumber
-                    allOf:
-                      - $ref: '#/components/schemas/Company'
-                    properties:
-                      businessAccounts:
-                        type: array
-                        items:
-                          required:
-                            - type
-                            - fees
-                            - serviceBundles
-                            - openingClosingChannels
-                            - transactionMethods
-                            - termsConditions
-                            - incomeRates
-                          properties:
-                            type:
-                              type: string
-                              enum:
-                                - CONTA_DEPOSITO_A_VISTA
-                                - CONTA_POUPANCA
-                                - CONTA_PAGAMENTO_PRE_PAGA
-                              description: 'Tipos de contas ofertadas para pessoas jurídicas, conforme Resolução 3.919 do Bacen.'
-                              example: CONTA_DEPOSITO_A_VISTA
-                            fees:
-                              type: array
-                              items:
-                                type: object
-                                required:
-                                  - service
-                                properties:
-                                  service:
-                                    $ref: '#/components/schemas/BusinessAccountsServices'
-                            serviceBundles:
-                              type: array
-                              items:
-                                type: object
-                                required:
-                                  - name
-                                  - service
-                                  - prices
-                                  - minimum
-                                  - maximum
-                                  - customers
-                                properties:
-                                  name:
-                                    type: string
-                                    maxLength: 250
-                                    description: Nome do Pacote de Serviços dado pela instituição.
-                                  service:
-                                    type: array
-                                    items:
-                                      required:
-                                        - code
-                                        - chargingTriggerInfo
-                                        - eventLimitQuantity
-                                        - freeEventQuantity
-                                      properties:
-                                        code:
-                                          type: string
-                                          maxLength: 100
-                                          description: 'Código que identifica o Serviço que compõe o Pacote de Serviços, podendo ser da lista de Serviços Prioritários ou Outros Serviços'
-                                          example: SAQUE_TERMINAL
-                                        chargingTriggerInfo:
-                                          type: string
-                                          maxLength: 2000
-                                          description: Fatos geradores de cobrança que incidem sobre serviço que compõe o Pacote de Serviços.
-                                          example: Cobrança devido a evento personalizado
-                                        eventLimitQuantity:
-                                          type: string
-                                          maxLength: 6
-                                          pattern: '^(\d{1,6}){1}$'
-                                          description: |
-                                            Segundo Resolução  4196, BCB, de 2013: Quantidade de eventos previstos no Pacote de Serviços (Número de eventos incluídos no mês) p.ex.'2'. No caso de quantidade ilimitada, reportar 999999
-                                          example: '2'
-                                        freeEventQuantity:
-                                          type: string
-                                          maxLength: 6
-                                          pattern: '^(\d{1,6}){1}$'
-                                          description: |
-                                            Segundo Resolução  4196, BCB, de 2013: Quantidade de eventos previstos no Pacote de Serviços com isenção de Tarifa.p.ex.'1'  No caso de quantidade ilimitada, reportar 999999
-                                          example: '1'
-                                  prices:
-                                    type: array
-                                    items:
-                                      $ref: '#/components/schemas/MontlyPrice'
-                                  minimum:
-                                    $ref: '#/components/schemas/MinimumPrice'
-                                  maximum:
-                                    $ref: '#/components/schemas/MaximumPrice'
-                                  customers:
-                                    type: array
-                                    items:
-                                      $ref: '#/components/schemas/Customer'
-                            openingClosingChannels:
-                              type: string
-                              enum:
-                                - DEPENDENCIAS_PROPRIAS
-                                - CORRESPONDENTES_BANCARIOS
-                                - INTERNET_BANKING
-                                - MOBILE_BANKING
-                                - CENTRAL_TELEFONICA
-                                - CHAT
-                                - OUTROS
-                              description: |
-                                Canais disponíveis para abertura e encerramento de contas, p.ex. 'DEPENDENCIAS_PROPRIAS'
-                              example: CENTRAL_TELEFONICA
-                            additionalInfo:
-                              type: string
-                              maxLength: 100
-                              pattern: \w*\W*
-                              description: 'Texto livre para complementar informação relativa ao Canal disponível, quando no campo ''openingClosingChannels'' estiver preenchida a opção ''Outros'''
-                              example: NA
-                            transactionMethods:
-                              type: array
-                              items:
-                                $ref: '#/components/schemas/TransactionMethods'
-                              minItems: 1
-                              maxItems: 4
-                            termsConditions:
-                              $ref: '#/components/schemas/AccountsTermsConditions'
-                            incomeRates:
-                              type: array
-                              items:
-                                properties:
-                                  savingAccount:
-                                    type: string
-                                    maxLength: 2000
-                                    pattern: \w*\W*
-                                    description: |
-                                      Descrição da Remuneração especificamente para Conta de Poupança. Deve ser preenchido com a determinação legal vigente. Restrição: De preenchimento obrigatório para CONTA_POUPANCA. Para os demais Tipos  preencher com NA
-                                    example: '''70% da Taxa Selic (6,5%) = 4,55%, que é o atual rendimento anual da poupança. O rendimento mensal é de 0,3715'
-                                  prepaidPaymentAccount:
-                                    type: string
-                                    maxLength: 2000
-                                    pattern: \w*\W*
-                                    description: |
-                                      Percentual em favor do titular da conta de pagamento pré-paga. Campo Livre. Restrição: De preenchimento obrigatório para Conta do Tipo CONTA_PAGAMENTO_PRE_PAGA. Para os demais Tipos preencher com NA
+              $ref: '#/components/schemas/BusinessAccountsBrand'
         links:
           $ref: '#/components/schemas/Links'
         meta:
@@ -764,10 +638,10 @@ components:
                 businessAccounts:
                   - type: CONTA_DEPOSITO_A_VISTA
                     fees:
-                      - service:
-                          name: "NA"
-                          code: "NA"
-                          chargingTriggerInfo: "NA"
+                      services:
+                        - name: "Entrega de talão de cheque em domícilio"
+                          code: "TALAO_DOMICILIO"
+                          chargingTriggerInfo: "Por remessa"
                           prices:
                             - interval: 1_FAIXA_VALOR
                               value: '55.40'
@@ -787,7 +661,7 @@ components:
                           maximum:
                             value: '88.00'
                             currency: BRL
-                          customers: 
+                          customers:
                             - frequency: '1_FAIXA_CLIENTE'
                               rate: '0.1500'
                             - frequency: '2_FAIXA_CLIENTE'
@@ -798,21 +672,21 @@ components:
                               rate: '0.3000'
                     serviceBundles:
                       - name: Conta de depósitos à vista Movimentação com cartão (sem cheque)
-                        service:
+                        services:
                           - code: CADASTRO
-                            chargingTriggerInfo: ''
-                            eventLimitQuantity: '999999'
-                            freeEventQuantity: '999999'
+                            chargingTriggerInfo: 'Realização de pesquisa em serviços de proteção ao crédito, base de dados e informações cadastrais, e tratamento de dados e informações necessários ao início relacionamento decorrente da abertura de conta de depósitos à vista ou de poupança ou contratação de operação de crédito ou de arrendamento mercantil, não podendo ser cobrada cumulativamente'
+                            eventLimitQuantity: '1'
+                            freeEventQuantity: '0'
                           - code: SAQUE_TERMINAL
-                            chargingTriggerInfo: ''
+                            chargingTriggerInfo: 'Saque em terminal de autoatendimento além do número de saques permitidos gratuitamente por mês. Nas "contas eletrônicas" não pode ser cobrada tarifa para este canal de entrega'
                             eventLimitQuantity: '999999'
                             freeEventQuantity: '8'
-                          - code: EXTRATO_MOVIMENTO_E
-                            chargingTriggerInfo: ''
+                          - code: CHEQUE_VISADO
+                            chargingTriggerInfo: 'Procedimentos para registro e bloqueio do saldo em conta de depósitos à vista correspondente ao valor do cheque'
                             eventLimitQuantity: '999999'
                             freeEventQuantity: '4'
-                          - code: TRANSF_RECURSO_P
-                            chargingTriggerInfo: ''
+                          - code: CHEQUE_ADMINISTRATIVO
+                            chargingTriggerInfo: 'Emissão de cheque administrativo'
                             eventLimitQuantity: '999999'
                             freeEventQuantity: '2'
                         prices:
@@ -834,7 +708,7 @@ components:
                         maximum:
                           value: '87.00'
                           currency: BRL
-                        customers: 
+                        customers:
                           - frequency: '1_FAIXA_CLIENTE'
                             rate: '0.1500'
                           - frequency: '2_FAIXA_CLIENTE'
@@ -843,18 +717,26 @@ components:
                             rate: '0.2000'
                           - frequency: '4_FAIXA_CLIENTE'
                             rate: '0.3000'
-                    openingClosingChannels: CENTRAL_TELEFONICA
-                    additionalInfo: NA
-                    transactionMethods: [MOVIMENTACAO_CARTAO]
+                    openingClosingChannels: 
+                      - DEPENDENCIAS_PROPRIAS
+                      - CORRESPONDENTES_BANCARIOS
+                      - INTERNET_BANKING
+                      - MOBILE_BANKING
+                      - CENTRAL_TELEFONICA
+                      - CHAT
+                      - OUTROS
+                    additionalInfo: WhastApp
+                    transactionMethods: 
+                      - MOVIMENTACAO_CARTAO
                     termsConditions:
                       minimumBalance:
                         value: '500.00'
                         currency: BRL
                       elegibilityCriteriaInfo: 'https://empresaa1.com/Accounts_elegebilityCriteria'
                       closingProcessInfo: 'https://empresaa1.com/Accounts_closingProcess'
-                    incomeRates:
-                      - savingAccount: NA
-                        prepaidPaymentAccount: NA
+                    incomeRate:
+                      savingAccount: NA
+                      prepaidPaymentAccount: NA
         links:
           self: 'https://api.banco.com.br/open-banking/products-services/v1/business-accounts'
           first: 'https://api.banco.com.br/open-banking/products-services/v1/business-accounts'
@@ -864,7 +746,97 @@ components:
         meta:
           totalRecords: 1
           totalPages: 1
-    BusinessAccountsServices:
+    BusinessAccountsBrand:
+      type: object
+      required:
+        - name
+        - companies
+      properties:
+        name:
+          type: string
+          maxLength: 80
+          pattern: \w*\W*
+          description: 'Nome da Instituição, pertencente à marca, responsável pela comercialização dos produtos e serviços'
+          example: Organização A
+        companies:
+          type: array
+          items:
+            $ref: '#/components/schemas/BusinessAccountsCompany'
+          minItems: 1
+          description: Companies traz uma lista de todas as instituições da Marca
+    BusinessAccountsCompany:
+      type: object
+      required:
+        - name
+        - cnpjNumber
+      allOf:
+        - $ref: '#/components/schemas/Company'
+      properties:
+        businessAccounts:
+          type: array
+          items:
+            $ref:  "#/components/schemas/BusinessAccounts"
+          minItems: 1
+          maxItems: 3
+          description: lista de tipos de conta
+    BusinessAccounts:
+      type: object
+      required:
+        - type
+        - fees
+        - serviceBundles
+        - openingClosingChannels
+        - transactionMethods
+        - termsConditions
+        - incomeRate
+      properties:
+        type:
+          $ref:  "#/components/schemas/AccountType"
+        fees:
+          type: object
+          description: Objeto que reúne informações de tarifas de serviços
+          required:
+            - services
+          properties:
+            services:
+              type: array
+              items:
+                $ref: '#/components/schemas/BusinessAccountsService'
+              minItems: 1
+              description: Lista das Tarifas cobradas sobre Serviços
+        serviceBundles:
+          type: array
+          items:
+            $ref:  "#/components/schemas/ServiceBundle"
+          minItems: 1
+          description: Lista dos serviços que compõe o pacote de serviços
+        openingClosingChannels:
+          type: array
+          items:
+            $ref: '#/components/schemas/OpeningClosingChannels'
+          minItems: 1
+          maxItems: 7
+          description: Lista dos canais para aberturas e encerramento
+        additionalInfo:
+          type: string
+          maxLength: 100
+          pattern: \w*\W*
+          description: |
+            Texto livre para complementar informação relativa ao Canal disponível, quando no campo ''openingClosingChannels'' estiver preenchida a opção ''Outros''
+            Restrição: Campo de preenchimento obrigatório se ''openingCloseChannels'' estiver preenchida a opção ''OUTROS''
+          example: 'NA'
+        transactionMethods:
+          type: array
+          items:
+            $ref: '#/components/schemas/TransactionMethods'
+          minItems: 1
+          maxItems: 4
+          description: Lista de formas de movimentação
+        termsConditions:
+          $ref: '#/components/schemas/AccountsTermsConditions'
+        incomeRate:
+          $ref: '#/components/schemas/AccountsIncomeRate'
+    BusinessAccountsService:
       type: object
       required:
         - name
@@ -887,21 +859,28 @@ components:
           example: EVENTO_PERSONALIZADO
         chargingTriggerInfo:
           type: string
-          maxLength: 3000
+          maxLength: 2000
+          pattern: \w*\W*
           description: Fatos geradores de cobrança que incidem sobre serviço que compõe o Pacote de Serviços.
           example: Cobrança devido a evento personalizado
         prices:
           type: array
           items:
-            $ref: '#/components/schemas/AccountPrice'
+            $ref: '#/components/schemas/Price'
+          minItems: 4
+          maxItems: 4
+          description: Lista distribuição preços tarifas de serviços
         minimum:
-          $ref: '#/components/schemas/AccountMinimumPrice'
+          $ref: '#/components/schemas/MinimumPrice'
         maximum:
-          $ref: '#/components/schemas/AccountMaximumPrice'
+          $ref: '#/components/schemas/MaximumPrice'
         customers:
           type: array
           items:
             $ref: '#/components/schemas/Customer'
+          minItems: 4
+          maxItems: 4
+          description: Lista percentual de clientes por faixa de preço
     ResponsePersonalLoans:
       type: object
       required:
@@ -936,7 +915,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PersonalLoanCompany'
-          description: Lista de instituições pertencentes à marca
+          minItems: 1
+          description: Companies traz uma lista de todas as instituições da Marca
     PersonalLoanCompany:
       type: object
       required:
@@ -960,7 +940,9 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PersonalLoan'
-          description: Lista
+          minItems: 1
+          maxItems: 6
+          description: Lista de modalidades de empréstimos
       allOf:
         - $ref: '#/components/schemas/CNPJ'
     ResponseBusinessLoans:
@@ -997,7 +979,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/BusinessLoanCompany'
-          description: Lista de instituições pertencentes à marca
+          minItems: 1
+          description: Companies traz uma lista de todas as instituições da Marca
     BusinessLoanCompany:
       type: object
       required:
@@ -1021,7 +1004,9 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/BusinessLoan'
-          description: Lista
+          minItems: 1
+          maxItems: 6
+          description: Lista de modalidades de empréstimos
       allOf:
         - $ref: '#/components/schemas/CNPJ'
     PersonalLoan:
@@ -1052,21 +1037,21 @@ components:
             Empréstimo-Conta garantida - operações de crédito rotativo, nas quais determinado limite de crédito é disponibilizado para utilização pelo cliente, através da simples movimentação da conta corrente e/ou solicitação formal à instituição financeira. As operações classificadas nessa modalidade não devem ter data definida para a amortização do saldo devedor, exceto a estabelecida para vigência do contrato
           example: EMPRESTIMO_CREDITO_PESSOAL_CONSIGNADO
         fees:
-          type: array
-          items:
-            $ref: '#/components/schemas/LoanFee'
-          description: Lista
+          $ref: '#/components/schemas/LoanFees'
         interestRate:
           $ref: '#/components/schemas/LoanInterestRate'
         requiredWarranties:
           type: array
           items:
             $ref: '#/components/schemas/RequiredWarranty'
+          minItems: 1
+          maxItems: 14
+          description: Lista das garantias exigidas
         termsConditions:
           type: string
           pattern: \w*\W*
           maxLength: 2000
-          description: Campo aberto para informar as condições contratuais relativas à Modalidade de Financiamentos para pessoa jurídica informada. Pode ser informada a URL referente ao endereço onde constam as condições informadas. Endereço eletrônico de acesso ao canal. 
+          description: Campo aberto para informar as condições contratuais relativas à Modalidade de Financiamentos para pessoa jurídica informada. Pode ser informada a URL referente ao endereço onde constam as condições informadas. Endereço eletrônico de acesso ao canal.
           example: 'https://empresaa1.com/personal_loans'
     BusinessLoan:
       type: object
@@ -1096,27 +1081,32 @@ components:
             Empréstimo-Capital de giro rotativo: operações de crédito voltadas para o financiamento de capital de giro, vinculadas a um contrato que estabeleça linha de crédito rotativo, de forma que, à medida que a empresa devedora amortize os empréstimos já tomados, o limite disponível para utilização seja restituído, e amortizações com datas predeterminadas, podendo ser facultado ao devedor repactuar o fluxo de pagamentos ao longo da vigência do contrato
           example: EMPRESTIMO_MICROCREDITO_PRODUTIVO_ORIENTADO
         fees:
-          type: array
-          items:
-            $ref: '#/components/schemas/LoanFee'
-          description: Lista
+          $ref: '#/components/schemas/LoanFees'
         interestRate:
           $ref: '#/components/schemas/LoanInterestRate'
         requiredWarranties:
           type: array
           items:
             $ref: '#/components/schemas/RequiredWarranty'
+          minItems: 1
+          maxItems: 14
+          description: Lista das garantias exigidas
         termsConditions:
           type: string
           pattern: \w*\W*
           maxLength: 2000
-          description: Campo aberto para informar as condições contratuais relativas à Modalidade de Empréstimo para pessoa jurídica informada. Pode ser informada a URL referente ao endereço onde constam as condições informadas. Endereço eletrônico de acesso ao canal. 
+          description: Campo aberto para informar as condições contratuais relativas à Modalidade de Empréstimo para pessoa jurídica informada. Pode ser informada a URL referente ao endereço onde constam as condições informadas. Endereço eletrônico de acesso ao canal.
           example: 'https://empresaa1.com/personal_loans'
-    LoanFee:
+    LoanFees:
       type: object
       properties:
-        service:
-          $ref: '#/components/schemas/LoanService'
+        services:
+          type: array
+          items:
+            $ref: '#/components/schemas/LoanService'
+          minItems: 1
+          description: Lista das Tarifas cobradas sobre Serviços
+      description: Objeto que reúne informações de tarifas de serviços
     LoanService:
       type: object
       required:
@@ -1150,6 +1140,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Price'
+          minItems: 4
+          maxItems: 4
         minimum:
           $ref: '#/components/schemas/MinimumPrice'
         maximum:
@@ -1158,6 +1150,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Customer'
+          minItems: 4
+          maxItems: 4
     LoanInterestRate:
       type: object
       properties:
@@ -1165,10 +1159,16 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/InterestRateFee'
+          minItems: 1
+          maxItems: 19
+          description: Lista das taxas referenciais ou indexadores
         applications:
           type: array
           items:
             $ref: '#/components/schemas/ApplicationRate'
+          minItems: 4
+          maxItems: 4
+          description: Lista  das faixas de cobrança da taxa efetiva aplicada pela contratação de crédito
         minimumRate:
           type: string
           format: '(^[0-9](\.[0-9]{4})$|^NA$)'
@@ -1183,6 +1183,9 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Customer'
+          minItems: 4
+          maxItems: 4
+          description: Lista percentual de cliente por faixa referente a contratação do financiamento
     ApplicationRate:
       type: object
       properties:
@@ -1251,7 +1254,7 @@ components:
         - 3_FAIXA_VALOR
         - 4_FAIXA_VALOR
       description: |
-        Faixas para cobrança da taxa efetiva aplicada pela contratação do crédito, no intervalo informado: 1ª faixa de valor, 2ª faixa de valor, 3ª faixa de valor e 4ª faixa de valor. Segundo Normativa nº32 de 2020: 'Distribuição de frequência relativa dos valores de tarifas e taxas de juros cobrados dos clientes, de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana e o percentual de clientes em cada uma dessas faixas. 
+        Faixas para cobrança da taxa efetiva aplicada pela contratação do crédito, no intervalo informado: 1ª faixa de valor, 2ª faixa de valor, 3ª faixa de valor e 4ª faixa de valor. Segundo Normativa nº32 de 2020: 'Distribuição de frequência relativa dos valores de tarifas e taxas de juros cobrados dos clientes, de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana e o percentual de clientes em cada uma dessas faixas.
     RequiredWarranty:
       type: string
       enum:
@@ -1269,7 +1272,22 @@ components:
         - OPERACOES_GARANTIDAS_OUTRAS_ENTIDADES
         - ACORDOS_COMPENSACAO
         - NAO_APLICAVEL
-      description: Campo aberto para informar as condições contratuais relativas à Modalidade de direitos creditórios descontados informada
+      description: |
+        Relação de garantias exigidas, segundo documento 3040 do Bacen: 
+        cessão de direitos creditórios: o cedente transfere ao credor/cessionário a titularidade de direitos creditórios, até a liquidação da dívida. O credor/cessionário passa a recebê-los diretamente dos devedores e credita o produto da operação para o cedente na operação que originou a cessão, até a sua liquidação 
+        caução: garantia instituída sobre créditos do garantidor 
+        penhor: direito real que consiste na tradição de uma coisa móvel ou mobilizável, suscetível de alienação, realizada pelo devedor ou por terceiro ao credor, a fim de garantir o pagamento do débito 
+        alienação fiduciária: transferência ao credor, ou fiduciário, da propriedade do bem 
+        hipoteca: direito real de garantia que afeta um bem imóvel para o cumprimento da obrigação 
+        operações garantidas pelo governo: nas instâncias federal, estadual ou municipal
+        outras garantias não fidejussórias: as garantias reais não descritas como: cessão de direitos creditórios, caução, penhor, alienação fiduciária, hipoteca ou operação garantida pelo governo 
+        seguros e assemelhados: os seguros (e assemelhados) contratados para garantir o pagamento da operação em circunstâncias adversas
+        garantia fidejussória: baseada na fidelidade do garantidor em cumprir as obrigações, caso o devedor não o faça
+        bens arrendados: bem objeto do arrendamento financeiro
+        garantias internacionais: declarar se a garantia é mitigadora ou não, observados os critérios definidos pela Circular 3.644, de 4 de março de 2013 
+        operações garantidas por outras entidade: declarar as garantias prestadas pelas entidades descritas no item 3. Informações de Garantias (i) do documento 3040 - Bacen 
+        acordos de compensação: operações que sejam abrangidas por acordos para a compensação e liquidação de obrigações no âmbito do SFN, nos termos da Resolução 3.263, de 24 de fevereiro de 2005
+        não aplicável
       example: CESSAO_DIREITOS_CREDITORIOS
     CreditCardIdentification:
       type: object
@@ -1389,6 +1407,7 @@ components:
           example: 'https://empresaa1.com/creditcards_closing_process'
     CreditCardInterest:
       type: object
+      description: Informações sobre taxas de juros
       required:
         - feeRate
         - instalmentRate
@@ -1400,61 +1419,36 @@ components:
           $ref: '#/components/schemas/InterestRate'
         interestRates:
           type: array
+          description: Lista de outras operações de crédito
           items:
-            type: object
-            required:
-              - code
-              - prices
-              - minimumRate
-              - maximumRate
-              - fees
-            properties:
-              code:
-                type: string
-                enum:
-                  - SAQUE_A_CREDITO
-                  - PAGAMENTOS_CONTAS
-                  - OUTROS
-                description: Lista de outras operações de crédito
-                example: SAQUE_A_CREDITO
-              additionalInfo:
-                type: string
-                maxLength: 50
-                pattern: \w*\W*
-                description: Campo Texto para descrever outras operações de crédito marcadas como 'OUTROS'. Se o campo 'code' vier selecionado com 'OUTROS' é obrigatório o preenchimento do additionalInfo
-                example: NA
-              prices:
-                type: array
-                items:
-                  required:
-                    - interval
-                    - rate
-                  properties:
-                    interval:
-                      $ref: '#/components/schemas/PriceIntervals'
-                    rate:
-                      type: string
-                      pattern: '((-?[1-9]?\d{1,4}){1}(\.\d{1,4}){1}|NA)$'
-                      maxLength: 9
-                      description: 'Percentual que corresponde a mediana (taxa efetiva) aplicada para  outras operações de crédito, no período informado.'
-                      example: '0.1500'
-              minimumRate:
-                type: string
-                pattern: '((-?[1-9]?\d{1,4}){1}(\.\d{1,4}){1}|NA)$'
-                maxLength: 9
-                description: Percentual mínimo cobrado (taxa efetiva) para  outras operações de crédito do mês de referência.
-                example: '0.0450'
-              maximumRate:
-                type: string
-                pattern: '((-?[1-9]?\d{1,4}){1}(\.\d{1,4}){1}|NA)$'
-                maxLength: 9
-                description: Percentual máximo cobrado (taxa efetiva) para  outras operações de crédito do mês de referência.
-                example: '0.8000'
-              fees:
-                type: array
-                description: Tarifas cobradas sobre Serviços ofertados
-                items:
-                  $ref: '#/components/schemas/FeeReferentialRateIndexer'
+            $ref:  "#/components/schemas/CreditCardInterestRate"
+          minItems: 1
+          maxItems: 3
+    CreditCardInterestRate:
+      type: object
+      required:
+        - code
+        - prices
+        - minimumRate
+        - maximumRate
+        - fees
+      properties:
+        code:
+          type: string
+          enum:
+            - SAQUE_A_CREDITO
+            - PAGAMENTOS_CONTAS
+            - OUTROS
+          description: Lista de outras operações de crédito
+          example: SAQUE_A_CREDITO
+        additionalInfo:
+          type: string
+          maxLength: 50
+          pattern: \w*\W*
+          description: Campo Texto para descrever outras operações de crédito marcadas como 'OUTROS'. Se o campo 'code' vier selecionado com 'OUTROS' é obrigatório o preenchimento do additionalInfo
+          example: NA
+      allOf: 
+      - $ref: '#/components/schemas/InterestRate'
     PersonalCreditCardResponse:
       type: object
       required:
@@ -1481,7 +1475,11 @@ components:
         - $ref: '#/components/schemas/Brand'
       properties:
         companies:
-          $ref: '#/components/schemas/PersonalCreditCardCompany'
+          type: array
+          description: Companies traz uma lista de todas as instituições da Marca
+          items:
+            $ref: '#/components/schemas/PersonalCreditCardCompany'
+          minItems: 1
     PersonalCreditCardCompany:
       type: object
       required:
@@ -1493,8 +1491,10 @@ components:
       properties:
         personalCreditCards:
           type: array
+          description: Lista das contas de pagamento pós-paga
           items:
             $ref: '#/components/schemas/CreditCard'
+          minItems: 1
     BusinessCreditCardResponse:
       type: object
       required:
@@ -1521,7 +1521,11 @@ components:
         - $ref: '#/components/schemas/Brand'
       properties:
         companies:
-          $ref: '#/components/schemas/BusinessCreditCardCompany'
+          type: array
+          description: Companies traz uma lista de todas as instituições da Marca
+          items:
+            $ref: '#/components/schemas/BusinessCreditCardCompany'
+          minItems: 1
     BusinessCreditCardCompany:
       type: object
       required:
@@ -1532,14 +1536,19 @@ components:
       properties:
         businessCreditCards:
           type: array
+          description: Lista dos nomes de conta de pagamento pós-paga
           items:
             $ref: '#/components/schemas/CreditCard'
+          minItems: 1
     CreditCardService:
       type: object
       required:
         - name
         - code
         - chargingTriggerInfo
+        - prices
+        - minimum
+        - maximum
         - customers
       properties:
         name:
@@ -1571,20 +1580,27 @@ components:
         chargingTriggerInfo:
           type: string
           maxLength: 2000
+          pattern: \w*\W*
           description: 'Fatos geradores de cobrança que incidem sobre as Modalidades de Contas de Pagamento Pós-Pagas informada, para pessoa jurídica. (Campo Livre)'
           example: 'Disponibilização de rede de estabelecimentos afiliados, instalada no País, para pagamentos de bens e serviços, cobrada no máximo uma vez a cada doze meses, admitido o parcelamento da cobrança'
         prices:
           type: array
+          description: Lista distribuição preços tarifas de serviços
           items:
             $ref: '#/components/schemas/Price'
+          minItems: 4
+          maxItems: 4
         minimum:
           $ref: '#/components/schemas/MinimumPrice'
         maximum:
           $ref: '#/components/schemas/MaximumPrice'
         customers:
           type: array
+          description: Lista percentual de clientes por faixa de preço
           items:
             $ref: '#/components/schemas/Customer'
+          minItems: 4
+          maxItems: 4
     ResponsePersonalFinancings:
       type: object
       required:
@@ -1608,13 +1624,9 @@ components:
       required:
         - name
         - companies
+      allOf:
+        - $ref: '#/components/schemas/Brand'
       properties:
-        name:
-          type: string
-          pattern: \w*\W*
-          maxLength: 30
-          description: Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a 'marca' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes
-          example: Organização A
         companies:
           type: array
           items:
@@ -1641,6 +1653,7 @@ components:
         - fees
         - interestRate
         - requiredWarranties
+        - termsConditions
       properties:
         type:
           type: string
@@ -1657,33 +1670,13 @@ components:
           description: 'Modalidades de financiamentos ofertados para pessoas naturais, conforme Circular 4015-Bacen. Segundo cartilha do Bacen: Financiamento é um contrato entre o cliente e uma instituição financeira, mas com, destinação específica como para a aquisição de veículo ou de bem imóvel, que funcionam como garantia para o crédito concedido'
           example: FINANCIAMENTO_AQUISICAO_BENS_VEICULOS_AUTOMOTORES
         fees:
-          type: array
-          items:
-            $ref: '#/components/schemas/PersonalFinancingFee'
+          $ref: '#/components/schemas/PersonalFinancingFee'
         interestRate:
           $ref: '#/components/schemas/FinancingInterestRate'
         requiredWarranties:
           type: array
           items:
-            enum:
-              - CESSAO_DIREITOS_CREDITORIOS
-              - CAUCAO
-              - PENHOR
-              - ALIENACAO_FIDUCIARIA
-              - HIPOTECA
-              - OPERCAOES_GARANTIDAS_PELO_GOVERNO
-              - OUTRAS_GARANTIAS_NAO_FIDEJUSSORIAS
-              - SEGUROS_ASSEMELHADOS
-              - GARANTIA_FIDEJUSSORIA
-              - BENS_ARRENDADOS
-              - GARANTIAS_INTERNACIONAIS
-              - OPERACOES_GARANTIDAS_OUTRAS_ENTIDADES
-              - ACORDOS_COMPENSACAO
-              - NAO_APLICAVEL
-            description: Relação de garantias exigidas
-            example:
-              - ALIENACAO_FIDUCIARIA
-              - PENHOR
+            $ref: '#/components/schemas/RequiredWarranty'
         termsConditions:
           type: string
           pattern: \w*\W*
@@ -1692,9 +1685,13 @@ components:
           example: 'https://empresaa1.com/personal_financing'
     PersonalFinancingFee:
       type: object
+      required:
+        - services
       properties:
-        service:
-          $ref: '#/components/schemas/FinancingService'
+        services:
+          type: array
+          items:
+            $ref: '#/components/schemas/FinancingService'
     FinancingService:
       type: object
       properties:
@@ -1712,8 +1709,10 @@ components:
           example: AQBAM009
         chargingTriggerInfo:
           type: string
+          maxLength: 2000
+          pattern: \w*\W*
           description: 'Fatores geradores de cobrança que incidem sobre as Modalidades de Financiamentos, para pessoa natural. Campo Livre'
-          example: '570.00'
+          example: 'R$ 570.00'
         prices:
           type: array
           items:
@@ -1733,6 +1732,7 @@ components:
         - minimum
         - maximum
         - customers
+        - chargingTriggerInfo
     FinancingInterestRate:
       type: object
       properties:
@@ -1795,13 +1795,9 @@ components:
       required:
         - name
         - companies
+      allOf:
+        - $ref: '#/components/schemas/Brand'
       properties:
-        name:
-          type: string
-          pattern: \w*\W*
-          maxLength: 80
-          description: Nome da marca.
-          example: Organização A
         companies:
           type: array
           items:
@@ -1828,6 +1824,7 @@ components:
         - fees
         - interestRate
         - requiredWarranties
+        - termsConditions
       properties:
         type:
           type: string
@@ -1844,31 +1841,13 @@ components:
           description: 'Modalidades de financiamentos ofertados para pessoas jurídicas, conforme Circular 4015-Bacen. Segundo cartilha do Bacen: Financiamento é um contrato entre o cliente e uma instituição financeira, mas com, destinação específica como para a aquisição de veículo ou de bem imóvel, que funcionam como garantia para o crédito concedido'
           example: FINANCIAMENTO_AQUISICAO_BENS_VEICULOS_AUTOMOTORES
         fees:
-          type: array
-          items:
-            $ref: '#/components/schemas/BusinessFinancingFee'
+          $ref: '#/components/schemas/BusinessFinancingFee'
         interestRate:
           $ref: '#/components/schemas/FinancingInterestRate'
         requiredWarranties:
           type: array
           items:
-            enum:
-              - CESSAO_DIREITOS_CREDITORIOS
-              - CAUCAO
-              - PENHOR
-              - ALIENACAO_FIDUCIARIA
-              - HIPOTECA
-              - OPERCAOES_GARANTIDAS_PELO_GOVERNO
-              - OUTRAS_GARANTIAS_NAO_FIDEJUSSORIAS
-              - SEGUROS_ASSEMELHADOS
-              - GARANTIA_FIDEJUSSORIA
-              - BENS_ARRENDADOS
-              - GARANTIAS_INTERNACIONAIS
-              - OPERACOES_GARANTIDAS_OUTRAS_ENTIDADES
-              - ACORDOS_COMPENSACAO
-              - NAO_APLICAVEL
-            description: Relação de garantias exigidas
-            example: ALIENACAO_FIDUCIARIA
+            $ref: '#/components/schemas/RequiredWarranty'
         termsConditions:
           type: string
           pattern: \w*\W*
@@ -1877,11 +1856,14 @@ components:
           example: 'https://empresaa1.com/personal_financing'
     BusinessFinancingFee:
       type: object
+      description: Objeto que reúne informações de tarifas de serviços
       properties:
-        service:
-          $ref: '#/components/schemas/FinancingService'
+        services:
+          type: array
+          items:
+            $ref: '#/components/schemas/FinancingService'
       required:
-        - service
+        - services
     ResponsePersonalInvoiceFinancings:
       type: object
       required:
@@ -1916,7 +1898,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PersonalInvoiceFinancingsCompanies'
-          description: Lista de instituições pertencentes à marga
+          minItems: 1
+          description: Companies traz uma lista de todas as instituições da Marca
     PersonalInvoiceFinancingsCompanies:
       type: object
       required:
@@ -1930,618 +1913,9 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PersonalInvoiceFinancings'
-          description: Lista de adiantamento de recebíveis
-          example:
-            - {
-                "type": "DESCONTO_DUPLICATAS",
-                "fees": [
-                  {
-                    "service": {
-                      "name": "Custódia de Duplicatas",
-                      "code": "NA",
-                      "chargingTriggerInfo": "5% do valor do contrato",
-                      "prices": [
-                        {
-                          "interval": "1_FAIXA_VALOR",
-                          "value": "25.40",
-                          "currency": "BRL"
-                        },
-                        {
-                          "interval": "2_FAIXA_VALOR",
-                          "value": "35.00",
-                          "currency": "BRL"
-                        },
-                        {
-                          "interval": "3_FAIXA_VALOR",
-                          "value": "52.00",
-                          "currency": "BRL"
-                        },
-                        {
-                          "interval": "4_FAIXA_VALOR",
-                          "value": "69.00",
-                          "currency": "BRL"
-                        }
-                      ],
-                      "minimum": {
-                        "value": "59.90",
-                        "currency": "BRL"
-                      },
-                      "maximum": {
-                        "value": "87.00",
-                        "currency": "BRL"
-                      },
-                      "customers": [
-                        {
-                          "frequency": "1_FAIXA_CLIENTE",
-                          "rate": "0.1500"
-                        },
-                        {
-                          "frequency": "2_FAIXA_CLIENTE",
-                          "rate": "0.3500"
-                        },
-                        {
-                          "frequency": "3_FAIXA_CLIENTE",
-                          "rate": "0.2000"
-                        },
-                        {
-                          "frequency": "4_FAIXA_CLIENTE",
-                          "rate": "0.3000"
-                        }
-                      ]
-                    }
-                  }
-                ],
-                "interestRate": {
-                  "fees": [
-                    {
-                      "referentialRateIndexer": "POS_FIXADO_TR_TBF",
-                      "rate": "0.15"
-                    }
-                  ],
-                  "applications": [
-                    {
-                      "interval": "1_FAIXA_VALOR",
-                      "rate": "0.0987"
-                    },
-                    {
-                      "interval": "2_FAIXA_VALOR",
-                      "rate": "0.1600"
-                    },
-                    {
-                      "interval": "3_FAIXA_VALOR",
-                      "rate": "0.3600"
-                    },
-                    {
-                      "interval": "4_FAIXA_VALOR",
-                      "rate": "0.5890"
-                    }
-                  ],
-                  "minimumRate": "0.0456",
-                  "maximumRate": "0.6865",
-                  "customers": [
-                    {
-                      "frequency": "1_FAIXA_CLIENTE",
-                      "rate": "0.1500"
-                    },
-                    {
-                      "frequency": "2_FAIXA_CLIENTE",
-                      "rate": "0.3500"
-                    },
-                    {
-                      "frequency": "3_FAIXA_CLIENTE",
-                      "rate": "0.2000"
-                    },
-                    {
-                      "frequency": "4_FAIXA_CLIENTE",
-                      "rate": "0.3000"
-                    }
-                  ]
-                },
-                "requiredWarranties": [
-                  "CESSAO_DIREITOS_CREDITORIOS"
-                ],
-                "termsConditions": "https://empresaa1.com/personal_invoice_financings"
-              }
-            - {
-                "type": "DESCONTO_CHEQUES",
-                "fees": [
-                  {
-                    "service": {
-                      "name": "Custódia de Cheques pré-datados: Inclusão",
-                      "code": "NA",
-                      "chargingTriggerInfo": "R$ 0,80",
-                      "prices": [
-                        {
-                          "interval": "1_FAIXA_VALOR",
-                          "value": "345.00",
-                          "currency": "BRL"
-                        },
-                        {
-                          "interval": "2_FAIXA_VALOR",
-                          "value": "479.00",
-                          "currency": "BRL"
-                        },
-                        {
-                          "interval": "3_FAIXA_VALOR",
-                          "value": "776.00",
-                          "currency": "BRL"
-                        },
-                        {
-                          "interval": "4_FAIXA_VALOR",
-                          "value": "1300.00",
-                          "currency": "BRL"
-                        }
-                      ],
-                      "minimum": {
-                        "value": "110.00",
-                        "currency": "BRL"
-                      },
-                      "maximum": {
-                        "value": "1390.00",
-                        "currency": "BRL"
-                      },
-                      "customers": [
-                        {
-                          "frequency": "1_FAIXA_CLIENTE",
-                          "rate": "0.1500"
-                        },
-                        {
-                          "frequency": "2_FAIXA_CLIENTE",
-                          "rate": "0.3500"
-                        },
-                        {
-                          "frequency": "3_FAIXA_CLIENTE",
-                          "rate": "0.2000"
-                        },
-                        {
-                          "frequency": "4_FAIXA_CLIENTE",
-                          "rate": "0.3000"
-                        }
-                      ]
-                    }
-                  }
-                ],
-                "interestRate": {
-                  "fees": [
-                    {
-                      "referentialRateIndexer": "POS_FIXADO_TR_TBF",
-                      "rate": "0.10"
-                    }
-                  ],
-                  "applications": [
-                    {
-                      "interval": "1_FAIXA_VALOR",
-                      "rate": "0.0987"
-                    },
-                    {
-                      "interval": "2_FAIXA_VALOR",
-                      "rate": "0.1600"
-                    },
-                    {
-                      "interval": "3_FAIXA_VALOR",
-                      "rate": "0.3600"
-                    },
-                    {
-                      "interval": "4_FAIXA_VALOR",
-                      "rate": "0.5890"
-                    }
-                  ],
-                  "minimumRate": "0.0456",
-                  "maximumRate": "0.6865",
-                  "customers": [
-                    {
-                      "frequency": "1_FAIXA_CLIENTE",
-                      "rate": "0.1500"
-                    },
-                    {
-                      "frequency": "2_FAIXA_CLIENTE",
-                      "rate": "0.3500"
-                    },
-                    {
-                      "frequency": "3_FAIXA_CLIENTE",
-                      "rate": "0.2000"
-                    },
-                    {
-                      "frequency": "4_FAIXA_CLIENTE",
-                      "rate": "0.3000"
-                    }
-                  ]
-                },
-                "requiredWarranties": [
-                  "CAUCAO"
-                ],
-                "termsConditions": "https://empresaa1.com/personal_invoice_financings"
-              }
-            - {
-                "type": "ANTECIPACAO_FATURA_CARTAO_CREDITO",
-                "fees": [
-                  {
-                    "service": {
-                      "name": "Aditamento de recebiveis",
-                      "code": "NA",
-                      "chargingTriggerInfo": "3% do valor do contrato",
-                      "prices": [
-                        {
-                          "interval": "1_FAIXA_VALOR",
-                          "value": "500.00",
-                          "currency": "BRL"
-                        },
-                        {
-                          "interval": "2_FAIXA_VALOR",
-                          "value": "860.00",
-                          "currency": "BRL"
-                        },
-                        {
-                          "interval": "3_FAIXA_VALOR",
-                          "value": "1090.00",
-                          "currency": "BRL"
-                        },
-                        {
-                          "interval": "4_FAIXA_VALOR",
-                          "value": "2100.00",
-                          "currency": "BRL"
-                        }
-                      ],
-                      "minimum": {
-                        "value": "430.00",
-                        "currency": "BRL"
-                      },
-                      "maximum": {
-                        "value": "2200.00",
-                        "currency": "BRL"
-                      },
-                      "customers": [
-                        {
-                          "frequency": "1_FAIXA_CLIENTE",
-                          "rate": "0.1500"
-                        },
-                        {
-                          "frequency": "2_FAIXA_CLIENTE",
-                          "rate": "0.3500"
-                        },
-                        {
-                          "frequency": "3_FAIXA_CLIENTE",
-                          "rate": "0.2000"
-                        },
-                        {
-                          "frequency": "4_FAIXA_CLIENTE",
-                          "rate": "0.3000"
-                        }
-                      ]
-                    }
-                  },
-                  {
-                    "service": {
-                      "name": "Custódia de Cheques pré-datados: Inclusão",
-                      "code": "NA",
-                      "chargingTriggerInfo": "2% do valor do contrato",
-                      "prices": [
-                        {
-                          "interval": "1_FAIXA_VALOR",
-                          "value": "3000.00",
-                          "currency": "BRL"
-                        },
-                        {
-                          "interval": "2_FAIXA_VALOR",
-                          "value": "3200.00",
-                          "currency": "BRL"
-                        },
-                        {
-                          "interval": "3_FAIXA_VALOR",
-                          "value": "4000.00",
-                          "currency": "BRL"
-                        },
-                        {
-                          "interval": "4_FAIXA_VALOR",
-                          "value": "5006.00",
-                          "currency": "BRL"
-                        }
-                      ],
-                      "minimum": {
-                        "value": "2290.00",
-                        "currency": "BRL"
-                      },
-                      "maximum": {
-                        "value": "5800.00",
-                        "currency": "BRL"
-                      },
-                      "customers": [
-                        {
-                          "frequency": "1_FAIXA_CLIENTE",
-                          "rate": "0.1500"
-                        },
-                        {
-                          "frequency": "2_FAIXA_CLIENTE",
-                          "rate": "0.3500"
-                        },
-                        {
-                          "frequency": "3_FAIXA_CLIENTE",
-                          "rate": "0.2000"
-                        },
-                        {
-                          "frequency": "4_FAIXA_CLIENTE",
-                          "rate": "0.3000"
-                        }
-                      ]
-                    }
-                  }
-                ],
-                "interestRate": {
-                  "fees": [
-                    {
-                      "referentialRateIndexer": "POS_FIXADO_TR_TBF",
-                      "rate": "0.13"
-                    },
-                    {
-                      "referentialRateIndexer": "POS_FIXADO_TR_TBF",
-                      "rate": "0.10"
-                    }
-                  ],
-                  "applications": [
-                    {
-                      "interval": "1_FAIXA_VALOR",
-                      "rate": "0.1500"
-                    },
-                    {
-                      "interval": "2_FAIXA_VALOR",
-                      "rate": "0.2000"
-                    },
-                    {
-                      "interval": "3_FAIXA_VALOR",
-                      "rate": "0.3500"
-                    },
-                    {
-                      "interval": "4_FAIXA_VALOR",
-                      "rate": "0.6800"
-                    }
-                  ],
-                  "minimumRate": "0.1450",
-                  "maximumRate": "0.6900",
-                  "customers": [
-                    {
-                      "frequency": "1_FAIXA_CLIENTE",
-                      "rate": "0.1500"
-                    },
-                    {
-                      "frequency": "2_FAIXA_CLIENTE",
-                      "rate": "0.3500"
-                    },
-                    {
-                      "frequency": "3_FAIXA_CLIENTE",
-                      "rate": "0.2000"
-                    },
-                    {
-                      "frequency": "4_FAIXA_CLIENTE",
-                      "rate": "0.3000"
-                    }
-                  ]
-                },
-                "requiredWarranties": [
-                  "CAUCAO"
-                ],
-                "termsConditions": "https://empresaa1.com/personal_invoice_financings"
-              }
-            - {
-                "type": "OUTROS_DIREITOS_CREDITORIOS_DESCONTADOS",
-                "fees": [
-                  {
-                    "service": {
-                      "name": "Documentos em Custódia",
-                      "code": "NA",
-                      "chargingTriggerInfo": "NA",
-                      "prices": [
-                        {
-                          "interval": "1_FAIXA_VALOR",
-                          "value": "200.00",
-                          "currency": "BRL"
-                        },
-                        {
-                          "interval": "2_FAIXA_VALOR",
-                          "value": "3200.00",
-                          "currency": "BRL"
-                        },
-                        {
-                          "interval": "3_FAIXA_VALOR",
-                          "value": "5072.00",
-                          "currency": "BRL"
-                        },
-                        {
-                          "interval": "4_FAIXA_VALOR",
-                          "value": "7006.00",
-                          "currency": "BRL"
-                        }
-                      ],
-                      "minimum": {
-                        "value": "150.00",
-                        "currency": "BRL"
-                      },
-                      "maximum": {
-                        "value": "8800.00",
-                        "currency": "BRL"
-                      },
-                      "customers": [
-                        {
-                          "frequency": "1_FAIXA_CLIENTE",
-                          "rate": "0.1500"
-                        },
-                        {
-                          "frequency": "2_FAIXA_CLIENTE",
-                          "rate": "0.3500"
-                        },
-                        {
-                          "frequency": "3_FAIXA_CLIENTE",
-                          "rate": "0.2000"
-                        },
-                        {
-                          "frequency": "4_FAIXA_CLIENTE",
-                          "rate": "0.3000"
-                        }
-                      ]
-                    }
-                  }
-                ],
-                "interestRate": {
-                  "fees": [
-                    {
-                      "referentialRateIndexer": "OUTRAS_TAXAS_POS_FIXADAS",
-                      "rate": "0.20"
-                    }
-                  ],
-                  "applications": [
-                    {
-                      "interval": "1_FAIXA_VALOR",
-                      "rate": "0.0987"
-                    },
-                    {
-                      "interval": "2_FAIXA_VALOR",
-                      "rate": "0.1600"
-                    },
-                    {
-                      "interval": "3_FAIXA_VALOR",
-                      "rate": "0.3600"
-                    },
-                    {
-                      "interval": "4_FAIXA_VALOR",
-                      "rate": "0.5890"
-                    }
-                  ],
-                  "minimumRate": "0.0889",
-                  "maximumRate": "0.6865",
-                  "customers": [
-                    {
-                      "frequency": "1_FAIXA_CLIENTE",
-                      "rate": "0.1500"
-                    },
-                    {
-                      "frequency": "2_FAIXA_CLIENTE",
-                      "rate": "0.3500"
-                    },
-                    {
-                      "frequency": "3_FAIXA_CLIENTE",
-                      "rate": "0.2000"
-                    },
-                    {
-                      "frequency": "4_FAIXA_CLIENTE",
-                      "rate": "0.3000"
-                    }
-                  ]
-                },
-                "requiredWarranties": [
-                  "CESSAO_DIREITOS_CREDITORIOS"
-                ],
-                "termsConditions": "https://empresaa1.com/personal_invoice_financings"
-              }
-            - {
-                "type": "OUTROS_TITULOS_DESCONTADOS",
-                "fees": [
-                  {
-                    "service": {
-                      "name": "Documentos em Custódia",
-                      "code": "NA",
-                      "chargingTriggerInfo": "NA",
-                      "prices": [
-                        {
-                          "interval": "1_FAIXA_VALOR",
-                          "value": "1000.00",
-                          "currency": "BRL"
-                        },
-                        {
-                          "interval": "2_FAIXA_VALOR",
-                          "value": "1200.00",
-                          "currency": "BRL"
-                        },
-                        {
-                          "interval": "3_FAIXA_VALOR",
-                          "value": "3072.00",
-                          "currency": "BRL"
-                        },
-                        {
-                          "interval": "4_FAIXA_VALOR",
-                          "value": "7020.00",
-                          "currency": "BRL"
-                        }
-                      ],
-                      "minimum": {
-                        "value": "560.00",
-                        "currency": "BRL"
-                      },
-                      "maximum": {
-                        "value": "8000.00",
-                        "currency": "BRL"
-                      },
-                      "customers": [
-                        {
-                          "frequency": "1_FAIXA_CLIENTE",
-                          "rate": "0.1500"
-                        },
-                        {
-                          "frequency": "2_FAIXA_CLIENTE",
-                          "rate": "0.3500"
-                        },
-                        {
-                          "frequency": "3_FAIXA_CLIENTE",
-                          "rate": "0.2000"
-                        },
-                        {
-                          "frequency": "4_FAIXA_CLIENTE",
-                          "rate": "0.3000"
-                        }
-                      ]
-                    }
-                  }
-                ],
-                "interestRate": {
-                  "fees": [
-                    {
-                      "referentialRateIndexer": "OUTRAS_TAXAS_POS_FIXADAS",
-                      "rate": "0.20"
-                    }
-                  ],
-                  "applications": [
-                    {
-                      "interval": "1_FAIXA_VALOR",
-                      "rate": "0.0987"
-                    },
-                    {
-                      "interval": "2_FAIXA_VALOR",
-                      "rate": "0.1600"
-                    },
-                    {
-                      "interval": "3_FAIXA_VALOR",
-                      "rate": "0.3600"
-                    },
-                    {
-                      "interval": "4_FAIXA_VALOR",
-                      "rate": "0.7680"
-                    }
-                  ],
-                  "minimumRate": "0.0456",
-                  "maximumRate": "0.8100",
-                  "customers": [
-                    {
-                      "frequency": "1_FAIXA_CLIENTE",
-                      "rate": "0.1500"
-                    },
-                    {
-                      "frequency": "2_FAIXA_CLIENTE",
-                      "rate": "0.3500"
-                    },
-                    {
-                      "frequency": "3_FAIXA_CLIENTE",
-                      "rate": "0.2000"
-                    },
-                    {
-                      "frequency": "4_FAIXA_CLIENTE",
-                      "rate": "0.3000"
-                    }
-                  ]
-                },
-                "requiredWarranties": [
-                  "CESSAO_DIREITOS_CREDITORIOS"
-                ],
-                "termsConditions": "https://empresaa1.com/personal_invoice_financings"
-              }
-
+          minItems: 1
+          maxItems: 5
+          description: Lista de Modalidades de Direitos Creditórios Descontados ofertados
     PersonalInvoiceFinancings:
       type: object
       required:
@@ -2560,110 +1934,126 @@ components:
             - OUTROS_DIREITOS_CREDITORIOS_DESCONTADOS
             - OUTROS_TITULOS_DESCONTADOS
           description: 'Modalidades de direitos creditórios descontados ofertados para pessoas naturais, conforme Circular 4015-Bacen. Direito creditório descontado é a antecipação de créditos relativos por ex. ao: desconto de duplicatas, desconto de cheques,antecipação de fatura de cartão de crédito'
+          example: DESCONTO_DUPLICATAS
         fees:
-          type: array
-          items:
-            $ref: '#/components/schemas/PersonalInvoiceFinancingsFees'
+          $ref: '#/components/schemas/PersonalInvoiceFinancingsFees'
         interestRate:
           $ref: '#/components/schemas/PersonalInvoiceFinancingsInterestRates'
         requiredWarranties:
           type: array
           items:
             $ref: '#/components/schemas/RequiredWarranty'
-          description: Relação de garantias exigidas
+          minItems: 1
+          maxItems: 14
+          description: Lista das  garantias exigidas
         termsConditions:
           type: string
           pattern: \w*\W*
           maxLength: 2000
-          description: Campo aberto para informar as condições contratuais relativas à Modalidade de Financiamentos para pessoa natural informada. Pode ser informada a URL referente ao endereço onde constam as condições informadas. Endereço eletrônico de acesso ao canal. 
-          example: ''
+          description: Campo aberto para informar as condições contratuais relativas à Modalidade de Financiamentos para pessoa natural informada. Pode ser informada a URL referente ao endereço onde constam as condições informadas. Endereço eletrônico de acesso ao canal.
+          example: 'https://empresaa1.com/personal_invoice_financings'
     PersonalInvoiceFinancingsFees:
       type: object
+      description: Objeto que reúne informações de tarifas de serviços
       properties:
-        service:
-          type: object
-          required:
-            - name
-            - code
-            - chargingTriggerInfo
-            - prices
-            - minimum
-            - maximum
-            - customers
-          properties:
-            name:
-              type: string
-              pattern: \w*\W*
-              maxLength: 250
-              description: 'Nomes das Tarifas cobradas sobre Serviços ofertados à Modalidade de direitos creditórios descontados, para pessoa natural. (Campo Livre)'
-              example: 'Custódia de Duplicatas'
-            code:
-              type: string
-              pattern: \w*\W*
-              maxLength: 100
-              description: 'Sigla de identificação do serviço relacionado à Modalidade de direitos creditórios descontados, para pessoa natural. Campo aberto'
-              example: 'NA'
-            chargingTriggerInfo:
-              type: string
-              pattern: \w*\W*
-              maxLength: 2000
-              description: 'Fatores geradores de cobrança que incidem sobre as Modalidades de direitos creditórios descontados, para pessoa natural. Campo Livre'
-              example: '5% do valor do contrato'
-            prices:
-              type: array
-              items:
-                $ref: '#/components/schemas/Price'
-            minimum:
-              type: object
-              items:
-                $ref: '#/components/schemas/MinimumPrice'
-            maximum:
-              type: object
-              items:
-                $ref: '#/components/schemas/MaximumPrice'
-            customers:
-              type: array
-              items:
-                $ref: '#/components/schemas/Customer'
+        services:
+          type: array
+          description: Lista das Tarifas cobradas sobre Serviços
+          items:
+            $ref:  "#/components/schemas/InvoiceFinancingsService"
+          minItems: 1
       required:
-        - service
+        - services
+    InvoiceFinancingsService:
+      type: object
+      required:
+        - name
+        - code
+        - chargingTriggerInfo
+        - prices
+        - minimum
+        - maximum
+        - customers
+      properties:
+        name:
+          type: string
+          pattern: \w*\W*
+          maxLength: 250
+          description: 'Nomes das Tarifas cobradas sobre Serviços ofertados à Modalidade de direitos creditórios descontados, para pessoa natural. (Campo Livre)'
+          example: 'Custódia de Duplicatas'
+        code:
+          type: string
+          pattern: \w*\W*
+          maxLength: 100
+          description: 'Sigla de identificação do serviço relacionado à Modalidade de direitos creditórios descontados, para pessoa natural. Campo aberto'
+          example: 'NA'
+        chargingTriggerInfo:
+          type: string
+          pattern: \w*\W*
+          maxLength: 2000
+          description: 'Fatores geradores de cobrança que incidem sobre as Modalidades de direitos creditórios descontados, para pessoa natural. Campo Livre'
+          example: '5% do valor do contrato'
+        prices:
+          type: array
+          items:
+            $ref: '#/components/schemas/Price'
+          minItems: 4
+          maxItems: 4
+          description: Lista distribuição preços tarifas de serviços
+        minimum:
+          type: object
+          items:
+            $ref: '#/components/schemas/MinimumPrice'
+        maximum:
+          type: object
+          items:
+            $ref: '#/components/schemas/MaximumPrice'
+        customers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Customer'
+          minItems: 4
+          maxItems: 4
+          description: Lista percentual de clientes por faixa de preço
     PersonalInvoiceFinancingsInterestRates:
       type: object
+      description: Taxas de juros remuneratórias
       properties:
         fees:
           type: array
           items:
             $ref: '#/components/schemas/InterestRateFee'
+          minItems: 1
+          maxItems: 19
+          description: Lista das taxas referenciais ou indexadores
         applications:
           type: array
+          description: Lista  das faixas de cobrança da taxa efetiva de remuneração
           items:
-            type: object
-            required:
-              - interval
-              - rate
-            properties:
-              interval:
-                $ref: '#/components/schemas/ApplicationIntervals'
-              rate:
-                type: string
-                description: |
-                  Percentual que corresponde a mediana da taxa efetiva cobrada do cliente pela contratação dos Direitos Creditórios Descontados, no intervalo informado. p.ex. '9,8700%' A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.15. Este valor representa 15%. O valor 1 representa 100%)
-                pattern: '(^[0-9](\.[0-9]{4})$|^NA$)'
+            $ref:  "#/components/schemas/ApplicationRate"
+          minItems: 4
+          maxItems: 4
         minimumRate:
           type: string
           description: |
             Percentual mínimo cobrado (taxa efetiva) no mês de referência, para os Direitos Creditórios Descontados contratado  A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.15. Este valor representa 15%. O valor 1 representa 100%)
           pattern: '(^[0-9](\.[0-9]{4})$|^NA$)'
+          example: '0.0889'
         maximumRate:
           type: string
           description: |
             Percentual máximo cobrado (taxa efetiva) no mês de referência, para os Direitos Creditórios Descontados contratado  A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.15. Este valor representa 15%. O valor 1 representa 100%)
           pattern: '(^[0-9](\.[0-9]{4})$|^NA$)'
+          example: '0.6865'
         customers:
           type: array
+          description: Lista percentual de cliente por faixa referente a  taxa remuneratória
           items:
             $ref: '#/components/schemas/Customer'
+          minItems: 4
+          maxItems: 4
       required:
+        - fees
         - applications
         - minimumRate
         - maximumRate
@@ -2702,7 +2092,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/BusinessInvoiceFinancingsCompanies'
-          description: Lista de instituições pertencentes à marga
+          minItems: 1
+          description: Companies traz uma lista de todas as instituições da Marca
     BusinessInvoiceFinancingsCompanies:
       type: object
       required:
@@ -2716,7 +2107,9 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/BusinessInvoiceFinancings'
-          description: Lista de adiantamento de recebíveis
+          minItems: 1
+          maxItems: 5
+          description: Lista de Modalidades de Direitos Creditórios
     BusinessInvoiceFinancings:
       type: object
       required:
@@ -2736,102 +2129,72 @@ components:
             - OUTROS_TITULOS_DESCONTADOS
           description: 'Modalidades de direitos creditórios descontados ofertados para pessoas Jurídicas, conforme Circular 4015-Bacen. Direito creditório descontado é a antecipação de créditos relativos por ex. ao: desconto de duplicatas, desconto de cheques,antecipação de fatura de cartão de crédito'
         fees:
-          type: array
-          items:
-            $ref: '#/components/schemas/BusinessInvoiceFinancingsFees'
+          $ref: '#/components/schemas/BusinessInvoiceFinancingsFees'
         interestRate:
-          $ref: '#/components/schemas/BusinessInvoiceFinancingsInterestRates'
+          $ref: '#/components/schemas/BusinessInvoiceFinancingsInterestRate'
         requiredWarranties:
           type: array
           items:
             $ref: '#/components/schemas/RequiredWarranty'
-          description: Relação de garantias exigidas
+          description: Lista das  garantias exigidas
+          minItems: 1
+          maxItems: 14
         termsConditions:
           type: string
           pattern: \w*\W*
           maxLength: 2000
-          description: Campo aberto para informar as condições contratuais relativas à Modalidade de Financiamentos para pessoa jurídica informada. Pode ser informada a URL referente ao endereço onde constam as condições informadas. Endereço eletrônico de acesso ao canal. 
-          example: ''
+          description: Campo aberto para informar as condições contratuais relativas à Modalidade de Financiamentos para pessoa jurídica informada. Pode ser informada a URL referente ao endereço onde constam as condições informadas. Endereço eletrônico de acesso ao canal.
+          example: 'https://empresaa1.com/personal_invoice_financings'
     BusinessInvoiceFinancingsFees:
       type: object
+      description: Objeto que reúne informações relativas a Termos e Condições para as modalidades tratadas
       required:
-        - service
+        - services
       properties:
-        service:
-          type: object
-          properties:
-            name:
-              type: string
-              pattern: \w*\W*
-              maxLength: 250
-              description: 'Nomes das Tarifas cobradas sobre Serviços ofertados à Modalidade de Direitos Creditórios Descontados, para pessoa jurídica. (Campo Livre). p.ex.  ''Avaliação de Garantia Hipotecária, Avaliação de Propriedade Rural e Parecer Técnico para Prorrogação de Operações Rurais'''
-            code:
-              type: string
-              pattern: \w*\W*
-              maxLength: 100
-              description: 'Sigla de identificação do serviço relacionado à Modalidade de direitos creditórios descontados, para pessoa jurídica. Campo aberto'
-            chargingTriggerInfo:
-              type: string
-              pattern: \w*\W*
-              maxLength: 2000
-              description: 'Fatores geradores de cobrança que incidem sobre as Modalidades de direitos creditórios descontados, para pessoa jurídica. Campo Livre'
-            prices:
-              type: array
-              items:
-                $ref: '#/components/schemas/Price'
-            minimum:
-              $ref: '#/components/schemas/MinimumPrice'
-            maximum:
-              $ref: '#/components/schemas/MaximumPrice'
-            customers:
-              type: array
-              items:
-                $ref: '#/components/schemas/Customer'
-          required:
-            - name
-            - code
-            - chargingTriggerInfo
-            - prices
-            - minimum
-            - maximum
-            - customers
-    BusinessInvoiceFinancingsInterestRates:
+        services:
+          type: array
+          items:
+            $ref:  "#/components/schemas/InvoiceFinancingsService"
+          minItems: 1
+          description: Lista das Tarifas cobradas sobre Serviços
+    BusinessInvoiceFinancingsInterestRate:
       type: object
       properties:
         fees:
           type: array
+          description: Lista das taxas referenciais ou indexadores
           items:
             $ref: '#/components/schemas/InterestRateFee'
+          minItems: 1
+          maxItems: 19
         applications:
           type: array
+          description: Lista  das faixas de cobrança da taxa efetiva de remuneração
           items:
-            type: object
-            required:
-              - interval
-              - rate
-            properties:
-              interval:
-                $ref: '#/components/schemas/ApplicationIntervals'
-              rate:
-                type: string
-                description: |
-                  Percentual que corresponde a mediana da taxa efetiva cobrada do cliente pela contratação dos Direitos Creditórios Descontados, no intervalo informado. p.ex. '9,8700%' A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.15. Este valor representa 15%. O valor 1 representa 100%)
-                pattern: '(^[0-9](\.[0-9]{4})$|^NA$)'
+            $ref:  "#/components/schemas/ApplicationRate"
+          minItems: 4
+          maxItems: 4
         minimumRate:
           type: string
           description: |
             Percentual mínimo cobrado (taxa efetiva) no mês de referência, para os Direitos Creditórios Descontados contratado  A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.15. Este valor representa 15%. O valor 1 representa 100%)
           pattern: '(^[0-9](\.[0-9]{4})$|^NA$)'
+          example: '0.1500'
         maximumRate:
           type: string
           description: |
             Percentual máximo cobrado (taxa efetiva) no mês de referência, para os Direitos Creditórios Descontados contratado  A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.15. Este valor representa 15%. O valor 1 representa 100%)
           pattern: '(^[0-9](\.[0-9]{4})$|^NA$)'
+          example: '0.6865'
         customers:
           type: array
+          description: Lista percentual de cliente por faixa referente a  taxa remuneratória
           items:
             $ref: '#/components/schemas/Customer'
+          minItems: 4
+          maxItems: 4
       required:
+        - fees
         - applications
         - minimumRate
         - maximumRate
@@ -2870,7 +2233,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/BusinessUnarrangedAccountOverdraftCompany'
-          description: Lista de instituições pertencentes à marca
+          description: Companies traz uma lista de todas as instituições da Marca
     BusinessUnarrangedAccountOverdraftCompany:
         type: object
         required:
@@ -2888,11 +2251,11 @@ components:
     BusinessUnarrangedAccountOverdraft:
       type: object
       required:
-        - fee
+        - fees
         - interestRate
         - termsConditions
       properties:
-        fee:
+        fees:
           $ref: '#/components/schemas/BusinessUnarrangedAccountOverdraftFee'
         interestRate:
           $ref: '#/components/schemas/UnarrangedAccountOverdraftRate'
@@ -2904,11 +2267,17 @@ components:
           example: 'https://empresaa1.com/business_unarranged_account_overdraft'
     BusinessUnarrangedAccountOverdraftFee:
       type: object
+      description: Objeto que reúne informações de tarifas de serviços
       required:
-        - service
+        - services
       properties:
-        service:
-          $ref: '#/components/schemas/UnarrangedAccountOverdraftService'
+        services:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnarrangedAccountOverdraftService'
+          minItems: 1
+          maxItems: 31
+          description: Lista das Tarifas cobradas sobre Serviços Prioritários
     UnarrangedAccountOverdraftService:
       type: object
       required:
@@ -2928,12 +2297,14 @@ components:
           description: 'Nome da Tarifa cobrada sobre Serviço que incide sobre Adiantamento a depositante, para pessoa jurídica.'
         code:
           type: string
-          enum: 
+          enum:
             - ADIANT_DEPOSITANTE
           default: ADIANT_DEPOSITANTE
           description: 'Sigla de identificação do serviço relacionado à Modalidade de Adiantamento a depositante, para pessoa jurídica.'
         chargingTriggerInfo:
           type: string
+          maxLength: 2000
+          pattern: \w*\W*
           description: 'Fato gerador de cobrança que incide sobre a Modalidade de Adiantamento a depositante informada, para pessoa jurídica.'
         prices:
           type: array
@@ -2941,13 +2312,14 @@ components:
             $ref: '#/components/schemas/Price'
           minItems: 4
           maxItems: 4
+          description: lista das faixas dos  valores de tarfas cobradas
         minimum:
           $ref: '#/components/schemas/MinimumPrice'
         maximum:
           $ref: '#/components/schemas/MaximumPrice'
         customers:
           type: array
-          description: Distribuição de frequência relativa aos clientes que pagaram valores de tarifas.
+          description: Lista percentual de clientes por faixa de preço.
           items:
             $ref: '#/components/schemas/FeeServiceCustomer'
           minItems: 4
@@ -2956,7 +2328,7 @@ components:
         name: CONCESSAO_ADIANTAMENTO_DEPOSITANTE
         code: ADIANT_DEPOSITANTE
         chargingTriggerInfo: Levantamento de informações e avaliação de viabilidade e de riscos para a concessão de crédito em caráter emergencial para cobertura de saldo devedor em conta de depósitos à vista e de excesso sobre o limite previamente pactuado de cheque especial, cobrada no máximo uma vez nos últimos trinta dias
-        prices: 
+        prices:
           - interval: 1_FAIXA_VALOR
             value: "500.00"
             currency: BRL
@@ -2975,7 +2347,7 @@ components:
         maximum:
           value: "2200.00"
           currency: "BRL"
-        customers: 
+        customers:
           - frequency: "1_FAIXA_CLIENTE"
             rate: "0.1500"
           - frequency: "2_FAIXA_CLIENTE"
@@ -2986,6 +2358,7 @@ components:
             rate: "0.3000"
     UnarrangedAccountOverdraftRate:
       type: object
+      description: Taxas de juros remuneratórias
       required:
         - fees
         - applications
@@ -2994,14 +2367,14 @@ components:
         - customers
       properties:
         fees:
-          description: Tarifas cobradas sobre Serviços ofertados à Modalidade de adiantamento a depositante
+          description: Lista de tipos de taxas referenciais ou indexadores
           type: array
           items:
             $ref: '#/components/schemas/FeeReferentialRateIndexer'
           minItems: 1
           maxItems: 19
         applications:
-          description:  Valor da mediana da taxa de remuneração relativa ao serviço ofertado.
+          description:  Lista  das faixas de cobrança da taxa efetiva de remuneração.
           type: array
           items:
             $ref: '#/components/schemas/InterestRateApplication'
@@ -3019,16 +2392,16 @@ components:
           pattern: '(^[0-9](\.[0-9]{4})|NA)$'
         customers:
           type: array
-          description: Distribuição de frequência relativa aos clientes que pagaram valores de tarifas
+          description: Lista percentual de cliente por faixa referente a  taxa remuneratória.
           items:
             $ref: '#/components/schemas/Customer'
           minItems: 4
           maxItems: 4
       example:
-          fees: 
+          fees:
               - referentialRateIndexer: "SEM_INDEXADOR_TAXA"
                 rate: "0.65"
-          applications: 
+          applications:
               - interval: "1_FAIXA_VALOR"
                 rate: "0.0187"
               - interval: "2_FAIXA_VALOR"
@@ -3036,10 +2409,10 @@ components:
               - interval: "3_FAIXA_VALOR"
                 rate: "0.3600"
               - interval: "4_FAIXA_VALOR"
-                rate: "0.7990"          
+                rate: "0.7990"
           minimumRate: "0.0056"
           maximumRate: "0.8565"
-          customers: 
+          customers:
             - frequency: "1_FAIXA_CLIENTE"
               rate: "0.1500"
             - frequency: "2_FAIXA_CLIENTE"
@@ -3110,7 +2483,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PersonalUnarrangedAccountOverdraftCompany'
-          description: Lista de instituições pertencentes à marca
+          description: Companies traz uma lista de todas as instituições da Marca
     PersonalUnarrangedAccountOverdraftCompany:
         type: object
         required:
@@ -3124,15 +2497,15 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/PersonalUnarrangedAccountOverdraft'
-            description: Lista de adiantamento de recebíveis
+            description: Lista de produtos e serviços referente adiantamento a depositante
     PersonalUnarrangedAccountOverdraft:
       type: object
       required:
-        - fee
+        - fees
         - interestRate
         - termsConditions
       properties:
-        fee:
+        fees:
           $ref: '#/components/schemas/PersonalUnarrangedAccountOverdraftFee'
         interestRate:
           $ref: '#/components/schemas/UnarrangedAccountOverdraftRate'
@@ -3144,11 +2517,16 @@ components:
           example: 'https://empresaa1.com/personal_unarranged_account_overdraft'
     PersonalUnarrangedAccountOverdraftFee:
       type: object
+      description: Objeto que reúne informações de tarifas de serviços
       required:
-        - priorityService
+        - priorityServices
       properties:
-        priorityService:
-          $ref: '#/components/schemas/UnarrangedAccountOverdraftService'
+        priorityServices:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnarrangedAccountOverdraftService'
+          minItems: 1
+          description: Lista das Tarifas cobradas sobre Serviços Prioritários
     Price:
       type: object
       required:
@@ -3163,28 +2541,11 @@ components:
           pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
           maxLength: 12
           x-cds-type: AmountString
-          description: 'Segundo Normativa nº 32, BCB, de 2020: Distribuição de frequência relativa dos valores de tarifas cobradas dos clientes, de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana em cada uma dessas faixas. Informando: 1ª faixa de valor, 2ª faixa de valor, 3ª faixa de valor e 4ª faixa de valor'
+          description: |
+            Valor da mediana de cada faixa relativa ao serviço ofertado, informado no período, conforme Res nº 32 BCB, 2020. p.ex. '45.00' (representa um valor monetário. p.ex: 1547368.92. Este valor, considerando que a moeda seja BRL, significa R$ 1.547.368,92. O único separador presente deve ser o '.' (ponto) para indicar a casa decimal. Não deve haver separador de milhar)
           example: '2000.00'
         currency:
           $ref:  "#/components/schemas/Currency"
-    AccountPrice:
-        type: object
-        required:
-          - interval
-          - value
-          - currency
-        properties:
-          interval:
-            $ref: '#/components/schemas/PriceIntervals'
-          value:
-            type: string
-            pattern: '^((\d{1,9}\.\d{2}){1})$'
-            maxLength: 12
-            x-cds-type: AmountString
-            description: 'Segundo Normativa nº 32, BCB, de 2020: Distribuição de frequência relativa dos valores de tarifas cobradas dos clientes, de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana em cada uma dessas faixas. Informando: 1ª faixa de valor, 2ª faixa de valor, 3ª faixa de valor e 4ª faixa de valor'
-            example: '2000.00'
-          currency:
-            $ref:  "#/components/schemas/Currency"
     MontlyPrice:
       type: object
       required:
@@ -3235,37 +2596,6 @@ components:
           example: '8800.00'
         currency:
           $ref:  "#/components/schemas/Currency"
-    AccountMinimumPrice:
-      type: object
-      required:
-        - value
-        - currency
-      properties:
-        value:
-          type: string
-          pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
-          maxLength: 12
-          x-cds-type: AmountString
-          description: Valor mínimo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
-          example: '1350.00'
-        currency:
-          $ref:  "#/components/schemas/Currency"
-    AccountMaximumPrice:
-      type: object
-      required:
-        - value
-        - currency
-      properties:
-        value:
-          type: string
-          pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
-          maxLength: 12
-          x-cds-type: AmountString
-          description: Valor máximo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
-          example: '8800.00'
-        currency:
-          $ref:  "#/components/schemas/Currency"
-
     Customer:
       type: object
       required:
@@ -3336,60 +2666,44 @@ components:
       example: BRL
     InterestRate:
       type: object
-      properties:
-        prices:
-          type: array
-          items:
-            type: object
-            required:
-              - interval
-              - rate
-            properties:
-              interval:
-                description: |
-                  Faixas para cobrança da taxa efetiva aplicada pela contratação do do crédito rotativo, no intervalo informado: 1ª faixa de valor, 2ª faixa de valor, 3ª faixa de valor e 4ª faixa de valor. Segundo Normativa nº32 de 2020: 'Distribuição de frequência relativa dos valores de tarifas e taxas de juros cobrados dos clientes, de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana e o percentual de clientes em cada uma dessas faixas.
-                type: string
-                enum:
-                  - 1_FAIXA_VALOR
-                  - 2_FAIXA_VALOR
-                  - 3_FAIXA_VALOR
-                  - 4_FAIXA_VALOR
-                example: '1_FAIXA_VALOR'
-              rate:
-                type: string
-                maxLength: 6
-                description: |
-                  Percentual que corresponde a mediana da taxa efetiva cobrada do cliente pela contratação dos Direitos Creditórios Descontados, no intervalo informado. A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.15. Este valor representa 15%. O valor 1 representa 100%)
-                pattern: '^([0-9](\.[0-9]{4})|NA)$'
-                example: '0.0987'
-        minimumRate:
-          type: string
-          maxLength: 6
-          description: |
-            Percentual mínimo cobrado (taxa efetiva) no mês de referência, para os Direitos Creditórios Descontados contratado  A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.15. Este valor representa 15%. O valor 1 representa 100%)
-          pattern: '^([0-9](\.[0-9]{4})|NA)$'
-          example: '0.0845'
-        maximumRate:
-          maxLength: 6
-          type: string
-          description: |
-            Percentual máximo cobrado (taxa efetiva) no mês de referência, para os Direitos Creditórios Descontados contratado  A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.15. Este valor representa 15%. O valor 1 representa 100%)
-          pattern: '^([0-9](\.[0-9]{4})|NA)$'
-          example: '0.9000'
-        fees:
-          type: array
-          description: Tarifas cobradas sobre Serviços ofertados
-          items:
-            $ref: '#/components/schemas/FeeReferentialRateIndexer'
-        customers:
-          type: array
-          items:
-            $ref: '#/components/schemas/Customer'
       required:
+        - fees
         - prices
         - minimumRate
         - maximumRate
-        - fees
+        - customers
+      properties:
+        fees:
+          type: array
+          description: Lista das taxas referenciais ou indexadores
+          items:
+            $ref: '#/components/schemas/FeeReferentialRateIndexer'
+          minItems: 1
+          maxItems: 19
+        prices:
+          type: array
+          description: Lista distribuição preços tarifas de serviços
+          items:
+            $ref:   "#/components/schemas/InterestRateApplication"
+          minItems: 4
+          maxItems: 4 
+        minimumRate:
+          type: string
+          format: '(^[0-9](\.[0-9]{4})$|^NA$)'
+          description: 'Percentual mínimo cobrado (taxa efetiva) no mês de referência, para o Financiamento contratado  A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)'
+          example: '0.0456'
+        maximumRate:
+          type: string
+          format: '(^[0-9](\.[0-9]{4})$|^NA$)'
+          description: 'Percentual máximo cobrado (taxa efetiva) no mês de referência, para o Financiamento contratado  A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)'
+          example: '0.6865'
+        customers:
+          type: array
+          description: Lista percentual de clientes por faixa de preço
+          items:
+            $ref: '#/components/schemas/Customer'
+          minItems: 4
+          maxItems: 4
     ReferentialRateIndexer:
       type: string
       description: |
@@ -3436,14 +2750,18 @@ components:
         rewardsProgram:
           $ref: '#/components/schemas/CreditCardRewardsProgram'
         fees:
-          type: array
-          items:
-            type: object
-            required:
-              - service
-            properties:
-              service:
+          type: object
+          description: Objeto que reúne informações de tarifas de serviços
+          required:
+            - services
+          properties:
+            services:
+              type: array
+              description: Lista das Tarifas cobradas sobre Serviço relacionadas a Modalidade de Pagamento Pós-Pagas
+              items:
                 $ref: '#/components/schemas/CreditCardService'
+              minItems: 1
+              maxItems: 8  
         interest:
           $ref: '#/components/schemas/CreditCardInterest'
         termsConditions:
@@ -3456,7 +2774,7 @@ components:
         name:
           type: string
           maxLength: 80
-          description: Nome da marca selecionada pela Organização
+          description: Nome da Marca selecionada pelas Organizações
           example: Organização A
     Company:
       type: object

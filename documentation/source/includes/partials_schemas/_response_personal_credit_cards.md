@@ -28,9 +28,9 @@
                 "hasRewardProgram": "string",
                 "rewardProgramInfo": "string"
               },
-              "fees": [
-                {
-                  "service": {
+              "fees": {
+                "services": [
+                  {
                     "name": "string",
                     "code": "string",
                     "chargingTriggerInfo": "string",
@@ -56,83 +56,79 @@
                       }
                     ]
                   }
-                }
-              ],
+                ]
+              },
               "interest": {
                 "feeRate": {
-                  "prices": [
-                    [
-                      {
-                        "interval": "string",
-                        "rate": "string"
-                      }
-                    ]
-                  ],
-                  "minimumRate": "string",
-                  "maximumRate": "string",
                   "fees": [
                     {
                       "referentialRateIndexer": "string",
                       "rate": "string"
                     }
                   ],
+                  "prices": [
+                    {
+                      "interval": "string",
+                      "rate": "string"
+                    }
+                  ],
+                  "minimumRate": "string",
+                  "maximumRate": "string",
                   "customers": [
                     {
-                      "frequency": "1_FAIXA_CLIENTE",
-                      "rate": "0.1500"
+                      "frequency": "string",
+                      "rate": "string"
                     }
                   ]
                 },
                 "instalmentRate": {
-                  "prices": [
-                    [
-                      {
-                        "interval": "string",
-                        "rate": "string"
-                      }
-                    ]
-                  ],
-                  "minimumRate": "string",
-                  "maximumRate": "string",
                   "fees": [
                     {
                       "referentialRateIndexer": "string",
                       "rate": "string"
                     }
                   ],
+                  "prices": [
+                    {
+                      "interval": "string",
+                      "rate": "string"
+                    }
+                  ],
+                  "minimumRate": "string",
+                  "maximumRate": "string",
                   "customers": [
                     {
-                      "frequency": "1_FAIXA_CLIENTE",
-                      "rate": "0.1500"
+                      "frequency": "string",
+                      "rate": "string"
                     }
                   ]
                 },
-                "interestRates": [{
-                  "code": "string",
-                  "additionalInfo": "string",
-                  "prices": [
-                    [
+                "interestRates": [
+                  {
+                    "code": "string",
+                    "additionalInfo": "string",
+                    "fees": [
+                      {
+                        "referentialRateIndexer": "string",
+                        "rate": "string"
+                      }
+                    ],  
+                    "prices": [
                       {
                         "interval": "string",
                         "rate": "string"
                       }
+                    ],
+                    "minimumRate": "string",
+                    "maximumRate": "string",
+                    "customers": [
+                      {
+                        "frequency": "string",
+                        "rate": "string"
+                      }
                     ]
-                  ],
-                  "minimumRate": "string",
-                  "maximumRate": "string",
-                  "fees": [
-                    {
-                      "referentialRateIndexer": "string",
-                      "rate": "string"
-                    }
-                  ],
-                  "customers": [
-                    {
-                      "frequency": "1_FAIXA_CLIENTE",
-                      "rate": "0.1500"
-                    }
-                  ]
-                }]
+                  }
+                ]
               },
               "termsConditions": {
                 "minimumFeeRate": "string",
@@ -163,7 +159,7 @@
 |     Nome          |  Tipo                                                       | Obrigatório  |                            Definição                                                                      |
 |:------------------|:----------------------------------------------------------- |:------------ |:--------------------------------------------------------------------------------------------------------- | 
 | data              | object                                                      | Sim          |                                                                                                           |
-| » brand           | [PersonalCreditCardBrand](#schemaPersonalCreditCardBrand) | Sim          | Dados da Marca selecionada que fornecem produtos e serviços de cartões de crédito para pessoa jurídica    |
+| » brand           | [PersonalCreditCardBrand](#schemaPersonalCreditCardBrand) | Sim          | Organização controladora do grupo de instituições financeiras    |
 | links             | [LinksPaginated](#schemaLinksPaginated)                     | Sim          |                                                                                                           |
 | meta              | [MetaPaginated](#schemaMetaPaginated)                       | Sim          |                                                                                                           |
 
@@ -195,9 +191,9 @@
             "hasRewardProgram": "string",
             "rewardProgramInfo": "string"
           },
-          "fees": [
-            {
-              "service": {
+          "fees": {
+            "services": [
+              {
                 "name": "string",
                 "code": "string",
                 "chargingTriggerInfo": "string",
@@ -223,83 +219,79 @@
                   }
                 ]
               }
-            }
-          ],
+            ]
+          },
           "interest": {
             "feeRate": {
-              "prices": [
-                [
-                  {
-                    "interval": "string",
-                    "rate": "string"
-                  }
-                ]
-              ],
-              "minimumRate": "string",
-              "maximumRate": "string",
               "fees": [
                 {
                   "referentialRateIndexer": "string",
                   "rate": "string"
                 }
               ],
+              "prices": [
+                {
+                  "interval": "string",
+                  "rate": "string"
+                }
+              ],
+              "minimumRate": "string",
+              "maximumRate": "string",
               "customers": [
                 {
-                  "frequency": "1_FAIXA_CLIENTE",
-                  "rate": "0.1500"
+                  "frequency": "string",
+                  "rate": "string"
                 }
               ]
             },
             "instalmentRate": {
-              "prices": [
-                [
-                  {
-                    "interval": "string",
-                    "rate": "string"
-                  }
-                ]
-              ],
-              "minimumRate": "string",
-              "maximumRate": "string",
               "fees": [
                 {
                   "referentialRateIndexer": "string",
                   "rate": "string"
                 }
               ],
+              "prices": [
+                {
+                  "interval": "string",
+                  "rate": "string"
+                }
+              ],
+              "minimumRate": "string",
+              "maximumRate": "string",
               "customers": [
                 {
-                  "frequency": "1_FAIXA_CLIENTE",
-                  "rate": "0.1500"
+                  "frequency": "string",
+                  "rate": "string"
                 }
               ]
             },
-            "interestRates": [{
-              "code": "string",
-              "additionalInfo": "string",
-              "prices": [
-                [
+            "interestRates": [
+              {
+                "code": "string",
+                "additionalInfo": "string",
+                "fees": [
+                  {
+                    "referentialRateIndexer": "string",
+                    "rate": "string"
+                  }
+                ],  
+                "prices": [
                   {
                     "interval": "string",
                     "rate": "string"
                   }
+                ],
+                "minimumRate": "string",
+                "maximumRate": "string",
+                "customers": [
+                  {
+                    "frequency": "string",
+                    "rate": "string"
+                  }
                 ]
-              ],
-              "minimumRate": "string",
-              "maximumRate": "string",
-              "fees": [
-                {
-                  "referentialRateIndexer": "string",
-                  "rate": "string"
-                }
-              ],
-              "customers": [
-                {
-                  "frequency": "1_FAIXA_CLIENTE",
-                  "rate": "0.1500"
-                }
-              ]
-            }]
+              }
+            ]
           },
           "termsConditions": {
             "minimumFeeRate": "string",
@@ -317,7 +309,7 @@
 |     Nome     |  Tipo                                                               | Obrigatório  |                            Definição                 |
 |:-------------|:--------------------------------------------------------------------|:-----------  |:---------------------------------------------------- |
 | name         | string                                                              | Sim          | Nome da Marca selecionada pelas Organizações         |
-| companies    | [[PersonalCreditCardCompanies](#schemaPersonalCreditCardCompanies)] | Sim          | Lista de instituições pertencentes a marca           |
+| companies    | [[PersonalCreditCardCompanies](#schemaPersonalCreditCardCompanies)] | Sim          | Companies traz uma lista de todas as instituições da Marca |
 
 ## PersonalCreditCardCompanies 
 <a id="schemaPersonalCreditCardCompanies"></a>
@@ -344,9 +336,9 @@
         "hasRewardProgram": "string",
         "rewardProgramInfo": "string"
       },
-      "fees": [
-        {
-          "service": {
+      "fees": {
+        "services": [
+          {
             "name": "string",
             "code": "string",
             "chargingTriggerInfo": "string",
@@ -372,83 +364,79 @@
               }
             ]
           }
-        }
-      ],
+        ]
+      },
       "interest": {
         "feeRate": {
-          "prices": [
-            [
-              {
-                "interval": "string",
-                "rate": "string"
-              }
-            ]
-          ],
-          "minimumRate": "string",
-          "maximumRate": "string",
           "fees": [
             {
               "referentialRateIndexer": "string",
               "rate": "string"
             }
           ],
+          "prices": [
+            {
+              "interval": "string",
+              "rate": "string"
+            }
+          ],
+          "minimumRate": "string",
+          "maximumRate": "string",
           "customers": [
             {
-              "frequency": "1_FAIXA_CLIENTE",
-              "rate": "0.1500"
+              "frequency": "string",
+              "rate": "string"
             }
           ]
         },
         "instalmentRate": {
-          "prices": [
-            [
-              {
-                "interval": "string",
-                "rate": "string"
-              }
-            ]
-          ],
-          "minimumRate": "string",
-          "maximumRate": "string",
           "fees": [
             {
               "referentialRateIndexer": "string",
               "rate": "string"
             }
           ],
+          "prices": [
+            {
+              "interval": "string",
+              "rate": "string"
+            }
+          ],
+          "minimumRate": "string",
+          "maximumRate": "string",
           "customers": [
             {
-              "frequency": "1_FAIXA_CLIENTE",
-              "rate": "0.1500"
+              "frequency": "string",
+              "rate": "string"
             }
           ]
         },
-        "interestRates": [{
-          "code": "string",
-          "additionalInfo": "string",
-          "prices": [
-            [
+        "interestRates": [
+          {
+            "code": "string",
+            "additionalInfo": "string",
+            "fees": [
+              {
+                "referentialRateIndexer": "string",
+                "rate": "string"
+              }
+            ],  
+            "prices": [
               {
                 "interval": "string",
                 "rate": "string"
               }
+            ],
+            "minimumRate": "string",
+            "maximumRate": "string",
+            "customers": [
+              {
+                "frequency": "string",
+                "rate": "string"
+              }
             ]
-          ],
-          "minimumRate": "string",
-          "maximumRate": "string",
-          "fees": [
-            {
-              "referentialRateIndexer": "string",
-              "rate": "string"
-            }
-          ],
-          "customers": [
-            {
-              "frequency": "1_FAIXA_CLIENTE",
-              "rate": "0.1500"
-            }
-          ]
-        }]
+          }
+        ]
       },
       "termsConditions": {
         "minimumFeeRate": "string",
@@ -466,7 +454,7 @@
 | name                 | string                                               | Sim            | Nome da instituição financeira     |
 | cnpjNumber           | string                                               | Sim            | CNPJ da instituição financeira     |
 | urlComplementaryList | string                                               | Não            | URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber |
-| personalCreditCards  | [[PersonalCreditCard](#schemaPersonalCreditCard)]  | Sim            | Lista  de cartões de crédito       |
+| personalCreditCards  | [[PersonalCreditCard](#schemaPersonalCreditCard)]  | Sim            | Lista das contas de pagamento pós-paga       |
 
 ## PersonalCreditCard
 <a id="schemaPersonalCreditCard"></a>
@@ -488,9 +476,9 @@
     "hasRewardProgram": "string",
     "rewardProgramInfo": "string"
   },
-  "fees": [
-    {
-      "service": {
+  "fees": {
+    "services": [
+      {
         "name": "string",
         "code": "string",
         "chargingTriggerInfo": "string",
@@ -516,83 +504,79 @@
           }
         ]
       }
-    }
-  ],
+    ]
+  },
   "interest": {
     "feeRate": {
-      "prices": [
-        [
-          {
-            "interval": "string",
-            "rate": "string"
-          }
-        ]
-      ],
-      "minimumRate": "string",
-      "maximumRate": "string",
       "fees": [
         {
           "referentialRateIndexer": "string",
           "rate": "string"
         }
       ],
+      "prices": [
+        {
+          "interval": "string",
+          "rate": "string"
+        }
+      ],
+      "minimumRate": "string",
+      "maximumRate": "string",
       "customers": [
         {
-          "frequency": "1_FAIXA_CLIENTE",
-          "rate": "0.1500"
+          "frequency": "string",
+          "rate": "string"
         }
       ]
     },
     "instalmentRate": {
-      "prices": [
-        [
-          {
-            "interval": "string",
-            "rate": "string"
-          }
-        ]
-      ],
-      "minimumRate": "string",
-      "maximumRate": "string",
       "fees": [
         {
           "referentialRateIndexer": "string",
           "rate": "string"
         }
       ],
+      "prices": [
+        {
+          "interval": "string",
+          "rate": "string"
+        }
+      ],
+      "minimumRate": "string",
+      "maximumRate": "string",
       "customers": [
         {
-          "frequency": "1_FAIXA_CLIENTE",
-          "rate": "0.1500"
+          "frequency": "string",
+          "rate": "string"
         }
       ]
     },
-    "interestRates": [{
-      "code": "string",
-      "additionalInfo": "string",
-      "prices": [
-        [
+    "interestRates": [
+      {
+        "code": "string",
+        "additionalInfo": "string",
+        "fees": [
+          {
+            "referentialRateIndexer": "string",
+            "rate": "string"
+          }
+        ],  
+        "prices": [
           {
             "interval": "string",
             "rate": "string"
           }
+        ],
+        "minimumRate": "string",
+        "maximumRate": "string",
+        "customers": [
+          {
+            "frequency": "string",
+            "rate": "string"
+          }
         ]
-      ],
-      "minimumRate": "string",
-      "maximumRate": "string",
-      "fees": [
-        {
-          "referentialRateIndexer": "string",
-          "rate": "string"
-        }
-      ],
-      "customers": [
-        {
-          "frequency": "1_FAIXA_CLIENTE",
-          "rate": "0.1500"
-        }
-      ]
-    }]
+      }
+    ]
   },
   "termsConditions": {
     "minimumFeeRate": "string",
@@ -608,7 +592,7 @@
 | name                  | string                                                                      | Sim         | Denominação/Identificação do nome da conta (cartão de crédito)            |
 | identification        | [PersonalCreditCardIdentification](#schemaPersonalCreditCardIdentification) | Sim         | Informações de identificação do cartão de crédito                         |
 | rewardsProgram        | [PersonalCreditCardRewardProgram](#schemaPersonalCreditCardRewardProgram)   | Sim         | Informações sobre programas de recompensa presentes no cartão de crédito  |
-| fees                  | [PersonalCreditCardFee](#schemaPersonalCreditCardFee)                       | Sim         | Informações sobre tarifas cobradas sobre o produto e serviços             |
+| fees                  | [PersonalCreditCardFee](#schemaPersonalCreditCardFee)                       | Sim         | Objeto que reúne informações de tarifas de serviços  |
 | interest              | [CreditCardInterest](#schemaCreditCardInterest)                             | Sim         | Informações sobre taxas de juros                                          |
 | termsConditions       | [CreditCardTermsConditions](#schemaCreditCardTermsConditions)               | Sim         | Informações sobre termos e condições para aquisição e cancelamento        |
 
@@ -726,11 +710,12 @@
 
 ```json
 {
-  "service": {
-    "name": "string",
-    "code": "string",
-    "chargingTriggerInfo": "string",
-    "prices": [
+  "services": [
+    {
+      "name": "string",
+      "code": "string",
+      "chargingTriggerInfo": "string",
+      "prices": [
         {
           "interval": "string",
           "value": "string",
@@ -751,13 +736,14 @@
           "rate": "string"
         }
       ]
-  }
+    }
+  ]
 }
 ```
 
 |     Nome   |  Tipo                                                               | Obrigatório     |    Definição                           |
 |:-----------|:--------------------------------------------------------------------|:----------------|:-------------------------------------- |
-| service    | [[PersonalCreditCardService](#schemaPersonalCreditCardService)]     | Sim             | Informações de tarifas sobre serviços  |
+| services    | [[PersonalCreditCardService](#schemaPersonalCreditCardService)]     | Sim             | Lista das Tarifas cobradas sobre Serviço relacionadas a Modalidade de Pagamento Pós-Pagas |
 
 ## PersonalCreditCardService
 <a id="schemaPersonalCreditCardService"></a>
@@ -796,10 +782,10 @@
 | name                | [Enum PersonalCreditCardFeesServiceName](#schemaEnumPersonalCreditCardFeesServiceName) | Sim         | Denominação de Serviços relacionados à Modalidade de Contas de Pagamento Pós-Pagas (Vide ENUM) |
 | code                | [Enum PersonalCreditCardFeesServiceCode](#schemaEnumPersonalCreditCardFeesServiceCode) | Sim         | Códigos de Serviços relacionados à Modalidade de Contas de Pagamento Pós-Pagas (Vide ENUM)               |
 | chargingTriggerInfo | string                                | Sim | Fatos geradores de cobrança que incidem sobre as Modalidades informadas de Contas de Pagamento Pós-Pagas para pessoa jurídica                  |
-| prices              | [[Price](#schemaPrice)]               | Sim | Informações sobre a tarifa cobrada, relativa ao serviço relacionado à Modalidade informada de Contas de Pagamento Pós-Pagas para pessoa jurídica  |
+| prices              | [[Price](#schemaPrice)]               | Sim | Lista distribuição preços tarifas de serviços |
 | minimum             | [[MinimumPrice](#schemaMinimumPrice)] | Sim | Valor mínimo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
 | maximum             | [[MaximumPrice](#schemaMaximumPrice)] | Sim | Valor máximo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type |
-| customers           | [[Customer](#schemaCustomer)]         | Sim |                                                                                              |
+| customers           | [[Customer](#schemaCustomer)]         | Sim | Lista percentual de clientes por faixa de preço |
 
 ### Enum PersonalCreditCardFeesServiceName
 <a id="schemaEnumPersonalCreditCardFeesServiceName"></a>

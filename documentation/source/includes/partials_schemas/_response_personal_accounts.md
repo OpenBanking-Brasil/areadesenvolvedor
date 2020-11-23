@@ -14,35 +14,9 @@
           "personalAccounts": [
             {
               "type": "string",
-              "fees": [
-                {
-                  "priorityService": {
-                    "name": "string",
-                    "code": "string",
-                    "chargingTriggerInfo": "string",
-                    "prices": [
-                      {
-                        "interval": "string",
-                        "value": "string",
-                        "currency": "string"
-                      }
-                    ],
-                    "minimum": {
-                      "value": "string",
-                      "currency": "string"
-                    },
-                    "maximum": {
-                      "value": "string",
-                      "currency": "string"
-                    },
-                    "customers": [
-                      {
-                        "frequency": "string",
-                        "rate": "string"
-                      }
-                    ]
-                  },
-                  "otherService": {
+              "fees": {
+                "priorityServices": [
+                  {
                     "name": "string",
                     "code": "string",
                     "chargingTriggerInfo": "string",
@@ -68,8 +42,36 @@
                       }
                     ]
                   }
-                }
-              ],
+                ],
+                "otherServices": [
+                  {
+                    "name": "string",
+                    "code": "string",
+                    "chargingTriggerInfo": "string",
+                    "prices": [
+                      {
+                        "interval": "string",
+                        "value": "string",
+                        "currency": "string"
+                      }
+                    ],
+                    "minimum": {
+                      "value": "string",
+                      "currency": "string"
+                    },
+                    "maximum": {
+                      "value": "string",
+                      "currency": "string"
+                    },
+                    "customers": [
+                      {
+                        "frequency": "string",
+                        "rate": "string"
+                      }
+                    ]
+                  }
+                ]
+              },
               "serviceBundles": [
                 {
                   "name": "string",
@@ -104,9 +106,13 @@
                   ]
                 }
               ],
-              "openingClosingChannels": "string",
+              "openingClosingChannels": [
+                "string"
+              ],
               "additionalInfo": "string",
-              "transactionMethods": "string",
+              "transactionMethods": [
+                "string"
+              ],
               "termsConditions": {
                 "minimumBalance": {
                   "value": "string",
@@ -142,7 +148,7 @@
 |     Nome          |  Tipo                                                  | Obrigatório  |                            Definição                  |
 |:------------      |:---------------------------------                      |:-----------  |:----------------------------------------------------  |
 | data              | object                                                 | Sim          |                                                       |
-| » brand           | [[PersonalAccountBrand](#schemaPersonalAccountBrand)]  | Sim          | Lista das organizações responsáveis pelas contas.       |
+| » brand           | [[PersonalAccountBrand](#schemaPersonalAccountBrand)]  | Sim          | Organização controladora do grupo de instituições financeiras.       |
 | links             | [[LinksPaginated](#schemaLinksPaginated)]              | Sim          |                                                       |
 | meta              | [MetaPaginated](#schemaMetaPaginated)                  | Sim          |                                                       |
 
@@ -160,35 +166,9 @@
       "personalAccounts": [
         {
           "type": "string",
-          "fees": [
-            {
-              "priorityService": {
-                "name": "string",
-                "code": "string",
-                "chargingTriggerInfo": "string",
-                "prices": [
-                  {
-                    "interval": "string",
-                    "value": "string",
-                    "currency": "string"
-                  }
-                ],
-                "minimum": {
-                  "value": "string",
-                  "currency": "string"
-                },
-                "maximum": {
-                  "value": "string",
-                  "currency": "string"
-                },
-                "customers": [
-                  {
-                    "frequency": "string",
-                    "rate": "string"
-                  }
-                ]
-              },
-              "otherService": {
+          "fees": {
+            "priorityServices": [
+              {
                 "name": "string",
                 "code": "string",
                 "chargingTriggerInfo": "string",
@@ -214,8 +194,36 @@
                   }
                 ]
               }
-            }
-          ],
+            ],
+            "otherServices": [
+              {
+                "name": "string",
+                "code": "string",
+                "chargingTriggerInfo": "string",
+                "prices": [
+                  {
+                    "interval": "string",
+                    "value": "string",
+                    "currency": "string"
+                  }
+                ],
+                "minimum": {
+                  "value": "string",
+                  "currency": "string"
+                },
+                "maximum": {
+                  "value": "string",
+                  "currency": "string"
+                },
+                "customers": [
+                  {
+                    "frequency": "string",
+                    "rate": "string"
+                  }
+                ]
+              }
+            ]
+          },
           "serviceBundles": [
             {
               "name": "string",
@@ -250,9 +258,13 @@
               ]
             }
           ],
-          "openingClosingChannels": "string",
+          "openingClosingChannels": [
+            "string"
+          ],
           "additionalInfo": "string",
-          "transactionMethods": "string",
+          "transactionMethods": [
+            "string"
+          ],
           "termsConditions": {
             "minimumBalance": {
               "value": "string",
@@ -288,35 +300,9 @@
   "personalAccounts": [
     {
       "type": "string",
-      "fees": [
-        {
-          "priorityService": {
-            "name": "string",
-            "code": "string",
-            "chargingTriggerInfo": "string",
-            "prices": [
-              {
-                "interval": "string",
-                "value": "string",
-                "currency": "string"
-              }
-            ],
-            "minimum": {
-              "value": "string",
-              "currency": "string"
-            },
-            "maximum": {
-              "value": "string",
-              "currency": "string"
-            },
-            "customers": [
-              {
-                "frequency": "string",
-                "rate": "string"
-              }
-            ]
-          },
-          "otherService": {
+      "fees": {
+        "priorityServices": [
+          {
             "name": "string",
             "code": "string",
             "chargingTriggerInfo": "string",
@@ -342,8 +328,36 @@
               }
             ]
           }
-        }
-      ],
+        ],
+        "otherServices": [
+          {
+            "name": "string",
+            "code": "string",
+            "chargingTriggerInfo": "string",
+            "prices": [
+              {
+                "interval": "string",
+                "value": "string",
+                "currency": "string"
+              }
+            ],
+            "minimum": {
+              "value": "string",
+              "currency": "string"
+            },
+            "maximum": {
+              "value": "string",
+              "currency": "string"
+            },
+            "customers": [
+              {
+                "frequency": "string",
+                "rate": "string"
+              }
+            ]
+          }
+        ]
+      },
       "serviceBundles": [
         {
           "name": "string",
@@ -378,9 +392,13 @@
           ]
         }
       ],
-      "openingClosingChannels": "string",
+      "openingClosingChannels": [
+        "string"
+      ],
       "additionalInfo": "string",
-      "transactionMethods": "string",
+      "transactionMethods": [
+        "string"
+      ],
       "termsConditions": {
         "minimumBalance": {
           "value": "string",
@@ -403,7 +421,7 @@
 | name            | string                                         | Sim          | Nome da Instituição, pertencente à marca, responsável pelas modalidades de Contas  para Pessoa Natural. p.ex.'Empresa da Organização A'   |
 | cnpjNumber      | string                                         | Sim          | O responsável pela comercialização das modalidades de Contas.                                                                             |
 | urlComplementaryList | string                                    | Não          | URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. Restrição: Será obrigatorimente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada |
-| PersonalAccounts| [PersonalAccount](#schemaPersonalAccount)      | Sim          | Lista de contas pessoa natural.                                      |
+| PersonalAccounts| [PersonalAccount](#schemaPersonalAccount)      | Sim          | Lista de tipos de conta                                     |
 
 
 ## PersonalAccount
@@ -412,35 +430,9 @@
 ```json
 {
   "type": "string",
-  "fees": [
-    {
-      "priorityService": {
-        "name": "string",
-        "code": "string",
-        "chargingTriggerInfo": "string",
-        "prices": [
-          {
-            "interval": "string",
-            "value": "string",
-            "currency": "string"
-          }
-        ],
-        "minimum": {
-          "value": "string",
-          "currency": "string"
-        },
-        "maximum": {
-          "value": "string",
-          "currency": "string"
-        },
-        "customers": [
-          {
-            "frequency": "string",
-            "rate": "string"
-          }
-        ]
-      },
-      "otherService": {
+  "fees": {
+    "priorityServices": [
+      {
         "name": "string",
         "code": "string",
         "chargingTriggerInfo": "string",
@@ -466,8 +458,36 @@
           }
         ]
       }
-    }
-  ],
+    ],
+    "otherServices": [
+      {
+        "name": "string",
+        "code": "string",
+        "chargingTriggerInfo": "string",
+        "prices": [
+          {
+            "interval": "string",
+            "value": "string",
+            "currency": "string"
+          }
+        ],
+        "minimum": {
+          "value": "string",
+          "currency": "string"
+        },
+        "maximum": {
+          "value": "string",
+          "currency": "string"
+        },
+        "customers": [
+          {
+            "frequency": "string",
+            "rate": "string"
+          }
+        ]
+      }
+    ]
+  },
   "serviceBundles": [
     {
       "name": "string",
@@ -502,9 +522,13 @@
       ]
     }
   ],
-  "openingClosingChannels": "string",
+  "openingClosingChannels": [
+    "string"
+  ],
   "additionalInfo": "string",
-  "transactionMethods": "string",
+  "transactionMethods": [
+    "string"
+  ],
   "termsConditions": {
     "minimumBalance": {
       "value": "string",
@@ -522,14 +546,14 @@
 
 |     Nome              |  Tipo                                          |  Obrigatório    |                            Descrição                  |
 |:----------------------|:-----------------------------------------------| :---------------|:------------------------------------------------------|
-| type                  | [Enum PersonalAccountType](#schemaPersonalAccountType) | Sim             | Tipos de contas ofertadas para pessoa natural, p.ex. 'CONTA_DEPOSITO_A_VISTA'. Conta de depósito à vista ou Conta corrente - é o tipo mais comum. Nela, o dinheiro fica à sua disposição para ser sacado a qualquer momento. Essa conta não gera rendimentos para o depositante Conta poupança - foi criada para estimular as pessoas a pouparem. O dinheiro que ficar na conta por trinta dias passa a gerar rendimentos, com isenção de imposto de renda para quem declara. Ou seja, o dinheiro “cresce” (rende) enquanto ficar guardado na conta. Cada depósito terá rendimentos de mês em mês, sempre no dia do mês em que o dinheiro tiver sido depositado Conta de pagamento pré-paga: segundo CIRCULAR Nº 3.680, BCB de  2013, é a 'destinada à execução de transações de pagamento em moeda eletrônica realizadas com base em fundos denominados em reais previamente aportados'  |
-| fees                  | [AccountFee](#schemaAccountFee) | Sim             | Lista Tarifas cobradas.                             |
-| serviceBundles         | [ServiceBundle](#schemaServiceBundle) | Sim             | Nome dos pacotes de serviços.                          |
-| openingClosingChannels   | [Enum OpeningClosingChannels ](#schemaEnumOpeningClosingChannels) | Sim             | Canais disponíveis para abertura e encerramento de contas, p.ex. 'DEPENDENCIAS_PROPRIAS' |
-| additionalInfo        | string                                         | Não             | Texto livre para complementar informação relativa ao Canal disponível, quando no campo ''openingClosingChannels'' estiver preenchida a opção ''Outros''<br>Restrição: Campo de preenchimento obrigatório se 'openingCloseChannels' estiver preenchida a opção 'OUTROS' |
-| transactionMethods    | [Enum TransactionMethods ](#schemaEnumTransactionMethods)                                         | Sim             | Lista de formas de movimentação possíveis para a conta |
-| termsConditions       | [AccountsTermsConditions](#schemaAccountTermsConditions) | Sim             | Termos e condições contratuais.                        |
-| incomeRates           | [PersonalAccountsIncomeRate](#schemapersonalaccountsincomerate) | Sim             | Valores dos percentuais de taxas.     |
+| type                  | [Enum AccountType](#schemaAccountType) | Sim             | Tipos de contas ofertadas para pessoa natural, p.ex. 'CONTA_DEPOSITO_A_VISTA'. <br>Conta de depósito à vista ou Conta corrente - é o tipo mais comum. Nela, o dinheiro fica à sua disposição para ser sacado a qualquer momento. Essa conta não gera rendimentos para o depositante. <br>Conta poupança - foi criada para estimular as pessoas a pouparem. O dinheiro que ficar na conta por trinta dias passa a gerar rendimentos, com isenção de imposto de renda para quem declara. Ou seja, o dinheiro “cresce” (rende) enquanto ficar guardado na conta. Cada depósito terá rendimentos de mês em mês, sempre no dia do mês em que o dinheiro tiver sido depositado. <br>Conta de pagamento pré-paga: segundo CIRCULAR Nº 3.680, BCB de  2013, é a 'destinada à execução de transações de pagamento em moeda eletrônica realizadas com base em fundos denominados em reais previamente aportados'  |
+| fees                  | [AccountFee](#schemaAccountFee) | Sim             | Objeto que reúne informações de tarifas de serviços                            |
+| serviceBundles         | [ServiceBundle](#schemaServiceBundle) | Sim             | Lista dos Pacotes de serviços                         |
+| openingClosingChannels   | [Enum OpeningClosingChannels ](#schemaEnumOpeningClosingChannels) | Sim             | Lista dos canais para aberturas e encerramento |
+| additionalInfo        | string                                         | Não             | Texto livre para complementar informação relativa ao Canal disponível, quando no campo ''openingClosingChannels'' estiver preenchida a opção ''Outros''. <br>Restrição: Campo de preenchimento obrigatório se ''openingCloseChannels'' estiver preenchida a opção ''OUTROS'' |
+| transactionMethods    | [Enum TransactionMethods ](#schemaEnumTransactionMethods)                                         | Sim             | Lista de formas de movimentação |
+| termsConditions       | [AccountsTermsConditions](#schemaAccountTermsConditions) | Sim             | Objeto que reúne informações relativas a Termos e Condições para as modalidades tratadas                       |
+| incomeRate           | [AccountsIncomeRate](#schemaAccountsIncomeRate) | Sim             | Valores dos percentuais de taxas.     |
 
 
 ## AccountFee
@@ -537,65 +561,69 @@
 
 ```json
 {
-  "priorityService": {
-    "name": "string",
-    "code": "string",
-    "chargingTriggerInfo": "string",
-    "prices": [
-      {
-        "interval": "string",
+  "priorityServices": [
+    {
+      "name": "string",
+      "code": "string",
+      "chargingTriggerInfo": "string",
+      "prices": [
+        {
+          "interval": "string",
+          "value": "string",
+          "currency": "string"
+        }
+      ],
+      "minimum": {
         "value": "string",
         "currency": "string"
-      }
-    ],
-    "minimum": {
-      "value": "string",
-      "currency": "string"
-    },
-    "maximum": {
-      "value": "string",
-      "currency": "string"
-    },
-    "customers": [
-      {
-        "frequency": "string",
-        "rate": "string"
-      }
-    ]
-  },
-  "otherService": {
-    "name": "string",
-    "code": "string",
-    "chargingTriggerInfo": "string",
-    "prices": [
-      {
-        "interval": "string",
+      },
+      "maximum": {
         "value": "string",
         "currency": "string"
-      }
-    ],
-    "minimum": {
-      "value": "string",
-      "currency": "string"
-    },
-    "maximum": {
-      "value": "string",
-      "currency": "string"
-    },
-    "customers": [
-      {
-        "frequency": "string",
-        "rate": "string"
-      }
-    ]
-  }
+      },
+      "customers": [
+        {
+          "frequency": "string",
+          "rate": "string"
+        }
+      ]
+    }
+  ],
+  "otherServices": [
+    {
+      "name": "string",
+      "code": "string",
+      "chargingTriggerInfo": "string",
+      "prices": [
+        {
+          "interval": "string",
+          "value": "string",
+          "currency": "string"
+        }
+      ],
+      "minimum": {
+        "value": "string",
+        "currency": "string"
+      },
+      "maximum": {
+        "value": "string",
+        "currency": "string"
+      },
+      "customers": [
+        {
+          "frequency": "string",
+          "rate": "string"
+        }
+      ]
+    }
+  ]
 }
 ```
 
 |     Nome         |  Tipo                              |  Obrigatório    |                       Descrição                     |
 |:-----------------|:-----------------------------------|:----------------|:----------------------------------------------------|
-| priorityService | [AccountPriorityService](#schemaAccountPriorityService) | Sim             | Lista Tarifas de serviços prioritários da conta                                 |
-| otherService    | [AccountOtherService](#schemaAccountOtherService) | Sim             | Lista Tarifas de outros serviços da conta                                 |
+| priorityServices | [AccountPriorityService](#schemaAccountPriorityService) | Sim             | Lista das Tarifas cobradas sobre Serviços Prioritários |
+| otherServices    | [AccountOtherService](#schemaAccountOtherService) | Sim             | Lista das Tarifas cobradas sobre outros Serviços, que não prioritários       |
 
 
 ## AccountPriorityService
@@ -724,12 +752,12 @@
 
 |     Nome           |  Tipo                                                               |  Obrigatório |                            Descrição                |
 |:-------------------|:-----------------------------                                       |:-------------|:----------------------------------------------------|
-| name               | string                                                              | Sim          | Nome do conjunto de serviços                        |
-| services           | [[ServiceBundleServiceDetail](#schemaservicebundleservicedetail)]         | Sim          | Lista de serviços       |
-| prices              | [MontlyPrice](#schemamontlyprice) | Sim          | Valor mensal da tarifa referente ao Pacote de Serviços |
+| name               | string                                                              | Sim          | Nome do Pacote de Serviços dado pela instituição.  |
+| services           | [[ServiceBundleServiceDetail](#schemaservicebundleservicedetail)]         | Sim          | Lista dos serviços que compõem o pacote de serviços. |
+| prices              | [MontlyPrice](#schemamontlyprice) | Sim          | Lista distribuição preços tarifas de serviços |
 | minimum             | [[MinimumPrice](#schemaMinimumPrice)]           | Sim          | Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. |
 | maximum             | [[MaximumPrice](#schemaMaximumPrice)]           | Sim          | Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. |
-|customers|[[Customer](#schemaCustomer)]| Sim |Percentual dos clientes de cada faixa relativa ao serviço ofertado |
+|customers|[[Customer](#schemaCustomer)]| Sim | Lista percentual de clientes por faixa de preço |
 
 ## ServiceBundleServiceDetail
 <a id="schemaservicebundleservicedetail"></a>
@@ -772,8 +800,8 @@
 |closingProcessInfo|string|Sim |Procedimentos de encerramento para o tipo de conta tratado. Possibilidade de inscrição da URL. Endereço eletrônico de acesso ao canal. p.ex. 'https://example.com/mobile-banking'|
 
 
-## PersonalAccountsIncomeRate
-<a id="schemapersonalaccountsincomerate"></a>
+## AccountsIncomeRate
+<a id="schemaAccountsIncomeRate"></a>
 
 ```json
 {
@@ -788,17 +816,21 @@
 |prepaidPaymentAccount  |string| Não |  Percentual em favor do titular da conta de pagamento pré-paga. Campo Livre.<br>Restrição: De preenchimento obrigatório para Conta do Tipo CONTA_PAGAMENTO_PRE_PAGA. Para os demais Tipos preencher com NA|
 
 
-### Enum PersonalAccountType
-<a id="schemaPersonalAccountType"></a>
+### Enum AccountType
+<a id="schemaAccountType"></a>
+
+Tipos de contas ofertadas para pessoa natural ou jurídica
 
 | Propriedade  | Valor                       | Definição                   |                
 |:-------------|:----------------------------|:----------------------------|
-| type         | CONTA_DEPOSITO_A_VISTA      | Conta de depósito à vista.              |
-| type         | CONTA_POUPANCA              | Conta Poupança.              |
-| type         | CONTA_PAGAMENTO_PRE_PAGA    | Conta de pagamento pré paga. |
+| type         | CONTA_DEPOSITO_A_VISTA      | Conta de depósito à vista ou Conta corrente - é o tipo mais comum. Nela, o dinheiro fica à sua disposição para ser sacado a qualquer momento. Essa conta não gera rendimentos para o depositante    |
+| type         | CONTA_POUPANCA              | Conta poupança - foi criada para estimular as pessoas a pouparem. O dinheiro que ficar na conta por trinta dias passa a gerar rendimentos, com isenção de imposto de renda para quem declara. Ou seja, o dinheiro “cresce” (rende) enquanto ficar guardado na conta. Cada depósito terá rendimentos de mês em mês, sempre no dia do mês em que o dinheiro tiver sido depositado |
+| type         | CONTA_PAGAMENTO_PRE_PAGA    | Conta de pagamento pré-paga: segundo CIRCULAR Nº 3.680, BCB de  2013, é a 'destinada à execução de transações de pagamento em moeda eletrônica realizadas com base em fundos denominados em reais previamente aportados. |
 
 ### Enum OpeningClosingChannels 
 <a id="schemaEnumOpeningClosingChannels"></a>
+
+Canais disponíveis para abertura e encerramento de contas, p.ex. 'DEPENDENCIAS_PROPRIAS'
 
 | Propriedade              | Valor                     | Definição                  |                     
 |:-------------------------|:--------------------------|:---------------------------|
@@ -812,6 +844,8 @@
 
 ### Enum TransactionMethods  
 <a id="schemaEnumTransactionMethods"></a>
+
+Lista de formas de movimentação possíveis para a conta, p.ex. 'MOVIMENTACAO_CARTÃO'.
 
 | Propriedade          | Valor                     | Definição                  |                     
 |:---------------------|:--------------------------|:---------------------------|
