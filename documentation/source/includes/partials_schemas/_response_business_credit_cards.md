@@ -159,7 +159,7 @@
 |     Nome          |  Tipo                                                       | Obrigatório  |                            Definição                                                                      |
 |:------------------|:----------------------------------------------------------- |:------------ |:--------------------------------------------------------------------------------------------------------- | 
 | data              | object                                                      | Sim          |                                                                                                           |
-| » brand           | [BusinessCreditCardBrand](#schemaBusinessCreditCardBrand) | Sim          | Dados da Marca selecionada que fornecem produtos e serviços de cartões de crédito para pessoa jurídica    |
+| » brand           | [BusinessCreditCardBrand](#schemaBusinessCreditCardBrand) | Sim          | Organização controladora do grupo de instituições financeiras    |
 | links             | [LinksPaginated](#schemaLinksPaginated)                     | Sim          |                                                                                                           |
 | meta              | [MetaPaginated](#schemaMetaPaginated)                       | Sim          |                                                                                                           |
 

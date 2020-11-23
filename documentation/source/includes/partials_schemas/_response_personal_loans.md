@@ -95,7 +95,7 @@
 |     Nome      |  Tipo                                                  | Obrigatório  |                            Definição                  |
 |:------------  |:---------------------------------                      |:-----------  |:----------------------------------------------------  |
 | data          | object                                                 | Sim          |                                                       |
-|   brand       | [PersonalLoanBrand](#schemaPersonalLoanBrand)          | Sim          | Organização titular das dependências                                            |
+|   brand       | [PersonalLoanBrand](#schemaPersonalLoanBrand)          | Sim          | Organização controladora do grupo de instituições financeiras                                            |
 | links         | [LinksPaginated](#schemaLinksPaginated)                | Sim          |                                                       |
 | meta          | [MetaPaginated](#schemaMetaPaginated)                  | Sim          |                                                       |
 
@@ -345,7 +345,7 @@
 | Propriedade  | Código                        | Definição
 |:------------ |:------                       |:------
 | type         | EMPRESTIMO_CREDITO_PESSOAL_CONSIGNADO  | Crédito pessoal consignado
-| type         | EMPRESTIMO_CREDITO_PESSOAL_SEM_CONSIGNACAO  | Crédito pessoal não consignado
+| type         | EMPRESTIMO_CREDITO_PESSOAL_SEM_CONSIGNACAO  | crédito pessoal sem consignação
 | type         | EMPRESTIMO_HOME_EQUITY | Home equity
 | type         | EMPRESTIMO_MICROCREDITO_PRODUTIVO_ORIENTADO | Microcrédito produtivo orientado
 | type         | EMPRESTIMO_CHEQUE_ESPECIAL | Cheque especial

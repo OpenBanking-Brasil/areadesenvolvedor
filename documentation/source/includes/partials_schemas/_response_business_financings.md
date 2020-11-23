@@ -406,7 +406,7 @@
 
 |     Nome |  Tipo                                                            | Obrigatório    |    Definição |
 |:---------|:---------------------------------------------------------------- |:-------------- |:------------ |
-| services | [BusinessFinancingFeeService](#schemaBusinessFinancingFeeService)| Sim            | Serviço      |
+| services | [BusinessFinancingFeeService](#schemaBusinessFinancingFeeService)| Sim            | Lista das Tarifas cobradas sobre Serviços      |
 
 ## BusinessFinancingFeeService 
 <a id="schemaBusinessFinancingFeeService"></a>

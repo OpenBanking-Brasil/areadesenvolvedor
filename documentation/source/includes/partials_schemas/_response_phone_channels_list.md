@@ -57,7 +57,7 @@
 |     Nome        |  Tipo                                                       | Obrigatório  |                            Definição                  |
 |:------------    |:---------------------------------                           |:-----------  |:----------------------------------------------------  |
 | data            | object                                                      | Sim          |                                                       |
-| brand         | [[PhoneChannelsBrand](#schemaPhoneChannelsBrand)]   | Sim          | Lista das organizações titulares das dependências.      |
+| brand         | [[PhoneChannelsBrand](#schemaPhoneChannelsBrand)]   | Sim          | Organização controladora do grupo de instituições financeiras.      |
 | links           | [[LinksPaginated](#schemaLinksPaginated)]                   | Sim          |                                                       |
 | meta            | [MetaPaginated](#schemaMetaPaginated)                     | Sim          |                                                       |
 
