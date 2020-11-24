@@ -17,7 +17,7 @@
                 "identification": {
                   "type": "string",
                   "additionalInfo": "string",
-                  "url": [
+                  "urls": [
                     "string"
                   ]
                 },
@@ -72,7 +72,7 @@
           "identification": {
             "type": "string",
             "additionalInfo": "string",
-            "url": [
+            "urls": [
               "string"
             ]
           },
@@ -108,7 +108,7 @@
       "identification": {
         "type": "string",
         "additionalInfo": "string",
-        "url": [
+        "urls": [
           "string"
         ]
       },
@@ -139,7 +139,7 @@
   "identification": {
     "type": "string",
     "additionalInfo": "string",
-    "url": [
+    "urls": [
       "string"
     ]
   },
@@ -165,7 +165,7 @@
 {
   "type": "string",
   "additionalInfo": "string",
-  "url": [
+  "urls": [
     "string"
   ]
 }
@@ -175,7 +175,7 @@
 |:------------    |:---------------------------------                                 |:----------- |:--------------------------------------------------                                    |:------------------------------------                                                                                                                                                      |
 | type            | [Enum ElectronicChannelsType](#schemaElectronicChannelsType)      | Sim         | Tipo de canal de atendimento.                                                         | O Tipo de Canal determina o Tipo de Acesso a ele relacionado: URL para acesso ao internet banking, URL para aquisição do app, URL da central,URL do SAC, URL da ouvidoria, URL para chat. |
 | additionalInfo  | string                                                            | Não         | Campo de texto livre para descrever quando o tipo de canal de atendimento for Outros  | Só será preenchido quando o tipo de canal de atendimento for Outros .                                                                                                                     |
-| url             | string                                                            | Sim         | Endereço eletrônico de acesso ao canal.                                               |                                                                                                                                                                                           |
+| urls            | [string]                                                          | Sim         | Lista das URLs que atendem um tipo de canal eletrônico selecionado                    |                                                                                                                                                                                           |
 
 ### Enum ElectronicChannelsType
 <a id="schemaElectronicChannelsType"></a>
