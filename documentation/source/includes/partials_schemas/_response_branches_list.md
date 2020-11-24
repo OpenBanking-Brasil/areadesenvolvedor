@@ -161,10 +161,10 @@
 | Nome      | Tipo                                            | Obrigatório | Definição                                                                                                                                                                                                                         |
 | :-------- | :---------------------------------------------- | :---------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | name      | string                                          | Sim         | Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a 'marca' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes |
-| companies | [[BranchesCompanies](#schemaBranchesCompanies)] | Sim         | Companies traz uma lista de todas as instuituições da Marca                                                                                                                                                                       |
+| companies | [[BranchesCompany](#schemaBranchesCompany)] | Sim         | Companies traz uma lista de todas as instuituições da Marca                                                                                                                                                                       |
 
-## BranchesCompanies 
-<a id="schemaBranchesCompanies"></a>
+## BranchesCompany 
+<a id="schemaBranchesCompany"></a>
 
 ```json
 {
