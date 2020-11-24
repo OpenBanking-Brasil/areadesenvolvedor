@@ -292,7 +292,7 @@
 | identification | [BranchIdentification](#schemaBranchIdentification) | Sim         | Dados de identificação na dependência.                               |
 | postalAddress  | [BranchPostalAddress](#schemaBranchPostalAddress)   | Sim         | Endereço na dependência.                                             |
 | availability   | [BranchAvailability](#schemaBranchAvailability)     | Sim         | Dias e horários de funcionamento na dependência.                     |
-| phones         | [[BranchPhone](#schemaBranchPhone)]                 | Não         | Lista de telefones para contato com a dependência.                   |
+| phones         | [[BranchPhone](#schemaBranchPhone)]                 | Sim         | Lista de telefones para contato com a dependência.                   |
 | services       | [[BranchServices](#schemaBranchServices)]           | Sim         | Traz a relação de serviços disponbilizados pelo Canal de Atendimento |
 
 ## BranchIdentification 
