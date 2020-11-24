@@ -161,7 +161,7 @@
 | Nome      | Tipo                                            | Obrigatório | Definição                                                                                                                                                                                                                         |
 | :-------- | :---------------------------------------------- | :---------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | name      | string                                          | Sim         | Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a 'marca' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes |
-| companies | [[BranchesCompany](#schemaBranchesCompany)] | Sim         | Companies traz uma lista de todas as instuituições da Marca                                                                                                                                                                       |
+| companies | [[BranchesCompany](#schemaBranchesCompany)]     | Sim         | Companies traz uma lista de todas as instuituições da Marca                                                                                                                                                                       |
 
 ## BranchesCompany 
 <a id="schemaBranchesCompany"></a>
@@ -287,13 +287,13 @@
 }
 ```
 
-| Propriedade | Código                             | Definição                              |
-| :---------- | :--------------------------------- | :------------------------------------- |
-| identification | [BranchIdentification](#schemaBranchIdentification) | Sim         | Dados de identificação na dependência.             |
-| postalAddress  | [BranchPostalAddress](#schemaBranchPostalAddress)   | Sim         | Endereço na dependência.                           |
-| availability   | [BranchAvailability](#schemaBranchAvailability)     | Sim         | Dias e horários de funcionamento na dependência.   |
-| phones         | [BranchPhone](#schemaBranchPhone)                   | Não         | Lista de telefones para contato com a dependência. |
-| services        | [BranchServices](#schemaBranchServices)             | Sim         | Serviços fornecidos na dependência.                |
+| Propriedade    | Código                                              | Obrigatório | Definição                                                            |
+| :------------- | :-------------------------------------------------- | :---------- |:-------------------------------------------------------------------- |
+| identification | [BranchIdentification](#schemaBranchIdentification) | Sim         | Dados de identificação na dependência.                               |
+| postalAddress  | [BranchPostalAddress](#schemaBranchPostalAddress)   | Sim         | Endereço na dependência.                                             |
+| availability   | [BranchAvailability](#schemaBranchAvailability)     | Sim         | Dias e horários de funcionamento na dependência.                     |
+| phones         | [[BranchPhone](#schemaBranchPhone)]                 | Não         | Lista de telefones para contato com a dependência.                   |
+| services       | [[BranchServices](#schemaBranchServices)]           | Sim         | Traz a relação de serviços disponbilizados pelo Canal de Atendimento |
 
 ## BranchIdentification 
 <a id="schemaBranchIdentification"></a>
