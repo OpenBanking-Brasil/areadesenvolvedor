@@ -380,12 +380,12 @@
 
 | Nome                  | Tipo                                   | Obrigatório | Descrição                                                                                                                                                                                                     |
 | :-------------------- | :------------------------------------- | :---------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| standards             | Array                                  | Sim         | Lista com os dias da semana.                                                                                                                                                                                  |
+| standards             | Array                                  | Sim         | Lista disponibilidade padrão da depêndencia por dias da semana                                                                                                                                                |
 | weekday               | [[Enum WeekDay](#schemaWeekDay)]       | Sim         | Em formato texto, seguindo o domínio apresentado, devem ser colocados os dias da semana                                                                                                                       |
 | openingTime           | [[TimeString](#commonFieldTimeString)] | Sim         | Horário padrão de início de atendimento da Dependência. (Uma string que representa a hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format). p.ex. '10:00:57Z')       |
 | closingTime           | [[TimeString](#commonFieldTimeString)] | Sim         | Horário padrão de encerramento de atendimento da Dependência. (Uma string que representa a hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format). p.ex. '16:00:57Z') |
 | exception             | string                                 | Sim         | Em campo texto devem ser registradas todas as Exceções para o não atendimento. p.ex. 'Exceto feriados municipais, nacionais e estaduais'                                                                      |
-| isPublicAccessAllowed | boolean                                | Sim         | Indica se a instalação do Correspondente Bancário tem acesso restrito a clientes, por exemplo. p.ex. false (restrito)                                                                                         |
+| isPublicAccessAllowed | boolean                                | Não         | Indica se a instalação do Correspondente Bancário tem acesso restrito a clientes, por exemplo. p.ex. false (restrito)                                                                                         |
 
 ## Enum WeekDay
 <a id="schemaWeekDay"></a>
