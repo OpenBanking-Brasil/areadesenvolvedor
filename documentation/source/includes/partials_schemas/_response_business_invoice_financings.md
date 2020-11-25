@@ -34,13 +34,7 @@
                     "maximum": {
                       "value": "string",
                       "currency": "string"
-                    },
-                    "customers": [
-                      {
-                        "frequency": "string",
-                        "rate": "string"
-                      }
-                    ]
+                    }
                   }
                 ]
               },
@@ -125,13 +119,7 @@
                 "maximum": {
                   "value": "string",
                   "currency": "string"
-                },
-                "customers": [
-                  {
-                    "frequency": "string",
-                    "rate": "string"
-                  }
-                ]
+                }
               }
             ]
           },
@@ -198,13 +186,7 @@
             "maximum": {
               "value": "string",
               "currency": "string"
-            },
-            "customers": [
-              {
-                "frequency": "string",
-                "rate": "string"
-              }
-            ]
+            }
           }
         ]
       },
@@ -266,13 +248,7 @@
         "maximum": {
           "value": "string",
           "currency": "string"
-        },
-        "customers": [
-          {
-            "frequency": "string",
-            "rate": "string"
-          }
-        ]
+        }
       }
     ]
   },
