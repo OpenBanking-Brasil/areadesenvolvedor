@@ -24,7 +24,10 @@
                       {
                         "interval": "string",
                         "value": "string",
-                        "currency": "string"
+                        "currency": "string",
+                        "customers": {
+                          "rate": "string"
+                        }
                       }
                     ],
                     "minimum": {
@@ -109,7 +112,10 @@
                   {
                     "interval": "string",
                     "value": "string",
-                    "currency": "string"
+                    "currency": "string",
+                    "customers": {
+                      "rate": "string"
+                    }
                   }
                 ],
                 "minimum": {
@@ -176,7 +182,10 @@
               {
                 "interval": "string",
                 "value": "string",
-                "currency": "string"
+                "currency": "string",
+                "customers": {
+                  "rate": "string"
+                }
               }
             ],
             "minimum": {
@@ -238,7 +247,10 @@
           {
             "interval": "string",
             "value": "string",
-            "currency": "string"
+            "currency": "string",
+            "customers": {
+              "rate": "string"
+            }
           }
         ],
         "minimum": {
@@ -330,7 +342,10 @@
         {
           "interval": "string",
           "value": "string",
-          "currency": "string"
+          "currency": "string",
+          "customers": {
+            "rate": "string"
+          }
         }
       ],
       "minimum": {
@@ -362,7 +377,10 @@
     {
       "interval": "string",
       "value": "string",
-      "currency": "string"
+      "currency": "string",
+      "customers": {
+        "rate": "string"
+      }
     }
   ],
   "minimum": {
