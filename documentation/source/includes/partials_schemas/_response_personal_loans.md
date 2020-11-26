@@ -34,13 +34,7 @@
                     "maximum": {
                       "value": "string",
                       "currency": "string"
-                    },
-                    "customers": [
-                      {
-                        "frequency": "string",
-                        "rate": "string"
-                      }
-                    ]
+                    }
                   }
                 ]
               },
@@ -133,13 +127,7 @@
                 "maximum": {
                   "value": "string",
                   "currency": "string"
-                },
-                "customers": [
-                  {
-                    "frequency": "string",
-                    "rate": "string"
-                  }
-                ]
+                }
               }
             ]
           },
@@ -214,13 +202,7 @@
             "maximum": {
               "value": "string",
               "currency": "string"
-            },
-            "customers": [
-              {
-                "frequency": "string",
-                "rate": "string"
-              }
-            ]
+            }
           }
         ]
       },
@@ -290,13 +272,7 @@
         "maximum": {
           "value": "string",
           "currency": "string"
-        },
-        "customers": [
-          {
-            "frequency": "string",
-            "rate": "string"
-          }
-        ]
+        }
       }
     ]
   },
@@ -396,13 +372,7 @@
       "maximum": {
         "value": "string",
         "currency": "string"
-      },
-      "customers": [
-        {
-          "frequency": "string",
-          "rate": "string"
-        }
-      ]
+      }
     }
   ]
 }
@@ -483,10 +453,10 @@
 ```
 
 | Nome                | Tipo                                                            | Obrigatório | Definição                                                                                                                                                                                                                                                                                                                                     |
-|:----------------    |:------                                                          |:----------- |:-------------------------------                                                                                                                                                                                                                                                                                                               |
+|:----------------    |:--------------------------------------------------------------- |:----------- |:-------------------------------                                                                                                                                                                                                                                                                                                               |
 | fees                | [[FeeReferentialRateIndexer](#schemaFeeReferentialRateIndexer)] | Sim         | Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial ou Indexador (Indx), do Documento 3040                                                                                                                                                                                                                         |
 | applications        | [[Application](#schemaApplication)]                             | Sim         | Lista  das faixas de cobrança da taxa efetiva aplicada pela contratação de crédito.                                                                                                                                                                                                                                                           | 
 | minimumRate         | string                                                          | Sim         | Percentual mínimo cobrado (taxa efetiva) no mês de referência, para o Empréstimo contratado. A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%) | 
 | maximumRate         | string                                                          | Sim         | Percentual máximo cobrado (taxa efetiva) no mês de referência, para o Empréstimo contratado. A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%) | 
-| customers           | [[Customer](#schemaCustomer)]                                   | Sim          | Lista percentual de clientes por faixa de valores de tarifas pagos                                                           | NA
+| customers           | [[Customer](#schemaCustomer)]                                   | Sim         | Lista percentual de clientes por faixa de valores de tarifas pagos                                                           | NA
 
