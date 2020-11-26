@@ -647,16 +647,16 @@ components:
                           code: "TALAO_DOMICILIO"
                           chargingTriggerInfo: "Por remessa"
                           prices:
-                            - interval: 1_FAIXA_VALOR
+                            - interval: 1_FAIXA
                               value: '55.40'
                               currency: BRL
-                            - interval: 2_FAIXA_VALOR
+                            - interval: 2_FAIXA
                               value: '65.00'
                               currency: BRL
-                            - interval: 3_FAIXA_VALOR
+                            - interval: 3_FAIXA
                               value: '69.00'
                               currency: BRL
-                            - interval: 4_FAIXA_VALOR
+                            - interval: 4_FAIXA
                               value: '72.00'
                               currency: BRL
                           minimum:
@@ -694,16 +694,16 @@ components:
                             eventLimitQuantity: '999999'
                             freeEventQuantity: '2'
                         prices:
-                          - interval: 1_FAIXA_VALOR
+                          - interval: 1_FAIXA
                             monthlyFee: '50.00'
                             currency: BRL
-                          - interval: 2_FAIXA_VALOR
+                          - interval: 2_FAIXA
                             monthlyFee: '65.40'
                             currency: BRL
-                          - interval: 3_FAIXA_VALOR
+                          - interval: 3_FAIXA
                             monthlyFee: '75.40'
                             currency: BRL
-                          - interval: 4_FAIXA_VALOR
+                          - interval: 4_FAIXA
                             monthlyFee: '83.00'
                             currency: BRL
                         minimum:
@@ -1195,15 +1195,24 @@ components:
       properties:
         interval:
           $ref: '#/components/schemas/ApplicationIntervals'
-        rate:
-          type: string
-          format: '(^[0-9](\.[0-9]{4})$|^NA$)'
-          description: |
-            Percentual que corresponde a mediana da taxa efetiva cobrada do cliente pela contratação do crédito, no intervalo informado. p.ex. '0,8700%' A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)'
-          example: '0.0987'
+        indexer:
+          $ref: '#/components/schemas/Indexer'
+        customers:
+          $ref: '#/components/schemas/Customer'
       required:
         - interval
         - rate
+        - customers
+    Indexer:
+      type: object
+      properties:
+        rate:
+          type: string
+          format: '(^[0-9](\.[0-9]{4})$|^NA$)'
+          maxLength: 6
+          description: |
+            Percentual que corresponde a mediana da taxa efetiva cobrada do cliente pela contratação do crédito, no intervalo informado. p.ex. '0,8700%'. A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)
+          example: '0.8700'
     InterestRateFee:
       type: object
       properties:
@@ -1243,22 +1252,22 @@ components:
     PriceIntervals:
       type: string
       enum:
-        - 1_FAIXA_VALOR
-        - 2_FAIXA_VALOR
-        - 3_FAIXA_VALOR
-        - 4_FAIXA_VALOR
+        - 1_FAIXA
+        - 2_FAIXA
+        - 3_FAIXA
+        - 4_FAIXA
       description: |
-        Segundo Normativa nº 32, BCB, de 2020: Distribuição de frequência relativa dos valores de tarifas cobradas dos clientes, de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana em cada uma dessas faixas. Informando: 1ª faixa de valor, 2ª faixa de valor, 3ª faixa de valor e 4ª faixa de valor
-      example: 1_FAIXA_VALOR
+        Segundo Normativa nº 32, BCB, de 2020: Distribuição de frequência relativa dos valores de tarifas cobradas dos clientes, de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana em cada uma dessas faixas. Informando: 1ª faixa, 2ª faixa, 3ª faixa e 4ª faixa
+      example: 1_FAIXA
     ApplicationIntervals:
       type: string
       enum:
-        - 1_FAIXA_VALOR
-        - 2_FAIXA_VALOR
-        - 3_FAIXA_VALOR
-        - 4_FAIXA_VALOR
+        - 1_FAIXA
+        - 2_FAIXA
+        - 3_FAIXA
+        - 4_FAIXA
       description: |
-        Faixas para cobrança da taxa efetiva aplicada pela contratação do crédito, no intervalo informado: 1ª faixa de valor, 2ª faixa de valor, 3ª faixa de valor e 4ª faixa de valor. Segundo Normativa nº32 de 2020: 'Distribuição de frequência relativa dos valores de tarifas e taxas de juros cobrados dos clientes, de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana e o percentual de clientes em cada uma dessas faixas.
+        Faixas para cobrança da taxa efetiva aplicada pela contratação do crédito, no intervalo informado: 1ª faixa, 2ª faixa, 3ª faixa e 4ª faixa. Segundo Normativa nº32 de 2020: 'Distribuição de frequência relativa dos valores de tarifas e taxas de juros cobrados dos clientes, de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana e o percentual de clientes em cada uma dessas faixas. 
     RequiredWarranty:
       type: string
       enum:
@@ -1749,14 +1758,22 @@ components:
           items:
             $ref: '#/components/schemas/ApplicationRate'
           example:
-            - interval: 1_FAIXA_VALOR
+            - interval: 1_FAIXA
               rate: '0.0987'
-            - interval: 2_FAIXA_VALOR
+              customers:
+                rate: '0.1500'
+            - interval: 2_FAIXA
               rate: '0.1600'
-            - interval: 3_FAIXA_VALOR
+              customers:
+                rate: '0.3500'
+            - interval: 3_FAIXA
               rate: '0.3600'
-            - interval: 4_FAIXA_VALOR
+              customers:
+                rate: '0.2000'
+            - interval: 4_FAIXA
               rate: '0.5890'
+              customers:
+                rate: '0.3000'
         minimumRate:
           type: string
           format: '(^[0-9](\.[0-9]{4})$|^NA$)'
@@ -1977,7 +1994,6 @@ components:
         - prices
         - minimum
         - maximum
-        - customers
       properties:
         name:
           type: string
@@ -2012,13 +2028,6 @@ components:
           type: object
           items:
             $ref: '#/components/schemas/MaximumPrice'
-        customers:
-          type: array
-          items:
-            $ref: '#/components/schemas/Customer'
-          minItems: 4
-          maxItems: 4
-          description: Lista percentual de clientes por faixa de preço
     PersonalInvoiceFinancingsInterestRates:
       type: object
       description: Taxas de juros remuneratórias
@@ -2049,19 +2058,11 @@ components:
             Percentual máximo cobrado (taxa efetiva) no mês de referência, para os Direitos Creditórios Descontados contratado  A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.15. Este valor representa 15%. O valor 1 representa 100%)
           pattern: '(^[0-9](\.[0-9]{4})$|^NA$)'
           example: '0.6865'
-        customers:
-          type: array
-          description: Lista percentual de cliente por faixa referente a  taxa remuneratória
-          items:
-            $ref: '#/components/schemas/Customer'
-          minItems: 4
-          maxItems: 4
       required:
         - fees
         - applications
         - minimumRate
         - maximumRate
-        - customers
     ResponseBusinessInvoiceFinancings:
       type: object
       required:
@@ -2113,7 +2114,7 @@ components:
             $ref: '#/components/schemas/BusinessInvoiceFinancings'
           minItems: 1
           maxItems: 5
-          description: Lista de Modalidades de Direitos Creditórios
+          description: Lista de Modalidades de Direitos Creditórios Descontados
     BusinessInvoiceFinancings:
       type: object
       required:
@@ -2151,7 +2152,7 @@ components:
           example: 'https://empresaa1.com/personal_invoice_financings'
     BusinessInvoiceFinancingsFees:
       type: object
-      description: Objeto que reúne informações relativas a Termos e Condições para as modalidades tratadas
+      description: Objeto que reúne informações de tarifas de serviços
       required:
         - services
       properties:
@@ -2190,19 +2191,11 @@ components:
             Percentual máximo cobrado (taxa efetiva) no mês de referência, para os Direitos Creditórios Descontados contratado  A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.15. Este valor representa 15%. O valor 1 representa 100%)
           pattern: '(^[0-9](\.[0-9]{4})$|^NA$)'
           example: '0.6865'
-        customers:
-          type: array
-          description: Lista percentual de cliente por faixa referente a  taxa remuneratória
-          items:
-            $ref: '#/components/schemas/Customer'
-          minItems: 4
-          maxItems: 4
       required:
         - fees
         - applications
         - minimumRate
         - maximumRate
-        - customers
     ResponseBusinessUnarrangedAccountOverdraft:
       type: object
       required:
@@ -2333,16 +2326,16 @@ components:
         code: ADIANT_DEPOSITANTE
         chargingTriggerInfo: Levantamento de informações e avaliação de viabilidade e de riscos para a concessão de crédito em caráter emergencial para cobertura de saldo devedor em conta de depósitos à vista e de excesso sobre o limite previamente pactuado de cheque especial, cobrada no máximo uma vez nos últimos trinta dias
         prices:
-          - interval: 1_FAIXA_VALOR
+          - interval: 1_FAIXA
             value: "500.00"
             currency: BRL
-          - interval: 2_FAIXA_VALOR
+          - interval: 2_FAIXA
             value: "860.00"
             currency: BRL
-          - interval: 3_FAIXA_VALOR
+          - interval: 3_FAIXA
             value: "1090.40"
             currency: "BRL"
-          - interval: 4_FAIXA_VALOR
+          - interval: 4_FAIXA
             value: "2100.00"
             currency: BRL
         minimum:
@@ -2406,13 +2399,13 @@ components:
               - referentialRateIndexer: "SEM_INDEXADOR_TAXA"
                 rate: "0.65"
           applications:
-              - interval: "1_FAIXA_VALOR"
+              - interval: "1_FAIXA"
                 rate: "0.0187"
-              - interval: "2_FAIXA_VALOR"
+              - interval: "2_FAIXA"
                 rate: "0.2900"
-              - interval: "3_FAIXA_VALOR"
+              - interval: "3_FAIXA"
                 rate: "0.3600"
-              - interval: "4_FAIXA_VALOR"
+              - interval: "4_FAIXA"
                 rate: "0.7990"
           minimumRate: "0.0056"
           maximumRate: "0.8565"
@@ -2550,6 +2543,8 @@ components:
           example: '2000.00'
         currency:
           $ref:  "#/components/schemas/Currency"
+        customers:
+          $ref: '#/components/schemas/Customer'
     MontlyPrice:
       type: object
       required:
@@ -2603,23 +2598,13 @@ components:
     Customer:
       type: object
       required:
-        - frequency
         - rate
       properties:
-        frequency:
-          type: string
-          description: |
-            Segundo Normativa nº 32, BCB, de 2020: Distribuição de frequência relativa aos clientes que contrataram crédito no mês de apuração de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana e o percentual de clientes em cada uma dessas faixas. Informando:1ª faixa de cliente, 2ª faixa de cliente, 3ª faixa de cliente e 4ª faixa de cliente
-          enum:
-            - 1_FAIXA_CLIENTE
-            - 2_FAIXA_CLIENTE
-            - 3_FAIXA_CLIENTE
-            - 4_FAIXA_CLIENTE
-          example: 1_FAIXA_CLIENTE
         rate:
           type: string
           description: |
-            Percentual que corresponde a mediana da taxa efetiva cobrada do cliente pela contratação dos Direitos Creditórios Descontados, no intervalo informado. p.ex. '9,8700%' A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.15. Este valor representa 15%. O valor 1 representa 100%) Percentual dos clientes de cada faixa relativa ao serviço ofertado, para pessoa natural informado no período, conforme Res nº32, BCB, 2020. p.ex. '0.1500' (representa uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O valor '1 'representa 100%) A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)
+           Percentual dos clientes de cada faixa relativa ao serviço ofertado, para pessoa natural informado no período, conforme Res nº32, BCB, 2020. p.ex. '0.1500' (representa uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O valor '1 'representa 100%). A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%) 
+          maxLength: 6
           pattern: '(^[0-9](\.[0-9]{4})$|^NA$)'
           example: '0.1500'
     FeeServiceCustomer:

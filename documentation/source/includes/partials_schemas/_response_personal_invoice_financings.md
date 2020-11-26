@@ -24,7 +24,10 @@
                       {
                         "interval": "string",
                         "value": "string",
-                        "currency": "string"
+                        "currency": "string",
+                        "customers": {
+                          "rate": "string"
+                        }
                       }
                     ],
                     "minimum": {
@@ -34,13 +37,7 @@
                     "maximum": {
                       "value": "string",
                       "currency": "string"
-                    },
-                    "customers": [
-                      {
-                        "frequency": "string",
-                        "rate": "string"
-                      }
-                    ]
+                    }
                   }
                 ]
               },
@@ -54,17 +51,16 @@
                 "applications": [
                   {
                     "interval": "string",
-                    "rate": "string"
+                    "indexer": {
+                      "rate": "string",
+                    },
+                    "customers": {
+                      "rate": "string"
+                    }
                   }
                 ],
                 "minimumRate": "string",
-                "maximumRate": "string",
-                "customers": [
-                  {
-                    "frequency": "string",
-                    "rate": "string"
-                  }
-                ]
+                "maximumRate": "string"
               },
               "requiredWarranties": [
                 "string"
@@ -121,7 +117,10 @@
                   {
                     "interval": "string",
                     "value": "string",
-                    "currency": "string"
+                    "currency": "string",
+                    "customers": {
+                      "rate": "string"
+                    }
                   }
                 ],
                 "minimum": {
@@ -131,13 +130,7 @@
                 "maximum": {
                   "value": "string",
                   "currency": "string"
-                },
-                "customers": [
-                  {
-                    "frequency": "string",
-                    "rate": "string"
-                  }
-                ]
+                }
               }
             ]
           },
@@ -151,17 +144,16 @@
             "applications": [
               {
                 "interval": "string",
-                "rate": "string"
+                "indexer": {
+                  "rate": "string",
+                },
+                "customers": {
+                  "rate": "string"
+                }
               }
             ],
             "minimumRate": "string",
-            "maximumRate": "string",
-            "customers": [
-              {
-                "frequency": "string",
-                "rate": "string"
-              }
-            ]
+            "maximumRate": "string"
           },
           "requiredWarranties": [
             "string"
@@ -200,7 +192,10 @@
               {
                 "interval": "string",
                 "value": "string",
-                "currency": "string"
+                "currency": "string",
+                "customers": {
+                  "rate": "string"
+                }
               }
             ],
             "minimum": {
@@ -210,13 +205,7 @@
             "maximum": {
               "value": "string",
               "currency": "string"
-            },
-            "customers": [
-              {
-                "frequency": "string",
-                "rate": "string"
-              }
-            ]
+            }
           }
         ]
       },
@@ -230,17 +219,16 @@
         "applications": [
           {
             "interval": "string",
-            "rate": "string"
+            "indexer": {
+              "rate": "string",
+            },
+            "customers": {
+              "rate": "string"
+            }
           }
         ],
         "minimumRate": "string",
-        "maximumRate": "string",
-        "customers": [
-          {
-            "frequency": "string",
-            "rate": "string"
-          }
-        ]
+        "maximumRate": "string"
       },
       "requiredWarranties": [
         "string"
@@ -274,7 +262,10 @@
           {
             "interval": "string",
             "value": "string",
-            "currency": "string"
+            "currency": "string",
+            "customers": {
+              "rate": "string"
+            }
           }
         ],
         "minimum": {
@@ -284,13 +275,7 @@
         "maximum": {
           "value": "string",
           "currency": "string"
-        },
-        "customers": [
-          {
-            "frequency": "string",
-            "rate": "string"
-          }
-        ]
+        }
       }
     ]
   },
@@ -304,17 +289,16 @@
     "applications": [
       {
         "interval": "string",
-        "rate": "string"
+        "indexer": {
+          "rate": "string",
+        },
+        "customers": {
+          "rate": "string"
+        }
       }
     ],
     "minimumRate": "string",
-    "maximumRate": "string",
-    "customers": [
-      {
-        "frequency": "string",
-        "rate": "string"
-      }
-    ]
+    "maximumRate": "string"
   },
   "requiredWarranties": [
     "string"
@@ -378,7 +362,10 @@
         {
           "interval": "string",
           "value": "string",
-          "currency": "string"
+          "currency": "string",
+          "customers": {
+            "rate": "string"
+          }
         }
       ],
       "minimum": {
@@ -388,13 +375,7 @@
       "maximum": {
         "value": "string",
         "currency": "string"
-      },
-      "customers": [
-        {
-          "frequency": "string",
-          "rate": "string"
-        }
-      ]
+      }
     }
   ]
 }
@@ -416,7 +397,10 @@
     {
       "interval": "string",
       "value": "string",
-      "currency": "string"
+      "currency": "string",
+      "customers": {
+        "rate": "string"
+      }
     }
   ],
   "minimum": {
@@ -426,13 +410,7 @@
   "maximum": {
     "value": "string",
     "currency": "string"
-  },
-  "customers": [
-    {
-      "frequency": "string",
-      "rate": "string"
-    }
-  ]
+  }
 }
 ```
 
@@ -444,7 +422,6 @@
 | prices               | [[Price](#schemaPrice)]                | Sim            | Lista distribuição preços tarifas de serviços    |
 | minimum              | [[MinimumPrice](#schemaMinimumPrice)]  | Sim            | Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência.                                              | 
 | maximum              | [[MaximumPrice](#schemaMaximumPrice)]  | Sim            | Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência.                                              | 
-|customers|[[Customer](#schemaCustomer)]| Sim | Lista percentual de clientes por faixa de preço. |
 
 ## PersonalInvoiceFinancingsInterestRate 
 <a id="schemaPersonalInvoiceFinancingsInterestRate"></a>
@@ -460,24 +437,22 @@
   "applications": [
     {
       "interval": "string",
-      "rate": "string"
+      "indexer": {
+        "rate": "string",
+      },
+      "customers": {
+        "rate": "string"
+      }
     }
   ],
   "minimumRate": "string",
-  "maximumRate": "string",
-  "customers": [
-    {
-      "frequency": "string",
-      "rate": "string"
-    }
-  ]
+  "maximumRate": "string"
 }
 ```
 
-|  Nome           |  Tipo                   | Obrigatório |   Definição   |
-|:--------------- |:----------------------- |------------ |:--------------|
-| fees            | [FeeReferentialRateIndexer](#schemaFeeReferentialRateIndexer)    | Sim            | Lista das taxas referenciais ou indexadores |
-| applications    | [[Rate](#schemaRate)] | Sim | Lista  das faixas de cobrança da taxa efetiva de remuneração |
-| minimumRate     | string                  | Sim | Valor mínimo cobrado para a taxa de remuneração relativa ao serviço ofertado, sobre a base de clientes,  no mês de referência | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
-| maximumRate     | string                  | Sim | Valor máximo cobrado para a taxa de remuneração relativa ao serviço ofertado, sobre a base de clientes,  no mês de referência | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
-|customers|[[Customer](#schemaCustomer)]| Sim | Lista percentual de cliente por faixa referente a  taxa remuneratória. |
+|  Nome           |  Tipo                                                         | Obrigatório |   Definição   |
+|:--------------- |:------------------------------------------------------------- |------------ |:--------------|
+| fees            | [FeeReferentialRateIndexer](#schemaFeeReferentialRateIndexer) | Sim         | Lista das taxas referenciais ou indexadores |
+| applications    | [[Rate](#schemaRate)]                                         | Sim         | Lista  das faixas de cobrança da taxa efetiva de remuneração |
+| minimumRate     | string                                                        | Sim         | Valor mínimo cobrado para a taxa de remuneração relativa ao serviço ofertado, sobre a base de clientes,  no mês de referência | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type |
+| maximumRate     | string                                                        | Sim         | Valor máximo cobrado para a taxa de remuneração relativa ao serviço ofertado, sobre a base de clientes,  no mês de referência | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type |

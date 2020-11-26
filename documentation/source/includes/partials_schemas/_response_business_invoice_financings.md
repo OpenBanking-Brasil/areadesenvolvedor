@@ -24,7 +24,10 @@
                       {
                         "interval": "string",
                         "value": "string",
-                        "currency": "string"
+                        "currency": "string",
+                        "customers": {
+                          "rate": "string"
+                        }
                       }
                     ],
                     "minimum": {
@@ -34,13 +37,7 @@
                     "maximum": {
                       "value": "string",
                       "currency": "string"
-                    },
-                    "customers": [
-                      {
-                        "frequency": "string",
-                        "rate": "string"
-                      }
-                    ]
+                    }
                   }
                 ]
               },
@@ -54,17 +51,16 @@
                 "applications": [
                   {
                     "interval": "string",
-                    "rate": "string"
+                    "indexer": {
+                      "rate": "string"
+                    },
+                    "customers": {
+                      "rate": "string"
+                    }
                   }
                 ],
                 "minimumRate": "string",
-                "maximumRate": "string",
-                "customers": [
-                  {
-                    "frequency": "string",
-                    "rate": "string"
-                  }
-                ]
+                "maximumRate": "string"
               },
               "requiredWarranties": [
                 "string"
@@ -121,7 +117,10 @@
                   {
                     "interval": "string",
                     "value": "string",
-                    "currency": "string"
+                    "currency": "string",
+                    "customers": {
+                      "rate": "string"
+                    }
                   }
                 ],
                 "minimum": {
@@ -131,13 +130,7 @@
                 "maximum": {
                   "value": "string",
                   "currency": "string"
-                },
-                "customers": [
-                  {
-                    "frequency": "string",
-                    "rate": "string"
-                  }
-                ]
+                }
               }
             ]
           },
@@ -151,17 +144,16 @@
             "applications": [
               {
                 "interval": "string",
-                "rate": "string"
+                "indexer": {
+                  "rate": "string"
+                },
+                "customers": {
+                  "rate": "string"
+                }
               }
             ],
             "minimumRate": "string",
-            "maximumRate": "string",
-            "customers": [
-              {
-                "frequency": "string",
-                "rate": "string"
-              }
-            ]
+            "maximumRate": "string"
           },
           "requiredWarranties": [
             "string"
@@ -200,7 +192,10 @@
               {
                 "interval": "string",
                 "value": "string",
-                "currency": "string"
+                "currency": "string",
+                "customers": {
+                  "rate": "string"
+                }
               }
             ],
             "minimum": {
@@ -210,13 +205,7 @@
             "maximum": {
               "value": "string",
               "currency": "string"
-            },
-            "customers": [
-              {
-                "frequency": "string",
-                "rate": "string"
-              }
-            ]
+            }
           }
         ]
       },
@@ -230,17 +219,16 @@
         "applications": [
           {
             "interval": "string",
-            "rate": "string"
+            "indexer": {
+              "rate": "string"
+            },
+            "customers": {
+              "rate": "string"
+            }
           }
         ],
         "minimumRate": "string",
-        "maximumRate": "string",
-        "customers": [
-          {
-            "frequency": "string",
-            "rate": "string"
-          }
-        ]
+        "maximumRate": "string"
       },
       "requiredWarranties": [
         "string"
@@ -253,10 +241,10 @@
 
 |     Nome                  |  Tipo                                                           | Obrigatório |                            Definição                                                                                                                                                              |  Restrições |
 |:------------              |:-----------------------------------                             |:----------- |:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |:------------|
-| name                      | string                                                          | Sim         | Nome da Instituição, pertencente à marca, responsável pela modalidade de Direitos Creditórios Descontados para Pessoa Natural. p.ex.'Empresa da Organização A' |             |
+| name                      | string                                                          | Sim         | Nome da Instituição, pertencente à marca, responsável pela modalidade de Direitos Creditórios Descontados para Pessoa Natural. p.ex.'Empresa da Organização A'                                    |             |
 | cnpjNumber                | string                                                          | Sim         | CNPJ da instituição responsável                                                                                                                                                                   |             |
 | urlComplementaryList      | [[URIString](#commonFieldURIString)]                            | Não         | URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços.           | Será obrigatorimente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada            |
-| businessInvoiceFinancings | [[BusinessInvoiceFinancings](#schemaBusinessInvoiceFinancings)] | Sim         | Lista de Modalidades de Direitos Creditórios  |             |
+| businessInvoiceFinancings | [[BusinessInvoiceFinancings](#schemaBusinessInvoiceFinancings)] | Sim         | Lista de Modalidades de Direitos Creditórios Descontados                                                                                                                                          |             |
 
 ## BusinessInvoiceFinancings
 <a id="schemaBusinessInvoiceFinancings"></a>
@@ -274,7 +262,10 @@
           {
             "interval": "string",
             "value": "string",
-            "currency": "string"
+            "currency": "string",
+            "customers": {
+              "rate": "string"
+            }
           }
         ],
         "minimum": {
@@ -284,13 +275,7 @@
         "maximum": {
           "value": "string",
           "currency": "string"
-        },
-        "customers": [
-          {
-            "frequency": "string",
-            "rate": "string"
-          }
-        ]
+        }
       }
     ]
   },
@@ -304,17 +289,16 @@
     "applications": [
       {
         "interval": "string",
-        "rate": "string"
+        "indexer": {
+          "rate": "string"
+        },
+        "customers": {
+          "rate": "string"
+        }
       }
     ],
     "minimumRate": "string",
-    "maximumRate": "string",
-    "customers": [
-      {
-        "frequency": "string",
-        "rate": "string"
-      }
-    ]
+    "maximumRate": "string"
   },
   "requiredWarranties": [
     "string"
@@ -323,13 +307,13 @@
 }
 ```
 
-|     Nome              |  Tipo                                                                                                       | Obrigatório |                            Definição                                                                                                                                                                                                                                                  |
-|:------------          |:---------------------------------------------------------------------------                                 |:----------- |:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------         |
+|     Nome              |  Tipo                                                                                                         | Obrigatório |                            Definição                                                                                                                                                                                                                        |
+|:------------          |:---------------------------------------------------------------------------                                   |:----------- |:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | type                  | [Enum BusinessInvoiceFinancingsType](#schemaEnumBusinessInvoiceFinancingsType)                                | Sim         | Modalidades de direitos creditórios descontados ofertados, conforme Circular 4015-Bacen. Direito creditório descontado é a antecipação de créditos relativos p.ex.: desconto de duplicatas, desconto de cheques,antecipação de fatura de cartão de crédito  |
-| fees                  | [[BusinessInvoiceFinancingsFees](#schemaBusinessInvoiceFinancingsFees)]                                       | Sim         | Objeto que reúne informações relativas a Termos e Condições para as modalidades tratadas         |
-| interestRate          | [[BusinessInvoiceFinancingsInterestRate](#schemaBusinessInvoiceFinancingsInterestRate)]                     | Sim         | Taxas de juros remuneratórias |
-| requiredWarranties    | [[Enum BusinessInvoiceFinancingsRequiredWarranties](#schemaEnumBusinessInvoiceFinancingsRequiredWarranties)]  | Sim         | Lista das  garantias exigidas                |
-| termsConditions       | string                                                                                                        | Sim          | Campo aberto para informar as condições contratuais relativas à Modalidade de Financiamentos para pessoa jurídica informada. Pode ser informada a URL referente ao endereço onde constam as condições informadas. Endereço eletrônico de acesso ao canal.   |
+| fees                  | [[BusinessInvoiceFinancingsFees](#schemaBusinessInvoiceFinancingsFees)]                                       | Sim         | Objeto que reúne informações de tarifas de serviços                                                                                                                                                                                                         |
+| interestRate          | [[BusinessInvoiceFinancingsInterestRate](#schemaBusinessInvoiceFinancingsInterestRate)]                       | Sim         | Taxas de juros remuneratórias                                                                                                                                                                                                                               |
+| requiredWarranties    | [[Enum BusinessInvoiceFinancingsRequiredWarranties](#schemaEnumBusinessInvoiceFinancingsRequiredWarranties)]  | Sim         | Lista das  garantias exigidas                                                                                                                                                                                                                               |
+| termsConditions       | string                                                                                                        | Sim         | Campo aberto para informar as condições contratuais relativas à Modalidade de Financiamentos para pessoa jurídica informada. Pode ser informada a URL referente ao endereço onde constam as condições informadas. Endereço eletrônico de acesso ao canal.   |
 
 
 ### Enum BusinessInvoiceFinancingsType
@@ -378,7 +362,10 @@
         {
           "interval": "string",
           "value": "string",
-          "currency": "string"
+          "currency": "string",
+          "customers": {
+            "rate": "string"
+          }
         }
       ],
       "minimum": {
@@ -388,13 +375,7 @@
       "maximum": {
         "value": "string",
         "currency": "string"
-      },
-      "customers": [
-        {
-          "frequency": "string",
-          "rate": "string"
-        }
-      ]
+      }
     }
   ]
 }
@@ -419,24 +400,22 @@
   "applications": [
     {
       "interval": "string",
-      "rate": "string"
+      "indexer": {
+        "rate": "string"
+      },
+      "customers": {
+        "rate": "string"
+      }
     }
   ],
   "minimumRate": "string",
-  "maximumRate": "string",
-  "customers": [
-    {
-      "frequency": "string",
-      "rate": "string"
-    }
-  ]
+  "maximumRate": "string"
 }
 ```
 
-|  Nome           |  Tipo                   | Obrigatório |   Definição   |
-|:--------------- |:----------------------- |------------ |:--------------|
-| fees            | [FeeReferentialRateIndexer](#schemaFeeReferentialRateIndexer)    | Sim            | Lista das taxas referenciais ou indexadores |
-| applications    | [[Rate](#schemaRate)]| Sim | Lista  das faixas de cobrança da taxa efetiva de remuneração |    
-| minimumRate     | string                  | Sim | Valor mínimo cobrado para a taxa de remuneração relativa ao serviço ofertado, sobre a base de clientes,  no mês de referência | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
-| maximumRate     | string                  | Sim | Valor máximo cobrado para a taxa de remuneração relativa ao serviço ofertado, sobre a base de clientes,  no mês de referência | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type |
-|customers|[[Customer](#schemaCustomer)]| Sim |  Lista percentual de cliente por faixa referente a  taxa remuneratória. |
+|  Nome           |  Tipo                                                         | Obrigatório |   Definição   |
+|:--------------- |:------------------------------------------------------------- |------------ |:--------------|
+| fees            | [FeeReferentialRateIndexer](#schemaFeeReferentialRateIndexer) | Sim         | Lista das taxas referenciais ou indexadores                                                                                                                                                                                                    |
+| applications    | [[Rate](#schemaRate)]                                         | Sim         | Lista  das faixas de cobrança da taxa efetiva de remuneração                                                                                                                                                                                   |                                                                                                                                                                                    |
+| minimumRate     | string                                                        | Sim         | Valor mínimo cobrado para a taxa de remuneração relativa ao serviço ofertado, sobre a base de clientes,  no mês de referência | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type |
+| maximumRate     | string                                                        | Sim         | Valor máximo cobrado para a taxa de remuneração relativa ao serviço ofertado, sobre a base de clientes,  no mês de referência | Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type |
