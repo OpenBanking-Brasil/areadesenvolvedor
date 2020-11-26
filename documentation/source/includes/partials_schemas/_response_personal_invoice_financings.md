@@ -51,7 +51,10 @@
                 "applications": [
                   {
                     "interval": "string",
-                    "rate": "string"
+                    "rate": "string",
+                    "customers": {
+                      "rate": "string"
+                    }
                   }
                 ],
                 "minimumRate": "string",
@@ -139,7 +142,10 @@
             "applications": [
               {
                 "interval": "string",
-                "rate": "string"
+                "rate": "string",
+                "customers": {
+                  "rate": "string"
+                }
               }
             ],
             "minimumRate": "string",
@@ -209,7 +215,10 @@
         "applications": [
           {
             "interval": "string",
-            "rate": "string"
+            "rate": "string",
+            "customers": {
+              "rate": "string"
+            }
           }
         ],
         "minimumRate": "string",
@@ -274,7 +283,10 @@
     "applications": [
       {
         "interval": "string",
-        "rate": "string"
+        "rate": "string",
+        "customers": {
+          "rate": "string"
+        }
       }
     ],
     "minimumRate": "string",
@@ -417,7 +429,10 @@
   "applications": [
     {
       "interval": "string",
-      "rate": "string"
+      "rate": "string",
+      "customers": {
+        "rate": "string"
+      }
     }
   ],
   "minimumRate": "string",
