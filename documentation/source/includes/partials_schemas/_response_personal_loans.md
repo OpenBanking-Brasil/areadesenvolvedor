@@ -24,7 +24,10 @@
                       {
                         "interval": "string",
                         "value": "string",
-                        "currency": "string"
+                        "currency": "string",
+                        "customers": {
+                          "rate": "string"
+                        }
                       }
                     ],
                     "minimum": {
@@ -34,13 +37,7 @@
                     "maximum": {
                       "value": "string",
                       "currency": "string"
-                    },
-                    "customers": [
-                      {
-                        "frequency": "string",
-                        "rate": "string"
-                      }
-                    ]
+                    }
                   }
                 ]
               },
@@ -50,22 +47,22 @@
                     {
                       "referentialRateOrIndexer": "string",
                       "rate": "string",
+                      "customers": {
+                        "rate": "string"
+                      }
                     }
                   ],
                   "applications": [
                     {
                       "interval": "string",
                       "rate": "string",
+                      "customers": {
+                        "rate": "string"
+                      }
                     }
                   ],
                   "minimumRate": "string",
-                  "maximumRate": "string",
-                  "customers": [
-                    {
-                      "frequency": "string",
-                      "rate": "string"
-                    }
-                  ]
+                  "maximumRate": "string"
                 }
               ],
               "requiredWarranties": [
@@ -95,7 +92,7 @@
 |     Nome      |  Tipo                                                  | Obrigatório  |                            Definição                  |
 |:------------  |:---------------------------------                      |:-----------  |:----------------------------------------------------  |
 | data          | object                                                 | Sim          |                                                       |
-|   brand       | [PersonalLoanBrand](#schemaPersonalLoanBrand)          | Sim          | Organização controladora do grupo de instituições financeiras                                            |
+| brand         | [PersonalLoanBrand](#schemaPersonalLoanBrand)          | Sim          | Organização controladora do grupo de instituições financeiras                                            |
 | links         | [LinksPaginated](#schemaLinksPaginated)                | Sim          |                                                       |
 | meta          | [MetaPaginated](#schemaMetaPaginated)                  | Sim          |                                                       |
 
@@ -123,7 +120,10 @@
                   {
                     "interval": "string",
                     "value": "string",
-                    "currency": "string"
+                    "currency": "string",
+                    "customers": {
+                      "rate": "string"
+                    }
                   }
                 ],
                 "minimum": {
@@ -133,13 +133,7 @@
                 "maximum": {
                   "value": "string",
                   "currency": "string"
-                },
-                "customers": [
-                  {
-                    "frequency": "string",
-                    "rate": "string"
-                  }
-                ]
+                }
               }
             ]
           },
@@ -149,22 +143,22 @@
                 {
                   "referentialRateOrIndexer": "string",
                   "rate": "string",
+                  "customers": {
+                    "rate": "string"
+                  }
                 }
               ],
               "applications": [
                 {
                   "interval": "string",
                   "rate": "string",
+                  "customers": {
+                    "rate": "string"
+                  }
                 }
               ],
               "minimumRate": "string",
-              "maximumRate": "string",
-              "customers": [
-                {
-                  "frequency": "string",
-                  "rate": "string"
-                }
-              ]
+              "maximumRate": "string"
             }
           ],
           "requiredWarranties": [
@@ -204,7 +198,10 @@
               {
                 "interval": "string",
                 "value": "string",
-                "currency": "string"
+                "currency": "string",
+                "customers": {
+                  "rate": "string"
+                }
               }
             ],
             "minimum": {
@@ -214,13 +211,7 @@
             "maximum": {
               "value": "string",
               "currency": "string"
-            },
-            "customers": [
-              {
-                "frequency": "string",
-                "rate": "string"
-              }
-            ]
+            }
           }
         ]
       },
@@ -230,22 +221,22 @@
             {
               "referentialRateOrIndexer": "string",
               "rate": "string",
+              "customers": {
+                "rate": "string"
+              }
             }
           ],
           "applications": [
             {
               "interval": "string",
               "rate": "string",
+              "customers": {
+                "rate": "string"
+              }
             }
           ],
           "minimumRate": "string",
-          "maximumRate": "string",
-          "customers": [
-            {
-              "frequency": "string",
-              "rate": "string"
-            }
-          ]
+          "maximumRate": "string"
         }
       ],
       "requiredWarranties": [
@@ -280,7 +271,10 @@
           {
             "interval": "string",
             "value": "string",
-            "currency": "string"
+            "currency": "string",
+            "customers": {
+              "rate": "string"
+            }
           }
         ],
         "minimum": {
@@ -290,13 +284,7 @@
         "maximum": {
           "value": "string",
           "currency": "string"
-        },
-        "customers": [
-          {
-            "frequency": "string",
-            "rate": "string"
-          }
-        ]
+        }
       }
     ]
   },
@@ -306,22 +294,22 @@
         {
           "referentialRateOrIndexer": "string",
           "rate": "string",
+          "customers": {
+            "rate": "string"
+          }
         }
       ],
       "applications": [
         {
           "interval": "string",
           "rate": "string",
+          "customers": {
+            "rate": "string"
+          }
         }
       ],
       "minimumRate": "string",
-      "maximumRate": "string",
-      "customers": [
-        {
-          "frequency": "string",
-          "rate": "string"
-        }
-      ]
+      "maximumRate": "string"
     }
   ],
   "requiredWarranties": [
@@ -386,7 +374,10 @@
         {
           "interval": "string",
           "value": "string",
-          "currency": "string"
+          "currency": "string",
+          "customers": {
+            "rate": "string"
+          }
         }
       ],
       "minimum": {
@@ -396,13 +387,7 @@
       "maximum": {
         "value": "string",
         "currency": "string"
-      },
-      "customers": [
-        {
-          "frequency": "string",
-          "rate": "string"
-        }
-      ]
+      }
     }
   ]
 }
@@ -424,7 +409,10 @@
     {
       "interval": "string",
       "value": "string",
-      "currency": "string"
+      "currency": "string",
+      "customers": {
+        "rate": "string"
+      }
     }
   ],
   "minimum": {
@@ -434,13 +422,7 @@
   "maximum": {
     "value": "string",
     "currency": "string"
-  },
-  "customers": [
-    {
-      "frequency": "string",
-      "rate": "string"
-    }
-  ]
+  }
 }
 ```
 
@@ -469,16 +451,13 @@
     {
       "interval": "string",
       "rate": "string",
+      "customers": {
+        "rate": "string"
+      }
     }
   ],
   "minimumRate": "string",
-  "maximumRate": "string",
-  "customers": [
-    {
-      "frequency": "string",
-      "rate": "string"
-    }
-  ]
+  "maximumRate": "string"
 }
 ```
 

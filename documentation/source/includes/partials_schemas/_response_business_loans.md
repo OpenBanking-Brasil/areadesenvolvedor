@@ -24,7 +24,10 @@
                       {
                         "interval": "string",
                         "value": "string",
-                        "currency": "string"
+                        "currency": "string",
+                        "customers": {
+                          "rate": "string"
+                        }
                       }
                     ],
                     "minimum": {
@@ -34,13 +37,7 @@
                     "maximum": {
                       "value": "string",
                       "currency": "string"
-                    },
-                    "customers": [
-                      {
-                        "frequency": "string",
-                        "rate": "string"
-                      }
-                    ]
+                    }
                   }
                 ]
               },
@@ -49,13 +46,16 @@
                   "fees": [
                     {
                       "referentialRateIndexer": "string",
-                      "rate": "string",
+                      "rate": "string"
                     }
                   ],
                   "applications": [
                     {
                       "interval": "string",
                       "rate": "string",
+                      "customers": {
+                        "rate": "string"
+                      }
                     }
                   ],
                   "minimumRate": "string",
@@ -117,7 +117,10 @@
                   {
                     "interval": "string",
                     "value": "string",
-                    "currency": "string"
+                    "currency": "string",
+                    "customer": {
+                      "rate": "string"
+                    }
                   }
                 ],
                 "minimum": {
@@ -127,13 +130,7 @@
                 "maximum": {
                   "value": "string",
                   "currency": "string"
-                },
-                "customers": [
-                  {
-                    "frequency": "string",
-                    "rate": "string"
-                  }
-                ]
+                }
               }
             ]
           },
@@ -142,13 +139,16 @@
               "fees": [
                 {
                   "referentialRateIndexer": "string",
-                  "rate": "string",
+                  "rate": "string"
                 }
               ],
               "applications": [
                 {
                   "interval": "string",
                   "rate": "string",
+                  "customers": {
+                    "rate": "string"
+                  }
                 }
               ],
               "minimumRate": "string",
@@ -192,7 +192,10 @@
               {
                 "interval": "string",
                 "value": "string",
-                "currency": "string"
+                "currency": "string",
+                "customers": {
+                  "rate": "string"
+                }
               }
             ],
             "minimum": {
@@ -202,13 +205,7 @@
             "maximum": {
               "value": "string",
               "currency": "string"
-            },
-            "customers": [
-              {
-                "frequency": "string",
-                "rate": "string"
-              }
-            ]
+            }
           }
         ]
       },
@@ -217,13 +214,16 @@
           "fees": [
             {
               "referentialRateIndexer": "string",
-              "rate": "string",
+              "rate": "string"
             }
           ],          
           "applications": [
             {
               "interval": "string",
               "rate": "string",
+              "customers": {
+                "rate": "string"
+              }
             }
           ],
           "minimumRate": "string",
@@ -262,7 +262,10 @@
           {
             "interval": "string",
             "value": "string",
-            "currency": "string"
+            "currency": "string",
+            "customer": {
+              "rate": "string"
+            }
           }
         ],
         "minimum": {
@@ -272,13 +275,7 @@
         "maximum": {
           "value": "string",
           "currency": "string"
-        },
-        "customers": [
-          {
-            "frequency": "string",
-            "rate": "string"
-          }
-        ]
+        }
       }
     ]
   },
@@ -287,13 +284,16 @@
       "fees": [
         {
           "referentialRateIndexer": "string",
-          "rate": "string",
+          "rate": "string"
         }
       ],
       "applications": [
         {
           "interval": "string",
           "rate": "string",
+          "customers": {
+            "rate": "string"
+          }
         }
       ],
       "minimumRate": "string",
@@ -318,35 +318,34 @@
 ### Enum BusinessLoanType
 <a id="schemaEnumBusinessLoanType"></a>
 
-| Propriedade  | Código                        | Definição
-|:------------ |:------                       |:------
-| type         | EMPRESTIMO_MICROCREDITO_PRODUTIVO_ORIENTADO  | Microcrédito produtivo orientado
-| type         | EMPRESTIMO_CHEQUE_ESPECIAL  | Cheque especial
-| type         | EMPRESTIMO_CONTA_GARANTIDA  | Conta garantida
-| type         | EMPRESTIMO_CAPITAL_GIRO_PRAZO_VENCIMENTO_ATE_365_DIAS | Capital de giro com prazo de vencimento até 365 dias
+| Propriedade  | Código                                                     | Definição
+|:------------ |:-----------------------------------------------------------|:------
+| type         | EMPRESTIMO_MICROCREDITO_PRODUTIVO_ORIENTADO                | Microcrédito produtivo orientado
+| type         | EMPRESTIMO_CHEQUE_ESPECIAL                                 | Cheque especial
+| type         | EMPRESTIMO_CONTA_GARANTIDA                                 | Conta garantida
+| type         | EMPRESTIMO_CAPITAL_GIRO_PRAZO_VENCIMENTO_ATE_365_DIAS      | Capital de giro com prazo de vencimento até 365 dias
 | type         | EMPRESTIMO_CAPITAL_GIRO_PRAZO_VENCIMENTO_SUPERIOR_365_DIAS | Capital de giro com prazo de vencimento superior a 365 dias
-| type         | EMPRESTIMO_CAPITAL_GIRO_ROTATIVO | Capital de giro rotativo
+| type         | EMPRESTIMO_CAPITAL_GIRO_ROTATIVO                           | Capital de giro rotativo
 
 ### Enum RequiredWarranty
 <a id="schemaEnumRequiredWarranty"></a>
 
-| Propriedade  | Código                                        | Definição                                    
-|:------------ |:------                                       |:------
-| requiredWarranty        | CESSAO_DIREITOS_CREDITORIOS     | Cessão de direitos creditórios
-| requiredWarranty        | CAUCAO                          | Caução
-| requiredWarranty        | PENHOR                          | Penhor
-| requiredWarranty        | ALIENACAO_FIDUCIARIA            | Alienação fiduciária
-| requiredWarranty        | HIPOTECA                        | Hipoteca
+| Propriedade             | Código                               | Definição                                    
+|:----------------------- |:------------------------------------ |:------
+| requiredWarranty        | CESSAO_DIREITOS_CREDITORIOS          | Cessão de direitos creditórios
+| requiredWarranty        | CAUCAO                               | Caução
+| requiredWarranty        | PENHOR                               | Penhor
+| requiredWarranty        | ALIENACAO_FIDUCIARIA                 | Alienação fiduciária
+| requiredWarranty        | HIPOTECA                             | Hipoteca
 | requiredWarranty        | OPERACOES_GARANTIDAS_PELO_GOVERNO    | Operações garantidas pelo governo
-| requiredWarranty        | OUTRAS_GARANTIAS_NAO_FIDEJUSSORIAS  | Outras garantias não fidejussórias
-| requiredWarranty        | SEGUROS_ASSEMELHADOS            | Seguros e assemelhados
-| requiredWarranty        | GARANTIA_FIDEJUSSORIA           | Garantia fidejussória
-| requiredWarranty        | BENS_ARRENDADOS                 | Bens arrendados
-| requiredWarranty        | GARANTIAS_INTERNACIONAIS        | Garantias internacionais
-| requiredWarranty        | OPERACOES_GARANTIDAS_OUTRAS_ENTIDADES
-  | Operações garantidas por outras entidades
-| requiredWarranty        | ACORDOS_COMPENSACAO             | Acordos de compensação
-| requiredWarranty        | NAO_APLICAVEL                   | Não aplicável
+| requiredWarranty        | OUTRAS_GARANTIAS_NAO_FIDEJUSSORIAS   | Outras garantias não fidejussórias
+| requiredWarranty        | SEGUROS_ASSEMELHADOS                 | Seguros e assemelhados
+| requiredWarranty        | GARANTIA_FIDEJUSSORIA                | Garantia fidejussória
+| requiredWarranty        | BENS_ARRENDADOS                      | Bens arrendados
+| requiredWarranty        | GARANTIAS_INTERNACIONAIS             | Garantias internacionais
+| requiredWarranty        | OPERACOES_GARANTIDAS_OUTRAS_ENTIDADES| Operações garantidas por outras entidades
+| requiredWarranty        | ACORDOS_COMPENSACAO                  | Acordos de compensação
+| requiredWarranty        | NAO_APLICAVEL                        | Não aplicável
 
 ## LoanFees
 <a id="schemaLoanFees"></a>
@@ -362,7 +361,10 @@
         {
           "interval": "string",
           "value": "string",
-          "currency": "string"
+          "currency": "string",
+          "customers": {
+            "rate": "string"
+          }
         }
       ],
       "minimum": {
@@ -372,13 +374,7 @@
       "maximum": {
         "value": "string",
         "currency": "string"
-      },
-      "customers": [
-        {
-          "frequency": "string",
-          "rate": "string"
-        }
-      ]
+      }
     }
   ]
 }
@@ -400,7 +396,10 @@
     {
       "interval": "string",
       "value": "string",
-      "currency": "string"
+      "currency": "string",
+      "customers": {
+        "rate": "string"
+      }
     }
   ],
   "minimum": {
@@ -410,13 +409,7 @@
   "maximum": {
     "value": "string",
     "currency": "string"
-  },
-  "customers": [
-    {
-      "frequency": "string",
-      "rate": "string"
-    }
-  ]
+  }
 }
 ```
 
@@ -445,6 +438,9 @@
     {
       "interval": "string",
       "rate": "string",
+      "customers": {
+        "rate": "string"
+      }
     }
   ],
   "minimumRate": "string",
