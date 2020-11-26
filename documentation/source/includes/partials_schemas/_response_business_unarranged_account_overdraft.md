@@ -381,7 +381,10 @@
     {
       "interval": "string",
       "value": "string",
-      "currency": "string"
+      "currency": "string",
+      "customers": {
+        "rate": "string"
+      }
     }
   ],
   "minimum": {
