@@ -51,7 +51,12 @@
                 "applications": [
                   {
                     "interval": "string",
-                    "rate": "string"
+                    "indexer": {
+                      "rate": "string"
+                    },
+                    "customers": {
+                      "rate": "string"
+                    }
                   }
                 ],
                 "minimumRate": "string",
@@ -144,7 +149,12 @@
             "applications": [
               {
                 "interval": "string",
-                "rate": "string"
+                "indexer": {
+                  "rate": "string"
+                },
+                "customers": {
+                  "rate": "string"
+                }
               }
             ],
             "minimumRate": "string",
@@ -219,7 +229,12 @@
         "applications": [
           {
             "interval": "string",
-            "rate": "string"
+            "indexer": {
+              "rate": "string"
+            },
+            "customers": {
+              "rate": "string"
+            }
           }
         ],
         "minimumRate": "string",
@@ -289,7 +304,12 @@
     "applications": [
       {
         "interval": "string",
-        "rate": "string"
+        "indexer": {
+          "rate": "string"
+        },
+        "customers": {
+          "rate": "string"
+        }
       }
     ],
     "minimumRate": "string",
@@ -379,13 +399,7 @@
   "maximum": {
     "value": "string",
     "currency": "string"
-  },
-  "customers": [
-    {
-      "frequency": "string",
-      "rate": "string"
-    }
-  ]
+  }
 }
 ```
 
@@ -440,12 +454,6 @@
   ],
   "minimumRate": "string",
   "maximumRate": "string",
-  "customers": [
-    {
-      "frequency": "string",
-      "rate": "string"
-    }
-  ]
 }
 
 ```
