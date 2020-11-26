@@ -25,7 +25,10 @@
                       {
                         "interval": "string",
                         "value": "string",
-                        "currency": "string"
+                        "currency": "string",
+                        "customers": {
+                          "rate": "string"
+                        }
                       }
                     ],
                     "minimum": {
@@ -35,13 +38,7 @@
                     "maximum": {
                       "value": "string",
                       "currency": "string"
-                    },
-                    "customers": [
-                      {
-                        "frequency": "string",
-                        "rate": "string"
-                      }
-                    ]
+                    }
                   }
                 ]
               },
@@ -55,29 +52,35 @@
                 "applications": [
                   {
                     "interval": "string",
-                    "rate": "string"
+                    "rate": "string",
+                    "customers": {
+                      "rate": "string"
+                    }
                   },
                   {
                     "interval": "string",
-                    "rate": "string"
+                    "rate": "string",
+                    "customers": {
+                      "rate": "string"
+                    }
                   },
                   {
                     "interval": "string",
-                    "rate": "string"
+                    "rate": "string",
+                    "customers": {
+                      "rate": "string"
+                    }
                   },
                   {
                     "interval": "string",
-                    "rate": "string"
+                    "rate": "string",
+                    "customers": {
+                      "rate": "string"
+                    }
                   }
                 ],
                 "minimumRate": "string",
-                "maximumRate": "string",
-                "customers": [
-                  {
-                    "frequency": "string",
-                    "rate": "string"
-                  }
-                ]
+                "maximumRate": "string"
               },
               "requiredWarranties": [
                 "string"
@@ -135,7 +138,10 @@
                   {
                     "interval": "string",
                     "value": "string",
-                    "currency": "string"
+                    "currency": "string",
+                    "customers": {
+                      "rate": "string"
+                    }
                   }
                 ],
                 "minimum": {
@@ -145,13 +151,7 @@
                 "maximum": {
                   "value": "string",
                   "currency": "string"
-                },
-                "customers": [
-                  {
-                    "frequency": "string",
-                    "rate": "string"
-                  }
-                ]
+                }
               }
             ]
           },
@@ -165,29 +165,35 @@
             "applications": [
               {
                 "interval": "string",
-                "rate": "string"
+                "rate": "string",
+                "customers": {
+                  "rate": "string"
+                }
               },
               {
                 "interval": "string",
-                "rate": "string"
+                "rate": "string",
+                "customers": {
+                  "rate": "string"
+                }
               },
               {
                 "interval": "string",
-                "rate": "string"
+                "rate": "string",
+                "cusomters": {
+                  "rate": "string"
+                }
               },
               {
                 "interval": "string",
-                "rate": "string"
+                "rate": "string",
+                "customers": {
+                  "rate": "string"
+                }
               }
             ],
             "minimumRate": "string",
-            "maximumRate": "string",
-            "customers": [
-              {
-                "frequency": "string",
-                "rate": "string"
-              }
-            ]
+            "maximumRate": "string"
           },
           "requiredWarranties": [
             "string"
@@ -227,7 +233,10 @@
               {
                 "interval": "string",
                 "value": "string",
-                "currency": "string"
+                "currency": "string",
+                "customers": {
+                  "rate": "string"
+                }
               }
             ],
             "minimum": {
@@ -237,13 +246,7 @@
             "maximum": {
               "value": "string",
               "currency": "string"
-            },
-            "customers": [
-              {
-                "frequency": "string",
-                "rate": "string"
-              }
-            ]
+            }
           }
         ]
       },
@@ -257,29 +260,35 @@
         "applications": [
           {
             "interval": "string",
-            "rate": "string"
+            "rate": "string",
+            "customers": {
+              "rate": "string"
+            }
           },
           {
             "interval": "string",
-            "rate": "string"
+            "rate": "string",
+            "customers": {
+              "rate": "string"
+            }
           },
           {
             "interval": "string",
-            "rate": "string"
+            "rate": "string",
+            "customers": {
+              "rate": "string"
+            }
           },
           {
             "interval": "string",
-            "rate": "string"
+            "rate": "string",
+            "customers": {
+              "rate": "string"
+            }
           }
         ],
         "minimumRate": "string",
-        "maximumRate": "string",
-        "customers": [
-          {
-            "frequency": "string",
-            "rate": "string"
-          }
-        ]
+        "maximumRate": "string"
       },
       "requiredWarranties": [
         "string"
@@ -314,7 +323,10 @@
           {
             "interval": "string",
             "value": "string",
-            "currency": "string"
+            "currency": "string",
+            "customers": {
+              "rate": "string"
+            }
           }
         ],
         "minimum": {
@@ -324,13 +336,7 @@
         "maximum": {
           "value": "string",
           "currency": "string"
-        },
-        "customers": [
-          {
-            "frequency": "string",
-            "rate": "string"
-          }
-        ]
+        }
       }
     ]
   },
@@ -344,29 +350,35 @@
     "applications": [
       {
         "interval": "string",
-        "rate": "string"
+        "rate": "string",
+        "customers": {
+          "rate": "string"
+        }
       },
       {
         "interval": "string",
-        "rate": "string"
+        "rate": "string",
+        "customers": {
+          "rate": "string"
+        }
       },
       {
         "interval": "string",
-        "rate": "string"
+        "rate": "string",
+        "customers": {
+          "rate": "string"
+        }
       },
       {
         "interval": "string",
-        "rate": "string"
+        "rate": "string",
+        "customers": {
+          "rate": "string"
+        }
       }
     ],
     "minimumRate": "string",
-    "maximumRate": "string",
-    "customers": [
-      {
-        "frequency": "string",
-        "rate": "string"
-      }
-    ]
+    "maximumRate": "string"
   },
   "requiredWarranties": [
     "string"
@@ -435,7 +447,10 @@
         {
           "interval": "string",
           "value": "string",
-          "currency": "string"
+          "currency": "string",
+          "customers": {
+            "rate": "string"
+          }
         }
       ],
       "minimum": {
@@ -445,13 +460,7 @@
       "maximum": {
         "value": "string",
         "currency": "string"
-      },
-      "customers": [
-        {
-          "frequency": "string",
-          "rate": "string"
-        }
-      ]
+      }
     }
   ]
 }
@@ -474,7 +483,10 @@
     {
       "interval": "string",
       "value": "string",
-      "currency": "string"
+      "currency": "string",
+      "customers": {
+        "rate": "string"
+      }
     }
   ],
   "minimum": {
@@ -484,13 +496,7 @@
   "maximum": {
     "value": "string",
     "currency": "string"
-  },
-  "customers": [
-    {
-      "frequency": "string",
-      "rate": "string"
-    }
-  ]
+  }
 }
 ```
 
@@ -518,7 +524,10 @@
   "applications": [
     {
       "interval": "string",
-      "rate": "string"
+      "rate": "string",
+      "customers": {
+        "rate": "string"
+      }
     }
   ],
   "minimumRate": "string",
@@ -526,9 +535,9 @@
 }
 ```
 
-|     Nome                  |  Tipo                                                                           | Obrigatório    |                            Definição                                                                                                                                                                                                                                                                                  |
-|:------------              |:------------------------------------------------------------------------------- |:-------------- |:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| fees            | [FeeReferentialRateIndexer](#schemaFeeReferentialRateIndexer)    | Sim            | Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial ou Indexador (Indx), do Documento 3040 |
-| applications               | [[Application](#schemaApplication)]    | Sim            | Valor da mediana da taxa de remuneração relativa ao serviço ofertado informado no período.                                                                                                                                                                                                         |
-| minimumRate                   | string | Sim            | Percentual mínimo cobrado (taxa efetiva) no mês de referência, para o Financiamento contratado. A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%) | 
-| maximumRate                   | string | Sim            |  Percentual máximo cobrado (taxa efetiva) no mês de referência, para o Financiamento contratado. A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%) | 
+|     Nome                  |  Tipo                                                            | Obrigatório    |                            Definição                                                                                                                                                                                                                                                                                  |
+|:------------------------- |:---------------------------------------------------------------- |:-------------- |:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| fees                      | [FeeReferentialRateIndexer](#schemaFeeReferentialRateIndexer)    | Sim            | Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial ou Indexador (Indx), do Documento 3040 |
+| applications              | [[Application](#schemaApplication)]                              | Sim            | Valor da mediana da taxa de remuneração relativa ao serviço ofertado informado no período.                                                                                                                                                                                                         |
+| minimumRate               | string                                                           | Sim            | Percentual mínimo cobrado (taxa efetiva) no mês de referência, para o Financiamento contratado. A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%) | 
+| maximumRate               | string                                                           | Sim            |  Percentual máximo cobrado (taxa efetiva) no mês de referência, para o Financiamento contratado. A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%) | 
