@@ -24,7 +24,10 @@
                       {
                         "interval": "string",
                         "value": "string",
-                        "currency": "string"
+                        "currency": "string",
+                        "customers": {
+                          "rate": "string"
+                        }
                       }
                     ],
                     "minimum": {
@@ -34,13 +37,7 @@
                     "maximum": {
                       "value": "string",
                       "currency": "string"
-                    },
-                    "customers": [
-                      {
-                        "frequency": "string",
-                        "rate": "string"
-                      }
-                    ]
+                    }
                   }
                 ]
               },
@@ -54,7 +51,12 @@
                 "applications": [
                   {
                     "interval": "string",
-                    "rate": "string"
+                    "indexer": {
+                      "rate": "string"
+                    },
+                    "customers": {
+                      "rate": "string"
+                    }
                   }
                 ],
                 "minimumRate": "string",
@@ -120,7 +122,10 @@
                   {
                     "interval": "string",
                     "value": "string",
-                    "currency": "string"
+                    "currency": "string",
+                    "customers": {
+                      "rate": "string"
+                    }
                   }
                 ],
                 "minimum": {
@@ -130,13 +135,7 @@
                 "maximum": {
                   "value": "string",
                   "currency": "string"
-                },
-                "customers": [
-                  {
-                    "frequency": "string",
-                    "rate": "string"
-                  }
-                ]
+                }
               }
             ]
           },
@@ -150,7 +149,12 @@
             "applications": [
               {
                 "interval": "string",
-                "rate": "string"
+                "indexer": {
+                  "rate": "string"
+                },
+                "customers": {
+                  "rate": "string"
+                }
               }
             ],
             "minimumRate": "string",
@@ -198,7 +202,10 @@
               {
                 "interval": "string",
                 "value": "string",
-                "currency": "string"
+                "currency": "string",
+                "customers": {
+                  "rate": "string"
+                }
               }
             ],
             "minimum": {
@@ -208,13 +215,7 @@
             "maximum": {
               "value": "string",
               "currency": "string"
-            },
-            "customers": [
-              {
-                "frequency": "string",
-                "rate": "string"
-              }
-            ]
+            }
           }
         ]
       },
@@ -228,7 +229,12 @@
         "applications": [
           {
             "interval": "string",
-            "rate": "string"
+            "indexer": {
+              "rate": "string"
+            },
+            "customers": {
+              "rate": "string"
+            }
           }
         ],
         "minimumRate": "string",
@@ -271,7 +277,10 @@
           {
             "interval": "string",
             "value": "string",
-            "currency": "string"
+            "currency": "string",
+            "customers": {
+              "rate": "string"
+            }
           }
         ],
         "minimum": {
@@ -281,13 +290,7 @@
         "maximum": {
           "value": "string",
           "currency": "string"
-        },
-        "customers": [
-          {
-            "frequency": "string",
-            "rate": "string"
-          }
-        ]
+        }
       }
     ]
   },
@@ -301,7 +304,12 @@
     "applications": [
       {
         "interval": "string",
-        "rate": "string"
+        "indexer": {
+          "rate": "string"
+        },
+        "customers": {
+          "rate": "string"
+        }
       }
     ],
     "minimumRate": "string",
@@ -339,7 +347,10 @@
         {
           "interval": "string",
           "value": "string",
-          "currency": "string"
+          "currency": "string",
+          "customers": {
+            "rate": "string"
+          }
         }
       ],
       "minimum": {
@@ -349,13 +360,7 @@
       "maximum": {
         "value": "string",
         "currency": "string"
-      },
-      "customers": [
-        {
-          "frequency": "string",
-          "rate": "string"
-        }
-      ]
+      }
     }
   ]
 }
@@ -381,7 +386,10 @@
     {
       "interval": "string",
       "value": "string",
-      "currency": "string"
+      "currency": "string",
+      "customers": {
+        "rate": "string"
+      }
     }
   ],
   "minimum": {
@@ -391,13 +399,7 @@
   "maximum": {
     "value": "string",
     "currency": "string"
-  },
-  "customers": [
-    {
-      "frequency": "string",
-      "rate": "string"
-    }
-  ]
+  }
 }
 ```
 
@@ -442,17 +444,16 @@
   "applications": [
     {
       "interval": "string",
-      "rate": "string"
+      "indexer": {
+        "rate": "string"
+      },
+      "customers": {
+        "rate": "string"
+      }
     }
   ],
   "minimumRate": "string",
   "maximumRate": "string",
-  "customers": [
-    {
-      "frequency": "string",
-      "rate": "string"
-    }
-  ]
 }
 
 ```
@@ -462,27 +463,7 @@
 |Nome|Tipo|Obrigatório|Definição|
 |---|---|---|---|
 |fees|[FeeReferentialRateIndexer](#schemaFeeReferentialRateIndexer)| Sim | Lista de tipos de taxas referenciais ou indexadores |
-|applications|[[InterestRateApplication](#schemainterestrateapplication)] |Sim| Lista  das faixas de cobrança da taxa efetiva de remuneração.|
+|applications|[[Application](#schemaApplication)] |Sim| Lista  das faixas de cobrança da taxa efetiva de remuneração.|
 |minimumRate|string| Sim |Percentual mínimo cobrado (taxa efetiva) no mês de referência, para os Direitos Creditórios Descontados contratado  A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.15. Este valor representa 15%. O valor 1 representa 100%)|
 |maximumRate|string| Sim |Percentual máximo cobrado (taxa efetiva) no mês de referência, para os Direitos Creditórios Descontados contratado  A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.15. Este valor representa 15%. O valor 1 representa 100%)|
 | customers   | [Customer](#schemaCustomer) | Sim   | Lista percentual de cliente por faixa referente a  taxa remuneratória. |
-
-## InterestRateApplication
-
-<a id="schemainterestrateapplication"></a>
-
-
-```json
-{
-  "interval": "string",
-  "rate": "string"
-}
-
-```
-
-### Properties
-
-|Nome |Tipo |Obrigatório |Definição|
-|---|---|---|---|
-|interval|[Enum PriceIntervals](#schemaPriceInterval)|Sim| Segundo Normativa nº 32, BCB, de 2020: Distribuição de frequência relativa dos valores de tarifas cobradas dos clientes, de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana em cada uma dessas faixas. Informando: 1ª faixa de valor, 2ª faixa de valor, 3ª faixa de valor e 4ª faixa de valor|
-|rate|string |Sim| Percentual que corresponde a mediana da taxa efetiva cobrada do cliente pela contratação do serviço/produto, no intervalo informado. p.ex. '9,8700%' A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)|
