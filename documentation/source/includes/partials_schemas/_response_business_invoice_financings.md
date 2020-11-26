@@ -51,7 +51,9 @@
                 "applications": [
                   {
                     "interval": "string",
-                    "rate": "string",
+                    "indexer": {
+                      "rate": "string"
+                    },
                     "customers": {
                       "rate": "string"
                     }
@@ -142,7 +144,9 @@
             "applications": [
               {
                 "interval": "string",
-                "rate": "string",
+                "indexer": {
+                  "rate": "string"
+                },
                 "customers": {
                   "rate": "string"
                 }
@@ -215,7 +219,9 @@
         "applications": [
           {
             "interval": "string",
-            "rate": "string",
+            "indexer": {
+              "rate": "string"
+            },
             "customers": {
               "rate": "string"
             }
@@ -283,7 +289,9 @@
     "applications": [
       {
         "interval": "string",
-        "rate": "string",
+        "indexer": {
+          "rate": "string"
+        },
         "customers": {
           "rate": "string"
         }
@@ -392,7 +400,9 @@
   "applications": [
     {
       "interval": "string",
-      "rate": "string",
+      "indexer": {
+        "rate": "string"
+      },
       "customers": {
         "rate": "string"
       }
