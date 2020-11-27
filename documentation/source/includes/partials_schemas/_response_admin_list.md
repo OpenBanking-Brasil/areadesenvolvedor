@@ -39,7 +39,7 @@
           0
         ]
       },
-      "lowPriority": {
+      "mediumPriority": {
         "currentDay": 0,
         "previousDays": [
           0
@@ -65,7 +65,7 @@
           0
         ]
       },
-      "lowPriority": {
+      "mediumPriority": {
         "currentDay": 0,
         "previousDays": [
           0
@@ -211,7 +211,7 @@
       0
     ]
   },
-  "lowPriority": {
+  "mediumPriority": {
     "currentDay": 0,
     "previousDays": [
       0
@@ -235,7 +235,7 @@
 |highPriority|object|Sim|Número de chamadas para o nível de alta prioridade.|
 |» currentDay|number|Sim|Número de chamadas no dia atual.|
 |» previousDays|[number]|Sim|Número de chamadas nos dias anteriores. O primeiro item do array é referente a ontem, e assim por diante. Devem ser retornados no máximo sete dias caso estejam disponíveis.|
-|lowPriority|object|Sim|Número de chamadas para o nível de baixa prioridade.|
+|mediumPriority|object|Sim|Número de chamadas para o nível de média prioridade.|
 |» currentDay|number|Sim|Número de chamadas no dia atual.|
 |» previousDays|[number]|Sim|Número de chamadas nos dias anteriores. O primeiro item do array é referente a ontem, e assim por diante. Devem ser retornados no máximo sete dias caso estejam disponíveis.|
 |unattended|object|Sim|Número de chamadas para o nível não acompanhado.|
@@ -259,7 +259,7 @@
       0
     ]
   },
-  "lowPriority": {
+  "mediumPriority": {
     "currentDay": 0,
     "previousDays": [
       0
@@ -283,7 +283,7 @@
 |highPriority|object|Sim|Número de chamadas para o nível de alta prioridade.|
 |» currentDay|number|Sim|Número de chamadas no dia atual.|
 |» previousDays|[number]|Sim|Número de chamadas nos dias anteriores. O primeiro item do array é referente a ontem, e assim por diante. Devem ser retornados no máximo sete dias caso estejam disponíveis.|
-|lowPriority|object|Sim|Número de chamadas para o nível de baixa prioridade.|
+|mediumPriority|object|Sim|Número de chamadas para o nível de média prioridade.|
 |» currentDay|number|Sim|Número de chamadas no dia atual|
 |» previousDays|[number]|Sim|Número de chamadas nos dias anteriores. O primeiro item do array é referente a ontem, e assim por diante. Devem ser retornados no máximo sete dias caso estejam disponíveis.|
 |unattended|object|Sim|Número de chamadas para o nível não acompanhado.|
