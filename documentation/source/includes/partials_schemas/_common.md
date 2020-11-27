@@ -61,11 +61,9 @@
   "interval": "string",
   "monthlyFee": "string",
   "currency": "string",
-  "customers": [
-    {
-      "rate": "string"
-    }
-  ]
+  "customers": {
+    "rate": "string"
+  }
 }
 ```
 
@@ -74,7 +72,7 @@
 | interval   | [Enum PriceInterval](#schemaPriceInterval) | Sim          | Segundo Normativa nº 32, BCB, de 2020: Distribuição de frequência relativa dos valores de tarifas cobradas dos clientes, de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana em cada uma dessas faixas. Informando: 1ª faixa , 2ª faixa, 3ª faixa e 4ª faixa|
 | monthlyFee | string                                     | Sim          | Valor da mediana da tarifa, relativa ao serviço ofertado,informado no período, conforme Res nº32 BCB, 2020. p.ex. '45.00' (representa um valor monetário. p.ex: 1547368.92. Este valor, considerando que a moeda seja BRL, significa R$ 1.547.368,92. O único separador presente deve ser o '.' (ponto) para indicar a casa decimal. Não deve haver separador de milhar)   |
 | currency   | [Currency](#schemacurrency)                | Sim          | Moeda referente ao valor do Pacote de serviços, segundo modelo ISO-4217.                                                                                                                                                                                                                                                                                                   |
-| customers  | [Customers](#schemaCustomer)               | Sim          | Lista percentual de clientes por faixa de preço                                                                                                                                                                                                                                                                                                                            |
+| customers  | [Customers](#schemaCustomer)               | Sim          |                                                                                                                                                                                                                                                                                                                                                                            |
 
 ## MinimumPrice
 
@@ -144,7 +142,7 @@
 {
   "interval": "string",
   "indexer": {
-    "rate": "string",
+    "rate": "string"
   },
   "customers": {
     "rate": "string"
@@ -158,13 +156,14 @@
 | customers    | [Customer](#schemaCustomer)                | Sim         | Percentual dos clientes de cada faixa relativa ao serviço ofertado.                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 
 ## Application
+
 <a id="schemaApplication"></a>
 
 ```json
 {
   "interval": "string",
   "indexer": {
-    "rate": "string",
+    "rate": "string"
   },
   "customers": {
     "rate": "string"
@@ -179,11 +178,12 @@
 | customers    | [Customer](#schemaCustomer)                      | Sim            | Percentual dos clientes de cada faixa relativa ao serviço ofertado.                          |
 
 ## Indexer
+
 <a id="schemaIndexer"></a>
 
 ```json
 {
-  "rate": "string",
+  "rate": "string"
 }
 ```
 
@@ -379,8 +379,8 @@ Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial o
       }
     }
   ],
-  "minimumRate" : "string",
-  "maximumRate" : "string"
+  "minimumRate": "string",
+  "maximumRate": "string"
 }
 ```
 
@@ -392,6 +392,7 @@ Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial o
 | maximumRate | String                                                        | Sim         | Percentual máximo cobrado para o pagamento parcelado do saldo devedor na fatura do mês de referência.|
 
 ### Enum CreditCardInterestRateCode
+
 <a id="schemaEnumCreditCardInterestRateCode"></a>
 
 | Propriedade                 | Código               | Definição           |
@@ -462,8 +463,8 @@ Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial o
       }
     }
   ],
-  "minimumRate" : "string",
-  "maximumRate" : "string"
+  "minimumRate": "string",
+  "maximumRate": "string"
 }
 ```
 
@@ -596,11 +597,9 @@ Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial o
       "interval": "string",
       "monthlyFee": "string",
       "currency": "string",
-      "customers": [
-        {
-          "rate": "string"
-        }
-      ]
+      "customers": {
+        "rate": "string"
+      }
     }
   ],
   "minimum": {
