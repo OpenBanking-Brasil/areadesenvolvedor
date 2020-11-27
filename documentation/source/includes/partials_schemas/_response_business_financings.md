@@ -311,17 +311,17 @@
 ### Enum BusinessFinancingType
 <a id="schemaEnumBusinessFinancingType"></a>
 
-| Propriedade  | Código                                 | Definição                                                        |
-|:------------ |:-------------------------------------- |:---------------------------------------------------------------- |
-| type         | FINANCIAMENTO_AQUISICAO_BENS_VEICULOS_AUTOMOTORES    | Aquisição de bens – veículos automotores.                         |
-| type         | FINANCIAMENTO_AQUISICAO_BENS_OUTROS_BENS             | Aquisição de bens – outros bens.                                  |
-| type         | FINANCIAMENTO_MICROCREDITO                           | operação de crédito realizada para financiamento de atividades produtivas de pessoas naturais ou jurídicas, organizadas de forma individual ou coletiva, com renda ou receita bruta anual de até R$200.000,00 (duzentos mil reais)                                 |
-| type         | FINANCIAMENTO_RURAL_CUSTEIO                          | Financiamentos rurais - custeio.                                  |
-| type         | FINANCIAMENTO_RURAL_INVESTIMENTO                     | Financiamentos rurais - investimento.                             |
-| type         | FINANCIAMENTO_RURAL_COMERCIALIZACAO                  | Financiamentos rurais - comercialização.                          |
-| type         | FINANCIAMENTO_RURAL_INDUSTRIALIZACAO                 | Financiamentos rurais - industrialização.                         |
-| type         | FINANCIAMENTO_IMOBILIARIO_SISTEMA_FINANCIERO_HABILITACAO_SFH          | Financimento imobiliário - Sistema Financeiro da Habitação (SFH. |
-| type         | FINANCIAMENTO_IMOBILIARIO_SISTEMA_FINANCIERO_HABILITACAO_SFI          | Financimento imobiliário - Sistema Financeiro da Imobiliário (SFI). |
+| Propriedade  | Código                                                                | Definição                                                        |
+|:------------ |:----------------------------------------------------------------------|:---------------------------------------------------------------- |
+| type         | FINANCIAMENTO_AQUISICAO_BENS_VEICULOS_AUTOMOTORES                     | Aquisição de bens – veículos automotores.                         |
+| type         | FINANCIAMENTO_AQUISICAO_BENS_OUTROS_BENS                              | Aquisição de bens – outros bens.                                  |
+| type         | FINANCIAMENTO_MICROCREDITO                                            | operação de crédito realizada para financiamento de atividades produtivas de pessoas naturais ou jurídicas, organizadas de forma individual ou coletiva, com renda ou receita bruta anual de até R$200.000,00 (duzentos mil reais)                                 |
+| type         | FINANCIAMENTO_RURAL_CUSTEIO                                           | Financiamentos rurais - custeio.                                  |
+| type         | FINANCIAMENTO_RURAL_INVESTIMENTO                                      | Financiamentos rurais - investimento.                             |
+| type         | FINANCIAMENTO_RURAL_COMERCIALIZACAO                                   | Financiamentos rurais - comercialização.                          |
+| type         | FINANCIAMENTO_RURAL_INDUSTRIALIZACAO                                  | Financiamentos rurais - industrialização.                         |
+| type         | FINANCIAMENTO_IMOBILIARIO_SISTEMA_FINANCEIRO_HABILITACAO_SFH          | Financimento imobiliário - Sistema Financeiro da Habitação (SFH. |
+| type         | FINANCIAMENTO_IMOBILIARIO_SISTEMA_FINANCEIRO_HABILITACAO_SFI          | Financimento imobiliário - Sistema Financeiro da Imobiliário (SFI). |
 
 
 ### Enum BusinessFinancingRequiredWarranty

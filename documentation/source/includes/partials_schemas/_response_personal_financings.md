@@ -180,7 +180,7 @@
               {
                 "interval": "string",
                 "rate": "string",
-                "cusomters": {
+                "customers": {
                   "rate": "string"
                 }
               },
@@ -408,8 +408,8 @@
 | type         | FINANCIAMENTO_RURAL_INVESTIMENTO                               | Financiamentos rurais - investimento.                             |
 | type         | FINANCIAMENTO_RURAL_COMERCIALIZACAO                            | Financiamentos rurais - comercialização.                          |
 | type         | FINANCIAMENTO_RURAL_INDUSTRIALIZACAO                           | Financiamentos rurais - industrialização.                         |
-| type         | FINANCIAMENTO_IMOBILIARIO_SISTEMA_FINANCIERO_HABILITACAO_SFH   | Financimento imobiliário - Sistema Financeiro da Habitação (SFH). |
-| type         | FINANCIAMENTO_IMOBILIARIO_SISTEMA_FINANCIERO_HABILITACAO_SFI   | Financimento imobiliário - Sistema Financeiro da Imobiliário (SFI). |
+| type         | FINANCIAMENTO_IMOBILIARIO_SISTEMA_FINANCEIRO_HABILITACAO_SFH   | Financimento imobiliário - Sistema Financeiro da Habitação (SFH). |
+| type         | FINANCIAMENTO_IMOBILIARIO_SISTEMA_FINANCEIRO_HABILITACAO_SFI   | Financimento imobiliário - Sistema Financeiro da Imobiliário (SFI). |
 
 ### Enum PersonalFinancingRequiredWarranty
 
@@ -422,7 +422,7 @@
 | requiredWarranty | PENHOR                                     | Penhor.                                                |
 | requiredWarranty | ALIENACAO_FIDUCIARIA                       | Alienação fiduciária.                                  |
 | requiredWarranty | HIPOTECA                                   | Hipoteca.                                              |
-| requiredWarranty | OPERCAOES_GARANTIDAS_PELO_GOVERNO          | Operações garantidas pelo governo.                     |
+| requiredWarranty | OPERACOES_GARANTIDAS_PELO_GOVERNO          | Operações garantidas pelo governo.                     |
 | requiredWarranty | OUTRAS_GARANTIAS_NAO_FIDEJUSSORIAS         | Outras garantias não fidejussórias.                    |
 | requiredWarranty | SEGUROS_ASSEMELHADOS                       | Seguros e assemelhados.                                |
 | requiredWarranty | GARANTIA_FIDEJUSSORIA                      | Garantia fidejussória.                                 |
