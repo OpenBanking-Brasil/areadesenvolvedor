@@ -38,7 +38,10 @@
                       {
                         "interval": "string",
                         "value": "string",
-                        "currency": "string"
+                        "currency": "string",
+                        "customers": {
+                          "rate": "string"
+                        }
                       }
                     ],
                     "minimum": {
@@ -48,13 +51,7 @@
                     "maximum": {
                       "value": "string",
                       "currency": "string"
-                    },
-                    "customers": [
-                      {
-                        "frequency": "string",
-                        "rate": "string"
-                      }
-                    ]
+                    }
                   }
                 ]
               },
@@ -69,17 +66,16 @@
                   "prices": [
                     {
                       "interval": "string",
-                      "rate": "string"
+                      "indexer": {
+                        "rate": "string"
+                      },
+                      "customers": {
+                        "rate": "string"
+                      }
                     }
                   ],
                   "minimumRate": "string",
-                  "maximumRate": "string",
-                  "customers": [
-                    {
-                      "frequency": "string",
-                      "rate": "string"
-                    }
-                  ]
+                  "maximumRate": "string"
                 },
                 "instalmentRate": {
                   "fees": [
@@ -91,17 +87,16 @@
                   "prices": [
                     {
                       "interval": "string",
-                      "rate": "string"
+                      "indexer": {
+                        "rate": "string"
+                      },
+                      "customers": {
+                        "rate": "string"
+                      }
                     }
                   ],
                   "minimumRate": "string",
-                  "maximumRate": "string",
-                  "customers": [
-                    {
-                      "frequency": "string",
-                      "rate": "string"
-                    }
-                  ]
+                  "maximumRate": "string"
                 },
                 "interestRates": [
                   {
@@ -116,17 +111,16 @@
                     "prices": [
                       {
                         "interval": "string",
-                        "rate": "string"
+                        "indexer": {
+                          "rate": "string"
+                        },
+                        "customers": {
+                          "rate": "string"
+                        }
                       }
                     ],
                     "minimumRate": "string",
-                    "maximumRate": "string",
-                    "customers": [
-                      {
-                        "frequency": "string",
-                        "rate": "string"
-                      }
-                    ]
+                    "maximumRate": "string"
                   }
                 ]
               },
@@ -201,7 +195,10 @@
                   {
                     "interval": "string",
                     "value": "string",
-                    "currency": "string"
+                    "currency": "string",
+                    "customers": {
+                      "rate": "string"
+                    }
                   }
                 ],
                 "minimum": {
@@ -211,13 +208,7 @@
                 "maximum": {
                   "value": "string",
                   "currency": "string"
-                },
-                "customers": [
-                  {
-                    "frequency": "string",
-                    "rate": "string"
-                  }
-                ]
+                }
               }
             ]
           },
@@ -232,17 +223,16 @@
               "prices": [
                 {
                   "interval": "string",
-                  "rate": "string"
+                  "indexer": {
+                    "rate": "string"
+                  },
+                  "customers": {
+                    "rate": "string"
+                  }
                 }
               ],
               "minimumRate": "string",
-              "maximumRate": "string",
-              "customers": [
-                {
-                  "frequency": "string",
-                  "rate": "string"
-                }
-              ]
+              "maximumRate": "string"
             },
             "instalmentRate": {
               "fees": [
@@ -254,17 +244,16 @@
               "prices": [
                 {
                   "interval": "string",
-                  "rate": "string"
+                  "indexer": {
+                    "rate": "string"
+                  },
+                  "customers": {
+                    "rate": "string"
+                  }
                 }
               ],
               "minimumRate": "string",
-              "maximumRate": "string",
-              "customers": [
-                {
-                  "frequency": "string",
-                  "rate": "string"
-                }
-              ]
+              "maximumRate": "string"
             },
             "interestRates": [
               {
@@ -279,17 +268,16 @@
                 "prices": [
                   {
                     "interval": "string",
-                    "rate": "string"
+                    "indexer": {
+                      "rate": "string"
+                    },
+                    "customers": {
+                      "rate": "string"
+                    }
                   }
                 ],
                 "minimumRate": "string",
-                "maximumRate": "string",
-                "customers": [
-                  {
-                    "frequency": "string",
-                    "rate": "string"
-                  }
-                ]
+                "maximumRate": "string"
               }
             ]
           },
@@ -346,7 +334,10 @@
               {
                 "interval": "string",
                 "value": "string",
-                "currency": "string"
+                "currency": "string",
+                "customers": {
+                  "rate": "string"
+                }
               }
             ],
             "minimum": {
@@ -356,13 +347,7 @@
             "maximum": {
               "value": "string",
               "currency": "string"
-            },
-            "customers": [
-              {
-                "frequency": "string",
-                "rate": "string"
-              }
-            ]
+            }
           }
         ]
       },
@@ -377,17 +362,16 @@
           "prices": [
             {
               "interval": "string",
-              "rate": "string"
+              "indexer": {
+                "rate": "string"
+              },
+              "customers": {
+                "rate": "string"
+              }
             }
           ],
           "minimumRate": "string",
-          "maximumRate": "string",
-          "customers": [
-            {
-              "frequency": "string",
-              "rate": "string"
-            }
-          ]
+          "maximumRate": "string"
         },
         "instalmentRate": {
           "fees": [
@@ -399,17 +383,16 @@
           "prices": [
             {
               "interval": "string",
-              "rate": "string"
+              "indexer": {
+                "rate": "string"
+              },
+              "customers": {
+                "rate": "string"
+              }
             }
           ],
           "minimumRate": "string",
-          "maximumRate": "string",
-          "customers": [
-            {
-              "frequency": "string",
-              "rate": "string"
-            }
-          ]
+          "maximumRate": "string"
         },
         "interestRates": [
           {
@@ -424,17 +407,16 @@
             "prices": [
               {
                 "interval": "string",
-                "rate": "string"
+                "indexer": {
+                  "rate": "string"
+                },
+                "customers": {
+                  "rate": "string"
+                }
               }
             ],
             "minimumRate": "string",
-            "maximumRate": "string",
-            "customers": [
-              {
-                "frequency": "string",
-                "rate": "string"
-              }
-            ]
+            "maximumRate": "string"
           }
         ]
       },
@@ -486,7 +468,10 @@
           {
             "interval": "string",
             "value": "string",
-            "currency": "string"
+            "currency": "string",
+            "customers": {
+              "rate": "string"
+            }
           }
         ],
         "minimum": {
@@ -496,13 +481,7 @@
         "maximum": {
           "value": "string",
           "currency": "string"
-        },
-        "customers": [
-          {
-            "frequency": "string",
-            "rate": "string"
-          }
-        ]
+        }
       }
     ]
   },
@@ -517,17 +496,16 @@
       "prices": [
         {
           "interval": "string",
-          "rate": "string"
+          "indexer": {
+            "rate": "string"
+          },
+          "customers": {
+            "rate": "string"
+          }
         }
       ],
       "minimumRate": "string",
-      "maximumRate": "string",
-      "customers": [
-        {
-          "frequency": "string",
-          "rate": "string"
-        }
-      ]
+      "maximumRate": "string"
     },
     "instalmentRate": {
       "fees": [
@@ -539,17 +517,16 @@
       "prices": [
         {
           "interval": "string",
-          "rate": "string"
+          "indexer": {
+            "rate": "string"
+          },
+          "customers": {
+            "rate": "string"
+          }
         }
       ],
       "minimumRate": "string",
-      "maximumRate": "string",
-      "customers": [
-        {
-          "frequency": "string",
-          "rate": "string"
-        }
-      ]
+      "maximumRate": "string"
     },
     "interestRates": [
       {
@@ -564,17 +541,16 @@
         "prices": [
           {
             "interval": "string",
-            "rate": "string"
+            "indexer": {
+              "rate": "string"
+            },
+            "customers": {
+              "rate": "string"
+            }
           }
         ],
         "minimumRate": "string",
-        "maximumRate": "string",
-        "customers": [
-          {
-            "frequency": "string",
-            "rate": "string"
-          }
-        ]
+        "maximumRate": "string"
       }
     ]
   },
@@ -719,7 +695,10 @@
         {
           "interval": "string",
           "value": "string",
-          "currency": "string"
+          "currency": "string",
+          "customers": {
+            "rate": "string"
+          }
         }
       ],
       "minimum": {
@@ -729,13 +708,7 @@
       "maximum": {
         "value": "string",
         "currency": "string"
-      },
-      "customers": [
-        {
-          "frequency": "string",
-          "rate": "string"
-        }
-      ]
+      }
     }
   ]
 }
@@ -757,7 +730,10 @@
     {
       "interval": "string",
       "value": "string",
-      "currency": "string"
+      "currency": "string",
+      "customers": {
+        "rate": "string"
+      }
     }
   ],
   "minimum": {
@@ -767,13 +743,7 @@
   "maximum": {
     "value": "string",
     "currency": "string"
-  },
-  "customers": [
-    {
-      "frequency": "string",
-      "rate": "string"
-    }
-  ]
+  }
 }
 ```
 
@@ -785,7 +755,6 @@
 | prices              | [[Price](#schemaPrice)]               | Sim | Lista distribuição preços tarifas de serviços |
 | minimum             | [[MinimumPrice](#schemaMinimumPrice)] | Sim | Valor mínimo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type
 | maximum             | [[MaximumPrice](#schemaMaximumPrice)] | Sim | Valor máximo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. Este campo deve estar obrigatoriamente preenchido se não houver conteúdo para os itens: value, currency e type |
-| customers           | [[Customer](#schemaCustomer)]         | Sim | Lista percentual de clientes por faixa de preço |
 
 ### Enum PersonalCreditCardFeesServiceName
 <a id="schemaEnumPersonalCreditCardFeesServiceName"></a>

@@ -131,14 +131,19 @@
 ```json
 {
   "interval": "string",
-  "rate": "string"
-}
+  "indexer": {
+    "rate": "string",
+  },
+  "customers": {
+    "rate": "string"
+  }
 ```
 
-|     Nome     |  Tipo                                            | Obrigatório    |                            Definição                                                |
-|:------------ |:------------------------------------------------ |:-------------- |:-----------------------------------------------------------------------------       |
-| interval     | [Enum PriceInterval](#schemaPriceInterval)       | Sim            | Faixas para cobrança da taxa efetiva aplicada pela contratação do crédito, no intervalo informado: 1ª faixa, 2ª faixa, 3ª faixa e 4ª faixa. Segundo Normativa nº32 de 2020: 'Distribuição de frequência relativa dos valores de tarifas e taxas de juros cobrados dos clientes, de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana e o percentual de clientes em cada uma dessas faixas.  |
-| rate         | [RateString](#commonFieldRateString)             | Sim            | Percentual que corresponde a mediana da taxa efetiva cobrada do cliente pela contratação do Empréstimo, no intervalo informado. p.ex. '9,8700%'. A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%) |
+|     Nome     |  Tipo                                      | Obrigatório |                            Definição                                                |
+|:------------ |:------------------------------------------ |:----------- |:-----------------------------------------------------------------------------       |
+| interval     | [Enum PriceInterval](#schemaPriceInterval) | Sim         | Faixas para cobrança da taxa efetiva aplicada pela contratação do do crédito rotativo, no intervalo informado: 1ª faixa, 2ª faixa, 3ª faixa e 4ª faixa. Segundo Normativa nº32 de 2020: 'Distribuição de frequência relativa dos valores de tarifas e taxas de juros cobrados dos clientes, de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana e o percentual de clientes em cada uma dessas faixas. |
+| indexer      | [Indexer](#schemaIndexer)                  | Sim         | Percentual que corresponde a mediana (taxa efetiva) cobrada do cliente pela utilização do crédito rotativo, no intervalo informado.                                                                                                                                                                                                                                                                                                                                                                                  |
+| customers    | [Customer](#schemaCustomer)                | Sim         | Percentual dos clientes de cada faixa relativa ao serviço ofertado.                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 
 ## Application
 <a id="schemaApplication"></a>
@@ -347,17 +352,16 @@ Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial o
   "prices": [
     {
       "interval": "string",
-      "rate": "string"
+      "indexer": {
+        "rate": "string"
+      },
+      "customers": {
+        "rate": "string"
+      }
     }
   ],
   "minimumRate" : "string",
-  "maximumRate" : "string",
-  "customers": [
-    {
-      "frequency": "string",
-      "rate": "string"
-    }
-  ]
+  "maximumRate" : "string"
 }
 ```
 
@@ -367,8 +371,6 @@ Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial o
 | prices      | [[Rate](#schemaRate)]                                         | Sim         | Lista distribuição preços tarifas de serviços   |
 | minimumRate | String                                                        | Sim         | Percentual mínimo cobrado para a taxa do crédito rotativo no mês de referência.                      |
 | maximumRate | String                                                        | Sim         | Percentual máximo cobrado para o pagamento parcelado do saldo devedor na fatura do mês de referência.|
-| customers   | [[Customer](#schemaCustomer)]                                 | Sim         | Lista percentual de clientes por faixa de preço   |
-
 
 ### Enum CreditCardInterestRateCode
 <a id="schemaEnumCreditCardInterestRateCode"></a>
@@ -395,17 +397,16 @@ Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial o
   "prices": [
     {
       "interval": "string",
-      "rate": "string"
+      "indexer": {
+        "rate": "string"
+      },
+      "customers": {
+        "rate": "string"
+      }
     }
   ],
   "minimumRate": "string",
-  "maximumRate": "string",
-  "customers": [
-    {
-      "frequency": "string",
-      "rate": "string"
-    }
-  ]
+  "maximumRate": "string"
 }
 ```
 
@@ -417,7 +418,6 @@ Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial o
 | prices         | [[Rate](#schemaRate)]                                                    | Sim         | Lista distribuição preços tarifas de serviços  |
 | minimumRate    | String                                                                   | Sim         | Percentual mínimo cobrado para a taxa do crédito rotativo no mês de referência.                      |
 | maximumRate    | String                                                                   | Sim         | Percentual máximo cobrado para o pagamento parcelado do saldo devedor na fatura do mês de referência.|
-| customers      | [[Customer](#schemaCustomer)]                                            | Sim         | Lista percentual de clientes por faixa de preço |
 
 ## CreditCardInstalmentRate
 <a id="schemaCreditCardInstalmentRate"></a>
@@ -433,17 +433,16 @@ Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial o
   "prices": [
     {
       "interval": "string",
-      "rate": "string"
+      "indexer": {
+        "rate": "string"
+      },
+      "customers": {
+        "rate": "string"
+      }
     }
   ],
   "minimumRate" : "string",
-  "maximumRate" : "string",
-  "customers": [
-    {
-      "frequency": "string",
-      "rate": "string"
-    }
-  ]
+  "maximumRate" : "string"
 }
 ```
 
@@ -453,7 +452,6 @@ Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial o
 | prices      | [[Rate](#schemaRate)]                                         | Sim         | Lista distribuição preços tarifas de serviços |
 | minimumRate | String                                                        | Sim         | Percentual mínimo cobrado para a taxa do crédito rotativo no mês de referência.                       |
 | maximumRate | String                                                        | Sim         | Percentual máximo cobrado para o pagamento parcelado do saldo devedor na fatura do mês de referência. |
-| customers   | [[Customer](#schemaCustomer)]                                 | Sim         | Lista percentual de clientes por faixa de preço |
 
 ## CreditCardInterest
 <a id="schemaCreditCardInterest"></a>
@@ -470,17 +468,16 @@ Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial o
     "prices": [
       {
         "interval": "string",
-        "rate": "string"
+        "indexer": {
+          "rate": "string"
+        },
+        "customers": {
+          "rate": "string"
+        }
       }
     ],
     "minimumRate": "string",
-    "maximumRate": "string",
-    "customers": [
-      {
-        "frequency": "string",
-        "rate": "string"
-      }
-    ]
+    "maximumRate": "string"
   },
   "instalmentRate": {
     "fees": [
@@ -492,17 +489,16 @@ Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial o
     "prices": [
       {
         "interval": "string",
-        "rate": "string"
+        "indexer": {
+          "rate": "string"
+        },
+        "customers": {
+          "rate": "string"
+        }
       }
     ],
     "minimumRate": "string",
-    "maximumRate": "string",
-    "customers": [
-      {
-        "frequency": "string",
-        "rate": "string"
-      }
-    ]
+    "maximumRate": "string"
   },
   "interestRates": [
     {
@@ -517,17 +513,16 @@ Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial o
       "prices": [
         {
           "interval": "string",
-          "rate": "string"
+          "indexer": {
+            "rate": "string"
+          },
+          "customers": {
+            "rate": "string"
+          }
         }
       ],
       "minimumRate": "string",
-      "maximumRate": "string",
-      "customers": [
-        {
-          "frequency": "string",
-          "rate": "string"
-        }
-      ]
+      "maximumRate": "string"
     }
   ]
 }
