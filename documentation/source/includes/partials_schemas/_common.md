@@ -235,7 +235,7 @@
 
 | Nome                  | Tipo                                   | Obrigatório | Descrição                                         |
 |:------------          |:------------------                     |:----------  |:------------------------------------------------- |
-| standards             | Array                                  | Não         | Lista com os dias da semana.                      |
+| standards             | Array                                  | Sim         | Lista com os dias da semana.                      |
 | weekday               | [[Enum WeekDay](#schemaWeekDay)]       | Não         | Dia da semana.                                    |
 | openingTime           | [[TimeString](#commonFieldTimeString)] | Não         | Horário padrão de início de atendimento.          |
 | closingTime           | [[TimeString](#commonFieldTimeString)] | Não         | Horário padrão de encerramento de atendimento.    |
