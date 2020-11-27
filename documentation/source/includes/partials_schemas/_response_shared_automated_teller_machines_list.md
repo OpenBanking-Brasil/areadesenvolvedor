@@ -31,13 +31,13 @@
               "availability": {
                 "standards": [
                   {
-                    "weekday": "DOMINGO",
+                    "weekday": "string",
                     "openingTime": "string",
                     "closingTime": "string"
                   }
                 ],
                 "exception": "string",
-                "isPublicAccessAllowed": "string"
+                "isPublicAccessAllowed": "boolean"
               },
               "services": [
                 {
@@ -115,7 +115,7 @@
               }
             ],
             "exception": "string",
-            "isPublicAccessAllowed": "string"
+            "isPublicAccessAllowed": "boolean"
           },
           "services": [
             {
@@ -174,7 +174,7 @@
           }
         ],
         "exception": "string",
-        "isPublicAccessAllowed": "string"
+        "isPublicAccessAllowed": "boolean"
       },
       "services": [
         {
@@ -233,7 +233,7 @@
       }
     ],
     "exception": "string",
-    "isPublicAccessAllowed": "string"
+    "isPublicAccessAllowed": "boolean"
   },
   "services": [
     {
