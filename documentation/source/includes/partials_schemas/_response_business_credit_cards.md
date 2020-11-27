@@ -111,17 +111,16 @@
                     "prices": [
                       {
                         "interval": "string",
-                        "rate": "string"
+                        "indexer": {
+                          "rate": "string"
+                        },
+                        "customers": {
+                          "rate": "string"
+                        }
                       }
                     ],
                     "minimumRate": "string",
-                    "maximumRate": "string",
-                    "customers": [
-                      {
-                        "frequency": "string",
-                        "rate": "string"
-                      }
-                    ]
+                    "maximumRate": "string"
                   }
                 ]
               },
@@ -269,17 +268,16 @@
                 "prices": [
                   {
                     "interval": "string",
-                    "rate": "string"
+                    "indexer": {
+                      "rate": "string"
+                    },
+                    "customers": {
+                      "rate": "string"
+                    }
                   }
                 ],
                 "minimumRate": "string",
-                "maximumRate": "string",
-                "customers": [
-                  {
-                    "frequency": "string",
-                    "rate": "string"
-                  }
-                ]
+                "maximumRate": "string"
               }
             ]
           },
@@ -415,17 +413,16 @@
             "prices": [
               {
                 "interval": "string",
-                "rate": "string"
+                "indexer": {
+                  "rate": "string"
+                },
+                "customers": {
+                  "rate": "string"
+                }
               }
             ],
             "minimumRate": "string",
-            "maximumRate": "string",
-            "customers": [
-              {
-                "frequency": "string",
-                "rate": "string"
-              }
-            ]
+            "maximumRate": "string"
           }
         ]
       },
@@ -550,17 +547,16 @@
         "prices": [
           {
             "interval": "string",
-            "rate": "string"
+            "indexer": {
+              "rate": "string"
+            },
+            "customers": {
+              "rate": "string"
+            }
           }
         ],
         "minimumRate": "string",
-        "maximumRate": "string",
-        "customers": [
-          {
-            "frequency": "string",
-            "rate": "string"
-          }
-        ]
+        "maximumRate": "string"
       }
     ]
   },

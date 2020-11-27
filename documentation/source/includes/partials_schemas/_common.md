@@ -397,17 +397,16 @@ Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial o
   "prices": [
     {
       "interval": "string",
-      "rate": "string"
+      "indexer": {
+        "rate": "string"
+      },
+      "customers": {
+        "rate": "string"
+      }
     }
   ],
   "minimumRate": "string",
-  "maximumRate": "string",
-  "customers": [
-    {
-      "frequency": "string",
-      "rate": "string"
-    }
-  ]
+  "maximumRate": "string"
 }
 ```
 
@@ -419,7 +418,6 @@ Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial o
 | prices         | [[Rate](#schemaRate)]                                                    | Sim         | Lista distribuição preços tarifas de serviços  |
 | minimumRate    | String                                                                   | Sim         | Percentual mínimo cobrado para a taxa do crédito rotativo no mês de referência.                      |
 | maximumRate    | String                                                                   | Sim         | Percentual máximo cobrado para o pagamento parcelado do saldo devedor na fatura do mês de referência.|
-| customers      | [[Customer](#schemaCustomer)]                                            | Sim         | Lista percentual de clientes por faixa de preço |
 
 ## CreditCardInstalmentRate
 <a id="schemaCreditCardInstalmentRate"></a>
@@ -515,17 +513,16 @@ Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial o
       "prices": [
         {
           "interval": "string",
-          "rate": "string"
+          "indexer": {
+            "rate": "string"
+          },
+          "customers": {
+            "rate": "string"
+          }
         }
       ],
       "minimumRate": "string",
-      "maximumRate": "string",
-      "customers": [
-        {
-          "frequency": "string",
-          "rate": "string"
-        }
-      ]
+      "maximumRate": "string"
     }
   ]
 }
