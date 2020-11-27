@@ -24,7 +24,10 @@
                       {
                         "interval": "string",
                         "value": "string",
-                        "currency": "string"
+                        "currency": "string",
+                        "customers": {
+                          "rate": "string"
+                        }
                       }
                     ],
                     "minimum": {
@@ -34,13 +37,7 @@
                     "maximum": {
                       "value": "string",
                       "currency": "string"
-                    },
-                    "customers": [
-                      {
-                        "frequency": "string",
-                        "rate": "string"
-                      }
-                    ]
+                    }
                   }
                 ]
               },
@@ -54,17 +51,14 @@
                 "applications": [
                   {
                     "interval": "string",
-                    "rate": "string"
+                    "rate": "string",
+                    "customers": {
+                      "rate": "string"
+                    }
                   }
                 ],
                 "minimumRate": "string",
-                "maximumRate": "string",
-                "customers": [
-                  {
-                    "frequency": "string",
-                    "rate": "string"
-                  }
-                ]
+                "maximumRate": "string"
               },
               "requiredWarranties": [
                 "string"
@@ -121,7 +115,10 @@
                   {
                     "interval": "string",
                     "value": "string",
-                    "currency": "string"
+                    "currency": "string",
+                    "customers": {
+                      "rate": "string"
+                    }
                   }
                 ],
                 "minimum": {
@@ -131,13 +128,7 @@
                 "maximum": {
                   "value": "string",
                   "currency": "string"
-                },
-                "customers": [
-                  {
-                    "frequency": "string",
-                    "rate": "string"
-                  }
-                ]
+                }
               }
             ]
           },
@@ -151,17 +142,14 @@
             "applications": [
               {
                 "interval": "string",
-                "rate": "string"
+                "rate": "string",
+                "customers": {
+                  "rate": "string"
+                }
               }
             ],
             "minimumRate": "string",
-            "maximumRate": "string",
-            "customers": [
-              {
-                "frequency": "string",
-                "rate": "string"
-              }
-            ]
+            "maximumRate": "string"
           },
           "requiredWarranties": [
             "string"
@@ -200,7 +188,10 @@
               {
                 "interval": "string",
                 "value": "string",
-                "currency": "string"
+                "currency": "string",
+                "customers": {
+                  "rate": "string"
+                }
               }
             ],
             "minimum": {
@@ -210,13 +201,7 @@
             "maximum": {
               "value": "string",
               "currency": "string"
-            },
-            "customers": [
-              {
-                "frequency": "string",
-                "rate": "string"
-              }
-            ]
+            }
           }
         ]
       },
@@ -230,17 +215,14 @@
         "applications": [
           {
             "interval": "string",
-            "rate": "string"
+            "rate": "string",
+            "customers": {
+              "rate": "string"
+            }
           }
         ],
         "minimumRate": "string",
-        "maximumRate": "string",
-        "customers": [
-          {
-            "frequency": "string",
-            "rate": "string"
-          }
-        ]
+        "maximumRate": "string"
       },
       "requiredWarranties": [
         "string"
@@ -274,7 +256,10 @@
           {
             "interval": "string",
             "value": "string",
-            "currency": "string"
+            "currency": "string",
+            "customers": {
+              "rate": "string"
+            }
           }
         ],
         "minimum": {
@@ -284,13 +269,7 @@
         "maximum": {
           "value": "string",
           "currency": "string"
-        },
-        "customers": [
-          {
-            "frequency": "string",
-            "rate": "string"
-          }
-        ]
+        }
       }
     ]
   },
@@ -304,17 +283,14 @@
     "applications": [
       {
         "interval": "string",
-        "rate": "string"
+        "rate": "string",
+        "customers": {
+          "rate": "string"
+        }
       }
     ],
     "minimumRate": "string",
-    "maximumRate": "string",
-    "customers": [
-      {
-        "frequency": "string",
-        "rate": "string"
-      }
-    ]
+    "maximumRate": "string"
   },
   "requiredWarranties": [
     "string"
@@ -335,17 +311,17 @@
 ### Enum BusinessFinancingType
 <a id="schemaEnumBusinessFinancingType"></a>
 
-| Propriedade  | Código                                 | Definição                                                        |
-|:------------ |:-------------------------------------- |:---------------------------------------------------------------- |
-| type         | FINANCIAMENTO_AQUISICAO_BENS_VEICULOS_AUTOMOTORES    | Aquisição de bens – veículos automotores.                         |
-| type         | FINANCIAMENTO_AQUISICAO_BENS_OUTROS_BENS             | Aquisição de bens – outros bens.                                  |
-| type         | FINANCIAMENTO_MICROCREDITO                           | operação de crédito realizada para financiamento de atividades produtivas de pessoas naturais ou jurídicas, organizadas de forma individual ou coletiva, com renda ou receita bruta anual de até R$200.000,00 (duzentos mil reais)                                 |
-| type         | FINANCIAMENTO_RURAL_CUSTEIO                          | Financiamentos rurais - custeio.                                  |
-| type         | FINANCIAMENTO_RURAL_INVESTIMENTO                     | Financiamentos rurais - investimento.                             |
-| type         | FINANCIAMENTO_RURAL_COMERCIALIZACAO                  | Financiamentos rurais - comercialização.                          |
-| type         | FINANCIAMENTO_RURAL_INDUSTRIALIZACAO                 | Financiamentos rurais - industrialização.                         |
-| type         | FINANCIAMENTO_IMOBILIARIO_SISTEMA_FINANCIERO_HABILITACAO_SFH          | Financimento imobiliário - Sistema Financeiro da Habitação (SFH. |
-| type         | FINANCIAMENTO_IMOBILIARIO_SISTEMA_FINANCIERO_HABILITACAO_SFI          | Financimento imobiliário - Sistema Financeiro da Imobiliário (SFI). |
+| Propriedade  | Código                                                                | Definição                                                        |
+|:------------ |:----------------------------------------------------------------------|:---------------------------------------------------------------- |
+| type         | FINANCIAMENTO_AQUISICAO_BENS_VEICULOS_AUTOMOTORES                     | Aquisição de bens – veículos automotores.                         |
+| type         | FINANCIAMENTO_AQUISICAO_BENS_OUTROS_BENS                              | Aquisição de bens – outros bens.                                  |
+| type         | FINANCIAMENTO_MICROCREDITO                                            | operação de crédito realizada para financiamento de atividades produtivas de pessoas naturais ou jurídicas, organizadas de forma individual ou coletiva, com renda ou receita bruta anual de até R$200.000,00 (duzentos mil reais)                                 |
+| type         | FINANCIAMENTO_RURAL_CUSTEIO                                           | Financiamentos rurais - custeio.                                  |
+| type         | FINANCIAMENTO_RURAL_INVESTIMENTO                                      | Financiamentos rurais - investimento.                             |
+| type         | FINANCIAMENTO_RURAL_COMERCIALIZACAO                                   | Financiamentos rurais - comercialização.                          |
+| type         | FINANCIAMENTO_RURAL_INDUSTRIALIZACAO                                  | Financiamentos rurais - industrialização.                         |
+| type         | FINANCIAMENTO_IMOBILIARIO_SISTEMA_FINANCEIRO_HABILITACAO_SFH          | Financimento imobiliário - Sistema Financeiro da Habitação (SFH. |
+| type         | FINANCIAMENTO_IMOBILIARIO_SISTEMA_FINANCEIRO_HABILITACAO_SFI          | Financimento imobiliário - Sistema Financeiro da Imobiliário (SFI). |
 
 
 ### Enum BusinessFinancingRequiredWarranty
@@ -382,7 +358,10 @@
         {
           "interval": "string",
           "value": "string",
-          "currency": "string"
+          "currency": "string",
+          "customer": {
+            "rate": "string"
+          }
         }
       ],
       "minimum": {
@@ -392,13 +371,7 @@
       "maximum": {
         "value": "string",
         "currency": "string"
-      },
-      "customers": [
-        {
-          "frequency": "string",
-          "rate": "string"
-        }
-      ]
+      }
     }
   ]
 }
@@ -420,7 +393,10 @@
     {
       "interval": "string",
       "value": "string",
-      "currency": "string"
+      "currency": "string",
+      "customers": {
+        "rate": "string"
+      }
     }
   ],
   "minimum": {
@@ -430,25 +406,19 @@
   "maximum": {
     "value": "string",
     "currency": "string"
-  },
-  "customers": [
-    {
-      "frequency": "string",
-      "rate": "string"
-    }
-  ]
+  }
 }
 ```
 
 |     Nome             |  Tipo                                                                    | Obrigatório    |                            Definição                                                                                                       |
-|:------------         |:------------------------------------------------------------------------ |:-------------- |:------------------------------------------------------------------------------------------------------------------------------------------ |
-| name          | string                                                                   | Sim            | Nomes das Tarifas cobradas sobre Serviços ofertados à Modalidade de Financiamento.                                      |
-| code          | string                                                                   | Sim            | Sigla de identificação do serviço relacionado à Modalidade de Financiamento informada. Campo aberto.                   |
+|:-------------------- |:------------------------------------------------------------------------ |:-------------- |:------------------------------------------------------------------------------------------------------------------------------------------ |
+| name                 | string                                                                   | Sim            | Nomes das Tarifas cobradas sobre Serviços ofertados à Modalidade de Financiamento.                                      |
+| code                 | string                                                                   | Sim            | Sigla de identificação do serviço relacionado à Modalidade de Financiamento informada. Campo aberto.                   |
 | chargingTriggerInfo  | string                                                                   | Não            | Fatos geradores de cobrança que incidem sobre as Modalidades de Financiamentos. Campo Aberto.                          |
-| prices                | [Price](#schemaPrice)                                                  | Sim            | Valor da mediana da tarifa, relativa ao serviço ofertado, informado no período.                                                                       |
-| minimum              | [MinimumPrice](#schemaMinimumPrice)                                     | Sim           | Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. |
-| maximum              | [MaximumPrice](#schemaMaximumPrice)                                     | Sim           | Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. |
-|customers|[[Customer](#schemaCustomer)]| Sim |Percentual dos clientes de cada faixa relativa ao serviço ofertado |
+| prices               | [Price](#schemaPrice)                                                    | Sim            | Valor da mediana da tarifa, relativa ao serviço ofertado, informado no período.                                                                       |
+| minimum              | [MinimumPrice](#schemaMinimumPrice)                                      | Sim            | Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. |
+| maximum              | [MaximumPrice](#schemaMaximumPrice)                                      | Sim            | Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. |
+| customers            |[[Customer](#schemaCustomer)]                                             | Sim            |Percentual dos clientes de cada faixa relativa ao serviço ofertado |
 
 
 ## BusinessFinancingInterestRate 
@@ -465,24 +435,21 @@
   "applications": [
     {
       "interval": "string",
-      "rate": "string"
+      "rate": "string",
+      "customers": {
+        "rate": "string"
+      }
     }
   ],
   "minimumRate": "string",
-  "maximumRate": "string",
-  "customers": [
-    {
-      "frequency": "string",
-      "rate": "string"
-    }
-  ]
+  "maximumRate": "string"
 }
 ```
 
-|     Nome                  |  Tipo                                                                           | Obrigatório    |                            Definição                                                                                                                                                                                                                                                                                  |
-|:------------              |:------------------------------------------------------------------------------- |:-------------- |:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| fees                      | [FeeReferentialRateIndexer](#schemaFeeReferentialRateIndexer)    | Sim            | Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial ou Indexador (Indx), do Documento 3040 |
-| applications               | [Application](#schemaApplication)    | Sim            | Valor da mediana da taxa de remuneração relativa ao serviço ofertado informado no período.                                                                                                                                                                                                         |
-| minimumRate                   | string | Sim            | Percentual mínimo cobrado (taxa efetiva) no mês de referência, para o Financiamento contratado. A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%) | 
-| maximumRate                   | string | Sim            |  Percentual máximo cobrado (taxa efetiva) no mês de referência, para o Financiamento contratado. A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%) | 
-|customers|[[Customer](#schemaCustomer)]| Sim |Percentual dos clientes de cada faixa relativa ao serviço ofertado |
+|     Nome      |  Tipo                                                            | Obrigatório    |                            Definição                                                                                                                                                                                                                                                                                  |
+|:------------  |:---------------------------------------------------------------- |:-------------- |:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| fees          | [FeeReferentialRateIndexer](#schemaFeeReferentialRateIndexer)    | Sim            | Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial ou Indexador (Indx), do Documento 3040 |
+| applications  | [Application](#schemaApplication)                                | Sim            | Valor da mediana da taxa de remuneração relativa ao serviço ofertado informado no período.                                                                                                                                                                                                         |
+| minimumRate   | string                                                           | Sim            | Percentual mínimo cobrado (taxa efetiva) no mês de referência, para o Financiamento contratado. A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%) | 
+| maximumRate   | string                                                           | Sim            |  Percentual máximo cobrado (taxa efetiva) no mês de referência, para o Financiamento contratado. A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%) | 
+| customers     |[[Customer](#schemaCustomer)]                                     | Sim            |Percentual dos clientes de cada faixa relativa ao serviço ofertado |
