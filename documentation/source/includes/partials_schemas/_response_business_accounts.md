@@ -1,4 +1,5 @@
 ## ResponseBusinessAccounts
+
 <a id="schemaResponseBusinessAccounts"></a>
 
 ```json
@@ -24,7 +25,10 @@
                       {
                         "interval": "string",
                         "value": "string",
-                        "currency": "string"
+                        "currency": "string",
+                        "customers": {
+                          "rate": "string"
+                        }
                       }
                     ],
                     "minimum": {
@@ -34,13 +38,7 @@
                     "maximum": {
                       "value": "string",
                       "currency": "string"
-                    },
-                    "customers": [
-                      {
-                        "frequency": "string",
-                        "rate": "string"
-                      }
-                    ]
+                    }
                   }
                 ]
               },
@@ -59,7 +57,10 @@
                     {
                       "interval": "string",
                       "monthlyFee": "string",
-                      "currency": "string"
+                      "currency": "string",
+                      "customers": {
+                        "rate": "string"
+                      }
                     }
                   ],
                   "minimum": {
@@ -69,13 +70,7 @@
                   "maximum": {
                     "value": "string",
                     "currency": "string"
-                  },
-                  "customers": [
-                    {
-                      "frequency": "string",
-                      "rate": "string"
-                    }
-                  ]
+                  }
                 }
               ],
               "openingClosingChannels": [
@@ -127,6 +122,7 @@
 | meta         | [MetaPaginated](#schemaMetaPaginated)                  | Sim         |                                                    |
 
 ## BusinessAccountsBrand
+
 <a id="schemaBusinessAccountsBrand"></a>
 
 ```json
@@ -150,7 +146,10 @@
                   {
                     "interval": "string",
                     "value": "string",
-                    "currency": "string"
+                    "currency": "string",
+                    "customers": {
+                      "rate": "string"
+                    }
                   }
                 ],
                 "minimum": {
@@ -160,13 +159,7 @@
                 "maximum": {
                   "value": "string",
                   "currency": "string"
-                },
-                "customers": [
-                  {
-                    "frequency": "string",
-                    "rate": "string"
-                  }
-                ]
+                }
               }
             ]
           },
@@ -185,7 +178,10 @@
                 {
                   "interval": "string",
                   "monthlyFee": "string",
-                  "currency": "string"
+                  "currency": "string",
+                  "customers": {
+                    "rate": "string"
+                  }
                 }
               ],
               "minimum": {
@@ -195,13 +191,7 @@
               "maximum": {
                 "value": "string",
                 "currency": "string"
-              },
-              "customers": [
-                {
-                  "frequency": "string",
-                  "rate": "string"
-                }
-              ]
+              }
             }
           ],
           "openingClosingChannels": [
@@ -237,7 +227,8 @@
 | name         | string                                                    | Sim          | Nome da Instituição, pertencente à marca, responsável pela comercialização dos produtos e serviços  |
 | companies    | [BusinessAccountsCompany](#schemaBusinessAccountsCompany)   | Sim        | Companies traz uma lista de todas as instituições da Marca |
 
-## BusinessAccountsCompany 
+## BusinessAccountsCompany
+
 <a id="schemaBusinessAccountsCompany"></a>
 
 ```json
@@ -258,7 +249,10 @@
               {
                 "interval": "string",
                 "value": "string",
-                "currency": "string"
+                "currency": "string",
+                "customers": {
+                  "rate": "string"
+                }
               }
             ],
             "minimum": {
@@ -268,13 +262,7 @@
             "maximum": {
               "value": "string",
               "currency": "string"
-            },
-            "customers": [
-              {
-                "frequency": "string",
-                "rate": "string"
-              }
-            ]
+            }
           }
         ]
       },
@@ -293,7 +281,10 @@
             {
               "interval": "string",
               "monthlyFee": "string",
-              "currency": "string"
+              "currency": "string",
+              "customers": {
+                "rate": "string"
+              }
             }
           ],
           "minimum": {
@@ -303,13 +294,7 @@
           "maximum": {
             "value": "string",
             "currency": "string"
-          },
-          "customers": [
-            {
-              "frequency": "string",
-              "rate": "string"
-            }
-          ]
+          }
         }
       ],
       "openingClosingChannels": [
@@ -346,6 +331,7 @@
 | businessAccounts     | [BusinessAccounts](#schemaBusinessAccounts)| Sim  | lista de tipos de conta          |
 
 ## BusinessAccounts
+
 <a id="schemaBusinessAccounts"></a>
 
 ```json
@@ -361,7 +347,10 @@
           {
             "interval": "string",
             "value": "string",
-            "currency": "string"
+            "currency": "string",
+            "customers": {
+              "rate": "string"
+            }
           }
         ],
         "minimum": {
@@ -371,13 +360,7 @@
         "maximum": {
           "value": "string",
           "currency": "string"
-        },
-        "customers": [
-          {
-            "frequency": "string",
-            "rate": "string"
-          }
-        ]
+        }
       }
     ]
   },
@@ -396,7 +379,10 @@
         {
           "interval": "string",
           "monthlyFee": "string",
-          "currency": "string"
+          "currency": "string",
+          "customers": {
+            "rate": "string"
+          }
         }
       ],
       "minimum": {
@@ -406,13 +392,7 @@
       "maximum": {
         "value": "string",
         "currency": "string"
-      },
-      "customers": [
-        {
-          "frequency": "string",
-          "rate": "string"
-        }
-      ]
+      }
     }
   ],
   "openingClosingChannels": [
@@ -450,8 +430,8 @@
 | termsConditions       | [AccountsTermsConditions](#schemaAccountTermsConditions) | Sim             | Objeto que reúne informações relativas a Termos e Condições para as modalidades tratadas                   |
 | incomeRate           | [AccountsIncomeRate](#schemaAccountsIncomeRate) | Sim             | Valores dos percentuais de taxas.                         |
 
-
 ## FeesBusinessAccount
+
 <a id="schemaFeeBusinessAccount"></a>
 
 ```json
@@ -465,7 +445,10 @@
         {
           "interval": "string",
           "value": "string",
-          "currency": "string"
+          "currency": "string",
+          "customers": {
+            "rate": "string"
+          }
         }
       ],
       "minimum": {
@@ -475,13 +458,7 @@
       "maximum": {
         "value": "string",
         "currency": "string"
-      },
-      "customers": [
-        {
-          "frequency": "string",
-          "rate": "string"
-        }
-      ]
+      }
     }
   ]
 }
@@ -492,6 +469,7 @@
 | services          | [BusinessAccountsService](#schemaBusinessAccountsService) | Sim             |  Lista das Tarifas cobradas sobre Serviços |
 
 ## BusinessAccountsService
+
 <a id="schemaBusinessAccountsService"></a>
 
 ```json
@@ -503,7 +481,10 @@
     {
       "interval": "string",
       "value": "string",
-      "currency": "string"
+      "currency": "string",
+      "customers": {
+        "rate": "string"
+      }
     }
   ],
   "minimum": {
@@ -513,13 +494,7 @@
   "maximum": {
     "value": "string",
     "currency": "string"
-  },
-  "customers": [
-    {
-      "frequency": "string",
-      "rate": "string"
-    }
-  ]
+  }
 }
 ```
 
@@ -531,7 +506,6 @@
 | prices               | [[Price](#schemaPrice)] | Sim      | Lista distribuição preços tarifas de serviços               |
 | minimum             | [[MinimumPrice](#schemaMinimumPrice)]           | Sim          | Valor mínimo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. |
 | maximum             | [[MaximumPrice](#schemaMaximumPrice)]           | Sim          | Valor máximo cobrado para a taxa de remuneração relativa ao serviço ofertado sobre a base de clientes no mês de referência. |
-|customers|[[Customer](#schemaCustomer)]| Sim | Lista percentual de clientes por faixa de preço |
 
 
 

@@ -333,7 +333,6 @@ components:
         - prices
         - minimum
         - maximum
-        - customers
       properties:
         name:
           $ref: '#/components/schemas/PriorityServiceName'
@@ -356,13 +355,6 @@ components:
           $ref: '#/components/schemas/MinimumPrice'
         maximum:
           $ref:  "#/components/schemas/MaximumPrice"
-        customers:
-          type: array
-          items:
-            $ref: '#/components/schemas/FeeServiceCustomer'
-          minItems: 4
-          maxItems: 4
-          description: Lista percentual de clientes por faixa de preço
     AccountType:
       type: string
       enum:
@@ -471,13 +463,6 @@ components:
           $ref: "#/components/schemas/MinimumPrice"
         maximum:
           $ref: "#/components/schemas/MaximumPrice"
-        customers:
-          type: array
-          items:
-            $ref: '#/components/schemas/FeeServiceCustomer'
-          minItems: 4
-          maxItems: 4
-          description: Lista percentual de clientes por faixa de preço
     AccountPriorityServiceCode:
       type: string
       description: 'Sigla de identificação do Serviço Prioritário, segundo Resolução 3.919 do Bacen.'
@@ -521,7 +506,6 @@ components:
         - prices
         - minimum
         - maximum
-        - customers
       properties:
         name:
           type: string
@@ -538,7 +522,7 @@ components:
         prices:
           type: array
           items:
-            $ref:  "#/components/schemas/MontlyPrice"
+            $ref: "#/components/schemas/MonthlyPrice"
           minItems: 4
           maxItems: 4
           description: Lista distribuição preços tarifas de serviços
@@ -546,13 +530,6 @@ components:
           $ref:  "#/components/schemas/MinimumPrice"
         maximum:
           $ref:  "#/components/schemas/MaximumPrice"
-        customers:
-          type: array
-          items:
-            $ref:  "#/components/schemas/Customer"
-          minItems: 4
-          maxItems: 4
-          description: Lista percentual de clientes por faixa de preço
     ServiceBundleServiceDetail:
       type: object
       required:
@@ -601,8 +578,8 @@ components:
           maxItems: 1
           description: |
             Descrição da Remuneração especificamente para Conta de Poupança. Deve ser preenchido com a determinação legal vigente.
-            Restrição: De preenchimento obrigatório para CONTA_POUPANCA. Para os demais Tipos  preencher com NA
-          example: 'NA'
+            Restrição: De preenchimento obrigatório para CONTA_POUPANCA.
+          example: 'Para depósitos até 03/05/2012 – remuneração trimestral de 1,5% + TR, sempre creditada no aniversário da conta; Para depósitos a partir de 04/05/2012 – 70% da Selic + TR quando a Selic for igual ou inferior a 8,5% ao ano e 1,5% + TR caso a Selic seja superior a 8,5%.'
         prepaidPaymentAccount:
           type: string
           maxLength: 2000
@@ -611,8 +588,8 @@ components:
           maxItems: 1
           description: |
             Percentual em favor do titular da conta de pagamento pré-paga. Campo Livre.
-            Restrição: De preenchimento obrigatório para Conta do Tipo CONTA_PAGAMENTO_PRE_PAGA. Para os demais Tipos preencher com NA
-          example: 'NA'
+            Restrição: De preenchimento obrigatório para Conta do Tipo CONTA_PAGAMENTO_PRE_PAGA.
+          example: '40% Rendimento a.m.'
     ResponseBusinessAccounts:
       type: object
       required:
@@ -631,133 +608,6 @@ components:
           $ref: '#/components/schemas/Links'
         meta:
           $ref: '#/components/schemas/Meta'
-      example:
-        data:
-          brand:
-            name: Organização A
-            companies:
-              - name: Empresa A1
-                cnpjNumber: '45086338000178'
-                urlComplementaryList: 'https://empresaa1.com/branches-banking'
-                businessAccounts:
-                  - type: CONTA_DEPOSITO_A_VISTA
-                    fees:
-                      services:
-                        - name: "Entrega de talão de cheque em domícilio"
-                          code: "TALAO_DOMICILIO"
-                          chargingTriggerInfo: "Por remessa"
-                          prices:
-                            - interval: 1_FAIXA
-                              value: '55.40'
-                              currency: BRL
-                              customers:
-                                rate: '0.1500'
-                            - interval: 2_FAIXA
-                              value: '65.00'
-                              currency: BRL
-                              customers:
-                                rate: '0.3500'
-                            - interval: 3_FAIXA
-                              value: '69.00'
-                              currency: BRL
-                              customers:
-                                rate: '0.2000'
-                            - interval: 4_FAIXA
-                              value: '72.00'
-                              currency: BRL
-                              customers:
-                                rate: '0.3000'
-                          minimum:
-                            value: '49.00'
-                            currency: BRL
-                          maximum:
-                            value: '88.00'
-                            currency: BRL
-                          customers:
-                            - frequency: '1_FAIXA_CLIENTE'
-                              rate: '0.1500'
-                            - frequency: '2_FAIXA_CLIENTE'
-                              rate: '0.3500'
-                            - frequency: '3_FAIXA_CLIENTE'
-                              rate: '0.2000'
-                            - frequency: '4_FAIXA_CLIENTE'
-                              rate: '0.3000'
-                    serviceBundles:
-                      - name: Conta de depósitos à vista Movimentação com cartão (sem cheque)
-                        services:
-                          - code: CADASTRO
-                            chargingTriggerInfo: 'Realização de pesquisa em serviços de proteção ao crédito, base de dados e informações cadastrais, e tratamento de dados e informações necessários ao início relacionamento decorrente da abertura de conta de depósitos à vista ou de poupança ou contratação de operação de crédito ou de arrendamento mercantil, não podendo ser cobrada cumulativamente'
-                            eventLimitQuantity: '1'
-                            freeEventQuantity: '0'
-                          - code: SAQUE_TERMINAL
-                            chargingTriggerInfo: 'Saque em terminal de autoatendimento além do número de saques permitidos gratuitamente por mês. Nas "contas eletrônicas" não pode ser cobrada tarifa para este canal de entrega'
-                            eventLimitQuantity: '999999'
-                            freeEventQuantity: '8'
-                          - code: CHEQUE_VISADO
-                            chargingTriggerInfo: 'Procedimentos para registro e bloqueio do saldo em conta de depósitos à vista correspondente ao valor do cheque'
-                            eventLimitQuantity: '999999'
-                            freeEventQuantity: '4'
-                          - code: CHEQUE_ADMINISTRATIVO
-                            chargingTriggerInfo: 'Emissão de cheque administrativo'
-                            eventLimitQuantity: '999999'
-                            freeEventQuantity: '2'
-                        prices:
-                          - interval: 1_FAIXA
-                            monthlyFee: '50.00'
-                            currency: BRL
-                          - interval: 2_FAIXA
-                            monthlyFee: '65.40'
-                            currency: BRL
-                          - interval: 3_FAIXA
-                            monthlyFee: '75.40'
-                            currency: BRL
-                          - interval: 4_FAIXA
-                            monthlyFee: '83.00'
-                            currency: BRL
-                        minimum:
-                          value: '45.00'
-                          currency: BRL
-                        maximum:
-                          value: '87.00'
-                          currency: BRL
-                        customers:
-                          - frequency: '1_FAIXA_CLIENTE'
-                            rate: '0.1500'
-                          - frequency: '2_FAIXA_CLIENTE'
-                            rate: '0.3500'
-                          - frequency: '3_FAIXA_CLIENTE'
-                            rate: '0.2000'
-                          - frequency: '4_FAIXA_CLIENTE'
-                            rate: '0.3000'
-                    openingClosingChannels:
-                      - DEPENDENCIAS_PROPRIAS
-                      - CORRESPONDENTES_BANCARIOS
-                      - INTERNET_BANKING
-                      - MOBILE_BANKING
-                      - CENTRAL_TELEFONICA
-                      - CHAT
-                      - OUTROS
-                    additionalInfo: WhastApp
-                    transactionMethods:
-                      - MOVIMENTACAO_CARTAO
-                    termsConditions:
-                      minimumBalance:
-                        value: '500.00'
-                        currency: BRL
-                      elegibilityCriteriaInfo: 'https://empresaa1.com/Accounts_elegebilityCriteria'
-                      closingProcessInfo: 'https://empresaa1.com/Accounts_closingProcess'
-                    incomeRate:
-                      savingAccount: NA
-                      prepaidPaymentAccount: NA
-        links:
-          self: 'https://api.banco.com.br/open-banking/products-services/v1/business-accounts'
-          first: 'https://api.banco.com.br/open-banking/products-services/v1/business-accounts'
-          prev: ""
-          next: ""
-          last: 'https://api.banco.com.br/open-banking/products-services/v1/business-accounts'
-        meta:
-          totalRecords: 1
-          totalPages: 1
     BusinessAccountsBrand:
       type: object
       required:
@@ -857,7 +707,6 @@ components:
         - prices
         - minimum
         - maximum
-        - customers
       properties:
         name:
           type: string
@@ -886,13 +735,6 @@ components:
           $ref: '#/components/schemas/MinimumPrice'
         maximum:
           $ref: '#/components/schemas/MaximumPrice'
-        customers:
-          type: array
-          items:
-            $ref: '#/components/schemas/Customer'
-          minItems: 4
-          maxItems: 4
-          description: Lista percentual de clientes por faixa de preço
     ResponsePersonalLoans:
       type: object
       required:
@@ -1264,6 +1106,8 @@ components:
         - 2_FAIXA
         - 3_FAIXA
         - 4_FAIXA
+      minItems: 1
+      maxItems: 1
       description: |
         Segundo Normativa nº 32, BCB, de 2020: Distribuição de frequência relativa dos valores de tarifas cobradas dos clientes, de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana em cada uma dessas faixas. Informando: 1ª faixa, 2ª faixa, 3ª faixa e 4ª faixa
       example: 1_FAIXA
@@ -2540,15 +2384,16 @@ components:
             Valor da mediana de cada faixa relativa ao serviço ofertado, informado no período, conforme Res nº 32 BCB, 2020. p.ex. '45.00' (representa um valor monetário. p.ex: 1547368.92. Este valor, considerando que a moeda seja BRL, significa R$ 1.547.368,92. O único separador presente deve ser o '.' (ponto) para indicar a casa decimal. Não deve haver separador de milhar)
           example: '2000.00'
         currency:
-          $ref:  "#/components/schemas/Currency"
+          $ref:  '#/components/schemas/Currency'
         customers:
           $ref: '#/components/schemas/Customer'
-    MontlyPrice:
+    MonthlyPrice:
       type: object
       required:
         - interval
         - monthlyFee
         - currency
+        - customers
       properties:
         interval:
           $ref: '#/components/schemas/PriceIntervals'
@@ -2563,6 +2408,8 @@ components:
           example: '2000.00'
         currency:
           $ref:  "#/components/schemas/Currency"
+        customers:
+          $ref: '#/components/schemas/Customer'
     MinimumPrice:
       type: object
       required:
@@ -2601,8 +2448,7 @@ components:
         rate:
           type: string
           description: |
-           Percentual dos clientes de cada faixa relativa ao serviço ofertado, para pessoa natural informado no período, conforme Res nº32, BCB, 2020. p.ex. '0.1500' (representa uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O valor '1 'representa 100%). A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%) 
-          maxLength: 6
+            Percentual dos clientes de cada faixa relativa ao serviço ofertado, para pessoa natural informado no período, conforme Res nº32 BCB, 2020. p.ex. '0.1500' (representa uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O valor '1 'representa 100%) A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)
           pattern: '(^[0-9](\.[0-9]{4})$|^NA$)'
           example: '0.1500'
     FeeServiceCustomer:

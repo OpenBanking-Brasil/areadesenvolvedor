@@ -1,4 +1,5 @@
 ## LinksPaginated
+
 <a id="schemaLinksPaginated"></a>
 
 |     Nome          |  Tipo                                |                            Definição                         | Mandatoriedade  | Restrição                                                |
@@ -10,6 +11,7 @@
 | last              | [[URIString](#commonFieldURIString)] | URI da última página dessa lista de resultados.               | Opcional        | Obrigatório quando não for a última página da resposta   |
 
 ## MetaPaginated
+
 <a id="schemaMetaPaginated"></a>
 
 |     Nome          |  Tipo         | Definição                              | Mandatoriedade  | Restrição |
@@ -18,6 +20,7 @@
 | totalPages        | integer       | Número total de páginas no resultado   | Mandatório      |           |
 
 ## Enum PriceInterval
+
 <a id="schemaPriceInterval"></a>
 
 | Nome         | Código     |
@@ -28,6 +31,7 @@
 | interval     | 4_FAIXA    |
 
 ## Price
+
 <a id="schemaPrice"></a>
 
 ```json
@@ -41,35 +45,39 @@
 }
 ```
 
+|     Nome  |  Tipo                                        | Obrigatório |Definição                                                                                                                                                                                                                                                                                                                                                                                                       |
+|:----------|:-------------------------------------------- |:----------- |:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| interval  | [Enum PriceInterval](#schemaPriceInterval)   | Sim         | Segundo Normativa nº 32, BCB, de 2020: Distribuição de frequência relativa dos valores de tarifas cobradas dos clientes, de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana em cada uma dessas faixas. Informando: 1ª faixa de valor, 2ª faixa de valor, 3ª faixa de valor e 4ª faixa de valor |
+| value     | [AmountString](#commonFieldAmountString)     | Sim         | Valor da mediana de cada faixa relativa ao serviço ofertado, informado no período, conforme Res nº 32 BCB, 2020. p.ex. '45.00' (representa um valor monetário. p.ex: 1547368.92. Este valor, considerando que a moeda seja BRL, significa R$ 1.547.368,92. O único separador presente deve ser o '.' (ponto) para indicar a casa decimal. Não deve haver separador de milhar)                                  |
+| currency  | [CurrencyString](#commonFieldCurrencyString) | Sim         | Moeda referente ao valor da Tarifa, segundo modelo ISO-4217. p.ex. 'BRL'                                                                                                                                                                                                                                                                                                                                       |
+| customers | [Customers](#schemaCustomer)                 | Sim         |                                                                                                                                                                                                                                                                                                                                                                                                                |
 
+## MonthlyPrice
 
-|     Nome     |  Tipo                                        | Obrigatório |Definição                                                                      |
-|:------------ |:-------------------------------------------- |:----------- |:----------------------------------------------------------------------------- |
-| interval     | [Enum PriceInterval](#schemaPriceInterval)   | Sim         | Segundo Normativa nº 32, BCB, de 2020: Distribuição de frequência relativa dos valores de tarifas cobradas dos clientes, de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana em cada uma dessas faixas. Informando: 1ª faixa,  2ª faixa, 3ª faixa e 4ª faixa |
-| value        | [AmountString](#commonFieldAmountString)     | Sim         | Valor da mediana de cada faixa relativa ao serviço ofertado, informado no período, conforme Res nº 32 BCB, 2020. p.ex. '45.00' (representa um valor monetário. p.ex: 1547368.92. Este valor, considerando que a moeda seja BRL, significa R$ 1.547.368,92. O único separador presente deve ser o '.' (ponto) para indicar a casa decimal. Não deve haver separador de milhar) |
-| currency     | [CurrencyString](#commonFieldCurrencyString) | Sim         | Moeda referente ao valor da Tarifa, segundo modelo ISO-4217. p.ex. 'BRL'                 |
-| customers    | [Customer](#schemaCustomer)                  | Sim         | Percentual de cliente por faixa referente a taxa remuneratória.                          |
-
-
-## MontlyPrice
-<a id="schemamontlyprice"></a>
+<a id="schemaMonthlyPrice"></a>
 
 ```json
 {
   "interval": "string",
   "monthlyFee": "string",
-  "currency": "string"
-  
+  "currency": "string",
+  "customers": [
+    {
+      "rate": "string"
+    }
+  ]
 }
 ```
 
-|     Nome           |  Tipo                        |  Obrigatório |                            Descrição                |
-|:-------------------|:-----------------------------|:-------------|:----------------------------------------------------|
-| interval           | [Enum PriceInterval](#schemaPriceInterval) | Sim          | Segundo Normativa nº32 de 2020: Distribuição de frequência relativa dos valores de tarifas e taxas de juros cobrados dos clientes, de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana e o percentual de clientes em cada uma dessas faixas. Informado:1º quartil de clientes, 2º quartil de clientes, 3º quartil de clientes e 4º quartil de clientes |
-| monthlyFee         | string                       | Sim          | Valor da mediana da tarifa, relativa ao serviço ofertado,informado no período, conforme Res nº32 BCB, 2020. p.ex. '45.00' (representa um valor monetário. p.ex: 1547368.92. Este valor, considerando que a moeda seja BRL, significa R$ 1.547.368,92. O único separador presente deve ser o '.' (ponto) para indicar a casa decimal. Não deve haver separador de milhar) |
-| currency           | [Currency](#schemacurrency)    | Sim          | Moeda referente ao valor do Pacote de serviços, segundo modelo ISO-4217.      |
+|     Nome   |  Tipo                                      |  Obrigatório |                            Descrição                                                                                                                                                                                                                                                                                                                                       |
+|:-----------|:-------------------------------------------|:-------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| interval   | [Enum PriceInterval](#schemaPriceInterval) | Sim          | Segundo Normativa nº 32, BCB, de 2020: Distribuição de frequência relativa dos valores de tarifas cobradas dos clientes, de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana em cada uma dessas faixas. Informando: 1ª faixa , 2ª faixa, 3ª faixa e 4ª faixa|
+| monthlyFee | string                                     | Sim          | Valor da mediana da tarifa, relativa ao serviço ofertado,informado no período, conforme Res nº32 BCB, 2020. p.ex. '45.00' (representa um valor monetário. p.ex: 1547368.92. Este valor, considerando que a moeda seja BRL, significa R$ 1.547.368,92. O único separador presente deve ser o '.' (ponto) para indicar a casa decimal. Não deve haver separador de milhar)   |
+| currency   | [Currency](#schemacurrency)                | Sim          | Moeda referente ao valor do Pacote de serviços, segundo modelo ISO-4217.                                                                                                                                                                                                                                                                                                   |
+| customers  | [Customers](#schemaCustomer)               | Sim          | Lista percentual de clientes por faixa de preço                                                                                                                                                                                                                                                                                                                            |
 
 ## MinimumPrice
+
 <a id="schemaMinimumPrice"></a>
 
 ```json
@@ -85,6 +93,7 @@
 | currency     | [CurrencyString](#commonFieldCurrencyString)     | Sim            | Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217. p.ex.'BRL'               |
 
 ## MaximumPrice
+
 <a id="schemaMaximumPrice"></a>
 
 ```json
@@ -100,11 +109,12 @@
 | currency     | [CurrencyString](#commonFieldCurrencyString)     | Sim            | Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217. p.ex.'BRL'               |
 
 ## MinimumRate
+
 <a id="schemaMinimumRate"></a>
 
 ```json
 {
-"minimumRate": "string"
+  "minimumRate": "string"
 }
 ```
 
@@ -113,11 +123,12 @@
 | minimumRate        | string         | Sim            | Percentual mínimo cobrado (taxa efetiva) no mês de referência, para o Empréstimo contratado   |
 
 ## MaximumRate
+
 <a id="schemaMaximumRate"></a>
 
 ```json
 {
-"maximumRate": "string"
+  "maximumRate": "string"
 }
 ```
 
@@ -126,6 +137,7 @@
 | maximumRate        | string        | Sim            | Percentual máximo cobrado (taxa efetiva) no mês de referência, para o Empréstimo contratado    |
 
 ## Rate
+
 <a id="schemaRate"></a>
 
 ```json
@@ -180,6 +192,7 @@
 | rate         | [RateString](#commonFieldRateString)             | Sim            | Percentual que corresponde a mediana da taxa efetiva cobrada do cliente pela contratação do Empréstimo, no intervalo informado. p.ex. '9,8700%'. A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%) |
 
 ## PostalAddress
+
 <a id="schemaPostalAddress"></a>
 
 ```json
@@ -203,6 +216,7 @@
 |postCode          |string|Sim        |CEP                              |
 
 ## Availability
+
 <a id="schemaAvailability"></a>
 
 ```json
@@ -257,6 +271,7 @@ Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial o
 | referentialRateIndexer |OUTROS_INDEXADORES      | OUTROS INDEXADORES|
 
 ## MinimumBalance
+
 <a id="schemaminimumbalance"></a>
 
 ```json
@@ -273,6 +288,7 @@ Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial o
 |currency|[Currency](#schemacurrency)|Sim |Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217|
 
 ## Currency
+
 <a id="schemacurrency"></a>
 
 ```json
@@ -285,6 +301,7 @@ Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial o
 |currency|string|Sim|Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217|
 
 ## FeeReferentialRateIndexer
+
 <a id="schemaFeeReferentialRateIndexer"></a>
 
 ```json
@@ -302,6 +319,7 @@ Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial o
 | rate|[RateString](#commonFieldRateString)| Sim |Percentual que incide sobre a composição das taxas de juros remuneratórios. (representa uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O valor '1 'representa 100%). A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)|
 
 ## Customer
+
 <a id="schemaCustomer"></a>
 
 ```json
@@ -314,10 +332,10 @@ Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial o
 
 |Nome     |Tipo                         |Obrigatório|Definição      |
 |:--------|:----------------------------|:----------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-|rate     |string                       |Sim        |Percentual dos clientes de cada faixa relativa ao serviço ofertado, para pessoa natural informado no período, conforme Res nº32, BCB, 2020. p.ex. '0.1500' (representa uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O valor '1 'representa 100%) A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)|
-
+|rate     |string                       |Sim        |Percentual dos clientes de cada faixa relativa ao serviço ofertado, para pessoa natural informado no período, conforme Res nº32 BCB, 2020. p.ex. '0.1500' (representa uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O valor '1 'representa 100%) A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%) |
 
 ## FeeServiceCustomer
+
 <a id="schemaFeeServiceCustomer"></a>
 
 ### Properties
@@ -328,6 +346,7 @@ Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial o
 |rate     |string                       |Sim        | Percentual dos clientes de cada faixa relativa ao serviço ofertado, para pessoa natural informado no período, conforme Res nº32, BCB, 2020. p.ex. '0.1500' (representa uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O valor '1 'representa 100%) A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)|
 
 ## Enum Frequency
+
 <a id="schemaFrequency"></a>
 
 |Nome     |Código         |
@@ -337,8 +356,8 @@ Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial o
 |frequency|3_FAIXA_CLIENTE|
 |frequency|4_FAIXA_CLIENTE|
 
-
 ## CreditCardFeeRate
+
 <a id="schemaCreditCardFeeRate"></a>
 
 ```json
@@ -382,6 +401,7 @@ Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial o
 | code                        | OUTROS               | Outros              |
 
 ## CreditCardInterestRate
+
 <a id="schemaCreditCardInterestRate"></a>
 
 ```json
@@ -420,6 +440,7 @@ Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial o
 | maximumRate    | String                                                                   | Sim         | Percentual máximo cobrado para o pagamento parcelado do saldo devedor na fatura do mês de referência.|
 
 ## CreditCardInstalmentRate
+
 <a id="schemaCreditCardInstalmentRate"></a>
 
 ```json
@@ -454,6 +475,7 @@ Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial o
 | maximumRate | String                                                        | Sim         | Percentual máximo cobrado para o pagamento parcelado do saldo devedor na fatura do mês de referência. |
 
 ## CreditCardInterest
+
 <a id="schemaCreditCardInterest"></a>
 
 ```json
@@ -534,8 +556,8 @@ Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial o
 | instalmentRate | [CreditCardInstalmentRate](#schemaCreditCardInstalmentRate) | Sim | Percentual que corresponde a taxa aplicada para pagamento parcelado do saldo devedor quando não realizado pagamento integral da fatura |
 | interestRates  | [CreditCardInterestRate](#schemaCreditCardInterestRate) | Sim | Lista de outras operações de crédito |
 
-
 ## CreditCardTermsConditions
+
 <a id="schemaCreditCardTermsConditions"></a>
 
 ```json
@@ -553,3 +575,49 @@ Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial o
 | additionalInfo          | string                                | Não             | Campo aberto para detalhamento de taxas de juros. <br> Restrição: Se o campo 'code' vier selecionado com 'OUTROS' é obrigatório o preenchimento do additonalInfo |
 | elegibilityCriteriaInfo | string                                | Sim             | Informação sobre as condições e critérios de elegibilidade do emissor do cartão. Pode ser informada a URL referente ao endereço onde constam as condições informadas. |
 | closingProcessInfo      | string                                | Sim             | Descrição dos procedimentos para encerramento da conta de pagamento pós paga. Pode ser informada a URL referente ao endereço onde constam as condições informadas.    |
+
+## ServiceBundle
+
+<a id="schemaServiceBundle"></a>
+
+```json
+{
+  "name": "string",
+  "services": [
+    {
+      "code": "string",
+      "chargingTriggerInfo": "string",
+      "eventLimitQuantity": "string",
+      "freeEventQuantity": "string"
+    }
+  ],
+  "prices": [
+    {
+      "interval": "string",
+      "monthlyFee": "string",
+      "currency": "string",
+      "customers": [
+        {
+          "rate": "string"
+        }
+      ]
+    }
+  ],
+  "minimum": {
+    "value": "string",
+    "currency": "string"
+  },
+  "maximum": {
+    "value": "string",
+    "currency": "string"
+  }
+}
+```
+
+|   Nome |  Tipo                                                         |Obrigatório|                            Descrição                                                        |
+|:-------|:--------------------------------------------------------------|:----------|:--------------------------------------------------------------------------------------------|
+|name    |string                                                         |Sim        |Nome do Pacote de Serviços dado pela instituição.                                            |
+|services|[ServiceBundleServiceDetail](#schemaservicebundleservicedetail)|Sim        |Lista dos serviços que compõem o pacote de serviços.                                         |
+|prices  |[MonthlyPrice](#schemaMonthlyPrice)                            |Sim        |Lista distribuição preços tarifas de serviços.                                               |
+|minimum |[MinimumPrice](#schemaMinimumPrice)                            |Sim        |Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência.|
+|maximum |[MaximumPrice](#schemaMaximumPrice)                            |Sim        |Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência.|
