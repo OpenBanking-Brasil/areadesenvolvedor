@@ -311,6 +311,11 @@
 }
 ```
 
+| Nome       | Tipo   | Obrigatório |Descrição                                                                                           |
+|:---        |:---    |:---         |:---                                                                                                |
+| latitude   | string | Não         | Informação da Latitude referente a geolocalização informada. Entre -90 e 90.p.ex. '-90.8365180'    |
+| longitude  | string | Não         | Informação da Longitude referente a geolocalização informada. Entre -180 e 180.p.ex. '-180.836519' |
+
 ## SharedAutomatedTellerMachinesServices
 <a id="schemaSharedAutomatedTellerMachinesServices"></a>
 
@@ -322,11 +327,11 @@
 }
 ```
 
-|Nome          |Tipo                                                                                                      |Obrigatório|Descrição                                                                                                                        |
-|:------------ |:-------------------------------------------------------------------------------------------------------- |:--------- |:------------------------------------------------------------------------------------------------------------------------------- |
-|name          |[[Enum SharedAutomatedTellerMachinesServicesNames](#schemaEnumSharedAutomatedTellerMachinesServicesNames)]|Não        |Lista com os nomes de serviços prestados.                                                                                        |
-|code          |[[Enum BankingAgentsServicesCodes](#schemaEnumSharedAutomatedTellerMachinesServicesCodes)]                |Não        |Lista com os códigos de serviços prestados.                                                                                      |
-|additionalInfo|string                                                                                                    |Não        |Texto livre para complementar informação relativa ao Serviço disponível, quando for preenchida a opção 'OUTROS_PRODUTOS_SERVICOS'|
+|Nome          |Tipo                                                                                                       |Obrigatório|Descrição                                                                                                                        |
+|:------------ |:--------------------------------------------------------------------------------------------------------- |:--------- |:------------------------------------------------------------------------------------------------------------------------------- |
+|name          |[[Enum SharedAutomatedTellerMachinesServicesNames](#schemaEnumSharedAutomatedTellerMachinesServicesNames)] |Não        |Lista com os nomes de serviços prestados.                                                                                        |
+|code          |[[Enum SharedAutomatedTellerMachinesServicesCodes](#schemaEnumSharedAutomatedTellerMachinesServicesCodes)] |Não        |Lista com os códigos de serviços prestados.                                                                                      |
+|additionalInfo|string                                                                                                     |Não        |Texto livre para complementar informação relativa ao Serviço disponível, quando for preenchida a opção 'OUTROS_PRODUTOS_SERVICOS'|
 
 ### Enum SharedAutomatedTellerMachinesServicesNames
 <a id="schemaEnumSharedAutomatedTellerMachinesServicesNames"></a>
