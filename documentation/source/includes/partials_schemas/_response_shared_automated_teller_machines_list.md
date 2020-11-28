@@ -13,7 +13,7 @@
               "identification": {
                 "ownerName": "string"
               },
-              "address": {
+              "postalAddress": {
                 "address": "string",
                 "additionalInfo": "string",
                 "districtName": "string",
@@ -91,7 +91,7 @@
           "identification": {
             "ownerName": "string"
           },
-          "address": {
+          "postalAddress": {
             "address": "string",
             "additionalInfo": "string",
             "districtName": "string",
@@ -150,7 +150,7 @@
       "identification": {
         "ownerName": "string"
       },
-      "address": {
+      "postalAddress": {
         "address": "string",
         "additionalInfo": "string",
         "districtName": "string",
@@ -209,7 +209,7 @@
   "identification": {
     "ownerName": "string"
   },
-  "address": {
+  "postalAddress": {
     "address": "string",
     "additionalInfo": "string",
     "districtName": "string",
@@ -248,12 +248,12 @@
 
 ### Properties
 
-|Nome          |Tipo                                                                                             |Obrigatório|Description                                                      |
-|:------------ |:----------------------------------------------------------------------------------------------- |:--------- |:--------------------------------------------------------------- |
-|identification|[SharedAutomatedTellerMachinesIdentification](#schemaSharedAutomatedTellerMachinesIdentification)|Não        |                                                                 |
-|address       |[PostalAddress](#schemaSharedAutomatedTellerMachinesPostalAddress)                                                            |Não        |                                                                 |
-|availability  |[Availability](#schemaAvailability)                                                              |Não        |                                                                 |
-|services      |[[SharedAutomatedTellerMachinesServices](#schemaSharedAutomatedTellerMachinesServices)]          |Não        |                                                                 |
+|Nome           |Tipo                                                                                             |Obrigatório|Description                                                      |
+|:------------- |:----------------------------------------------------------------------------------------------- |:--------- |:--------------------------------------------------------------- |
+|identification |[SharedAutomatedTellerMachinesIdentification](#schemaSharedAutomatedTellerMachinesIdentification)|Não        |                                                                 |
+|postalAddress  |[PostalAddress](#schemaSharedAutomatedTellerMachinesPostalAddress)                                                            |Não        |                                                                 |
+|availability   |[Availability](#schemaAvailability)                                                              |Não        |                                                                 |
+|services       |[[SharedAutomatedTellerMachinesServices](#schemaSharedAutomatedTellerMachinesServices)]          |Não        |                                                                 |
 
 ## SharedAutomatedTellerMachinesIdentification
 <a id="schemaSharedAutomatedTellerMachinesIdentification"></a>
