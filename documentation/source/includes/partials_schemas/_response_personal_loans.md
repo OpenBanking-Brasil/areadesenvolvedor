@@ -355,8 +355,7 @@
 | requiredWarranty        | GARANTIA_FIDEJUSSORIA           | Garantia fidejussória
 | requiredWarranty        | BENS_ARRENDADOS                 | Bens arrendados
 | requiredWarranty        | GARANTIAS_INTERNACIONAIS        | Garantias internacionais
-| requiredWarranty        | OPERACOES_GARANTIDAS_OUTRAS_ENTIDADES
-  | Operações garantidas por outras entidades
+| requiredWarranty        | OPERACOES_GARANTIDAS_OUTRAS_ENTIDADES | Operações garantidas por outras entidades
 | requiredWarranty        | ACORDOS_COMPENSACAO             | Acordos de compensação
 | requiredWarranty        | NAO_APLICAVEL                   | Não aplicável
 
@@ -434,7 +433,7 @@
 | prices              | [[Price](#schemaPrice)]                         | Sim          | Valor da mediana da tarifa, relativa ao serviço ofertado, informado no período.                                              | NA
 | minimum             | [MinimumPrice](#schemaMinimumPrice)             | Sim          | Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência.                                | NA
 | maximum             | [MaximumPrice](#schemaMaximumPrice)             | Sim          | Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência.                                | NA
-| customers           | [[Customer](#schemaCustomer)]                   | Sim          | Lista percentual de clientes por faixa de valores de tarifas pagos                                                           | NA
+| customers           | [[Customer](#schemaCustomer)]                   | Sim          | Percentual de clientes em cada faixa                                                           | NA
 
 ## LoanInterestRate
 <a id="schemaLoanInterestRate"></a>

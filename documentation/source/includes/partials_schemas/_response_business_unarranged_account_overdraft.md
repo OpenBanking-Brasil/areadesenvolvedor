@@ -413,7 +413,6 @@
 |prices|[[Price](#schemaPrice)]|Sim | Lista das faixas dos  valores de tarfas cobradas. |
 |minimum|[MinimumPrice](#schemaMinimumPrice)|Sim | Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. |
 |maximum|[MaximumPrice](#schemaMaximumPrice)|Sim | Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência. |
-|customers | [FeeServiceCustomer](#schemaFeeServiceCustomer) | Sim   |  Lista percentual de clientes por faixa de preço. |
 
 ## Enum UnarrangedAccountOverdraftFeeName
 <a id="schemaUnarrangedAccountOverdraftFeeName"></a>
