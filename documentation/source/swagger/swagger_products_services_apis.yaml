@@ -333,7 +333,6 @@ components:
         - prices
         - minimum
         - maximum
-        - customers
       properties:
         name:
           $ref: '#/components/schemas/PriorityServiceName'
@@ -356,13 +355,6 @@ components:
           $ref: '#/components/schemas/MinimumPrice'
         maximum:
           $ref:  "#/components/schemas/MaximumPrice"
-        customers:
-          type: array
-          items:
-            $ref: '#/components/schemas/FeeServiceCustomer'
-          minItems: 4
-          maxItems: 4
-          description: Lista percentual de clientes por faixa de preço
     AccountType:
       type: string
       enum:
@@ -471,13 +463,6 @@ components:
           $ref: "#/components/schemas/MinimumPrice"
         maximum:
           $ref: "#/components/schemas/MaximumPrice"
-        customers:
-          type: array
-          items:
-            $ref: '#/components/schemas/FeeServiceCustomer'
-          minItems: 4
-          maxItems: 4
-          description: Lista percentual de clientes por faixa de preço
     AccountPriorityServiceCode:
       type: string
       description: 'Sigla de identificação do Serviço Prioritário, segundo Resolução 3.919 do Bacen.'
@@ -521,7 +506,6 @@ components:
         - prices
         - minimum
         - maximum
-        - customers
       properties:
         name:
           type: string
@@ -538,7 +522,7 @@ components:
         prices:
           type: array
           items:
-            $ref:  "#/components/schemas/MontlyPrice"
+            $ref: "#/components/schemas/MonthlyPrice"
           minItems: 4
           maxItems: 4
           description: Lista distribuição preços tarifas de serviços
@@ -546,13 +530,6 @@ components:
           $ref:  "#/components/schemas/MinimumPrice"
         maximum:
           $ref:  "#/components/schemas/MaximumPrice"
-        customers:
-          type: array
-          items:
-            $ref:  "#/components/schemas/Customer"
-          minItems: 4
-          maxItems: 4
-          description: Lista percentual de clientes por faixa de preço
     ServiceBundleServiceDetail:
       type: object
       required:
@@ -597,18 +574,22 @@ components:
           type: string
           maxLength: 2000
           pattern: \w*\W*
+          minItems: 1
+          maxItems: 1
           description: |
             Descrição da Remuneração especificamente para Conta de Poupança. Deve ser preenchido com a determinação legal vigente.
-            Restrição: De preenchimento obrigatório para CONTA_POUPANCA. Para os demais Tipos  preencher com NA
-          example: 'NA'
+            Restrição: De preenchimento obrigatório para CONTA_POUPANCA.
+          example: 'Para depósitos até 03/05/2012 – remuneração trimestral de 1,5% + TR, sempre creditada no aniversário da conta; Para depósitos a partir de 04/05/2012 – 70% da Selic + TR quando a Selic for igual ou inferior a 8,5% ao ano e 1,5% + TR caso a Selic seja superior a 8,5%.'
         prepaidPaymentAccount:
           type: string
           maxLength: 2000
           pattern: \w*\W*
+          minItems: 1
+          maxItems: 1
           description: |
             Percentual em favor do titular da conta de pagamento pré-paga. Campo Livre.
-            Restrição: De preenchimento obrigatório para Conta do Tipo CONTA_PAGAMENTO_PRE_PAGA. Para os demais Tipos preencher com NA
-          example: 'NA'
+            Restrição: De preenchimento obrigatório para Conta do Tipo CONTA_PAGAMENTO_PRE_PAGA.
+          example: '40% Rendimento a.m.'
     ResponseBusinessAccounts:
       type: object
       required:
@@ -627,125 +608,6 @@ components:
           $ref: '#/components/schemas/Links'
         meta:
           $ref: '#/components/schemas/Meta'
-      example:
-        data:
-          brand:
-            name: Organização A
-            companies:
-              - name: Empresa A1
-                cnpjNumber: '45086338000178'
-                urlComplementaryList: 'https://empresaa1.com/branches-banking'
-                businessAccounts:
-                  - type: CONTA_DEPOSITO_A_VISTA
-                    fees:
-                      services:
-                        - name: "Entrega de talão de cheque em domícilio"
-                          code: "TALAO_DOMICILIO"
-                          chargingTriggerInfo: "Por remessa"
-                          prices:
-                            - interval: 1_FAIXA_VALOR
-                              value: '55.40'
-                              currency: BRL
-                            - interval: 2_FAIXA_VALOR
-                              value: '65.00'
-                              currency: BRL
-                            - interval: 3_FAIXA_VALOR
-                              value: '69.00'
-                              currency: BRL
-                            - interval: 4_FAIXA_VALOR
-                              value: '72.00'
-                              currency: BRL
-                          minimum:
-                            value: '49.00'
-                            currency: BRL
-                          maximum:
-                            value: '88.00'
-                            currency: BRL
-                          customers:
-                            - frequency: '1_FAIXA_CLIENTE'
-                              rate: '0.1500'
-                            - frequency: '2_FAIXA_CLIENTE'
-                              rate: '0.3500'
-                            - frequency: '3_FAIXA_CLIENTE'
-                              rate: '0.2000'
-                            - frequency: '4_FAIXA_CLIENTE'
-                              rate: '0.3000'
-                    serviceBundles:
-                      - name: Conta de depósitos à vista Movimentação com cartão (sem cheque)
-                        services:
-                          - code: CADASTRO
-                            chargingTriggerInfo: 'Realização de pesquisa em serviços de proteção ao crédito, base de dados e informações cadastrais, e tratamento de dados e informações necessários ao início relacionamento decorrente da abertura de conta de depósitos à vista ou de poupança ou contratação de operação de crédito ou de arrendamento mercantil, não podendo ser cobrada cumulativamente'
-                            eventLimitQuantity: '1'
-                            freeEventQuantity: '0'
-                          - code: SAQUE_TERMINAL
-                            chargingTriggerInfo: 'Saque em terminal de autoatendimento além do número de saques permitidos gratuitamente por mês. Nas "contas eletrônicas" não pode ser cobrada tarifa para este canal de entrega'
-                            eventLimitQuantity: '999999'
-                            freeEventQuantity: '8'
-                          - code: CHEQUE_VISADO
-                            chargingTriggerInfo: 'Procedimentos para registro e bloqueio do saldo em conta de depósitos à vista correspondente ao valor do cheque'
-                            eventLimitQuantity: '999999'
-                            freeEventQuantity: '4'
-                          - code: CHEQUE_ADMINISTRATIVO
-                            chargingTriggerInfo: 'Emissão de cheque administrativo'
-                            eventLimitQuantity: '999999'
-                            freeEventQuantity: '2'
-                        prices:
-                          - interval: 1_FAIXA_VALOR
-                            monthlyFee: '50.00'
-                            currency: BRL
-                          - interval: 2_FAIXA_VALOR
-                            monthlyFee: '65.40'
-                            currency: BRL
-                          - interval: 3_FAIXA_VALOR
-                            monthlyFee: '75.40'
-                            currency: BRL
-                          - interval: 4_FAIXA_VALOR
-                            monthlyFee: '83.00'
-                            currency: BRL
-                        minimum:
-                          value: '45.00'
-                          currency: BRL
-                        maximum:
-                          value: '87.00'
-                          currency: BRL
-                        customers:
-                          - frequency: '1_FAIXA_CLIENTE'
-                            rate: '0.1500'
-                          - frequency: '2_FAIXA_CLIENTE'
-                            rate: '0.3500'
-                          - frequency: '3_FAIXA_CLIENTE'
-                            rate: '0.2000'
-                          - frequency: '4_FAIXA_CLIENTE'
-                            rate: '0.3000'
-                    openingClosingChannels: 
-                      - DEPENDENCIAS_PROPRIAS
-                      - CORRESPONDENTES_BANCARIOS
-                      - INTERNET_BANKING
-                      - MOBILE_BANKING
-                      - CENTRAL_TELEFONICA
-                      - CHAT
-                      - OUTROS
-                    additionalInfo: WhastApp
-                    transactionMethods: 
-                      - MOVIMENTACAO_CARTAO
-                    termsConditions:
-                      minimumBalance:
-                        value: '500.00'
-                        currency: BRL
-                      elegibilityCriteriaInfo: 'https://empresaa1.com/Accounts_elegebilityCriteria'
-                      closingProcessInfo: 'https://empresaa1.com/Accounts_closingProcess'
-                    incomeRate:
-                      savingAccount: NA
-                      prepaidPaymentAccount: NA
-        links:
-          self: 'https://api.banco.com.br/open-banking/products-services/v1/business-accounts'
-          first: 'https://api.banco.com.br/open-banking/products-services/v1/business-accounts'
-          prev: ""
-          next: ""
-          last: 'https://api.banco.com.br/open-banking/products-services/v1/business-accounts'
-        meta:
-          totalRecords: 1
-          totalPages: 1
     BusinessAccountsBrand:
       type: object
       required:
@@ -845,7 +707,6 @@ components:
         - prices
         - minimum
         - maximum
-        - customers
       properties:
         name:
           type: string
@@ -874,13 +735,6 @@ components:
           $ref: '#/components/schemas/MinimumPrice'
         maximum:
           $ref: '#/components/schemas/MaximumPrice'
-        customers:
-          type: array
-          items:
-            $ref: '#/components/schemas/Customer'
-          minItems: 4
-          maxItems: 4
-          description: Lista percentual de clientes por faixa de preço
     ResponsePersonalLoans:
       type: object
       required:
@@ -1022,19 +876,19 @@ components:
           type: string
           enum:
             - EMPRESTIMO_CREDITO_PESSOAL_CONSIGNADO
-            - EMPRESTIMO_CREDITO_PESSOAL_NAO_CONSIGNADO
+            - EMPRESTIMO_CREDITO_PESSOAL_SEM_CONSIGNACAO
             - EMPRESTIMO_HOME_EQUITY
             - EMPRESTIMO_MICROCREDITO_PRODUTIVO_ORIENTADO
             - EMPRESTIMO_CHEQUE_ESPECIAL
             - EMPRESTIMO_CONTA_GARANTIDA
           description: |
             Modalidades de empréstimos ofertados para pessoa Natural, conforme Circular 4015-Bacen. Segundo cartilha do Bacen: Empréstimo é um contrato entre o cliente e uma instituição financeira (banco, cooperativa de crédito, caixa econômica) pelo qual o cliente recebe uma quantia em dinheiro que deverá ser devolvida em prazo determinado, acrescida dos juros acertados. Os recursos obtidos no empréstimo não tem destinação específica.
-            Empréstimo-Crédito pessoal consignado -  operações de crédito com retenção de parcela do salário ou benefício do tomador, para o pagamento das prestações do empréstimo – desconto em folha de pagamento – nos termos da legislação em vigor
-            Empréstimo-Home equity - empréstimos pessoa natural, garantidos por hipoteca ou por alienação fiduciária de bens imóveis residenciais, sem vinculação a aquisição de bens
-            Empréstimo-Microcrédito Produtivo Orientado - segundo PNMPO é o crédito concedido para financiamento das atividades produtivas, cuja metodologia será estabelecida em regulamento, observada a preferência do relacionamento direto com os empreendedores, admitido o uso de tecnologias digitais e eletrônicas que possam substituir o contato presencial
-            Empréstimo-Crédito pessoal não consignado -  operações de empréstimos às pessoa natural, sem vinculação com aquisição de bem ou serviço e sem retenção de parcela do salário ou benefício do tomador para o pagamento das prestações do empréstimo
-            Empréstimo-Cheque especial - operações de crédito vinculadas à conta corrente, nas quais determinado limite de crédito é disponibilizado aos clientes para utilização de acordo com suas conveniências, sem necessidade de comunicação prévia à instituição financeira
-            Empréstimo-Conta garantida - operações de crédito rotativo, nas quais determinado limite de crédito é disponibilizado para utilização pelo cliente, através da simples movimentação da conta corrente e/ou solicitação formal à instituição financeira. As operações classificadas nessa modalidade não devem ter data definida para a amortização do saldo devedor, exceto a estabelecida para vigência do contrato
+              * `EMPRESTIMO_CREDITO_PESSOAL_CONSIGNADO` -  operações de crédito com retenção de parcela do salário ou benefício do tomador, para o pagamento das prestações do empréstimo – desconto em folha de pagamento – nos termos da legislação em vigor
+              * `EMPRESTIMO_CREDITO_PESSOAL_SEM_CONSIGNACAO` - operações de empréstimos às pessoa natural, sem vinculação com aquisição de bem ou serviço e sem retenção de parcela do salário ou benefício do tomador para o pagamento das prestações do empréstimo
+              * `EMPRESTIMO_HOME_EQUITY` - empréstimos pessoa natural, garantidos por hipoteca ou por alienação fiduciária de bens imóveis residenciais, sem vinculação a aquisição de bens
+              * `EMPRESTIMO_MICROCREDITO_PRODUTIVO_ORIENTADO` - segundo PNMPO é o crédito concedido para financiamento das atividades produtivas, cuja metodologia será estabelecida em regulamento, observada a preferência do relacionamento direto com os empreendedores, admitido o uso de tecnologias digitais e eletrônicas que possam substituir o contato presencial
+              * `EMPRESTIMO_CHEQUE_ESPECIAL` - operações de crédito vinculadas à conta corrente, nas quais determinado limite de crédito é disponibilizado aos clientes para utilização de acordo com suas conveniências, sem necessidade de comunicação prévia à instituição financeira
+              * `EMPRESTIMO_CONTA_GARANTIDA` - operações de crédito rotativo, nas quais determinado limite de crédito é disponibilizado para utilização pelo cliente, através da simples movimentação da conta corrente e/ou solicitação formal à instituição financeira. As operações classificadas nessa modalidade não devem ter data definida para a amortização do saldo devedor, exceto a estabelecida para vigência do contrato
           example: EMPRESTIMO_CREDITO_PESSOAL_CONSIGNADO
         fees:
           $ref: '#/components/schemas/LoanFees'
@@ -1073,12 +927,12 @@ components:
             - EMPRESTIMO_CAPITAL_GIRO_ROTATIVO
           description: |
             Modalidades de empréstimos ofertados para pessoas Jurídicas, conforme Circular 4015-Bacen. Segundo cartilha do Bacen: Empréstimo é um contrato entre o cliente e uma instituição financeira (banco, cooperativa de crédito, caixa econômica) pelo qual o cliente recebe uma quantia em dinheiro que deverá ser devolvida em prazo determinado, acrescida dos juros acertados. Os recursos obtidos no empréstimo não tem destinação específica.
-            Empréstimo-Microcrédito Produtivo Orientado - segundo PNMPO é o crédito concedido para financiamento das atividades produtivas, cuja metodologia será estabelecida em regulamento, observada a preferência do relacionamento direto com os empreendedores, admitido o uso de tecnologias digitais e eletrônicas que possam substituir o contato presencial
-            Empréstimo-Cheque especial - operações de crédito vinculadas à conta corrente, nas quais determinado limite de crédito é disponibilizado aos clientes para utilização de acordo com suas conveniências, sem necessidade de comunicação prévia à instituição financeira
-            Empréstimo-Conta garantida - operações de crédito rotativo, nas quais determinado limite de crédito é disponibilizado para utilização pelo cliente, através da simples movimentação da conta corrente e/ou solicitação formal à instituição financeira. As operações classificadas nessa modalidade não devem ter data definida para a amortização do saldo devedor, exceto a estabelecida para vigência do contrato
-            Empréstimo-Capital de giro com prazo de vencimento até 365 dias: operações de crédito voltadas para o financiamento de curto prazo (igual ou inferior a 365 dias) das pessoas jurídicas, vinculadas às necessidades de capital de giro e a um contrato específico que estabeleça prazos, taxas e garantias
-            Empréstimo-Capital de giro com prazo vencimento superior a 365 dias: operações de crédito voltadas para o financiamento de médio e longo prazo (superior a 365 dias) das pessoas jurídicas, vinculadas às necessidades de capital de giro e a um contrato específico que estabeleça prazos, taxas e garantias
-            Empréstimo-Capital de giro rotativo: operações de crédito voltadas para o financiamento de capital de giro, vinculadas a um contrato que estabeleça linha de crédito rotativo, de forma que, à medida que a empresa devedora amortize os empréstimos já tomados, o limite disponível para utilização seja restituído, e amortizações com datas predeterminadas, podendo ser facultado ao devedor repactuar o fluxo de pagamentos ao longo da vigência do contrato
+            * Empréstimo-Microcrédito Produtivo Orientado - segundo PNMPO é o crédito concedido para financiamento das atividades produtivas, cuja metodologia será estabelecida em regulamento, observada a preferência do relacionamento direto com os empreendedores, admitido o uso de tecnologias digitais e eletrônicas que possam substituir o contato presencial
+            * Empréstimo-Cheque especial - operações de crédito vinculadas à conta corrente, nas quais determinado limite de crédito é disponibilizado aos clientes para utilização de acordo com suas conveniências, sem necessidade de comunicação prévia à instituição financeira
+            * Empréstimo-Conta garantida - operações de crédito rotativo, nas quais determinado limite de crédito é disponibilizado para utilização pelo cliente, através da simples movimentação da conta corrente e/ou solicitação formal à instituição financeira. As operações classificadas nessa modalidade não devem ter data definida para a amortização do saldo devedor, exceto a estabelecida para vigência do contrato
+            * Empréstimo-Capital de giro com prazo de vencimento até 365 dias: operações de crédito voltadas para o financiamento de curto prazo (igual ou inferior a 365 dias) das pessoas jurídicas, vinculadas às necessidades de capital de giro e a um contrato específico que estabeleça prazos, taxas e garantias
+            * Empréstimo-Capital de giro com prazo vencimento superior a 365 dias: operações de crédito voltadas para o financiamento de médio e longo prazo (superior a 365 dias) das pessoas jurídicas, vinculadas às necessidades de capital de giro e a um contrato específico que estabeleça prazos, taxas e garantias
+            * Empréstimo-Capital de giro rotativo: operações de crédito voltadas para o financiamento de capital de giro, vinculadas a um contrato que estabeleça linha de crédito rotativo, de forma que, à medida que a empresa devedora amortize os empréstimos já tomados, o limite disponível para utilização seja restituído, e amortizações com datas predeterminadas, podendo ser facultado ao devedor repactuar o fluxo de pagamentos ao longo da vigência do contrato
           example: EMPRESTIMO_MICROCREDITO_PRODUTIVO_ORIENTADO
         fees:
           $ref: '#/components/schemas/LoanFees'
@@ -1146,12 +1000,6 @@ components:
           $ref: '#/components/schemas/MinimumPrice'
         maximum:
           $ref: '#/components/schemas/MaximumPrice'
-        customers:
-          type: array
-          items:
-            $ref: '#/components/schemas/Customer'
-          minItems: 4
-          maxItems: 4
     LoanInterestRate:
       type: object
       properties:
@@ -1179,27 +1027,29 @@ components:
           format: '(^[0-9](\.[0-9]{4})$|^NA$)'
           description: 'Percentual máximo cobrado (taxa efetiva) no mês de referência, para o Empréstimo contratado  A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)'
           example: '0.6865'
-        customers:
-          type: array
-          items:
-            $ref: '#/components/schemas/Customer'
-          minItems: 4
-          maxItems: 4
-          description: Lista percentual de cliente por faixa referente a contratação do financiamento
     ApplicationRate:
       type: object
       properties:
         interval:
           $ref: '#/components/schemas/ApplicationIntervals'
+        indexer:
+          $ref: '#/components/schemas/Indexer'
+        customers:
+          $ref: '#/components/schemas/Customer'
+      required:
+        - interval
+        - indexer
+        - customers
+    Indexer:
+      type: object
+      properties:
         rate:
           type: string
           format: '(^[0-9](\.[0-9]{4})$|^NA$)'
+          maxLength: 6
           description: |
-            Percentual que corresponde a mediana da taxa efetiva cobrada do cliente pela contratação do crédito, no intervalo informado. p.ex. '0,8700%' A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)'
-          example: '0.0987'
-      required:
-        - interval
-        - rate
+            Percentual que corresponde a mediana da taxa efetiva cobrada do cliente pela contratação do crédito, no intervalo informado. p.ex. '0,8700%'. A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)
+          example: '0.8700'
     InterestRateFee:
       type: object
       properties:
@@ -1233,28 +1083,31 @@ components:
           description: |
             Percentual que incide sobre a composição das taxas de juros remuneratórios. (representa uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O valor '1 'representa 100%) A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)
           example: '0.15'
+          maxLength: 4
       required:
         - referentialRateIndexer
         - rate
     PriceIntervals:
       type: string
       enum:
-        - 1_FAIXA_VALOR
-        - 2_FAIXA_VALOR
-        - 3_FAIXA_VALOR
-        - 4_FAIXA_VALOR
+        - 1_FAIXA
+        - 2_FAIXA
+        - 3_FAIXA
+        - 4_FAIXA
+      minItems: 1
+      maxItems: 1
       description: |
-        Segundo Normativa nº 32, BCB, de 2020: Distribuição de frequência relativa dos valores de tarifas cobradas dos clientes, de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana em cada uma dessas faixas. Informando: 1ª faixa de valor, 2ª faixa de valor, 3ª faixa de valor e 4ª faixa de valor
-      example: 1_FAIXA_VALOR
+        Segundo Normativa nº 32, BCB, de 2020: Distribuição de frequência relativa dos valores de tarifas cobradas dos clientes, de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana em cada uma dessas faixas. Informando: 1ª faixa, 2ª faixa, 3ª faixa e 4ª faixa
+      example: 1_FAIXA
     ApplicationIntervals:
       type: string
       enum:
-        - 1_FAIXA_VALOR
-        - 2_FAIXA_VALOR
-        - 3_FAIXA_VALOR
-        - 4_FAIXA_VALOR
+        - 1_FAIXA
+        - 2_FAIXA
+        - 3_FAIXA
+        - 4_FAIXA
       description: |
-        Faixas para cobrança da taxa efetiva aplicada pela contratação do crédito, no intervalo informado: 1ª faixa de valor, 2ª faixa de valor, 3ª faixa de valor e 4ª faixa de valor. Segundo Normativa nº32 de 2020: 'Distribuição de frequência relativa dos valores de tarifas e taxas de juros cobrados dos clientes, de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana e o percentual de clientes em cada uma dessas faixas.
+        Faixas para cobrança da taxa efetiva aplicada pela contratação do crédito, no intervalo informado: 1ª faixa, 2ª faixa, 3ª faixa e 4ª faixa. Segundo Normativa nº32 de 2020: 'Distribuição de frequência relativa dos valores de tarifas e taxas de juros cobrados dos clientes, de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana e o percentual de clientes em cada uma dessas faixas.
     RequiredWarranty:
       type: string
       enum:
@@ -1263,7 +1116,7 @@ components:
         - PENHOR
         - ALIENACAO_FIDUCIARIA
         - HIPOTECA
-        - OPERCAOES_GARANTIDAS_PELO_GOVERNO
+        - OPERACOES_GARANTIDAS_PELO_GOVERNO
         - OUTRAS_GARANTIAS_NAO_FIDEJUSSORIAS
         - SEGUROS_ASSEMELHADOS
         - GARANTIA_FIDEJUSSORIA
@@ -1273,21 +1126,21 @@ components:
         - ACORDOS_COMPENSACAO
         - NAO_APLICAVEL
       description: |
-        Relação de garantias exigidas, segundo documento 3040 do Bacen: 
-        cessão de direitos creditórios: o cedente transfere ao credor/cessionário a titularidade de direitos creditórios, até a liquidação da dívida. O credor/cessionário passa a recebê-los diretamente dos devedores e credita o produto da operação para o cedente na operação que originou a cessão, até a sua liquidação 
-        caução: garantia instituída sobre créditos do garantidor 
-        penhor: direito real que consiste na tradição de uma coisa móvel ou mobilizável, suscetível de alienação, realizada pelo devedor ou por terceiro ao credor, a fim de garantir o pagamento do débito 
-        alienação fiduciária: transferência ao credor, ou fiduciário, da propriedade do bem 
-        hipoteca: direito real de garantia que afeta um bem imóvel para o cumprimento da obrigação 
-        operações garantidas pelo governo: nas instâncias federal, estadual ou municipal
-        outras garantias não fidejussórias: as garantias reais não descritas como: cessão de direitos creditórios, caução, penhor, alienação fiduciária, hipoteca ou operação garantida pelo governo 
-        seguros e assemelhados: os seguros (e assemelhados) contratados para garantir o pagamento da operação em circunstâncias adversas
-        garantia fidejussória: baseada na fidelidade do garantidor em cumprir as obrigações, caso o devedor não o faça
-        bens arrendados: bem objeto do arrendamento financeiro
-        garantias internacionais: declarar se a garantia é mitigadora ou não, observados os critérios definidos pela Circular 3.644, de 4 de março de 2013 
-        operações garantidas por outras entidade: declarar as garantias prestadas pelas entidades descritas no item 3. Informações de Garantias (i) do documento 3040 - Bacen 
-        acordos de compensação: operações que sejam abrangidas por acordos para a compensação e liquidação de obrigações no âmbito do SFN, nos termos da Resolução 3.263, de 24 de fevereiro de 2005
-        não aplicável
+        Relação de garantias exigidas, segundo documento 3040 do Bacen:
+        * `cessão de direitos creditórios`: o cedente transfere ao credor/cessionário a titularidade de direitos creditórios, até a liquidação da dívida. O credor/cessionário passa a recebê-los diretamente dos devedores e credita o produto da operação para o cedente na operação que originou a cessão, até a sua liquidação
+        * `caução`: garantia instituída sobre créditos do garantidor
+        * `penhor`: direito real que consiste na tradição de uma coisa móvel ou mobilizável, suscetível de alienação, realizada pelo devedor ou por terceiro ao credor, a fim de garantir o pagamento do débito
+        * `alienação fiduciária`: transferência ao credor, ou fiduciário, da propriedade do bem
+        * `hipoteca`: direito real de garantia que afeta um bem imóvel para o cumprimento da obrigação
+        * `operações garantidas pelo governo`: nas instâncias federal, estadual ou municipal
+        * `outras garantias não fidejussórias`: as garantias reais não descritas como: cessão de direitos creditórios, caução, penhor, alienação fiduciária, hipoteca ou operação garantida pelo governo
+        * `seguros e assemelhados`: os seguros (e assemelhados) contratados para garantir o pagamento da operação em circunstâncias adversas
+        * `garantia fidejussória`: baseada na fidelidade do garantidor em cumprir as obrigações, caso o devedor não o faça
+        * `bens arrendados`: bem objeto do arrendamento financeiro
+        * `garantias internacionais`: declarar se a garantia é mitigadora ou não, observados os critérios definidos pela Circular 3.644, de 4 de março de 2013
+        * `operações garantidas por outras entidade`: declarar as garantias prestadas pelas entidades descritas no item 3. Informações de Garantias (i) do documento 3040 - Bacen
+        * `acordos de compensação`: operações que sejam abrangidas por acordos para a compensação e liquidação de obrigações no âmbito do SFN, nos termos da Resolução 3.263, de 24 de fevereiro de 2005
+        * `não aplicável`
       example: CESSAO_DIREITOS_CREDITORIOS
     CreditCardIdentification:
       type: object
@@ -1447,7 +1300,7 @@ components:
           pattern: \w*\W*
           description: Campo Texto para descrever outras operações de crédito marcadas como 'OUTROS'. Se o campo 'code' vier selecionado com 'OUTROS' é obrigatório o preenchimento do additionalInfo
           example: NA
-      allOf: 
+      allOf:
       - $ref: '#/components/schemas/InterestRate'
     PersonalCreditCardResponse:
       type: object
@@ -1549,7 +1402,6 @@ components:
         - prices
         - minimum
         - maximum
-        - customers
       properties:
         name:
           type: string
@@ -1594,13 +1446,6 @@ components:
           $ref: '#/components/schemas/MinimumPrice'
         maximum:
           $ref: '#/components/schemas/MaximumPrice'
-        customers:
-          type: array
-          description: Lista percentual de clientes por faixa de preço
-          items:
-            $ref: '#/components/schemas/Customer'
-          minItems: 4
-          maxItems: 4
     ResponsePersonalFinancings:
       type: object
       required:
@@ -1631,6 +1476,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PersonalFinancingCompany'
+          minItems: 1
           description: Lista de instituições pertencentes à marca
     PersonalFinancingCompany:
       type: object
@@ -1645,6 +1491,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PersonalFinancing'
+          minItems: 1
+          maxItems: 9
           description: Lista de financiamentos
     PersonalFinancing:
       type: object
@@ -1665,8 +1513,8 @@ components:
             - FINANCIAMENTO_RURAL_INVESTIMENTO
             - FINANCIAMENTO_RURAL_COMERCIALIZACAO
             - FINANCIAMENTO_RURAL_INDUSTRIALIZACAO
-            - FINANCIAMENTO_IMOBILIARIO_SISTEMA_FINANCIERO_HABILITACAO_SFH
-            - FINANCIAMENTO_IMOBILIARIO_SISTEMA_FINANCIERO_HABILITACAO_SFI
+            - FINANCIAMENTO_IMOBILIARIO_SISTEMA_FINANCEIRO_HABILITACAO_SFH
+            - FINANCIAMENTO_IMOBILIARIO_SISTEMA_FINANCEIRO_HABILITACAO_SFI
           description: 'Modalidades de financiamentos ofertados para pessoas naturais, conforme Circular 4015-Bacen. Segundo cartilha do Bacen: Financiamento é um contrato entre o cliente e uma instituição financeira, mas com, destinação específica como para a aquisição de veículo ou de bem imóvel, que funcionam como garantia para o crédito concedido'
           example: FINANCIAMENTO_AQUISICAO_BENS_VEICULOS_AUTOMOTORES
         fees:
@@ -1677,6 +1525,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/RequiredWarranty'
+          minItems: 1
+          maxItems: 14
         termsConditions:
           type: string
           pattern: \w*\W*
@@ -1692,6 +1542,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/FinancingService'
+          minItems: 1
     FinancingService:
       type: object
       properties:
@@ -1712,19 +1563,17 @@ components:
           maxLength: 2000
           pattern: \w*\W*
           description: 'Fatores geradores de cobrança que incidem sobre as Modalidades de Financiamentos, para pessoa natural. Campo Livre'
-          example: 'R$ 570.00'
+          example: 'R$ 570.00 Por solicitação'
         prices:
           type: array
           items:
             $ref: '#/components/schemas/Price'
+          minItems: 4
+          maxItems: 4
         minimum:
           $ref: '#/components/schemas/MinimumPrice'
         maximum:
           $ref: '#/components/schemas/MaximumPrice'
-        customers:
-          type: array
-          items:
-            $ref: '#/components/schemas/Customer'
       required:
         - name
         - code
@@ -1740,33 +1589,47 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/InterestRateFee'
+          minItems: 1
+          maxItems: 19
         applications:
           type: array
           items:
             $ref: '#/components/schemas/ApplicationRate'
+          minItems: 4
+          maxItems: 4
           example:
-            - interval: 1_FAIXA_VALOR
-              rate: '0.0987'
-            - interval: 2_FAIXA_VALOR
-              rate: '0.1600'
-            - interval: 3_FAIXA_VALOR
-              rate: '0.3600'
-            - interval: 4_FAIXA_VALOR
-              rate: '0.5890'
+            - interval: 1_FAIXA
+              indexer:
+                rate: '0.0987'
+              customers:
+                rate: '0.1500'
+            - interval: 2_FAIXA
+              indexer:
+                rate: '0.1600'
+              customers:
+                rate: '0.3500'
+            - interval: 3_FAIXA
+              indexer:
+                rate: '0.3600'
+              customers:
+                rate: '0.2000'
+            - interval: 4_FAIXA
+              indexer:
+                rate: '0.5890'
+              customers:
+                rate: '0.3000'
         minimumRate:
           type: string
           format: '(^[0-9](\.[0-9]{4})$|^NA$)'
           description: 'Percentual mínimo cobrado (taxa efetiva) no mês de referência, para o Financiamento contratado  A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)'
           example: '0.0456'
+          maxLength: 6
         maximumRate:
           type: string
           format: '(^[0-9](\.[0-9]{4})$|^NA$)'
           description: 'Percentual máximo cobrado (taxa efetiva) no mês de referência, para o Financiamento contratado  A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)'
           example: '0.6865'
-        customers:
-          type: array
-          items:
-            $ref: '#/components/schemas/Customer'
+          maxLength: 6
       required:
         - applications
         - minimumRate
@@ -1802,6 +1665,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/BusinessFinancingCompany'
+          minItems: 1
           description: Lista de instituições pertencentes à marga
     BusinessFinancingCompany:
       type: object
@@ -1816,6 +1680,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/BusinessFinancing'
+          minItems: 1
+          maxItems: 9
           description: Lista de financiamentos
     BusinessFinancing:
       type: object
@@ -1836,8 +1702,8 @@ components:
             - FINANCIAMENTO_RURAL_INVESTIMENTO
             - FINANCIAMENTO_RURAL_COMERCIALIZACAO
             - FINANCIAMENTO_RURAL_INDUSTRIALIZACAO
-            - FINANCIAMENTO_IMOBILIARIO_SISTEMA_FINANCIERO_HABILITACAO_SFH
-            - FINANCIAMENTO_IMOBILIARIO_SISTEMA_FINANCIERO_HABILITACAO_SFI
+            - FINANCIAMENTO_IMOBILIARIO_SISTEMA_FINANCEIRO_HABILITACAO_SFH
+            - FINANCIAMENTO_IMOBILIARIO_SISTEMA_FINANCEIRO_HABILITACAO_SFI
           description: 'Modalidades de financiamentos ofertados para pessoas jurídicas, conforme Circular 4015-Bacen. Segundo cartilha do Bacen: Financiamento é um contrato entre o cliente e uma instituição financeira, mas com, destinação específica como para a aquisição de veículo ou de bem imóvel, que funcionam como garantia para o crédito concedido'
           example: FINANCIAMENTO_AQUISICAO_BENS_VEICULOS_AUTOMOTORES
         fees:
@@ -1848,6 +1714,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/RequiredWarranty'
+          minItems: 1
+          maxItems: 14
         termsConditions:
           type: string
           pattern: \w*\W*
@@ -1862,6 +1730,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/FinancingService'
+          minItems: 1
       required:
         - services
     ResponsePersonalInvoiceFinancings:
@@ -1973,7 +1842,6 @@ components:
         - prices
         - minimum
         - maximum
-        - customers
       properties:
         name:
           type: string
@@ -2001,20 +1869,9 @@ components:
           maxItems: 4
           description: Lista distribuição preços tarifas de serviços
         minimum:
-          type: object
-          items:
-            $ref: '#/components/schemas/MinimumPrice'
+          $ref: '#/components/schemas/MinimumPrice'
         maximum:
-          type: object
-          items:
-            $ref: '#/components/schemas/MaximumPrice'
-        customers:
-          type: array
-          items:
-            $ref: '#/components/schemas/Customer'
-          minItems: 4
-          maxItems: 4
-          description: Lista percentual de clientes por faixa de preço
+          $ref: '#/components/schemas/MaximumPrice'
     PersonalInvoiceFinancingsInterestRates:
       type: object
       description: Taxas de juros remuneratórias
@@ -2045,19 +1902,11 @@ components:
             Percentual máximo cobrado (taxa efetiva) no mês de referência, para os Direitos Creditórios Descontados contratado  A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.15. Este valor representa 15%. O valor 1 representa 100%)
           pattern: '(^[0-9](\.[0-9]{4})$|^NA$)'
           example: '0.6865'
-        customers:
-          type: array
-          description: Lista percentual de cliente por faixa referente a  taxa remuneratória
-          items:
-            $ref: '#/components/schemas/Customer'
-          minItems: 4
-          maxItems: 4
       required:
         - fees
         - applications
         - minimumRate
         - maximumRate
-        - customers
     ResponseBusinessInvoiceFinancings:
       type: object
       required:
@@ -2109,7 +1958,7 @@ components:
             $ref: '#/components/schemas/BusinessInvoiceFinancings'
           minItems: 1
           maxItems: 5
-          description: Lista de Modalidades de Direitos Creditórios
+          description: Lista de Modalidades de Direitos Creditórios Descontados
     BusinessInvoiceFinancings:
       type: object
       required:
@@ -2147,7 +1996,7 @@ components:
           example: 'https://empresaa1.com/personal_invoice_financings'
     BusinessInvoiceFinancingsFees:
       type: object
-      description: Objeto que reúne informações relativas a Termos e Condições para as modalidades tratadas
+      description: Objeto que reúne informações de tarifas de serviços
       required:
         - services
       properties:
@@ -2186,19 +2035,11 @@ components:
             Percentual máximo cobrado (taxa efetiva) no mês de referência, para os Direitos Creditórios Descontados contratado  A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.15. Este valor representa 15%. O valor 1 representa 100%)
           pattern: '(^[0-9](\.[0-9]{4})$|^NA$)'
           example: '0.6865'
-        customers:
-          type: array
-          description: Lista percentual de cliente por faixa referente a  taxa remuneratória
-          items:
-            $ref: '#/components/schemas/Customer'
-          minItems: 4
-          maxItems: 4
       required:
         - fees
         - applications
         - minimumRate
         - maximumRate
-        - customers
     ResponseBusinessUnarrangedAccountOverdraft:
       type: object
       required:
@@ -2287,7 +2128,6 @@ components:
         - prices
         - minimum
         - maximum
-        - customers
       properties:
         name:
           type: string
@@ -2317,45 +2157,37 @@ components:
           $ref: '#/components/schemas/MinimumPrice'
         maximum:
           $ref: '#/components/schemas/MaximumPrice'
-        customers:
-          type: array
-          description: Lista percentual de clientes por faixa de preço.
-          items:
-            $ref: '#/components/schemas/FeeServiceCustomer'
-          minItems: 4
-          maxItems: 4
       example:
         name: CONCESSAO_ADIANTAMENTO_DEPOSITANTE
         code: ADIANT_DEPOSITANTE
         chargingTriggerInfo: Levantamento de informações e avaliação de viabilidade e de riscos para a concessão de crédito em caráter emergencial para cobertura de saldo devedor em conta de depósitos à vista e de excesso sobre o limite previamente pactuado de cheque especial, cobrada no máximo uma vez nos últimos trinta dias
         prices:
-          - interval: 1_FAIXA_VALOR
+          - interval: 1_FAIXA
             value: "500.00"
             currency: BRL
-          - interval: 2_FAIXA_VALOR
+            customers:
+              rate: "0.1500"
+          - interval: 2_FAIXA
             value: "860.00"
             currency: BRL
-          - interval: 3_FAIXA_VALOR
+            customers:
+              rate: "0.3500"
+          - interval: 3_FAIXA
             value: "1090.40"
             currency: "BRL"
-          - interval: 4_FAIXA_VALOR
+            customers:
+              rate: "0.2000"
+          - interval: 4_FAIXA
             value: "2100.00"
             currency: BRL
+            customers:
+              rate: "0.3000"
         minimum:
           value: "430.00"
           currency: "BRL"
         maximum:
           value: "2200.00"
           currency: "BRL"
-        customers:
-          - frequency: "1_FAIXA_CLIENTE"
-            rate: "0.1500"
-          - frequency: "2_FAIXA_CLIENTE"
-            rate: "0.3500"
-          - frequency: "3_FAIXA_CLIENTE"
-            rate: "0.2000"
-          - frequency: "4_FAIXA_CLIENTE"
-            rate: "0.3000"
     UnarrangedAccountOverdraftRate:
       type: object
       description: Taxas de juros remuneratórias
@@ -2364,7 +2196,6 @@ components:
         - applications
         - minimumRate
         - maximumRate
-        - customers
       properties:
         fees:
           description: Lista de tipos de taxas referenciais ou indexadores
@@ -2377,7 +2208,7 @@ components:
           description:  Lista  das faixas de cobrança da taxa efetiva de remuneração.
           type: array
           items:
-            $ref: '#/components/schemas/InterestRateApplication'
+            $ref: '#/components/schemas/ApplicationRate'
           minItems: 4
           maxItems: 4
         minimumRate:
@@ -2402,25 +2233,28 @@ components:
               - referentialRateIndexer: "SEM_INDEXADOR_TAXA"
                 rate: "0.65"
           applications:
-              - interval: "1_FAIXA_VALOR"
-                rate: "0.0187"
-              - interval: "2_FAIXA_VALOR"
-                rate: "0.2900"
-              - interval: "3_FAIXA_VALOR"
-                rate: "0.3600"
-              - interval: "4_FAIXA_VALOR"
-                rate: "0.7990"
+              - interval: "1_FAIXA"
+                indexer:
+                  rate: "0.0187"
+                customers:
+                  rate: "0.1500"
+              - interval: "2_FAIXA"
+                indexer:
+                 rate: "0.2900"
+                customers:
+                  rate: "0.3500"
+              - interval: "3_FAIXA"
+                indexer:
+                  rate: "0.3600"
+                customers:
+                  rate: "0.2000"
+              - interval: "4_FAIXA"
+                indexer:
+                  rate: "0.7990"
+                customers:
+                  rate: "0.3000"
           minimumRate: "0.0056"
           maximumRate: "0.8565"
-          customers:
-            - frequency: "1_FAIXA_CLIENTE"
-              rate: "0.1500"
-            - frequency: "2_FAIXA_CLIENTE"
-              rate: "0.3500"
-            - frequency: "3_FAIXA_CLIENTE"
-              rate: "0.2000"
-            - frequency: "4_FAIXA_CLIENTE"
-              rate: "0.3000"
     FeeReferentialRateIndexer:
       description: Tarifas cobradas sobre Serviços ofertados
       type: object
@@ -2441,14 +2275,14 @@ components:
       properties:
         interval:
           $ref: '#/components/schemas/PriceIntervals'
-        rate:
-          type: string
-          format: '(^[0-9](\.[0-9]{4})$|^NA$)'
-          description: 'Percentual que corresponde a mediana da taxa efetiva cobrada do cliente pela contratação do serviço/produto, no intervalo informado. p.ex. ''9,8700%'' A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)'
-          example: '0.0987'
+        indexer:
+          $ref: '#/components/schemas/Customer'
+        customers:
+          $ref: '#/components/schemas/Customer'
       required:
         - interval
-        - rate
+        - indexer
+        - customers
     ResponsePersonalUnarrangedAccountOverdraft:
       type: object
       required:
@@ -2533,6 +2367,7 @@ components:
         - interval
         - value
         - currency
+        - customers
       properties:
         interval:
           $ref: '#/components/schemas/PriceIntervals'
@@ -2545,13 +2380,16 @@ components:
             Valor da mediana de cada faixa relativa ao serviço ofertado, informado no período, conforme Res nº 32 BCB, 2020. p.ex. '45.00' (representa um valor monetário. p.ex: 1547368.92. Este valor, considerando que a moeda seja BRL, significa R$ 1.547.368,92. O único separador presente deve ser o '.' (ponto) para indicar a casa decimal. Não deve haver separador de milhar)
           example: '2000.00'
         currency:
-          $ref:  "#/components/schemas/Currency"
-    MontlyPrice:
+          $ref:  '#/components/schemas/Currency'
+        customers:
+          $ref: '#/components/schemas/Customer'
+    MonthlyPrice:
       type: object
       required:
         - interval
         - monthlyFee
         - currency
+        - customers
       properties:
         interval:
           $ref: '#/components/schemas/PriceIntervals'
@@ -2566,6 +2404,8 @@ components:
           example: '2000.00'
         currency:
           $ref:  "#/components/schemas/Currency"
+        customers:
+          $ref: '#/components/schemas/Customer'
     MinimumPrice:
       type: object
       required:
@@ -2599,50 +2439,15 @@ components:
     Customer:
       type: object
       required:
-        - frequency
         - rate
       properties:
-        frequency:
-          type: string
-          description: |
-            Segundo Normativa nº 32, BCB, de 2020: Distribuição de frequência relativa aos clientes que contrataram crédito no mês de apuração de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana e o percentual de clientes em cada uma dessas faixas. Informando:1ª faixa de cliente, 2ª faixa de cliente, 3ª faixa de cliente e 4ª faixa de cliente
-          enum:
-            - 1_FAIXA_CLIENTE
-            - 2_FAIXA_CLIENTE
-            - 3_FAIXA_CLIENTE
-            - 4_FAIXA_CLIENTE
-          example: 1_FAIXA_CLIENTE
         rate:
           type: string
           description: |
-            Percentual que corresponde a mediana da taxa efetiva cobrada do cliente pela contratação dos Direitos Creditórios Descontados, no intervalo informado. p.ex. '9,8700%' A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.15. Este valor representa 15%. O valor 1 representa 100%) Percentual dos clientes de cada faixa relativa ao serviço ofertado, para pessoa natural informado no período, conforme Res nº32, BCB, 2020. p.ex. '0.1500' (representa uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O valor '1 'representa 100%) A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)
+            Percentual de clientes em cada faixa.
           pattern: '(^[0-9](\.[0-9]{4})$|^NA$)'
           example: '0.1500'
-    FeeServiceCustomer:
-      type: object
-      required:
-        - frequency
-        - rate
-      properties:
-        frequency:
-          type: string
-          description: |
-            Segundo Normativa nº 32, BCB, de 2020: Distribuição de frequência relativa aos clientes que pagaram valores de tarifas , de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana e o percentual de clientes em cada uma dessas faixas. Informando:1ª faixa de cliente, 2ª faixa de cliente, 3ª faixa de cliente e 4ª faixa de cliente
-          enum:
-            - 1_FAIXA_CLIENTE
-            - 2_FAIXA_CLIENTE
-            - 3_FAIXA_CLIENTE
-            - 4_FAIXA_CLIENTE
-          example: 1_FAIXA_CLIENTE
-        rate:
-          type: string
-          description: |
-            Percentual dos clientes de cada faixa relativa ao serviço ofertado, para pessoa natural informado no período, conforme Res nº32, BCB, 2020. p.ex. '0.1500'
-            (representa uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O valor '1 'representa 100%)
-            A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros
-            (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)
-          pattern: '(^[0-9](\.[0-9]{4})$|^NA$)'
-          example: '0.1500'
+          maxLength: 6
     MinimumBalance:
       type: object
       required:
@@ -2686,7 +2491,7 @@ components:
           items:
             $ref:   "#/components/schemas/InterestRateApplication"
           minItems: 4
-          maxItems: 4 
+          maxItems: 4
         minimumRate:
           type: string
           format: '(^[0-9](\.[0-9]{4})$|^NA$)'
@@ -2697,13 +2502,6 @@ components:
           format: '(^[0-9](\.[0-9]{4})$|^NA$)'
           description: 'Percentual máximo cobrado (taxa efetiva) no mês de referência, para o Financiamento contratado  A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)'
           example: '0.6865'
-        customers:
-          type: array
-          description: Lista percentual de clientes por faixa de preço
-          items:
-            $ref: '#/components/schemas/Customer'
-          minItems: 4
-          maxItems: 4
     ReferentialRateIndexer:
       type: string
       description: |
@@ -2761,7 +2559,7 @@ components:
               items:
                 $ref: '#/components/schemas/CreditCardService'
               minItems: 1
-              maxItems: 8  
+              maxItems: 8
         interest:
           $ref: '#/components/schemas/CreditCardInterest'
         termsConditions:
@@ -2774,6 +2572,7 @@ components:
         name:
           type: string
           maxLength: 80
+          pattern: \w*\W*
           description: Nome da Marca selecionada pelas Organizações
           example: Organização A
     Company:

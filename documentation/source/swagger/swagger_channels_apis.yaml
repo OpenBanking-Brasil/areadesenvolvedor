@@ -347,8 +347,9 @@ components:
                       postCode: '17500-001'
                       country: 'Brasil'
                       countryCode: 'BRA'
-                      latitude: '-90.8365180'
-                      longitude: '-180.836519'
+                      geographicCoordinates:
+                        latitude: "-90.8365180"
+                        longitude: "-180.836519"
                     availability:
                       standards:
                         - weekday: SEGUNDA_FEIRA
@@ -407,9 +408,9 @@ components:
         companies:
           type: array
           items:
-            $ref: '#/components/schemas/BranchesCompanies'
+            $ref: '#/components/schemas/BranchesCompany'
           description: Lista de contratantes
-    BranchesCompanies:
+    BranchesCompany:
       type: object
       required:
         - name
@@ -469,7 +470,7 @@ components:
                   - identification:
                       type: 'INTERNET_BANKING'
                       additionalInfo: 'NA'
-                      url:
+                      urls:
                         - 'https://empresaa1.com/internet-banking'
                     services:
                       - name: "ABERTURA_CONTAS_DEPOSITOS_OU_PAGAMENTO_PRE_PAGA"
@@ -498,6 +499,7 @@ components:
           description: Nome da marca selecionada pela Organização proprietária da dependência (titular).
           example: "Marca A"
           maxLength: 80
+          pattern: \w*\W*
         companies:
           type: array
           items:
@@ -515,9 +517,12 @@ components:
           type: string
           description: Nome da marca selecionada pela Organização proprietária da dependência (titular).
           example: "Empresa da Marca A"
+          maxLength: 80
+          pattern: \w*\W*
         urlComplementaryList:
           type: string
           maxLength: 1024
+          pattern: \w*\W*
           example: "https://example.com/mobile-banking"
         electronicChannels:
           type: array
@@ -832,7 +837,7 @@ components:
       type: object
       required:
         - type
-        - url
+        - urls
       properties:
         type:
           type: string
@@ -847,10 +852,21 @@ components:
           example: "CHAT"
         additionalInfo:
           type: string
-          maxLength: 256
+          pattern: \w*\W*
+          maxLength: 300
+          description: |
+            Campo de texto livre para descrever complementação de informações necessárias. De preenchimento obrigatório para  o tipo de canal de atendimento 'OUTROS'
+            Restrição: Preenchimento obrigatório para o tipo de canal de atendimento 'OUTROS'
         urls:
           type: array
+          items:
+            $ref: '#/components/schemas/ElectronicChannelUrl'
+          minItems: 1
           description: Lista das URLs que atendem um tipo de canal eletrônico selecionado
+    ElectronicChannelUrl:
+      type: string
+      pattern: \w*\W*
+      maxLength: 1024
     ElectronicChannelService:
       type: object
       required:
@@ -910,8 +926,9 @@ components:
         additionalInfo:
           type: string
           maxLength: 2000
+          pattern: \w*\W*
           description: "Texto livre para complementar informação relativa ao Serviço disponível, quando for selecionada a opção p preenchida a opção 'OUTROS_PRODUTOS_SERVICOS'"
-          example: ""
+          example: "SIC"
     Phone:
       type: object
       required:
@@ -1067,7 +1084,7 @@ components:
       properties:
         identification:
           $ref: '#/components/schemas/SharedAutomatedTellerMachinesIdentification'
-        address:
+        postalAddress:
           $ref: '#/components/schemas/SharedAutomatedTellerMachinesPostalAddress'
         availability:
           $ref: '#/components/schemas/SharedAutomatedTellerMachinesAvailability'
