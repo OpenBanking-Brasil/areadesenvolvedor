@@ -54,12 +54,12 @@
 }
 ```
 
-|     Nome        |  Tipo                                                       | Obrigatório  |                            Definição                  |
-|:------------    |:---------------------------------                           |:-----------  |:----------------------------------------------------  |
-| data            | object                                                      | Sim          |                                                       |
-| brand         | [[PhoneChannelsBrand](#schemaPhoneChannelsBrand)]   | Sim          | Organização controladora do grupo de instituições financeiras.      |
-| links           | [[LinksPaginated](#schemaLinksPaginated)]                   | Sim          |                                                       |
-| meta            | [MetaPaginated](#schemaMetaPaginated)                     | Sim          |                                                       |
+|     Nome        |  Tipo                                                    | Obrigatório  |                            Definição                  |
+|:------------    |:---------------------------------                        |:-----------  |:----------------------------------------------------  |
+| data            | object                                                   | Sim          |                                                       |
+| brand           | [PhoneChannelsBrand](#schemaPhoneChannelsBrand)          | Sim          | Organização controladora do grupo de instituições financeiras.      |
+| links           | [[LinksPaginated](#schemaLinksPaginated)]                | Sim          |                                                       |
+| meta            | [MetaPaginated](#schemaMetaPaginated)                    | Sim          |                                                       |
 
 ## PhoneChannelsBrand
 <a id="schemaPhoneChannelsBrand"></a>
