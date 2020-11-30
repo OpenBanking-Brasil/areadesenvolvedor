@@ -89,7 +89,7 @@
 |     Nome      |  Tipo                                                                     | Obrigatório  |                            Definição                  |
 |:------------  |:---------------------------------                                         |:-----------  |:----------------------------------------------------  |
 | data          | object                                                                    | Sim          |                                                       |
-| brand       | [[PersonalInvoiceFinancingsBrand](#schemaPersonalInvoiceFinancingsBrand)] | Sim          | Organização controladora do grupo de instituições financeiras      |
+| brand         | [PersonalInvoiceFinancingsBrand](#schemaPersonalInvoiceFinancingsBrand)   | Sim          | Organização controladora do grupo de instituições financeiras      |
 | links         | [[LinksPaginated](#schemaLinksPaginated)]                                 | Sim          |                                                       |
 | meta          | [MetaPaginated](#schemaMetaPaginated)                                     | Sim          |                                                       |
 

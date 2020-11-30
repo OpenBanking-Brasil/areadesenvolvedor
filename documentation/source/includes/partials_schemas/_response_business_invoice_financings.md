@@ -89,9 +89,9 @@
 |     Nome          |  Tipo                                                                     | Obrigatório  |                            Definição                  |
 |:------------      |:---------------------------------                                         |:-----------  |:----------------------------------------------------  |
 | data              | object                                                                    | Sim          |                                                       |
-| brand           | [[BusinessInvoiceFinancingsBrand](#schemaBusinessInvoiceFinancingsBrand)]   | Sim          | Organização controladora do grupo de instituições financeiras      |
+| brand             | [BusinessInvoiceFinancingsBrand](#schemaBusinessInvoiceFinancingsBrand)   | Sim          | Organização controladora do grupo de instituições financeiras      |
 | links             | [[LinksPaginated](#schemaLinksPaginated)]                                 | Sim          |                                                       |
-| meta              | [MetaPaginated](#schemaMetaPaginated)                                   | Sim          |                                                       |
+| meta              | [MetaPaginated](#schemaMetaPaginated)                                     | Sim          |                                                       |
 
 ## BusinessInvoiceFinancingsBrand
 <a id="schemaBusinessInvoiceFinancingsBrand"></a>
