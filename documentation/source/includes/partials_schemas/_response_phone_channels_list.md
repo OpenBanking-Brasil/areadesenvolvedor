@@ -4,41 +4,39 @@
 ```json
 {
   "data": {
-    "brand": [
-      {
-        "name": "string",
-        "companies": [
-          {
-            "name": "string",
-            "cnpjNumber": "string",
-            "urlComplementaryList": "string",
-            "phoneChannels": [
-              {
-                "identification": {
-                  "type": "string",
-                  "additionalInfo": "string",
-                  "phones": [
-                    {
-                      "countryCallingCode": "string",
-                      "areaCode": "string",
-                      "number": "string",
-                      "additionalInfo": "string"
-                    }
-                  ]
-                },
-                "services": [
+    "brand": {
+      "name": "string",
+      "companies": [
+        {
+          "name": "string",
+          "cnpjNumber": "string",
+          "urlComplementaryList": "string",
+          "phoneChannels": [
+            {
+              "identification": {
+                "type": "string",
+                "additionalInfo": "string",
+                "phones": [
                   {
-                    "name": "string",
-                    "code": "string",
+                    "countryCallingCode": "string",
+                    "areaCode": "string",
+                    "number": "string",
                     "additionalInfo": "string"
                   }
                 ]
-              }
-            ]
-          }
-        ]
-      }
-    ]
+              },
+              "services": [
+                {
+                  "name": "string",
+                  "code": "string",
+                  "additionalInfo": "string"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
   },
   "links": {
     "self": "string",
