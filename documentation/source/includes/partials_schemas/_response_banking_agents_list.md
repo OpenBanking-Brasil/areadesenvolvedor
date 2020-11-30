@@ -4,8 +4,7 @@
 ```json
 {
   "data": {
-    "brand": [
-      {
+    "brand": {
         "name": "string",
         "companies": [
           {
@@ -75,7 +74,6 @@
           }
         ]
       }
-    ]
   },
   "links": {
     "self": "string",
