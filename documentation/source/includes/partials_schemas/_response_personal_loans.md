@@ -46,16 +46,15 @@
                   "fees": [
                     {
                       "referentialRateOrIndexer": "string",
-                      "rate": "string",
-                      "customers": {
-                        "rate": "string"
-                      }
+                      "rate": "string"
                     }
                   ],
                   "applications": [
                     {
                       "interval": "string",
-                      "rate": "string",
+                      "indexer": {
+                        "rate": "string"
+                      },
                       "customers": {
                         "rate": "string"
                       }
@@ -142,16 +141,15 @@
               "fees": [
                 {
                   "referentialRateOrIndexer": "string",
-                  "rate": "string",
-                  "customers": {
-                    "rate": "string"
-                  }
+                  "rate": "string"
                 }
               ],
               "applications": [
                 {
                   "interval": "string",
-                  "rate": "string",
+                  "indexer": {
+                    "rate": "string"
+                  },
                   "customers": {
                     "rate": "string"
                   }
@@ -220,16 +218,15 @@
           "fees": [
             {
               "referentialRateOrIndexer": "string",
-              "rate": "string",
-              "customers": {
-                "rate": "string"
-              }
+              "rate": "string"
             }
           ],
           "applications": [
             {
               "interval": "string",
-              "rate": "string",
+              "indexer": {
+                "rate": "string"
+              },
               "customers": {
                 "rate": "string"
               }
@@ -293,16 +290,15 @@
       "fees": [
         {
           "referentialRateOrIndexer": "string",
-          "rate": "string",
-          "customers": {
-            "rate": "string"
-          }
+          "rate": "string"
         }
       ],
       "applications": [
         {
           "interval": "string",
-          "rate": "string",
+          "indexer": {
+            "rate": "string"
+          },
           "customers": {
             "rate": "string"
           }
@@ -433,7 +429,6 @@
 | prices              | [[Price](#schemaPrice)]                         | Sim          | Valor da mediana da tarifa, relativa ao serviço ofertado, informado no período.                                              | NA
 | minimum             | [MinimumPrice](#schemaMinimumPrice)             | Sim          | Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência.                                | NA
 | maximum             | [MaximumPrice](#schemaMaximumPrice)             | Sim          | Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência.                                | NA
-| customers           | [[Customer](#schemaCustomer)]                   | Sim          | Percentual de clientes em cada faixa                                                           | NA
 
 ## LoanInterestRate
 <a id="schemaLoanInterestRate"></a>
@@ -449,7 +444,9 @@
   "applications": [
     {
       "interval": "string",
-      "rate": "string",
+      "indexer": {
+        "rate": "string"
+      },
       "customers": {
         "rate": "string"
       }
@@ -466,5 +463,3 @@
 | applications        | [[Application](#schemaApplication)]                             | Sim         | Lista  das faixas de cobrança da taxa efetiva aplicada pela contratação de crédito.                                                                                                                                                                                                                                                           | 
 | minimumRate         | string                                                          | Sim         | Percentual mínimo cobrado (taxa efetiva) no mês de referência, para o Empréstimo contratado. A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%) | 
 | maximumRate         | string                                                          | Sim         | Percentual máximo cobrado (taxa efetiva) no mês de referência, para o Empréstimo contratado. A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%) | 
-| customers           | [[Customer](#schemaCustomer)]                                   | Sim          | Lista percentual de clientes por faixa de valores de tarifas pagos                                                           | NA
-
