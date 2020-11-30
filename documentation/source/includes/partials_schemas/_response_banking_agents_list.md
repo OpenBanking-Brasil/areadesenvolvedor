@@ -92,7 +92,7 @@
 |     Nome          |  Tipo                                                  | Obrigatório  |                            Definição                  |
 |:------------      |:---------------------------------                      |:-----------  |:----------------------------------------------------  |
 | data              | object                                                 | Sim          |                                                       |
-| brand             | [[BankingAgentsBrand](#schemaBankingAgentsBrand)]      | Sim          | Organização controladora do grupo de instituições financeiras.     |
+| brand             | [BankingAgentsBrand](#schemaBankingAgentsBrand)        | Sim          | Organização controladora do grupo de instituições financeiras.     |
 | links             | [[LinksPaginated](#schemaLinksPaginated)]              | Sim          |                                                       |
 | meta              | [MetaPaginated](#schemaMetaPaginated)                  | Sim          |                                                       |
 
