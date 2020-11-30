@@ -4,36 +4,34 @@
 ```json
 {
   "data": {
-    "brand": [
-      {
-        "name": "string",
-        "companies": [
-          {
-            "name": "string",
-            "cnpjNumber": "string",
-            "urlComplementaryList": "string",
-            "electronicChannels": [
-              {
-                "identification": {
-                  "type": "string",
-                  "additionalInfo": "string",
-                  "urls": [
-                    "string"
-                  ]
-                },
-                "services": [
-                  {
-                    "name": "string",
-                    "code": "string",
-                    "additionalInfo": "string"
-                  }
+    "brand": {
+      "name": "string",
+      "companies": [
+        {
+          "name": "string",
+          "cnpjNumber": "string",
+          "urlComplementaryList": "string",
+          "electronicChannels": [
+            {
+              "identification": {
+                "type": "string",
+                "additionalInfo": "string",
+                "urls": [
+                  "string"
                 ]
-              }
-            ]
-          }
-        ]
-      }
-    ]
+              },
+              "services": [
+                {
+                  "name": "string",
+                  "code": "string",
+                  "additionalInfo": "string"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
   },
   "links": {
     "self": "string",
