@@ -52,7 +52,9 @@
                   "applications": [
                     {
                       "interval": "string",
-                      "rate": "string",
+                      "indexer": {
+                        "rate": "string"
+                      }, 
                       "customers": {
                         "rate": "string"
                       }
@@ -145,7 +147,9 @@
               "applications": [
                 {
                   "interval": "string",
-                  "rate": "string",
+                  "indexer": {
+                    "rate": "string"
+                  }, 
                   "customers": {
                     "rate": "string"
                   }
@@ -220,7 +224,9 @@
           "applications": [
             {
               "interval": "string",
-              "rate": "string",
+              "indexer": {
+                "rate": "string"
+              }, 
               "customers": {
                 "rate": "string"
               }
@@ -290,7 +296,9 @@
       "applications": [
         {
           "interval": "string",
-          "rate": "string",
+          "indexer": {
+            "rate": "string"
+          }, 
           "customers": {
             "rate": "string"
           }
@@ -421,7 +429,6 @@
 | prices              | [[Price](#schemaPrice)]                         | Sim          | Lista das Tarifas cobradas sobre Serviços                                                                                    | NA
 | minimum             | [MinimumPrice](#schemaMinimumPrice)             | Sim          | Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência.                                | NA
 | maximum             | [MaximumPrice](#schemaMaximumPrice)             | Sim          | Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência.                                | NA
-| customers           | [[Customer](#schemaCustomer)]                   | Sim          | Percentual de clientes em cada faixa                                                            | NA
 
 ## LoanInterestRate
 <a id="schemaLoanInterestRate"></a>
@@ -437,7 +444,9 @@
   "applications": [
     {
       "interval": "string",
-      "rate": "string",
+      "indexer": {
+        "rate": "string"
+      }, 
       "customers": {
         "rate": "string"
       }
