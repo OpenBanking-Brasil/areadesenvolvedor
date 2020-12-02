@@ -3,8 +3,8 @@
 
 ## Correção
 
-* Remove a definição de tamanho de máximo no atributo `name` de `priorityServices`, pois se trata de uma enumeração.
-* Remove a definição de expressão regular no atributo `name` de `priorityServices`, pois se trata de uma enumeração.
+* Remove a definição de tamanho de máximo e expressão regular no atributo `name` de `priorityServices` em contas PN na especificação Open API, pois se trata de uma enumeração.
+* Adiciona a definição de expressão regular no atributo `name` de `otherServices` em contas PN na especificação Open API, conforme dicionário de dados.
 
 # 2.0.0
 [30/11/2020]
