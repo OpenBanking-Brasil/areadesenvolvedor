@@ -1,6 +1,10 @@
 # {version}
 [{date}]
 
+## Melhoria
+
+* Adiciona descrição complementar dos valores da enumeração `period` na especificação Open API de métricas.
+
 ## Correção
 
 * Remove a definição de tamanho de máximo e expressão regular no atributo `name` de `priorityServices` em contas PN na especificação Open API, pois se trata de uma enumeração.
