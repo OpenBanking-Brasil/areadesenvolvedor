@@ -17,6 +17,19 @@
     - `fees` em financiamentos PN/PJ.
     - `indexer` em antecipação de recebíveis PN/PJ.
     - `fees` em antecipação de recebíveis PN/PJ.
+* Atualiza da Visão de alto de nível das estruturas de dados de Dependências Próprias
+* Adiciona mínimo e máximo de ocorrências nos atributos da especificação em OAS de Dependências Próprias, conforme indicado no dicionário de dados:
+  - `companies` em BranchesBrand
+  - `branches` em BranchesCompany
+  - `phones` e `services` em Branch
+  - `standards` em BranchAvailability
+* Remove obrigatoriedade dos atributos de Dependências Próprias, conforme indicado no dicionário de dados:
+  - `countryCallingCode`, `areaCode`, `number` em Phone
+* Adiciona indicador de "Não se Aplica" na expressão regular nos atributos da especificação em OAS de Dependências Próprias:
+  - `cnpjNumber` em BranchesCompany
+  - `code`, `checkDigit`, `openingDate` em BranchIdentification
+  - `openingTime`, `closingTime` em standards
+  - `countryCallingCode`, `areaCode`, `number` em Phone
 
 # 2.0.0
 [30/11/2020]
