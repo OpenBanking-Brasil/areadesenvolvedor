@@ -381,10 +381,9 @@ components:
                     services:
                       - name: "RECEBIMENTOS_PAGAMENTOS_QUALQUER_NATUREZA"
                         code: "RECEBE_PAGA_QUALQUER_NATUREZA"
-                        additionalInfo: "Renegociação, Previdência Privada"
-                      - name: "ABERTURA_CONTAS_DEPOSITOS_OU_PAGAMENTO_PRE_PAGA"
-                        code: "ABRE_CONTA_DEPOSITO_OU_PRE_PAGA"
-                        additionalInfo: "Renegociação, Previdência Privada"
+                      - name: "OUTROS_PRODUTOS_SERVICOS"
+                        code: "OUTROS_PRODUTOS_SERVICOS"
+                        additionalInfo: "Renegociação"
         links:
           self: 'https://api.banco.com.br/open-banking/channels/v1/branches'
           first: 'https://api.banco.com.br/open-banking/channels/v1/branches'
@@ -402,14 +401,15 @@ components:
       properties:
         name:
           type: string
-          description: Nome da marca selecionada pela Organização proprietária da dependência (titular).
+          description: Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a 'marca' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes.
           maxLength: 80
           pattern: \w*\W*
         companies:
           type: array
           items:
             $ref: '#/components/schemas/BranchesCompany'
-          description: Lista de contratantes
+          minItems: 1
+          description: Companies traz uma lista de todas as instuituições da Marca.
     BranchesCompany:
       type: object
       required:
@@ -424,7 +424,7 @@ components:
           type: string
           minLength: 14
           maxLength: 14
-          pattern: '^(\d{14})$'
+          pattern: '^(\d{14})$|^NA$'
           description: |
             Número completo do CNPJ da instituição responsável pela dependência - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica.
             Deve-se ter apenas os números do CNPJ, sem máscara
@@ -438,6 +438,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Branch'
+          minItems: 1
+          description: Lista de Dependências de uma Instituição
       allOf:
         - $ref: '#/components/schemas/CNPJ'
     ResponseElectronicChannelsList:
@@ -664,10 +666,15 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Phone'
+          minItems: 1
+          description: Lista de telefones da Dependência
         services:
           type: array
+          description: Traz a relação de serviços disponbilizados pelo Canal de Atendimento
           items:
-            $ref: '#/components/schemas/BranchServices'
+            $ref: '#/components/schemas/BranchService'
+          minItems: 1
+          maxItems: 20
     BranchPostalAddress:
       type: object
       required:
@@ -688,33 +695,42 @@ components:
             - POSTO_ATENDIMENTO
             - POSTO_ATENDIMENTO_ELETRONICO
             - UNIDADE_ADMINISTRATIVA_DESMEMBRADA
-          description: >
+          description:  >
             Tipo da dependência, segundo a regulamentação do Bacen,  na Resolução Nº 4072, de 26 de abril de 2012:
-            Agência é a dependência destinada ao atendimento aos clientes e ao público em geral no exercício de atividades da instituição, não podendo ser móvel ou transitória;
-            Dependência de instituições financeiras e demais instituições, autorizadas a funcionar pelo Banco Central do Brasil, destinada à prática das atividades para as quais a instituição esteja regularmente habilitada.
-            Posto de Atendimento é a dependência subordinada a agência  ou à sede da instituição financeira, destinada ao atendimento ao público no exercício de uma ou mais de suas atividades, podendo ser fixo ou móvel. Segundo Art.15. Os Postos de Atendimento Bancário (PAB), Postos Avançados de Atendimento (PAA), Postos de Atendimento Transitórios (PAT), Postos de Compra de Ouro (PCO), Postos de Atendimento Cooperativo (PAC), Postos de Atendimento de Microcrédito (PAM), Postos Bancários de Arrecadação e Pagamento (PAP) e os Postos de Câmbio atualmente em funcionamento serão considerados PA.
-            Posto de Atendimento Eletrônico é a dependência constituída por um ou mais terminais de autoatendimento, subordinada a agência ou à sede da instituição, destinada à prestação de serviços por meio eletrônico, podendo ser fixo ou móvel, permanente ou transitório
-            Unidade Administrativa Desmembrada (UAD) segundo a Resolução 4072 , BCB, 2012, no Art. 8º "... é dependência destinada à execução de atividades administrativas da instituição, vedado o atendimento ao público"
+            Dependência de instituições financeiras e demais instituições, autorizadas a funcionar pelo Banco Central do Brasil, destinada à prática das atividades para as quais a instituição esteja regularmente habilitada. 
+            
+            * `AGENCIA`: Agência é a dependência destinada ao atendimento aos clientes e ao público em geral no exercício de atividades da instituição, não podendo ser móvel ou transitória;            
+            
+            * `POSTO_ATENDIMENTO`: Posto de Atendimento é a dependência subordinada a agência  ou à sede da instituição financeira, destinada ao atendimento ao público no exercício de uma ou mais de suas atividades, podendo ser fixo ou móvel. Segundo Art.15. Os Postos de Atendimento Bancário (PAB), Postos Avançados de Atendimento (PAA), Postos de Atendimento Transitórios (PAT), Postos de Compra de Ouro (PCO), Postos de Atendimento Cooperativo (PAC), Postos de Atendimento de Microcrédito (PAM), Postos Bancários de Arrecadação e Pagamento (PAP) e os Postos de Câmbio atualmente em funcionamento serão considerados PA.
+            
+            * `POSTO_ATENDIMENTO_ELETRONICO`: Posto de Atendimento Eletrônico é a dependência constituída por um ou mais terminais de autoatendimento, subordinada a agência ou à sede da instituição, destinada à prestação de serviços por meio eletrônico, podendo ser fixo ou móvel, permanente ou transitório
+            
+            * `UNIDADE_ADMINISTRATIVA_DESMEMBRADA `: Unidade Administrativa Desmembrada (UAD) segundo a Resolução 4072 , BCB, 2012, no Art. 8º "... é dependência destinada à execução de atividades administrativas da instituição, vedado o atendimento ao público"
         code:
           type: string
           maxLength: 4
-          pattern: ^\d{4}$
+          pattern: ^\d{4}$|^NA$
+          description: Código identificador da dependência
         checkDigit:
           type: string
           maxLength: 1
-          pattern: ^\d{1}$
+          pattern: ^\d{1}$|^NA$
+          description: Dígito verificador do código da dependência
         name:
           type: string
           maxLength: 100
           pattern: \w*\W*
+          description: Nome da dependência
         relatedBranch:
           type: string
           maxLength: 4
           pattern: ^\d{4}$|^NA$
+          description: Código da agência vinculada ao Posto de Atendimento - se aplicável
         openingDate:
           type: string
           maxLength: 10
-          pattern: ^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$
+          pattern: ^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$|^NA$
+          description: Data de abertura da dependência (uma string com data conforme especificação RFC-3339. p.ex. 2014-03-19)
       required:
         - type
         - code
@@ -725,6 +741,7 @@ components:
       properties:
         standards:
           type: array
+          description: Lista disponibilidade padrão da depêndencia por dias da semana
           items:
             properties:
               weekday:
@@ -742,26 +759,30 @@ components:
                 type: string
                 description: Horário de abertura da dependência bancária (UTC)
                 maxLength: 13
-                pattern: ^(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)|Z$
+                pattern: ^(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)|Z$|^NA$
               closingTime:
                 type: string
                 description: Horário de fechamento da dependência bancária (UTC)
                 maxLength: 13
-                pattern: ^(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)|Z$
+                pattern: ^(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)|Z$|^NA$
             required:
               - weekday
               - openingTime
               - closingTime
+          minItems: 1
+          maxItems: 7
         exception:
           type: string
           maxLength: 2000
           pattern: \w*\W*
+          description: Em campo texto devem ser registradas todas as Exceções para o não atendimento.
         isPublicAccessAllowed:
           type: boolean
+          description: Indica se a instalação da Dependência tem acesso restrito a clientes.
       required:
         - standards
         - exception
-    BranchServices:
+    BranchService:
       type: object
       properties:
         name:
@@ -787,6 +808,7 @@ components:
             - CANCELAMENTO
             - INFORMACOES
             - RECLAMACOES
+          description: Nome dos Serviços efetivamente prestados pelo Canal de Atendimento
         code:
           type: string
           enum:
@@ -810,9 +832,10 @@ components:
             - CANCELAMENTO
             - INFORMACOES
             - RECLAMACOES
+          description: Código dos Serviços efetivamente prestados pelo Canal de Atendimento
         additionalInfo:
           type: string
-          description: Texto livre para complementar informação relativa ao Serviço disponível, quando for selecionada a opção p preenchida a opção 'OUTROS_PRODUTOS_SERVICOS'
+          description: Texto livre para complementar informação relativa ao Serviço disponível, quando for selecionada a opção 'OUTROS_PRODUTOS_SERVICOS'
           maxLength: 2000
           pattern: \w*\W*
       required:
@@ -927,15 +950,12 @@ components:
           type: string
           maxLength: 2000
           pattern: \w*\W*
-          description: "Texto livre para complementar informação relativa ao Serviço disponível, quando for selecionada a opção p preenchida a opção 'OUTROS_PRODUTOS_SERVICOS'"
+          description: "Texto livre para complementar informação relativa ao Serviço disponível, quando for selecionada a opção 'OUTROS_PRODUTOS_SERVICOS'"
           example: "SIC"
     Phone:
       type: object
       required:
         - type
-        - countryCallingCode
-        - areaCode
-        - number
       properties:
         type:
           type: string
@@ -947,19 +967,19 @@ components:
         countryCallingCode:
           type: string
           maxLength: 2
-          pattern: ^\d{2}$
+          pattern: ^\d{2}$|^NA$
           example: "55"
           description: "Número de DDI (Discagem Direta Internacional) para  telefone de acesso ao Canal - se houver. p.ex. '55'"
         areaCode:
           type: string
           maxLength: 2
-          pattern: ^\d{2}$
+          pattern: ^\d{2}$|^NA$
           example: "19"
           description: "Número de DDD (Discagem Direta à Distância) do telefone da dependência - se houver. p.ex. '19'"
         number:
           type: string
           maxLength: 11
-          pattern: '^([0-9]{8,11})$'
+          pattern: ^([0-9]{8,11})$|^NA$
           example: "35721199"
           description: "Número de telefone da dependência - se houver"
     PostalAddress:
@@ -973,7 +993,7 @@ components:
           example: 'Av Naburo Ykesaki, 1270'
         additionalInfo:
           type: string
-          description: "Complemento"
+          description: "Alguns logradouros ainda necessitam ser especificados por meio de complemento"
           maxLength: 30
           pattern: \w*\W*
           example: 'Fundos'
@@ -1451,7 +1471,7 @@ components:
           type: string
           pattern: \w*\W*
           maxLength: 2000
-          description: "Texto livre para complementar informação relativa ao Serviço disponível, quando for selecionada a opção p preenchida a opção 'OUTROS_PRODUTOS_SERVICOS'"
+          description: "Texto livre para complementar informação relativa ao Serviço disponível, quando for selecionada a opção 'OUTROS_PRODUTOS_SERVICOS'"
           example: ""
     GeographicCoordinates:
       type: object
@@ -1461,13 +1481,13 @@ components:
           description: Informação da latitude referente a geolocalização informada.
           type: string
           pattern: ^-?\d{1,2}\.\d{1,9}$|^NA$
-          maxLength: 11
+          maxLength: 13
           example: '-90.8365180'
         longitude:
           description: Informação da longitude referente a geolocalização informada.
           type: string
           pattern: ^-?\d{1,3}\.\d{1,8}$|^NA$
-          maxLength: 11
+          maxLength: 13
           example: '-180.836519'
     Availability:
       type: object
