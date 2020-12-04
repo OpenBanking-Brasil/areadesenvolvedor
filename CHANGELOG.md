@@ -30,6 +30,7 @@
   - `code`, `checkDigit`, `openingDate` em BranchIdentification
   - `openingTime`, `closingTime` em standards
   - `countryCallingCode`, `areaCode`, `number` em Phone
+* Corrigi o path da especificação Open API das APIs comuns de `outage` para `outages`.
 
 # 2.0.0
 [30/11/2020]
