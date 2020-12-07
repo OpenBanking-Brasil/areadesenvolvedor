@@ -110,7 +110,10 @@
 * Atualiza Enums de `SchemaPriorityServiceName` e `SchemaPriorityCode` de personal_accounts.
 * Atualiza descrição de `prepaidPaymentAccount` de contas PN e PJ
 * Corrigi descrição de `InterestRates` em Antecipação de recebíveis PN/PJ.
-
+* Corrige descrição dos seguintes atributos: 
+  - `fees` em Financiamentos PN e PJ
+  - `prices` em Financiamentos PN e PJ
+  
 # 2.0.0
 [30/11/2020]
 
