@@ -113,7 +113,8 @@
 * Corrige descrição dos seguintes atributos: 
   - `fees` em Financiamentos PN e PJ
   - `prices` em Financiamentos PN e PJ
-  
+* Corrigi descrição de `InterestRates` em Antecipação de recebíveis PN/PJ.
+
 # 2.0.0
 [30/11/2020]
 
