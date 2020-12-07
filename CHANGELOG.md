@@ -61,6 +61,7 @@
   - `prices` em Financiamentos PN e PJ
 * Corrige a descrição dos atributos de `AverageMetrics` para que esteja condizendo com tempo médio de resposta;  
 
+* Corrigi descrição de `InterestRates` em Antecipação de recebíveis PN/PJ.
 # 2.0.0
 [30/11/2020]
 
