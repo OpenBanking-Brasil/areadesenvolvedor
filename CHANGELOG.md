@@ -97,34 +97,10 @@
 * Corrigi obrigatoriedade e tamanho máximo na especificação Open API para os seguintes atributos:
   - `maximumRate` em LoanInterestRate para PN e PJ;
   - `minimumRate` em LoanInterestRate para PN e PJ;
-* Corrigi descrição de `InterestRates` em Antecipação de recebíveis PN/PJ.
 * Corrige descrição dos seguintes atributos: 
   - `fees` em Financiamentos PN e PJ
   - `prices` em Financiamentos PN e PJ
-* Corrige a descrição dos atributos de `AverageMetrics` para que esteja condizendo com tempo médio de resposta;
-* Corrigi descrição de `InterestRates` em Antecipação de recebíveis PN/PJ.
-* Corrige descrição dos seguintes atributos: 
-  - `fees` em Financiamentos PN e PJ
-  - `prices` em Financiamentos PN e PJ
-* Corrige enum de `name`e `code` em `services` com adição de `ANUIDADE_DIFERENCIADA` 
-* Atualiza Enums de `SchemaPriorityServiceName` e `SchemaPriorityCode` de personal_accounts.
-* Atualiza descrição de `prepaidPaymentAccount` de contas PN e PJ
-* Corrigi descrição de `InterestRates` em Antecipação de recebíveis PN/PJ.
-* Corrige descrição dos seguintes atributos: 
-  - `fees` em Financiamentos PN e PJ
-  - `prices` em Financiamentos PN e PJ
-* Corrigi descrição de `InterestRates` em Antecipação de recebíveis PN/PJ.
-* Corrige a descrição dos atributos de `AverageMetrics` para que esteja condizendo com tempo médio de resposta;  
-* Corrige enum de `name`e `code` em `services` com adição de `ANUIDADE_DIFERENCIADA` 
-* Atualiza Enums de `SchemaPriorityServiceName` e `SchemaPriorityCode` de personal_accounts.
-* Atualiza descrição de `prepaidPaymentAccount` de contas PN e PJ
-* Corrigi descrição de `InterestRates` em Antecipação de recebíveis PN/PJ.
-* Corrige descrição dos seguintes atributos: 
-  - `fees` em Financiamentos PN e PJ
-  - `prices` em Financiamentos PN e PJ
-* Corrige enum de `name`e `code` em `services` com adição de `ANUIDADE_DIFERENCIADA` 
-
-
+  
 # 2.0.0
 [30/11/2020]
 
