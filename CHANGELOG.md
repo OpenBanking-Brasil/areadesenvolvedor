@@ -1,6 +1,13 @@
 # {version}
 [{date}]
 
+## Quebra de compatibilidade
+
+* Melhora a estrutura em Financiamentos PN e PJ para contemplar as alterações referentes à Distribuição de Frequência: 
+  - Converte o atributo `interestRate` para array, sendo renomeado como `interestRates` 
+  - Remove atributo `fees` de `interestRates`
+  - Adiciona `referentialRateIndexer` e `rate` em `interestRates` 
+
 ## Melhoria
 
 * Adiciona descrição complementar dos valores da enumeração `period` na especificação Open API de métricas.
@@ -19,23 +26,28 @@
     - `fees` em antecipação de recebíveis PN/PJ.
 * Atualiza da Visão de alto de nível das estruturas de dados de Dependências Próprias
 * Adiciona mínimo e máximo de ocorrências nos atributos da especificação em OAS de Dependências Próprias, conforme indicado no dicionário de dados:
-  - `companies` em BranchesBrand
-  - `branches` em BranchesCompany
-  - `phones` e `services` em Branch
-  - `standards` em BranchAvailability
+  - `companies`
+  - `branches`
+  - `phones`
+  - `services`
+  - `standards`
 * Remove obrigatoriedade dos atributos de Dependências Próprias, conforme indicado no dicionário de dados:
-  - `countryCallingCode`, `areaCode`, `number` em Phone
-* Adiciona indicador de "Não se Aplica" na expressão regular nos atributos da especificação em OAS de Dependências Próprias:
-  - `cnpjNumber` em BranchesCompany
-  - `code`, `checkDigit`, `openingDate` em BranchIdentification
-  - `openingTime`, `closingTime` em standards
-  - `countryCallingCode`, `areaCode`, `number` em Phone
+  - `countryCallingCode`
+  - `areaCode`
+  - `number`
+* Adiciona indicador de "Não se Aplica" na expressão regular nos atributos da API de Canais de Atendimento que são obrigatórios:
+  - Todos os atributos `cnpjNumber` em Canais Telefônicos, Canais Eletrônicos, Correspondentes Bancários e Dependências Próprias
+  - `countryCallingCode`, `areaCode`, `number` em Canais Telefônicos
+  - `code`, `postCode` em Dependências Próprias
 * Corrigi o path da especificação Open API das APIs comuns de `outage` para `outages`.
 * Corrigi o pattern de `CNPJ` e descrição de `InterestRates` em adiantamento à Depositantes.
 * Corrigi obrigatoriedade e tamanho máximo na especificação Open API para os seguintes atributos:
   - `maximumRate` em LoanInterestRate para PN e PJ;
   - `minimumRate` em LoanInterestRate para PN e PJ;
 * Corrigi descrição de `InterestRates` em Antecipação de recebíveis PN/PJ.
+* Corrige descrição dos seguintes atributos: 
+  - `fees` em Financiamentos PN e PJ
+  - `prices` em Financiamentos PN e PJ
 # 2.0.0
 [30/11/2020]
 
