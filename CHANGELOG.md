@@ -35,7 +35,7 @@
 * Corrigi obrigatoriedade e tamanho máximo na especificação Open API para os seguintes atributos:
   - `maximumRate` em LoanInterestRate para PN e PJ;
   - `minimumRate` em LoanInterestRate para PN e PJ;
-
+* Corrigi descrição de `InterestRates` em Antecipação de recebíveis PN/PJ.
 # 2.0.0
 [30/11/2020]
 
