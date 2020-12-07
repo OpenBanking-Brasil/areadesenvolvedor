@@ -584,7 +584,7 @@ components:
         postalAddress:
           $ref: '#/components/schemas/BankingAgentPostalAddress'
         availability:
-          $ref: '#/components/schemas/Availability'
+          $ref: '#/components/schemas/BankingAgentAvailability'
         phones:
           type: array
           items:
@@ -592,14 +592,51 @@ components:
     BankingAgentPostalAddress:
       type: object
       required:
+        - address
         - districtName
         - townName
         - countrySubDivision
         - postCode
-        - address
       allOf:
         - $ref: '#/components/schemas/PostalAddress'
-
+    BankingAgentAvailability:
+      type: object
+      properties:
+        standards:
+          type: array
+          items:
+            required:
+              - weekday
+            properties:
+              weekday:
+                type: string
+                enum:
+                  - DOMINGO
+                  - SEGUNDA_FEIRA
+                  - TERCA_FEIRA
+                  - QUARTA_FEIRA
+                  - QUINTA_FEIRA
+                  - SEXTA_FEIRA
+                  - SABADO
+                description: Dia da semana de abertura
+              openingTime:
+                type: string
+                description: Horário de abertura (UTC)
+                maxLength: 13
+                pattern: ^(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)|Z$
+              closingTime:
+                type: string
+                description: Horário de fechamento (UTC)
+                maxLength: 13
+                pattern: ^(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)|Z$
+        exception:
+          type: string
+          maxLength: 2000
+          pattern: \w*\W*
+          example: Exceto feriados municipais, nacionais e estaduais
+        isPublicAccessAllowed:
+          type: boolean
+          example: false
     BankingAgentService:
       type: object
       properties:
@@ -665,7 +702,7 @@ components:
         phones:
           type: array
           items:
-            $ref: '#/components/schemas/Phone'
+            $ref: '#/components/schemas/BranchPhone'
           minItems: 1
           description: Lista de telefones da Dependência
         services:
@@ -678,13 +715,19 @@ components:
     BranchPostalAddress:
       type: object
       required:
+        - address
         - districtName
         - townName
         - countrySubDivision
         - postCode
-        - address
       allOf:
         - $ref: '#/components/schemas/PostalAddress'
+    BranchPhone:
+      type: object
+      required:
+        - type
+      allOf:
+        - $ref: '#/components/schemas/Phone'
     BranchIdentification:
       type: object
       properties:
@@ -702,7 +745,6 @@ components:
             * `AGENCIA`: Agência é a dependência destinada ao atendimento aos clientes e ao público em geral no exercício de atividades da instituição, não podendo ser móvel ou transitória;
 
             * `POSTO_ATENDIMENTO`: Posto de Atendimento é a dependência subordinada a agência  ou à sede da instituição financeira, destinada ao atendimento ao público no exercício de uma ou mais de suas atividades, podendo ser fixo ou móvel. Segundo Art.15. Os Postos de Atendimento Bancário (PAB), Postos Avançados de Atendimento (PAA), Postos de Atendimento Transitórios (PAT), Postos de Compra de Ouro (PCO), Postos de Atendimento Cooperativo (PAC), Postos de Atendimento de Microcrédito (PAM), Postos Bancários de Arrecadação e Pagamento (PAP) e os Postos de Câmbio atualmente em funcionamento serão considerados PA.
-            
 
             * `POSTO_ATENDIMENTO_ELETRONICO`: Posto de Atendimento Eletrônico é a dependência constituída por um ou mais terminais de autoatendimento, subordinada a agência ou à sede da instituição, destinada à prestação de serviços por meio eletrônico, podendo ser fixo ou móvel, permanente ou transitório
 
@@ -730,7 +772,7 @@ components:
         openingDate:
           type: string
           maxLength: 10
-          pattern: ^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$|^NA$
+          pattern: ^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$
           description: Data de abertura da dependência (uma string com data conforme especificação RFC-3339. p.ex. 2014-03-19)
       required:
         - type
@@ -955,8 +997,6 @@ components:
           example: "SIC"
     Phone:
       type: object
-      required:
-        - type
       properties:
         type:
           type: string
@@ -968,19 +1008,19 @@ components:
         countryCallingCode:
           type: string
           maxLength: 2
-          pattern: ^\d{2}$|^NA$
+          pattern: ^\d{2}$
           example: "55"
           description: "Número de DDI (Discagem Direta Internacional) para  telefone de acesso ao Canal - se houver. p.ex. '55'"
         areaCode:
           type: string
           maxLength: 2
-          pattern: ^\d{2}$|^NA$
+          pattern: ^\d{2}$
           example: "19"
           description: "Número de DDD (Discagem Direta à Distância) do telefone da dependência - se houver. p.ex. '19'"
         number:
           type: string
           maxLength: 11
-          pattern: '^([0-9]{8,11})$|^NA$'
+          pattern: '^([0-9]{8,11})$'
           example: "35721199"
           description: "Número de telefone da dependência - se houver"
     PostalAddress:
@@ -1490,44 +1530,6 @@ components:
           pattern: ^-?\d{1,3}\.\d{1,8}$|^NA$
           maxLength: 13
           example: '-180.836519'
-    Availability:
-      type: object
-      properties:
-        standards:
-          type: array
-          items:
-            required:
-              - weekday
-            properties:
-              weekday:
-                type: string
-                enum:
-                  - DOMINGO
-                  - SEGUNDA_FEIRA
-                  - TERCA_FEIRA
-                  - QUARTA_FEIRA
-                  - QUINTA_FEIRA
-                  - SEXTA_FEIRA
-                  - SABADO
-                description: Dia da semana de abertura
-              openingTime:
-                type: string
-                description: Horário de abertura (UTC)
-                maxLength: 13
-                pattern: ^(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)|Z$|^NA$
-              closingTime:
-                type: string
-                description: Horário de fechamento (UTC)
-                maxLength: 13
-                pattern: ^(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)|Z$|^NA$
-        exception:
-          type: string
-          maxLength: 2000
-          pattern: \w*\W*
-          example: Exceto feriados municipais, nacionais e estaduais
-        isPublicAccessAllowed:
-          type: boolean
-          example: false
     Brand:
       type: object
       properties:
