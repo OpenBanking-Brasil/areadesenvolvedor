@@ -1267,17 +1267,22 @@ components:
       description: Informações sobre taxas de juros
       required:
         - rates
-        - instalmentRate
-        - interestRates
+        - instalmentRates
+        - otherCredits
       properties:
         rates:
           type: array
           items:
             $ref: '#/components/schemas/InterestRate'
           minItems: 1
-        instalmentRate:
-          $ref: '#/components/schemas/InterestRate'
-        interestRates:
+          description: Lista da representação que traz o conjunto de informações necessárias para demonstrar a distribuição de frequências das taxas de juros remuneratórios para crédito rotativo
+        instalmentRates:
+          type: array
+          items:
+            $ref: '#/components/schemas/InterestRate'
+          minItems: 1
+          description: Lista da representação que traz o conjunto de informações necessárias para demonstrar a distribuição de frequências das taxas de juros remuneratórios para parcelamento do saldo devedor
+        otherCredits:
           type: array
           description: Lista de outras operações de crédito
           items:
@@ -1288,10 +1293,7 @@ components:
       type: object
       required:
         - code
-        - prices
-        - minimumRate
-        - maximumRate
-        - fees
+        - additionalInfo
       properties:
         code:
           type: string
@@ -1307,8 +1309,6 @@ components:
           pattern: \w*\W*
           description: Campo Texto para descrever outras operações de crédito marcadas como 'OUTROS'. Se o campo 'code' vier selecionado com 'OUTROS' é obrigatório o preenchimento do additionalInfo
           example: NA
-      allOf:
-      - $ref: '#/components/schemas/InterestRate'
     PersonalCreditCardResponse:
       type: object
       required:
@@ -2504,7 +2504,8 @@ components:
           description: Lista distribuição percentuais relativos à taxa de juros remuneratórios
           items:
             $ref:   "#/components/schemas/ApplicationRate"
-          minItems: 1
+          minItems: 4
+          maxItems: 4
         minimumRate:
           type: string
           pattern: '(^[0-9](\.[0-9]{4})$|^NA$)'
