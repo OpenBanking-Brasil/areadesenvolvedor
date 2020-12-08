@@ -71,7 +71,8 @@
   - `prices` em Financiamentos PN e PJ
 * Corrige a descrição dos atributos de `AverageMetrics` para que esteja condizendo com tempo médio de resposta;  
 * Corrige enum de `name`e `code` em `services` com adição de `ANUIDADE_DIFERENCIADA` 
-
+* Atualiza Enums de `SchemaPriorityServiceName` e `SchemaPriorityCode` de personal_accounts.
+* Atualiza descrição de `prepaidPaymentAccount` de contas PN e PJ
 
 # 2.0.0
 [30/11/2020]
