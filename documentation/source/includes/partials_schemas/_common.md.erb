@@ -334,18 +334,14 @@ Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial o
 |:--------|:----------------------------|:----------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 |rate     |string                       |Sim        |Percentual dos clientes de cada faixa relativa ao serviço ofertado, para pessoa natural informado no período, conforme Res nº32 BCB, 2020. p.ex. '0.1500' (representa uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O valor '1 'representa 100%) A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%) |
 
-## CreditCardFeeRate
+## CreditCardRate
 
-<a id="schemaCreditCardFeeRate"></a>
+<a id="schemaCreditCardRate"></a>
 
 ```json
 {
-  "fees": [
-    {
-      "referentialRateIndexer": "string",
-      "rate": "string"
-    }
-  ],
+  "referentialRateIndexer": "string",
+  "rate": "string",
   "prices": [
     {
       "interval": "string",
@@ -362,12 +358,13 @@ Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial o
 }
 ```
 
-|     Nome    |  Tipo                                                         | Obrigatório |    Definição                                                                                         |
-|:------------|:--------------------------------------------------------------|:------------|:-----------------------------------------------------------------------------------------------------|
-| fees        | [FeeReferentialRateIndexer](#schemaFeeReferentialRateIndexer) | Sim         | Lista das taxas referenciais ou indexadores      |
-| prices      | [Rate](#schemaRate)                                           | Sim         | Lista distribuição preços tarifas de serviços   |
-| minimumRate | String                                                        | Sim         | Percentual mínimo cobrado para a taxa do crédito rotativo no mês de referência.                      |
-| maximumRate | String                                                        | Sim         | Percentual máximo cobrado para o pagamento parcelado do saldo devedor na fatura do mês de referência.|
+|     Nome              |  Tipo                                                         | Obrigatório |    Definição                                                                                                          |
+|:--------------------- |:--------------------------------------------------------------|:------------|:--------------------------------------------------------------------------------------------------------------------- |
+| referentialRateIndexer| [ReferentialRateIndexer](#schemareferentialrateorindexer)     | Sim         | Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial ou Indexador (Indx), do Documento 3040 |
+| rate                  | [RateString](#commonFieldRateString)                          | Sim         | Percentual que incide sobre a composição das taxas de juros remuneratórios.                                           |
+| applications          | [Application](#schemaApplication)                             | Sim         | Lista distribuição percentuais relativos à taxa de juros remuneratórios                                               |
+| minimumRate           | String                                                        | Sim         | Percentual mínimo cobrado para a taxa do crédito rotativo no mês de referência.                                       |
+| maximumRate           | String                                                        | Sim         | Percentual máximo cobrado para o pagamento parcelado do saldo devedor na fatura do mês de referência.                 |
 
 ### Enum CreditCardInterestRateCode
 
@@ -459,27 +456,25 @@ Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial o
 
 ```json
 {
-  "feeRate": {
-    "fees": [
-      {
-        "referentialRateOrIndexer": "string",
-        "rate": "string"
-      }
-    ],
-    "prices": [
-      {
-        "interval": "string",
-        "indexer": {
-          "rate": "string"
-        },
-        "customers": {
-          "rate": "string"
+  "rates": [
+    {
+      "referentialRateIndexer": "string",
+      "rate": "string",
+      "applications": [
+        {
+          "interval": "string",
+          "indexer": {
+            "rate": "string"
+          },
+          "customers": {
+            "rate": "string"
+          }
         }
-      }
-    ],
-    "minimumRate": "string",
-    "maximumRate": "string"
-  },
+      ],
+      "minimumRate": "string",
+      "maximumRate": "string"
+    }
+  ],
   "instalmentRate": {
     "fees": [
       {
@@ -529,11 +524,11 @@ Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial o
 }
 ```
 
-|     Nome       |  Tipo                       | Obrigatório      |    Definição                                                 |
-|:-------------- |:--------------------------- |:---------------- |:------------------------------------------------------------ |
-| feeRate        | [CreditCardFeeRate](#schemaCreditCardFeeRate)               | Sim | Percentual que corresponde a taxa aplicada para utilização de Crédito Rotativo              |
-| instalmentRate | [CreditCardInstalmentRate](#schemaCreditCardInstalmentRate) | Sim | Percentual que corresponde a taxa aplicada para pagamento parcelado do saldo devedor quando não realizado pagamento integral da fatura |
-| interestRates  | [CreditCardInterestRate](#schemaCreditCardInterestRate) | Sim | Lista de outras operações de crédito |
+|     Nome       |  Tipo                                                       | Obrigatório  |    Definição                                                 |
+|:-------------- |:----------------------------------------------------------- |:------------ |:------------------------------------------------------------ |
+| rates          | [CreditCardRate](#schemaCreditCardRate)                     | Sim          | Lista da representação que traz o conjunto de informações necessárias para demonstrar a distribuição de frequências das taxas de juros remuneratórios para crédito rotativo |
+| instalmentRate | [CreditCardInstalmentRate](#schemaCreditCardInstalmentRate) | Sim          | Percentual que corresponde a taxa aplicada para pagamento parcelado do saldo devedor quando não realizado pagamento integral da fatura                                      |
+| interestRates  | [CreditCardInterestRate](#schemaCreditCardInterestRate)     | Sim          | Lista de outras operações de crédito                                                                                                                                        |
 
 ## CreditCardTermsConditions
 
