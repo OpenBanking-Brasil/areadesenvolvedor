@@ -11,6 +11,17 @@
 ## Melhoria
 
 * Adiciona descrição complementar dos valores da enumeração `period` na especificação Open API de métricas.
+* Adiciona descrição dos atributos nas seguintes estruturas na API de métricas na especificação Open API:
+    - `ErrorMetrics`;
+    - `RejectionMetrics`;
+    - `PeakTPSMetrics`;
+    - `AverageTPSMetrics`;
+    - `AverageMetrics`;
+    - `InvocationMetrics`;
+    - `EndpointDowntime`;
+    - `EndpointUptime`;
+    - `AvailabilityMetrics`;
+    - `ResponseMetricsList`;
 
 ## Correção
 
@@ -47,6 +58,8 @@
 * Corrige descrição dos seguintes atributos: 
   - `fees` em Financiamentos PN e PJ
   - `prices` em Financiamentos PN e PJ
+* Corrige a descrição dos atributos de `AverageMetrics` para que esteja condizendo com tempo médio de resposta;  
+
 # 2.0.0
 [30/11/2020]
 
