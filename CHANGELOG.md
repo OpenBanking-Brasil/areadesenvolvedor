@@ -122,7 +122,9 @@
 * Corrige descrição dos seguintes atributos: 
   - `fees` em Financiamentos PN e PJ
   - `prices` em Financiamentos PN e PJ
-  
+* Corrige enum de `name`e `code` em `services` com adição de `ANUIDADE_DIFERENCIADA` 
+
+
 # 2.0.0
 [30/11/2020]
 
