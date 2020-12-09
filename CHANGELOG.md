@@ -114,6 +114,9 @@
   - `fees` em Financiamentos PN e PJ
   - `prices` em Financiamentos PN e PJ
 * Corrigi descrição de `InterestRates` em Antecipação de recebíveis PN/PJ.
+* Corrige a descrição dos atributos de `AverageMetrics` para que esteja condizendo com tempo médio de resposta;  
+* Corrige enum de `name`e `code` em `services` com adição de `ANUIDADE_DIFERENCIADA` 
+
 
 # 2.0.0
 [30/11/2020]
