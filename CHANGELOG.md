@@ -11,6 +11,29 @@
   - Remove o atributo `feeRate` e substitui pelo atributo `rates`
   - Converte o atributo `instalmentRate` para array, sendo renomeado como `instalmentRates` 
   - Remove o atributo `interestRates` e substitui pelo atributo `otherCredits` 
+  
+## Novos recursos
+
+* Adiciona novos valores ao enum `SchemaPriorityServiceName`:
+  - `ANUIDADE_CARTAO_BASICO_NACIONAL`;
+  - `ANUIDADE_CARTAO_BASICO_INTERNACIONAL`;
+  - `ANUIDADE_DIFERENCIADA`;
+  - `UTILIZACAO_CANAIS_ATENDIMENTO_RETIRADA_ESPECIE_BRASIL`;
+  - `UTILIZACAO_CANAIS_ATENDIMENTO_RETIRADA_ESPECIE_EXTERIOR`;
+  - `AVALIACAO_EMERGENCIAL_CREDITO`;
+  - `FORNECIMENTO_SEGUNDA_VIA_FUNCAO_CREDITO`;
+  - `PAGAMENTO_CONTAS_UTILIZANDO_FUNCAO_CREDITO`;
+  - `SMS`
+* Adiciona novos valores ao enum `SchemaPriorityCode`:
+  - `ANUIDADE_NACIONAL`;
+  - `ANUIDADE_INTERNACIONAL`;
+  - `ANUIDADE_DIFERENCIADA`;
+  - `SAQUE_CARTAO_BRASIL`;
+  - `SAQUE_CARTAO_EXTERIOR`;
+  - `AVALIACAO_EMERGENCIAL_CREDITO`;
+  - `EMISSAO_SEGUNDA_VIA`;
+  - `TARIFA_PAGAMENTO_CONTAS`;
+  - `SMS`;
 
 ## Melhoria
 
@@ -29,6 +52,14 @@
 * Ajusta a estrutura para contemplar mais de 4 canais em `phoneChannels`.
 * Adiciona exemplo para `OUTROS` em Canais Telefônicos 
 
+* Adiciona novos valores ao enum `SchemaPriorityServiceName`:
+    - `ANUIDADE_CARTAO_BASICO_NACIONAL`;
+    - `ANUIDADE_CARTAO_BASICO_INTERNACIONAL`;
+    - `ANUIDADE_DIFERENCIADA`;
+    - `UTILIZACAO_CANAIS_ATENDIMENTO_RETIRADA_ESPECIE_BRASIL`;
+    - `UTILIZACAO_CANAIS_ATENDIMENTO_RETIRADA_ESPECIE_EXTERIOR`;
+    - `AVALIACAO_EMERGENCIAL_CREDITO`;
+  
 ## Correção
 
 * Corrigi o dicionário `personal_acounts.csv` onde a definição de `name` em `priorityServices` trazia um exemplo que não condiz com os valores da enumeração.
