@@ -90,8 +90,9 @@
   - `code`, `postCode` em Dependências Próprias
 * Remove indicador de "Não se Aplica" na expressão regular dos atributos opcionais e condicionais da API de Canais de Atendimento, conforme indicado no dicionário de dados:
   - `relatedBranch` em Dependências Próprias
-  - `latitude` em Dependências Próprias
-  - `longitude` em Dependências Próprias
+  - `latitude`
+  - `longitude`
+  - `ibgeCode` 
 * Corrigi o path da especificação Open API das APIs comuns de `outage` para `outages`.
 * Corrigi o pattern de `CNPJ` e descrição de `InterestRates` em adiantamento à Depositantes.
 * Corrigi obrigatoriedade e tamanho máximo na especificação Open API para os seguintes atributos:
