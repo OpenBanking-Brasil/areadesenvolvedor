@@ -54,6 +54,10 @@
   - Todos os atributos `cnpjNumber` em Canais Telefônicos, Canais Eletrônicos, Correspondentes Bancários e Dependências Próprias
   - `countryCallingCode`, `areaCode`, `number` em Canais Telefônicos
   - `code`, `postCode` em Dependências Próprias
+* Remove indicador de "Não se Aplica" na expressão regular dos atributos opcionais e condicionais da API de Canais de Atendimento, conforme indicado no dicionário de dados:
+  - `relatedBranch` em Dependências Próprias
+  - `latitude` em Dependências Próprias
+  - `longitude` em Dependências Próprias
 * Corrigi o path da especificação Open API das APIs comuns de `outage` para `outages`.
 * Corrigi o pattern de `CNPJ` e descrição de `InterestRates` em adiantamento à Depositantes.
 * Corrigi obrigatoriedade e tamanho máximo na especificação Open API para os seguintes atributos:
