@@ -7,6 +7,10 @@
   - Converte o atributo `interestRate` para array, sendo renomeado como `interestRates` 
   - Remove atributo `fees` de `interestRates`
   - Adiciona `referentialRateIndexer` e `rate` em `interestRates` 
+* Melhora a estrutura em Cartões PN e PJ para contemplar as alterações referentes à Distribuição de Frequência: 
+  - Remove o atributo `feeRate` e substitui pelo atributo `rates`
+  - Converte o atributo `instalmentRate` para array, sendo renomeado como `instalmentRates` 
+  - Remove o atributo `interestRates` e substitui pelo atributo `otherCredits` 
 
 ## Melhoria
 
@@ -59,6 +63,8 @@
   - `fees` em Financiamentos PN e PJ
   - `prices` em Financiamentos PN e PJ
 * Corrige a descrição dos atributos de `AverageMetrics` para que esteja condizendo com tempo médio de resposta;  
+* Corrige enum de `name`e `code` em `services` com adição de `ANUIDADE_DIFERENCIADA` 
+
 
 # 2.0.0
 [30/11/2020]

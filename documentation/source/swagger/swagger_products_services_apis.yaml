@@ -1266,15 +1266,23 @@ components:
       type: object
       description: Informações sobre taxas de juros
       required:
-        - feeRate
-        - instalmentRate
-        - interestRates
+        - rates
+        - instalmentRates
+        - otherCredits
       properties:
-        feeRate:
-          $ref: '#/components/schemas/InterestRate'
-        instalmentRate:
-          $ref: '#/components/schemas/InterestRate'
-        interestRates:
+        rates:
+          type: array
+          items:
+            $ref: '#/components/schemas/InterestRate'
+          minItems: 1
+          description: Lista da representação que traz o conjunto de informações necessárias para demonstrar a distribuição de frequências das taxas de juros remuneratórios para crédito rotativo
+        instalmentRates:
+          type: array
+          items:
+            $ref: '#/components/schemas/InterestRate'
+          minItems: 1
+          description: Lista da representação que traz o conjunto de informações necessárias para demonstrar a distribuição de frequências das taxas de juros remuneratórios para parcelamento do saldo devedor
+        otherCredits:
           type: array
           description: Lista de outras operações de crédito
           items:
@@ -1285,10 +1293,7 @@ components:
       type: object
       required:
         - code
-        - prices
-        - minimumRate
-        - maximumRate
-        - fees
+        - additionalInfo
       properties:
         code:
           type: string
@@ -1304,8 +1309,6 @@ components:
           pattern: \w*\W*
           description: Campo Texto para descrever outras operações de crédito marcadas como 'OUTROS'. Se o campo 'code' vier selecionado com 'OUTROS' é obrigatório o preenchimento do additionalInfo
           example: NA
-      allOf:
-      - $ref: '#/components/schemas/InterestRate'
     PersonalCreditCardResponse:
       type: object
       required:
@@ -1412,6 +1415,7 @@ components:
           enum:
             - ANUIDADE_CARTAO_BASICO_NACIONAL
             - ANUIDADE_CARTAO_BASICO_INTERNACIONAL
+            - ANUIDADE_DIFERENCIADA
             - UTILIZACAO_CANAIS_ATENDIMENTO_RETIRADA_ESPECIE_BRASIL
             - UTILIZACAO_CANAIS_ATENDIMENTO_RETIRADA_ESPECIE_EXTERIOR
             - AVALIACAO_EMERGENCIAL_CREDITO
@@ -1425,6 +1429,7 @@ components:
           enum:
             - ANUIDADE_NACIONAL
             - ANUIDADE_INTERNACIONAL
+            - ANUIDADE_DIFERENCIADA
             - SAQUE_CARTAO_BRASIL
             - SAQUE_CARTAO_EXTERIOR
             - AVALIACAO_EMERGENCIAL_CREDITO
@@ -2278,19 +2283,6 @@ components:
             Percentual que incide sobre a composição das taxas de juros remuneratórios. (representa uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O valor '1 'representa 100%). A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)
           pattern: '(^[0-9](\.[0-9]{2})|NA)$'
           example: '0.15'
-    InterestRateApplication:
-      type: object
-      properties:
-        interval:
-          $ref: '#/components/schemas/PriceIntervals'
-        indexer:
-          $ref: '#/components/schemas/Customer'
-        customers:
-          $ref: '#/components/schemas/Customer'
-      required:
-        - interval
-        - indexer
-        - customers
     ResponsePersonalUnarrangedAccountOverdraft:
       type: object
       required:
@@ -2480,24 +2472,25 @@ components:
     InterestRate:
       type: object
       required:
-        - fees
-        - prices
+        - referentialRateIndexer
+        - rate
+        - applications
         - minimumRate
         - maximumRate
-        - customers
       properties:
-        fees:
+        referentialRateIndexer:
+          $ref: '#/components/schemas/ReferentialRateIndexer'
+        rate:
+          type: string
+          description: |
+            Percentual que incide sobre a composição das taxas de juros remuneratórios. (representa uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O valor '1 'representa 100%). A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)
+          pattern: '(^[0-9](\.[0-9]{2})|NA)$'
+          example: '0.15'
+        applications:
           type: array
-          description: Lista das taxas referenciais ou indexadores
+          description: Lista distribuição percentuais relativos à taxa de juros remuneratórios
           items:
-            $ref: '#/components/schemas/FeeReferentialRateIndexer'
-          minItems: 1
-          maxItems: 19
-        prices:
-          type: array
-          description: Lista distribuição preços tarifas de serviços
-          items:
-            $ref:   "#/components/schemas/InterestRateApplication"
+            $ref:   "#/components/schemas/ApplicationRate"
           minItems: 4
           maxItems: 4
         minimumRate:
@@ -2567,7 +2560,7 @@ components:
               items:
                 $ref: '#/components/schemas/CreditCardService'
               minItems: 1
-              maxItems: 8
+              maxItems: 9
         interest:
           $ref: '#/components/schemas/CreditCardInterest'
         termsConditions:
