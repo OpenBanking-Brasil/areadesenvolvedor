@@ -26,6 +26,8 @@
     - `EndpointUptime`;
     - `AvailabilityMetrics`;
     - `ResponseMetricsList`;
+* Ajusta a estrutura para contemplar mais de 4 canais em `phoneChannels`.
+* Adiciona exemplo para `OUTROS` em Canais Telefônicos 
 
 ## Correção
 
