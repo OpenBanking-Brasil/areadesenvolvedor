@@ -105,6 +105,13 @@
 * Atualiza Enums de `SchemaPriorityServiceName` e `SchemaPriorityCode` de personal_accounts.
 * Atualiza descrição de `prepaidPaymentAccount` de contas PN e PJ
 * Corrigi descrição de `InterestRates` em Antecipação de recebíveis PN/PJ.
+* Corrige valores do enum `PersonalFinancingType`:
+  - `FINANCIAMENTO_IMOBILIARIO_SISTEMA_FINANCEIRO_HABILITACAO_SFH`
+  - `FINANCIAMENTO_IMOBILIARIO_SISTEMA_FINANCEIRO_HABILITACAO_SFI`
+  para
+    - `FINANCIAMENTO_IMOBILIARIO_SISTEMA_FINANCEIRO_HABITACAO_SFH`
+    - `FINANCIAMENTO_IMOBILIARIO_SISTEMA_FINANCEIRO_HABITACAO_SFI`
+  
 
 # 2.0.0
 [30/11/2020]
