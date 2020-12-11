@@ -63,7 +63,7 @@
   
 ## Correção
 
-* Corrigi o dicionário `personal_acounts.csv` onde a definição de `name` em `priorityServices` trazia um exemplo que não condiz com os valores da enumeração.
+* Corrige o dicionário `personal_acounts.csv` onde a definição de `name` em `priorityServices` trazia um exemplo que não condiz com os valores da enumeração.
 * Remove a definição de tamanho de máximo e expressão regular no atributo `name` de `priorityServices` em contas PN na especificação Open API, pois se trata de uma enumeração.
 * Adiciona a definição de expressão regular no atributo `name` de `otherServices` em contas PN na especificação Open API, conforme dicionário de dados.
 * Corrige o atributo de representação de expressão regular para os seguintes atributos na especificação Open API (estavam como `format` porém o utilizado é `pattern`):
@@ -93,9 +93,9 @@
   - `latitude`
   - `longitude`
   - `ibgeCode` 
-* Corrigi o path da especificação Open API das APIs comuns de `outage` para `outages`.
-* Corrigi o pattern de `CNPJ` e descrição de `InterestRates` em adiantamento à Depositantes.
-* Corrigi obrigatoriedade e tamanho máximo na especificação Open API para os seguintes atributos:
+* Corrige o path da especificação Open API das APIs comuns de `outage` para `outages`.
+* Corrige o pattern de `CNPJ` e descrição de `InterestRates` em adiantamento à Depositantes.
+* Corrige obrigatoriedade e tamanho máximo na especificação Open API para os seguintes atributos:
   - `maximumRate` em LoanInterestRate para PN e PJ;
   - `minimumRate` em LoanInterestRate para PN e PJ;
 * Corrige descrição dos seguintes atributos: 
@@ -105,14 +105,14 @@
 * Corrige enum de `name`e `code` em `services` com adição de `ANUIDADE_DIFERENCIADA` 
 * Atualiza Enums de `SchemaPriorityServiceName` e `SchemaPriorityCode` de personal_accounts.
 * Atualiza descrição de `prepaidPaymentAccount` de contas PN e PJ
-* Corrigi descrição de `InterestRates` em Antecipação de recebíveis PN/PJ.
+* Corrige descrição de `InterestRates` em Antecipação de recebíveis PN/PJ.
 * Corrige valores do enum `PersonalFinancingType` e `BusinessFinancingType`:
   - `FINANCIAMENTO_IMOBILIARIO_SISTEMA_FINANCEIRO_HABILITACAO_SFH`
   - `FINANCIAMENTO_IMOBILIARIO_SISTEMA_FINANCEIRO_HABILITACAO_SFI`
   para
     - `FINANCIAMENTO_IMOBILIARIO_SISTEMA_FINANCEIRO_HABITACAO_SFH`
     - `FINANCIAMENTO_IMOBILIARIO_SISTEMA_FINANCEIRO_HABITACAO_SFI`
-* Corrigi nos exemplos de código a versão da API atual.
+* Corrige nos exemplos de código a versão da API atual.
 
 # 2.0.0
 [30/11/2020]
