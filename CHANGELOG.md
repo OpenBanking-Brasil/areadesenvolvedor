@@ -3,7 +3,7 @@
 
 ## Quebra de compatibilidade
 
-* Melhora a estrutura em Financiamentos PN/PJ, Antecipação de Recebíveis PN/PJ e Adiantamento a Depositante PN/PJ para contemplar as alterações referentes à Distribuição de Frequência: 
+* Melhora a estrutura em Empréstimos PF/PJ, Financiamentos PN/PJ, Antecipação de Recebíveis PN/PJ e Adiantamento a Depositante PN/PJ para contemplar as alterações referentes à Distribuição de Frequência: 
   - Converte o atributo `interestRate` para array, sendo renomeado como `interestRates` 
   - Remove atributo `fees` de `interestRates`
   - Adiciona `referentialRateIndexer` e `rate` em `interestRates` 
