@@ -155,20 +155,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ResponseBusinessInvoiceFinancings'
-  /business-unarranged-account-overdraft:
-    get:
-      tags:
-        - Unarranged Account Overdraft
-      summary: Obtém a lista de adiantamento de depositante de Pessoa Jurídica.
-      description: Obtém a lista de adiantamento de depositante de Pessoa Jurídica.
-      operationId: getBusinessUnarrangedAccountOverdraft
-      responses:
-        '200':
-          description: Lista de adiantamento de depositante de pessoa jurídica obtida com sucesso.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResponseBusinessUnarrangedAccountOverdraft'
   /personal-unarranged-account-overdraft:
     get:
       tags:
@@ -183,6 +169,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ResponsePersonalUnarrangedAccountOverdraft'
+  /business-unarranged-account-overdraft:
+    get:
+      tags:
+        - Unarranged Account Overdraft
+      summary: Obtém a lista de adiantamento de depositante de Pessoa Jurídica.
+      description: Obtém a lista de adiantamento de depositante de Pessoa Jurídica.
+      operationId: getBusinessUnarrangedAccountOverdraft
+      responses:
+        '200':
+          description: Lista de adiantamento de depositante de pessoa jurídica obtida com sucesso.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseBusinessUnarrangedAccountOverdraft'
 components:
   schemas:
     AccountsTermsConditions:
@@ -907,8 +907,12 @@ components:
           example: EMPRESTIMO_CREDITO_PESSOAL_CONSIGNADO
         fees:
           $ref: '#/components/schemas/LoanFees'
-        interestRate:
-          $ref: '#/components/schemas/LoanInterestRate'
+        interestRates:
+          type: array
+          items: 
+            $ref: '#/components/schemas/LoanInterestRate'
+          minItems: 1
+          description: Lista que traz o conjunto de informações necessárias para demonstrar a distribuição de frequências das taxas de juros remuneratórios da Modalidade de crédito 
         requiredWarranties:
           type: array
           items:
@@ -951,8 +955,12 @@ components:
           example: EMPRESTIMO_MICROCREDITO_PRODUTIVO_ORIENTADO
         fees:
           $ref: '#/components/schemas/LoanFees'
-        interestRate:
-          $ref: '#/components/schemas/LoanInterestRate'
+        interestRates:
+          type: array
+          items:
+            $ref: '#/components/schemas/LoanInterestRate'
+          minItems: 1
+          description: Lista que traz o conjunto de informações necessárias para demonstrar a distribuição de frequências das taxas de juros remuneratórios da Modalidade de crédito 
         requiredWarranties:
           type: array
           items:
@@ -1017,18 +1025,13 @@ components:
           $ref: '#/components/schemas/MaximumPrice'
     LoanInterestRate:
       required:
+        - applications
         - minimumRate
         - maximumRate
       type: object
-      description: Lista que traz o conjunto de informações necessárias para demonstrar a distribuição de frequência das taxas de juros remuneratórios da Modalidade de crédito
+      allOf:
+        - $ref: '#/components/schemas/InterestRateFee'
       properties:
-        fees:
-          type: array
-          items:
-            $ref: '#/components/schemas/InterestRateFee'
-          minItems: 1
-          maxItems: 19
-          description: Lista das taxas referenciais ou indexadores
         applications:
           type: array
           items:
@@ -2125,8 +2128,12 @@ components:
       properties:
         fees:
           $ref: '#/components/schemas/BusinessUnarrangedAccountOverdraftFee'
-        interestRate:
-          $ref: '#/components/schemas/UnarrangedAccountOverdraftRate'
+        interestRates:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnarrangedAccountOverdraftRate'
+          minItems: 1
+          description: Lista que traz o conjunto de informações necessárias para demonstrar a distribuição de frequências das taxas de juros remuneratórios da Modalidade de crédito 
         termsConditions:
           type: string
           pattern: \w*\W*
@@ -2217,20 +2224,13 @@ components:
           currency: "BRL"
     UnarrangedAccountOverdraftRate:
       type: object
-      description: Lista que traz o conjunto de informações necessárias para demonstrar a distribuição de frequências das taxas de juros remuneratórios da Modalidade de crédito
       required:
-        - fees
         - applications
         - minimumRate
         - maximumRate
+      allOf:
+        - $ref: '#/components/schemas/FeeReferentialRateIndexer'
       properties:
-        fees:
-          description: Lista de tipos de taxas referenciais ou indexadores
-          type: array
-          items:
-            $ref: '#/components/schemas/FeeReferentialRateIndexer'
-          minItems: 1
-          maxItems: 19
         applications:
           description:  Lista  das faixas de cobrança da taxa efetiva de remuneração.
           type: array
@@ -2248,17 +2248,9 @@ components:
           description: |
             Percentual máximo cobrado (taxa efetiva) no mês de referência, para o crédito contratado A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)
           pattern: '(^[0-9](\.[0-9]{4})|NA)$'
-        customers:
-          type: array
-          description: Lista percentual de cliente por faixa referente a  taxa remuneratória.
-          items:
-            $ref: '#/components/schemas/Customer'
-          minItems: 4
-          maxItems: 4
       example:
-          fees:
-              - referentialRateIndexer: "SEM_INDEXADOR_TAXA"
-                rate: "0.65"
+          referentialRateIndexer: "SEM_INDEXADOR_TAXA"
+          rate: "0.65"
           applications:
               - interval: "1_FAIXA"
                 indexer:
@@ -2355,8 +2347,12 @@ components:
       properties:
         fees:
           $ref: '#/components/schemas/PersonalUnarrangedAccountOverdraftFee'
-        interestRate:
-          $ref: '#/components/schemas/UnarrangedAccountOverdraftRate'
+        interestRates:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnarrangedAccountOverdraftRate'
+          minItems: 1
+          description: Lista que traz o conjunto de informações necessárias para demonstrar a distribuição de frequências das taxas de juros remuneratórios da Modalidade de crédito 
         termsConditions:
           type: string
           pattern: \w*\W*
