@@ -34,6 +34,7 @@
   - `EMISSAO_SEGUNDA_VIA`;
   - `TARIFA_PAGAMENTO_CONTAS`;
   - `SMS`;
+* Adiciona seção de perguntas frequentes (FAQ).
 
 ## Melhoria
 
