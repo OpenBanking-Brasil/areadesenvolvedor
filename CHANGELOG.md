@@ -116,6 +116,7 @@
 * Corrigi linha duplicada dos cabeçalhos HTTP onde o `Content-Encoding` estava como obrigatório e a descrição estava divergente;
 * Corrigi estrutura da especificação Open API do atributo `unavailableEndpoints` da API de status.
 * Corrigi obrigatoriedade da especificação Open API da API de status.
+* Corrigi o versionamento dos exemplos das APIs de status e outages.
 
 # 2.0.0
 [30/11/2020]
