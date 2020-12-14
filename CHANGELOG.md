@@ -10,7 +10,8 @@
 * Melhora a estrutura em Cartões PN e PJ para contemplar as alterações referentes à Distribuição de Frequência: 
   - Remove o atributo `feeRate` e substitui pelo atributo `rates`
   - Converte o atributo `instalmentRate` para array, sendo renomeado como `instalmentRates` 
-  - Remove o atributo `interestRates` e substitui pelo atributo `otherCredits` 
+  - Remove o atributo `interestRates` e substitui pelo atributo `otherCredits`
+* Atualiza os dicionários de dados com as alterações;
   
 ## Novos recursos
 
@@ -35,6 +36,7 @@
   - `TARIFA_PAGAMENTO_CONTAS`;
   - `SMS`;
 * Adiciona seção de perguntas frequentes (FAQ).
+* Atualiza os dicionários de dados com as alterações;
 
 ## Melhoria
 
@@ -117,6 +119,7 @@
 * Corrigi estrutura da especificação Open API do atributo `unavailableEndpoints` da API de status.
 * Corrigi obrigatoriedade da especificação Open API da API de status.
 * Corrigi o versionamento dos exemplos das APIs de status e outages.
+* Atualiza os dicionários de dados com as correções;
 
 # 2.0.0
 [30/11/2020]
