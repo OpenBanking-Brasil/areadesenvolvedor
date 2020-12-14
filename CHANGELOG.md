@@ -114,6 +114,8 @@
     - `FINANCIAMENTO_IMOBILIARIO_SISTEMA_FINANCEIRO_HABITACAO_SFI`
 * Corrige nos exemplos de código a versão da API atual.
 * Corrigi linha duplicada dos cabeçalhos HTTP onde o `Content-Encoding` estava como obrigatório e a descrição estava divergente;
+* Corrigi estrutura da especificação Open API do atributo `unavailableEndpoints` da API de status.
+* Corrigi obrigatoriedade da especificação Open API da API de status.
 
 # 2.0.0
 [30/11/2020]
