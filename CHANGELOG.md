@@ -102,7 +102,7 @@
   - `fees` em Financiamentos PN e PJ
   - `prices` em Financiamentos PN e PJ
 * Corrige a descrição dos atributos de `AverageMetrics` para que esteja condizendo com tempo médio de resposta;  
-* Corrige enum de `name`e `code` em `services` com adição de `ANUIDADE_DIFERENCIADA` 
+* Corrige enum de `name`e `code` em `services` com adição de `ANUIDADE_DIFERENCIADA`; 
 * Atualiza Enums de `SchemaPriorityServiceName` e `SchemaPriorityCode` de personal_accounts.
 * Atualiza descrição de `prepaidPaymentAccount` de contas PN e PJ
 * Corrige descrição de `InterestRates` em Antecipação de recebíveis PN/PJ.
@@ -113,6 +113,7 @@
     - `FINANCIAMENTO_IMOBILIARIO_SISTEMA_FINANCEIRO_HABITACAO_SFH`
     - `FINANCIAMENTO_IMOBILIARIO_SISTEMA_FINANCEIRO_HABITACAO_SFI`
 * Corrige nos exemplos de código a versão da API atual.
+* Corrigi linha duplicada dos cabeçalhos HTTP onde o `Content-Encoding` estava como obrigatório e a descrição estava divergente;
 
 # 2.0.0
 [30/11/2020]
