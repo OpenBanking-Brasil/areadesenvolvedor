@@ -1,5 +1,5 @@
-# {version}
-[{date}]
+# 3.0.0
+[14/12/2020]
 
 ## Quebra de compatibilidade
 
