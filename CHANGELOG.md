@@ -1,7 +1,14 @@
+# {version}
+[{date}]
+
+## Melhorias
+
+* Adiciona descrição complementar com exemplo no cabeçalho de resposta `x-v`;
+
 # 3.0.0
 [14/12/2020]
 
-## Quebra de compatibilidade
+## Quebras de compatibilidade
 
 * Melhora a estrutura em Empréstimos PF/PJ, Financiamentos PN/PJ, Antecipação de Recebíveis PN/PJ e Adiantamento a Depositante PN/PJ para contemplar as alterações referentes à Distribuição de Frequência: 
   - Converte o atributo `interestRate` para array, sendo renomeado como `interestRates` 
@@ -38,7 +45,7 @@
 * Adiciona seção de perguntas frequentes (FAQ).
 * Atualiza os dicionários de dados com as alterações;
 
-## Melhoria
+## Melhorias
 
 * Adiciona descrição complementar dos valores da enumeração `period` na especificação Open API de métricas.
 * Adiciona descrição dos atributos nas seguintes estruturas na API de métricas na especificação Open API:
@@ -63,7 +70,7 @@
     - `UTILIZACAO_CANAIS_ATENDIMENTO_RETIRADA_ESPECIE_EXTERIOR`;
     - `AVALIACAO_EMERGENCIAL_CREDITO`;
   
-## Correção
+## Correções
 
 * Corrige o dicionário `personal_acounts.csv` onde a definição de `name` em `priorityServices` trazia um exemplo que não condiz com os valores da enumeração.
 * Remove a definição de tamanho de máximo e expressão regular no atributo `name` de `priorityServices` em contas PN na especificação Open API, pois se trata de uma enumeração.
