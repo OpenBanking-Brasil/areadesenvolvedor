@@ -4,7 +4,7 @@
 ## Melhorias
 
 * Adiciona descrição complementar com exemplo no cabeçalho de resposta `x-v`;
-
+* Adiciona respostas referentes ao tipo de terminal regulado para ATMs e à obrigatoriedade dos atributos `weekday` e `type` para Correspondentes Bancários 
 
 ## Correções
 
