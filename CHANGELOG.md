@@ -10,6 +10,7 @@
 
 * Corrige descrição de `branch/type`;
 * Corrige pattern de `branch/checkDigit`;
+* Corrige o número da versão da API de Contas PJ no Slate Docs;
 
 # 3.0.0
 [14/12/2020]
