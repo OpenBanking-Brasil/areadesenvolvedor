@@ -5,6 +5,12 @@
 
 * Adiciona descrição complementar com exemplo no cabeçalho de resposta `x-v`;
 
+
+## Correções
+
+* Corrige descrição de `branch/type`;
+* Corrige pattern de `branch/checkDigit`;
+
 # 3.0.0
 [14/12/2020]
 
