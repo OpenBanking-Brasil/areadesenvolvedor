@@ -25,7 +25,6 @@
 ## Quebras de compatibilidade
 
 * Altera o esquema de versionamento para utilização de release candidate visto que as implementações das APIs ainda não estão em vigor.
-
 ## Novos recursos
 
 * Implementa os parâmetros de paginação na query string de todas as APIs - especificação OAS:
