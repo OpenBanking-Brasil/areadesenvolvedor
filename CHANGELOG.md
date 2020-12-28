@@ -26,6 +26,9 @@
 ## Melhorias
 
 * Adiciona o valor do `cnpjNumber` nos exemplos de `branch` na área de `Identification`
+* Adiciona mais detalhes na pergunta e na resposta das seguintes seções no FAQ:
+  - Sendo consideradas somente as operações “contratadas” no mês da apuração no cálculo e disponibilização de informações relativas a distribuição de frequência de Taxas remuneratórias.
+  - Sendo consideradas somente as operações "contratadas" no mês da apuração no cálculo e disponibilização de informações relativas a distribuição de frequência de Tarifas.
 
 ## Correções
 * Corrige quantidade máxima de items na lista `BankingAgentAvailability`
