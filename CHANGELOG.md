@@ -20,6 +20,17 @@
 * Corrige a expressão regular do campo `countryCallingCode` para que seja permitida de 1 até 4 posições nas especificações e dicionários de dependências, correspondentes bancários e canais telefônicos.
 
 # v1.0.0-rc5
+# {version}
+[{date}]
+
+## Melhorias
+
+* Adiciona o valor do `cnpjNumber` nos exemplos de `branch` na área de `Identification`
+
+## Correções
+* Correção de descrição `Brand` em `Branch`;
+
+# v1.0.0
 [11/01/2021]
 
 ## Quebras de compatibilidade
