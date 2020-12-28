@@ -28,8 +28,13 @@
 * Adiciona o valor do `cnpjNumber` nos exemplos de `branch` na área de `Identification`
 
 ## Correções
-* Corrige quantidade máxima de items na lista de `BankingAngesSerice` em `bankingAgents`
 * Corrige quantidade máxima de items na lista `BankingAgentAvailability`
+* Corrige descrição da Divulgação dos valores de tarifas e taxas de juros remuneratórias:
+  - Atualiza descrição de serviço na seção "Tarifas – Apuração Frequência e valores correspondentes"
+  - Atualiza descrição em modalidade na seção "Apuração Frequência Taxas Juros remuneratórios"
+* Corrige exemplos de uso em Divulgação dos valores de tarifas e taxas de juros remuneratórias:
+  - Tarifas – Apuração Frequência e valores correspondentes
+  - Taxas Remuneratórias – Apuração Frequência e valores correspondentes 1
 
 # v1.0.0
 [11/01/2021]
