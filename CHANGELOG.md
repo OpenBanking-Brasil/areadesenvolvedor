@@ -31,13 +31,16 @@
   - Sendo consideradas somente as operações "contratadas" no mês da apuração no cálculo e disponibilização de informações relativas a distribuição de frequência de Tarifas.
 
 ## Correções
-* Corrige quantidade máxima de items na lista `BankingAgentAvailability`
+* Corrige quantidade máxima de items na lista `BankingAgentAvailability`;
 * Corrige descrição da Divulgação dos valores de tarifas e taxas de juros remuneratórias:
-  - Atualiza descrição de serviço na seção "Tarifas – Apuração Frequência e valores correspondentes"
-  - Atualiza descrição em modalidade na seção "Apuração Frequência Taxas Juros remuneratórios"
+  - Atualiza descrição de serviço na seção "Tarifas – Apuração Frequência e valores correspondentes";
+  - Atualiza descrição em modalidade na seção "Apuração Frequência Taxas Juros remuneratórios";
 * Corrige exemplos de uso em Divulgação dos valores de tarifas e taxas de juros remuneratórias:
-  - Tarifas – Apuração Frequência e valores correspondentes
-  - Taxas Remuneratórias – Apuração Frequência e valores correspondentes 1
+  - Tarifas – Apuração Frequência e valores correspondentes;
+  - Taxas Remuneratórias – Apuração Frequência e valores correspondentes 1;
+* Corrige quantidade máxima de items na lista `SharedAutomatedTellerMachinesAvailability`;
+* Corrige quantidade máxima de items na lista `SharedAutomatedTellerMachinesServices`;
+* Corrige descrição de `geograpichCoordinates` de `response_shared_automated_teller_machines_list`;
 
 # v1.0.0
 [11/01/2021]
