@@ -41,6 +41,7 @@
 * Corrige quantidade máxima de items na lista `SharedAutomatedTellerMachinesAvailability`;
 * Corrige quantidade máxima de items na lista `SharedAutomatedTellerMachinesServices`;
 * Corrige descrição de `geograpichCoordinates` de `response_shared_automated_teller_machines_list`;
+* Corrige a quantidade minima de items no campo `phones` em `branch`;
 
 # v1.0.0
 [11/01/2021]
