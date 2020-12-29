@@ -211,6 +211,6 @@
 # v1.0.0-rc2
 [30/11/2020]
 
-Versão 2.0.0 liberada com quebra de compatibilidade pois houveram alterações obrigatoriedade, valores de enumerações e remoção de campos de algumas APIs.
+Versão rc2 liberada com quebra de compatibilidade pois houveram alterações obrigatoriedade, valores de enumerações e remoção de campos de algumas APIs.
 
 # v1.0.0-rc
