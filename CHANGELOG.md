@@ -1,25 +1,3 @@
-# v1.0.0-rc5.3
-[19/01/2021]
-
-### Correções
-
-* Corrige links para o novo repositório do Github (openbanking-brasil).
-
-# v1.0.0-rc5.2
-[14/01/2021]
-
-## Correções
-
-* Corrige versão dos dicionários `phone_channels.csv`, `branches.csv` e `baking_agents.csv` para que reflita a última versão oficialmente validada e liberada.
-
-# v1.0.0-rc5.1
-[14/01/2021]
-
-## Correções
-
-* Corrige a expressão regular do campo `countryCallingCode` para que seja permitida de 1 até 4 posições nas especificações e dicionários de dependências, correspondentes bancários e canais telefônicos.
-
-# v1.0.0-rc5
 # {version}
 [{date}]
 
@@ -45,7 +23,28 @@
 * Corrige os campos `minimumRate` e `maximumRate` de cartões de crédito PN e PJ para `minimum/rate` e `maximum/rate`;
 * Atualiza os dicionários com as correções acima;
 
-# v1.0.0
+# v1.0.0-rc5.3
+[19/01/2021]
+
+### Correções
+
+* Corrige links para o novo repositório do Github (openbanking-brasil).
+
+# v1.0.0-rc5.2
+[14/01/2021]
+
+## Correções
+
+* Corrige versão dos dicionários `phone_channels.csv`, `branches.csv` e `baking_agents.csv` para que reflita a última versão oficialmente validada e liberada.
+
+# v1.0.0-rc5.1
+[14/01/2021]
+
+## Correções
+
+* Corrige a expressão regular do campo `countryCallingCode` para que seja permitida de 1 até 4 posições nas especificações e dicionários de dependências, correspondentes bancários e canais telefônicos.
+
+# v1.0.0-rc5
 [11/01/2021]
 
 ## Quebras de compatibilidade
