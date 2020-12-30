@@ -43,6 +43,7 @@
 * Corrige descrição de `geograpichCoordinates` de `response_shared_automated_teller_machines_list`;
 * Corrige a quantidade minima de items no campo `phones` em `branch`;
 * Corrige os campos `minimumRate` e `maximumRate` de cartões de crédito PN e PJ para `minimum/rate` e `maximum/rate`;
+* Atualiza os dicionários com as correções acima;
 
 # v1.0.0
 [11/01/2021]
