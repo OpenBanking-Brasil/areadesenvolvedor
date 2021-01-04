@@ -22,6 +22,7 @@
 * Corrige a quantidade minima de items no campo `phones` em `branch`;
 * Corrige os campos `minimumRate` e `maximumRate` de cartões de crédito PN e PJ para `minimum/rate` e `maximum/rate`;
 * Atualiza os dicionários com as correções acima;
+* Corrige tabela de códigos de resposta para chamadas com o método POST, onde estava sinalizado que poderia haver retorno com código 200 porém será sempre 201.
 
 # v1.0.0-rc5.3
 [19/01/2021]
