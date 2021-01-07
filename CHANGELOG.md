@@ -23,6 +23,7 @@
 * Corrige os campos `minimumRate` e `maximumRate` de cartões de crédito PN e PJ para `minimum/rate` e `maximum/rate`;
 * Atualiza os dicionários com as correções acima;
 * Corrige tabela de códigos de resposta para chamadas com o método POST, onde estava sinalizado que poderia haver retorno com código 200 porém será sempre 201.
+* Corrige em `rates` em `interest/rates/applications/rate` para Cartão de Crédito PN e PJ para ficar de acordo com os respectivos dicionários.
 
 # v1.0.0-rc5.3
 [19/01/2021]
