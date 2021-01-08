@@ -7,6 +7,14 @@
 * Adiciona mais detalhes na pergunta e na resposta das seguintes seções no FAQ:
   - Sendo consideradas somente as operações “contratadas” no mês da apuração no cálculo e disponibilização de informações relativas a distribuição de frequência de Taxas remuneratórias.
   - Sendo consideradas somente as operações "contratadas" no mês da apuração no cálculo e disponibilização de informações relativas a distribuição de frequência de Tarifas.
+* Adiciona as questões em relação às definições e orientações recebidas dos GTs no FAQ:
+  - É possível incluir novos Tipos de cartão?
+  - Como reportar Agências Digitais?
+  - Dúvida sobre inclusão de operações de repasse dentro do reporte do Open Banking
+  - Dúvidas sobre a participação optativa da Fase 1 e Fase 2
+* Adiciona as questões em relação às definições e orientações recebidas do Regulador no FAQ:
+  - Considerar data da concessão ou data da liberação para o Cálculo da distribuição de frequência para operações com característica de liberações parciais?
+  - Como devemos tratar distribuição de frequência sobre taxas remuneratórias para outras operações de crédito relacionadas ao Produto Cartão?
 
 ## Correções
 * Corrige quantidade máxima de items na lista `BankingAgentAvailability`;
