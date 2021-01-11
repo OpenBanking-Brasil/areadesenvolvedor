@@ -1,4 +1,4 @@
-# v1.0.0
+# v1.0.0-rc5
 [11/01/2021]
 
 ## Quebras de compatibilidade
