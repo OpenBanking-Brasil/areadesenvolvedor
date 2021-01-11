@@ -1,4 +1,11 @@
-# 3.0.1
+# v1.0.0
+[11/01/2021]
+
+## Quebras de compatibilidade
+
+* Altera o esquema de versionamento para utilização de release candidate visto que as implementações das APIs ainda não estão em vigor.
+
+# v1.0.0-rc4
 [18/12/2020]
 
 ## Melhorias
@@ -23,7 +30,7 @@
   - `personal_invoice_financings.csv`;
   - `personal_loans.csv`;
 
-# 3.0.0
+# v1.0.0-rc3
 [14/12/2020]
 
 ## Quebras de compatibilidade
@@ -146,7 +153,9 @@
 * Corrigi o versionamento dos exemplos das APIs de status e outages.
 * Atualiza os dicionários de dados com as correções;
 
-# 2.0.0
+# v1.0.0-rc2
 [30/11/2020]
 
 Versão 2.0.0 liberada com quebra de compatibilidade pois houveram alterações obrigatoriedade, valores de enumerações e remoção de campos de algumas APIs.
+
+# v1.0.0-rc
