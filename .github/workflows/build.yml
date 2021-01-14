@@ -2,11 +2,12 @@ name: Build
 
 on:
   push:
-    branches-ignore:
-      - master
+    branches:
+      - '**'
 
 jobs:
-  test:
+  build:
+    name: Build SlateDocs
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -15,18 +16,50 @@ jobs:
       ruby-version: 2.5
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Ruby
-      uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: ${{ env.ruby-version }}
+      - uses: actions/checkout@v2
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ env.ruby-version }}
 
-    - uses: actions/cache@v1
-      with:
-        path: vendor/bundle
-        key: gems-${{ runner.os }}-${{ env.ruby-version }}-${{ hashFiles('**/Gemfile.lock') }}
+      - uses: actions/cache@v1
+        with:
+          path: vendor/bundle
+          key: gems-${{ runner.os }}-${{ env.ruby-version }}-${{ hashFiles('**/Gemfile.lock') }}
 
-    - run: bundle config set deployment 'true'
-    - run: bundle install
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '12'
 
-    - run: bundle exec middleman build
+      - run: npm install -g widdershins
+      - run: npm install -g @apidevtools/swagger-cli
+
+      - run: swagger-cli bundle source/swagger/parts/_admin_apis_part.yml --outfile source/swagger/swagger_admin_apis.yaml --type=yaml
+      - run: swagger-cli bundle source/swagger/parts/_channels_apis_part.yml --outfile source/swagger/swagger_channels_apis.yaml --type=yaml
+      - run: swagger-cli bundle source/swagger/parts/_common_apis_part.yml --outfile source/swagger/swagger_common_apis.yaml --type=yaml
+      - run: swagger-cli bundle source/swagger/parts/_products_services_apis_part.yml --outfile source/swagger/swagger_products_services_apis.yaml --type=yaml
+      - run: swagger-cli bundle source/swagger/parts/_open_banking_apis_part.yml --outfile source/swagger/swagger_open_banking_apis.yml --type=yaml
+
+      - run: widdershins source/swagger/swagger_open_banking_apis.yml -o source/includes/partials_open_banking/_open_banking_apis.md.erb --user_templates source/templates/openapi3/ --language_tabs "javascript:JavaScript" --omitHeader --summary
+
+      - uses: actions/cache@v1
+        with:
+          path: build
+          key: ${{ runner.os }}-${{ hashFiles('**/source') }}
+
+      - run: bundle config set deployment 'true'
+      - run: bundle install
+      - run: bundle exec middleman build
+
+  stoplight:
+    name: Lint specifications with Stoplight Spectral
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      # Check out the repository
+      - uses: actions/checkout@v2
+
+      # Run Spectral
+      - uses: stoplightio/spectral-action@v0.7.0
+        with:
+          file_glob: 'documentation/source/swagger/*.yaml'
