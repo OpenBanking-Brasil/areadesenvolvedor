@@ -1,3 +1,10 @@
+# v1.0.0-rc5.1
+[14/01/2021]
+
+## Correções
+
+* Corrige a expressão regular do campo `countryCallingCode` para que seja permitida de 1 até 4 posições nas especificações e dicionários de dependências, correspondentes bancários e canais telefônicos.
+
 # v1.0.0-rc5
 [11/01/2021]
 
