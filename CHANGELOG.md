@@ -1,3 +1,10 @@
+# v1.0.0-rc5.2
+[14/01/2021]
+
+## Correções
+
+* Corrige versão dos dicionários `phone_channels.csv`, `branches.csv` e `baking_agents.csv` para que reflita a última versão oficialmente validada e liberada.
+
 # v1.0.0-rc5.1
 [14/01/2021]
 
