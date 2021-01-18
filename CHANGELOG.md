@@ -33,6 +33,7 @@
 * Corrige tabela de códigos de resposta para chamadas com o método POST, onde estava sinalizado que poderia haver retorno com código 200 porém será sempre 201.
 * Corrige em `rates` em `interest/rates/applications/rate` para Cartão de Crédito PN e PJ para ficar de acordo com os respectivos dicionários.
 * Corrige a expressão regular de `TimeString` onde estava sendo permitido que somente a letra Z estivesse presente no texto.
+* Corrige a especificação da API de outages que estava diferente da definição do site.
 
 # v1.0.0-rc5.3
 [19/01/2021]
