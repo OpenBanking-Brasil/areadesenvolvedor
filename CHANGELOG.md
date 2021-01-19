@@ -1,3 +1,10 @@
+# v1.0.0-rc5.3
+[19/01/2021]
+
+### Correções
+
+* Corrige links para o novo repositório do Github (openbanking-brasil).
+
 # v1.0.0-rc5.2
 [14/01/2021]
 
