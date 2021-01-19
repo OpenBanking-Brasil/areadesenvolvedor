@@ -1,9 +1,9 @@
-![Build](https://github.com/openbankingbrasil/areadesenvolvedor/workflows/Build/badge.svg)
-![Stoplight](https://github.com/openbankingbrasil/areadesenvolvedor/workflows/Stoplight/badge.svg)
-![Deploy](https://github.com/openbankingbrasil/areadesenvolvedor/workflows/Deploy/badge.svg)
+![Build](https://github.com/openbanking-brasil/areadesenvolvedor/workflows/Build/badge.svg)
+![Stoplight](https://github.com/openbanking-brasil/areadesenvolvedor/workflows/Stoplight/badge.svg)
+![Deploy](https://github.com/openbanking-brasil/areadesenvolvedor/workflows/Deploy/badge.svg)
 
-# openbanking-febraban
-Repositório - Febraban para o Open Banking
+# openbanking-brasil
+Repositório - Open Banking Brasil
 
 ## Como contribuir?
 
