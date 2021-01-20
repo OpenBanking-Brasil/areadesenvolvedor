@@ -15,6 +15,8 @@
 * Adiciona as questões em relação às definições e orientações recebidas do Regulador no FAQ:
   - Considerar data da concessão ou data da liberação para o Cálculo da distribuição de frequência para operações com característica de liberações parciais?
   - Como devemos tratar distribuição de frequência sobre taxas remuneratórias para outras operações de crédito relacionadas ao Produto Cartão?
+* Ordena os schemas por ordem alfabética no site.
+* Adiciona exemplos nos schemas do site.
 
 ## Correções
 * Corrige quantidade máxima de items na lista `BankingAgentAvailability`;
