@@ -842,11 +842,47 @@ components:
           maxItems: 4
           description: Valor da tarifa cobrada referente aos Outros Serviços.
         minimum:
-          $ref: '#/components/schemas/MinimumPrice'
+          type: object
           description: Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência.
+          required:
+            - value
+            - currency
+          properties:
+            value:
+              type: string
+              pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
+              maxLength: 12
+              x-cds-type: AmountString
+              description: Valor mínimo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
+              example: '1350.00'
+            currency:
+              type: string
+              pattern: '^(\w{3}){1}$'
+              maxLength: 3
+              x-cds-type: CurrencyString
+              description: 'Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217'
+              example: BRL
         maximum:
-          $ref: '#/components/schemas/MaximumPrice'
+          type: object
           description: Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência.
+          required:
+            - value
+            - currency
+          properties:
+            value:
+              type: string
+              pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
+              maxLength: 12
+              x-cds-type: AmountString
+              description: Valor máximo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
+              example: '8800.00'
+            currency:
+              type: string
+              pattern: '^(\w{3}){1}$'
+              maxLength: 3
+              x-cds-type: CurrencyString
+              description: 'Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217'
+              example: BRL
     AccountPriorityService:
       type: object
       required:
@@ -875,11 +911,47 @@ components:
           maxItems: 4
           description: 'Valor da mediana da tarifa, relativa ao serviço ofertado, informado no período'
         minimum:
-          $ref: '#/components/schemas/MinimumPrice'
+          type: object
           description: Valor mínimo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
+          required:
+            - value
+            - currency
+          properties:
+            value:
+              type: string
+              pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
+              maxLength: 12
+              x-cds-type: AmountString
+              description: Valor mínimo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
+              example: '1350.00'
+            currency:
+              type: string
+              pattern: '^(\w{3}){1}$'
+              maxLength: 3
+              x-cds-type: CurrencyString
+              description: 'Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217'
+              example: BRL
         maximum:
-          $ref: '#/components/schemas/MaximumPrice'
+          type: object
           description: Valor máximo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
+          required:
+            - value
+            - currency
+          properties:
+            value:
+              type: string
+              pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
+              maxLength: 12
+              x-cds-type: AmountString
+              description: Valor máximo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
+              example: '8800.00'
+            currency:
+              type: string
+              pattern: '^(\w{3}){1}$'
+              maxLength: 3
+              x-cds-type: CurrencyString
+              description: 'Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217'
+              example: BRL
     AccountsIncomeRate:
       type: object
       properties:
@@ -934,13 +1006,13 @@ components:
           description: Percentual que corresponde a mediana (taxa efetiva) cobrada do cliente
         customers:
           $ref: '#/components/schemas/Customer'
-          description: Percentual de clientes em cada faixa.
       required:
         - interval
         - indexer
         - customers
     AvailabilityMetrics:
       type: object
+      description: Índices de disponibilidades das APIs.
       required:
         - uptime
         - downtime
@@ -975,6 +1047,7 @@ components:
               $ref: '#/components/schemas/EndpointDowntime'
     AverageMetrics:
       type: object
+      description: Tempo médio de reposta em segundos em cada nível e prioridade.
       required:
         - unauthenticated
         - highPriority
@@ -1043,6 +1116,7 @@ components:
                 type: integer
     AverageTPSMetrics:
       type: object
+      description: Transações em média por segundo.
       required:
         - currentDay
         - previousDays
@@ -1103,11 +1177,12 @@ components:
                 type: string
                 maxLength: 13
                 pattern: '^(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
-                example:
-                  - '10:20:30Z'
-                  - '16:00:57Z'
+                example: '10:20:30Z'
               closingTime:
-                $ref: '#/components/schemas/BankingAgentAvailability/properties/standards/items/properties/openingTime'
+                type: string
+                maxLength: 13
+                pattern: '^(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
+                example: '10:20:30Z'
                 description: Horário de fechamento (UTC)
         exception:
           type: string
@@ -1315,13 +1390,13 @@ components:
                 type: string
                 maxLength: 13
                 pattern: '^(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$|^NA$'
-                example:
-                  - '10:20:30Z'
-                  - '16:00:57Z'
-                  - NA
+                example: '16:00:57Z'
               closingTime:
-                $ref: '#/components/schemas/BranchAvailability/properties/standards/items/properties/openingTime'
+                type: string
                 description: Horário de fechamento da dependência bancária (UTC)
+                maxLength: 13
+                pattern: '^(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$|^NA$'
+                example: '16:00:57Z'
             required:
               - weekday
               - openingTime
@@ -1649,9 +1724,45 @@ components:
           maxItems: 4
           description: Lista distribuição preços tarifas de serviços
         minimum:
-          $ref: '#/components/schemas/MinimumPrice'
+          type: object
+          required:
+            - value
+            - currency
+          properties:
+            value:
+              type: string
+              pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
+              maxLength: 12
+              x-cds-type: AmountString
+              description: Valor mínimo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
+              example: '1350.00'
+            currency:
+              type: string
+              pattern: '^(\w{3}){1}$'
+              maxLength: 3
+              x-cds-type: CurrencyString
+              description: 'Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217'
+              example: BRL
         maximum:
-          $ref: '#/components/schemas/MaximumPrice'
+          type: object
+          required:
+            - value
+            - currency
+          properties:
+            value:
+              type: string
+              pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
+              maxLength: 12
+              x-cds-type: AmountString
+              description: Valor máximo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
+              example: '8800.00'
+            currency:
+              type: string
+              pattern: '^(\w{3}){1}$'
+              maxLength: 3
+              x-cds-type: CurrencyString
+              description: 'Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217'
+              example: BRL
     BusinessCreditCard:
       type: object
       required:
@@ -1912,7 +2023,6 @@ components:
           pattern: '(^[0-9](\.[0-9]{4})$|^NA$)'
           example: '0.6865'
       required:
-        - fees
         - applications
         - minimumRate
         - maximumRate
@@ -2014,7 +2124,7 @@ components:
       type: object
       required:
         - fees
-        - interestRate
+        - interestRates
         - termsConditions
       properties:
         fees:
@@ -2215,9 +2325,8 @@ components:
                       type: string
                       pattern: '(^[0-9](\.[0-9]{4})$|^NA$)'
                       maxLength: 6
-                      description: |
-                        Percentual que corresponde a mediana (taxa efetiva) cobrada do cliente pela utilização do crédito rotativo, no intervalo informado.
-                      example: 0.87
+                      description: 'Percentual que corresponde a mediana (taxa efetiva) cobrada do cliente pela utilização do crédito rotativo, no intervalo informado. '
+                      example: '0.8700'
                     customers:
                       $ref: '#/components/schemas/Customer'
                   required:
@@ -2344,9 +2453,47 @@ components:
           minItems: 4
           maxItems: 4
         minimum:
-          $ref: '#/components/schemas/MinimumPrice'
+          type: object
+          description: Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência.
+          required:
+            - value
+            - currency
+          properties:
+            value:
+              type: string
+              pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
+              maxLength: 12
+              x-cds-type: AmountString
+              description: Valor mínimo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
+              example: '1350.00'
+            currency:
+              type: string
+              pattern: '^(\w{3}){1}$'
+              maxLength: 3
+              x-cds-type: CurrencyString
+              description: 'Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217'
+              example: BRL
         maximum:
-          $ref: '#/components/schemas/MaximumPrice'
+          type: object
+          description: Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência.
+          required:
+            - value
+            - currency
+          properties:
+            value:
+              type: string
+              pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
+              maxLength: 12
+              x-cds-type: AmountString
+              description: Valor máximo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
+              example: '8800.00'
+            currency:
+              type: string
+              pattern: '^(\w{3}){1}$'
+              maxLength: 3
+              x-cds-type: CurrencyString
+              description: 'Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217'
+              example: BRL
     CreditCardTermsConditions:
       type: object
       required:
@@ -2392,9 +2539,8 @@ components:
       properties:
         rate:
           type: string
-          description: |
-            Percentual de clientes em cada faixa.
-          pattern: '(^[0-9](\.[0-9]{4})$|^NA$)'
+          description: Percentual de clientes em cada faixa.
+          pattern: '^[0-9](\.[0-9]{4})$|^NA$'
           example: '0.1500'
           maxLength: 6
     ElectronicChannel:
@@ -2803,6 +2949,7 @@ components:
           example: MOVIMENTACAO_CARTAO
     ErrorMetrics:
       type: object
+      description: Número de chamadas que resultaram em erro devido ao servidor.
       required:
         - currentDay
         - previousDays
@@ -2880,7 +3027,6 @@ components:
         - applications
         - minimumRate
         - maximumRate
-        - customers
     FinancingService:
       type: object
       properties:
@@ -2909,16 +3055,53 @@ components:
           minItems: 4
           maxItems: 4
         minimum:
-          $ref: '#/components/schemas/MinimumPrice'
+          type: object
+          description: Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência.
+          required:
+            - value
+            - currency
+          properties:
+            value:
+              type: string
+              pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
+              maxLength: 12
+              x-cds-type: AmountString
+              description: Valor mínimo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
+              example: '1350.00'
+            currency:
+              type: string
+              pattern: '^(\w{3}){1}$'
+              maxLength: 3
+              x-cds-type: CurrencyString
+              description: 'Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217'
+              example: BRL
         maximum:
-          $ref: '#/components/schemas/MaximumPrice'
+          type: object
+          description: Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência.
+          required:
+            - value
+            - currency
+          properties:
+            value:
+              type: string
+              pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
+              maxLength: 12
+              x-cds-type: AmountString
+              description: Valor máximo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
+              example: '8800.00'
+            currency:
+              type: string
+              pattern: '^(\w{3}){1}$'
+              maxLength: 3
+              x-cds-type: CurrencyString
+              description: 'Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217'
+              example: BRL
       required:
         - name
         - code
         - prices
         - minimum
         - maximum
-        - customers
         - chargingTriggerInfo
     GeographicCoordinates:
       type: object
@@ -3029,6 +3212,7 @@ components:
         - rate
     InvocationMetrics:
       type: object
+      description: Número de chamadas em cada nível e prioridade.
       required:
         - unauthenticated
         - highPriority
@@ -3131,9 +3315,47 @@ components:
           maxItems: 4
           description: Lista distribuição preços tarifas de serviços
         minimum:
-          $ref: '#/components/schemas/MinimumPrice'
+          type: object
+          description: Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência.
+          required:
+            - value
+            - currency
+          properties:
+            value:
+              type: string
+              pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
+              maxLength: 12
+              x-cds-type: AmountString
+              description: Valor mínimo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
+              example: '1350.00'
+            currency:
+              type: string
+              pattern: '^(\w{3}){1}$'
+              maxLength: 3
+              x-cds-type: CurrencyString
+              description: 'Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217'
+              example: BRL
         maximum:
-          $ref: '#/components/schemas/MaximumPrice'
+          type: object
+          description: Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência.
+          required:
+            - value
+            - currency
+          properties:
+            value:
+              type: string
+              pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
+              maxLength: 12
+              x-cds-type: AmountString
+              description: Valor máximo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
+              example: '8800.00'
+            currency:
+              type: string
+              pattern: '^(\w{3}){1}$'
+              maxLength: 3
+              x-cds-type: CurrencyString
+              description: 'Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217'
+              example: BRL
     Links:
       type: object
       description: Referências para outros recusos da API requisitada.
@@ -3205,7 +3427,6 @@ components:
         - prices
         - minimum
         - maximum
-        - customers
       properties:
         name:
           type: string
@@ -3232,9 +3453,47 @@ components:
           minItems: 4
           maxItems: 4
         minimum:
-          $ref: '#/components/schemas/MinimumPrice'
+          type: object
+          description: Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência.
+          required:
+            - value
+            - currency
+          properties:
+            value:
+              type: string
+              pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
+              maxLength: 12
+              x-cds-type: AmountString
+              description: Valor mínimo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
+              example: '1350.00'
+            currency:
+              type: string
+              pattern: '^(\w{3}){1}$'
+              maxLength: 3
+              x-cds-type: CurrencyString
+              description: 'Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217'
+              example: BRL
         maximum:
-          $ref: '#/components/schemas/MaximumPrice'
+          type: object
+          description: Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência.
+          required:
+            - value
+            - currency
+          properties:
+            value:
+              type: string
+              pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
+              maxLength: 12
+              x-cds-type: AmountString
+              description: Valor máximo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
+              example: '8800.00'
+            currency:
+              type: string
+              pattern: '^(\w{3}){1}$'
+              maxLength: 3
+              x-cds-type: CurrencyString
+              description: 'Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217'
+              example: BRL
     MaximumPrice:
       type: object
       required:
@@ -3252,7 +3511,7 @@ components:
           $ref: '#/components/schemas/Currency'
     Meta:
       type: object
-      descripion: Meta informações referente a API requisitada.
+      description: Meta informações referente a API requisitada.
       properties:
         totalRecords:
           type: integer
@@ -3319,6 +3578,7 @@ components:
           $ref: '#/components/schemas/Customer'
     PeakTPSMetrics:
       type: object
+      description: Número máximo de transações por segundo.
       required:
         - currentDay
         - previousDays
@@ -3340,7 +3600,7 @@ components:
         - openingClosingChannels
         - transactionMethods
         - termsConditions
-        - incomeRates
+        - incomeRate
       properties:
         type:
           $ref: '#/components/schemas/EnumAccountType/properties/type'
@@ -3400,7 +3660,7 @@ components:
       type: object
       required:
         - name
-        - cnpjNumbers
+        - cnpjNumber
       allOf:
         - $ref: '#/components/schemas/Company'
       properties:
@@ -3675,13 +3935,12 @@ components:
         - applications
         - minimumRate
         - maximumRate
-        - customers
     PersonalLoan:
       type: object
       required:
         - type
         - fees
-        - interestRate
+        - interestRates
         - requiredWarranties
         - termsConditions
       properties:
@@ -3774,7 +4033,7 @@ components:
       type: object
       required:
         - fees
-        - interestRate
+        - interestRates
         - termsConditions
       properties:
         fees:
@@ -3930,7 +4189,7 @@ components:
           type: string
           maxLength: 13
           pattern: '^([0-9]{8,11})$|^NA$'
-          example: 08007787788
+          example: '80017787788'
           description: Número de telefone de acesso ao canal.
         additionalInfo:
           type: string
@@ -4126,7 +4385,22 @@ components:
           description: Código do país
           example: BRA
         geographicCoordinates:
-          $ref: '#/components/schemas/GeographicCoordinates'
+          type: object
+          description: |
+            Objeto agrupador das informações que compõem as Coordenadas geográficas: latitude e longitude
+          properties:
+            latitude:
+              description: Informação da latitude referente a geolocalização informada.
+              type: string
+              pattern: '^-?\d{1,2}\.\d{1,9}$'
+              maxLength: 13
+              example: '-90.8365180'
+            longitude:
+              description: Informação da longitude referente a geolocalização informada.
+              type: string
+              pattern: '^-?\d{1,3}\.\d{1,8}$'
+              maxLength: 13
+              example: '-180.836519'
     Price:
       type: object
       required:
@@ -4148,10 +4422,20 @@ components:
         currency:
           $ref: '#/components/schemas/Currency'
         customers:
-          $ref: '#/components/schemas/Customer'
+          type: object
           description: Percentual de clientes em cada faixa
+          required:
+            - rate
+          properties:
+            rate:
+              type: string
+              description: Percentual de clientes em cada faixa.
+              pattern: '^[0-9](\.[0-9]{4})$|^NA$'
+              example: '0.1500'
+              maxLength: 6
     RejectionMetrics:
       type: object
+      description: Número de chamadas rejeitadas devido aos limites.
       required:
         - currentDay
         - previousDays
@@ -4198,7 +4482,7 @@ components:
                       - identification:
                           corporationName: Empresa Correspondente A
                           groupName: Grupo Master
-                          cnpjNumber: 02345876000299
+                          cnpjNumber: '23458760002990'
                           isUnderestablishment: true
                         locations:
                           - postalAddress:
@@ -4454,82 +4738,82 @@ components:
                   - type: CONTA_DEPOSITO_A_VISTA
                     fees:
                       services:
-                        name: Entrega de talão de cheque em domícilio
-                        code: TALAO_DOMICILIO
-                        chargingTriggerInfo: Por remessa
+                        - name: Entrega de talão de cheque em domícilio
+                          code: TALAO_DOMICILIO
+                          chargingTriggerInfo: Por remessa
+                          prices:
+                            - interval: 1_FAIXA
+                              value: '55.40'
+                              currency: BRL
+                              customers:
+                                rate: '0.1500'
+                            - interval: 2_FAIXA
+                              value: '65.00'
+                              currency: BRL
+                              customers:
+                                rate: '0.3500'
+                            - interval: 3_FAIXA
+                              value: '69.00'
+                              currency: BRL
+                              customers:
+                                rate: '0.2000'
+                            - interval: 4_FAIXA
+                              value: '72.00'
+                              currency: BRL
+                              customers:
+                                rate: '0.3000'
+                          minimum:
+                            value: '49.00'
+                            currency: BRL
+                          maximum:
+                            value: '88.00'
+                            currency: BRL
+                    serviceBundles:
+                      - name: Conta de depósitos à vista Movimentação com cartão (sem cheque)
+                        services:
+                          - code: CADASTRO
+                            chargingTriggerInfo: 'Realização de pesquisa em serviços de proteção ao crédito, base de dados e informações cadastrais, e tratamento de dados e informações necessários ao início relacionamento decorrente da abertura de conta de depósitos à vista ou de poupança ou contratação de operação de crédito ou de arrendamento mercantil, não podendo ser cobrada cumulativamente'
+                            eventLimitQuantity: '1'
+                            freeEventQuantity: '0'
+                          - code: SAQUE_TERMINAL
+                            chargingTriggerInfo: Saque em terminal de autoatendimento além do número de saques permitidos gratuitamente por mês. Nas 'contas eletrônicas' não pode ser cobrada tarifa para este canal de entrega
+                            eventLimitQuantity: '999999'
+                            freeEventQuantity: '8'
+                          - code: CHEQUE_VISADO
+                            chargingTriggerInfo: Procedimentos para registro e bloqueio do saldo em conta de depósitos à vista correspondente ao valor do cheque
+                            eventLimitQuantity: '999999'
+                            freeEventQuantity: '4'
+                          - code: CHEQUE_ADMINISTRATIVO
+                            chargingTriggerInfo: Emissão de cheque administrativo
+                            eventLimitQuantity: '999999'
+                            freeEventQuantity: '2'
                         prices:
                           - interval: 1_FAIXA
-                            value: '55.40'
+                            monthlyFee: '50.00'
                             currency: BRL
                             customers:
                               rate: '0.1500'
                           - interval: 2_FAIXA
-                            value: '65.00'
+                            monthlyFee: '65.40'
                             currency: BRL
                             customers:
                               rate: '0.3500'
                           - interval: 3_FAIXA
-                            value: '69.00'
+                            monthlyFee: '75.40'
                             currency: BRL
                             customers:
                               rate: '0.2000'
                           - interval: 4_FAIXA
-                            value: '72.00'
+                            monthlyFee: '83.00'
                             currency: BRL
                             customers:
                               rate: '0.3000'
                         minimum:
-                          value: '49.00'
+                          value: '45.00'
                           currency: BRL
                         maximum:
-                          value: '88.00'
+                          value: '87.00'
                           currency: BRL
-                    serviceBundles:
-                      name: Conta de depósitos à vista Movimentação com cartão (sem cheque)
-                      services:
-                        - code: CADASTRO
-                          chargingTriggerInfo: 'Realização de pesquisa em serviços de proteção ao crédito, base de dados e informações cadastrais, e tratamento de dados e informações necessários ao início relacionamento decorrente da abertura de conta de depósitos à vista ou de poupança ou contratação de operação de crédito ou de arrendamento mercantil, não podendo ser cobrada cumulativamente'
-                          eventLimitQuantity: '1'
-                          freeEventQuantity: '0'
-                        - code: SAQUE_TERMINAL
-                          chargingTriggerInfo: Saque em terminal de autoatendimento além do número de saques permitidos gratuitamente por mês. Nas 'contas eletrônicas' não pode ser cobrada tarifa para este canal de entrega
-                          eventLimitQuantity: '999999'
-                          freeEventQuantity: '8'
-                        - code: CHEQUE_VISADO
-                          chargingTriggerInfo: Procedimentos para registro e bloqueio do saldo em conta de depósitos à vista correspondente ao valor do cheque
-                          eventLimitQuantity: '999999'
-                          freeEventQuantity: '4'
-                        - code: CHEQUE_ADMINISTRATIVO
-                          chargingTriggerInfo: Emissão de cheque administrativo
-                          eventLimitQuantity: '999999'
-                          freeEventQuantity: '2'
-                      prices:
-                        - interval: 1_FAIXA
-                          monthlyFee: '50.00'
-                          currency: BRL
-                          customers:
-                            rate: '0.1500'
-                        - interval: 2_FAIXA
-                          monthlyFee: '65.40'
-                          currency: BRL
-                          customers:
-                            rate: '0.3500'
-                        - interval: 3_FAIXA
-                          monthlyFee: '75.40'
-                          currency: BRL
-                          customers:
-                            rate: '0.2000'
-                        - interval: 4_FAIXA
-                          monthlyFee: '83.00'
-                          currency: BRL
-                          customers:
-                            rate: '0.3000'
-                      minimum:
-                        value: '45.00'
-                        currency: BRL
-                      maximum:
-                        value: '87.00'
-                        currency: BRL
                     openingClosingChannels:
                       - DEPENDENCIAS_PROPRIAS
                       - CORRESPONDENTES_BANCARIOS
@@ -4592,8 +4876,10 @@ components:
                     identification:
                       product:
                         type: CLASSIC_INTERNACIONAL
+                        additionalInfo: NA
                       creditCard:
                         network: MASTERCARD
+                        additionalInfo: NA
                     rewardsProgram:
                       hasRewardProgram: false
                     fees:
@@ -4683,7 +4969,9 @@ components:
                           maximumRate: '0.7500'
                       otherCredits:
                         - code: SAQUE_A_CREDITO
+                          additionalInfo: NA
                         - code: PAGAMENTOS_CONTAS
+                          additionalInfo: NA
                     termsConditions:
                       minimumFeeRate: '0.40'
                       elegibilityCriteriaInfo: 'https://empresaa1.com/creditcards_elegibility_criteria'
@@ -4921,7 +5209,7 @@ components:
                           maximum:
                             value: '87.00'
                             currency: BRL
-                    interestRate:
+                    interestRates:
                       - referentialRateIndexer: POS_FIXADO_TR_TBF
                         rate: '0.15'
                         applications:
@@ -5299,7 +5587,7 @@ components:
                           maximum:
                             value: '8800.00'
                             currency: BRL
-                    interestRates:
+                    interestRate:
                       - referentialRateOrIndexer: POS_FIXADO_TR_TBF
                         rate: '0.15'
                         applications:
@@ -5361,7 +5649,7 @@ components:
                           maximum:
                             value: '6800.00'
                             currency: BRL
-                    interestRates:
+                    interestRate:
                       - referentialRateOrIndexer: POS_FIXADO_TR_TBF
                         rate: '0.10'
                         applications:
@@ -5423,7 +5711,7 @@ components:
                           maximum:
                             value: '8800.00'
                             currency: BRL
-                    interestRates:
+                    interestRate:
                       - referentialRateOrIndexer: POS_FIXADO_TR_TBF
                         rate: '0.10'
                         applications:
@@ -5515,7 +5803,7 @@ components:
                           maximum:
                             value: '90.00'
                             currency: BRL
-                    interestRates:
+                    interestRate:
                       - referentialRateOrIndexer: OUTRAS_TAXAS_POS_FIXADAS
                         rate: '0.15'
                         applications:
@@ -5577,7 +5865,7 @@ components:
                         maximum:
                           value: '1390.00'
                           currency: BRL
-                    interestRates:
+                    interestRate:
                       - referentialRateOrIndexer: OUTRAS_TAXAS_POS_FIXADAS
                         rate: '0.09'
                         applications:
@@ -5639,7 +5927,7 @@ components:
                           maximum:
                             value: '8580.00'
                             currency: BRL
-                    interestRates:
+                    interestRate:
                       - referentialRateOrIndexer: OUTRAS_TAXAS_POS_FIXADAS
                         rate: '0.18'
                         applications:
@@ -5706,65 +5994,65 @@ components:
                 cnpjNumber: '45086338000178'
                 urlComplementaryList: 'https://empresaa1.com/branches-banking'
                 businessUnarrangedAccountOverdraft:
-                  fees:
-                    services:
-                      - name: CONCESSAO_ADIANTAMENTO_DEPOSITANTE
-                        code: ADIANT_DEPOSITANTE
-                        chargingTriggerInfo: 'Levantamento de informações e avaliação de viabilidade e de riscos para a concessão de crédito em caráter emergencial para cobertura de saldo devedor em conta de depósitos à vista e de excesso sobre o limite previamente pactuado de cheque especial, cobrada no máximo uma vez nos últimos trinta dias'
-                        prices:
-                          - interval: 1_FAIXA
-                            value: '500.00'
+                  - fees:
+                      services:
+                        - name: CONCESSAO_ADIANTAMENTO_DEPOSITANTE
+                          code: ADIANT_DEPOSITANTE
+                          chargingTriggerInfo: 'Levantamento de informações e avaliação de viabilidade e de riscos para a concessão de crédito em caráter emergencial para cobertura de saldo devedor em conta de depósitos à vista e de excesso sobre o limite previamente pactuado de cheque especial, cobrada no máximo uma vez nos últimos trinta dias'
+                          prices:
+                            - interval: 1_FAIXA
+                              value: '500.00'
+                              currency: BRL
+                              customers:
+                                rate: '0.1500'
+                            - interval: 2_FAIXA
+                              value: '860.00'
+                              currency: BRL
+                              customers:
+                                rate: '0.3500'
+                            - interval: 3_FAIXA
+                              value: '1090.40'
+                              currency: BRL
+                              customers:
+                                rate: '0.2000'
+                            - interval: 4_FAIXA
+                              value: '2100.00'
+                              currency: BRL
+                              customers:
+                                rate: '0.3000'
+                          minimum:
+                            value: '430.00'
                             currency: BRL
+                          maximum:
+                            value: '2200.00'
+                            currency: BRL
+                    interestRates:
+                      - referentialRateIndexer: SEM_INDEXADOR_TAXA
+                        rate: '0.65'
+                        applications:
+                          - interval: 1_FAIXA
+                            indexer:
+                              rate: '0.0187'
                             customers:
                               rate: '0.1500'
                           - interval: 2_FAIXA
-                            value: '860.00'
-                            currency: BRL
+                            indexer:
+                              rate: '0.2900'
                             customers:
                               rate: '0.3500'
                           - interval: 3_FAIXA
-                            value: '1090.40'
-                            currency: BRL
+                            indexer:
+                              rate: '0.3600'
                             customers:
                               rate: '0.2000'
                           - interval: 4_FAIXA
-                            value: '2100.00'
-                            currency: BRL
+                            indexer:
+                              rate: '0.7990'
                             customers:
                               rate: '0.3000'
-                        minimum:
-                          value: '430.00'
-                          currency: BRL
-                        maximum:
-                          value: '2200.00'
-                          currency: BRL
-                  interestRates:
-                    referentialRateIndexer: SEM_INDEXADOR_TAXA
-                    rate: '0.65'
-                    applications:
-                      - interval: 1_FAIXA
-                        indexer:
-                          rate: '0.0187'
-                        customers:
-                          rate: '0.1500'
-                      - interval: 2_FAIXA
-                        indexer:
-                          rate: '0.2900'
-                        customers:
-                          rate: '0.3500'
-                      - interval: 3_FAIXA
-                        indexer:
-                          rate: '0.3600'
-                        customers:
-                          rate: '0.2000'
-                      - interval: 4_FAIXA
-                        indexer:
-                          rate: '0.7990'
-                        customers:
-                          rate: '0.3000'
-                    minimumRate: '0.0056'
-                    maximumRate: '0.8565'
-                  termsConditions: 'https://empresaa1.com/business_unarranged_account_overdraft'
+                        minimumRate: '0.0056'
+                        maximumRate: '0.8565'
+                    termsConditions: 'https://empresaa1.com/business_unarranged_account_overdraft'
         links:
           self: 'https://api.banco.com.br/open-banking/products-services/v1/business-unarranged-account-overdraft'
           first: 'https://api.banco.com.br/open-banking/products-services/v1/business-unarranged-account-overdraft'
@@ -5806,9 +6094,7 @@ components:
                     description: Duração prevista da indisponibilidade
                     type: string
                     pattern: ^P(?!$)(\d+Y)?(\d+M)?(\d+W)?(\d+D)?(T(?=\d)(\d+H)?(\d+M)?(\d+S)?)?$
-                    example:
-                      - P23DT23H
-                      - PT2H30M
+                    example: P23DT23H
                   isPartial:
                     type: boolean
                     description: Flag que indica se a indisponibilidade é parcial (atingindo apenas alguns end points) ou total (atingindo todos os end points)
@@ -5880,11 +6166,11 @@ components:
               updateTime: '2020-01-02T01:00:00Z'
               unavailableEndpoints:
                 - 'https://api.banco.com.br/open-banking/channels/v1/electronic-channels'
-          links:
-            self: 'https://api.banco.com.br/open-banking/discovery/v1/status'
-          meta:
-            totalRecords: 1
-            totalPages: 1
+        links:
+          self: 'https://api.banco.com.br/open-banking/discovery/v1/status'
+        meta:
+          totalRecords: 1
+          totalPages: 1
     ResponseElectronicChannelsList:
       type: object
       required:
@@ -5983,25 +6269,18 @@ components:
               format: date-time
             availability:
               $ref: '#/components/schemas/AvailabilityMetrics'
-              description: Índices de disponibilidades das APIs.
             invocations:
               $ref: '#/components/schemas/InvocationMetrics'
-              description: Número de chamadas em cada nível e prioridade.
             averageResponse:
               $ref: '#/components/schemas/AverageMetrics'
-              description: Tempo médio de reposta em segundos em cada nível e prioridade.
             averageTps:
               $ref: '#/components/schemas/AverageTPSMetrics'
-              description: Transações em média por segundo.
             peakTps:
               $ref: '#/components/schemas/PeakTPSMetrics'
-              description: Número máximo de transações por segundo.
             errors:
               $ref: '#/components/schemas/ErrorMetrics'
-              description: Número de chamadas que resultaram em erro devido ao servidor.
             rejections:
               $ref: '#/components/schemas/RejectionMetrics'
-              description: Número de chamadas rejeitadas devido aos limites.
         links:
           $ref: '#/components/schemas/Links'
         meta:
@@ -6031,134 +6310,134 @@ components:
           brand:
             name: Organização A
             companies:
-              name: Empresa A1
-              cnpjNumber: '45086338000178'
-              urlComplementaryList: 'https://empresaa1.com/branches-banking'
-              personalAccounts:
-                - type: CONTA_DEPOSITO_A_VISTA
-                  fees:
-                    priorityServices:
-                      - name: TRANSFERENCIA_TED_PESSOAL_OU_PRESENCIAL
-                        code: TED_PESSOAL
-                        chargingTriggerInfo: 'Realização de transferência de recursos por meio de Transferência Eletrônica Disponível (TED) em guichê de caixa ou mediante outras formas de atendimento pessoal, incluindo o atendimento telefônico realizado por atendente'
-                        prices:
-                          - interval: 1_FAIXA
-                            value: '35.40'
-                            currency: BRL
-                            customers:
-                              rate: '0.1500'
-                          - interval: 2_FAIXA
-                            value: '45.00'
-                            currency: BRL
-                            customers:
-                              rate: '0.3500'
-                          - interval: 3_FAIXA
-                            value: '52.00'
-                            currency: BRL
-                            customers:
-                              rate: '0.2000'
-                          - interval: 4_FAIXA
-                            value: '69.00'
-                            currency: BRL
-                            customers:
-                              rate: '0.3000'
-                        minimum:
-                          value: '19.00'
-                          currency: BRL
-                        maximum:
-                          value: '88.00'
-                          currency: BRL
-                      - name: FORNECIMENTO_2_VIA_CARTAO_FUNCAO_DEBITO
-                        code: 2_VIA_CARTAO_DEBITO
-                        chargingTriggerInfo: 'Confecção e emissão de novo cartão com função débito, restrito a casos de pedidos de reposição formulados pelo detentor da conta, decorrente de perda, roubo, furto, danificação e outros motivos não imputáveis à instituição emitente'
-                        prices:
-                          - interval: 1_FAIXA
-                            value: '37.40'
-                            currency: BRL
-                            customers:
-                              rate: '0.1500'
-                          - interval: 2_FAIXA
-                            value: '45.00'
-                            currency: BRL
-                            customers:
-                              rate: '0.3500'
-                          - interval: 3_FAIXA
-                            value: '52.00'
-                            currency: BRL
-                            customers:
-                              rate: '0.2000'
-                          - interval: 4_FAIXA
-                            value: '69.00'
-                            currency: BRL
-                            customers:
-                              rate: '0.3000'
-                            minimum:
-                              value: '35.00'
+              - name: Empresa A1
+                cnpjNumber: '45086338000178'
+                urlComplementaryList: 'https://empresaa1.com/branches-banking'
+                personalAccounts:
+                  - type: CONTA_DEPOSITO_A_VISTA
+                    fees:
+                      priorityServices:
+                        - name: TRANSFERENCIA_TED_PESSOAL_OU_PRESENCIAL
+                          code: TED_PESSOAL
+                          chargingTriggerInfo: 'Realização de transferência de recursos por meio de Transferência Eletrônica Disponível (TED) em guichê de caixa ou mediante outras formas de atendimento pessoal, incluindo o atendimento telefônico realizado por atendente'
+                          prices:
+                            - interval: 1_FAIXA
+                              value: '35.40'
                               currency: BRL
-                            maximum:
-                              value: '72.00'
+                              customers:
+                                rate: '0.1500'
+                            - interval: 2_FAIXA
+                              value: '45.00'
                               currency: BRL
-                    otherServices:
-                      - name: Entrega de talão de cheque em domícilio
-                        code: TALAO_DOMICILIO
-                        chargingTriggerInfo: Por remessa
-                        prices:
-                          - interval: 1_FAIXA
-                            value: '30.40'
+                              customers:
+                                rate: '0.3500'
+                            - interval: 3_FAIXA
+                              value: '52.00'
+                              currency: BRL
+                              customers:
+                                rate: '0.2000'
+                            - interval: 4_FAIXA
+                              value: '69.00'
+                              currency: BRL
+                              customers:
+                                rate: '0.3000'
+                          minimum:
+                            value: '19.00'
                             currency: BRL
-                            customers:
-                              rate: '0.1500'
-                          - interval: 2_FAIXA
-                            value: '45.00'
+                          maximum:
+                            value: '88.00'
                             currency: BRL
-                            customers:
-                              rate: '0.3500'
-                          - interval: 3_FAIXA
-                            value: '62.00'
+                        - name: FORNECIMENTO_2_VIA_CARTAO_FUNCAO_DEBITO
+                          code: 2_VIA_CARTAO_DEBITO
+                          chargingTriggerInfo: 'Confecção e emissão de novo cartão com função débito, restrito a casos de pedidos de reposição formulados pelo detentor da conta, decorrente de perda, roubo, furto, danificação e outros motivos não imputáveis à instituição emitente'
+                          prices:
+                            - interval: 1_FAIXA
+                              value: '37.40'
+                              currency: BRL
+                              customers:
+                                rate: '0.1500'
+                            - interval: 2_FAIXA
+                              value: '45.00'
+                              currency: BRL
+                              customers:
+                                rate: '0.3500'
+                            - interval: 3_FAIXA
+                              value: '52.00'
+                              currency: BRL
+                              customers:
+                                rate: '0.2000'
+                            - interval: 4_FAIXA
+                              value: '69.00'
+                              currency: BRL
+                              customers:
+                                rate: '0.3000'
+                          minimum:
+                            value: '35.00'
                             currency: BRL
-                            customers:
-                              rate: '0.2000'
-                          - interval: 4_FAIXA
-                            value: '69.00'
+                          maximum:
+                            value: '72.00'
                             currency: BRL
-                            customers:
-                              rate: '0.3000'
-                        minimum:
-                          value: '19.00'
-                          currency: BRL
-                        maximum:
-                          value: '88.00'
-                          currency: BRL
-                      - name: 2ª via de recibo de transação eletrônica
-                        code: SEGUNDA_RECIBO_TE
-                        chargingTriggerInfo: Por documento
-                        prices:
-                          - interval: 1_FAIXA_VALOR
-                            value: '37.40'
+                      otherServices:
+                        - name: Entrega de talão de cheque em domícilio
+                          code: TALAO_DOMICILIO
+                          chargingTriggerInfo: Por remessa
+                          prices:
+                            - interval: 1_FAIXA
+                              value: '30.40'
+                              currency: BRL
+                              customers:
+                                rate: '0.1500'
+                            - interval: 2_FAIXA
+                              value: '45.00'
+                              currency: BRL
+                              customers:
+                                rate: '0.3500'
+                            - interval: 3_FAIXA
+                              value: '62.00'
+                              currency: BRL
+                              customers:
+                                rate: '0.2000'
+                            - interval: 4_FAIXA
+                              value: '69.00'
+                              currency: BRL
+                              customers:
+                                rate: '0.3000'
+                          minimum:
+                            value: '19.00'
                             currency: BRL
-                            customers:
-                              rate: '0.1500'
-                          - interval: 2_FAIXA_VALOR
-                            value: '45.00'
+                          maximum:
+                            value: '88.00'
                             currency: BRL
-                            customers:
-                              rate: '0.3500'
-                          - interval: 3_FAIXA_VALOR
-                            value: '62.00'
+                        - name: 2ª via de recibo de transação eletrônica
+                          code: SEGUNDA_RECIBO_TE
+                          chargingTriggerInfo: Por documento
+                          prices:
+                            - interval: 1_FAIXA
+                              value: '37.40'
+                              currency: BRL
+                              customers:
+                                rate: '0.1500'
+                            - interval: 2_FAIXA
+                              value: '45.00'
+                              currency: BRL
+                              customers:
+                                rate: '0.3500'
+                            - interval: 3_FAIXA
+                              value: '62.00'
+                              currency: BRL
+                              customers:
+                                rate: '0.2000'
+                            - interval: 4_FAIXA
+                              value: '69.00'
+                              currency: BRL
+                              customers:
+                                rate: '0.3000'
+                          minimum:
+                            value: '15.00'
                             currency: BRL
-                            customers:
-                              rate: '0.2000'
-                          - interval: 4_FAIXA_VALOR
-                            value: '69.00'
+                          maximum:
+                            value: '72.00'
                             currency: BRL
-                            customers:
-                              rate: '0.3000'
-                        minimum:
-                          value: '15.00'
-                          currency: BRL
-                        maximum:
-                          value: '72.00'
-                          currency: BRL
                     serviceBundles:
                       - name: Conta de depósitos à vista Movimentação com cartão (sem cheque)
                         services:
@@ -6195,7 +6474,7 @@ components:
                             customers:
                               rate: '0.2000'
                           - interval: 4_FAIXA
-                            monthlyFee: '69.0'
+                            monthlyFee: '69.00'
                             currency: BRL
                             customers:
                               rate: '0.3000'
@@ -6224,23 +6503,23 @@ components:
                             eventLimitQuantity: '999999'
                             freeEventQuantity: '2'
                         prices:
-                          - interval: 1_FAIXA_VALOR
+                          - interval: 1_FAIXA
                             monthlyFee: '30.40'
                             currency: BRL
                             customers:
                               rate: '0.1500'
-                          - interval: 2_FAIXA_VALOR
+                          - interval: 2_FAIXA
                             monthlyFee: '45.00'
                             currency: BRL
                             customers:
                               rate: '0.3500'
-                          - interval: 3_FAIXA_VALOR
+                          - interval: 3_FAIXA
                             monthlyFee: '62.00'
                             currency: BRL
                             customers:
                               rate: '0.2000'
-                          - interval: 4_FAIXA_VALOR
-                            monthlyFee: '69.0'
+                          - interval: 4_FAIXA
+                            monthlyFee: '69.00'
                             currency: BRL
                             customers:
                               rate: '0.3000'
@@ -6268,8 +6547,8 @@ components:
                       elegibilityCriteriaInfo: 'https://empresaa1.com/Accounts_closingProcess'
                       closingProcessInfo: 'https://empresaa1.com/Accounts_closingProcess'
                     incomeRate:
-                      - savingAccount: NA
-                        prepaidPaymentAccount: NA
+                      savingAccount: NA
+                      prepaidPaymentAccount: NA
         links:
           self: 'https://api.banco.com.br/open-banking/products-services/v1/personal-accounts'
           first: 'https://api.banco.com.br/open-banking/products-services/v1/personal-accounts'
@@ -6312,8 +6591,10 @@ components:
                     identification:
                       product:
                         type: CLASSIC_NACIONAL
+                        additionalInfo: NA
                       creditCard:
                         network: VISA
+                        additionalInfo: NA
                     rewardsProgram:
                       hasRewardProgram: true
                       rewardProgramInfo: 'https://empresaa1.com/credit_cards_rewards'
@@ -6404,7 +6685,9 @@ components:
                           maximumRate: '0.0865'
                       otherCredits:
                         - code: SAQUE_A_CREDITO
+                          additionalInfo: NA
                         - code: PAGAMENTOS_CONTAS
+                          additionalInfo: NA
                     termsConditions:
                       minimumFeeRate: '0.30'
                       additionalInfo: NA
@@ -7693,7 +7976,7 @@ components:
                       - name: SEGUROS
                         code: SEGUROS
                       - name: OPERACOES_ARRENDAMENTO_MERCANTIL
-                        code: OPERACOES_ARRENDAMENTO_MERCANTIL
+                        code: OPERA_ARRENDAMENTO_MERCANTIL
                       - name: OUTROS_PRODUTOS_SERVICOS
                         code: OUTROS_PRODUTOS_SERVICOS
                         additionalInfo: Serviços complementares de atendimento via terminais de autoatendimento.
@@ -7736,10 +8019,8 @@ components:
           description: Lista distribuição preços tarifas de serviços
         minimum:
           $ref: '#/components/schemas/MinimumPrice'
-          description: Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência.
         maximum:
           $ref: '#/components/schemas/MaximumPrice'
-          description: Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência.
     ServiceBundleServiceDetail:
       type: object
       required:
@@ -7816,11 +8097,17 @@ components:
                 description: Dia da semana de abertura
                 example: SEGUNDA_FEIRA
               openingTime:
-                $ref: '#/components/schemas/BranchAvailability/properties/standards/items/properties/openingTime'
+                type: string
                 description: Horário de abertura (UTC)
+                maxLength: 13
+                pattern: '^(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$|^NA$'
+                example: '16:00:57Z'
               closingTime:
-                $ref: '#/components/schemas/BranchAvailability/properties/standards/items/properties/openingTime'
+                type: string
                 description: Horário de fechamento (UTC)
+                maxLength: 13
+                pattern: '^(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$|^NA$'
+                example: '16:00:57Z'
         exception:
           type: string
           maxLength: 2000
@@ -8162,10 +8449,8 @@ components:
           description: lista das faixas dos  valores de tarfas cobradas
         minimum:
           $ref: '#/components/schemas/MinimumPrice'
-          description: Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência.
         maximum:
           $ref: '#/components/schemas/MaximumPrice'
-          description: Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência.
       example:
         name: CONCESSAO_ADIANTAMENTO_DEPOSITANTE
         code: ADIANT_DEPOSITANTE
