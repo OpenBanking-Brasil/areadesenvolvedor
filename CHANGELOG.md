@@ -38,6 +38,7 @@
 * Corrige a especificação da API de outages que estava diferente da definição do site.
 * Corrige o link da API de produtos e serviços de v2 para v1 conforme utilização de release candidate.
 * Corrige definição de schema onde os objetos `personalUnarrangedAccountOverdraft` e  `businessUnarrangedAccountOverdraft` estavam definidos como lista.
+* Corrige o nome do atributo referente ao endereço postal na especificação Open API da API de dependências de `postalAddresses` para `postalAddress`;
 
 # v1.0.0-rc5.3
 [19/01/2021]
