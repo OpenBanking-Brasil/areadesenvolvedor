@@ -13,6 +13,7 @@ tags:
   - name: API - Produtos e Serviços
   - name: API - Admin
   - name: API - Customers
+  - name: API - Contas
 paths:
   /discovery/v1/status:
     get:
@@ -818,7 +819,7 @@ paths:
         ### Especificação em OAS 3.0
 
         <a href="swagger/swagger_customers_apis.yaml">Download da Especificação (OAS 3.0)</a>
-      operationId: getPersonalQualification
+      operationId: getPersonalIdentification
       parameters:
         - $ref: '#/components/parameters/page'
         - $ref: '#/components/parameters/pageSize'
@@ -860,7 +861,7 @@ paths:
         ### Especificação em OAS 3.0
 
         <a href="swagger/swagger_customers_apis.yaml">Download da Especificação (OAS 3.0)</a>
-      operationId: getBusinessQualification
+      operationId: getBusinessIdentification
       parameters:
         - $ref: '#/components/parameters/page'
         - $ref: '#/components/parameters/pageSize'
@@ -955,6 +956,134 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ResponseBusinessCustomersQualification'
+  /accounts/v1/identification:
+    get:
+      tags:
+        - API - Contas
+      summary: Dados de Identificação de Contas
+      description: |
+        |Versão|
+        |:-----|
+        |1     |
+
+        ### Visão Geral
+
+        Este *endpoint* possibilita ao diretório consultar dados que identificam uma conta
+
+        ### Dicionário de dados
+
+        <a href='dictionary/accounts_identification.csv' target="_blank">Fazer download do dicionário de dados</a>
+
+        ### Especificação em OAS 3.0
+
+        <a href='swagger/swagger_accounts_apis.yaml'>Download da Especificação (OAS 3.0)</a>
+      operationId: getAccountsIdentification
+      parameters:
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+      responses:
+        '200':
+          description: Dados de identificação de conta obtidos com sucesso.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseAccountIdentification'
+  /accounts/v1/balances:
+    get:
+      tags:
+        - API - Contas
+      summary: Dados relativos aos saldos em conta
+      description: |
+        |Versão|
+        |:-----|
+        |1     |
+
+        ### Visão Geral
+
+        Este *endpoint* possibilita ao diretório consultar dados relativos aos saldos em conta
+
+        ### Dicionário de dados
+
+        <a href='dictionary/accounts_balances.csv' target="_blank">Fazer download do dicionário de dados</a>
+
+        ### Especificação em OAS 3.0
+
+        <a href='swagger/swagger_accounts_apis.yaml'>Download da Especificação (OAS 3.0)</a>
+      operationId: getAccountsBalances
+      parameters:
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+      responses:
+        '200':
+          description: Dados relativos aos saldos em conta obtidos com sucesso.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseAccountBalances'
+  /accounts/v1/transactions:
+    get:
+      tags:
+        - API - Contas
+      summary: Informações relativas às Transações de crédito e débito realizadas e autorizadas
+      description: |
+        |Versão|
+        |:-----|
+        |1     |
+
+        ### Visão Geral
+
+        Este *endpoint* possibilita ao diretório consultar informações relativas às Transações de crédito e débito realizadas e autorizadas
+
+        ### Dicionário de dados
+
+        <a href='dictionary/accounts_transactions.csv' target="_blank">Fazer download do dicionário de dados</a>
+
+        ### Especificação em OAS 3.0
+
+        <a href='swagger/swagger_accounts_apis.yaml'>Download da Especificação (OAS 3.0)</a>
+      operationId: getAccountsTransactions
+      parameters:
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+      responses:
+        '200':
+          description: Dados relativos a Transações de crédito e débito realizadas e autorizadas.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseAccountTransactions'
+  /accounts/v1/overdraft-limits:
+    get:
+      tags:
+        - API - Contas
+      summary: Limites referentes ao valor das operações de crédito
+      description: |
+        |Versão|
+        |:-----|
+        |1     |
+
+        ### Visão Geral
+
+        Este *endpoint* possibilita ao diretório consultar limites referentes ao valor das operações de crédito vinculadas à conta de depósito à vista ou conta corrente
+
+        ### Dicionário de dados
+
+        <a href='dictionary/accounts_overdraft_limits.csv' target="_blank">Fazer download do dicionário de dados</a>
+
+        ### Especificação em OAS 3.0
+
+        <a href='swagger/swagger_accounts_apis.yaml'>Download da Especificação (OAS 3.0)</a>
+      operationId: getAccountsOverdraftLimits
+      parameters:
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+      responses:
+        '200':
+          description: Dados relativos a Limites referentes ao valor das operações de crédito obtidos com sucesso.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseAccountOverdraftLimits'
 components:
   schemas:
     AccountFee:
@@ -1052,6 +1181,15 @@ components:
               x-cds-type: CurrencyString
               description: 'Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217'
               example: BRL
+    AccountOverdraftLimits:
+      type: object
+      required:
+        - overdraftLimits
+      properties:
+        overdraftLimits:
+          type: array
+          items:
+            $ref: '#/components/schemas/OverdraftLimits'
     AccountPriorityService:
       type: object
       required:
@@ -1121,6 +1259,43 @@ components:
               x-cds-type: CurrencyString
               description: 'Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217'
               example: BRL
+    AccountsIdentification:
+      type: object
+      required:
+        - identification
+      properties:
+        identification:
+          $ref: '#/components/schemas/Identification'
+    AccountsIdentificationBrand:
+      type: object
+      description: Objeto que define a Organização controladora do grupo de instituições financeiras
+      required:
+        - name
+        - companies
+      properties:
+        name:
+          type: string
+          description: 'Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes.'
+          maxLength: 80
+          pattern: \w*\W*
+        companies:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountsIdentificationCompany'
+          minItems: 1
+          description: Companies traz uma lista de todas as instituições da Marca.
+    AccountsIdentificationCompany:
+      type: object
+      description: Instituições da Marca
+      required:
+        - name
+        - cnpjNumber
+        - accounts
+      allOf:
+        - $ref: '#/components/schemas/CompanySimple'
+      properties:
+        accounts:
+          $ref: '#/components/schemas/AccountsIdentification'
     AccountsIncomeRate:
       type: object
       properties:
@@ -1298,6 +1473,24 @@ components:
           description: 'Número médio de chamadas por segundo nos dias anteriores. O primeiro item do array é referente a ontem, e assim por diante. Devem ser retornados no máximo sete dias caso estejam disponíveis.'
           items:
             type: integer
+    Balances:
+      type: object
+      required:
+        - requestDateTime
+        - updateDateTime
+        - type
+        - amount
+      allOf:
+        - $ref: '#/components/schemas/RequestUpdateDateTime'
+      properties:
+        type:
+          $ref: '#/components/schemas/EnumBalanceType/properties/balanceType'
+        amount:
+          type: number
+          nullable: true
+          description: 'Valor do Saldo disponível, representado em valor monetário com 2 casas decimais. O tipo SALDO_DISPONIVEL admite valor negativo.'
+        currency:
+          $ref: '#/components/schemas/Currency'
     BankingAgent:
       type: object
       required:
@@ -1434,15 +1627,15 @@ components:
             - OUTROS
           description: |
             Relação dos Códigos relativos aos serviços prestados pelo Correspondente
-            \n* `RECEBE_ENCAMINHA_PROPOSTAS_ABERTURA_CONTAS` - Recepção e encaminhamento de propostas de abertura de contas
-            \n* `REALIZA_RECEBIMENTOS_PAGAMENTOS_TRANSFERENCIAS_ELETRONICAS` - Realização de recebimentos, pagamentos e transferências eletrônicas
-            \n* `RECEBIMENTOS_PAGAMENTOS_QUALQUER_NATUREZA_EXECUCAO_CONTRATOS_CONVENIO` - Recebimentos e pagamentos de qualquer natureza
-            \n* `EXECUCAO_ATIVA_PASSIVA_ORDENS_PAGAMENTO` - Execução ativa e passiva de ordens de pagamento
-            \n* `RECEBE_ENCAMINHA_PROPOSTAS_CREDITO_ARRENDAMENTO_MERCANTIL` - Recepção e encaminhamento de propostas de operações de crédito e de arrendamento mercantil
-            \n* `RECEBE_PAGAMENTOS_RELACIONADOS_LETRAS_CAMBIO_ACEITE_INSTITUICAO` - Recebimento e pagamentos relacionados a letras de câmbio de aceite da instituição
-            \n* `RECEBE_ENCAMINHA_PROPOSTAS_FORNECIMENTO_CARTAO_CREDITO` - Recepção e encaminhamento de propostas de fornecimento de cartões de crédito
-            \n* `REALIZA_OPERACOES_CAMBIO` - Realização de operações de câmbio
-            \n* `OUTROS` - Outros
+            * `RECEBE_ENCAMINHA_PROPOSTAS_ABERTURA_CONTAS` - Recepção e encaminhamento de propostas de abertura de contas
+            * `REALIZA_RECEBIMENTOS_PAGAMENTOS_TRANSFERENCIAS_ELETRONICAS` - Realização de recebimentos, pagamentos e transferências eletrônicas
+            * `RECEBIMENTOS_PAGAMENTOS_QUALQUER_NATUREZA_EXECUCAO_CONTRATOS_CONVENIO` - Recebimentos e pagamentos de qualquer natureza
+            * `EXECUCAO_ATIVA_PASSIVA_ORDENS_PAGAMENTO` - Execução ativa e passiva de ordens de pagamento
+            * `RECEBE_ENCAMINHA_PROPOSTAS_CREDITO_ARRENDAMENTO_MERCANTIL` - Recepção e encaminhamento de propostas de operações de crédito e de arrendamento mercantil
+            * `RECEBE_PAGAMENTOS_RELACIONADOS_LETRAS_CAMBIO_ACEITE_INSTITUICAO` - Recebimento e pagamentos relacionados a letras de câmbio de aceite da instituição
+            * `RECEBE_ENCAMINHA_PROPOSTAS_FORNECIMENTO_CARTAO_CREDITO` - Recepção e encaminhamento de propostas de fornecimento de cartões de crédito
+            * `REALIZA_OPERACOES_CAMBIO` - Realização de operações de câmbio
+            * `OUTROS` - Outros
         additionalInfo:
           type: string
           maxLength: 2000
@@ -1519,7 +1712,7 @@ components:
       properties:
         identification:
           $ref: '#/components/schemas/BranchIdentification'
-        postalAddresses:
+        postalAddress:
           $ref: '#/components/schemas/BranchPostalAddress'
         availability:
           $ref: '#/components/schemas/BranchAvailability'
@@ -1596,10 +1789,10 @@ components:
           description: |
             Tipo da dependência, segundo a regulamentação do Bacen,  na Resolução Nº 4072, de 26 de abril de 2012:
             Dependência de instituições financeiras e demais instituições, autorizadas a funcionar pelo Banco Central do Brasil, destinada à prática das atividades para as quais a instituição esteja regularmente habilitada.
-            \n* `AGENCIA`: Agência é a dependência destinada ao atendimento aos clientes, ao público em geral e aos associados de cooperativas de crédito, no exercício de atividades da instituição, não podendo ser móvel ou transitória;
-            \n* `POSTO_ATENDIMENTO`: Posto de Atendimento é a dependência subordinada a agência  ou à sede da instituição financeira, destinada ao atendimento ao público no exercício de uma ou mais de suas atividades, podendo ser fixo ou móvel. Segundo Art.15. Os Postos de Atendimento Bancário (PAB), Postos Avançados de Atendimento (PAA), Postos de Atendimento Transitórios (PAT), Postos de Compra de Ouro (PCO), Postos de Atendimento Cooperativo (PAC), Postos de Atendimento de Microcrédito (PAM), Postos Bancários de Arrecadação e Pagamento (PAP) e os Postos de Câmbio atualmente em funcionamento serão considerados PA.
-            \n* `POSTO_ATENDIMENTO_ELETRONICO`: Posto de Atendimento Eletrônico é a dependência constituída por um ou mais terminais de autoatendimento, subordinada a agência ou à sede da instituição, destinada à prestação de serviços por meio eletrônico, podendo ser fixo ou móvel, permanente ou transitório
-            \n* `UNIDADE_ADMINISTRATIVA_DESMEMBRADA `: Unidade Administrativa Desmembrada (UAD) segundo a Resolução 4072 , BCB, 2012, no Art. 8º \"... é dependência destinada à execução de atividades administrativas da instituição, vedado o atendimento ao público\"
+            * `AGENCIA`: Agência é a dependência destinada ao atendimento aos clientes, ao público em geral e aos associados de cooperativas de crédito, no exercício de atividades da instituição, não podendo ser móvel ou transitória;
+            * `POSTO_ATENDIMENTO`: Posto de Atendimento é a dependência subordinada a agência  ou à sede da instituição financeira, destinada ao atendimento ao público no exercício de uma ou mais de suas atividades, podendo ser fixo ou móvel. Segundo Art.15. Os Postos de Atendimento Bancário (PAB), Postos Avançados de Atendimento (PAA), Postos de Atendimento Transitórios (PAT), Postos de Compra de Ouro (PCO), Postos de Atendimento Cooperativo (PAC), Postos de Atendimento de Microcrédito (PAM), Postos Bancários de Arrecadação e Pagamento (PAP) e os Postos de Câmbio atualmente em funcionamento serão considerados PA.
+            * `POSTO_ATENDIMENTO_ELETRONICO`: Posto de Atendimento Eletrônico é a dependência constituída por um ou mais terminais de autoatendimento, subordinada a agência ou à sede da instituição, destinada à prestação de serviços por meio eletrônico, podendo ser fixo ou móvel, permanente ou transitório
+            * `UNIDADE_ADMINISTRATIVA_DESMEMBRADA `: Unidade Administrativa Desmembrada (UAD) segundo a Resolução 4072 , BCB, 2012, no Art. 8º \"... é dependência destinada à execução de atividades administrativas da instituição, vedado o atendimento ao público\"
         code:
           type: string
           maxLength: 4
@@ -2576,6 +2769,20 @@ components:
           description: 'Número completo do CPF. O CPF é o Cadastro de Pessoa natural. Ele é um documento feito pela Receita Federal e serve para identificar os contribuintes. O CPF é uma numeração com 11 dígitos, que só mudam por decisão judicial. O documento é emitido pela receita federal'
           maxLength: 11
           example: '25872252137'
+    CompanySimple:
+      type: object
+      required:
+        - name
+        - cnpjNumber
+      allOf:
+        - $ref: '#/components/schemas/CNPJ'
+      properties:
+        name:
+          type: string
+          description: 'Nome da Instituição, pertencente à marca, responsável pela modalidade de Empréstimos.'
+          maxLength: 80
+          pattern: \w*\W*
+          example: Empresa da Organização A
     CreditCardIdentification:
       type: object
       required:
@@ -3315,6 +3522,19 @@ components:
             - TARIFA_PAGAMENTO_CONTAS
             - SMS
           example: CADASTRO
+    EnumAccountSubType:
+      properties:
+        accountSubType:
+          type: string
+          enum:
+            - INDIVIDUAL
+            - CONJUNTA_SOLIDARIA
+            - CONJUNTA_NAO_SOLIDARIA
+          description: |
+            Conta individual - possui um único titular
+            Conta conjunta solidária - é a modalidade cujos titulares podem realizar movimentações de forma isolada, isto é, sem que seja necessária a autorização dos demais titulares
+            Conta conjunta não solidária - onde as movimentações financeiras só podem serem realizadas mediante autorização de TODOS os correntistas da conta.
+          example: INDIVIDUAL
     EnumAccountType:
       properties:
         type:
@@ -3419,6 +3639,30 @@ components:
             - RECEITA_FEDERAL
             - CBO
             - OUTRO
+    EnumBalanceType:
+      properties:
+        balanceType:
+          type: string
+          enum:
+            - SALDO_DISPONIVEL
+            - SALDO_BLOQUEADO
+            - SALDO_DISPONIVEL_APLICACAO_AUTOMATICA
+          description: |
+            tipos de saldo em conta: (vide enum) informados:
+            Saldo disponível para utilização imediata. No caso de conta de depósito a vista, sem considerar cheque especial e investimentos atrelados a conta. Admite saldo negativo.
+            Saldo bloqueado não disponível para utilização imediata, por motivo de bloqueio por compensação, ou bloqueio judicial
+            Saldo disponível com aplicação automática - saldo disponível para utilização imediata, referente ao tipo de conta que remunera automaticamente o saldo em conta 
+          example: SALDO_DISPONIVEL
+    EnumCreditDebitIndicator:
+      properties:
+        creditDebitIndicator:
+          type: string
+          enum:
+            - CREDITO
+            - DEBITO
+          description: |
+            Indicador do tipo de lançamento: a crédito ou a débito. 
+          example: CREDITO
     EnumOpeningClosingChannels:
       properties:
         openingClosingChannels:
@@ -3467,6 +3711,20 @@ components:
             - OUTROS
           description: |
             Relação dos Códigos dos demais documentos pessoa natural.
+    EnumOverdraftLimitType:
+      properties:
+        overdraftLimitType:
+          type: string
+          enum:
+            - VALOR_UTILIZADO
+            - VALOR_DISPONIVEL
+            - SALDO_DESCOBERTO
+          description: |
+            Tipo de Transação relativa ao saldo do limite  informado: (vide Enum)
+            valor utilizado do limite do cheque especial
+            valor disponível do limite do cheque especial
+            saldo a descoberto em conta de depósito a vista (relativo ao adiantamento a depositante 
+          example: VALOR_UTILIZADO
     EnumPriceIntervals:
       type: string
       enum:
@@ -3526,6 +3784,23 @@ components:
             - SMS
           description: 'Nome dos Serviços prioritários, segundo Resolução 3.919 do Bacen, para pessoa natural.'
           example: TRANSFERENCIA_TED_PESSOAL_OU_PRESENCIAL
+    EnumTransactionTypes:
+      properties:
+        transactionTypes:
+          type: string
+          enum:
+            - PACOTE_TARIFA_SERVICOS
+            - TARIFA_SERVICOS_AVULSOS
+            - FOLHA_PAGAMENTO
+            - SAQUE
+            - CARTAO_DEBITO
+            - CARTAO_PRE_PAGO
+            - DEPOSITO
+            - JUROS_CHEQUE_ESPECIAL
+            - RENDIMENTOS
+          description: |
+            Tipo de Transação
+          example: SAQUE
     EnumReferentialRateIndexer:
       properties:
         referentialRateIndexer:
@@ -3807,6 +4082,49 @@ components:
           pattern: '^-?\d{1,3}\.\d{1,8}$'
           maxLength: 13
           example: '-180.836519'
+    Identification:
+      type: object
+      required:
+        - requestDateTime
+        - updateDateTime
+        - number
+        - digitNumber
+        - branchCode
+        - ispbCode
+        - type
+        - subtype
+      allOf:
+        - $ref: '#/components/schemas/RequestUpdateDateTime'
+      properties:
+        number:
+          type: string
+          maxLength: 8
+          pattern: '\d{8}|^NA$'
+          description: |
+            Número da conta
+        digitNumber:
+          type: string
+          maxLength: 1
+          pattern: '\d{8}|^NA$'
+          description: |
+            Número do dígito da conta
+        branchCode:
+          type: string
+          maxLength: 4
+          pattern: '\d{8}|^NA$'
+          description: |
+            Código da Agência detentora da conta
+        ispbCode:
+          type: string
+          maxLength: 8
+          pattern: '\d{8}|^NA$'
+          description: |
+            Código da Instituição financeira. 
+            ISPB: Identificador do participante junto ao Banco Central para o Sistema de Pagamentos Brasileiro – código identificador atribuído a todos os participantes do Sistema de Transferência de Reservas (STR) do Banco Central do Brasil
+        type:
+          $ref: '#/components/schemas/EnumAccountType/properties/type'
+        subtype:
+          $ref: '#/components/schemas/EnumAccountSubType/properties/accountSubType'
     Indexer:
       type: object
       properties:
@@ -4500,6 +4818,24 @@ components:
           description: 'Data vigência do Passaporte, conforme especificação RFC-3339.'
           x-cds-type: DateString
           example: '2014-03-19'
+    OverdraftLimits:
+      type: object
+      description: Objeto que define um Limite referente ao valor das operações de crédito (cheque especial e Adiantamento a Depositantes) vinculadas à conta de depósito à vista ou conta corrente
+      required:
+        - requestDateTime
+        - updateDateTime
+        - type
+      allOf:
+        - $ref: '#/components/schemas/RequestUpdateDateTime'
+      properties:
+        type:
+          $ref: '#/components/schemas/EnumOverdraftLimitType/properties/overdraftLimitType'
+        amount:
+          type: number
+          nullable: true
+          description: Valor da transação. Expressa em valor monetário com 2 casas decimais. A opção saldo a descoberto é expressa em valor negativo.
+        currency:
+          $ref: '#/components/schemas/Currency'
     PeakTPSMetrics:
       type: object
       description: Número máximo de transações por segundo.
@@ -5270,10 +5606,10 @@ components:
             - OUTROS
           description: |
             Tipo de canal telefônico de atendimento:
-              \n* `CENTRAL_TELEFONICA`
-              \n* `SAC`
-              \n* `OUVIDORIA`
-              \n* `OUTROS`
+              * `CENTRAL_TELEFONICA`
+              * `SAC`
+              * `OUVIDORIA`
+              * `OUTROS`
           example: OUVIDORIA
         additionalInfo:
           type: string
@@ -5421,6 +5757,168 @@ components:
           description: Lista  de canais de atendimento telefônico
       allOf:
         - $ref: '#/components/schemas/CNPJ'
+    ResponseAccountBalances:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          type: object
+          required:
+            - brand
+          properties:
+            brand:
+              type: object
+              description: Objeto que define a Organização controladora do grupo de instituições financeiras
+              required:
+                - name
+                - companies
+              properties:
+                name:
+                  type: string
+                  description: 'Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes.'
+                  maxLength: 80
+                  pattern: \w*\W*
+                companies:
+                  type: array
+                  items:
+                    type: object
+                    description: Instituições da Marca
+                    required:
+                      - name
+                      - cnpjNumber
+                      - accounts
+                    allOf:
+                      - $ref: '#/components/schemas/CompanySimple'
+                    properties:
+                      accounts:
+                        type: object
+                        required:
+                          - balances
+                        properties:
+                          balances:
+                            type: array
+                            items:
+                              $ref: '#/components/schemas/Balances'
+                  minItems: 1
+                  description: Companies traz uma lista de todas as instituições da Marca.
+        links:
+          $ref: '#/components/schemas/Links'
+        meta:
+          $ref: '#/components/schemas/Meta'
+    ResponseAccountIdentification:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          type: object
+          required:
+            - brand
+          properties:
+            brand:
+              $ref: '#/components/schemas/AccountsIdentificationBrand'
+        links:
+          $ref: '#/components/schemas/Links'
+        meta:
+          $ref: '#/components/schemas/Meta'
+    ResponseAccountOverdraftLimits:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          type: object
+          required:
+            - brand
+          properties:
+            brand:
+              type: object
+              description: Objeto que define a Organização controladora do grupo de instituições financeiras
+              required:
+                - name
+                - companies
+              properties:
+                name:
+                  type: string
+                  description: 'Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes.'
+                  maxLength: 80
+                  pattern: \w*\W*
+                companies:
+                  type: array
+                  items:
+                    type: object
+                    description: Instituições da Marca
+                    required:
+                      - name
+                      - cnpjNumber
+                      - accounts
+                    allOf:
+                      - $ref: '#/components/schemas/CompanySimple'
+                    properties:
+                      accounts:
+                        $ref: '#/components/schemas/AccountOverdraftLimits'
+                  minItems: 1
+                  description: Companies traz uma lista de todas as instituições da Marca.
+        links:
+          $ref: '#/components/schemas/Links'
+        meta:
+          $ref: '#/components/schemas/Meta'
+    ResponseAccountTransactions:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          type: object
+          required:
+            - brand
+          properties:
+            brand:
+              type: object
+              description: Objeto que define a Organização controladora do grupo de instituições financeiras
+              required:
+                - name
+                - companies
+              properties:
+                name:
+                  type: string
+                  description: 'Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes.'
+                  maxLength: 80
+                  pattern: \w*\W*
+                companies:
+                  type: array
+                  items:
+                    type: object
+                    description: Instituições da Marca
+                    required:
+                      - name
+                      - cnpjNumber
+                      - accounts
+                    allOf:
+                      - $ref: '#/components/schemas/CompanySimple'
+                    properties:
+                      accounts:
+                        type: object
+                        required:
+                          - transactions
+                        properties:
+                          transactions:
+                            $ref: '#/components/schemas/Transactions'
+                  minItems: 1
+                  description: Companies traz uma lista de todas as instituições da Marca.
+        links:
+          $ref: '#/components/schemas/Links'
+        meta:
+          $ref: '#/components/schemas/Meta'
     PostalAddress:
       type: object
       properties:
@@ -5576,6 +6074,24 @@ components:
           pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
           description: 'Data e hora da consulta, conforme especificação RFC-3339, formato UTC.'
           maxLength: 20
+          example: '2020-07-21T08:30:00Z'
+    RequestUpdateDateTime:
+      type: object
+      required:
+        - requestDateTime
+        - updateDateTime
+      properties:
+        requestDateTime:
+          type: string
+          maxLength: 20
+          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
+          description: 'Data e hora da consulta, conforme especificação RFC-3339, formato UTC.'
+          example: '2020-07-21T08:30:00Z'
+        updateDateTime:
+          type: string
+          maxLength: 20
+          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
+          description: 'Data e hora da atualização, conforme especificação RFC-3339.'
           example: '2020-07-21T08:30:00Z'
     ResponseBankingAgentsList:
       type: object
@@ -5786,7 +6302,7 @@ components:
                       townName: Marília
                       ibgeCode: '3550308'
                       countrySubDivision: SP
-                      postCode: 17500-001
+                      postCode: '17500001'
                       country: Brasil
                       countryCode: BRA
                       geographicCoordinates:
@@ -9572,6 +10088,97 @@ components:
             type: string
           example:
             - 'https://api.banco.com.br/open-banking/channels/v1/electronic-channels'
+    Transactions:
+      type: object
+      description: Agrupador das informações relativas às Transações de crédito e débito realizadas e autorizadas
+      required:
+        - requestDateTime
+        - updateDateTime
+        - completedTransactions
+        - authorisedPayments
+      allOf:
+        - $ref: '#/components/schemas/RequestUpdateDateTime'
+      properties:
+        completedTransactions:
+          type: array
+          items:
+            type: object
+            description: Transações a débito e a crédito efetivadas em conta
+            required:
+              - creditDebitIndicator
+              - type
+              - amount
+              - transactionDate
+              - payer
+              - payee
+            properties:
+              creditDebitIndicator:
+                $ref: '#/components/schemas/EnumCreditDebitIndicator/properties/creditDebitIndicator'
+              type:
+                $ref: '#/components/schemas/EnumTransactionTypes/properties/transactionTypes'
+              amount:
+                type: number
+                nullable: true
+                description: Valor da transação. Expressa em valor monetário com 2 casas decimais
+              currency:
+                $ref: '#/components/schemas/Currency'
+              transactionDate:
+                type: string
+                description: Data de lançamento da transação
+                maxLength: 10
+                pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
+              payer:
+                type: string
+                description: Identificação do Pagador da transação
+                maxLength: 100
+                pattern: \w*\W*
+              payee:
+                type: string
+                description: Identificação do Recebedor da transação
+                maxLength: 100
+                pattern: \w*\W*
+          minItems: 1
+          description: Lista das transações a débito e a crédito efetivadas em conta.
+        authorisedPayments:
+          type: array
+          items:
+            type: object
+            description: Informações relativas aos pagamentos autorizados
+            required:
+              - creditDebitIndicator
+              - type
+              - amount
+              - transactionDate
+              - payer
+              - payee
+            properties:
+              creditDebitIndicator:
+                $ref: '#/components/schemas/EnumCreditDebitIndicator/properties/creditDebitIndicator'
+              type:
+                $ref: '#/components/schemas/EnumTransactionTypes/properties/transactionTypes'
+              amount:
+                type: number
+                nullable: true
+                description: Valor da transação. Expressa em valor monetário com 2 casas decimais
+              currency:
+                $ref: '#/components/schemas/Currency'
+              transactionDate:
+                type: string
+                description: Data de lançamento da transação
+                maxLength: 10
+                pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
+              payer:
+                type: string
+                description: Identificação do Pagador da transação
+                maxLength: 100
+                pattern: \w*\W*
+              payee:
+                type: string
+                description: Identificação do Recebedor da transação
+                maxLength: 100
+                pattern: \w*\W*
+          minItems: 1
+          description: Lista das Informações relativas aos pagamentos autorizados.
     UnarrangedAccountOverdraftRate:
       type: object
       required:
