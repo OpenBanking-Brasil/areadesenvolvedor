@@ -1800,45 +1800,9 @@ components:
           maxItems: 4
           description: Lista distribuição preços tarifas de serviços
         minimum:
-          type: object
-          required:
-            - value
-            - currency
-          properties:
-            value:
-              type: string
-              pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
-              maxLength: 12
-              x-cds-type: AmountString
-              description: Valor mínimo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
-              example: '1350.00'
-            currency:
-              type: string
-              pattern: '^(\w{3}){1}$'
-              maxLength: 3
-              x-cds-type: CurrencyString
-              description: 'Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217'
-              example: BRL
+          $ref: '#/components/schemas/MinimumPrice'
         maximum:
-          type: object
-          required:
-            - value
-            - currency
-          properties:
-            value:
-              type: string
-              pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
-              maxLength: 12
-              x-cds-type: AmountString
-              description: Valor máximo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
-              example: '8800.00'
-            currency:
-              type: string
-              pattern: '^(\w{3}){1}$'
-              maxLength: 3
-              x-cds-type: CurrencyString
-              description: 'Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217'
-              example: BRL
+          $ref: '#/components/schemas/MaximumPrice'
     BusinessCreditCard:
       type: object
       required:
@@ -2692,6 +2656,7 @@ components:
       example: BRL
     Customer:
       type: object
+      description: Percentual de clientes em cada faixa.
       required:
         - rate
       properties:
@@ -3144,6 +3109,24 @@ components:
         - OUTROS
       description: 'Canais disponíveis para abertura e encerramento de contas, p.ex. ''DEPENDENCIAS_PROPRIAS'''
       example: DEPENDENCIAS_PROPRIAS
+    EnumPersonalLoanType:
+      type: string
+      enum:
+        - EMPRESTIMO_CREDITO_PESSOAL_CONSIGNADO
+        - EMPRESTIMO_CREDITO_PESSOAL_SEM_CONSIGNACAO
+        - EMPRESTIMO_HOME_EQUITY
+        - EMPRESTIMO_MICROCREDITO_PRODUTIVO_ORIENTADO
+        - EMPRESTIMO_CHEQUE_ESPECIAL
+        - EMPRESTIMO_CONTA_GARANTIDA
+      description: |
+        Modalidades de empréstimos ofertados para pessoa Natural, conforme Circular 4015-Bacen. Segundo cartilha do Bacen: Empréstimo é um contrato entre o cliente e uma instituição financeira (banco, cooperativa de crédito, caixa econômica) pelo qual o cliente recebe uma quantia em dinheiro que deverá ser devolvida em prazo determinado, acrescida dos juros acertados. Os recursos obtidos no empréstimo não tem destinação específica.
+          * `EMPRESTIMO_CREDITO_PESSOAL_CONSIGNADO` -  operações de crédito com retenção de parcela do salário ou benefício do tomador, para o pagamento das prestações do empréstimo – desconto em folha de pagamento – nos termos da legislação em vigor
+          * `EMPRESTIMO_CREDITO_PESSOAL_SEM_CONSIGNACAO` - operações de empréstimos às pessoa natural, sem vinculação com aquisição de bem ou serviço e sem retenção de parcela do salário ou benefício do tomador para o pagamento das prestações do empréstimo
+          * `EMPRESTIMO_HOME_EQUITY` - empréstimos pessoa natural, garantidos por hipoteca ou por alienação fiduciária de bens imóveis residenciais, sem vinculação a aquisição de bens
+          * `EMPRESTIMO_MICROCREDITO_PRODUTIVO_ORIENTADO` - segundo PNMPO é o crédito concedido para financiamento das atividades produtivas, cuja metodologia será estabelecida em regulamento, observada a preferência do relacionamento direto com os empreendedores, admitido o uso de tecnologias digitais e eletrônicas que possam substituir o contato presencial
+          * `EMPRESTIMO_CHEQUE_ESPECIAL` - operações de crédito vinculadas à conta corrente, nas quais determinado limite de crédito é disponibilizado aos clientes para utilização de acordo com suas conveniências, sem necessidade de comunicação prévia à instituição financeira
+          * `EMPRESTIMO_CONTA_GARANTIDA` - operações de crédito rotativo, nas quais determinado limite de crédito é disponibilizado para utilização pelo cliente, através da simples movimentação da conta corrente e/ou solicitação formal à instituição financeira. As operações classificadas nessa modalidade não devem ter data definida para a amortização do saldo devedor, exceto a estabelecida para vigência do contrato
+      example: EMPRESTIMO_CREDITO_PESSOAL_CONSIGNADO
     EnumPhoneChannelsServicesCode:
       type: string
       enum:
@@ -3614,6 +3597,7 @@ components:
           example: '-180.836519'
     Indexer:
       type: object
+      description: 'Percentual que corresponde a mediana da taxa efetiva cobrada do cliente pela contratação do Empréstimo, no intervalo informado.'
       properties:
         rate:
           type: string
@@ -3859,30 +3843,7 @@ components:
       type: object
       properties:
         referentialRateIndexer:
-          type: string
-          enum:
-            - SEM_INDEXADOR_TAXA
-            - PRE_FIXADO
-            - POS_FIXADO_TR_TBF
-            - POS_FIXADO_TJLP
-            - POS_FIXADO_LIBOR
-            - POS_FIXADO_TLP
-            - OUTRAS_TAXAS_POS_FIXADAS
-            - FLUTUANTES_CDI
-            - FLUTUANTES_SELIC
-            - OUTRAS_TAXAS_FLUTUANTES
-            - INDICES_PRECOS_IGPM
-            - INDICES_PRECOS_IPCA
-            - INDICES_PRECOS_IPCC
-            - OUTROS_INDICES_PRECO
-            - CREDITO_RURAL_TCR_PRE
-            - CREDITO_RURAL_TCR_POS
-            - CREDITO_RURAL_TRFC_PRE
-            - CREDITO_RURAL_TRFC_POS
-            - OUTROS_INDEXADORES
-          description: |
-            Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial ou Indexador (Indx), do Documento 3040
-          example: PRE_FIXADO
+          $ref: '#/components/schemas/EnumReferentialRateIndexer'
         rate:
           type: string
           pattern: '(^[0-1](\.[0-9]{2})$|^NA$)'
@@ -3946,47 +3907,9 @@ components:
           minItems: 4
           maxItems: 4
         minimum:
-          type: object
-          description: Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência.
-          required:
-            - value
-            - currency
-          properties:
-            value:
-              type: string
-              pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
-              maxLength: 12
-              x-cds-type: AmountString
-              description: Valor mínimo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
-              example: '1350.00'
-            currency:
-              type: string
-              pattern: '^(\w{3}){1}$'
-              maxLength: 3
-              x-cds-type: CurrencyString
-              description: 'Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217'
-              example: BRL
+          $ref: '#/components/schemas/MinimumPrice'
         maximum:
-          type: object
-          description: Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência.
-          required:
-            - value
-            - currency
-          properties:
-            value:
-              type: string
-              pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
-              maxLength: 12
-              x-cds-type: AmountString
-              description: Valor máximo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
-              example: '8800.00'
-            currency:
-              type: string
-              pattern: '^(\w{3}){1}$'
-              maxLength: 3
-              x-cds-type: CurrencyString
-              description: 'Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217'
-              example: BRL
+          $ref: '#/components/schemas/MaximumPrice'
     MaximumPrice:
       type: object
       description: Valor máximo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
@@ -4552,23 +4475,7 @@ components:
         - termsConditions
       properties:
         type:
-          type: string
-          enum:
-            - EMPRESTIMO_CREDITO_PESSOAL_CONSIGNADO
-            - EMPRESTIMO_CREDITO_PESSOAL_SEM_CONSIGNACAO
-            - EMPRESTIMO_HOME_EQUITY
-            - EMPRESTIMO_MICROCREDITO_PRODUTIVO_ORIENTADO
-            - EMPRESTIMO_CHEQUE_ESPECIAL
-            - EMPRESTIMO_CONTA_GARANTIDA
-          description: |
-            Modalidades de empréstimos ofertados para pessoa Natural, conforme Circular 4015-Bacen. Segundo cartilha do Bacen: Empréstimo é um contrato entre o cliente e uma instituição financeira (banco, cooperativa de crédito, caixa econômica) pelo qual o cliente recebe uma quantia em dinheiro que deverá ser devolvida em prazo determinado, acrescida dos juros acertados. Os recursos obtidos no empréstimo não tem destinação específica.
-              * `EMPRESTIMO_CREDITO_PESSOAL_CONSIGNADO` -  operações de crédito com retenção de parcela do salário ou benefício do tomador, para o pagamento das prestações do empréstimo – desconto em folha de pagamento – nos termos da legislação em vigor
-              * `EMPRESTIMO_CREDITO_PESSOAL_SEM_CONSIGNACAO` - operações de empréstimos às pessoa natural, sem vinculação com aquisição de bem ou serviço e sem retenção de parcela do salário ou benefício do tomador para o pagamento das prestações do empréstimo
-              * `EMPRESTIMO_HOME_EQUITY` - empréstimos pessoa natural, garantidos por hipoteca ou por alienação fiduciária de bens imóveis residenciais, sem vinculação a aquisição de bens
-              * `EMPRESTIMO_MICROCREDITO_PRODUTIVO_ORIENTADO` - segundo PNMPO é o crédito concedido para financiamento das atividades produtivas, cuja metodologia será estabelecida em regulamento, observada a preferência do relacionamento direto com os empreendedores, admitido o uso de tecnologias digitais e eletrônicas que possam substituir o contato presencial
-              * `EMPRESTIMO_CHEQUE_ESPECIAL` - operações de crédito vinculadas à conta corrente, nas quais determinado limite de crédito é disponibilizado aos clientes para utilização de acordo com suas conveniências, sem necessidade de comunicação prévia à instituição financeira
-              * `EMPRESTIMO_CONTA_GARANTIDA` - operações de crédito rotativo, nas quais determinado limite de crédito é disponibilizado para utilização pelo cliente, através da simples movimentação da conta corrente e/ou solicitação formal à instituição financeira. As operações classificadas nessa modalidade não devem ter data definida para a amortização do saldo devedor, exceto a estabelecida para vigência do contrato
-          example: EMPRESTIMO_CREDITO_PESSOAL_CONSIGNADO
+          $ref: '#/components/schemas/EnumPersonalLoanType'
         fees:
           $ref: '#/components/schemas/LoanFees'
         interestRates:
@@ -4592,6 +4499,7 @@ components:
           example: 'https://empresaa1.com/personal_loans'
     PersonalLoanBrand:
       type: object
+      description: Organização controladora do grupo de instituições financeiras
       required:
         - name
         - companies
