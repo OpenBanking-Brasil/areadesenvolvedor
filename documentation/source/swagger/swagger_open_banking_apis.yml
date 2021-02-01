@@ -1842,6 +1842,7 @@ components:
           $ref: '#/components/schemas/CreditCardTermsConditions'
     BusinessCreditCardBrand:
       type: object
+      description: Organização controladora do grupo de instituições financeiras
       required:
         - companies
       properties:
@@ -2300,76 +2301,30 @@ components:
           minItems: 1
           maxItems: 31
           description: Lista das Tarifas cobradas sobre Serviços Prioritários
+    CreditCardFee:
+      type: object
+      description: Objeto que reúne informações de tarifas de serviços
+      required:
+        - services
+      properties:
+        services:
+          type: array
+          description: Lista das Tarifas cobradas sobre Serviço relacionadas a Modalidade de Pagamento Pós-Pagas
+          items:
+            $ref: '#/components/schemas/CreditCardService'
+          minItems: 1
+          maxItems: 9
     CreditCardIdentification:
       type: object
+      description: Informações de identificação do cartão de crédito
       required:
         - product
         - creditCard
       properties:
         product:
-          type: object
-          required:
-            - type
-            - additionalInfo
-          properties:
-            type:
-              type: string
-              enum:
-                - CLASSIC_NACIONAL
-                - CLASSIC_INTERNACIONAL
-                - GOLD
-                - PLATINUM
-                - INFINITE
-                - ELECTRON
-                - STANDARD_NACIONAL
-                - STANDARD_INTERNACIONAL
-                - ELETRONIC
-                - BLACK
-                - REDESHOP
-                - MAESTRO_MASTERCARD_MAESTRO
-                - GREEN
-                - BLUE
-                - BLUEBOX
-                - PROFISSIONAL_LIBERAL
-                - CHEQUE_ELETRONICO
-                - CORPORATIVO
-                - EMPRESARIAL
-                - COMPRAS
-                - OUTROS
-              description: 'Categoria atribuída a um cartão de pagamento, sob uma certa denominação, que lhe agrega um conjunto de vantagens, diferenciando-o de acordo com o perfil do portador. Essa categoria é definida pelo BACEN e está contida no documento de nome ''Elaboração e Remessa de Informações Relativas aos Cartões de Pagamento  Emissores'''
-              example: PLATINUM
-            additionalInfo:
-              type: string
-              maxLength: 50
-              pattern: \w*\W*
-              description: Informações complementares se tipo de Cartão 'OUTROS'. Campo deve ser obrigatoriamente preenchido se selecionado 'OUTROS'
-              example: NA
+          $ref: '#/components/schemas/PersonalCreditCardIdentificationProduct'
         creditCard:
-          type: object
-          required:
-            - network
-            - additionalInfo
-          properties:
-            network:
-              type: string
-              enum:
-                - VISA
-                - MASTERCARD
-                - AMERICAN_EXPRESS
-                - DINERS_CLUB
-                - HIPERCARD
-                - BANDEIRA_PROPRIA
-                - CHEQUE_ELETRONICO
-                - ELO
-                - OUTRAS
-              description: 'Categoria de Bandeiras de Cartões de Crédito (Instituidor do arranjo de pagamento). Bandeira é a detentora de todos os direitos e deveres da utilização da marca estampada no cartão, inclusive as bandeiras pertencentes aos emissores. p.ex. "American Express", "Diners Club" Essas bandeiras estão definidas em documento do BACEN de nome "Elaboração e Remessa de Informações Relativas aos Cartões de Pagamento  Emissores"'
-              example: MASTERCARD
-            additionalInfo:
-              type: string
-              maxLength: 50
-              pattern: \w*\W*
-              description: Texto livre para especificar categoria de bandeira marcada como 'OUTRAS'. Campo deve ser obrigatoriamente preenchido se campo network vier selecionado como 'OUTROS'
-              example: NA
+          $ref: '#/components/schemas/PersonalCreditCardIdentificationCreditCard'
     CreditCardInterest:
       type: object
       description: Informações sobre taxas de juros
@@ -2472,6 +2427,7 @@ components:
           maxItems: 3
     CreditCardRewardsProgram:
       type: object
+      description: Informações sobre programas de recompensa presentes no cartão de crédito
       required:
         - hasRewardProgram
       properties:
@@ -2537,47 +2493,9 @@ components:
           minItems: 4
           maxItems: 4
         minimum:
-          type: object
-          description: Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência.
-          required:
-            - value
-            - currency
-          properties:
-            value:
-              type: string
-              pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
-              maxLength: 12
-              x-cds-type: AmountString
-              description: Valor mínimo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
-              example: '1350.00'
-            currency:
-              type: string
-              pattern: '^(\w{3}){1}$'
-              maxLength: 3
-              x-cds-type: CurrencyString
-              description: 'Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217'
-              example: BRL
+          $ref: '#/components/schemas/MinimumPrice'
         maximum:
-          type: object
-          description: Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência.
-          required:
-            - value
-            - currency
-          properties:
-            value:
-              type: string
-              pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
-              maxLength: 12
-              x-cds-type: AmountString
-              description: Valor máximo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
-              example: '8800.00'
-            currency:
-              type: string
-              pattern: '^(\w{3}){1}$'
-              maxLength: 3
-              x-cds-type: CurrencyString
-              description: 'Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217'
-              example: BRL
+          $ref: '#/components/schemas/MaximumPrice'
     CreditCardTermsConditions:
       type: object
       required:
@@ -3089,6 +3007,46 @@ components:
         - OUTROS
       description: 'Canais disponíveis para abertura e encerramento de contas, p.ex. ''DEPENDENCIAS_PROPRIAS'''
       example: DEPENDENCIAS_PROPRIAS
+    EnumPersonalCreditCardBrandCode:
+      type: string
+      enum:
+        - VISA
+        - MASTERCARD
+        - AMERICAN_EXPRESS
+        - DINERS_CLUB
+        - HIPERCARD
+        - BANDEIRA_PROPRIA
+        - CHEQUE_ELETRONICO
+        - ELO
+        - OUTRAS
+      description: 'Categoria de Bandeiras de Cartões de Crédito (Instituidor do arranjo de pagamento). Bandeira é a detentora de todos os direitos e deveres da utilização da marca estampada no cartão, inclusive as bandeiras pertencentes aos emissores. p.ex. "American Express", "Diners Club" Essas bandeiras estão definidas em documento do BACEN de nome "Elaboração e Remessa de Informações Relativas aos Cartões de Pagamento  Emissores"'
+      example: MASTERCARD
+    EnumPersonalCreditCardProductType:
+      type: string
+      enum:
+        - CLASSIC_NACIONAL
+        - CLASSIC_INTERNACIONAL
+        - GOLD
+        - PLATINUM
+        - INFINITE
+        - ELECTRON
+        - STANDARD_NACIONAL
+        - STANDARD_INTERNACIONAL
+        - ELETRONIC
+        - BLACK
+        - REDESHOP
+        - MAESTRO_MASTERCARD_MAESTRO
+        - GREEN
+        - BLUE
+        - BLUEBOX
+        - PROFISSIONAL_LIBERAL
+        - CHEQUE_ELETRONICO
+        - CORPORATIVO
+        - EMPRESARIAL
+        - COMPRAS
+        - OUTROS
+      description: 'Categoria atribuída a um cartão de pagamento, sob uma certa denominação, que lhe agrega um conjunto de vantagens, diferenciando-o de acordo com o perfil do portador. Essa categoria é definida pelo BACEN e está contida no documento de nome ''Elaboração e Remessa de Informações Relativas aos Cartões de Pagamento  Emissores'''
+      example: PLATINUM
     EnumPersonalFinancingType:
       type: string
       enum:
@@ -4058,24 +4016,14 @@ components:
         rewardsProgram:
           $ref: '#/components/schemas/CreditCardRewardsProgram'
         fees:
-          type: object
-          description: Objeto que reúne informações de tarifas de serviços
-          required:
-            - services
-          properties:
-            services:
-              type: array
-              description: Lista das Tarifas cobradas sobre Serviço relacionadas a Modalidade de Pagamento Pós-Pagas
-              items:
-                $ref: '#/components/schemas/CreditCardService'
-              minItems: 1
-              maxItems: 9
+          $ref: '#/components/schemas/CreditCardFee'
         interest:
           $ref: '#/components/schemas/CreditCardInterest'
         termsConditions:
           $ref: '#/components/schemas/CreditCardTermsConditions'
     PersonalCreditCardBrand:
       type: object
+      description: Organização controladora do grupo de instituições financeiras
       required:
         - companies
       properties:
@@ -4124,6 +4072,34 @@ components:
           items:
             $ref: '#/components/schemas/PersonalCreditCard'
           minItems: 1
+    PersonalCreditCardIdentificationCreditCard:
+      type: object
+      required:
+        - network
+        - additionalInfo
+      properties:
+        network:
+          $ref: '#/components/schemas/EnumPersonalCreditCardBrandCode'
+        additionalInfo:
+          type: string
+          maxLength: 50
+          pattern: \w*\W*
+          description: Texto livre para especificar categoria de bandeira marcada como 'OUTRAS'. Campo deve ser obrigatoriamente preenchido se campo network vier selecionado como 'OUTROS'
+          example: NA
+    PersonalCreditCardIdentificationProduct:
+      type: object
+      required:
+        - type
+        - additionalInfo
+      properties:
+        type:
+          $ref: '#/components/schemas/EnumPersonalCreditCardProductType'
+        additionalInfo:
+          type: string
+          maxLength: 50
+          pattern: \w*\W*
+          description: Informações complementares se tipo de Cartão 'OUTROS'. Campo deve ser obrigatoriamente preenchido se selecionado 'OUTROS'
+          example: NA
     PersonalFinancing:
       type: object
       required:
