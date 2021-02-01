@@ -983,7 +983,6 @@ components:
       properties:
         minimumBalance:
           $ref: '#/components/schemas/MinimumBalance'
-          description: 'Saldo mínimo exigido nos Termos e condições contratuais, que regem as contas comercializadas.'
         elegibilityCriteriaInfo:
           type: string
           maxLength: 2000
@@ -1003,7 +1002,6 @@ components:
           $ref: '#/components/schemas/EnumApplicationIntervals'
         indexer:
           $ref: '#/components/schemas/Indexer'
-          description: Percentual que corresponde a mediana (taxa efetiva) cobrada do cliente
         customers:
           $ref: '#/components/schemas/Customer'
       required:
@@ -1138,7 +1136,6 @@ components:
       properties:
         identification:
           $ref: '#/components/schemas/BankingAgentIdentification'
-          description: Dados de identificação do correspondente.
         locations:
           type: array
           items:
@@ -1161,11 +1158,13 @@ components:
             $ref: '#/components/schemas/BankingAgentsStandard'
         exception:
           type: string
+          description: Em campo texto devem ser registradas todas as Exceções para o não atendimento.
           maxLength: 2000
           pattern: \w*\W*
           example: 'Exceto feriados municipais, nacionais e estaduais'
         isPublicAccessAllowed:
           type: boolean
+          description: Indica se a instalação do Correspondente Bancário tem acesso restrito a clientes.
           example: false
     BankingAgentIdentification:
       type: object
@@ -1399,32 +1398,24 @@ components:
           example: '-180.836519'
     BankingAgentsStandard:
       type: object
+      description: Relação da disponbilidade de atendimento
       required:
         - weekday
       properties:
         weekday:
-          type: string
-          enum:
-            - DOMINGO
-            - SEGUNDA_FEIRA
-            - TERCA_FEIRA
-            - QUARTA_FEIRA
-            - QUINTA_FEIRA
-            - SEXTA_FEIRA
-            - SABADO
-          description: Dia da semana de abertura
+          $ref: '#/components/schemas/EnumWeekDay'
         openingTime:
-          description: Horário de abertura (UTC)
           type: string
           maxLength: 13
           pattern: '^(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
           example: '10:20:30Z'
+          description: Horário padrão de início de atendimento pelo Correspondente Bancário.
         closingTime:
           type: string
           maxLength: 13
           pattern: '^(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
           example: '10:20:30Z'
-          description: Horário de fechamento (UTC)
+          description: Horário padrão de encerramento de atendimento pelo Correspondente Bancário.
     Branch:
       type: object
       description: 'Dependência de instituições financeiras e demais instituições, autorizadas a funcionar pelo Banco Central do Brasil, destinada à prática das atividades para as quais a instituição esteja regularmente habilitada.'
@@ -2454,7 +2445,6 @@ components:
           example: 'https://empresadaorganizacaoa.com/complementarylist'
         businessUnarrangedAccountOverdraft:
           $ref: '#/components/schemas/BusinessUnarrangedAccountOverdraft'
-          description: Lista de produtos e serviços referente adiantamento a depositante
     BusinessUnarrangedAccountOverdraftFee:
       type: object
       description: Objeto que reúne informações de tarifas de serviços
@@ -3430,6 +3420,60 @@ components:
           `UNAVAILABLE` - A implementação completa está indisponível
           `SCHEDULED_OUTAGE` - Uma interrupção anunciada está em vigor
       example: OK
+    EnumSharedAutomatedTellerMachinesServicesCodes:
+      type: string
+      enum:
+        - ABRE_CONTA_DEPOSITO_OU_PRE_PAGA
+        - SAQUE_MOEDA_ESPECIE
+        - RECEBE_PAGA_QUALQUER_NATUREZA
+        - TRANSFERENCIAS_ELETRONICAS_MOVIMENTA_CONTAS_DEPOSITOS_OU_PAGA_TITULARES_CLIENTES
+        - CONSULTA_SALDOS_EXTRATOS_CONTAS_DEPOSITOS
+        - PAGAMENTOS
+        - APLICA_RESGATA_INVESTIMENTOS
+        - EXECUTA_ATIVA_PASSIVA_ORDENS_PAGAMENTO
+        - DEPOSITA_MOEDA_ESPECIE_CHEQUE
+        - OPERA_CREDITO_OUTROS_SERVICOS_ACOMPANHA_OPERACAO
+        - CARTAO_CREDITO
+        - SEGUROS
+        - OPERA_ARRENDAMENTO_MERCANTIL
+        - ABERTURA_CONTA_PAGAMENTO_POS_PAGA
+        - COMPRA_VENDE_MOEDA_ESTRANGEIRA_ESPECIE
+        - COMPRA_VENDE_CHEQUE_CHEQUE_VIAGEM_CARGA_MOEDA_ESTRANGEIRA_CARTAO_PRE_PAGO
+        - COMPRA_VENDE_OURO
+        - OUTROS_PRODUTOS_SERVICOS
+        - CANCELAMENTO
+        - INFORMACOES
+        - RECLAMACOES
+      description: Código dos Serviços efetivamente prestados pelo Terminal de Autoatendimento Compartilhado informado
+      example: OUTROS_PRODUTOS_SERVICOS
+    EnumSharedAutomatedTellerMachinesServicesNames:
+      type: string
+      enum:
+        - ABERTURA_CONTAS_DEPOSITOS_OU_PAGAMENTO_PRE_PAGA
+        - SAQUE_MOEDA_EM_ESPECIE
+        - RECEBIMENTOS_PAGAMENTOS_QUALQUER_NATUREZA
+        - TRANSFERENCIAS_ELETRONICAS_VISANDO_MOVIMENTACAO
+        - CONTAS_DEPOSITOS_OU_PAGAMENTO_TITULARIDADE_CLIENTES
+        - CONSULTA_SALDOS_EXTRATOS_CONTAS_DEPOSITOS_E_CONTAS
+        - PAGAMENTOS
+        - APLICACOES_RESGATES_INVESTIMENTOS
+        - EXECUCAO_ATIVA_PASSIVA_ORDENS_PAGAMENTO_SOLICITACAO
+        - CLIENTES_USUARIOS
+        - DEPOSITOS_MOEDA_ESPECIE_CHEQUE
+        - OPERACOES_CREDITO_BEM_COMO_OUTROS_SERVICOS_PRESTADOS_ACOMPANHAMENTO_OPERACAO
+        - CARTAO_CREDITO
+        - SEGUROS
+        - OPERACOES_ARRENDAMENTO_MERCANTIL
+        - ABERTURA_CONTA_PAGAMENTO_POS_PAGA
+        - COMPRA_VENDA_MOEDA_ESTRANGEIRA_ESPECIE
+        - COMPRA_VENDA_CHEQUE_CHEQUE_VIAGEM_BEM_COMO_CARGA_MOEDA_ESTRANGEIRA_CARTAO_PRE_PAGO
+        - COMPRA_VENDA_OURO
+        - OUTROS_PRODUTOS_SERVICOS
+        - CANCELAMENTO
+        - INFORMACOES
+        - RECLAMACOES
+      description: Nome dos Serviços efetivamente prestados pelo Terminal de Autoatendimento Compartilhado informado
+      example: OUTROS_PRODUTOS_SERVICOS
     EnumTransactionMethods:
       type: string
       enum:
@@ -3441,7 +3485,7 @@ components:
       example: MOVIMENTACAO_CARTAO
     EnumWeekDay:
       type: string
-      description: Dia da semana de abertura da dependência bancária
+      description: Dia da semana de abertura
       enum:
         - DOMINGO
         - SEGUNDA_FEIRA
@@ -4733,7 +4777,6 @@ components:
           example: 'https://empresadaorganizacaoa.com/complementarylist'
         personalUnarrangedAccountOverdraft:
           $ref: '#/components/schemas/PersonalUnarrangedAccountOverdraft'
-          description: Lista de produtos e serviços referente adiantamento a depositante
     PersonalUnarrangedAccountOverdraftFee:
       type: object
       description: Objeto que reúne informações de tarifas de serviços
@@ -4964,7 +5007,6 @@ components:
           properties:
             brand:
               $ref: '#/components/schemas/BankingAgentsBrand'
-              description: Organização controladora do grupo de instituições financeiras.
         links:
           $ref: '#/components/schemas/Links'
         meta:
@@ -5222,7 +5264,6 @@ components:
           properties:
             brand:
               $ref: '#/components/schemas/BusinessAccountsBrand'
-              description: Organização controladora do grupo de instituições financeiras.
         links:
           $ref: '#/components/schemas/Links'
         meta:
@@ -5359,7 +5400,6 @@ components:
           properties:
             brand:
               $ref: '#/components/schemas/BusinessCreditCardBrand'
-              description: Organização controladora do grupo de instituições financeiras.
         links:
           $ref: '#/components/schemas/Links'
         meta:
@@ -5501,7 +5541,6 @@ components:
           properties:
             brand:
               $ref: '#/components/schemas/BusinessFinancingBrand'
-              description: Organização controladora do grupo de instituições financeiras.
         links:
           $ref: '#/components/schemas/Links'
         meta:
@@ -5663,7 +5702,6 @@ components:
           properties:
             brand:
               $ref: '#/components/schemas/BusinessInvoiceFinancingsBrand'
-              description: Organização controladora do grupo de instituições financeiras.
         links:
           $ref: '#/components/schemas/Links'
         meta:
@@ -6041,7 +6079,6 @@ components:
           properties:
             brand:
               $ref: '#/components/schemas/BusinessLoanBrand'
-              description: Organização controladora do grupo de instituições financeiras.
         links:
           $ref: '#/components/schemas/Links'
         meta:
@@ -6481,7 +6518,6 @@ components:
           properties:
             brand:
               $ref: '#/components/schemas/BusinessUnarrangedAccountOverdraftBrand'
-              description: Organização titular das dependências.
         links:
           $ref: '#/components/schemas/Links'
         meta:
@@ -6661,7 +6697,6 @@ components:
           properties:
             brand:
               $ref: '#/components/schemas/ElectronicChannelsBrand'
-              description: Organização controladora do grupo de instituições financeiras.
         links:
           $ref: '#/components/schemas/Links'
         meta:
@@ -6775,7 +6810,6 @@ components:
           properties:
             brand:
               $ref: '#/components/schemas/PersonalAccountBrand'
-              description: Organização controladora do grupo de instituições financeiras.
         links:
           $ref: '#/components/schemas/Links'
         meta:
@@ -7048,7 +7082,6 @@ components:
           properties:
             brand:
               $ref: '#/components/schemas/PersonalCreditCardBrand'
-              description: Organização controladora do grupo de instituições financeiras.
         links:
           $ref: '#/components/schemas/Links'
         meta:
@@ -7192,7 +7225,6 @@ components:
           properties:
             brand:
               $ref: '#/components/schemas/PersonalFinancingBrand'
-              description: Organização controladora do grupo de instituições financeiras.
         links:
           $ref: '#/components/schemas/Links'
         meta:
@@ -7356,7 +7388,6 @@ components:
           properties:
             brand:
               $ref: '#/components/schemas/PersonalInvoiceFinancingsBrand'
-              description: Organização controladora do grupo de instituições financeiras.
         links:
           $ref: '#/components/schemas/Links'
         meta:
@@ -7734,7 +7765,6 @@ components:
           properties:
             brand:
               $ref: '#/components/schemas/PersonalLoanBrand'
-              description: Organização controladora do grupo de instituições financeiras
         links:
           $ref: '#/components/schemas/Links'
         meta:
@@ -8175,7 +8205,6 @@ components:
           properties:
             brand:
               $ref: '#/components/schemas/PersonalUnarrangedAccountOverdraftBrand'
-              description: Organização titular das dependências
         links:
           $ref: '#/components/schemas/Links'
         meta:
@@ -8277,7 +8306,6 @@ components:
           properties:
             brand:
               $ref: '#/components/schemas/PhoneChannelsBrand'
-              description: Organização controladora do grupo de instituições financeiras.
         links:
           $ref: '#/components/schemas/Links'
         meta:
@@ -8390,7 +8418,6 @@ components:
           properties:
             brand:
               $ref: '#/components/schemas/SharedAutomatedTellerMachinesBrand'
-              description: Organização controladora do grupo de instituições financeiras.
         links:
           $ref: '#/components/schemas/Links'
         meta:
@@ -8542,13 +8569,10 @@ components:
       properties:
         identification:
           $ref: '#/components/schemas/SharedAutomatedTellerMachinesIdentification'
-          description: Nome do proprietário do terminal de Autoatendimento Compartilhado.
         postalAddress:
           $ref: '#/components/schemas/SharedAutomatedTellerMachinesPostalAddress'
-          description: Deverá trazer o endereço completo referente à localização do Terminal de Autoatendimento.
         availability:
           $ref: '#/components/schemas/SharedAutomatedTellerMachinesAvailability'
-          description: Relação da disponbilidade de atendimento padrão por dias da semana.
         services:
           type: array
           maxItems: 20
@@ -8565,17 +8589,7 @@ components:
           items:
             properties:
               weekday:
-                type: string
-                enum:
-                  - DOMINGO
-                  - SEGUNDA_FEIRA
-                  - TERCA_FEIRA
-                  - QUARTA_FEIRA
-                  - QUINTA_FEIRA
-                  - SEXTA_FEIRA
-                  - SABADO
-                description: Dia da semana de abertura
-                example: SEGUNDA_FEIRA
+                $ref: '#/components/schemas/EnumWeekDay'
               openingTime:
                 type: string
                 description: Horário de abertura (UTC)
@@ -8615,12 +8629,22 @@ components:
     SharedAutomatedTellerMachinesCompany:
       type: object
       properties:
+        sharedAutomatedTellerMachines:
+          type: array
+          items:
+            $ref: '#/components/schemas/SharedAutomatedTellerMachines'
         name:
           type: string
           description: 'Nome da Instituição, pertencente à Marca.'
           maxLength: 80
           pattern: \w*\W*
           example: Empresa da Organização A
+        cnpjNumber:
+          type: string
+          pattern: '^(\d{14})$|^NA$'
+          description: Número completo do CNPJ da instituição
+          maxLength: 14
+          example: '50685362000135'
         urlComplementaryList:
           type: string
           pattern: \w*\W*
@@ -8628,17 +8652,6 @@ components:
           description: |
             URL de link para lista complementar com os nomes e CNPJs agrupados para o caso instituições ofertantes de produtos e serviços com as mesmas características.
           example: 'https://empresadaorganizacaoa.com/complementarylist'
-        cnpjNumber:
-          type: string
-          pattern: '^(\d{14})$|^NA$'
-          description: Número completo do CNPJ da instituição
-          maxLength: 14
-          example: '50685362000135'
-        sharedAutomatedTellerMachines:
-          type: array
-          description: Companies traz uma lista de todas as intuituições da Marca.
-          items:
-            $ref: '#/components/schemas/SharedAutomatedTellerMachines'
     SharedAutomatedTellerMachinesIdentification:
       type: object
       properties:
@@ -8653,40 +8666,37 @@ components:
       properties:
         address:
           type: string
-          description: |
-            Deverá trazer toda a informação referente ao endereço da dependência informada: Tipo de logradouro + Nome do logradouro + Número do Logradouro (se não existir usar ' s/n') + complemento (se houver), como, p.ex.: 'R Diamatina, 59, bloco 35, fundos' 'Praça da Boa Vontade s/n'
+          description: Informação referente ao endereço da máquina compartilhada de autoatendimento
           maxLength: 150
           pattern: \w*\W*
           example: 'Av Naburo Ykesaki, 1270'
         additionalInfo:
           type: string
-          description: Alguns logradouros ainda necessitam ser especificados por meio de complemento
+          description: Complemento
           maxLength: 30
           pattern: \w*\W*
           example: Fundos
         districtName:
           type: string
-          description: |
-            Bairro é uma comunidade ou região localizada em uma cidade ou município de acordo com as suas subdivisões geográficas. p.ex: 'Paraíso'
+          description: Bairro
           maxLength: 50
           pattern: \w*\W*
           example: Centro
         townName:
           type: string
-          description: |
-            Localidade: O nome da localidade corresponde à designação da cidade ou município no qual o endereço está localizado. p.ex. 'São Paulo'
+          description: Cidade
           maxLength: 50
           pattern: \w*\W*
           example: Marília
         ibgeCode:
           type: string
-          description: 'Código IBGE de Município. A Tabela de Códigos de Municípios do IBGE apresenta a lista os municípios brasileiros associados a um código composto de 7 dígitos, sendo os dois primeiros referentes ao código da Unidade da Federação.'
+          description: Código IBGE de Município.
           maxLength: 7
           pattern: '\d{7}'
           example: '3515890'
         countrySubDivision:
           type: string
-          description: 'Enumeração referente a cada sigla da unidade da federação que identifica o estado ou o distrito federal, no qual o endereço está localizado. p.ex. ''AC''. São consideradas apenas as siglas para os estados brasileiros'
+          description: Estado
           enum:
             - AC
             - AL
@@ -8718,13 +8728,13 @@ components:
           example: SP
         postCode:
           type: string
-          description: 'Composto por um conjunto numérico de oito dígitos, o objetivo principal do CEP é orientar e acelerar o encaminhamento, o tratamento e a entrega de objetos postados nos Correios, por meio da sua atribuição a localidades, logradouros, unidades dos Correios, serviços, órgãos públicos, empresas e edifícios'
+          description: CEP
           pattern: '(\d{8})|^NA$'
           maxLength: 8
           example: '17500001'
         country:
           type: string
-          description: Nome do país
+          description: País
           maxLength: 80
           pattern: \w*\W*
           example: Brasil
@@ -8734,64 +8744,13 @@ components:
           example: BRA
         geographicCoordinates:
           $ref: '#/components/schemas/GeographicCoordinates'
-          description: 'Objeto agrupador das informações, que correspondem aos valores das coordenadas geográficas em graus decimais, no Sistema de referência WGS84'
     SharedAutomatedTellerMachinesServices:
       type: object
       properties:
         name:
-          type: string
-          enum:
-            - ABERTURA_CONTAS_DEPOSITOS_OU_PAGAMENTO_PRE_PAGA
-            - SAQUE_MOEDA_EM_ESPECIE
-            - RECEBIMENTOS_PAGAMENTOS_QUALQUER_NATUREZA
-            - TRANSFERENCIAS_ELETRONICAS_VISANDO_MOVIMENTACAO
-            - CONTAS_DEPOSITOS_OU_PAGAMENTO_TITULARIDADE_CLIENTES
-            - CONSULTA_SALDOS_EXTRATOS_CONTAS_DEPOSITOS_E_CONTAS
-            - PAGAMENTOS
-            - APLICACOES_RESGATES_INVESTIMENTOS
-            - EXECUCAO_ATIVA_PASSIVA_ORDENS_PAGAMENTO_SOLICITACAO
-            - CLIENTES_USUARIOS
-            - DEPOSITOS_MOEDA_ESPECIE_CHEQUE
-            - OPERACOES_CREDITO_BEM_COMO_OUTROS_SERVICOS_PRESTADOS_ACOMPANHAMENTO_OPERACAO
-            - CARTAO_CREDITO
-            - SEGUROS
-            - OPERACOES_ARRENDAMENTO_MERCANTIL
-            - ABERTURA_CONTA_PAGAMENTO_POS_PAGA
-            - COMPRA_VENDA_MOEDA_ESTRANGEIRA_ESPECIE
-            - COMPRA_VENDA_CHEQUE_CHEQUE_VIAGEM_BEM_COMO_CARGA_MOEDA_ESTRANGEIRA_CARTAO_PRE_PAGO
-            - COMPRA_VENDA_OURO
-            - OUTROS_PRODUTOS_SERVICOS
-            - CANCELAMENTO
-            - INFORMACOES
-            - RECLAMACOES
-          description: Nome dos Serviços efetivamente prestados pelo Terminal de Autoatendimento Compartilhado informado
-          example: OUTROS_PRODUTOS_SERVICOS
+          $ref: '#/components/schemas/EnumSharedAutomatedTellerMachinesServicesNames'
         code:
-          type: string
-          enum:
-            - ABRE_CONTA_DEPOSITO_OU_PRE_PAGA
-            - SAQUE_MOEDA_ESPECIE
-            - RECEBE_PAGA_QUALQUER_NATUREZA
-            - TRANSFERENCIAS_ELETRONICAS_MOVIMENTA_CONTAS_DEPOSITOS_OU_PAGA_TITULARES_CLIENTES
-            - CONSULTA_SALDOS_EXTRATOS_CONTAS_DEPOSITOS
-            - PAGAMENTOS
-            - APLICA_RESGATA_INVESTIMENTOS
-            - EXECUTA_ATIVA_PASSIVA_ORDENS_PAGAMENTO
-            - DEPOSITA_MOEDA_ESPECIE_CHEQUE
-            - OPERA_CREDITO_OUTROS_SERVICOS_ACOMPANHA_OPERACAO
-            - CARTAO_CREDITO
-            - SEGUROS
-            - OPERA_ARRENDAMENTO_MERCANTIL
-            - ABERTURA_CONTA_PAGAMENTO_POS_PAGA
-            - COMPRA_VENDE_MOEDA_ESTRANGEIRA_ESPECIE
-            - COMPRA_VENDE_CHEQUE_CHEQUE_VIAGEM_CARGA_MOEDA_ESTRANGEIRA_CARTAO_PRE_PAGO
-            - COMPRA_VENDE_OURO
-            - OUTROS_PRODUTOS_SERVICOS
-            - CANCELAMENTO
-            - INFORMACOES
-            - RECLAMACOES
-          description: Código dos Serviços efetivamente prestados pelo Terminal de Autoatendimento Compartilhado informado
-          example: OUTROS_PRODUTOS_SERVICOS
+          $ref: '#/components/schemas/EnumSharedAutomatedTellerMachinesServicesCodes'
         additionalInfo:
           type: string
           maxLength: 2000
