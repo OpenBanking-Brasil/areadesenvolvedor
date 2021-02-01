@@ -40,6 +40,7 @@
 * Corrige definição de schema onde os objetos `personalUnarrangedAccountOverdraft` e  `businessUnarrangedAccountOverdraft` estavam definidos como lista.
 * Corrige o nome do atributo referente ao endereço postal na especificação Open API da API de dependências de `postalAddresses` para `postalAddress`;
 * Corrige referência de `companies` em Shared Automated Teller Machines
+* Corrige a OAS de `outages` que estava sem o atributo `unavailableEndpoints` que já estava definido no site.
 
 # v1.0.0-rc5.3
 [19/01/2021]
