@@ -17,6 +17,7 @@
   - Como devemos tratar distribuição de frequência sobre taxas remuneratórias para outras operações de crédito relacionadas ao Produto Cartão?
 * Ordena os schemas por ordem alfabética no site.
 * Adiciona exemplos nos schemas do site.
+* Adiciona automação para geração do site baseando-se nas especificações OAS.
 
 ## Correções
 * Corrige quantidade máxima de items na lista `BankingAgentAvailability`;
@@ -41,6 +42,7 @@
 * Corrige o nome do atributo referente ao endereço postal na especificação Open API da API de dependências de `postalAddresses` para `postalAddress`;
 * Corrige referência de `companies` em Shared Automated Teller Machines
 * Corrige a OAS de `outages` que estava sem o atributo `unavailableEndpoints` que já estava definido no site.
+* Corrige divergências entre site e OAS, a partir desta versão o site é gerado com base nas especificações definidas.
 
 # v1.0.0-rc5.3
 [19/01/2021]
