@@ -17,6 +17,7 @@
   - Como devemos tratar distribuição de frequência sobre taxas remuneratórias para outras operações de crédito relacionadas ao Produto Cartão?
 * Ordena os schemas por ordem alfabética no site.
 * Adiciona exemplos nos schemas do site.
+* Adiciona automação para geração do site baseando-se nas especificações OAS.
 
 ## Correções
 * Corrige quantidade máxima de items na lista `BankingAgentAvailability`;
