@@ -18,6 +18,7 @@
 * Ordena os schemas por ordem alfabética no site.
 * Adiciona exemplos nos schemas do site.
 * Adiciona automação para geração do site baseando-se nas especificações OAS.
+* Adiciona o atributo `urlComplementaryList` na área `BankingAgentCompanies`
 
 ## Correções
 * Corrige quantidade máxima de items na lista `BankingAgentAvailability`;
