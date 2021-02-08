@@ -53,8 +53,8 @@ paths:
                       status:
                         type: array
                         items:
-                          description: Lista de códigos de status da API.
                           type: object
+                          description: Lista de códigos de status da API.
                           required:
                             - code
                             - explanation
@@ -68,25 +68,28 @@ paths:
                                 - SCHEDULED_OUTAGE
                               description: |
                                 Condição atual da API:
-                                  * `OK` - A implementação é totalmente funcional
-                                  * `PARTIAL_FAILURE` - Um ou mais endpoints estão indisponíveis
-                                  * `UNAVAILABLE` - A implementação completa está indisponível
-                                  * `SCHEDULED_OUTAGE` - Uma interrupção anunciada está em vigor
+                                  `OK` - A implementação é totalmente funcional
+                                  `PARTIAL_FAILURE` - Um ou mais endpoints estão indisponíveis
+                                  `UNAVAILABLE` - A implementação completa está indisponível
+                                  `SCHEDULED_OUTAGE` - Uma interrupção anunciada está em vigor
                               example: OK
                             explanation:
                               type: string
-                              description: Fornece uma explicação da interrupção atual que pode ser exibida para um cliente final. Será obrigatoriamente preenchido se code tiver algum valor que não seja OK
+                              description: Fornece uma explicação da interrupção atual que pode ser exibida para um cliente final. Restrição - Será obrigatoriamente preenchido se code tiver algum valor que não seja OK
                               example: Retorno com Sucesso
                             detectionTime:
                               type: string
-                              description: A data e hora em que a interrupção atual foi detectada. Será obrigatoriamente preenchido se a propriedade code for PARTIAL_FAILURE ou UNAVAILABLE
+                              format: DateTimeString
+                              description: A data e hora em que a interrupção atual foi detectada. Restrição - Será obrigatoriamente preenchido se a propriedade code for PARTIAL_FAILURE ou UNAVAILABLE
                               example: '2020-07-21T08:30:00Z'
                             expectedResolutionTime:
                               type: string
-                              description: A data e hora em que o serviço completo deve continuar (se conhecido). Será obrigatoriamente preenchido se code tiver algum valor que não seja OK
+                              format: DateTimeString
+                              description: A data e hora em que o serviço completo deve continuar (se conhecido). Restrição - Será obrigatoriamente preenchido se code tiver algum valor que não seja OK
                               example: '2020-07-21T08:30:00Z'
                             updateTime:
                               type: string
+                              format: DateTimeString
                               description: A data e hora em que esse status foi atualizado pela última vez pelo titular dos dados.
                               example: '2020-01-02T01:00:00Z'
                             unavailableEndpoints:
@@ -99,24 +102,31 @@ paths:
                   links:
                     type: object
                     description: Referências para outros recusos da API requisitada.
+                    required:
+                      - self
                     properties:
                       self:
                         type: string
-                        description: URL da página atualmente requisitada
+                        format: URIString
+                        description: URI completo que gerou a resposta atual.
                         example: 'https://api.banco.com.br/open-banking/<api>/v1/<resource>'
                       first:
                         type: string
-                        description: URL da primeira página de registros
+                        format: URIString
+                        description: URI da primeira página que originou essa lista de resultados. Restrição - Obrigatório quando não for a primeira página da resposta
                         example: 'https://api.banco.com.br/open-banking/<api>/v1/<resource>'
                       prev:
                         type: string
-                        description: URL da página anterior de registros
+                        format: URIString
+                        description: "URI da página anterior dessa lista de resultados. Restrição - \tObrigatório quando não for a primeira página da resposta"
                       next:
                         type: string
-                        description: URL da próxima página de registros
+                        format: URIString
+                        description: URI da próxima página dessa lista de resultados. Restrição - Obrigatório quando não for a última página da resposta
                       last:
                         type: string
-                        description: URL da última página de registros
+                        format: URIString
+                        description: URI da última página dessa lista de resultados. Restrição - Obrigatório quando não for a última página da resposta
                         example: 'https://api.banco.com.br/open-banking/<api>/v1/<resource>'
                   meta:
                     type: object
@@ -124,11 +134,11 @@ paths:
                     properties:
                       totalRecords:
                         type: integer
-                        description: Total de registros encontrados
+                        description: Número total de registros no resultado
                         example: 1
                       totalPages:
                         type: integer
-                        description: Total de páginas para os registros encontrados
+                        description: Número total de páginas no resultado
                         example: 1
                     required:
                       - totalRecords
@@ -187,6 +197,7 @@ paths:
                         type: array
                         items:
                           type: object
+                          description: Lista de indisponibilidades planejadas.
                           required:
                             - outageTime
                             - duration
@@ -194,15 +205,15 @@ paths:
                             - explanation
                           properties:
                             outageTime:
-                              description: Data e hora planejada do início da indisponibilidade
                               type: string
-                              pattern: '^(?:2\d{3})-(?:0\d|1[012])-(?:[012]\d|3[01])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
+                              format: DateTimeString
                               example: '2020-07-21T08:30:00Z'
+                              description: Data e hora planejada do início da indisponibilidade
                             duration:
-                              description: Duração prevista da indisponibilidade
                               type: string
-                              pattern: ^P(?!$)(\d+Y)?(\d+M)?(\d+W)?(\d+D)?(T(?=\d)(\d+H)?(\d+M)?(\d+S)?)?$
-                              example: P23DT23H
+                              format: DateTimeString
+                              example: '2020-07-21T08:30:00Z'
+                              description: Duração prevista da indisponibilidade
                             isPartial:
                               type: boolean
                               description: Flag que indica se a indisponibilidade é parcial (atingindo apenas alguns end points) ou total (atingindo todos os end points)
@@ -213,10 +224,11 @@ paths:
                               example: Atualização do API Gateway
                             unavailableEndpoints:
                               type: array
+                              description: Endpoints com indisponibilidade
                               items:
                                 type: string
-                                pattern: '^([a-z0-9+.-]+):(?://(?:((?:[a-z0-9-._~!$&''()*+,;=:]|%[0-9A-F]{2})*)@)?((?:[a-z0-9-._~!$&''()*+,;=]|%[0-9A-F]{2})*)(?::(\d*))?(/(?:[a-z0-9-._~!$&''()*+,;=:@/]|%[0-9A-F]{2})*)?|(/?(?:[a-z0-9-._~!$&''()*+,;=:@]|%[0-9A-F]{2})+(?:[a-z0-9-._~!$&''()*+,;=:@/]|%[0-9A-F]{2})*)?)(?:\?((?:[a-z0-9-._~!$&''()*+,;=:/?@]|%[0-9A-F]{2})*))?(?:#((?:[a-z0-9-._~!$&''()*+,;=:/?@]|%[0-9A-F]{2})*))?$'
-                                example: 'http://www.google.com.br'
+                              example:
+                                - 'https://api.banco.com.br/open-banking/channels/v1/electronic-channels'
                   links:
                     $ref: '#/paths/~1status/get/responses/200/content/application~1json/schema/properties/links'
                   meta:

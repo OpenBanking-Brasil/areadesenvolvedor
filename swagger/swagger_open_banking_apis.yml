@@ -765,20 +765,9 @@ paths:
         <a href="swagger/swagger_admin_apis.yaml">Download da Especificação (OAS 3.0)</a>
       operationId: getMetrics
       parameters:
-        - in: query
-          name: period
-          schema:
-            type: string
-            enum:
-              - CURRENT
-              - ALL
-          required: false
-          description: |
-            Período a ser consultado
-              * `CURRENT` - Métricas do dia atual.
-              * `ALL` - Métricas de todo o período disponível.
         - $ref: '#/components/parameters/page'
         - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/period'
       responses:
         '200':
           description: Dados das métricas
@@ -842,47 +831,9 @@ components:
           maxItems: 4
           description: Valor da tarifa cobrada referente aos Outros Serviços.
         minimum:
-          type: object
-          description: Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência.
-          required:
-            - value
-            - currency
-          properties:
-            value:
-              type: string
-              pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
-              maxLength: 12
-              x-cds-type: AmountString
-              description: Valor mínimo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
-              example: '1350.00'
-            currency:
-              type: string
-              pattern: '^(\w{3}){1}$'
-              maxLength: 3
-              x-cds-type: CurrencyString
-              description: 'Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217'
-              example: BRL
+          $ref: '#/components/schemas/MinimumPrice'
         maximum:
-          type: object
-          description: Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência.
-          required:
-            - value
-            - currency
-          properties:
-            value:
-              type: string
-              pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
-              maxLength: 12
-              x-cds-type: AmountString
-              description: Valor máximo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
-              example: '8800.00'
-            currency:
-              type: string
-              pattern: '^(\w{3}){1}$'
-              maxLength: 3
-              x-cds-type: CurrencyString
-              description: 'Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217'
-              example: BRL
+          $ref: '#/components/schemas/MaximumPrice'
     AccountPriorityService:
       type: object
       required:
@@ -894,9 +845,9 @@ components:
         - maximum
       properties:
         name:
-          $ref: '#/components/schemas/EnumPriorityServiceName/properties/name'
+          $ref: '#/components/schemas/EnumPriorityServiceName'
         code:
-          $ref: '#/components/schemas/EnumAccountPriorityServiceCode/properties/code'
+          $ref: '#/components/schemas/EnumAccountPriorityServiceCode'
         chargingTriggerInfo:
           type: string
           maxLength: 2000
@@ -911,49 +862,12 @@ components:
           maxItems: 4
           description: 'Valor da mediana da tarifa, relativa ao serviço ofertado, informado no período'
         minimum:
-          type: object
-          description: Valor mínimo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
-          required:
-            - value
-            - currency
-          properties:
-            value:
-              type: string
-              pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
-              maxLength: 12
-              x-cds-type: AmountString
-              description: Valor mínimo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
-              example: '1350.00'
-            currency:
-              type: string
-              pattern: '^(\w{3}){1}$'
-              maxLength: 3
-              x-cds-type: CurrencyString
-              description: 'Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217'
-              example: BRL
+          $ref: '#/components/schemas/MinimumPrice'
         maximum:
-          type: object
-          description: Valor máximo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
-          required:
-            - value
-            - currency
-          properties:
-            value:
-              type: string
-              pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
-              maxLength: 12
-              x-cds-type: AmountString
-              description: Valor máximo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
-              example: '8800.00'
-            currency:
-              type: string
-              pattern: '^(\w{3}){1}$'
-              maxLength: 3
-              x-cds-type: CurrencyString
-              description: 'Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217'
-              example: BRL
+          $ref: '#/components/schemas/MaximumPrice'
     AccountsIncomeRate:
       type: object
+      description: Valores dos percentuais de taxas.
       properties:
         savingAccount:
           type: string
@@ -983,7 +897,6 @@ components:
       properties:
         minimumBalance:
           $ref: '#/components/schemas/MinimumBalance'
-          description: 'Saldo mínimo exigido nos Termos e condições contratuais, que regem as contas comercializadas.'
         elegibilityCriteriaInfo:
           type: string
           maxLength: 2000
@@ -1000,10 +913,9 @@ components:
       type: object
       properties:
         interval:
-          $ref: '#/components/schemas/EnumApplicationIntervals/properties/interval'
+          $ref: '#/components/schemas/EnumApplicationIntervals'
         indexer:
           $ref: '#/components/schemas/Indexer'
-          description: Percentual que corresponde a mediana (taxa efetiva) cobrada do cliente
         customers:
           $ref: '#/components/schemas/Customer'
       required:
@@ -1138,7 +1050,6 @@ components:
       properties:
         identification:
           $ref: '#/components/schemas/BankingAgentIdentification'
-          description: Dados de identificação do correspondente.
         locations:
           type: array
           items:
@@ -1158,56 +1069,40 @@ components:
           type: array
           maxItems: 7
           items:
-            required:
-              - weekday
-            properties:
-              weekday:
-                type: string
-                enum:
-                  - DOMINGO
-                  - SEGUNDA_FEIRA
-                  - TERCA_FEIRA
-                  - QUARTA_FEIRA
-                  - QUINTA_FEIRA
-                  - SEXTA_FEIRA
-                  - SABADO
-                description: Dia da semana de abertura
-              openingTime:
-                description: Horário de abertura (UTC)
-                type: string
-                maxLength: 13
-                pattern: '^(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
-                example: '10:20:30Z'
-              closingTime:
-                type: string
-                maxLength: 13
-                pattern: '^(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
-                example: '10:20:30Z'
-                description: Horário de fechamento (UTC)
+            $ref: '#/components/schemas/BankingAgentsStandard'
         exception:
           type: string
+          description: Em campo texto devem ser registradas todas as Exceções para o não atendimento.
           maxLength: 2000
           pattern: \w*\W*
           example: 'Exceto feriados municipais, nacionais e estaduais'
         isPublicAccessAllowed:
           type: boolean
+          description: Indica se a instalação do Correspondente Bancário tem acesso restrito a clientes.
           example: false
     BankingAgentIdentification:
       type: object
+      description: Dados de identificação do correspondente.
       properties:
         corporationName:
           type: string
           maxLength: 100
           pattern: \w*\W*
+          description: Nome do Correspondente Bancário.
         groupName:
           type: string
           maxLength: 100
           pattern: \w*\W*
+          description: Nome do conglomerado ao qual pertence o agente bancário.
+        cnpjNumber:
+          type: string
+          pattern: '^(\d{14})$|^NA$'
+          description: Número completo do CNPJ da instituição
+          maxLength: 14
+          example: '50685362000135'
         isUnderestablishment:
           type: boolean
           description: Indicador do Correspondente Bancário ser um Substabelecimento (são empresas  que foram contratadas por um correspondente bancário para prestar serviços. A empresa substabelecida é tratada como um correspondente do banco e tem praticamente os mesmos direitos e obrigações que possui o correspondente direto)
-      allOf:
-        - $ref: '#/components/schemas/CNPJ'
       required:
         - cnpjNumber
         - corporationName
@@ -1218,82 +1113,133 @@ components:
       properties:
         postalAddress:
           $ref: '#/components/schemas/BankingAgentPostalAddress'
-        availability:
-          $ref: '#/components/schemas/BankingAgentAvailability'
         phones:
           type: array
+          description: Lista de telefones do correspondente.
           items:
             $ref: '#/components/schemas/Phone'
+        availability:
+          $ref: '#/components/schemas/BankingAgentAvailability'
     BankingAgentPostalAddress:
       type: object
+      description: Endereço do correspondente.
       required:
         - address
         - districtName
         - townName
         - countrySubDivision
         - postCode
-      allOf:
-        - $ref: '#/components/schemas/PostalAddress'
+      properties:
+        address:
+          type: string
+          description: |
+            Deverá trazer toda a informação referente ao endereço da dependência informada: Tipo de logradouro + Nome do logradouro + Número do Logradouro (se não existir usar ' s/n') + complemento (se houver), como, p.ex.: 'R Diamatina, 59, bloco 35, fundos' 'Praça da Boa Vontade s/n'
+          maxLength: 150
+          pattern: \w*\W*
+          example: 'Av Naburo Ykesaki, 1270'
+        districtName:
+          type: string
+          description: |
+            Bairro é uma comunidade ou região localizada em uma cidade ou município de acordo com as suas subdivisões geográficas. p.ex: 'Paraíso'
+          maxLength: 50
+          pattern: \w*\W*
+          example: Centro
+        townName:
+          type: string
+          description: |
+            Localidade: O nome da localidade corresponde à designação da cidade ou município no qual o endereço está localizado. p.ex. 'São Paulo'
+          maxLength: 50
+          pattern: \w*\W*
+          example: Marília
+        countrySubDivision:
+          type: string
+          description: 'Enumeração referente a cada sigla da unidade da federação que identifica o estado ou o distrito federal, no qual o endereço está localizado. p.ex. ''AC''. São consideradas apenas as siglas para os estados brasileiros'
+          enum:
+            - AC
+            - AL
+            - AP
+            - AM
+            - BA
+            - CE
+            - DF
+            - ES
+            - GO
+            - MA
+            - MT
+            - MS
+            - MG
+            - PA
+            - PB
+            - PR
+            - PE
+            - PI
+            - RJ
+            - RN
+            - RS
+            - RO
+            - RR
+            - SC
+            - SP
+            - SE
+            - TO
+          example: SP
+        postCode:
+          type: string
+          description: Código de Endereçamento Postal
+          pattern: '(\d{8}|^NA$)'
+          maxLength: 8
+          example: '17500001'
+        additionalInfo:
+          type: string
+          description: Alguns logradouros ainda necessitam ser especificados por meio de complemento
+          maxLength: 30
+          pattern: \w*\W*
+          example: Fundos
+        ibgeCode:
+          type: string
+          description: Código IBGE do município
+          pattern: '^(\d{7})$'
+          example: '3550308'
+        country:
+          type: string
+          description: Nome do país
+          maxLength: 80
+          pattern: \w*\W*
+          example: Brasil
+        countryCode:
+          type: string
+          description: Código do país
+          example: BRA
+        geographicCoordinates:
+          $ref: '#/components/schemas/BakingAgentsGeographicCoordinates'
     BankingAgentService:
       type: object
       description: Serviços fornecidos pelo correspondente.
       properties:
         name:
-          type: string
-          enum:
-            - RECEPCAO_ENCAMINHAMENTO_PROPOSTAS_ABERTURA_CONTAS_DEPOSITOS_VISTA_PRAZO_POUPANCA_MANTIDOS_INSTITUICAO_CONTRATANTE
-            - REALIZACAO_RECEBIMENTOS_PAGAMENTOS_TRANSFERENCIAS_ELETRONICAS_VISANDO_MOVIMENTACAO_CONTAS_DEPOSITOS_TITULARIDADE_CLIENTES_MANTIDAS_INSTITUICAO_CONTRATANTE
-            - RECEBIMENTOS_PAGAMENTOS_QUALQUER_NATUREZA_OUTRAS_ATIVIDADES_DECORRENTES_EXECUCAO_CONTRATOS_CONVENIOS_PRESTACAO_SERVICOS
-            - EXECUCAO_ATIVA_PASSIVA_ORDENS_PAGAMENTO_CURSADAS_INTERMEDIO_INSTITUICAO_CONTRATANTE_SOLICITACAO_CLIENTES_USUARIOS
-            - RECEPCAO_ENCAMINHAMENTO_PROPOSTAS_OPERACAO_CREDITO_ARRENDAMENTO_MERCANTIL_CONCESSAO_INSTITUICAO_CONTRATANTE
-            - RECEBIMENTOS_PAGAMENTOS_RELACIONADOS_LETRAS_CAMBIO_ACEITE_INSTITUICAO_CONTRATANTE
-            - RECEPCAO_ENCAMINHAMENTO_PROPOSTAS_FORNECIMENTO_CARTAO_CREDITO_RESPONSABILIDADE_INSTITUICAO_CONTRATANTE
-            - REALIZACAO_OPERACOES_CAMBIO_RESPONSABILIDADE_INSTITUICAO_CONTRATANTE
-            - OUTROS
-          description: Relação dos Nomes de serviços prestados pelo Correspondente
+          $ref: '#/components/schemas/EnumBankingAgentsServicesName'
         code:
-          type: string
-          enum:
-            - RECEBE_ENCAMINHA_PROPOSTAS_ABERTURA_CONTAS
-            - REALIZA_RECEBIMENTOS_PAGAMENTOS_TRANSFERENCIAS_ELETRONICAS
-            - RECEBIMENTOS_PAGAMENTOS_QUALQUER_NATUREZA_EXECUCAO_CONTRATOS_CONVENIO
-            - EXECUCAO_ATIVA_PASSIVA_ORDENS_PAGAMENTO
-            - RECEBE_ENCAMINHA_PROPOSTAS_CREDITO_ARRENDAMENTO_MERCANTIL
-            - RECEBE_PAGAMENTOS_RELACIONADOS_LETRAS_CAMBIO_ACEITE_INSTITUICAO
-            - RECEBE_ENCAMINHA_PROPOSTAS_FORNECIMENTO_CARTAO_CREDITO
-            - REALIZA_OPERACOES_CAMBIO
-            - OUTROS
-          description: |
-            Relação dos Códigos relativos aos serviços prestados pelo Correspondente
-            \n* `RECEBE_ENCAMINHA_PROPOSTAS_ABERTURA_CONTAS` - Recepção e encaminhamento de propostas de abertura de contas
-            \n* `REALIZA_RECEBIMENTOS_PAGAMENTOS_TRANSFERENCIAS_ELETRONICAS` - Realização de recebimentos, pagamentos e transferências eletrônicas
-            \n* `RECEBIMENTOS_PAGAMENTOS_QUALQUER_NATUREZA_EXECUCAO_CONTRATOS_CONVENIO` - Recebimentos e pagamentos de qualquer natureza
-            \n* `EXECUCAO_ATIVA_PASSIVA_ORDENS_PAGAMENTO` - Execução ativa e passiva de ordens de pagamento
-            \n* `RECEBE_ENCAMINHA_PROPOSTAS_CREDITO_ARRENDAMENTO_MERCANTIL` - Recepção e encaminhamento de propostas de operações de crédito e de arrendamento mercantil
-            \n* `RECEBE_PAGAMENTOS_RELACIONADOS_LETRAS_CAMBIO_ACEITE_INSTITUICAO` - Recebimento e pagamentos relacionados a letras de câmbio de aceite da instituição
-            \n* `RECEBE_ENCAMINHA_PROPOSTAS_FORNECIMENTO_CARTAO_CREDITO` - Recepção e encaminhamento de propostas de fornecimento de cartões de crédito
-            \n* `REALIZA_OPERACOES_CAMBIO` - Realização de operações de câmbio
-            \n* `OUTROS` - Outros
+          $ref: '#/components/schemas/EnumBankingAgentsServicesCode'
         additionalInfo:
           type: string
           maxLength: 2000
           pattern: \w*\W*
-          description: Campo aberto para detalhamento
+          description: Detalhes adicionais sobre os serviços prestados.
       required:
         - name
         - code
     BankingAgentsBrand:
       type: object
+      description: Organização controladora do grupo de instituições financeiras.
       required:
         - name
         - companies
-      allOf:
-        - $ref: '#/components/schemas/Brand'
       properties:
         name:
           type: string
           description: Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a 'marca' utilizada está em definição pelos participantes.
           maxLength: 80
+          example: Organização A
         companies:
           type: array
           items:
@@ -1313,14 +1259,27 @@ components:
           pattern: \w*\W*
           description: 'Nome da Instituição, pertencente à marca, responsável pelo Correspondente Bancário no país.'
           example: Empresa da Organização A
+        cnpjNumber:
+          type: string
+          pattern: '^(\d{14})$|^NA$'
+          description: Número completo do CNPJ da instituição
+          maxLength: 14
+          example: '50685362000135'
+        urlComplementaryList:
+          type: string
+          pattern: \w*\W*
+          format: URIString
+          maxLength: 1024
+          description: |
+            URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços.
+            Endereço eletrônico de acesso ao canal. URLs são limitadas a 2048 caracteres mas, para o contexto do Sistema Financeiro aberto, será adotado a metade deste tamanho.
+          example: 'https://example.com/mobile-banking'
         contractors:
           type: array
           items:
             $ref: '#/components/schemas/BankingAgentsContractor'
           minItems: 1
           description: Relação de informações de um contratante do serviço de correspondente.
-      allOf:
-        - $ref: '#/components/schemas/CNPJ'
     BankingAgentsContractor:
       type: object
       required:
@@ -1331,14 +1290,59 @@ components:
           type: string
           maxLength: 100
           pattern: \w*\W*
+          description: Nome do contratante do serviço do correspondente.
+        cnpjNumber:
+          type: string
+          pattern: '^(\d{14})$|^NA$'
+          description: Número completo do CNPJ da instituição
+          maxLength: 14
+          example: '50685362000135'
         bankingAgents:
           type: array
+          description: Lista de correspondentes bancários.
           items:
             $ref: '#/components/schemas/BankingAgent'
           minItems: 1
           maxItems: 20
-      allOf:
-        - $ref: '#/components/schemas/CNPJ'
+    BakingAgentsGeographicCoordinates:
+      type: object
+      description: |
+        Objeto agrupador das informações que compõem as Coordenadas geográficas: latitude e longitude
+      properties:
+        latitude:
+          description: Informação da latitude referente a geolocalização informada.
+          type: string
+          pattern: '^-?\d{1,2}\.\d{1,9}$'
+          maxLength: 13
+          example: '-90.8365180'
+        longitude:
+          description: Informação da longitude referente a geolocalização informada.
+          type: string
+          pattern: '^-?\d{1,3}\.\d{1,8}$'
+          maxLength: 13
+          example: '-180.836519'
+    BankingAgentsStandard:
+      type: object
+      description: Relação da disponbilidade de atendimento
+      required:
+        - weekday
+      properties:
+        weekday:
+          $ref: '#/components/schemas/EnumWeekDay'
+        openingTime:
+          type: string
+          maxLength: 13
+          pattern: '^(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
+          format: TimeString
+          example: '10:20:30Z'
+          description: Horário padrão de início de atendimento pelo Correspondente Bancário.
+        closingTime:
+          type: string
+          maxLength: 13
+          pattern: '^(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
+          format: TimeString
+          example: '10:20:30Z'
+          description: Horário padrão de encerramento de atendimento pelo Correspondente Bancário.
     Branch:
       type: object
       description: 'Dependência de instituições financeiras e demais instituições, autorizadas a funcionar pelo Banco Central do Brasil, destinada à prática das atividades para as quais a instituição esteja regularmente habilitada.'
@@ -1350,7 +1354,7 @@ components:
       properties:
         identification:
           $ref: '#/components/schemas/BranchIdentification'
-        postalAddresses:
+        postalAddress:
           $ref: '#/components/schemas/BranchPostalAddress'
         availability:
           $ref: '#/components/schemas/BranchAvailability'
@@ -1368,6 +1372,7 @@ components:
           maxItems: 20
     BranchAvailability:
       type: object
+      description: Dias e horários de funcionamento na dependência
       properties:
         standards:
           type: array
@@ -1375,24 +1380,17 @@ components:
           items:
             properties:
               weekday:
-                type: string
-                enum:
-                  - DOMINGO
-                  - SEGUNDA_FEIRA
-                  - TERCA_FEIRA
-                  - QUARTA_FEIRA
-                  - QUINTA_FEIRA
-                  - SEXTA_FEIRA
-                  - SABADO
-                description: Dia da semana de abertura da dependência bancária
+                $ref: '#/components/schemas/EnumWeekDay'
               openingTime:
-                description: Horário de abertura da dependência bancária (UTC)
                 type: string
+                format: TimeString
                 maxLength: 13
                 pattern: '^(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$|^NA$'
                 example: '16:00:57Z'
+                description: Horário de abertura da dependência bancária (UTC)
               closingTime:
                 type: string
+                format: TimeString
                 description: Horário de fechamento da dependência bancária (UTC)
                 maxLength: 13
                 pattern: '^(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$|^NA$'
@@ -1414,23 +1412,29 @@ components:
       required:
         - standards
         - exception
+    BranchesGeographicCoordinates:
+      type: object
+      description: |
+        Objeto agrupador das informações que compõem as Coordenadas geográficas: latitude e longitude
+      properties:
+        latitude:
+          description: Informação da latitude referente a geolocalização informada.
+          type: string
+          pattern: '^-?\d{1,2}\.\d{1,9}$'
+          maxLength: 13
+          example: '-90.8365180'
+        longitude:
+          description: Informação da longitude referente a geolocalização informada.
+          type: string
+          pattern: '^-?\d{1,3}\.\d{1,8}$'
+          maxLength: 13
+          example: '-180.836519'
     BranchIdentification:
       type: object
+      description: Dados de identificação na dependência.
       properties:
         type:
-          type: string
-          enum:
-            - AGENCIA
-            - POSTO_ATENDIMENTO
-            - POSTO_ATENDIMENTO_ELETRONICO
-            - UNIDADE_ADMINISTRATIVA_DESMEMBRADA
-          description: |
-            Tipo da dependência, segundo a regulamentação do Bacen,  na Resolução Nº 4072, de 26 de abril de 2012:
-            Dependência de instituições financeiras e demais instituições, autorizadas a funcionar pelo Banco Central do Brasil, destinada à prática das atividades para as quais a instituição esteja regularmente habilitada.
-            \n* `AGENCIA`: Agência é a dependência destinada ao atendimento aos clientes, ao público em geral e aos associados de cooperativas de crédito, no exercício de atividades da instituição, não podendo ser móvel ou transitória;
-            \n* `POSTO_ATENDIMENTO`: Posto de Atendimento é a dependência subordinada a agência  ou à sede da instituição financeira, destinada ao atendimento ao público no exercício de uma ou mais de suas atividades, podendo ser fixo ou móvel. Segundo Art.15. Os Postos de Atendimento Bancário (PAB), Postos Avançados de Atendimento (PAA), Postos de Atendimento Transitórios (PAT), Postos de Compra de Ouro (PCO), Postos de Atendimento Cooperativo (PAC), Postos de Atendimento de Microcrédito (PAM), Postos Bancários de Arrecadação e Pagamento (PAP) e os Postos de Câmbio atualmente em funcionamento serão considerados PA.
-            \n* `POSTO_ATENDIMENTO_ELETRONICO`: Posto de Atendimento Eletrônico é a dependência constituída por um ou mais terminais de autoatendimento, subordinada a agência ou à sede da instituição, destinada à prestação de serviços por meio eletrônico, podendo ser fixo ou móvel, permanente ou transitório
-            \n* `UNIDADE_ADMINISTRATIVA_DESMEMBRADA `: Unidade Administrativa Desmembrada (UAD) segundo a Resolução 4072 , BCB, 2012, no Art. 8º \"... é dependência destinada à execução de atividades administrativas da instituição, vedado o atendimento ao público\"
+          $ref: '#/components/schemas/EnumBranchIdentificationType'
         code:
           type: string
           maxLength: 4
@@ -1471,69 +1475,126 @@ components:
       type: object
       required:
         - type
-      allOf:
-        - $ref: '#/components/schemas/Phone'
+      properties:
+        type:
+          $ref: '#/components/schemas/EnumBranchPhoneType'
+        countryCallingCode:
+          type: string
+          maxLength: 4
+          pattern: '^\d{1,4}$'
+          example: '55'
+          description: Número de DDI (Discagem Direta Internacional) para  telefone de acesso ao Canal - se houver. p.ex. '55'
+        areaCode:
+          type: string
+          maxLength: 2
+          pattern: '^\d{2}$'
+          example: '19'
+          description: Número de DDD (Discagem Direta à Distância) do telefone da dependência - se houver. p.ex. '19'
+        number:
+          type: string
+          maxLength: 11
+          pattern: '^([0-9]{8,11})$'
+          example: '35721199'
+          description: Número de telefone da dependência - se houver
     BranchPostalAddress:
       type: object
+      description: Endereço na dependência.
       required:
         - address
         - districtName
         - townName
         - countrySubDivision
         - postCode
-      allOf:
-        - $ref: '#/components/schemas/PostalAddress'
+      properties:
+        address:
+          type: string
+          description: |
+            Deverá trazer toda a informação referente ao endereço da dependência informada: Tipo de logradouro + Nome do logradouro + Número do Logradouro (se não existir usar ' s/n') + complemento (se houver), como, p.ex.: 'R Diamatina, 59, bloco 35, fundos' 'Praça da Boa Vontade s/n'
+          maxLength: 150
+          pattern: \w*\W*
+          example: 'Av Naburo Ykesaki, 1270'
+        additionalInfo:
+          type: string
+          description: Alguns logradouros ainda necessitam ser especificados por meio de complemento
+          maxLength: 30
+          pattern: \w*\W*
+          example: Fundos
+        districtName:
+          type: string
+          description: |
+            Bairro é uma comunidade ou região localizada em uma cidade ou município de acordo com as suas subdivisões geográficas. p.ex: 'Paraíso'
+          maxLength: 50
+          pattern: \w*\W*
+          example: Centro
+        townName:
+          type: string
+          description: |
+            Localidade: O nome da localidade corresponde à designação da cidade ou município no qual o endereço está localizado. p.ex. 'São Paulo'
+          maxLength: 50
+          pattern: \w*\W*
+          example: Marília
+        ibgeCode:
+          type: string
+          description: Código IBGE do município
+          pattern: '^(\d{7})$'
+          example: '3550308'
+        countrySubDivision:
+          type: string
+          description: 'Enumeração referente a cada sigla da unidade da federação que identifica o estado ou o distrito federal, no qual o endereço está localizado. p.ex. ''AC''. São consideradas apenas as siglas para os estados brasileiros'
+          enum:
+            - AC
+            - AL
+            - AP
+            - AM
+            - BA
+            - CE
+            - DF
+            - ES
+            - GO
+            - MA
+            - MT
+            - MS
+            - MG
+            - PA
+            - PB
+            - PR
+            - PE
+            - PI
+            - RJ
+            - RN
+            - RS
+            - RO
+            - RR
+            - SC
+            - SP
+            - SE
+            - TO
+          example: SP
+        postCode:
+          type: string
+          description: Código de Endereçamento Postal
+          pattern: '(\d{8}|^NA$)'
+          maxLength: 8
+          example: '17500001'
+        country:
+          type: string
+          description: Nome do país
+          maxLength: 80
+          pattern: \w*\W*
+          example: Brasil
+        countryCode:
+          type: string
+          description: Código do país
+          example: BRA
+        geographicCoordinates:
+          $ref: '#/components/schemas/GeographicCoordinates'
     BranchService:
       type: object
       properties:
         name:
-          type: string
-          enum:
-            - ABERTURA_CONTAS_DEPOSITOS_OU_PAGAMENTO_PRE_PAGA
-            - SAQUE_MOEDA_EM_ESPECIE
-            - RECEBIMENTOS_PAGAMENTOS_QUALQUER_NATUREZA
-            - TRANSFERENCIAS_ELETRONICAS_VISANDO_MOVIMENTACAO_CONTAS_DEPOSITOS_OU_PAGAMENTO_TITULARIDADE_CLIENTES
-            - CONSULTA_SALDOS_EXTRATOS_CONTAS_DEPOSITOS_CONTAS_PAGAMENTOS
-            - APLICACOES_RESGATES_INVESTIMENTOS
-            - EXECUCAO_ATIVA_PASSIVA_ORDENS_PAGAMENTO_SOLICITACAO_CLIENTES_USUARIOS
-            - DEPOSITOS_MOEDA_ESPECIE_CHEQUE
-            - OPERACOES_CREDITO_BEM_COMO_OUTROS_SERVICOS_PRESTADOS_ACOMPANHAMENTO_OPERACAO
-            - CARTAO_CREDITO
-            - SEGUROS
-            - OPERACOES_ARRENDAMENTO_MERCANTIL
-            - ABERTURA_CONTA_PAGAMENTO_POS_PAGA
-            - COMPRA_VENDA_MOEDA_ESTRANGEIRA_ESPECIE
-            - COMPRA_VENDA_CHEQUE_CHEQUE_VIAGEM_BEM_COMO_CARGA_MOEDA_ESTRANGEIRA_CARTAO_PRE_PAGO
-            - COMPRA_VENDA_OURO
-            - OUTROS_PRODUTOS_SERVICOS
-            - CANCELAMENTO
-            - INFORMACOES
-            - RECLAMACOES
-          description: Nome dos Serviços efetivamente prestados pelo Canal de Atendimento
+          $ref: '#/components/schemas/EnumBranchServicesNames'
         code:
-          type: string
-          enum:
-            - ABRE_CONTA_DEPOSITO_OU_PRE_PAGA
-            - SAQUE_MOEDA_ESPECIE
-            - RECEBE_PAGA_QUALQUER_NATUREZA
-            - TRANSFERENCIAS_ELETRONICAS_MOVIMENTA_CONTAS_DEPOSITOS_OU_PAGTO_TITULARES_CLIENTES
-            - CONSULTA_SALDOS_EXTRATOS_CONTAS_DEPOSITOS_PAGTOS
-            - APLICA_RESGATA_INVESTIMENTOS
-            - EXECUCAO_ATIVA_PASSIVA_ORDENS_PAGTO
-            - DEPOSITO_MOEDA_ESPECIE_CHEQUE
-            - OPERA_CREDITO_OUTROS_SERVICOS_ACOMPANHA_OPERACAO
-            - CARTAO_CREDITO
-            - SEGUROS
-            - OPERA_ARRENDAMENTO_MERCANTIL
-            - ABERTURA_CONTA_PAGAMENTO_POS_PAGA
-            - COMPRA_VENDA_MOEDA_ESTRANGEIRA_ESPECIE
-            - COMPRA_VENDA_CHEQUE_CHEQUE_VIAGEM_CARGA_MOEDA_ESTRANGEIRA_CARTAO_PRE_PAGO
-            - COMPRA_VENDA_OURO
-            - OUTROS_PRODUTOS_SERVICOS
-            - CANCELAMENTO
-            - INFORMACOES
-            - RECLAMACOES
-          description: Código dos Serviços efetivamente prestados pelo Canal de Atendimento
+          $ref: '#/components/schemas/EnumBranchServicesCodes'
         additionalInfo:
           type: string
           description: 'Texto livre para complementar informação relativa ao Serviço disponível, quando for selecionada a opção ''OUTROS_PRODUTOS_SERVICOS'''
@@ -1544,6 +1605,7 @@ components:
         - name
     BranchesBrand:
       type: object
+      description: Organização controladora do grupo de instituições financeiras.
       required:
         - name
         - companies
@@ -1561,9 +1623,11 @@ components:
           description: Companies traz uma lista de todas as instuituições da Marca.
     BranchesCompany:
       type: object
+      description: 'Nome da Instituição, pertencente à Marca, responsável pela Dependência.'
       required:
         - name
         - cnpjNumber
+        - branches
       properties:
         name:
           type: string
@@ -1580,8 +1644,10 @@ components:
           example: '45086338000178'
         urlComplementaryList:
           type: string
+          description: 'URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. Endereço eletrônico de acesso ao canal. URLs são limitadas a 2048 caracteres mas, para o contexto do Sistema Financeiro aberto, será adotado a metade deste tamanho.'
           maxLength: 1024
           pattern: \w*\W*
+          format: URIString
           example: 'https://example.com/mobile-banking'
         branches:
           type: array
@@ -1589,17 +1655,6 @@ components:
             $ref: '#/components/schemas/Branch'
           minItems: 1
           description: Lista de Dependências de uma Instituição
-      allOf:
-        - $ref: '#/components/schemas/CNPJ'
-    Brand:
-      type: object
-      properties:
-        name:
-          type: string
-          maxLength: 80
-          pattern: \w*\W*
-          description: Nome da marca selecionada pela Organização
-          example: Organização A
     BusinessAccounts:
       type: object
       required:
@@ -1612,19 +1667,9 @@ components:
         - incomeRate
       properties:
         type:
-          $ref: '#/components/schemas/EnumAccountType/properties/type'
+          $ref: '#/components/schemas/EnumAccountType'
         fees:
-          type: object
-          description: Objeto que reúne informações de tarifas de serviços
-          required:
-            - services
-          properties:
-            services:
-              type: array
-              items:
-                $ref: '#/components/schemas/BusinessAccountsService'
-              minItems: 1
-              description: Lista das Tarifas cobradas sobre Serviços
+          $ref: '#/components/schemas/FeesBusinessAccount'
         serviceBundles:
           type: array
           items:
@@ -1634,7 +1679,7 @@ components:
         openingClosingChannels:
           type: array
           items:
-            $ref: '#/components/schemas/EnumOpeningClosingChannels/properties/openingClosingChannels'
+            $ref: '#/components/schemas/EnumOpeningClosingChannels'
           minItems: 1
           maxItems: 7
           description: Lista dos canais para aberturas e encerramento
@@ -1649,7 +1694,7 @@ components:
         transactionMethods:
           type: array
           items:
-            $ref: '#/components/schemas/EnumTransactionMethods/properties/transactionMethods'
+            $ref: '#/components/schemas/EnumTransactionMethods'
           minItems: 1
           maxItems: 4
           description: Lista de formas de movimentação
@@ -1659,6 +1704,7 @@ components:
           $ref: '#/components/schemas/AccountsIncomeRate'
     BusinessAccountsBrand:
       type: object
+      description: Organização controladora do grupo de instituições financeiras.
       required:
         - name
         - companies
@@ -1680,9 +1726,28 @@ components:
       required:
         - name
         - cnpjNumber
-      allOf:
-        - $ref: '#/components/schemas/Company'
       properties:
+        name:
+          type: string
+          description: 'Nome da Instituição, pertencente à marca, responsável pela modalidade de Empréstimos. p.ex.''Empresa da Organização A'''
+          maxLength: 80
+          pattern: \w*\W*
+          example: Empresa A1
+        cnpjNumber:
+          type: string
+          pattern: '^(\d{14})$|^NA$'
+          description: Número completo do CNPJ da instituição
+          maxLength: 14
+          example: '50685362000135'
+        urlComplementaryList:
+          type: string
+          pattern: \w*\W*
+          format: URIString
+          maxLength: 1024
+          description: |
+            URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. Endereço eletrônico de acesso ao canal. Será obrigatoriamente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada.
+            Restrição: Será obrigatorimente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada
+          example: 'https://empresadaorganizacaoa.com/complementarylist'
         businessAccounts:
           type: array
           items:
@@ -1724,45 +1789,9 @@ components:
           maxItems: 4
           description: Lista distribuição preços tarifas de serviços
         minimum:
-          type: object
-          required:
-            - value
-            - currency
-          properties:
-            value:
-              type: string
-              pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
-              maxLength: 12
-              x-cds-type: AmountString
-              description: Valor mínimo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
-              example: '1350.00'
-            currency:
-              type: string
-              pattern: '^(\w{3}){1}$'
-              maxLength: 3
-              x-cds-type: CurrencyString
-              description: 'Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217'
-              example: BRL
+          $ref: '#/components/schemas/MinimumPrice'
         maximum:
-          type: object
-          required:
-            - value
-            - currency
-          properties:
-            value:
-              type: string
-              pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
-              maxLength: 12
-              x-cds-type: AmountString
-              description: Valor máximo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
-              example: '8800.00'
-            currency:
-              type: string
-              pattern: '^(\w{3}){1}$'
-              maxLength: 3
-              x-cds-type: CurrencyString
-              description: 'Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217'
-              example: BRL
+          $ref: '#/components/schemas/MaximumPrice'
     BusinessCreditCard:
       type: object
       required:
@@ -1802,11 +1831,16 @@ components:
           $ref: '#/components/schemas/CreditCardTermsConditions'
     BusinessCreditCardBrand:
       type: object
+      description: Organização controladora do grupo de instituições financeiras
       required:
         - companies
-      allOf:
-        - $ref: '#/components/schemas/Brand'
       properties:
+        name:
+          type: string
+          maxLength: 80
+          pattern: \w*\W*
+          description: Nome da marca selecionada pela Organização
+          example: Organização A
         companies:
           type: array
           description: Companies traz uma lista de todas as instituições da Marca
@@ -1818,9 +1852,28 @@ components:
       required:
         - name
         - cnpjNumber
-      allOf:
-        - $ref: '#/components/schemas/Company'
       properties:
+        name:
+          type: string
+          description: 'Nome da Instituição, pertencente à marca, responsável pela modalidade de Empréstimos. p.ex.''Empresa da Organização A'''
+          maxLength: 80
+          pattern: \w*\W*
+          example: Empresa A1
+        cnpjNumber:
+          type: string
+          pattern: '^(\d{14})$|^NA$'
+          description: Número completo do CNPJ da instituição
+          maxLength: 14
+          example: '50685362000135'
+        urlComplementaryList:
+          type: string
+          pattern: \w*\W*
+          format: URIString
+          maxLength: 1024
+          description: |
+            URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. Endereço eletrônico de acesso ao canal. Será obrigatoriamente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada.
+            Restrição: Será obrigatorimente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada
+          example: 'https://empresadaorganizacaoa.com/complementarylist'
         businessCreditCards:
           type: array
           description: Lista dos nomes de conta de pagamento pós-paga
@@ -1862,7 +1915,7 @@ components:
         requiredWarranties:
           type: array
           items:
-            $ref: '#/components/schemas/EnumRequiredWarranty/properties/requiredWarranties'
+            $ref: '#/components/schemas/EnumRequiredWarranty'
           minItems: 1
           maxItems: 14
         termsConditions:
@@ -1873,12 +1926,17 @@ components:
           example: 'https://empresaa1.com/personal_financing'
     BusinessFinancingBrand:
       type: object
+      description: Organização controladora do grupo de instituições financeiras
       required:
         - name
         - companies
-      allOf:
-        - $ref: '#/components/schemas/Brand'
       properties:
+        name:
+          type: string
+          maxLength: 80
+          pattern: \w*\W*
+          description: Nome da marca selecionada pela Organização
+          example: Organização A
         companies:
           type: array
           items:
@@ -1891,9 +1949,28 @@ components:
         - name
         - cnpjNumber
         - businessFinancings
-      allOf:
-        - $ref: '#/components/schemas/Company'
       properties:
+        name:
+          type: string
+          description: 'Nome da Instituição, pertencente à marca, responsável pela modalidade de Empréstimos. p.ex.''Empresa da Organização A'''
+          maxLength: 80
+          pattern: \w*\W*
+          example: Empresa A1
+        cnpjNumber:
+          type: string
+          pattern: '^(\d{14})$|^NA$'
+          description: Número completo do CNPJ da instituição
+          maxLength: 14
+          example: '50685362000135'
+        urlComplementaryList:
+          type: string
+          pattern: \w*\W*
+          format: URIString
+          maxLength: 1024
+          description: |
+            URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. Endereço eletrônico de acesso ao canal. Será obrigatoriamente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada.
+            Restrição: Será obrigatorimente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada
+          example: 'https://empresadaorganizacaoa.com/complementarylist'
         businessFinancings:
           type: array
           items:
@@ -1942,7 +2019,7 @@ components:
         requiredWarranties:
           type: array
           items:
-            $ref: '#/components/schemas/EnumRequiredWarranty/properties/requiredWarranties'
+            $ref: '#/components/schemas/EnumRequiredWarranty'
           description: Lista das  garantias exigidas
           minItems: 1
           maxItems: 14
@@ -1954,6 +2031,7 @@ components:
           example: 'https://empresaa1.com/personal_invoice_financings'
     BusinessInvoiceFinancingsBrand:
       type: object
+      description: Organização controladora do grupo de instituições financeiras
       required:
         - name
         - companies
@@ -1976,9 +2054,28 @@ components:
         - name
         - cnpjNumber
         - businessInvoiceFinancings
-      allOf:
-        - $ref: '#/components/schemas/Company'
       properties:
+        name:
+          type: string
+          description: 'Nome da Instituição, pertencente à marca, responsável pela modalidade de Empréstimos. p.ex.''Empresa da Organização A'''
+          maxLength: 80
+          pattern: \w*\W*
+          example: Empresa A1
+        cnpjNumber:
+          type: string
+          pattern: '^(\d{14})$|^NA$'
+          description: Número completo do CNPJ da instituição
+          maxLength: 14
+          example: '50685362000135'
+        urlComplementaryList:
+          type: string
+          pattern: \w*\W*
+          format: URIString
+          maxLength: 1024
+          description: |
+            URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. Endereço eletrônico de acesso ao canal. Será obrigatoriamente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada.
+            Restrição: Será obrigatorimente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada
+          example: 'https://empresadaorganizacaoa.com/complementarylist'
         businessInvoiceFinancings:
           type: array
           items:
@@ -2000,9 +2097,16 @@ components:
           description: Lista das Tarifas cobradas sobre Serviços
     BusinessInvoiceFinancingsInterestRates:
       type: object
-      allOf:
-        - $ref: '#/components/schemas/InterestRateFee'
       properties:
+        referentialRateIndexer:
+          $ref: '#/components/schemas/EnumReferentialRateIndexer'
+        rate:
+          type: string
+          pattern: '(^[0-1](\.[0-9]{2})$|^NA$)'
+          description: |
+            Percentual que incide sobre a composição das taxas de juros remuneratórios. (representa uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O valor 1 representa 100%) A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)
+          example: '0.15'
+          maxLength: 4
         applications:
           type: array
           description: Lista  das faixas de cobrança da taxa efetiva de remuneração
@@ -2023,6 +2127,8 @@ components:
           pattern: '(^[0-9](\.[0-9]{4})$|^NA$)'
           example: '0.6865'
       required:
+        - referentialRateIndexer
+        - rate
         - applications
         - minimumRate
         - maximumRate
@@ -2036,23 +2142,7 @@ components:
         - termsConditions
       properties:
         type:
-          type: string
-          enum:
-            - EMPRESTIMO_MICROCREDITO_PRODUTIVO_ORIENTADO
-            - EMPRESTIMO_CHEQUE_ESPECIAL
-            - EMPRESTIMO_CONTA_GARANTIDA
-            - EMPRESTIMO_CAPITAL_GIRO_PRAZO_VENCIMENTO_ATE_365_DIAS
-            - EMPRESTIMO_CAPITAL_GIRO_PRAZO_VENCIMENTO_SUPERIOR_365_DIAS
-            - EMPRESTIMO_CAPITAL_GIRO_ROTATIVO
-          description: |
-            Modalidades de empréstimos ofertados para pessoas Jurídicas, conforme Circular 4015-Bacen. Segundo cartilha do Bacen: Empréstimo é um contrato entre o cliente e uma instituição financeira (banco, cooperativa de crédito, caixa econômica) pelo qual o cliente recebe uma quantia em dinheiro que deverá ser devolvida em prazo determinado, acrescida dos juros acertados. Os recursos obtidos no empréstimo não tem destinação específica.
-            * Empréstimo-Microcrédito Produtivo Orientado - segundo PNMPO é o crédito concedido para financiamento das atividades produtivas, cuja metodologia será estabelecida em regulamento, observada a preferência do relacionamento direto com os empreendedores, admitido o uso de tecnologias digitais e eletrônicas que possam substituir o contato presencial
-            * Empréstimo-Cheque especial - operações de crédito vinculadas à conta corrente, nas quais determinado limite de crédito é disponibilizado aos clientes para utilização de acordo com suas conveniências, sem necessidade de comunicação prévia à instituição financeira
-            * Empréstimo-Conta garantida - operações de crédito rotativo, nas quais determinado limite de crédito é disponibilizado para utilização pelo cliente, através da simples movimentação da conta corrente e/ou solicitação formal à instituição financeira. As operações classificadas nessa modalidade não devem ter data definida para a amortização do saldo devedor, exceto a estabelecida para vigência do contrato
-            * Empréstimo-Capital de giro com prazo de vencimento até 365 dias: operações de crédito voltadas para o financiamento de curto prazo (igual ou inferior a 365 dias) das pessoas jurídicas, vinculadas às necessidades de capital de giro e a um contrato específico que estabeleça prazos, taxas e garantias
-            * Empréstimo-Capital de giro com prazo vencimento superior a 365 dias: operações de crédito voltadas para o financiamento de médio e longo prazo (superior a 365 dias) das pessoas jurídicas, vinculadas às necessidades de capital de giro e a um contrato específico que estabeleça prazos, taxas e garantias
-            * Empréstimo-Capital de giro rotativo: operações de crédito voltadas para o financiamento de capital de giro, vinculadas a um contrato que estabeleça linha de crédito rotativo, de forma que, à medida que a empresa devedora amortize os empréstimos já tomados, o limite disponível para utilização seja restituído, e amortizações com datas predeterminadas, podendo ser facultado ao devedor repactuar o fluxo de pagamentos ao longo da vigência do contrato
-          example: EMPRESTIMO_MICROCREDITO_PRODUTIVO_ORIENTADO
+          $ref: '#/components/schemas/EnumBusinessLoanType'
         fees:
           $ref: '#/components/schemas/LoanFees'
         interestRates:
@@ -2064,7 +2154,7 @@ components:
         requiredWarranties:
           type: array
           items:
-            $ref: '#/components/schemas/EnumRequiredWarranty/properties/requiredWarranties'
+            $ref: '#/components/schemas/EnumRequiredWarranty'
           minItems: 1
           maxItems: 14
           description: Lista das garantias exigidas
@@ -2076,6 +2166,7 @@ components:
           example: 'https://empresaa1.com/personal_loans'
     BusinessLoanBrand:
       type: object
+      description: Organização controladora do grupo de instituições financeiras
       required:
         - name
         - companies
@@ -2105,9 +2196,16 @@ components:
           maxLength: 80
           description: 'Nome da Instituição, pertencente à marca, responsável pela modalidade de Empréstimos. p.ex.''Empresa da Organização A'''
           example: Empresa A1
+        cnpjNumber:
+          type: string
+          pattern: '^(\d{14})$|^NA$'
+          description: Número completo do CNPJ da instituição
+          maxLength: 14
+          example: '50685362000135'
         urlComplementaryList:
           type: string
           pattern: \w*\W*
+          format: URIString
           maxLength: 1024
           description: URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. Endereço eletrônico de acesso ao canal.
           example: 'https://example.com/mobile-banking'
@@ -2118,10 +2216,9 @@ components:
           minItems: 1
           maxItems: 6
           description: Lista de modalidades de empréstimos
-      allOf:
-        - $ref: '#/components/schemas/CNPJ'
     BusinessUnarrangedAccountOverdraft:
       type: object
+      description: Lista de adiantamento a depositante
       required:
         - fees
         - interestRates
@@ -2143,6 +2240,7 @@ components:
           example: 'https://empresaa1.com/business_unarranged_account_overdraft'
     BusinessUnarrangedAccountOverdraftBrand:
       type: object
+      description: Organização titular das dependências
       required:
         - name
         - companies
@@ -2160,16 +2258,35 @@ components:
           description: Companies traz uma lista de todas as instituições da Marca
     BusinessUnarrangedAccountOverdraftCompany:
       type: object
+      description: Lista de adiantamento a depositante
       required:
         - name
         - cnpjNumber
         - businessUnarrangedAccountOverdraft
-      allOf:
-        - $ref: '#/components/schemas/Company'
       properties:
+        name:
+          type: string
+          description: 'Nome da Instituição, pertencente à marca, responsável pela modalidade de Empréstimos. p.ex.''Empresa da Organização A'''
+          maxLength: 80
+          pattern: \w*\W*
+          example: Empresa A1
+        cnpjNumber:
+          type: string
+          pattern: '^(\d{14})$|^NA$'
+          description: Número completo do CNPJ da instituição
+          maxLength: 14
+          example: '50685362000135'
+        urlComplementaryList:
+          type: string
+          pattern: \w*\W*
+          format: URIString
+          maxLength: 1024
+          description: |
+            URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. Endereço eletrônico de acesso ao canal. Será obrigatoriamente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada.
+            Restrição: Será obrigatorimente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada
+          example: 'https://empresadaorganizacaoa.com/complementarylist'
         businessUnarrangedAccountOverdraft:
           $ref: '#/components/schemas/BusinessUnarrangedAccountOverdraft'
-          description: Lista de produtos e serviços referente adiantamento a depositante
     BusinessUnarrangedAccountOverdraftFee:
       type: object
       description: Objeto que reúne informações de tarifas de serviços
@@ -2183,107 +2300,77 @@ components:
           minItems: 1
           maxItems: 31
           description: Lista das Tarifas cobradas sobre Serviços Prioritários
-    CNPJ:
+    CreditCardApplication:
       type: object
       properties:
-        cnpjNumber:
+        interval:
+          $ref: '#/components/schemas/EnumApplicationIntervals'
+        rate:
           type: string
-          pattern: '^(\d{14})$|^NA$'
-          description: Número completo do CNPJ da instituição
-          maxLength: 14
-          example: '50685362000135'
-    Company:
-      type: object
+          pattern: '(^[0-9](\.[0-9]{4})$|^NA$)'
+          maxLength: 6
+          description: 'Percentual que corresponde a mediana (taxa efetiva) cobrada do cliente pela utilização do crédito rotativo, no intervalo informado. '
+          example: '0.8700'
+        customers:
+          $ref: '#/components/schemas/Customer'
       required:
-        - name
-        - cnpjNumber
-      allOf:
-        - $ref: '#/components/schemas/CNPJ'
+        - interval
+        - indexer
+        - customers
+    CreditCardFee:
+      type: object
+      description: Objeto que reúne informações de tarifas de serviços
+      required:
+        - services
       properties:
-        name:
-          type: string
-          description: 'Nome da Instituição, pertencente à marca, responsável pela modalidade de Empréstimos. p.ex.''Empresa da Organização A'''
-          maxLength: 80
-          pattern: \w*\W*
-          example: Empresa A1
-        urlComplementaryList:
-          type: string
-          pattern: \w*\W*
-          maxLength: 1024
-          description: |
-            URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. Endereço eletrônico de acesso ao canal. Será obrigatoriamente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada.
-            Restrição: Será obrigatorimente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada
-          example: 'https://empresadaorganizacaoa.com/complementarylist'
+        services:
+          type: array
+          description: Lista das Tarifas cobradas sobre Serviço relacionadas a Modalidade de Pagamento Pós-Pagas
+          items:
+            $ref: '#/components/schemas/CreditCardService'
+          minItems: 1
+          maxItems: 9
     CreditCardIdentification:
       type: object
+      description: Informações de identificação do cartão de crédito
       required:
         - product
         - creditCard
       properties:
         product:
-          type: object
-          required:
-            - type
-            - additionalInfo
-          properties:
-            type:
-              type: string
-              enum:
-                - CLASSIC_NACIONAL
-                - CLASSIC_INTERNACIONAL
-                - GOLD
-                - PLATINUM
-                - INFINITE
-                - ELECTRON
-                - STANDARD_NACIONAL
-                - STANDARD_INTERNACIONAL
-                - ELETRONIC
-                - BLACK
-                - REDESHOP
-                - MAESTRO_MASTERCARD_MAESTRO
-                - GREEN
-                - BLUE
-                - BLUEBOX
-                - PROFISSIONAL_LIBERAL
-                - CHEQUE_ELETRONICO
-                - CORPORATIVO
-                - EMPRESARIAL
-                - COMPRAS
-                - OUTROS
-              description: 'Categoria atribuída a um cartão de pagamento, sob uma certa denominação, que lhe agrega um conjunto de vantagens, diferenciando-o de acordo com o perfil do portador. Essa categoria é definida pelo BACEN e está contida no documento de nome ''Elaboração e Remessa de Informações Relativas aos Cartões de Pagamento  Emissores'''
-              example: PLATINUM
-            additionalInfo:
-              type: string
-              maxLength: 50
-              pattern: \w*\W*
-              description: Informações complementares se tipo de Cartão 'OUTROS'. Campo deve ser obrigatoriamente preenchido se selecionado 'OUTROS'
-              example: NA
+          $ref: '#/components/schemas/CreditCardIdentificationProduct'
         creditCard:
-          type: object
-          required:
-            - network
-            - additionalInfo
-          properties:
-            network:
-              type: string
-              enum:
-                - VISA
-                - MASTERCARD
-                - AMERICAN_EXPRESS
-                - DINERS_CLUB
-                - HIPERCARD
-                - BANDEIRA_PROPRIA
-                - CHEQUE_ELETRONICO
-                - ELO
-                - OUTRAS
-              description: 'Categoria de Bandeiras de Cartões de Crédito (Instituidor do arranjo de pagamento). Bandeira é a detentora de todos os direitos e deveres da utilização da marca estampada no cartão, inclusive as bandeiras pertencentes aos emissores. p.ex. "American Express", "Diners Club" Essas bandeiras estão definidas em documento do BACEN de nome "Elaboração e Remessa de Informações Relativas aos Cartões de Pagamento  Emissores"'
-              example: MASTERCARD
-            additionalInfo:
-              type: string
-              maxLength: 50
-              pattern: \w*\W*
-              description: Texto livre para especificar categoria de bandeira marcada como 'OUTRAS'. Campo deve ser obrigatoriamente preenchido se campo network vier selecionado como 'OUTROS'
-              example: NA
+          $ref: '#/components/schemas/CreditCardIdentificationCreditCard'
+    CreditCardIdentificationCreditCard:
+      type: object
+      description: Categoria de Bandeiras de Cartões de Crédito
+      required:
+        - network
+        - additionalInfo
+      properties:
+        network:
+          $ref: '#/components/schemas/EnumCreditCardBrandCode'
+        additionalInfo:
+          type: string
+          maxLength: 50
+          pattern: \w*\W*
+          description: Texto livre para especificar categoria de bandeira marcada como 'OUTRAS'. Campo deve ser obrigatoriamente preenchido se campo network vier selecionado como 'OUTROS'
+          example: NA
+    CreditCardIdentificationProduct:
+      type: object
+      description: 'Categoria atribuída a um cartão de pagamento, sob uma certa denominação, que lhe agrega um conjunto de vantagens, diferenciando-o de acordo com o perfil do portador'
+      required:
+        - type
+        - additionalInfo
+      properties:
+        type:
+          $ref: '#/components/schemas/EnumCreditCardProductType'
+        additionalInfo:
+          type: string
+          maxLength: 50
+          pattern: \w*\W*
+          description: Informações complementares se tipo de Cartão 'OUTROS'. Campo deve ser obrigatoriamente preenchido se selecionado 'OUTROS'
+          example: NA
     CreditCardInterest:
       type: object
       description: Informações sobre taxas de juros
@@ -2295,6 +2382,12 @@ components:
         rates:
           type: array
           items:
+            $ref: '#/components/schemas/CreditCardRate'
+          minItems: 1
+          description: Lista da representação que traz o conjunto de informações necessárias para demonstrar a distribuição de frequências das taxas de juros remuneratórios para crédito rotativo
+        instalmentRates:
+          type: array
+          items:
             type: object
             required:
               - referentialRateIndexer
@@ -2304,33 +2397,18 @@ components:
               - maximumRate
             properties:
               referentialRateIndexer:
-                $ref: '#/components/schemas/EnumReferentialRateIndexer/properties/referentialRateIndexer'
+                $ref: '#/components/schemas/EnumReferentialRateIndexer'
               rate:
                 type: string
                 description: |
-                  Percentual que incide sobre a composição das taxas de juros remuneratórios. (representa uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O valor 1 representa 100%). A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)
+                  Percentual que incide sobre a composição das taxas de juros remuneratórios. (representa uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O valor '1 'representa 100%). A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)
                 pattern: '(^[0-9](\.[0-9]{2})|NA)$'
                 example: '0.15'
               applications:
                 type: array
                 description: Lista distribuição percentuais relativos à taxa de juros remuneratórios
                 items:
-                  type: object
-                  properties:
-                    interval:
-                      $ref: '#/components/schemas/EnumApplicationIntervals/properties/interval'
-                    rate:
-                      type: string
-                      pattern: '(^[0-9](\.[0-9]{4})$|^NA$)'
-                      maxLength: 6
-                      description: 'Percentual que corresponde a mediana (taxa efetiva) cobrada do cliente pela utilização do crédito rotativo, no intervalo informado. '
-                      example: '0.8700'
-                    customers:
-                      $ref: '#/components/schemas/Customer'
-                  required:
-                    - interval
-                    - indexer
-                    - customers
+                  $ref: '#/components/schemas/ApplicationRate'
                 minItems: 4
                 maxItems: 4
               minimum:
@@ -2352,40 +2430,59 @@ components:
                       Percentual máximo cobrado (taxa efetiva) no mês de referência, para o Financiamento contratado  A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)
                     example: '0.6865'
           minItems: 1
-          description: Lista da representação que traz o conjunto de informações necessárias para demonstrar a distribuição de frequências das taxas de juros remuneratórios para crédito rotativo
-        instalmentRates:
-          type: array
-          items:
-            $ref: '#/components/schemas/InterestRate'
-          minItems: 1
           description: Lista da representação que traz o conjunto de informações necessárias para demonstrar a distribuição de frequências das taxas de juros remuneratórios para parcelamento do saldo devedor
         otherCredits:
           type: array
           description: Lista de outras operações de crédito
           items:
-            type: object
-            required:
-              - code
-              - additionalInfo
-            properties:
-              code:
-                type: string
-                enum:
-                  - SAQUE_A_CREDITO
-                  - PAGAMENTOS_CONTAS
-                  - OUTROS
-                description: Lista de outras operações de crédito
-                example: SAQUE_A_CREDITO
-              additionalInfo:
-                type: string
-                maxLength: 50
-                pattern: \w*\W*
-                description: Campo Texto para descrever outras operações de crédito marcadas como 'OUTROS'. Se o campo 'code' vier selecionado com 'OUTROS' é obrigatório o preenchimento do additionalInfo
-                example: NA
+            $ref: '#/components/schemas/OtherCredit'
           minItems: 1
           maxItems: 3
+    CreditCardRate:
+      type: object
+      required:
+        - referentialRateIndexer
+        - rate
+        - applications
+        - minimumRate
+        - maximumRate
+      properties:
+        referentialRateIndexer:
+          $ref: '#/components/schemas/EnumReferentialRateIndexer'
+        rate:
+          type: string
+          description: |
+            Percentual que incide sobre a composição das taxas de juros remuneratórios. (representa uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O valor 1 representa 100%). A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)
+          pattern: '(^[0-9](\.[0-9]{2})|NA)$'
+          example: '0.15'
+        applications:
+          type: array
+          description: Lista distribuição percentuais relativos à taxa de juros remuneratórios
+          items:
+            $ref: '#/components/schemas/CreditCardApplication'
+          minItems: 4
+          maxItems: 4
+        minimum:
+          type: object
+          properties:
+            rate:
+              type: string
+              pattern: '(^[0-9](\.[0-9]{4})$|^NA$)'
+              description: |
+                Percentual mínimo cobrado (taxa efetiva) no mês de referência, para o Financiamento contratado  A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)
+              example: '0.0456'
+        maximum:
+          type: object
+          properties:
+            rate:
+              type: string
+              pattern: '(^[0-9](\.[0-9]{4})$|^NA$)'
+              description: |
+                Percentual máximo cobrado (taxa efetiva) no mês de referência, para o Financiamento contratado  A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)
+              example: '0.6865'
     CreditCardRewardsProgram:
       type: object
+      description: Informações sobre programas de recompensa presentes no cartão de crédito
       required:
         - hasRewardProgram
       properties:
@@ -2451,49 +2548,12 @@ components:
           minItems: 4
           maxItems: 4
         minimum:
-          type: object
-          description: Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência.
-          required:
-            - value
-            - currency
-          properties:
-            value:
-              type: string
-              pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
-              maxLength: 12
-              x-cds-type: AmountString
-              description: Valor mínimo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
-              example: '1350.00'
-            currency:
-              type: string
-              pattern: '^(\w{3}){1}$'
-              maxLength: 3
-              x-cds-type: CurrencyString
-              description: 'Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217'
-              example: BRL
+          $ref: '#/components/schemas/MinimumPrice'
         maximum:
-          type: object
-          description: Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência.
-          required:
-            - value
-            - currency
-          properties:
-            value:
-              type: string
-              pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
-              maxLength: 12
-              x-cds-type: AmountString
-              description: Valor máximo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
-              example: '8800.00'
-            currency:
-              type: string
-              pattern: '^(\w{3}){1}$'
-              maxLength: 3
-              x-cds-type: CurrencyString
-              description: 'Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217'
-              example: BRL
+          $ref: '#/components/schemas/MaximumPrice'
     CreditCardTermsConditions:
       type: object
+      description: Informações sobre termos e condições para aquisição e cancelamento
       required:
         - minimumFeeRate
         - elegibilityCriteriaInfo
@@ -2527,11 +2587,12 @@ components:
       type: string
       pattern: '^(\w{3}){1}$'
       maxLength: 3
-      x-cds-type: CurrencyString
+      format: CurrencyString
       description: 'Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217'
       example: BRL
     Customer:
       type: object
+      description: Percentual de clientes em cada faixa.
       required:
         - rate
       properties:
@@ -2541,6 +2602,75 @@ components:
           pattern: '^[0-9](\.[0-9]{4})$|^NA$'
           example: '0.1500'
           maxLength: 6
+    DiscoveryOutage:
+      type: object
+      description: Lista de indisponibilidades planejadas.
+      required:
+        - outageTime
+        - duration
+        - isPartial
+        - explanation
+      properties:
+        outageTime:
+          type: string
+          format: DateTimeString
+          example: '2020-07-21T08:30:00Z'
+          description: Data e hora planejada do início da indisponibilidade
+        duration:
+          type: string
+          format: DateTimeString
+          example: '2020-07-21T08:30:00Z'
+          description: Duração prevista da indisponibilidade
+        isPartial:
+          type: boolean
+          description: Flag que indica se a indisponibilidade é parcial (atingindo apenas alguns end points) ou total (atingindo todos os end points)
+          example: false
+        explanation:
+          type: string
+          description: Explicação sobre os motivos da indisponibilidade.
+          example: Atualização do API Gateway
+        unavailableEndpoints:
+          type: array
+          description: Endpoints com indisponibilidade
+          items:
+            type: string
+          example:
+            - 'https://api.banco.com.br/open-banking/channels/v1/electronic-channels'
+    DiscoveryStatus:
+      type: object
+      description: Lista de códigos de status da API.
+      required:
+        - code
+        - explanation
+      properties:
+        code:
+          $ref: '#/components/schemas/EnumStatusCode'
+        explanation:
+          type: string
+          description: Fornece uma explicação da interrupção atual que pode ser exibida para um cliente final. Restrição - Será obrigatoriamente preenchido se code tiver algum valor que não seja OK
+          example: Retorno com Sucesso
+        detectionTime:
+          type: string
+          format: DateTimeString
+          description: A data e hora em que a interrupção atual foi detectada. Restrição - Será obrigatoriamente preenchido se a propriedade code for PARTIAL_FAILURE ou UNAVAILABLE
+          example: '2020-07-21T08:30:00Z'
+        expectedResolutionTime:
+          type: string
+          format: DateTimeString
+          description: A data e hora em que o serviço completo deve continuar (se conhecido). Restrição - Será obrigatoriamente preenchido se code tiver algum valor que não seja OK
+          example: '2020-07-21T08:30:00Z'
+        updateTime:
+          type: string
+          format: DateTimeString
+          description: A data e hora em que esse status foi atualizado pela última vez pelo titular dos dados.
+          example: '2020-01-02T01:00:00Z'
+        unavailableEndpoints:
+          type: array
+          description: Endpoints com indisponibilidade
+          items:
+            type: string
+          example:
+            - 'https://api.banco.com.br/open-banking/channels/v1/electronic-channels'
     ElectronicChannel:
       type: object
       properties:
@@ -2563,16 +2693,7 @@ components:
         - urls
       properties:
         type:
-          type: string
-          enum:
-            - INTERNET_BANKING
-            - MOBILE_BANKING
-            - SAC
-            - OUVIDORIA
-            - CHAT
-            - OUTROS
-          description: Tipo de canal de atendimento eletrônico
-          example: CHAT
+          $ref: '#/components/schemas/EnumElectronicChannelsType'
         additionalInfo:
           type: string
           pattern: \w*\W*
@@ -2583,7 +2704,9 @@ components:
         urls:
           type: array
           items:
-            $ref: '#/components/schemas/ElectronicChannelUrl'
+            type: string
+            pattern: \w*\W*
+            maxLength: 1024
           minItems: 1
           description: Lista das URLs que atendem um tipo de canal eletrônico selecionado
     ElectronicChannelService:
@@ -2593,67 +2716,18 @@ components:
         - code
       properties:
         name:
-          type: string
-          enum:
-            - ABERTURA_CONTAS_DEPOSITOS_OU_PAGAMENTO_PRE_PAGA
-            - SAQUE_MOEDA_EM_ESPECIE
-            - RECEBIMENTOS_PAGAMENTOS_QUALQUER_NATUREZA
-            - TRANSFERENCIAS_ELETRONICAS_VISANDO_MOVIMENTACAO_CONTAS_DEPOSITOS_OU_PAGAMENTO_TITULARIDADE_CLIENTES
-            - CONSULTA_SALDOS_EXTRATOS_CONTAS_DEPOSITOS_CONTAS_PAGAMENTOS
-            - APLICACOES_RESGATES_INVESTIMENTOS
-            - EXECUCAO_ATIVA_PASSIVA_ORDENS_PAGAMENTO_SOLICITACAO_CLIENTES_USUARIOS
-            - DEPOSITOS_MOEDA_ESPECIE_CHEQUE
-            - OPERACOES_CREDITO_BEM_COMO_OUTROS_SERVICOS_PRESTADOS_ACOMPANHAMENTO_OPERACAO
-            - CARTAO_CREDITO
-            - SEGUROS
-            - OPERACOES_ARRENDAMENTO_MERCANTIL
-            - ABERTURA_CONTA_PAGAMENTO_POS_PAGA
-            - COMPRA_VENDA_MOEDA_ESTRANGEIRA_ESPECIE
-            - COMPRA_VENDA_CHEQUE_CHEQUE_VIAGEM_BEM_COMO_CARGA_MOEDA_ESTRANGEIRA_CARTAO_PRE_PAGO
-            - COMPRA_VENDA_OURO
-            - OUTROS_PRODUTOS_SERVICOS
-            - CANCELAMENTO
-            - INFORMACOES
-            - RECLAMACOES
-          description: Nome dos Serviços efetivamente prestados pelo Canal de Atendimento
-          example: ABERTURA_CONTAS_DEPOSITOS_OU_PAGAMENTO_PRE_PAGA
+          $ref: '#/components/schemas/EnumElectronicChannelsServicesName'
         code:
-          type: string
-          enum:
-            - ABRE_CONTA_DEPOSITO_OU_PRE_PAGA
-            - SAQUE_MOEDA_ESPECIE
-            - RECEBE_PAGA_QUALQUER_NATUREZA
-            - TRANSFERENCIAS_ELETRONICAS_MOVIMENTA_CONTAS_DEPOSITOS_OU_PAGTO_TITULARES_CLIENTES
-            - CONSULTA_SALDOS_EXTRATOS_CONTAS_DEPOSITOS_PAGTOS
-            - APLICA_RESGATA_INVESTIMENTOS
-            - EXECUCAO_ATIVA_PASSIVA_ORDENS_PAGTO
-            - DEPOSITO_MOEDA_ESPECIE_CHEQUE
-            - OPERA_CREDITO_OUTROS_SERVICOS_ACOMPANHA_OPERACAO
-            - CARTAO_CREDITO
-            - SEGUROS
-            - OPERA_ARRENDAMENTO_MERCANTIL
-            - ABERTURA_CONTA_PAGAMENTO_POS_PAGA
-            - COMPRA_VENDA_MOEDA_ESTRANGEIRA_ESPECIE
-            - COMPRA_VENDA_CHEQUE_CHEQUE_VIAGEM_CARGA_MOEDA_ESTRANGEIRA_CARTAO_PRE_PAGO
-            - COMPRA_VENDA_OURO
-            - OUTROS_PRODUTOS_SERVICOS
-            - CANCELAMENTO
-            - INFORMACOES
-            - RECLAMACOES
-          description: Código dos Serviços efetivamente prestados pelo Canal de Atendimento
-          example: ABRE_CONTA_DEPOSITO_OU_PRE_PAGA
+          $ref: '#/components/schemas/EnumElectronicChannelsServicesCode'
         additionalInfo:
           type: string
           maxLength: 2000
           pattern: \w*\W*
           description: 'Texto livre para complementar informação relativa ao Serviço disponível, quando for selecionada a opção ''OUTROS_PRODUTOS_SERVICOS'''
           example: SIC
-    ElectronicChannelUrl:
-      type: string
-      pattern: \w*\W*
-      maxLength: 1024
     ElectronicChannelsBrand:
       type: object
+      description: Organização controladora do grupo de instituições financeiras.
       required:
         - name
         - companies
@@ -2683,10 +2757,18 @@ components:
           example: Empresa da Marca A
           maxLength: 80
           pattern: \w*\W*
+        cnpjNumber:
+          type: string
+          pattern: '^(\d{14})$|^NA$'
+          description: Número completo do CNPJ da instituição
+          maxLength: 14
+          example: '50685362000135'
         urlComplementaryList:
           type: string
+          description: URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber.
           maxLength: 1024
           pattern: \w*\W*
+          format: URIString
           example: 'https://example.com/mobile-banking'
         electronicChannels:
           type: array
@@ -2695,8 +2777,6 @@ components:
           minItems: 1
           maxItems: 4
           description: Lista  de canais de atendimento eltrônico
-      allOf:
-        - $ref: '#/components/schemas/CNPJ'
     EndpointDowntime:
       type: object
       description: Tempos de downtime por endpoint.
@@ -2724,227 +2804,639 @@ components:
           type: string
           description: Taxa de disponibilidade do endpoint.
     EnumAccountPriorityServiceCode:
-      properties:
-        code:
-          type: string
-          description: 'Sigla de identificação do Serviço Prioritário, segundo Resolução 3.919 do Bacen.'
-          enum:
-            - CADASTRO
-            - 2_VIA_CARTAO_DEBITO
-            - 2_VIA_CARTAO_POUPANCA
-            - EXCLUSAO_CCF
-            - SUSTACAO_REVOGACAO
-            - FOLHA_CHEQUE
-            - CHEQUE_ADMINISTRATIVO
-            - CHEQUE_VISADO
-            - SAQUE_PESSOAL
-            - SAQUE_TERMINAL
-            - SAQUE_CORRESPONDENTE
-            - DEPOSITO_IDENTIFICADO
-            - EXTRATO_MES_P
-            - EXTRATO_MES_E
-            - EXTRATO_MES_C
-            - EXTRATO_MOVIMENTO_P
-            - EXTRATO_MOVIMENTO_E
-            - EXTRATO_MOVIMENTO_C
-            - MICROFILME
-            - DOC_PESSOAL
-            - DOC_ELETRONICO
-            - DOC_INTERNET
-            - TED_PESSOAL
-            - TED_ELETRONICO
-            - TED_INTERNET
-            - DOC_TED_AGENDADO_P
-            - DOC_TED_AGENDADO_E
-            - DOC_TED_AGENDADO_I
-            - TRANSF_RECURSO_P
-            - TRANSF_RECURSO_E
-            - ORDEM_PAGAMENTO
-            - ANUIDADE_NACIONAL
-            - ANUIDADE_INTERNACIONAL
-            - ANUIDADE_DIFERENCIADA
-            - SAQUE_CARTAO_BRASIL
-            - SAQUE_CARTAO_EXTERIOR
-            - AVALIACAO_EMERGENCIAL_CREDITO
-            - EMISSAO_SEGUNDA_VIA
-            - TARIFA_PAGAMENTO_CONTAS
-            - SMS
-          example: CADASTRO
+      type: string
+      description: 'Sigla de identificação do Serviço Prioritário, segundo Resolução 3.919 do Bacen.'
+      enum:
+        - CADASTRO
+        - 2_VIA_CARTAO_DEBITO
+        - 2_VIA_CARTAO_POUPANCA
+        - EXCLUSAO_CCF
+        - SUSTACAO_REVOGACAO
+        - FOLHA_CHEQUE
+        - CHEQUE_ADMINISTRATIVO
+        - CHEQUE_VISADO
+        - SAQUE_PESSOAL
+        - SAQUE_TERMINAL
+        - SAQUE_CORRESPONDENTE
+        - DEPOSITO_IDENTIFICADO
+        - EXTRATO_MES_P
+        - EXTRATO_MES_E
+        - EXTRATO_MES_C
+        - EXTRATO_MOVIMENTO_P
+        - EXTRATO_MOVIMENTO_E
+        - EXTRATO_MOVIMENTO_C
+        - MICROFILME
+        - DOC_PESSOAL
+        - DOC_ELETRONICO
+        - DOC_INTERNET
+        - TED_PESSOAL
+        - TED_ELETRONICO
+        - TED_INTERNET
+        - DOC_TED_AGENDADO_P
+        - DOC_TED_AGENDADO_E
+        - DOC_TED_AGENDADO_I
+        - TRANSF_RECURSO_P
+        - TRANSF_RECURSO_E
+        - ORDEM_PAGAMENTO
+        - ANUIDADE_NACIONAL
+        - ANUIDADE_INTERNACIONAL
+        - ANUIDADE_DIFERENCIADA
+        - SAQUE_CARTAO_BRASIL
+        - SAQUE_CARTAO_EXTERIOR
+        - AVALIACAO_EMERGENCIAL_CREDITO
+        - EMISSAO_SEGUNDA_VIA
+        - TARIFA_PAGAMENTO_CONTAS
+        - SMS
+      example: CADASTRO
     EnumAccountType:
-      properties:
-        type:
-          type: string
-          enum:
-            - CONTA_DEPOSITO_A_VISTA
-            - CONTA_POUPANCA
-            - CONTA_PAGAMENTO_PRE_PAGA
-          description: |
-            Tipos de contas ofertadas para pessoa natural ou jurídica, p.ex. 'CONTA_DEPOSITO_A_VISTA'.
-            Conta de depósito à vista ou Conta corrente - é o tipo mais comum. Nela, o dinheiro fica à sua disposição para ser sacado a qualquer momento. Essa conta não gera rendimentos para o depositante
-            Conta poupança - foi criada para estimular as pessoas a pouparem. O dinheiro que ficar na conta por trinta dias passa a gerar rendimentos, com isenção de imposto de renda para quem declara. Ou seja, o dinheiro “cresce” (rende) enquanto ficar guardado na conta. Cada depósito terá rendimentos de mês em mês, sempre no dia do mês em que o dinheiro tiver sido depositado
-            Conta de pagamento pré-paga: segundo CIRCULAR Nº 3.680, BCB de  2013, é a 'destinada à execução de transações de pagamento em moeda eletrônica realizadas com base em fundos denominados em reais previamente aportados'
-          example: CONTA_DEPOSITO_A_VISTA
+      type: string
+      enum:
+        - CONTA_DEPOSITO_A_VISTA
+        - CONTA_POUPANCA
+        - CONTA_PAGAMENTO_PRE_PAGA
+      description: |
+        Tipos de contas ofertadas para pessoa natural ou jurídica, p.ex. 'CONTA_DEPOSITO_A_VISTA'.
+        Conta de depósito à vista ou Conta corrente - é o tipo mais comum. Nela, o dinheiro fica à sua disposição para ser sacado a qualquer momento. Essa conta não gera rendimentos para o depositante
+        Conta poupança - foi criada para estimular as pessoas a pouparem. O dinheiro que ficar na conta por trinta dias passa a gerar rendimentos, com isenção de imposto de renda para quem declara. Ou seja, o dinheiro “cresce” (rende) enquanto ficar guardado na conta. Cada depósito terá rendimentos de mês em mês, sempre no dia do mês em que o dinheiro tiver sido depositado
+        Conta de pagamento pré-paga: segundo CIRCULAR Nº 3.680, BCB de  2013, é a 'destinada à execução de transações de pagamento em moeda eletrônica realizadas com base em fundos denominados em reais previamente aportados'
+      example: CONTA_DEPOSITO_A_VISTA
+    EnumAdminMetricsPeriod:
+      type: string
+      enum:
+        - CURRENT
+        - ALL
+      description: |
+        Período a ser consultado
+           `CURRENT` - Métricas do dia atual.
+           `ALL` - Métricas de todo o período disponível.
     EnumApplicationIntervals:
-      properties:
-        interval:
-          type: string
-          enum:
-            - 1_FAIXA
-            - 2_FAIXA
-            - 3_FAIXA
-            - 4_FAIXA
-          description: |
-            Faixas para cobrança da taxa efetiva aplicada pela contratação do crédito, no intervalo informado: 1ª faixa, 2ª faixa, 3ª faixa e 4ª faixa. Segundo Normativa nº32 de 2020: 'Distribuição de frequência relativa dos valores de tarifas e taxas de juros cobrados dos clientes, de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana e o percentual de clientes em cada uma dessas faixas.
-          example: 1_FAIXA
+      type: string
+      enum:
+        - 1_FAIXA
+        - 2_FAIXA
+        - 3_FAIXA
+        - 4_FAIXA
+      description: |
+        Faixas para cobrança da taxa efetiva aplicada pela contratação do crédito, no intervalo informado: 1ª faixa, 2ª faixa, 3ª faixa e 4ª faixa. Segundo Normativa nº32 de 2020: 'Distribuição de frequência relativa dos valores de tarifas e taxas de juros cobrados dos clientes, de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana e o percentual de clientes em cada uma dessas faixas.
+      example: 1_FAIXA
+    EnumBankingAgentsServicesCode:
+      type: string
+      enum:
+        - RECEBE_ENCAMINHA_PROPOSTAS_ABERTURA_CONTAS
+        - REALIZA_RECEBIMENTOS_PAGAMENTOS_TRANSFERENCIAS_ELETRONICAS
+        - RECEBIMENTOS_PAGAMENTOS_QUALQUER_NATUREZA_EXECUCAO_CONTRATOS_CONVENIO
+        - EXECUCAO_ATIVA_PASSIVA_ORDENS_PAGAMENTO
+        - RECEBE_ENCAMINHA_PROPOSTAS_CREDITO_ARRENDAMENTO_MERCANTIL
+        - RECEBE_PAGAMENTOS_RELACIONADOS_LETRAS_CAMBIO_ACEITE_INSTITUICAO
+        - RECEBE_ENCAMINHA_PROPOSTAS_FORNECIMENTO_CARTAO_CREDITO
+        - REALIZA_OPERACOES_CAMBIO
+        - OUTROS
+      description: |
+        Relação dos Códigos relativos aos serviços prestados pelo Correspondente
+         `RECEBE_ENCAMINHA_PROPOSTAS_ABERTURA_CONTAS` - Recepção e encaminhamento de propostas de abertura de contas
+         `REALIZA_RECEBIMENTOS_PAGAMENTOS_TRANSFERENCIAS_ELETRONICAS` - Realização de recebimentos, pagamentos e transferências eletrônicas
+         `RECEBIMENTOS_PAGAMENTOS_QUALQUER_NATUREZA_EXECUCAO_CONTRATOS_CONVENIO` - Recebimentos e pagamentos de qualquer natureza
+         `EXECUCAO_ATIVA_PASSIVA_ORDENS_PAGAMENTO` - Execução ativa e passiva de ordens de pagamento
+         `RECEBE_ENCAMINHA_PROPOSTAS_CREDITO_ARRENDAMENTO_MERCANTIL` - Recepção e encaminhamento de propostas de operações de crédito e de arrendamento mercantil
+         `RECEBE_PAGAMENTOS_RELACIONADOS_LETRAS_CAMBIO_ACEITE_INSTITUICAO` - Recebimento e pagamentos relacionados a letras de câmbio de aceite da instituição
+         `RECEBE_ENCAMINHA_PROPOSTAS_FORNECIMENTO_CARTAO_CREDITO` - Recepção e encaminhamento de propostas de fornecimento de cartões de crédito
+         `REALIZA_OPERACOES_CAMBIO` - Realização de operações de câmbio
+         `OUTROS` - Outros
+    EnumBankingAgentsServicesName:
+      type: string
+      enum:
+        - RECEPCAO_ENCAMINHAMENTO_PROPOSTAS_ABERTURA_CONTAS_DEPOSITOS_VISTA_PRAZO_POUPANCA_MANTIDOS_INSTITUICAO_CONTRATANTE
+        - REALIZACAO_RECEBIMENTOS_PAGAMENTOS_TRANSFERENCIAS_ELETRONICAS_VISANDO_MOVIMENTACAO_CONTAS_DEPOSITOS_TITULARIDADE_CLIENTES_MANTIDAS_INSTITUICAO_CONTRATANTE
+        - RECEBIMENTOS_PAGAMENTOS_QUALQUER_NATUREZA_OUTRAS_ATIVIDADES_DECORRENTES_EXECUCAO_CONTRATOS_CONVENIOS_PRESTACAO_SERVICOS
+        - EXECUCAO_ATIVA_PASSIVA_ORDENS_PAGAMENTO_CURSADAS_INTERMEDIO_INSTITUICAO_CONTRATANTE_SOLICITACAO_CLIENTES_USUARIOS
+        - RECEPCAO_ENCAMINHAMENTO_PROPOSTAS_OPERACAO_CREDITO_ARRENDAMENTO_MERCANTIL_CONCESSAO_INSTITUICAO_CONTRATANTE
+        - RECEBIMENTOS_PAGAMENTOS_RELACIONADOS_LETRAS_CAMBIO_ACEITE_INSTITUICAO_CONTRATANTE
+        - RECEPCAO_ENCAMINHAMENTO_PROPOSTAS_FORNECIMENTO_CARTAO_CREDITO_RESPONSABILIDADE_INSTITUICAO_CONTRATANTE
+        - REALIZACAO_OPERACOES_CAMBIO_RESPONSABILIDADE_INSTITUICAO_CONTRATANTE
+        - OUTROS
+      description: Relação dos Nomes de serviços prestados pelo Correspondente
+    EnumBranchIdentificationType:
+      type: string
+      enum:
+        - AGENCIA
+        - POSTO_ATENDIMENTO
+        - POSTO_ATENDIMENTO_ELETRONICO
+        - UNIDADE_ADMINISTRATIVA_DESMEMBRADA
+      description: |
+        Tipo da dependência, segundo a regulamentação do Bacen,  na Resolução Nº 4072, de 26 de abril de 2012:
+        Dependência de instituições financeiras e demais instituições, autorizadas a funcionar pelo Banco Central do Brasil, destinada à prática das atividades para as quais a instituição esteja regularmente habilitada.
+         `AGENCIA`: Agência é a dependência destinada ao atendimento aos clientes, ao público em geral e aos associados de cooperativas de crédito, no exercício de atividades da instituição, não podendo ser móvel ou transitória;
+         `POSTO_ATENDIMENTO`: Posto de Atendimento é a dependência subordinada a agência  ou à sede da instituição financeira, destinada ao atendimento ao público no exercício de uma ou mais de suas atividades, podendo ser fixo ou móvel. Segundo Art.15. Os Postos de Atendimento Bancário (PAB), Postos Avançados de Atendimento (PAA), Postos de Atendimento Transitórios (PAT), Postos de Compra de Ouro (PCO), Postos de Atendimento Cooperativo (PAC), Postos de Atendimento de Microcrédito (PAM), Postos Bancários de Arrecadação e Pagamento (PAP) e os Postos de Câmbio atualmente em funcionamento serão considerados PA.
+         `POSTO_ATENDIMENTO_ELETRONICO`: Posto de Atendimento Eletrônico é a dependência constituída por um ou mais terminais de autoatendimento, subordinada a agência ou à sede da instituição, destinada à prestação de serviços por meio eletrônico, podendo ser fixo ou móvel, permanente ou transitório
+         `UNIDADE_ADMINISTRATIVA_DESMEMBRADA `: Unidade Administrativa Desmembrada (UAD) segundo a Resolução 4072 , BCB, 2012, no Art. 8º \"... é dependência destinada à execução de atividades administrativas da instituição, vedado o atendimento ao público\"
+    EnumBranchPhoneType:
+      type: string
+      description: Identificação do Tipo de telefone da dependência.
+      enum:
+        - FIXO
+        - MOVEL
+      example: FIXO
+    EnumBranchServicesCodes:
+      type: string
+      enum:
+        - ABRE_CONTA_DEPOSITO_OU_PRE_PAGA
+        - SAQUE_MOEDA_ESPECIE
+        - RECEBE_PAGA_QUALQUER_NATUREZA
+        - TRANSFERENCIAS_ELETRONICAS_MOVIMENTA_CONTAS_DEPOSITOS_OU_PAGTO_TITULARES_CLIENTES
+        - CONSULTA_SALDOS_EXTRATOS_CONTAS_DEPOSITOS_PAGTOS
+        - APLICA_RESGATA_INVESTIMENTOS
+        - EXECUCAO_ATIVA_PASSIVA_ORDENS_PAGTO
+        - DEPOSITO_MOEDA_ESPECIE_CHEQUE
+        - OPERA_CREDITO_OUTROS_SERVICOS_ACOMPANHA_OPERACAO
+        - CARTAO_CREDITO
+        - SEGUROS
+        - OPERA_ARRENDAMENTO_MERCANTIL
+        - ABERTURA_CONTA_PAGAMENTO_POS_PAGA
+        - COMPRA_VENDA_MOEDA_ESTRANGEIRA_ESPECIE
+        - COMPRA_VENDA_CHEQUE_CHEQUE_VIAGEM_CARGA_MOEDA_ESTRANGEIRA_CARTAO_PRE_PAGO
+        - COMPRA_VENDA_OURO
+        - OUTROS_PRODUTOS_SERVICOS
+        - CANCELAMENTO
+        - INFORMACOES
+        - RECLAMACOES
+      description: Código dos Serviços efetivamente prestados pelo Canal de Atendimento
+    EnumBranchServicesNames:
+      type: string
+      enum:
+        - ABERTURA_CONTAS_DEPOSITOS_OU_PAGAMENTO_PRE_PAGA
+        - SAQUE_MOEDA_EM_ESPECIE
+        - RECEBIMENTOS_PAGAMENTOS_QUALQUER_NATUREZA
+        - TRANSFERENCIAS_ELETRONICAS_VISANDO_MOVIMENTACAO_CONTAS_DEPOSITOS_OU_PAGAMENTO_TITULARIDADE_CLIENTES
+        - CONSULTA_SALDOS_EXTRATOS_CONTAS_DEPOSITOS_CONTAS_PAGAMENTOS
+        - APLICACOES_RESGATES_INVESTIMENTOS
+        - EXECUCAO_ATIVA_PASSIVA_ORDENS_PAGAMENTO_SOLICITACAO_CLIENTES_USUARIOS
+        - DEPOSITOS_MOEDA_ESPECIE_CHEQUE
+        - OPERACOES_CREDITO_BEM_COMO_OUTROS_SERVICOS_PRESTADOS_ACOMPANHAMENTO_OPERACAO
+        - CARTAO_CREDITO
+        - SEGUROS
+        - OPERACOES_ARRENDAMENTO_MERCANTIL
+        - ABERTURA_CONTA_PAGAMENTO_POS_PAGA
+        - COMPRA_VENDA_MOEDA_ESTRANGEIRA_ESPECIE
+        - COMPRA_VENDA_CHEQUE_CHEQUE_VIAGEM_BEM_COMO_CARGA_MOEDA_ESTRANGEIRA_CARTAO_PRE_PAGO
+        - COMPRA_VENDA_OURO
+        - OUTROS_PRODUTOS_SERVICOS
+        - CANCELAMENTO
+        - INFORMACOES
+        - RECLAMACOES
+      description: Nome dos Serviços efetivamente prestados pelo Canal de Atendimento
+    EnumBusinessLoanType:
+      type: string
+      enum:
+        - EMPRESTIMO_MICROCREDITO_PRODUTIVO_ORIENTADO
+        - EMPRESTIMO_CHEQUE_ESPECIAL
+        - EMPRESTIMO_CONTA_GARANTIDA
+        - EMPRESTIMO_CAPITAL_GIRO_PRAZO_VENCIMENTO_ATE_365_DIAS
+        - EMPRESTIMO_CAPITAL_GIRO_PRAZO_VENCIMENTO_SUPERIOR_365_DIAS
+        - EMPRESTIMO_CAPITAL_GIRO_ROTATIVO
+      description: |
+        Modalidades de empréstimos ofertados para pessoas Jurídicas, conforme Circular 4015-Bacen. Segundo cartilha do Bacen: Empréstimo é um contrato entre o cliente e uma instituição financeira (banco, cooperativa de crédito, caixa econômica) pelo qual o cliente recebe uma quantia em dinheiro que deverá ser devolvida em prazo determinado, acrescida dos juros acertados. Os recursos obtidos no empréstimo não tem destinação específica.
+         Empréstimo-Microcrédito Produtivo Orientado - segundo PNMPO é o crédito concedido para financiamento das atividades produtivas, cuja metodologia será estabelecida em regulamento, observada a preferência do relacionamento direto com os empreendedores, admitido o uso de tecnologias digitais e eletrônicas que possam substituir o contato presencial
+         Empréstimo-Cheque especial - operações de crédito vinculadas à conta corrente, nas quais determinado limite de crédito é disponibilizado aos clientes para utilização de acordo com suas conveniências, sem necessidade de comunicação prévia à instituição financeira
+         Empréstimo-Conta garantida - operações de crédito rotativo, nas quais determinado limite de crédito é disponibilizado para utilização pelo cliente, através da simples movimentação da conta corrente e/ou solicitação formal à instituição financeira. As operações classificadas nessa modalidade não devem ter data definida para a amortização do saldo devedor, exceto a estabelecida para vigência do contrato
+         Empréstimo-Capital de giro com prazo de vencimento até 365 dias: operações de crédito voltadas para o financiamento de curto prazo (igual ou inferior a 365 dias) das pessoas jurídicas, vinculadas às necessidades de capital de giro e a um contrato específico que estabeleça prazos, taxas e garantias
+         Empréstimo-Capital de giro com prazo vencimento superior a 365 dias: operações de crédito voltadas para o financiamento de médio e longo prazo (superior a 365 dias) das pessoas jurídicas, vinculadas às necessidades de capital de giro e a um contrato específico que estabeleça prazos, taxas e garantias
+         Empréstimo-Capital de giro rotativo: operações de crédito voltadas para o financiamento de capital de giro, vinculadas a um contrato que estabeleça linha de crédito rotativo, de forma que, à medida que a empresa devedora amortize os empréstimos já tomados, o limite disponível para utilização seja restituído, e amortizações com datas predeterminadas, podendo ser facultado ao devedor repactuar o fluxo de pagamentos ao longo da vigência do contrato
+      example: EMPRESTIMO_MICROCREDITO_PRODUTIVO_ORIENTADO
+    EnumCreditCardBrandCode:
+      type: string
+      enum:
+        - VISA
+        - MASTERCARD
+        - AMERICAN_EXPRESS
+        - DINERS_CLUB
+        - HIPERCARD
+        - BANDEIRA_PROPRIA
+        - CHEQUE_ELETRONICO
+        - ELO
+        - OUTRAS
+      description: 'Categoria de Bandeiras de Cartões de Crédito (Instituidor do arranjo de pagamento). Bandeira é a detentora de todos os direitos e deveres da utilização da marca estampada no cartão, inclusive as bandeiras pertencentes aos emissores. p.ex. "American Express", "Diners Club" Essas bandeiras estão definidas em documento do BACEN de nome "Elaboração e Remessa de Informações Relativas aos Cartões de Pagamento  Emissores"'
+      example: MASTERCARD
+    EnumCreditCardProductType:
+      type: string
+      enum:
+        - CLASSIC_NACIONAL
+        - CLASSIC_INTERNACIONAL
+        - GOLD
+        - PLATINUM
+        - INFINITE
+        - ELECTRON
+        - STANDARD_NACIONAL
+        - STANDARD_INTERNACIONAL
+        - ELETRONIC
+        - BLACK
+        - REDESHOP
+        - MAESTRO_MASTERCARD_MAESTRO
+        - GREEN
+        - BLUE
+        - BLUEBOX
+        - PROFISSIONAL_LIBERAL
+        - CHEQUE_ELETRONICO
+        - CORPORATIVO
+        - EMPRESARIAL
+        - COMPRAS
+        - OUTROS
+      description: 'Categoria atribuída a um cartão de pagamento, sob uma certa denominação, que lhe agrega um conjunto de vantagens, diferenciando-o de acordo com o perfil do portador. Essa categoria é definida pelo BACEN e está contida no documento de nome ''Elaboração e Remessa de Informações Relativas aos Cartões de Pagamento  Emissores'''
+      example: PLATINUM
+    EnumElectronicChannelsServicesCode:
+      type: string
+      enum:
+        - ABRE_CONTA_DEPOSITO_OU_PRE_PAGA
+        - SAQUE_MOEDA_ESPECIE
+        - RECEBE_PAGA_QUALQUER_NATUREZA
+        - TRANSFERENCIAS_ELETRONICAS_MOVIMENTA_CONTAS_DEPOSITOS_OU_PAGTO_TITULARES_CLIENTES
+        - CONSULTA_SALDOS_EXTRATOS_CONTAS_DEPOSITOS_PAGTOS
+        - APLICA_RESGATA_INVESTIMENTOS
+        - EXECUCAO_ATIVA_PASSIVA_ORDENS_PAGTO
+        - DEPOSITO_MOEDA_ESPECIE_CHEQUE
+        - OPERA_CREDITO_OUTROS_SERVICOS_ACOMPANHA_OPERACAO
+        - CARTAO_CREDITO
+        - SEGUROS
+        - OPERA_ARRENDAMENTO_MERCANTIL
+        - ABERTURA_CONTA_PAGAMENTO_POS_PAGA
+        - COMPRA_VENDA_MOEDA_ESTRANGEIRA_ESPECIE
+        - COMPRA_VENDA_CHEQUE_CHEQUE_VIAGEM_CARGA_MOEDA_ESTRANGEIRA_CARTAO_PRE_PAGO
+        - COMPRA_VENDA_OURO
+        - OUTROS_PRODUTOS_SERVICOS
+        - CANCELAMENTO
+        - INFORMACOES
+        - RECLAMACOES
+      description: Código dos Serviços efetivamente prestados pelo Canal de Atendimento
+      example: ABRE_CONTA_DEPOSITO_OU_PRE_PAGA
+    EnumElectronicChannelsServicesName:
+      type: string
+      enum:
+        - ABERTURA_CONTAS_DEPOSITOS_OU_PAGAMENTO_PRE_PAGA
+        - SAQUE_MOEDA_EM_ESPECIE
+        - RECEBIMENTOS_PAGAMENTOS_QUALQUER_NATUREZA
+        - TRANSFERENCIAS_ELETRONICAS_VISANDO_MOVIMENTACAO_CONTAS_DEPOSITOS_OU_PAGAMENTO_TITULARIDADE_CLIENTES
+        - CONSULTA_SALDOS_EXTRATOS_CONTAS_DEPOSITOS_CONTAS_PAGAMENTOS
+        - APLICACOES_RESGATES_INVESTIMENTOS
+        - EXECUCAO_ATIVA_PASSIVA_ORDENS_PAGAMENTO_SOLICITACAO_CLIENTES_USUARIOS
+        - DEPOSITOS_MOEDA_ESPECIE_CHEQUE
+        - OPERACOES_CREDITO_BEM_COMO_OUTROS_SERVICOS_PRESTADOS_ACOMPANHAMENTO_OPERACAO
+        - CARTAO_CREDITO
+        - SEGUROS
+        - OPERACOES_ARRENDAMENTO_MERCANTIL
+        - ABERTURA_CONTA_PAGAMENTO_POS_PAGA
+        - COMPRA_VENDA_MOEDA_ESTRANGEIRA_ESPECIE
+        - COMPRA_VENDA_CHEQUE_CHEQUE_VIAGEM_BEM_COMO_CARGA_MOEDA_ESTRANGEIRA_CARTAO_PRE_PAGO
+        - COMPRA_VENDA_OURO
+        - OUTROS_PRODUTOS_SERVICOS
+        - CANCELAMENTO
+        - INFORMACOES
+        - RECLAMACOES
+      description: Nome dos Serviços efetivamente prestados pelo Canal de Atendimento
+      example: ABERTURA_CONTAS_DEPOSITOS_OU_PAGAMENTO_PRE_PAGA
+    EnumElectronicChannelsType:
+      type: string
+      enum:
+        - INTERNET_BANKING
+        - MOBILE_BANKING
+        - SAC
+        - OUVIDORIA
+        - CHAT
+        - OUTROS
+      description: 'Tipo de canal de atendimento eletrônico. Restrição - O Tipo de Canal determina o Tipo de Acesso a ele relacionado: URL para acesso ao internet banking, URL para aquisição do app, URL da central,URL do SAC, URL da ouvidoria, URL para chat.'
+      example: CHAT
     EnumOpeningClosingChannels:
-      properties:
-        openingClosingChannels:
-          type: string
-          enum:
-            - DEPENDENCIAS_PROPRIAS
-            - CORRESPONDENTES_BANCARIOS
-            - INTERNET_BANKING
-            - MOBILE_BANKING
-            - CENTRAL_TELEFONICA
-            - CHAT
-            - OUTROS
-          description: 'Canais disponíveis para abertura e encerramento de contas, p.ex. ''DEPENDENCIAS_PROPRIAS'''
-          example: DEPENDENCIAS_PROPRIAS
+      type: string
+      enum:
+        - DEPENDENCIAS_PROPRIAS
+        - CORRESPONDENTES_BANCARIOS
+        - INTERNET_BANKING
+        - MOBILE_BANKING
+        - CENTRAL_TELEFONICA
+        - CHAT
+        - OUTROS
+      description: 'Canais disponíveis para abertura e encerramento de contas, p.ex. ''DEPENDENCIAS_PROPRIAS'''
+      example: DEPENDENCIAS_PROPRIAS
+    EnumPersonalFinancingType:
+      type: string
+      enum:
+        - FINANCIAMENTO_AQUISICAO_BENS_VEICULOS_AUTOMOTORES
+        - FINANCIAMENTO_AQUISICAO_BENS_OUTROS_BENS
+        - FINANCIAMENTO_MICROCREDITO
+        - FINANCIAMENTO_RURAL_CUSTEIO
+        - FINANCIAMENTO_RURAL_INVESTIMENTO
+        - FINANCIAMENTO_RURAL_COMERCIALIZACAO
+        - FINANCIAMENTO_RURAL_INDUSTRIALIZACAO
+        - FINANCIAMENTO_IMOBILIARIO_SISTEMA_FINANCEIRO_HABITACAO_SFH
+        - FINANCIAMENTO_IMOBILIARIO_SISTEMA_FINANCEIRO_HABITACAO_SFI
+      description: |
+        Modalidades de financiamentos ofertados para pessoas naturais, conforme Circular 4015-Bacen. Segundo cartilha do Bacen: Financiamento é um contrato entre o cliente e uma instituição financeira, mas com, destinação específica como para a aquisição de veículo ou de bem imóvel, que funcionam como garantia para o crédito concedido
+      example: FINANCIAMENTO_AQUISICAO_BENS_VEICULOS_AUTOMOTORES
+    EnumPersonalInvoiceFinancingsType:
+      type: string
+      enum:
+        - DESCONTO_DUPLICATAS
+        - DESCONTO_CHEQUES
+        - ANTECIPACAO_FATURA_CARTAO_CREDITO
+        - OUTROS_DIREITOS_CREDITORIOS_DESCONTADOS
+        - OUTROS_TITULOS_DESCONTADOS
+      description: |
+        Modalidades de direitos creditórios descontados ofertados para pessoas naturais, conforme Circular 4015-Bacen. Direito creditório descontado é a antecipação de créditos relativos por ex. ao: desconto de duplicatas, desconto de cheques,antecipação de fatura de cartão de crédito
+      example: DESCONTO_DUPLICATAS
+    EnumPersonalLoanType:
+      type: string
+      enum:
+        - EMPRESTIMO_CREDITO_PESSOAL_CONSIGNADO
+        - EMPRESTIMO_CREDITO_PESSOAL_SEM_CONSIGNACAO
+        - EMPRESTIMO_HOME_EQUITY
+        - EMPRESTIMO_MICROCREDITO_PRODUTIVO_ORIENTADO
+        - EMPRESTIMO_CHEQUE_ESPECIAL
+        - EMPRESTIMO_CONTA_GARANTIDA
+      description: |
+        Modalidades de empréstimos ofertados para pessoa Natural, conforme Circular 4015-Bacen. Segundo cartilha do Bacen: Empréstimo é um contrato entre o cliente e uma instituição financeira (banco, cooperativa de crédito, caixa econômica) pelo qual o cliente recebe uma quantia em dinheiro que deverá ser devolvida em prazo determinado, acrescida dos juros acertados. Os recursos obtidos no empréstimo não tem destinação específica.
+          * `EMPRESTIMO_CREDITO_PESSOAL_CONSIGNADO` -  operações de crédito com retenção de parcela do salário ou benefício do tomador, para o pagamento das prestações do empréstimo – desconto em folha de pagamento – nos termos da legislação em vigor
+          * `EMPRESTIMO_CREDITO_PESSOAL_SEM_CONSIGNACAO` - operações de empréstimos às pessoa natural, sem vinculação com aquisição de bem ou serviço e sem retenção de parcela do salário ou benefício do tomador para o pagamento das prestações do empréstimo
+          * `EMPRESTIMO_HOME_EQUITY` - empréstimos pessoa natural, garantidos por hipoteca ou por alienação fiduciária de bens imóveis residenciais, sem vinculação a aquisição de bens
+          * `EMPRESTIMO_MICROCREDITO_PRODUTIVO_ORIENTADO` - segundo PNMPO é o crédito concedido para financiamento das atividades produtivas, cuja metodologia será estabelecida em regulamento, observada a preferência do relacionamento direto com os empreendedores, admitido o uso de tecnologias digitais e eletrônicas que possam substituir o contato presencial
+          * `EMPRESTIMO_CHEQUE_ESPECIAL` - operações de crédito vinculadas à conta corrente, nas quais determinado limite de crédito é disponibilizado aos clientes para utilização de acordo com suas conveniências, sem necessidade de comunicação prévia à instituição financeira
+          * `EMPRESTIMO_CONTA_GARANTIDA` - operações de crédito rotativo, nas quais determinado limite de crédito é disponibilizado para utilização pelo cliente, através da simples movimentação da conta corrente e/ou solicitação formal à instituição financeira. As operações classificadas nessa modalidade não devem ter data definida para a amortização do saldo devedor, exceto a estabelecida para vigência do contrato
+      example: EMPRESTIMO_CREDITO_PESSOAL_CONSIGNADO
+    EnumPhoneChannelsServicesCode:
+      type: string
+      enum:
+        - ABRE_CONTA_DEPOSITO_OU_PRE_PAGA
+        - SAQUE_MOEDA_ESPECIE
+        - RECEBE_PAGA_QUALQUER_NATUREZA
+        - TRANSFERENCIAS_ELETRONICAS_MOVIMENTA_CONTAS_DEPOSITOS_OU_PAGTO_TITULARES_CLIENTES
+        - CONSULTA_SALDOS_EXTRATOS_CONTAS_DEPOSITOS_PAGTOS
+        - APLICA_RESGATA_INVESTIMENTOS
+        - EXECUCAO_ATIVA_PASSIVA_ORDENS_PAGTO
+        - DEPOSITO_MOEDA_ESPECIE_CHEQUE
+        - OPERA_CREDITO_OUTROS_SERVICOS_ACOMPANHA_OPERACAO
+        - CARTAO_CREDITO
+        - SEGUROS
+        - OPERA_ARRENDAMENTO_MERCANTIL
+        - ABERTURA_CONTA_PAGAMENTO_POS_PAGA
+        - COMPRA_VENDA_MOEDA_ESTRANGEIRA_ESPECIE
+        - COMPRA_VENDA_CHEQUE_CHEQUE_VIAGEM_CARGA_MOEDA_ESTRANGEIRA_CARTAO_PRE_PAGO
+        - COMPRA_VENDA_OURO
+        - OUTROS_PRODUTOS_SERVICOS
+        - CANCELAMENTO
+        - INFORMACOES
+        - RECLAMACOES
+      description: Código dos Serviços efetivamente prestados pelo Canal de Atendimento
+    EnumPhoneChannelsServicesName:
+      type: string
+      enum:
+        - ABERTURA_CONTAS_DEPOSITOS_OU_PAGAMENTO_PRE_PAGA
+        - SAQUE_MOEDA_EM_ESPECIE
+        - RECEBIMENTOS_PAGAMENTOS_QUALQUER_NATUREZA
+        - TRANSFERENCIAS_ELETRONICAS_VISANDO_MOVIMENTACAO_CONTAS_DEPOSITOS_OU_PAGAMENTO_TITULARIDADE_CLIENTES
+        - CONSULTA_SALDOS_EXTRATOS_CONTAS_DEPOSITOS_CONTAS_PAGAMENTOS
+        - APLICACOES_RESGATES_INVESTIMENTOS
+        - EXECUCAO_ATIVA_PASSIVA_ORDENS_PAGAMENTO_SOLICITACAO_CLIENTES_USUARIOS
+        - DEPOSITOS_MOEDA_ESPECIE_CHEQUE
+        - OPERACOES_CREDITO_BEM_COMO_OUTROS_SERVICOS_PRESTADOS_ACOMPANHAMENTO_OPERACAO
+        - CARTAO_CREDITO
+        - SEGUROS
+        - OPERACOES_ARRENDAMENTO_MERCANTIL
+        - ABERTURA_CONTA_PAGAMENTO_POS_PAGA
+        - COMPRA_VENDA_MOEDA_ESTRANGEIRA_ESPECIE
+        - COMPRA_VENDA_CHEQUE_CHEQUE_VIAGEM_BEM_COMO_CARGA_MOEDA_ESTRANGEIRA_CARTAO_PRE_PAGO
+        - COMPRA_VENDA_OURO
+        - OUTROS_PRODUTOS_SERVICOS
+        - CANCELAMENTO
+        - INFORMACOES
+        - RECLAMACOES
+      description: Nome dos Serviços efetivamente prestados pelo Canal de Atendimento
+    EnumPhoneChannelsType:
+      type: string
+      enum:
+        - CENTRAL_TELEFONICA
+        - SAC
+        - OUVIDORIA
+        - OUTROS
+      description: |
+        Tipo de canal telefônico de atendimento:
+           `CENTRAL_TELEFONICA`
+           `SAC`
+           `OUVIDORIA`
+           `OUTROS`
+      example: OUVIDORIA
     EnumPriceIntervals:
-      properties:
-        interval:
-          type: string
-          enum:
-            - 1_FAIXA
-            - 2_FAIXA
-            - 3_FAIXA
-            - 4_FAIXA
-          minItems: 1
-          maxItems: 1
-          description: |
-            Segundo Normativa nº 32, BCB, de 2020: Distribuição de frequência relativa dos valores de tarifas cobradas dos clientes, de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana em cada uma dessas faixas. Informando: 1ª faixa, 2ª faixa, 3ª faixa e 4ª faixa
-          example: 1_FAIXA
+      type: string
+      enum:
+        - 1_FAIXA
+        - 2_FAIXA
+        - 3_FAIXA
+        - 4_FAIXA
+      minItems: 1
+      maxItems: 1
+      description: |
+        Segundo Normativa nº 32, BCB, de 2020: Distribuição de frequência relativa dos valores de tarifas cobradas dos clientes, de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana em cada uma dessas faixas. Informando: 1ª faixa, 2ª faixa, 3ª faixa e 4ª faixa
+      example: 1_FAIXA
     EnumPriorityServiceName:
-      properties:
-        name:
-          type: string
-          enum:
-            - CONFECCAO_CADASTRO_INICIO_RELACIONAMENTO
-            - FORNECIMENTO_2_VIA_CARTAO_FUNCAO_DEBITO
-            - FORNECIMENTO_2_VIA_CARTAO_FUNCAO_MOVIMENTACAO_CONTA_POUPANCA
-            - EXCLUSAO_CADASTRO_EMITENTES_CHEQUES_SEM_FUNDO_CCF
-            - CONTRA_ORDEM_REVOGACAO_E_OPOSICAO_OU_SUSTACAO_PAGAMENTO_CHEQUE
-            - FORNECIMENTO_FOLHAS_CHEQUE
-            - CHEQUE_ADMINISTRATIVO
-            - CHEQUE_VISADO
-            - SAQUE_CONTA_DEPOSITO_A_VISTA_POUPANCA_PRESENCIAL_OU_PESSOAL
-            - SAQUE_CONTA_DEPOSITO_A_VISTA_POUPANCA_TERMINAL_AUTOATENDIMENTO
-            - SAQUE_CONTA_DEPOSITO_A_VISTA_POUPANCA_CORRESPONDENTES_PAIS
-            - DEPOSITO_IDENTIFICADO
-            - FORNECIMENTO_EXTRATO_MENSAL_CONTA_DEPOSITOS_A_VISTA_E_POUPANCA_PRESENCIAL_OU_PESSOAL
-            - FORNECIMENTO_EXTRATO_MENSAL_CONTA_DEPOSITOS_A_VISTA_E_POUPANCA_TERMINAL_AUTOATENDIMENTO
-            - FORNECIMENTO_EXTRATO_MENSAL_CONTA_DEPOSITOS_A_VISTA_E_POUPANCA_CORRESPONDENTES_PAIS
-            - FORNECIMENTO_EXTRATO_DE_UM_PERIODO_CONTA_DEPOSITOS_A_VISTA_E_POUPANCA_PRESENCIAL_OU_PESSOAL
-            - FORNECIMENTO_EXTRATO_DE_UM_PERIODO_CONTA_DEPOSITOS_A_VISTA_E_POUPANCA_TERMINAL_AUTOATENDIMENTO
-            - FORNECIMENTO_EXTRATO_DE_UM_PERIODO_CONTA_DEPOSITOS_A_VISTA_E_POUPANCA_CORRESPONDENTES_PAIS
-            - FORNECIMENTO_COPIA_MICROFILME_MICROFICHA_ASSEMELHADO
-            - TRANSFERENCIA_DOC_PESSOAL_OU_PRESENCIAL
-            - TRANSFERENCIA_DOC_TERMINAL_AUTOATENDIMENTO_OUTROS_MEIOS_ELETRONICOS
-            - TRANSFERENCIA_DOC_INTERNET
-            - TRANSFERENCIA_TED_PESSOAL_OU_PRESENCIAL
-            - TRANSFERENCIA_TED_TERMINAL_AUTOATENDIMENTO_OUTROS_MEIOS_ELETRONICOS
-            - TRANSFERENCIA_TED_INTERNET
-            - TRANSFERENCIA_DOC_TED_PESSOAL_OU_PRESENCIAL
-            - TRANSFERENCIA_DOC_TED_TERMINAL_AUTOATENDIMENTO_OUTROS_MEIOS_ELETRONICOS
-            - TRANSFERENCIA_DOC_TED_INTERNET
-            - TRANSFERENCIA_ENTRE_CONTAS_PROPRIA_INSTITUICAO_PESSOAL_OU_PRESENCIAL
-            - TRANSFERENCIA_ENTRE_CONTAS_PROPRIA_INSTITUICAO_TERMINAL_AUTOATENDIMENTO_OUTROS_MEIOS_ELETRONICOS_INCLUSIVE_INTERNET
-            - ORDEM_PAGAMENTO
-            - ANUIDADE_CARTAO_BASICO_NACIONAL
-            - ANUIDADE_CARTAO_BASICO_INTERNACIONAL
-            - ANUIDADE_DIFERENCIADA
-            - UTILIZACAO_CANAIS_ATENDIMENTO_RETIRADA_ESPECIE_BRASIL
-            - UTILIZACAO_CANAIS_ATENDIMENTO_RETIRADA_ESPECIE_EXTERIOR
-            - AVALIACAO_EMERGENCIAL_CREDITO
-            - FORNECIMENTO_SEGUNDA_VIA_FUNCAO_CREDITO
-            - PAGAMENTO_CONTAS_UTILIZANDO_FUNCAO_CREDITO
-            - SMS
-          description: 'Nome dos Serviços prioritários, segundo Resolução 3.919 do Bacen, para pessoa natural.'
-          example: TRANSFERENCIA_TED_PESSOAL_OU_PRESENCIAL
+      type: string
+      enum:
+        - CONFECCAO_CADASTRO_INICIO_RELACIONAMENTO
+        - FORNECIMENTO_2_VIA_CARTAO_FUNCAO_DEBITO
+        - FORNECIMENTO_2_VIA_CARTAO_FUNCAO_MOVIMENTACAO_CONTA_POUPANCA
+        - EXCLUSAO_CADASTRO_EMITENTES_CHEQUES_SEM_FUNDO_CCF
+        - CONTRA_ORDEM_REVOGACAO_E_OPOSICAO_OU_SUSTACAO_PAGAMENTO_CHEQUE
+        - FORNECIMENTO_FOLHAS_CHEQUE
+        - CHEQUE_ADMINISTRATIVO
+        - CHEQUE_VISADO
+        - SAQUE_CONTA_DEPOSITO_A_VISTA_POUPANCA_PRESENCIAL_OU_PESSOAL
+        - SAQUE_CONTA_DEPOSITO_A_VISTA_POUPANCA_TERMINAL_AUTOATENDIMENTO
+        - SAQUE_CONTA_DEPOSITO_A_VISTA_POUPANCA_CORRESPONDENTES_PAIS
+        - DEPOSITO_IDENTIFICADO
+        - FORNECIMENTO_EXTRATO_MENSAL_CONTA_DEPOSITOS_A_VISTA_E_POUPANCA_PRESENCIAL_OU_PESSOAL
+        - FORNECIMENTO_EXTRATO_MENSAL_CONTA_DEPOSITOS_A_VISTA_E_POUPANCA_TERMINAL_AUTOATENDIMENTO
+        - FORNECIMENTO_EXTRATO_MENSAL_CONTA_DEPOSITOS_A_VISTA_E_POUPANCA_CORRESPONDENTES_PAIS
+        - FORNECIMENTO_EXTRATO_DE_UM_PERIODO_CONTA_DEPOSITOS_A_VISTA_E_POUPANCA_PRESENCIAL_OU_PESSOAL
+        - FORNECIMENTO_EXTRATO_DE_UM_PERIODO_CONTA_DEPOSITOS_A_VISTA_E_POUPANCA_TERMINAL_AUTOATENDIMENTO
+        - FORNECIMENTO_EXTRATO_DE_UM_PERIODO_CONTA_DEPOSITOS_A_VISTA_E_POUPANCA_CORRESPONDENTES_PAIS
+        - FORNECIMENTO_COPIA_MICROFILME_MICROFICHA_ASSEMELHADO
+        - TRANSFERENCIA_DOC_PESSOAL_OU_PRESENCIAL
+        - TRANSFERENCIA_DOC_TERMINAL_AUTOATENDIMENTO_OUTROS_MEIOS_ELETRONICOS
+        - TRANSFERENCIA_DOC_INTERNET
+        - TRANSFERENCIA_TED_PESSOAL_OU_PRESENCIAL
+        - TRANSFERENCIA_TED_TERMINAL_AUTOATENDIMENTO_OUTROS_MEIOS_ELETRONICOS
+        - TRANSFERENCIA_TED_INTERNET
+        - TRANSFERENCIA_DOC_TED_PESSOAL_OU_PRESENCIAL
+        - TRANSFERENCIA_DOC_TED_TERMINAL_AUTOATENDIMENTO_OUTROS_MEIOS_ELETRONICOS
+        - TRANSFERENCIA_DOC_TED_INTERNET
+        - TRANSFERENCIA_ENTRE_CONTAS_PROPRIA_INSTITUICAO_PESSOAL_OU_PRESENCIAL
+        - TRANSFERENCIA_ENTRE_CONTAS_PROPRIA_INSTITUICAO_TERMINAL_AUTOATENDIMENTO_OUTROS_MEIOS_ELETRONICOS_INCLUSIVE_INTERNET
+        - ORDEM_PAGAMENTO
+        - ANUIDADE_CARTAO_BASICO_NACIONAL
+        - ANUIDADE_CARTAO_BASICO_INTERNACIONAL
+        - ANUIDADE_DIFERENCIADA
+        - UTILIZACAO_CANAIS_ATENDIMENTO_RETIRADA_ESPECIE_BRASIL
+        - UTILIZACAO_CANAIS_ATENDIMENTO_RETIRADA_ESPECIE_EXTERIOR
+        - AVALIACAO_EMERGENCIAL_CREDITO
+        - FORNECIMENTO_SEGUNDA_VIA_FUNCAO_CREDITO
+        - PAGAMENTO_CONTAS_UTILIZANDO_FUNCAO_CREDITO
+        - SMS
+      description: 'Nome dos Serviços prioritários, segundo Resolução 3.919 do Bacen, para pessoa natural.'
+      example: TRANSFERENCIA_TED_PESSOAL_OU_PRESENCIAL
     EnumReferentialRateIndexer:
-      properties:
-        referentialRateIndexer:
-          type: string
-          description: |
-            Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial ou Indexador (Indx), do Documento 3040
-          enum:
-            - SEM_INDEXADOR_TAXA
-            - PRE_FIXADO
-            - POS_FIXADO_TR_TBF
-            - POS_FIXADO_TJLP
-            - POS_FIXADO_LIBOR
-            - POS_FIXADO_TLP
-            - OUTRAS_TAXAS_POS_FIXADAS
-            - FLUTUANTES_CDI
-            - FLUTUANTES_SELIC
-            - OUTRAS_TAXAS_FLUTUANTES
-            - INDICES_PRECOS_IGPM
-            - INDICES_PRECOS_IPCA
-            - INDICES_PRECOS_IPCC
-            - OUTROS_INDICES_PRECO
-            - CREDITO_RURAL_TCR_PRE
-            - CREDITO_RURAL_TCR_POS
-            - CREDITO_RURAL_TRFC_PRE
-            - CREDITO_RURAL_TRFC_POS
-            - OUTROS_INDEXADORES
-          example: SEM_INDEXADOR_TAXA
+      type: string
+      description: |
+        Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial ou Indexador (Indx), do Documento 3040
+      enum:
+        - SEM_INDEXADOR_TAXA
+        - PRE_FIXADO
+        - POS_FIXADO_TR_TBF
+        - POS_FIXADO_TJLP
+        - POS_FIXADO_LIBOR
+        - POS_FIXADO_TLP
+        - OUTRAS_TAXAS_POS_FIXADAS
+        - FLUTUANTES_CDI
+        - FLUTUANTES_SELIC
+        - OUTRAS_TAXAS_FLUTUANTES
+        - INDICES_PRECOS_IGPM
+        - INDICES_PRECOS_IPCA
+        - INDICES_PRECOS_IPCC
+        - OUTROS_INDICES_PRECO
+        - CREDITO_RURAL_TCR_PRE
+        - CREDITO_RURAL_TCR_POS
+        - CREDITO_RURAL_TRFC_PRE
+        - CREDITO_RURAL_TRFC_POS
+        - OUTROS_INDEXADORES
+      example: SEM_INDEXADOR_TAXA
     EnumRequiredWarranty:
-      properties:
-        requiredWarranties:
-          type: string
-          enum:
-            - CESSAO_DIREITOS_CREDITORIOS
-            - CAUCAO
-            - PENHOR
-            - ALIENACAO_FIDUCIARIA
-            - HIPOTECA
-            - OPERACOES_GARANTIDAS_PELO_GOVERNO
-            - OUTRAS_GARANTIAS_NAO_FIDEJUSSORIAS
-            - SEGUROS_ASSEMELHADOS
-            - GARANTIA_FIDEJUSSORIA
-            - BENS_ARRENDADOS
-            - GARANTIAS_INTERNACIONAIS
-            - OPERACOES_GARANTIDAS_OUTRAS_ENTIDADES
-            - ACORDOS_COMPENSACAO
-            - NAO_APLICAVEL
-          description: |
-            Relação de garantias exigidas, segundo documento 3040 do Bacen:
-            * `cessão de direitos creditórios`: o cedente transfere ao credor/cessionário a titularidade de direitos creditórios, até a liquidação da dívida. O credor/cessionário passa a recebê-los diretamente dos devedores e credita o produto da operação para o cedente na operação que originou a cessão, até a sua liquidação
-            * `caução`: garantia instituída sobre créditos do garantidor
-            * `penhor`: direito real que consiste na tradição de uma coisa móvel ou mobilizável, suscetível de alienação, realizada pelo devedor ou por terceiro ao credor, a fim de garantir o pagamento do débito
-            * `alienação fiduciária`: transferência ao credor, ou fiduciário, da propriedade do bem
-            * `hipoteca`: direito real de garantia que afeta um bem imóvel para o cumprimento da obrigação
-            * `operações garantidas pelo governo`: nas instâncias federal, estadual ou municipal
-            * `outras garantias não fidejussórias`: as garantias reais não descritas como: cessão de direitos creditórios, caução, penhor, alienação fiduciária, hipoteca ou operação garantida pelo governo
-            * `seguros e assemelhados`: os seguros (e assemelhados) contratados para garantir o pagamento da operação em circunstâncias adversas
-            * `garantia fidejussória`: baseada na fidelidade do garantidor em cumprir as obrigações, caso o devedor não o faça
-            * `bens arrendados`: bem objeto do arrendamento financeiro
-            * `garantias internacionais`: declarar se a garantia é mitigadora ou não, observados os critérios definidos pela Circular 3.644, de 4 de março de 2013
-            * `operações garantidas por outras entidade`: declarar as garantias prestadas pelas entidades descritas no item 3. Informações de Garantias (i) do documento 3040 - Bacen
-            * `acordos de compensação`: operações que sejam abrangidas por acordos para a compensação e liquidação de obrigações no âmbito do SFN, nos termos da Resolução 3.263, de 24 de fevereiro de 2005
-            * `não aplicável`
-          example: CESSAO_DIREITOS_CREDITORIOS
+      type: string
+      enum:
+        - CESSAO_DIREITOS_CREDITORIOS
+        - CAUCAO
+        - PENHOR
+        - ALIENACAO_FIDUCIARIA
+        - HIPOTECA
+        - OPERACOES_GARANTIDAS_PELO_GOVERNO
+        - OUTRAS_GARANTIAS_NAO_FIDEJUSSORIAS
+        - SEGUROS_ASSEMELHADOS
+        - GARANTIA_FIDEJUSSORIA
+        - BENS_ARRENDADOS
+        - GARANTIAS_INTERNACIONAIS
+        - OPERACOES_GARANTIDAS_OUTRAS_ENTIDADES
+        - ACORDOS_COMPENSACAO
+        - NAO_APLICAVEL
+      description: |
+        Relação de garantias exigidas, segundo documento 3040 do Bacen:
+         `cessão de direitos creditórios`: o cedente transfere ao credor/cessionário a titularidade de direitos creditórios, até a liquidação da dívida. O credor/cessionário passa a recebê-los diretamente dos devedores e credita o produto da operação para o cedente na operação que originou a cessão, até a sua liquidação
+         `caução`: garantia instituída sobre créditos do garantidor
+         `penhor`: direito real que consiste na tradição de uma coisa móvel ou mobilizável, suscetível de alienação, realizada pelo devedor ou por terceiro ao credor, a fim de garantir o pagamento do débito
+         `alienação fiduciária`: transferência ao credor, ou fiduciário, da propriedade do bem
+         `hipoteca`: direito real de garantia que afeta um bem imóvel para o cumprimento da obrigação
+         `operações garantidas pelo governo`: nas instâncias federal, estadual ou municipal
+         `outras garantias não fidejussórias`: as garantias reais não descritas como: cessão de direitos creditórios, caução, penhor, alienação fiduciária, hipoteca ou operação garantida pelo governo
+         `seguros e assemelhados`: os seguros (e assemelhados) contratados para garantir o pagamento da operação em circunstâncias adversas
+         `garantia fidejussória`: baseada na fidelidade do garantidor em cumprir as obrigações, caso o devedor não o faça
+         `bens arrendados`: bem objeto do arrendamento financeiro
+         `garantias internacionais`: declarar se a garantia é mitigadora ou não, observados os critérios definidos pela Circular 3.644, de 4 de março de 2013
+         `operações garantidas por outras entidade`: declarar as garantias prestadas pelas entidades descritas no item 3. Informações de Garantias (i) do documento 3040 - Bacen
+         `acordos de compensação`: operações que sejam abrangidas por acordos para a compensação e liquidação de obrigações no âmbito do SFN, nos termos da Resolução 3.263, de 24 de fevereiro de 2005
+         `não aplicável`
+      example: CESSAO_DIREITOS_CREDITORIOS
+    EnumStatusCode:
+      type: string
+      enum:
+        - OK
+        - PARTIAL_FAILURE
+        - UNAVAILABLE
+        - SCHEDULED_OUTAGE
+      description: |
+        Condição atual da API:
+          `OK` - A implementação é totalmente funcional
+          `PARTIAL_FAILURE` - Um ou mais endpoints estão indisponíveis
+          `UNAVAILABLE` - A implementação completa está indisponível
+          `SCHEDULED_OUTAGE` - Uma interrupção anunciada está em vigor
+      example: OK
+    EnumSharedAutomatedTellerMachinesServicesCodes:
+      type: string
+      enum:
+        - ABRE_CONTA_DEPOSITO_OU_PRE_PAGA
+        - SAQUE_MOEDA_ESPECIE
+        - RECEBE_PAGA_QUALQUER_NATUREZA
+        - TRANSFERENCIAS_ELETRONICAS_MOVIMENTA_CONTAS_DEPOSITOS_OU_PAGA_TITULARES_CLIENTES
+        - CONSULTA_SALDOS_EXTRATOS_CONTAS_DEPOSITOS
+        - PAGAMENTOS
+        - APLICA_RESGATA_INVESTIMENTOS
+        - EXECUTA_ATIVA_PASSIVA_ORDENS_PAGAMENTO
+        - DEPOSITA_MOEDA_ESPECIE_CHEQUE
+        - OPERA_CREDITO_OUTROS_SERVICOS_ACOMPANHA_OPERACAO
+        - CARTAO_CREDITO
+        - SEGUROS
+        - OPERA_ARRENDAMENTO_MERCANTIL
+        - ABERTURA_CONTA_PAGAMENTO_POS_PAGA
+        - COMPRA_VENDE_MOEDA_ESTRANGEIRA_ESPECIE
+        - COMPRA_VENDE_CHEQUE_CHEQUE_VIAGEM_CARGA_MOEDA_ESTRANGEIRA_CARTAO_PRE_PAGO
+        - COMPRA_VENDE_OURO
+        - OUTROS_PRODUTOS_SERVICOS
+        - CANCELAMENTO
+        - INFORMACOES
+        - RECLAMACOES
+      description: Código dos Serviços efetivamente prestados pelo Terminal de Autoatendimento Compartilhado informado
+      example: OUTROS_PRODUTOS_SERVICOS
+    EnumSharedAutomatedTellerMachinesServicesNames:
+      type: string
+      enum:
+        - ABERTURA_CONTAS_DEPOSITOS_OU_PAGAMENTO_PRE_PAGA
+        - SAQUE_MOEDA_EM_ESPECIE
+        - RECEBIMENTOS_PAGAMENTOS_QUALQUER_NATUREZA
+        - TRANSFERENCIAS_ELETRONICAS_VISANDO_MOVIMENTACAO
+        - CONTAS_DEPOSITOS_OU_PAGAMENTO_TITULARIDADE_CLIENTES
+        - CONSULTA_SALDOS_EXTRATOS_CONTAS_DEPOSITOS_E_CONTAS
+        - PAGAMENTOS
+        - APLICACOES_RESGATES_INVESTIMENTOS
+        - EXECUCAO_ATIVA_PASSIVA_ORDENS_PAGAMENTO_SOLICITACAO
+        - CLIENTES_USUARIOS
+        - DEPOSITOS_MOEDA_ESPECIE_CHEQUE
+        - OPERACOES_CREDITO_BEM_COMO_OUTROS_SERVICOS_PRESTADOS_ACOMPANHAMENTO_OPERACAO
+        - CARTAO_CREDITO
+        - SEGUROS
+        - OPERACOES_ARRENDAMENTO_MERCANTIL
+        - ABERTURA_CONTA_PAGAMENTO_POS_PAGA
+        - COMPRA_VENDA_MOEDA_ESTRANGEIRA_ESPECIE
+        - COMPRA_VENDA_CHEQUE_CHEQUE_VIAGEM_BEM_COMO_CARGA_MOEDA_ESTRANGEIRA_CARTAO_PRE_PAGO
+        - COMPRA_VENDA_OURO
+        - OUTROS_PRODUTOS_SERVICOS
+        - CANCELAMENTO
+        - INFORMACOES
+        - RECLAMACOES
+      description: Nome dos Serviços efetivamente prestados pelo Terminal de Autoatendimento Compartilhado informado
+      example: OUTROS_PRODUTOS_SERVICOS
     EnumTransactionMethods:
-      properties:
-        transactionMethods:
-          type: string
-          enum:
-            - MOVIMENTACAO_ELETRONICA
-            - MOVIMENTACAO_CHEQUE
-            - MOVIMENTACAO_CARTAO
-            - MOVIMENTACAO_PRESENCIAL
-          description: Lista de formas de movimentação possíveis para a conta
-          example: MOVIMENTACAO_CARTAO
+      type: string
+      enum:
+        - MOVIMENTACAO_ELETRONICA
+        - MOVIMENTACAO_CHEQUE
+        - MOVIMENTACAO_CARTAO
+        - MOVIMENTACAO_PRESENCIAL
+      description: Lista de formas de movimentação possíveis para a conta
+      example: MOVIMENTACAO_CARTAO
+    EnumUnarrangedAccountOverdraftFeeCode:
+      type: string
+      enum:
+        - ADIANT_DEPOSITANTE
+      default: ADIANT_DEPOSITANTE
+      description: 'Sigla de identificação do serviço relacionado à Modalidade de Adiantamento a depositante, para pessoa jurídica.'
+    EnumUnarrangedAccountOverdraftFeeName:
+      type: string
+      enum:
+        - CONCESSAO_ADIANTAMENTO_DEPOSITANTE
+      default: CONCESSAO_ADIANTAMENTO_DEPOSITANTE
+      description: 'Nome da Tarifa cobrada sobre Serviço que incide sobre Adiantamento a depositante, para pessoa jurídica.'
+    EnumWeekDay:
+      type: string
+      description: Dia da semana de abertura
+      enum:
+        - DOMINGO
+        - SEGUNDA_FEIRA
+        - TERCA_FEIRA
+        - QUARTA_FEIRA
+        - QUINTA_FEIRA
+        - SEXTA_FEIRA
+        - SABADO
     ErrorMetrics:
       type: object
       description: Número de chamadas que resultaram em erro devido ao servidor.
@@ -2960,26 +3452,30 @@ components:
           description: 'Número de chamadas com erro nos dias anteriores. O primeiro item do array é referente a ontem, e assim por diante. Devem ser retornados no máximo sete dias caso estejam disponíveis.'
           items:
             type: integer
-    FeeReferentialRateIndexer:
-      description: Tarifas cobradas sobre Serviços ofertados
+    FeesBusinessAccount:
       type: object
+      description: Objeto que reúne informações de tarifas de serviços
       required:
-        - referentialRateIndexer
-        - rate
+        - services
       properties:
-        referentialRateIndexer:
-          $ref: '#/components/schemas/EnumReferentialRateIndexer/properties/referentialRateIndexer'
-        rate:
-          type: string
-          description: |
-            Percentual que incide sobre a composição das taxas de juros remuneratórios. (representa uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O valor '1 'representa 100%). A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)
-          pattern: '(^[0-9](\.[0-9]{2})|NA)$'
-          example: '0.15'
+        services:
+          type: array
+          items:
+            $ref: '#/components/schemas/BusinessAccountsService'
+          minItems: 1
+          description: Lista das Tarifas cobradas sobre Serviços
     FinancingInterestRate:
       type: object
-      allOf:
-        - $ref: '#/components/schemas/InterestRateFee'
       properties:
+        referentialRateIndexer:
+          $ref: '#/components/schemas/EnumReferentialRateIndexer'
+        rate:
+          type: string
+          pattern: '(^[0-1](\.[0-9]{2})$|^NA$)'
+          description: |
+            Percentual que incide sobre a composição das taxas de juros remuneratórios. (representa uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O valor 1 representa 100%) A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)
+          example: '0.15'
+          maxLength: 4
         applications:
           type: array
           items:
@@ -3022,6 +3518,8 @@ components:
           example: '0.6865'
           maxLength: 6
       required:
+        - referentialRateIndexer
+        - rate
         - applications
         - minimumRate
         - maximumRate
@@ -3053,47 +3551,9 @@ components:
           minItems: 4
           maxItems: 4
         minimum:
-          type: object
-          description: Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência.
-          required:
-            - value
-            - currency
-          properties:
-            value:
-              type: string
-              pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
-              maxLength: 12
-              x-cds-type: AmountString
-              description: Valor mínimo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
-              example: '1350.00'
-            currency:
-              type: string
-              pattern: '^(\w{3}){1}$'
-              maxLength: 3
-              x-cds-type: CurrencyString
-              description: 'Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217'
-              example: BRL
+          $ref: '#/components/schemas/MinimumPrice'
         maximum:
-          type: object
-          description: Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência.
-          required:
-            - value
-            - currency
-          properties:
-            value:
-              type: string
-              pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
-              maxLength: 12
-              x-cds-type: AmountString
-              description: Valor máximo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
-              example: '8800.00'
-            currency:
-              type: string
-              pattern: '^(\w{3}){1}$'
-              maxLength: 3
-              x-cds-type: CurrencyString
-              description: 'Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217'
-              example: BRL
+          $ref: '#/components/schemas/MaximumPrice'
       required:
         - name
         - code
@@ -3120,6 +3580,7 @@ components:
           example: '-180.836519'
     Indexer:
       type: object
+      description: 'Percentual que corresponde a mediana da taxa efetiva cobrada do cliente pela contratação do Empréstimo, no intervalo informado.'
       properties:
         rate:
           type: string
@@ -3128,6 +3589,8 @@ components:
           description: |
             Percentual que corresponde a mediana da taxa efetiva cobrada do cliente pela contratação do crédito, no intervalo informado. p.ex. '0,8700%'. A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)
           example: '0.8700'
+    InstalmentRate:
+      $ref: '#/components/schemas/InterestRate'
     InterestRate:
       type: object
       required:
@@ -3138,7 +3601,7 @@ components:
         - maximumRate
       properties:
         referentialRateIndexer:
-          $ref: '#/components/schemas/EnumReferentialRateIndexer/properties/referentialRateIndexer'
+          $ref: '#/components/schemas/EnumReferentialRateIndexer'
         rate:
           type: string
           description: |
@@ -3170,44 +3633,6 @@ components:
               description: |
                 Percentual máximo cobrado (taxa efetiva) no mês de referência, para o Financiamento contratado  A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)
               example: '0.6865'
-    InterestRateFee:
-      type: object
-      properties:
-        referentialRateIndexer:
-          type: string
-          enum:
-            - SEM_INDEXADOR_TAXA
-            - PRE_FIXADO
-            - POS_FIXADO_TR_TBF
-            - POS_FIXADO_TJLP
-            - POS_FIXADO_LIBOR
-            - POS_FIXADO_TLP
-            - OUTRAS_TAXAS_POS_FIXADAS
-            - FLUTUANTES_CDI
-            - FLUTUANTES_SELIC
-            - OUTRAS_TAXAS_FLUTUANTES
-            - INDICES_PRECOS_IGPM
-            - INDICES_PRECOS_IPCA
-            - INDICES_PRECOS_IPCC
-            - OUTROS_INDICES_PRECO
-            - CREDITO_RURAL_TCR_PRE
-            - CREDITO_RURAL_TCR_POS
-            - CREDITO_RURAL_TRFC_PRE
-            - CREDITO_RURAL_TRFC_POS
-            - OUTROS_INDEXADORES
-          description: |
-            Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial ou Indexador (Indx), do Documento 3040
-          example: PRE_FIXADO
-        rate:
-          type: string
-          pattern: '(^[0-1](\.[0-9]{2})$|^NA$)'
-          description: |
-            Percentual que incide sobre a composição das taxas de juros remuneratórios. (representa uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O valor 1 representa 100%) A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)
-          example: '0.15'
-          maxLength: 4
-      required:
-        - referentialRateIndexer
-        - rate
     InvocationMetrics:
       type: object
       description: Número de chamadas em cada nível e prioridade.
@@ -3313,68 +3738,37 @@ components:
           maxItems: 4
           description: Lista distribuição preços tarifas de serviços
         minimum:
-          type: object
-          description: Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência.
-          required:
-            - value
-            - currency
-          properties:
-            value:
-              type: string
-              pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
-              maxLength: 12
-              x-cds-type: AmountString
-              description: Valor mínimo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
-              example: '1350.00'
-            currency:
-              type: string
-              pattern: '^(\w{3}){1}$'
-              maxLength: 3
-              x-cds-type: CurrencyString
-              description: 'Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217'
-              example: BRL
+          $ref: '#/components/schemas/MinimumPrice'
         maximum:
-          type: object
-          description: Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência.
-          required:
-            - value
-            - currency
-          properties:
-            value:
-              type: string
-              pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
-              maxLength: 12
-              x-cds-type: AmountString
-              description: Valor máximo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
-              example: '8800.00'
-            currency:
-              type: string
-              pattern: '^(\w{3}){1}$'
-              maxLength: 3
-              x-cds-type: CurrencyString
-              description: 'Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217'
-              example: BRL
+          $ref: '#/components/schemas/MaximumPrice'
     Links:
       type: object
       description: Referências para outros recusos da API requisitada.
+      required:
+        - self
       properties:
         self:
           type: string
-          description: URL da página atualmente requisitada
+          format: URIString
+          description: URI completo que gerou a resposta atual.
           example: 'https://api.banco.com.br/open-banking/<api>/v1/<resource>'
         first:
           type: string
-          description: URL da primeira página de registros
+          format: URIString
+          description: URI da primeira página que originou essa lista de resultados. Restrição - Obrigatório quando não for a primeira página da resposta
           example: 'https://api.banco.com.br/open-banking/<api>/v1/<resource>'
         prev:
           type: string
-          description: URL da página anterior de registros
+          format: URIString
+          description: "URI da página anterior dessa lista de resultados. Restrição - \tObrigatório quando não for a primeira página da resposta"
         next:
           type: string
-          description: URL da próxima página de registros
+          format: URIString
+          description: URI da próxima página dessa lista de resultados. Restrição - Obrigatório quando não for a última página da resposta
         last:
           type: string
-          description: URL da última página de registros
+          format: URIString
+          description: URI da última página dessa lista de resultados. Restrição - Obrigatório quando não for a última página da resposta
           example: 'https://api.banco.com.br/open-banking/<api>/v1/<resource>'
     LoanFees:
       type: object
@@ -3391,10 +3785,19 @@ components:
         - applications
         - minimumRate
         - maximumRate
+        - referentialRateIndexer
+        - rate
       type: object
-      allOf:
-        - $ref: '#/components/schemas/InterestRateFee'
       properties:
+        referentialRateIndexer:
+          $ref: '#/components/schemas/EnumReferentialRateIndexer'
+        rate:
+          type: string
+          pattern: '(^[0-1](\.[0-9]{2})$|^NA$)'
+          description: |
+            Percentual que incide sobre a composição das taxas de juros remuneratórios. (representa uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O valor 1 representa 100%) A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)
+          example: '0.15'
+          maxLength: 4
         applications:
           type: array
           items:
@@ -3451,49 +3854,12 @@ components:
           minItems: 4
           maxItems: 4
         minimum:
-          type: object
-          description: Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência.
-          required:
-            - value
-            - currency
-          properties:
-            value:
-              type: string
-              pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
-              maxLength: 12
-              x-cds-type: AmountString
-              description: Valor mínimo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
-              example: '1350.00'
-            currency:
-              type: string
-              pattern: '^(\w{3}){1}$'
-              maxLength: 3
-              x-cds-type: CurrencyString
-              description: 'Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217'
-              example: BRL
+          $ref: '#/components/schemas/MinimumPrice'
         maximum:
-          type: object
-          description: Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência.
-          required:
-            - value
-            - currency
-          properties:
-            value:
-              type: string
-              pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
-              maxLength: 12
-              x-cds-type: AmountString
-              description: Valor máximo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
-              example: '8800.00'
-            currency:
-              type: string
-              pattern: '^(\w{3}){1}$'
-              maxLength: 3
-              x-cds-type: CurrencyString
-              description: 'Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217'
-              example: BRL
+          $ref: '#/components/schemas/MaximumPrice'
     MaximumPrice:
       type: object
+      description: Valor máximo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
       required:
         - value
         - currency
@@ -3502,7 +3868,7 @@ components:
           type: string
           pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
           maxLength: 12
-          x-cds-type: AmountString
+          format: AmountString
           description: Valor máximo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
           example: '8800.00'
         currency:
@@ -3513,11 +3879,11 @@ components:
       properties:
         totalRecords:
           type: integer
-          description: Total de registros encontrados
+          description: Número total de registros no resultado
           example: 1
         totalPages:
           type: integer
-          description: Total de páginas para os registros encontrados
+          description: Número total de páginas no resultado
           example: 1
       required:
         - totalRecords
@@ -3538,6 +3904,7 @@ components:
           $ref: '#/components/schemas/Currency'
     MinimumPrice:
       type: object
+      description: Valor mínimo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
       required:
         - value
         - currency
@@ -3546,7 +3913,7 @@ components:
           type: string
           pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
           maxLength: 12
-          x-cds-type: AmountString
+          format: AmountString
           description: Valor mínimo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
           example: '1350.00'
         currency:
@@ -3560,12 +3927,12 @@ components:
         - customers
       properties:
         interval:
-          $ref: '#/components/schemas/EnumPriceIntervals/properties/interval'
+          $ref: '#/components/schemas/EnumPriceIntervals'
         monthlyFee:
           type: string
           pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
           maxLength: 12
-          x-cds-type: AmountString
+          format: AmountString
           description: |
             Valor da mediana de cada faixa relativa ao serviço ofertado, informado no período, conforme Res nº 32 BCB, 2020. p.ex. ''45.00''
             (representa um valor monetário. p.ex: 1547368.92. Este valor, considerando que a moeda seja BRL, significa R$ 1.547.368,92. O único separador presente deve ser o ''.'' (ponto) para indicar a casa decimal. Não deve haver separador de milhar)
@@ -3574,6 +3941,26 @@ components:
           $ref: '#/components/schemas/Currency'
         customers:
           $ref: '#/components/schemas/Customer'
+    OtherCredit:
+      type: object
+      required:
+        - code
+        - additionalInfo
+      properties:
+        code:
+          type: string
+          enum:
+            - SAQUE_A_CREDITO
+            - PAGAMENTOS_CONTAS
+            - OUTROS
+          description: Lista de outras operações de crédito
+          example: SAQUE_A_CREDITO
+        additionalInfo:
+          type: string
+          maxLength: 50
+          pattern: \w*\W*
+          description: Campo Texto para descrever outras operações de crédito marcadas como 'OUTROS'. Se o campo 'code' vier selecionado com 'OUTROS' é obrigatório o preenchimento do additionalInfo
+          example: NA
     PeakTPSMetrics:
       type: object
       description: Número máximo de transações por segundo.
@@ -3601,7 +3988,7 @@ components:
         - incomeRate
       properties:
         type:
-          $ref: '#/components/schemas/EnumAccountType/properties/type'
+          $ref: '#/components/schemas/EnumAccountType'
         fees:
           $ref: '#/components/schemas/AccountFee'
         serviceBundles:
@@ -3613,7 +4000,7 @@ components:
         openingClosingChannels:
           type: array
           items:
-            $ref: '#/components/schemas/EnumOpeningClosingChannels/properties/openingClosingChannels'
+            $ref: '#/components/schemas/EnumOpeningClosingChannels'
           minItems: 1
           maxItems: 7
           description: Lista dos canais para aberturas e encerramento
@@ -3628,7 +4015,7 @@ components:
         transactionMethods:
           type: array
           items:
-            $ref: '#/components/schemas/EnumTransactionMethods/properties/transactionMethods'
+            $ref: '#/components/schemas/EnumTransactionMethods'
           minItems: 1
           maxItems: 4
           description: Lista de formas de movimentação
@@ -3638,6 +4025,7 @@ components:
           $ref: '#/components/schemas/AccountsIncomeRate'
     PersonalAccountBrand:
       type: object
+      description: Organização controladora do grupo de instituições financeiras.
       required:
         - name
         - companies
@@ -3659,9 +4047,28 @@ components:
       required:
         - name
         - cnpjNumber
-      allOf:
-        - $ref: '#/components/schemas/Company'
       properties:
+        name:
+          type: string
+          description: 'Nome da Instituição, pertencente à marca, responsável pela modalidade de Empréstimos. p.ex.''Empresa da Organização A'''
+          maxLength: 80
+          pattern: \w*\W*
+          example: Empresa A1
+        cnpjNumber:
+          type: string
+          pattern: '^(\d{14})$|^NA$'
+          description: Número completo do CNPJ da instituição
+          maxLength: 14
+          example: '50685362000135'
+        urlComplementaryList:
+          type: string
+          pattern: \w*\W*
+          format: URIString
+          maxLength: 1024
+          description: |
+            URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. Endereço eletrônico de acesso ao canal. Será obrigatoriamente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada.
+            Restrição: Será obrigatorimente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada
+          example: 'https://empresadaorganizacaoa.com/complementarylist'
         personalAccounts:
           type: array
           items:
@@ -3690,29 +4097,23 @@ components:
         rewardsProgram:
           $ref: '#/components/schemas/CreditCardRewardsProgram'
         fees:
-          type: object
-          description: Objeto que reúne informações de tarifas de serviços
-          required:
-            - services
-          properties:
-            services:
-              type: array
-              description: Lista das Tarifas cobradas sobre Serviço relacionadas a Modalidade de Pagamento Pós-Pagas
-              items:
-                $ref: '#/components/schemas/CreditCardService'
-              minItems: 1
-              maxItems: 9
+          $ref: '#/components/schemas/CreditCardFee'
         interest:
           $ref: '#/components/schemas/CreditCardInterest'
         termsConditions:
           $ref: '#/components/schemas/CreditCardTermsConditions'
     PersonalCreditCardBrand:
       type: object
+      description: Organização controladora do grupo de instituições financeiras
       required:
         - companies
-      allOf:
-        - $ref: '#/components/schemas/Brand'
       properties:
+        name:
+          type: string
+          maxLength: 80
+          pattern: \w*\W*
+          description: Nome da marca selecionada pela Organização
+          example: Organização A
         companies:
           type: array
           description: Companies traz uma lista de todas as instituições da Marca
@@ -3725,9 +4126,28 @@ components:
         - name
         - cnpjNumber
         - personalCreditCards
-      allOf:
-        - $ref: '#/components/schemas/Company'
       properties:
+        name:
+          type: string
+          description: 'Nome da Instituição, pertencente à marca, responsável pela modalidade de Empréstimos. p.ex.''Empresa da Organização A'''
+          maxLength: 80
+          pattern: \w*\W*
+          example: Empresa A1
+        cnpjNumber:
+          type: string
+          pattern: '^(\d{14})$|^NA$'
+          description: Número completo do CNPJ da instituição
+          maxLength: 14
+          example: '50685362000135'
+        urlComplementaryList:
+          type: string
+          pattern: \w*\W*
+          format: URIString
+          maxLength: 1024
+          description: |
+            URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. Endereço eletrônico de acesso ao canal. Será obrigatoriamente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada.
+            Restrição: Será obrigatorimente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada
+          example: 'https://empresadaorganizacaoa.com/complementarylist'
         personalCreditCards:
           type: array
           description: Lista das contas de pagamento pós-paga
@@ -3744,20 +4164,7 @@ components:
         - termsConditions
       properties:
         type:
-          type: string
-          enum:
-            - FINANCIAMENTO_AQUISICAO_BENS_VEICULOS_AUTOMOTORES
-            - FINANCIAMENTO_AQUISICAO_BENS_OUTROS_BENS
-            - FINANCIAMENTO_MICROCREDITO
-            - FINANCIAMENTO_RURAL_CUSTEIO
-            - FINANCIAMENTO_RURAL_INVESTIMENTO
-            - FINANCIAMENTO_RURAL_COMERCIALIZACAO
-            - FINANCIAMENTO_RURAL_INDUSTRIALIZACAO
-            - FINANCIAMENTO_IMOBILIARIO_SISTEMA_FINANCEIRO_HABITACAO_SFH
-            - FINANCIAMENTO_IMOBILIARIO_SISTEMA_FINANCEIRO_HABITACAO_SFI
-          description: |
-            Modalidades de financiamentos ofertados para pessoas naturais, conforme Circular 4015-Bacen. Segundo cartilha do Bacen: Financiamento é um contrato entre o cliente e uma instituição financeira, mas com, destinação específica como para a aquisição de veículo ou de bem imóvel, que funcionam como garantia para o crédito concedido
-          example: FINANCIAMENTO_AQUISICAO_BENS_VEICULOS_AUTOMOTORES
+          $ref: '#/components/schemas/EnumPersonalFinancingType'
         fees:
           $ref: '#/components/schemas/PersonalFinancingFee'
         interestRates:
@@ -3769,7 +4176,7 @@ components:
         requiredWarranties:
           type: array
           items:
-            $ref: '#/components/schemas/EnumRequiredWarranty/properties/requiredWarranties'
+            $ref: '#/components/schemas/EnumRequiredWarranty'
           minItems: 1
           maxItems: 14
         termsConditions:
@@ -3780,12 +4187,17 @@ components:
           example: 'https://empresaa1.com/personal_financing'
     PersonalFinancingBrand:
       type: object
+      description: Organização controladora do grupo de instituições financeiras
       required:
         - name
         - companies
-      allOf:
-        - $ref: '#/components/schemas/Brand'
       properties:
+        name:
+          type: string
+          maxLength: 80
+          pattern: \w*\W*
+          description: Nome da marca selecionada pela Organização
+          example: Organização A
         companies:
           type: array
           items:
@@ -3798,9 +4210,28 @@ components:
         - name
         - cnpjNumber
         - personalFinancings
-      allOf:
-        - $ref: '#/components/schemas/Company'
       properties:
+        name:
+          type: string
+          description: 'Nome da Instituição, pertencente à marca, responsável pela modalidade de Empréstimos. p.ex.''Empresa da Organização A'''
+          maxLength: 80
+          pattern: \w*\W*
+          example: Empresa A1
+        cnpjNumber:
+          type: string
+          pattern: '^(\d{14})$|^NA$'
+          description: Número completo do CNPJ da instituição
+          maxLength: 14
+          example: '50685362000135'
+        urlComplementaryList:
+          type: string
+          pattern: \w*\W*
+          format: URIString
+          maxLength: 1024
+          description: |
+            URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. Endereço eletrônico de acesso ao canal. Será obrigatoriamente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada.
+            Restrição: Será obrigatorimente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada
+          example: 'https://empresadaorganizacaoa.com/complementarylist'
         personalFinancings:
           type: array
           items:
@@ -3810,11 +4241,13 @@ components:
           description: Lista de financiamentos
     PersonalFinancingFee:
       type: object
+      description: Objeto que reúne informações de tarifas de serviços
       required:
         - services
       properties:
         services:
           type: array
+          description: Lista das Tarifas cobradas sobre Serviços
           items:
             $ref: '#/components/schemas/FinancingService'
           minItems: 1
@@ -3828,16 +4261,7 @@ components:
         - termsConditions
       properties:
         type:
-          type: string
-          enum:
-            - DESCONTO_DUPLICATAS
-            - DESCONTO_CHEQUES
-            - ANTECIPACAO_FATURA_CARTAO_CREDITO
-            - OUTROS_DIREITOS_CREDITORIOS_DESCONTADOS
-            - OUTROS_TITULOS_DESCONTADOS
-          description: |
-            Modalidades de direitos creditórios descontados ofertados para pessoas naturais, conforme Circular 4015-Bacen. Direito creditório descontado é a antecipação de créditos relativos por ex. ao: desconto de duplicatas, desconto de cheques,antecipação de fatura de cartão de crédito
-          example: DESCONTO_DUPLICATAS
+          $ref: '#/components/schemas/EnumPersonalInvoiceFinancingsType'
         fees:
           $ref: '#/components/schemas/PersonalInvoiceFinancingsFees'
         interestRates:
@@ -3849,7 +4273,7 @@ components:
         requiredWarranties:
           type: array
           items:
-            $ref: '#/components/schemas/EnumRequiredWarranty/properties/requiredWarranties'
+            $ref: '#/components/schemas/EnumRequiredWarranty'
           minItems: 1
           maxItems: 14
           description: Lista das  garantias exigidas
@@ -3861,6 +4285,7 @@ components:
           example: 'https://empresaa1.com/personal_invoice_financings'
     PersonalInvoiceFinancingsBrand:
       type: object
+      description: Organização controladora do grupo de instituições financeiras
       required:
         - name
         - companies
@@ -3883,9 +4308,28 @@ components:
         - name
         - cnpjNumber
         - personalInvoiceFinancings
-      allOf:
-        - $ref: '#/components/schemas/Company'
       properties:
+        name:
+          type: string
+          description: 'Nome da Instituição, pertencente à marca, responsável pela modalidade de Empréstimos. p.ex.''Empresa da Organização A'''
+          maxLength: 80
+          pattern: \w*\W*
+          example: Empresa A1
+        cnpjNumber:
+          type: string
+          pattern: '^(\d{14})$|^NA$'
+          description: Número completo do CNPJ da instituição
+          maxLength: 14
+          example: '50685362000135'
+        urlComplementaryList:
+          type: string
+          pattern: \w*\W*
+          format: URIString
+          maxLength: 1024
+          description: |
+            URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. Endereço eletrônico de acesso ao canal. Será obrigatoriamente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada.
+            Restrição: Será obrigatorimente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada
+          example: 'https://empresadaorganizacaoa.com/complementarylist'
         personalInvoiceFinancings:
           type: array
           items:
@@ -3907,9 +4351,16 @@ components:
         - services
     PersonalInvoiceFinancingsInterestRates:
       type: object
-      allOf:
-        - $ref: '#/components/schemas/InterestRateFee'
       properties:
+        referentialRateIndexer:
+          $ref: '#/components/schemas/EnumReferentialRateIndexer'
+        rate:
+          type: string
+          pattern: '(^[0-1](\.[0-9]{2})$|^NA$)'
+          description: |
+            Percentual que incide sobre a composição das taxas de juros remuneratórios. (representa uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O valor 1 representa 100%) A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)
+          example: '0.15'
+          maxLength: 4
         applications:
           type: array
           description: Lista  das faixas de cobrança da taxa efetiva de remuneração
@@ -3930,6 +4381,8 @@ components:
           pattern: '(^[0-9](\.[0-9]{4})$|^NA$)'
           example: '0.6865'
       required:
+        - referentialRateIndexer
+        - rate
         - applications
         - minimumRate
         - maximumRate
@@ -3943,23 +4396,7 @@ components:
         - termsConditions
       properties:
         type:
-          type: string
-          enum:
-            - EMPRESTIMO_CREDITO_PESSOAL_CONSIGNADO
-            - EMPRESTIMO_CREDITO_PESSOAL_SEM_CONSIGNACAO
-            - EMPRESTIMO_HOME_EQUITY
-            - EMPRESTIMO_MICROCREDITO_PRODUTIVO_ORIENTADO
-            - EMPRESTIMO_CHEQUE_ESPECIAL
-            - EMPRESTIMO_CONTA_GARANTIDA
-          description: |
-            Modalidades de empréstimos ofertados para pessoa Natural, conforme Circular 4015-Bacen. Segundo cartilha do Bacen: Empréstimo é um contrato entre o cliente e uma instituição financeira (banco, cooperativa de crédito, caixa econômica) pelo qual o cliente recebe uma quantia em dinheiro que deverá ser devolvida em prazo determinado, acrescida dos juros acertados. Os recursos obtidos no empréstimo não tem destinação específica.
-              * `EMPRESTIMO_CREDITO_PESSOAL_CONSIGNADO` -  operações de crédito com retenção de parcela do salário ou benefício do tomador, para o pagamento das prestações do empréstimo – desconto em folha de pagamento – nos termos da legislação em vigor
-              * `EMPRESTIMO_CREDITO_PESSOAL_SEM_CONSIGNACAO` - operações de empréstimos às pessoa natural, sem vinculação com aquisição de bem ou serviço e sem retenção de parcela do salário ou benefício do tomador para o pagamento das prestações do empréstimo
-              * `EMPRESTIMO_HOME_EQUITY` - empréstimos pessoa natural, garantidos por hipoteca ou por alienação fiduciária de bens imóveis residenciais, sem vinculação a aquisição de bens
-              * `EMPRESTIMO_MICROCREDITO_PRODUTIVO_ORIENTADO` - segundo PNMPO é o crédito concedido para financiamento das atividades produtivas, cuja metodologia será estabelecida em regulamento, observada a preferência do relacionamento direto com os empreendedores, admitido o uso de tecnologias digitais e eletrônicas que possam substituir o contato presencial
-              * `EMPRESTIMO_CHEQUE_ESPECIAL` - operações de crédito vinculadas à conta corrente, nas quais determinado limite de crédito é disponibilizado aos clientes para utilização de acordo com suas conveniências, sem necessidade de comunicação prévia à instituição financeira
-              * `EMPRESTIMO_CONTA_GARANTIDA` - operações de crédito rotativo, nas quais determinado limite de crédito é disponibilizado para utilização pelo cliente, através da simples movimentação da conta corrente e/ou solicitação formal à instituição financeira. As operações classificadas nessa modalidade não devem ter data definida para a amortização do saldo devedor, exceto a estabelecida para vigência do contrato
-          example: EMPRESTIMO_CREDITO_PESSOAL_CONSIGNADO
+          $ref: '#/components/schemas/EnumPersonalLoanType'
         fees:
           $ref: '#/components/schemas/LoanFees'
         interestRates:
@@ -3971,7 +4408,7 @@ components:
         requiredWarranties:
           type: array
           items:
-            $ref: '#/components/schemas/EnumRequiredWarranty/properties/requiredWarranties'
+            $ref: '#/components/schemas/EnumRequiredWarranty'
           minItems: 1
           maxItems: 14
           description: Lista das garantias exigidas
@@ -3983,6 +4420,7 @@ components:
           example: 'https://empresaa1.com/personal_loans'
     PersonalLoanBrand:
       type: object
+      description: Organização controladora do grupo de instituições financeiras
       required:
         - name
         - companies
@@ -4012,9 +4450,16 @@ components:
           maxLength: 80
           description: 'Nome da Instituição, pertencente à marca, responsável pela comercialização dos produtos e serviços'
           example: Empresa da Marca A
+        cnpjNumber:
+          type: string
+          pattern: '^(\d{14})$|^NA$'
+          description: Número completo do CNPJ da instituição
+          maxLength: 14
+          example: '50685362000135'
         urlComplementaryList:
           type: string
           pattern: \w*\W*
+          format: URIString
           maxLength: 1024
           description: URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. Endereço eletrônico de acesso ao canal.
           example: 'https://example.com/mobile-banking'
@@ -4025,10 +4470,9 @@ components:
           minItems: 1
           maxItems: 6
           description: Lista de modalidades de empréstimos
-      allOf:
-        - $ref: '#/components/schemas/CNPJ'
     PersonalUnarrangedAccountOverdraft:
       type: object
+      description: Lista de produtos e serviços referente adiantamento a depositante
       required:
         - fees
         - interestRates
@@ -4050,6 +4494,7 @@ components:
           example: 'https://empresaa1.com/personal_unarranged_account_overdraft'
     PersonalUnarrangedAccountOverdraftBrand:
       type: object
+      description: Organização titular das dependências
       required:
         - name
         - companies
@@ -4067,16 +4512,35 @@ components:
           description: Companies traz uma lista de todas as instituições da Marca
     PersonalUnarrangedAccountOverdraftCompany:
       type: object
+      description: Lista de produtos e serviços referente adiantamento a depositante
       required:
         - name
         - cnpjNumber
         - personalUnarrangedAccountOverdraft
-      allOf:
-        - $ref: '#/components/schemas/Company'
       properties:
+        name:
+          type: string
+          description: 'Nome da Instituição, pertencente à marca, responsável pela modalidade de Empréstimos. p.ex.''Empresa da Organização A'''
+          maxLength: 80
+          pattern: \w*\W*
+          example: Empresa A1
+        cnpjNumber:
+          type: string
+          pattern: '^(\d{14})$|^NA$'
+          description: Número completo do CNPJ da instituição
+          maxLength: 14
+          example: '50685362000135'
+        urlComplementaryList:
+          type: string
+          pattern: \w*\W*
+          format: URIString
+          maxLength: 1024
+          description: |
+            URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. Endereço eletrônico de acesso ao canal. Será obrigatoriamente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada.
+            Restrição: Será obrigatorimente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada
+          example: 'https://empresadaorganizacaoa.com/complementarylist'
         personalUnarrangedAccountOverdraft:
           $ref: '#/components/schemas/PersonalUnarrangedAccountOverdraft'
-          description: Lista de produtos e serviços referente adiantamento a depositante
     PersonalUnarrangedAccountOverdraftFee:
       type: object
       description: Objeto que reúne informações de tarifas de serviços
@@ -4138,19 +4602,7 @@ components:
         - type
       properties:
         type:
-          type: string
-          enum:
-            - CENTRAL_TELEFONICA
-            - SAC
-            - OUVIDORIA
-            - OUTROS
-          description: |
-            Tipo de canal telefônico de atendimento:
-              \n* `CENTRAL_TELEFONICA`
-              \n* `SAC`
-              \n* `OUVIDORIA`
-              \n* `OUTROS`
-          example: OUVIDORIA
+          $ref: '#/components/schemas/EnumPhoneChannelsType'
         additionalInfo:
           type: string
           pattern: \w*\W*
@@ -4200,53 +4652,9 @@ components:
         - code
       properties:
         name:
-          type: string
-          enum:
-            - ABERTURA_CONTAS_DEPOSITOS_OU_PAGAMENTO_PRE_PAGA
-            - SAQUE_MOEDA_EM_ESPECIE
-            - RECEBIMENTOS_PAGAMENTOS_QUALQUER_NATUREZA
-            - TRANSFERENCIAS_ELETRONICAS_VISANDO_MOVIMENTACAO_CONTAS_DEPOSITOS_OU_PAGAMENTO_TITULARIDADE_CLIENTES
-            - CONSULTA_SALDOS_EXTRATOS_CONTAS_DEPOSITOS_CONTAS_PAGAMENTOS
-            - APLICACOES_RESGATES_INVESTIMENTOS
-            - EXECUCAO_ATIVA_PASSIVA_ORDENS_PAGAMENTO_SOLICITACAO_CLIENTES_USUARIOS
-            - DEPOSITOS_MOEDA_ESPECIE_CHEQUE
-            - OPERACOES_CREDITO_BEM_COMO_OUTROS_SERVICOS_PRESTADOS_ACOMPANHAMENTO_OPERACAO
-            - CARTAO_CREDITO
-            - SEGUROS
-            - OPERACOES_ARRENDAMENTO_MERCANTIL
-            - ABERTURA_CONTA_PAGAMENTO_POS_PAGA
-            - COMPRA_VENDA_MOEDA_ESTRANGEIRA_ESPECIE
-            - COMPRA_VENDA_CHEQUE_CHEQUE_VIAGEM_BEM_COMO_CARGA_MOEDA_ESTRANGEIRA_CARTAO_PRE_PAGO
-            - COMPRA_VENDA_OURO
-            - OUTROS_PRODUTOS_SERVICOS
-            - CANCELAMENTO
-            - INFORMACOES
-            - RECLAMACOES
-          description: Nome dos Serviços efetivamente prestados pelo Canal de Atendimento
+          $ref: '#/components/schemas/EnumPhoneChannelsServicesName'
         code:
-          type: string
-          enum:
-            - ABRE_CONTA_DEPOSITO_OU_PRE_PAGA
-            - SAQUE_MOEDA_ESPECIE
-            - RECEBE_PAGA_QUALQUER_NATUREZA
-            - TRANSFERENCIAS_ELETRONICAS_MOVIMENTA_CONTAS_DEPOSITOS_OU_PAGTO_TITULARES_CLIENTES
-            - CONSULTA_SALDOS_EXTRATOS_CONTAS_DEPOSITOS_PAGTOS
-            - APLICA_RESGATA_INVESTIMENTOS
-            - EXECUCAO_ATIVA_PASSIVA_ORDENS_PAGTO
-            - DEPOSITO_MOEDA_ESPECIE_CHEQUE
-            - OPERA_CREDITO_OUTROS_SERVICOS_ACOMPANHA_OPERACAO
-            - CARTAO_CREDITO
-            - SEGUROS
-            - OPERA_ARRENDAMENTO_MERCANTIL
-            - ABERTURA_CONTA_PAGAMENTO_POS_PAGA
-            - COMPRA_VENDA_MOEDA_ESTRANGEIRA_ESPECIE
-            - COMPRA_VENDA_CHEQUE_CHEQUE_VIAGEM_CARGA_MOEDA_ESTRANGEIRA_CARTAO_PRE_PAGO
-            - COMPRA_VENDA_OURO
-            - OUTROS_PRODUTOS_SERVICOS
-            - CANCELAMENTO
-            - INFORMACOES
-            - RECLAMACOES
-          description: Código dos Serviços efetivamente prestados pelo Canal de Atendimento
+          $ref: '#/components/schemas/EnumPhoneChannelsServicesCode'
         additionalInfo:
           type: string
           pattern: \w*\W*
@@ -4254,6 +4662,7 @@ components:
           description: 'Texto livre para complementar informação relativa ao Serviço disponível, quando for selecionada a opção ''OUTROS_PRODUTOS_SERVICOS'''
     PhoneChannelsBrand:
       type: object
+      description: Organização controladora do grupo de instituições financeiras.
       required:
         - name
         - companies
@@ -4283,9 +4692,16 @@ components:
           maxLength: 80
           description: 'Nome da Instituição, pertencente à organização, responsável pelo Canal Telefônico.'
           example: Empresa da Marca A
+        cnpjNumber:
+          type: string
+          pattern: '^(\d{14})$|^NA$'
+          description: Número completo do CNPJ da instituição
+          maxLength: 14
+          example: '50685362000135'
         urlComplementaryList:
           type: string
           pattern: \w*\W*
+          format: URIString
           maxLength: 1024
           example: 'https://example.com/mobile-banking'
           description: URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber.
@@ -4295,108 +4711,6 @@ components:
             $ref: '#/components/schemas/PhoneChannel'
           minItems: 1
           description: Lista  de canais de atendimento telefônico
-      allOf:
-        - $ref: '#/components/schemas/CNPJ'
-    PostalAddress:
-      type: object
-      properties:
-        address:
-          type: string
-          description: |
-            Deverá trazer toda a informação referente ao endereço da dependência informada: Tipo de logradouro + Nome do logradouro + Número do Logradouro (se não existir usar ' s/n') + complemento (se houver), como, p.ex.: 'R Diamatina, 59, bloco 35, fundos' 'Praça da Boa Vontade s/n'
-          maxLength: 150
-          pattern: \w*\W*
-          example: 'Av Naburo Ykesaki, 1270'
-        additionalInfo:
-          type: string
-          description: Alguns logradouros ainda necessitam ser especificados por meio de complemento
-          maxLength: 30
-          pattern: \w*\W*
-          example: Fundos
-        districtName:
-          type: string
-          description: |
-            Bairro é uma comunidade ou região localizada em uma cidade ou município de acordo com as suas subdivisões geográficas. p.ex: 'Paraíso'
-          maxLength: 50
-          pattern: \w*\W*
-          example: Centro
-        townName:
-          type: string
-          description: |
-            Localidade: O nome da localidade corresponde à designação da cidade ou município no qual o endereço está localizado. p.ex. 'São Paulo'
-          maxLength: 50
-          pattern: \w*\W*
-          example: Marília
-        ibgeCode:
-          type: string
-          description: Código IBGE do município
-          pattern: '^(\d{7})$'
-          example: '3550308'
-        countrySubDivision:
-          type: string
-          description: 'Enumeração referente a cada sigla da unidade da federação que identifica o estado ou o distrito federal, no qual o endereço está localizado. p.ex. ''AC''. São consideradas apenas as siglas para os estados brasileiros'
-          enum:
-            - AC
-            - AL
-            - AP
-            - AM
-            - BA
-            - CE
-            - DF
-            - ES
-            - GO
-            - MA
-            - MT
-            - MS
-            - MG
-            - PA
-            - PB
-            - PR
-            - PE
-            - PI
-            - RJ
-            - RN
-            - RS
-            - RO
-            - RR
-            - SC
-            - SP
-            - SE
-            - TO
-          example: SP
-        postCode:
-          type: string
-          description: Código de Endereçamento Postal
-          pattern: '(\d{8}|^NA$)'
-          maxLength: 8
-          example: '17500001'
-        country:
-          type: string
-          description: Nome do país
-          maxLength: 80
-          pattern: \w*\W*
-          example: Brasil
-        countryCode:
-          type: string
-          description: Código do país
-          example: BRA
-        geographicCoordinates:
-          type: object
-          description: |
-            Objeto agrupador das informações que compõem as Coordenadas geográficas: latitude e longitude
-          properties:
-            latitude:
-              description: Informação da latitude referente a geolocalização informada.
-              type: string
-              pattern: '^-?\d{1,2}\.\d{1,9}$'
-              maxLength: 13
-              example: '-90.8365180'
-            longitude:
-              description: Informação da longitude referente a geolocalização informada.
-              type: string
-              pattern: '^-?\d{1,3}\.\d{1,8}$'
-              maxLength: 13
-              example: '-180.836519'
     Price:
       type: object
       required:
@@ -4406,12 +4720,12 @@ components:
         - customers
       properties:
         interval:
-          $ref: '#/components/schemas/EnumPriceIntervals/properties/interval'
+          $ref: '#/components/schemas/EnumPriceIntervals'
         value:
           type: string
           pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
           maxLength: 12
-          x-cds-type: AmountString
+          format: AmountString
           description: |
             Valor da mediana de cada faixa relativa ao serviço ofertado, informado no período, conforme Res nº 32 BCB, 2020. p.ex. '45.00' (representa um valor monetário. p.ex: 1547368.92. Este valor, considerando que a moeda seja BRL, significa R$ 1.547.368,92. O único separador presente deve ser o '.' (ponto) para indicar a casa decimal. Não deve haver separador de milhar)
           example: '2000.00'
@@ -4459,7 +4773,6 @@ components:
           properties:
             brand:
               $ref: '#/components/schemas/BankingAgentsBrand'
-              description: Organização controladora do grupo de instituições financeiras.
         links:
           $ref: '#/components/schemas/Links'
         meta:
@@ -4653,7 +4966,7 @@ components:
                       townName: Marília
                       ibgeCode: '3550308'
                       countrySubDivision: SP
-                      postCode: 17500-001
+                      postCode: '17500001'
                       country: Brasil
                       countryCode: BRA
                       geographicCoordinates:
@@ -4717,7 +5030,6 @@ components:
           properties:
             brand:
               $ref: '#/components/schemas/BusinessAccountsBrand'
-              description: Organização controladora do grupo de instituições financeiras.
         links:
           $ref: '#/components/schemas/Links'
         meta:
@@ -4854,7 +5166,6 @@ components:
           properties:
             brand:
               $ref: '#/components/schemas/BusinessCreditCardBrand'
-              description: Organização controladora do grupo de instituições financeiras.
         links:
           $ref: '#/components/schemas/Links'
         meta:
@@ -4996,7 +5307,6 @@ components:
           properties:
             brand:
               $ref: '#/components/schemas/BusinessFinancingBrand'
-              description: Organização controladora do grupo de instituições financeiras.
         links:
           $ref: '#/components/schemas/Links'
         meta:
@@ -5158,7 +5468,6 @@ components:
           properties:
             brand:
               $ref: '#/components/schemas/BusinessInvoiceFinancingsBrand'
-              description: Organização controladora do grupo de instituições financeiras.
         links:
           $ref: '#/components/schemas/Links'
         meta:
@@ -5523,6 +5832,7 @@ components:
           totalPages: 1
     ResponseBusinessLoans:
       type: object
+      description: Organização controladora do grupo de instituições financeiras
       required:
         - data
         - links
@@ -5536,7 +5846,6 @@ components:
           properties:
             brand:
               $ref: '#/components/schemas/BusinessLoanBrand'
-              description: Organização controladora do grupo de instituições financeiras.
         links:
           $ref: '#/components/schemas/Links'
         meta:
@@ -5976,7 +6285,6 @@ components:
           properties:
             brand:
               $ref: '#/components/schemas/BusinessUnarrangedAccountOverdraftBrand'
-              description: Organização titular das dependências.
         links:
           $ref: '#/components/schemas/Links'
         meta:
@@ -6079,37 +6387,7 @@ components:
             outages:
               type: array
               items:
-                type: object
-                required:
-                  - outageTime
-                  - duration
-                  - isPartial
-                  - explanation
-                properties:
-                  outageTime:
-                    description: Data e hora planejada do início da indisponibilidade
-                    type: string
-                    pattern: '^(?:2\d{3})-(?:0\d|1[012])-(?:[012]\d|3[01])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
-                    example: '2020-07-21T08:30:00Z'
-                  duration:
-                    description: Duração prevista da indisponibilidade
-                    type: string
-                    pattern: ^P(?!$)(\d+Y)?(\d+M)?(\d+W)?(\d+D)?(T(?=\d)(\d+H)?(\d+M)?(\d+S)?)?$
-                    example: P23DT23H
-                  isPartial:
-                    type: boolean
-                    description: Flag que indica se a indisponibilidade é parcial (atingindo apenas alguns end points) ou total (atingindo todos os end points)
-                    example: false
-                  explanation:
-                    type: string
-                    description: Explicação sobre os motivos da indisponibilidade.
-                    example: Atualização do API Gateway
-                  unavailableEndpoints:
-                    type: array
-                    items:
-                      type: string
-                      pattern: '^([a-z0-9+.-]+):(?://(?:((?:[a-z0-9-._~!$&''()*+,;=:]|%[0-9A-F]{2})*)@)?((?:[a-z0-9-._~!$&''()*+,;=]|%[0-9A-F]{2})*)(?::(\d*))?(/(?:[a-z0-9-._~!$&''()*+,;=:@/]|%[0-9A-F]{2})*)?|(/?(?:[a-z0-9-._~!$&''()*+,;=:@]|%[0-9A-F]{2})+(?:[a-z0-9-._~!$&''()*+,;=:@/]|%[0-9A-F]{2})*)?)(?:\?((?:[a-z0-9-._~!$&''()*+,;=:/?@]|%[0-9A-F]{2})*))?(?:#((?:[a-z0-9-._~!$&''()*+,;=:/?@]|%[0-9A-F]{2})*))?$'
-                      example: 'http://www.google.com.br'
+                $ref: '#/components/schemas/DiscoveryOutage'
         links:
           $ref: '#/components/schemas/Links'
         meta:
@@ -6144,8 +6422,7 @@ components:
             status:
               type: array
               items:
-                $ref: '#/components/schemas/Status'
-                description: Lista de códigos de status da API.
+                $ref: '#/components/schemas/DiscoveryStatus'
         links:
           $ref: '#/components/schemas/Links'
         meta:
@@ -6187,7 +6464,6 @@ components:
           properties:
             brand:
               $ref: '#/components/schemas/ElectronicChannelsBrand'
-              description: Organização controladora do grupo de instituições financeiras.
         links:
           $ref: '#/components/schemas/Links'
         meta:
@@ -6301,7 +6577,6 @@ components:
           properties:
             brand:
               $ref: '#/components/schemas/PersonalAccountBrand'
-              description: Organização controladora do grupo de instituições financeiras.
         links:
           $ref: '#/components/schemas/Links'
         meta:
@@ -6574,7 +6849,6 @@ components:
           properties:
             brand:
               $ref: '#/components/schemas/PersonalCreditCardBrand'
-              description: Organização controladora do grupo de instituições financeiras.
         links:
           $ref: '#/components/schemas/Links'
         meta:
@@ -6718,7 +6992,6 @@ components:
           properties:
             brand:
               $ref: '#/components/schemas/PersonalFinancingBrand'
-              description: Organização controladora do grupo de instituições financeiras.
         links:
           $ref: '#/components/schemas/Links'
         meta:
@@ -6882,7 +7155,6 @@ components:
           properties:
             brand:
               $ref: '#/components/schemas/PersonalInvoiceFinancingsBrand'
-              description: Organização controladora do grupo de instituições financeiras.
         links:
           $ref: '#/components/schemas/Links'
         meta:
@@ -7260,7 +7532,6 @@ components:
           properties:
             brand:
               $ref: '#/components/schemas/PersonalLoanBrand'
-              description: Organização controladora do grupo de instituições financeiras
         links:
           $ref: '#/components/schemas/Links'
         meta:
@@ -7701,7 +7972,6 @@ components:
           properties:
             brand:
               $ref: '#/components/schemas/PersonalUnarrangedAccountOverdraftBrand'
-              description: Organização titular das dependências
         links:
           $ref: '#/components/schemas/Links'
         meta:
@@ -7803,7 +8073,6 @@ components:
           properties:
             brand:
               $ref: '#/components/schemas/PhoneChannelsBrand'
-              description: Organização controladora do grupo de instituições financeiras.
         links:
           $ref: '#/components/schemas/Links'
         meta:
@@ -7916,7 +8185,6 @@ components:
           properties:
             brand:
               $ref: '#/components/schemas/SharedAutomatedTellerMachinesBrand'
-              description: Organização controladora do grupo de instituições financeiras.
         links:
           $ref: '#/components/schemas/Links'
         meta:
@@ -8068,13 +8336,10 @@ components:
       properties:
         identification:
           $ref: '#/components/schemas/SharedAutomatedTellerMachinesIdentification'
-          description: Nome do proprietário do terminal de Autoatendimento Compartilhado.
         postalAddress:
           $ref: '#/components/schemas/SharedAutomatedTellerMachinesPostalAddress'
-          description: Deverá trazer o endereço completo referente à localização do Terminal de Autoatendimento.
         availability:
           $ref: '#/components/schemas/SharedAutomatedTellerMachinesAvailability'
-          description: Relação da disponbilidade de atendimento padrão por dias da semana.
         services:
           type: array
           maxItems: 20
@@ -8091,28 +8356,20 @@ components:
           items:
             properties:
               weekday:
-                type: string
-                enum:
-                  - DOMINGO
-                  - SEGUNDA_FEIRA
-                  - TERCA_FEIRA
-                  - QUARTA_FEIRA
-                  - QUINTA_FEIRA
-                  - SEXTA_FEIRA
-                  - SABADO
-                description: Dia da semana de abertura
-                example: SEGUNDA_FEIRA
+                $ref: '#/components/schemas/EnumWeekDay'
               openingTime:
                 type: string
                 description: Horário de abertura (UTC)
                 maxLength: 13
                 pattern: '^(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$|^NA$'
+                format: TimeString
                 example: '16:00:57Z'
               closingTime:
                 type: string
                 description: Horário de fechamento (UTC)
                 maxLength: 13
                 pattern: '^(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$|^NA$'
+                format: TimeString
                 example: '16:00:57Z'
         exception:
           type: string
@@ -8126,45 +8383,46 @@ components:
           description: 'Indica se o Terminal de Autoatendimento Compartilhado disponibiliza acesso restrito ou  irrestrito, atendendo ao público em geral.'
     SharedAutomatedTellerMachinesBrand:
       type: object
-      allOf:
-        - $ref: '#/components/schemas/Brand'
+      description: Organização controladora do grupo de instituições financeiras.
       properties:
+        name:
+          type: string
+          maxLength: 80
+          pattern: \w*\W*
+          description: Nome da marca selecionada pela Organização
+          example: Organização A
         companies:
           type: array
           items:
-            $ref: '#/components/schemas/SharedAutomatedTellerMachinesCompanies'
+            $ref: '#/components/schemas/SharedAutomatedTellerMachinesCompany'
           description: Lista de instituições pertencentes à marca
-    SharedAutomatedTellerMachinesCompanies:
-      properties:
-        sharedAutomatedTellerMachines:
-          type: array
-          description: Companies traz uma lista de todas as intuituições da Marca.
-          items:
-            $ref: '#/components/schemas/SharedAutomatedTellerMachines'
-      allOf:
-        - $ref: '#/components/schemas/SharedAutomatedTellerMachinesCompany'
     SharedAutomatedTellerMachinesCompany:
       type: object
       properties:
+        sharedAutomatedTellerMachines:
+          type: array
+          items:
+            $ref: '#/components/schemas/SharedAutomatedTellerMachines'
         name:
           type: string
           description: 'Nome da Instituição, pertencente à Marca.'
           maxLength: 80
           pattern: \w*\W*
           example: Empresa da Organização A
-        urlComplementaryList:
-          type: string
-          pattern: \w*\W*
-          maxLength: 1024
-          description: |
-            URL de link para lista complementar com os nomes e CNPJs agrupados para o caso instituições ofertantes de produtos e serviços com as mesmas características.
-          example: 'https://empresadaorganizacaoa.com/complementarylist'
         cnpjNumber:
           type: string
           pattern: '^(\d{14})$|^NA$'
           description: Número completo do CNPJ da instituição
           maxLength: 14
           example: '50685362000135'
+        urlComplementaryList:
+          type: string
+          pattern: \w*\W*
+          format: URIString
+          maxLength: 1024
+          description: |
+            URL de link para lista complementar com os nomes e CNPJs agrupados para o caso instituições ofertantes de produtos e serviços com as mesmas características.
+          example: 'https://empresadaorganizacaoa.com/complementarylist'
     SharedAutomatedTellerMachinesIdentification:
       type: object
       properties:
@@ -8179,40 +8437,37 @@ components:
       properties:
         address:
           type: string
-          description: |
-            Deverá trazer toda a informação referente ao endereço da dependência informada: Tipo de logradouro + Nome do logradouro + Número do Logradouro (se não existir usar ' s/n') + complemento (se houver), como, p.ex.: 'R Diamatina, 59, bloco 35, fundos' 'Praça da Boa Vontade s/n'
+          description: Informação referente ao endereço da máquina compartilhada de autoatendimento
           maxLength: 150
           pattern: \w*\W*
           example: 'Av Naburo Ykesaki, 1270'
         additionalInfo:
           type: string
-          description: Alguns logradouros ainda necessitam ser especificados por meio de complemento
+          description: Complemento
           maxLength: 30
           pattern: \w*\W*
           example: Fundos
         districtName:
           type: string
-          description: |
-            Bairro é uma comunidade ou região localizada em uma cidade ou município de acordo com as suas subdivisões geográficas. p.ex: 'Paraíso'
+          description: Bairro
           maxLength: 50
           pattern: \w*\W*
           example: Centro
         townName:
           type: string
-          description: |
-            Localidade: O nome da localidade corresponde à designação da cidade ou município no qual o endereço está localizado. p.ex. 'São Paulo'
+          description: Cidade
           maxLength: 50
           pattern: \w*\W*
           example: Marília
         ibgeCode:
           type: string
-          description: 'Código IBGE de Município. A Tabela de Códigos de Municípios do IBGE apresenta a lista os municípios brasileiros associados a um código composto de 7 dígitos, sendo os dois primeiros referentes ao código da Unidade da Federação.'
+          description: Código IBGE de Município.
           maxLength: 7
           pattern: '\d{7}'
           example: '3515890'
         countrySubDivision:
           type: string
-          description: 'Enumeração referente a cada sigla da unidade da federação que identifica o estado ou o distrito federal, no qual o endereço está localizado. p.ex. ''AC''. São consideradas apenas as siglas para os estados brasileiros'
+          description: Estado
           enum:
             - AC
             - AL
@@ -8244,13 +8499,13 @@ components:
           example: SP
         postCode:
           type: string
-          description: 'Composto por um conjunto numérico de oito dígitos, o objetivo principal do CEP é orientar e acelerar o encaminhamento, o tratamento e a entrega de objetos postados nos Correios, por meio da sua atribuição a localidades, logradouros, unidades dos Correios, serviços, órgãos públicos, empresas e edifícios'
+          description: CEP
           pattern: '(\d{8})|^NA$'
           maxLength: 8
           example: '17500001'
         country:
           type: string
-          description: Nome do país
+          description: País
           maxLength: 80
           pattern: \w*\W*
           example: Brasil
@@ -8260,122 +8515,37 @@ components:
           example: BRA
         geographicCoordinates:
           $ref: '#/components/schemas/GeographicCoordinates'
-          description: 'Objeto agrupador das informações, que correspondem aos valores das coordenadas geográficas em graus decimais, no Sistema de referência WGS84'
     SharedAutomatedTellerMachinesServices:
       type: object
       properties:
         name:
-          type: string
-          enum:
-            - ABERTURA_CONTAS_DEPOSITOS_OU_PAGAMENTO_PRE_PAGA
-            - SAQUE_MOEDA_EM_ESPECIE
-            - RECEBIMENTOS_PAGAMENTOS_QUALQUER_NATUREZA
-            - TRANSFERENCIAS_ELETRONICAS_VISANDO_MOVIMENTACAO
-            - CONTAS_DEPOSITOS_OU_PAGAMENTO_TITULARIDADE_CLIENTES
-            - CONSULTA_SALDOS_EXTRATOS_CONTAS_DEPOSITOS_E_CONTAS
-            - PAGAMENTOS
-            - APLICACOES_RESGATES_INVESTIMENTOS
-            - EXECUCAO_ATIVA_PASSIVA_ORDENS_PAGAMENTO_SOLICITACAO
-            - CLIENTES_USUARIOS
-            - DEPOSITOS_MOEDA_ESPECIE_CHEQUE
-            - OPERACOES_CREDITO_BEM_COMO_OUTROS_SERVICOS_PRESTADOS_ACOMPANHAMENTO_OPERACAO
-            - CARTAO_CREDITO
-            - SEGUROS
-            - OPERACOES_ARRENDAMENTO_MERCANTIL
-            - ABERTURA_CONTA_PAGAMENTO_POS_PAGA
-            - COMPRA_VENDA_MOEDA_ESTRANGEIRA_ESPECIE
-            - COMPRA_VENDA_CHEQUE_CHEQUE_VIAGEM_BEM_COMO_CARGA_MOEDA_ESTRANGEIRA_CARTAO_PRE_PAGO
-            - COMPRA_VENDA_OURO
-            - OUTROS_PRODUTOS_SERVICOS
-            - CANCELAMENTO
-            - INFORMACOES
-            - RECLAMACOES
-          description: Nome dos Serviços efetivamente prestados pelo Terminal de Autoatendimento Compartilhado informado
-          example: OUTROS_PRODUTOS_SERVICOS
+          $ref: '#/components/schemas/EnumSharedAutomatedTellerMachinesServicesNames'
         code:
-          type: string
-          enum:
-            - ABRE_CONTA_DEPOSITO_OU_PRE_PAGA
-            - SAQUE_MOEDA_ESPECIE
-            - RECEBE_PAGA_QUALQUER_NATUREZA
-            - TRANSFERENCIAS_ELETRONICAS_MOVIMENTA_CONTAS_DEPOSITOS_OU_PAGA_TITULARES_CLIENTES
-            - CONSULTA_SALDOS_EXTRATOS_CONTAS_DEPOSITOS
-            - PAGAMENTOS
-            - APLICA_RESGATA_INVESTIMENTOS
-            - EXECUTA_ATIVA_PASSIVA_ORDENS_PAGAMENTO
-            - DEPOSITA_MOEDA_ESPECIE_CHEQUE
-            - OPERA_CREDITO_OUTROS_SERVICOS_ACOMPANHA_OPERACAO
-            - CARTAO_CREDITO
-            - SEGUROS
-            - OPERA_ARRENDAMENTO_MERCANTIL
-            - ABERTURA_CONTA_PAGAMENTO_POS_PAGA
-            - COMPRA_VENDE_MOEDA_ESTRANGEIRA_ESPECIE
-            - COMPRA_VENDE_CHEQUE_CHEQUE_VIAGEM_CARGA_MOEDA_ESTRANGEIRA_CARTAO_PRE_PAGO
-            - COMPRA_VENDE_OURO
-            - OUTROS_PRODUTOS_SERVICOS
-            - CANCELAMENTO
-            - INFORMACOES
-            - RECLAMACOES
-          description: Código dos Serviços efetivamente prestados pelo Terminal de Autoatendimento Compartilhado informado
-          example: OUTROS_PRODUTOS_SERVICOS
+          $ref: '#/components/schemas/EnumSharedAutomatedTellerMachinesServicesCodes'
         additionalInfo:
           type: string
           maxLength: 2000
           pattern: \w*\W*
           description: 'Texto livre para complementar informação relativa ao Serviço disponível, quando for preenchida a opção ''OUTROS_PRODUTOS_SERVICOS'''
           example: Serviços complementares de atendimento via terminais de autoatendimento.
-    Status:
-      type: object
-      required:
-        - code
-        - explanation
-      properties:
-        code:
-          type: string
-          enum:
-            - OK
-            - PARTIAL_FAILURE
-            - UNAVAILABLE
-            - SCHEDULED_OUTAGE
-          description: |
-            Condição atual da API:
-              * `OK` - A implementação é totalmente funcional
-              * `PARTIAL_FAILURE` - Um ou mais endpoints estão indisponíveis
-              * `UNAVAILABLE` - A implementação completa está indisponível
-              * `SCHEDULED_OUTAGE` - Uma interrupção anunciada está em vigor
-          example: OK
-        explanation:
-          type: string
-          description: Fornece uma explicação da interrupção atual que pode ser exibida para um cliente final. Será obrigatoriamente preenchido se code tiver algum valor que não seja OK
-          example: Retorno com Sucesso
-        detectionTime:
-          type: string
-          description: A data e hora em que a interrupção atual foi detectada. Será obrigatoriamente preenchido se a propriedade code for PARTIAL_FAILURE ou UNAVAILABLE
-          example: '2020-07-21T08:30:00Z'
-        expectedResolutionTime:
-          type: string
-          description: A data e hora em que o serviço completo deve continuar (se conhecido). Será obrigatoriamente preenchido se code tiver algum valor que não seja OK
-          example: '2020-07-21T08:30:00Z'
-        updateTime:
-          type: string
-          description: A data e hora em que esse status foi atualizado pela última vez pelo titular dos dados.
-          example: '2020-01-02T01:00:00Z'
-        unavailableEndpoints:
-          type: array
-          description: Endpoints com indisponibilidade
-          items:
-            type: string
-          example:
-            - 'https://api.banco.com.br/open-banking/channels/v1/electronic-channels'
     UnarrangedAccountOverdraftRate:
       type: object
       required:
         - applications
         - minimumRate
         - maximumRate
-      allOf:
-        - $ref: '#/components/schemas/FeeReferentialRateIndexer'
+        - referentialRateIndexer
+        - rate
       properties:
+        referentialRateIndexer:
+          $ref: '#/components/schemas/EnumReferentialRateIndexer'
+        rate:
+          type: string
+          description: |
+            Percentual que incide sobre a composição das taxas de juros remuneratórios. (representa uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O valor '1 'representa 100%). A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)
+          pattern: '(^[0-9](\.[0-9]{2})|NA)$'
+          format: RateString
+          example: '0.15'
         applications:
           description: Lista  das faixas de cobrança da taxa efetiva de remuneração.
           type: array
@@ -8430,17 +8600,9 @@ components:
         - maximum
       properties:
         name:
-          type: string
-          enum:
-            - CONCESSAO_ADIANTAMENTO_DEPOSITANTE
-          default: CONCESSAO_ADIANTAMENTO_DEPOSITANTE
-          description: 'Nome da Tarifa cobrada sobre Serviço que incide sobre Adiantamento a depositante, para pessoa jurídica.'
+          $ref: '#/components/schemas/EnumUnarrangedAccountOverdraftFeeName'
         code:
-          type: string
-          enum:
-            - ADIANT_DEPOSITANTE
-          default: ADIANT_DEPOSITANTE
-          description: 'Sigla de identificação do serviço relacionado à Modalidade de Adiantamento a depositante, para pessoa jurídica.'
+          $ref: '#/components/schemas/EnumUnarrangedAccountOverdraftFeeCode'
         chargingTriggerInfo:
           type: string
           maxLength: 2000
@@ -8505,3 +8667,9 @@ components:
         type: integer
         default: 25
         minimum: 1
+    period:
+      in: query
+      description: 'O período a ser retornado. Se não for informado, o padrão será ALL'
+      name: period
+      schema:
+        $ref: '#/components/schemas/EnumAdminMetricsPeriod'

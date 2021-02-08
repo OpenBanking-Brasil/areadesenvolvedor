@@ -44,8 +44,8 @@ paths:
                       - brand
                     properties:
                       brand:
-                        description: Organização controladora do grupo de instituições financeiras.
                         type: object
+                        description: Organização controladora do grupo de instituições financeiras.
                         required:
                           - name
                           - companies
@@ -64,29 +64,28 @@ paths:
                               required:
                                 - name
                                 - cnpjNumber
-                              allOf:
-                                - type: object
-                                  required:
-                                    - name
-                                    - cnpjNumber
-                                  allOf:
-                                    - $ref: '#/paths/~1personal-loans/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/allOf/0'
-                                  properties:
-                                    name:
-                                      type: string
-                                      description: 'Nome da Instituição, pertencente à marca, responsável pela modalidade de Empréstimos. p.ex.''Empresa da Organização A'''
-                                      maxLength: 80
-                                      pattern: \w*\W*
-                                      example: Empresa A1
-                                    urlComplementaryList:
-                                      type: string
-                                      pattern: \w*\W*
-                                      maxLength: 1024
-                                      description: |
-                                        URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. Endereço eletrônico de acesso ao canal. Será obrigatoriamente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada.
-                                        Restrição: Será obrigatorimente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada
-                                      example: 'https://empresadaorganizacaoa.com/complementarylist'
                               properties:
+                                name:
+                                  type: string
+                                  description: 'Nome da Instituição, pertencente à marca, responsável pela modalidade de Empréstimos. p.ex.''Empresa da Organização A'''
+                                  maxLength: 80
+                                  pattern: \w*\W*
+                                  example: Empresa A1
+                                cnpjNumber:
+                                  type: string
+                                  pattern: '^(\d{14})$|^NA$'
+                                  description: Número completo do CNPJ da instituição
+                                  maxLength: 14
+                                  example: '50685362000135'
+                                urlComplementaryList:
+                                  type: string
+                                  pattern: \w*\W*
+                                  format: URIString
+                                  maxLength: 1024
+                                  description: |
+                                    URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. Endereço eletrônico de acesso ao canal. Será obrigatoriamente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada.
+                                    Restrição: Será obrigatorimente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada
+                                  example: 'https://empresadaorganizacaoa.com/complementarylist'
                                 personalAccounts:
                                   type: array
                                   items:
@@ -229,52 +228,14 @@ paths:
                                                 prices:
                                                   type: array
                                                   items:
-                                                    $ref: '#/paths/~1business-accounts/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/properties/businessAccounts/items/properties/fees/properties/services/items/properties/prices/items'
+                                                    $ref: '#/paths/~1business-credit-cards/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/properties/businessCreditCards/items/properties/fees/properties/services/items/properties/prices/items'
                                                   minItems: 4
                                                   maxItems: 4
                                                   description: 'Valor da mediana da tarifa, relativa ao serviço ofertado, informado no período'
                                                 minimum:
-                                                  type: object
-                                                  description: Valor mínimo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
-                                                  required:
-                                                    - value
-                                                    - currency
-                                                  properties:
-                                                    value:
-                                                      type: string
-                                                      pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
-                                                      maxLength: 12
-                                                      x-cds-type: AmountString
-                                                      description: Valor mínimo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
-                                                      example: '1350.00'
-                                                    currency:
-                                                      type: string
-                                                      pattern: '^(\w{3}){1}$'
-                                                      maxLength: 3
-                                                      x-cds-type: CurrencyString
-                                                      description: 'Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217'
-                                                      example: BRL
+                                                  $ref: '#/paths/~1personal-accounts/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/properties/personalAccounts/items/properties/serviceBundles/items/properties/minimum'
                                                 maximum:
-                                                  type: object
-                                                  description: Valor máximo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
-                                                  required:
-                                                    - value
-                                                    - currency
-                                                  properties:
-                                                    value:
-                                                      type: string
-                                                      pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
-                                                      maxLength: 12
-                                                      x-cds-type: AmountString
-                                                      description: Valor máximo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
-                                                      example: '8800.00'
-                                                    currency:
-                                                      type: string
-                                                      pattern: '^(\w{3}){1}$'
-                                                      maxLength: 3
-                                                      x-cds-type: CurrencyString
-                                                      description: 'Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217'
-                                                      example: BRL
+                                                  $ref: '#/paths/~1personal-accounts/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/properties/personalAccounts/items/properties/serviceBundles/items/properties/maximum'
                                             minItems: 1
                                             maxItems: 40
                                             description: Lista das Tarifas cobradas sobre Serviços Prioritários
@@ -310,52 +271,14 @@ paths:
                                                 prices:
                                                   type: array
                                                   items:
-                                                    $ref: '#/paths/~1business-accounts/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/properties/businessAccounts/items/properties/fees/properties/services/items/properties/prices/items'
+                                                    $ref: '#/paths/~1business-credit-cards/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/properties/businessCreditCards/items/properties/fees/properties/services/items/properties/prices/items'
                                                   minItems: 4
                                                   maxItems: 4
                                                   description: Valor da tarifa cobrada referente aos Outros Serviços.
                                                 minimum:
-                                                  type: object
-                                                  description: Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência.
-                                                  required:
-                                                    - value
-                                                    - currency
-                                                  properties:
-                                                    value:
-                                                      type: string
-                                                      pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
-                                                      maxLength: 12
-                                                      x-cds-type: AmountString
-                                                      description: Valor mínimo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
-                                                      example: '1350.00'
-                                                    currency:
-                                                      type: string
-                                                      pattern: '^(\w{3}){1}$'
-                                                      maxLength: 3
-                                                      x-cds-type: CurrencyString
-                                                      description: 'Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217'
-                                                      example: BRL
+                                                  $ref: '#/paths/~1personal-accounts/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/properties/personalAccounts/items/properties/serviceBundles/items/properties/minimum'
                                                 maximum:
-                                                  type: object
-                                                  description: Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência.
-                                                  required:
-                                                    - value
-                                                    - currency
-                                                  properties:
-                                                    value:
-                                                      type: string
-                                                      pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
-                                                      maxLength: 12
-                                                      x-cds-type: AmountString
-                                                      description: Valor máximo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
-                                                      example: '8800.00'
-                                                    currency:
-                                                      type: string
-                                                      pattern: '^(\w{3}){1}$'
-                                                      maxLength: 3
-                                                      x-cds-type: CurrencyString
-                                                      description: 'Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217'
-                                                      example: BRL
+                                                  $ref: '#/paths/~1personal-accounts/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/properties/personalAccounts/items/properties/serviceBundles/items/properties/maximum'
                                             minItems: 1
                                             description: 'Lista das Tarifas cobradas sobre outros Serviços, que não prioritários'
                                       serviceBundles:
@@ -441,7 +364,7 @@ paths:
                                                     type: string
                                                     pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
                                                     maxLength: 12
-                                                    x-cds-type: AmountString
+                                                    format: AmountString
                                                     description: |
                                                       Valor da mediana de cada faixa relativa ao serviço ofertado, informado no período, conforme Res nº 32 BCB, 2020. p.ex. ''45.00''
                                                       (representa um valor monetário. p.ex: 1547368.92. Este valor, considerando que a moeda seja BRL, significa R$ 1.547.368,92. O único separador presente deve ser o ''.'' (ponto) para indicar a casa decimal. Não deve haver separador de milhar)
@@ -455,6 +378,7 @@ paths:
                                               description: Lista distribuição preços tarifas de serviços
                                             minimum:
                                               type: object
+                                              description: Valor mínimo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
                                               required:
                                                 - value
                                                 - currency
@@ -463,13 +387,14 @@ paths:
                                                   type: string
                                                   pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
                                                   maxLength: 12
-                                                  x-cds-type: AmountString
+                                                  format: AmountString
                                                   description: Valor mínimo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
                                                   example: '1350.00'
                                                 currency:
                                                   $ref: '#/paths/~1personal-accounts/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/properties/personalAccounts/items/properties/termsConditions/properties/minimumBalance/properties/currency'
                                             maximum:
                                               type: object
+                                              description: Valor máximo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
                                               required:
                                                 - value
                                                 - currency
@@ -478,7 +403,7 @@ paths:
                                                   type: string
                                                   pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
                                                   maxLength: 12
-                                                  x-cds-type: AmountString
+                                                  format: AmountString
                                                   description: Valor máximo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
                                                   example: '8800.00'
                                                 currency:
@@ -533,7 +458,6 @@ paths:
                                           - closingProcessInfo
                                         properties:
                                           minimumBalance:
-                                            description: 'Saldo mínimo exigido nos Termos e condições contratuais, que regem as contas comercializadas.'
                                             type: object
                                             required:
                                               - value
@@ -549,7 +473,7 @@ paths:
                                                 type: string
                                                 pattern: '^(\w{3}){1}$'
                                                 maxLength: 3
-                                                x-cds-type: CurrencyString
+                                                format: CurrencyString
                                                 description: 'Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217'
                                                 example: BRL
                                           elegibilityCriteriaInfo:
@@ -566,6 +490,7 @@ paths:
                                             example: 'https://example.com/mobile-banking'
                                       incomeRate:
                                         type: object
+                                        description: Valores dos percentuais de taxas.
                                         properties:
                                           savingAccount:
                                             type: string
@@ -875,8 +800,8 @@ paths:
                       - brand
                     properties:
                       brand:
-                        description: Organização controladora do grupo de instituições financeiras.
                         type: object
+                        description: Organização controladora do grupo de instituições financeiras.
                         required:
                           - name
                           - companies
@@ -894,9 +819,28 @@ paths:
                               required:
                                 - name
                                 - cnpjNumber
-                              allOf:
-                                - $ref: '#/paths/~1personal-accounts/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/allOf/0'
                               properties:
+                                name:
+                                  type: string
+                                  description: 'Nome da Instituição, pertencente à marca, responsável pela modalidade de Empréstimos. p.ex.''Empresa da Organização A'''
+                                  maxLength: 80
+                                  pattern: \w*\W*
+                                  example: Empresa A1
+                                cnpjNumber:
+                                  type: string
+                                  pattern: '^(\d{14})$|^NA$'
+                                  description: Número completo do CNPJ da instituição
+                                  maxLength: 14
+                                  example: '50685362000135'
+                                urlComplementaryList:
+                                  type: string
+                                  pattern: \w*\W*
+                                  format: URIString
+                                  maxLength: 1024
+                                  description: |
+                                    URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. Endereço eletrônico de acesso ao canal. Será obrigatoriamente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada.
+                                    Restrição: Será obrigatorimente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada
+                                  example: 'https://empresadaorganizacaoa.com/complementarylist'
                                 businessAccounts:
                                   type: array
                                   items:
@@ -949,80 +893,14 @@ paths:
                                                 prices:
                                                   type: array
                                                   items:
-                                                    type: object
-                                                    required:
-                                                      - interval
-                                                      - value
-                                                      - currency
-                                                      - customers
-                                                    properties:
-                                                      interval:
-                                                        $ref: '#/paths/~1personal-accounts/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/properties/personalAccounts/items/properties/serviceBundles/items/properties/prices/items/properties/interval'
-                                                      value:
-                                                        type: string
-                                                        pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
-                                                        maxLength: 12
-                                                        x-cds-type: AmountString
-                                                        description: |
-                                                          Valor da mediana de cada faixa relativa ao serviço ofertado, informado no período, conforme Res nº 32 BCB, 2020. p.ex. '45.00' (representa um valor monetário. p.ex: 1547368.92. Este valor, considerando que a moeda seja BRL, significa R$ 1.547.368,92. O único separador presente deve ser o '.' (ponto) para indicar a casa decimal. Não deve haver separador de milhar)
-                                                        example: '2000.00'
-                                                      currency:
-                                                        $ref: '#/paths/~1personal-accounts/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/properties/personalAccounts/items/properties/termsConditions/properties/minimumBalance/properties/currency'
-                                                      customers:
-                                                        type: object
-                                                        description: Percentual de clientes em cada faixa
-                                                        required:
-                                                          - rate
-                                                        properties:
-                                                          rate:
-                                                            type: string
-                                                            description: Percentual de clientes em cada faixa.
-                                                            pattern: '^[0-9](\.[0-9]{4})$|^NA$'
-                                                            example: '0.1500'
-                                                            maxLength: 6
+                                                    $ref: '#/paths/~1business-credit-cards/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/properties/businessCreditCards/items/properties/fees/properties/services/items/properties/prices/items'
                                                   minItems: 4
                                                   maxItems: 4
                                                   description: Lista distribuição preços tarifas de serviços
                                                 minimum:
-                                                  type: object
-                                                  required:
-                                                    - value
-                                                    - currency
-                                                  properties:
-                                                    value:
-                                                      type: string
-                                                      pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
-                                                      maxLength: 12
-                                                      x-cds-type: AmountString
-                                                      description: Valor mínimo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
-                                                      example: '1350.00'
-                                                    currency:
-                                                      type: string
-                                                      pattern: '^(\w{3}){1}$'
-                                                      maxLength: 3
-                                                      x-cds-type: CurrencyString
-                                                      description: 'Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217'
-                                                      example: BRL
+                                                  $ref: '#/paths/~1personal-accounts/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/properties/personalAccounts/items/properties/serviceBundles/items/properties/minimum'
                                                 maximum:
-                                                  type: object
-                                                  required:
-                                                    - value
-                                                    - currency
-                                                  properties:
-                                                    value:
-                                                      type: string
-                                                      pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
-                                                      maxLength: 12
-                                                      x-cds-type: AmountString
-                                                      description: Valor máximo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
-                                                      example: '8800.00'
-                                                    currency:
-                                                      type: string
-                                                      pattern: '^(\w{3}){1}$'
-                                                      maxLength: 3
-                                                      x-cds-type: CurrencyString
-                                                      description: 'Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217'
-                                                      example: BRL
+                                                  $ref: '#/paths/~1personal-accounts/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/properties/personalAccounts/items/properties/serviceBundles/items/properties/maximum'
                                             minItems: 1
                                             description: Lista das Tarifas cobradas sobre Serviços
                                       serviceBundles:
@@ -1224,8 +1102,8 @@ paths:
                       - brand
                     properties:
                       brand:
-                        description: Organização controladora do grupo de instituições financeiras
                         type: object
+                        description: Organização controladora do grupo de instituições financeiras
                         required:
                           - name
                           - companies
@@ -1251,9 +1129,16 @@ paths:
                                   maxLength: 80
                                   description: 'Nome da Instituição, pertencente à marca, responsável pela comercialização dos produtos e serviços'
                                   example: Empresa da Marca A
+                                cnpjNumber:
+                                  type: string
+                                  pattern: '^(\d{14})$|^NA$'
+                                  description: Número completo do CNPJ da instituição
+                                  maxLength: 14
+                                  example: '50685362000135'
                                 urlComplementaryList:
                                   type: string
                                   pattern: \w*\W*
+                                  format: URIString
                                   maxLength: 1024
                                   description: URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. Endereço eletrônico de acesso ao canal.
                                   example: 'https://example.com/mobile-banking'
@@ -1322,51 +1207,13 @@ paths:
                                                 prices:
                                                   type: array
                                                   items:
-                                                    $ref: '#/paths/~1business-accounts/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/properties/businessAccounts/items/properties/fees/properties/services/items/properties/prices/items'
+                                                    $ref: '#/paths/~1business-credit-cards/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/properties/businessCreditCards/items/properties/fees/properties/services/items/properties/prices/items'
                                                   minItems: 4
                                                   maxItems: 4
                                                 minimum:
-                                                  type: object
-                                                  description: Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência.
-                                                  required:
-                                                    - value
-                                                    - currency
-                                                  properties:
-                                                    value:
-                                                      type: string
-                                                      pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
-                                                      maxLength: 12
-                                                      x-cds-type: AmountString
-                                                      description: Valor mínimo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
-                                                      example: '1350.00'
-                                                    currency:
-                                                      type: string
-                                                      pattern: '^(\w{3}){1}$'
-                                                      maxLength: 3
-                                                      x-cds-type: CurrencyString
-                                                      description: 'Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217'
-                                                      example: BRL
+                                                  $ref: '#/paths/~1personal-accounts/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/properties/personalAccounts/items/properties/serviceBundles/items/properties/minimum'
                                                 maximum:
-                                                  type: object
-                                                  description: Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência.
-                                                  required:
-                                                    - value
-                                                    - currency
-                                                  properties:
-                                                    value:
-                                                      type: string
-                                                      pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
-                                                      maxLength: 12
-                                                      x-cds-type: AmountString
-                                                      description: Valor máximo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
-                                                      example: '8800.00'
-                                                    currency:
-                                                      type: string
-                                                      pattern: '^(\w{3}){1}$'
-                                                      maxLength: 3
-                                                      x-cds-type: CurrencyString
-                                                      description: 'Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217'
-                                                      example: BRL
+                                                  $ref: '#/paths/~1personal-accounts/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/properties/personalAccounts/items/properties/serviceBundles/items/properties/maximum'
                                             minItems: 1
                                             description: Lista das Tarifas cobradas sobre Serviços
                                         description: Objeto que reúne informações de tarifas de serviços
@@ -1377,46 +1224,19 @@ paths:
                                             - applications
                                             - minimumRate
                                             - maximumRate
+                                            - referentialRateIndexer
+                                            - rate
                                           type: object
-                                          allOf:
-                                            - type: object
-                                              properties:
-                                                referentialRateIndexer:
-                                                  type: string
-                                                  enum:
-                                                    - SEM_INDEXADOR_TAXA
-                                                    - PRE_FIXADO
-                                                    - POS_FIXADO_TR_TBF
-                                                    - POS_FIXADO_TJLP
-                                                    - POS_FIXADO_LIBOR
-                                                    - POS_FIXADO_TLP
-                                                    - OUTRAS_TAXAS_POS_FIXADAS
-                                                    - FLUTUANTES_CDI
-                                                    - FLUTUANTES_SELIC
-                                                    - OUTRAS_TAXAS_FLUTUANTES
-                                                    - INDICES_PRECOS_IGPM
-                                                    - INDICES_PRECOS_IPCA
-                                                    - INDICES_PRECOS_IPCC
-                                                    - OUTROS_INDICES_PRECO
-                                                    - CREDITO_RURAL_TCR_PRE
-                                                    - CREDITO_RURAL_TCR_POS
-                                                    - CREDITO_RURAL_TRFC_PRE
-                                                    - CREDITO_RURAL_TRFC_POS
-                                                    - OUTROS_INDEXADORES
-                                                  description: |
-                                                    Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial ou Indexador (Indx), do Documento 3040
-                                                  example: PRE_FIXADO
-                                                rate:
-                                                  type: string
-                                                  pattern: '(^[0-1](\.[0-9]{2})$|^NA$)'
-                                                  description: |
-                                                    Percentual que incide sobre a composição das taxas de juros remuneratórios. (representa uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O valor 1 representa 100%) A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)
-                                                  example: '0.15'
-                                                  maxLength: 4
-                                              required:
-                                                - referentialRateIndexer
-                                                - rate
                                           properties:
+                                            referentialRateIndexer:
+                                              $ref: '#/paths/~1personal-unarranged-account-overdraft/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/properties/personalUnarrangedAccountOverdraft/properties/interestRates/items/properties/referentialRateIndexer'
+                                            rate:
+                                              type: string
+                                              pattern: '(^[0-1](\.[0-9]{2})$|^NA$)'
+                                              description: |
+                                                Percentual que incide sobre a composição das taxas de juros remuneratórios. (representa uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O valor 1 representa 100%) A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)
+                                              example: '0.15'
+                                              maxLength: 4
                                             applications:
                                               type: array
                                               items:
@@ -1461,20 +1281,20 @@ paths:
                                             - NAO_APLICAVEL
                                           description: |
                                             Relação de garantias exigidas, segundo documento 3040 do Bacen:
-                                            * `cessão de direitos creditórios`: o cedente transfere ao credor/cessionário a titularidade de direitos creditórios, até a liquidação da dívida. O credor/cessionário passa a recebê-los diretamente dos devedores e credita o produto da operação para o cedente na operação que originou a cessão, até a sua liquidação
-                                            * `caução`: garantia instituída sobre créditos do garantidor
-                                            * `penhor`: direito real que consiste na tradição de uma coisa móvel ou mobilizável, suscetível de alienação, realizada pelo devedor ou por terceiro ao credor, a fim de garantir o pagamento do débito
-                                            * `alienação fiduciária`: transferência ao credor, ou fiduciário, da propriedade do bem
-                                            * `hipoteca`: direito real de garantia que afeta um bem imóvel para o cumprimento da obrigação
-                                            * `operações garantidas pelo governo`: nas instâncias federal, estadual ou municipal
-                                            * `outras garantias não fidejussórias`: as garantias reais não descritas como: cessão de direitos creditórios, caução, penhor, alienação fiduciária, hipoteca ou operação garantida pelo governo
-                                            * `seguros e assemelhados`: os seguros (e assemelhados) contratados para garantir o pagamento da operação em circunstâncias adversas
-                                            * `garantia fidejussória`: baseada na fidelidade do garantidor em cumprir as obrigações, caso o devedor não o faça
-                                            * `bens arrendados`: bem objeto do arrendamento financeiro
-                                            * `garantias internacionais`: declarar se a garantia é mitigadora ou não, observados os critérios definidos pela Circular 3.644, de 4 de março de 2013
-                                            * `operações garantidas por outras entidade`: declarar as garantias prestadas pelas entidades descritas no item 3. Informações de Garantias (i) do documento 3040 - Bacen
-                                            * `acordos de compensação`: operações que sejam abrangidas por acordos para a compensação e liquidação de obrigações no âmbito do SFN, nos termos da Resolução 3.263, de 24 de fevereiro de 2005
-                                            * `não aplicável`
+                                             `cessão de direitos creditórios`: o cedente transfere ao credor/cessionário a titularidade de direitos creditórios, até a liquidação da dívida. O credor/cessionário passa a recebê-los diretamente dos devedores e credita o produto da operação para o cedente na operação que originou a cessão, até a sua liquidação
+                                             `caução`: garantia instituída sobre créditos do garantidor
+                                             `penhor`: direito real que consiste na tradição de uma coisa móvel ou mobilizável, suscetível de alienação, realizada pelo devedor ou por terceiro ao credor, a fim de garantir o pagamento do débito
+                                             `alienação fiduciária`: transferência ao credor, ou fiduciário, da propriedade do bem
+                                             `hipoteca`: direito real de garantia que afeta um bem imóvel para o cumprimento da obrigação
+                                             `operações garantidas pelo governo`: nas instâncias federal, estadual ou municipal
+                                             `outras garantias não fidejussórias`: as garantias reais não descritas como: cessão de direitos creditórios, caução, penhor, alienação fiduciária, hipoteca ou operação garantida pelo governo
+                                             `seguros e assemelhados`: os seguros (e assemelhados) contratados para garantir o pagamento da operação em circunstâncias adversas
+                                             `garantia fidejussória`: baseada na fidelidade do garantidor em cumprir as obrigações, caso o devedor não o faça
+                                             `bens arrendados`: bem objeto do arrendamento financeiro
+                                             `garantias internacionais`: declarar se a garantia é mitigadora ou não, observados os critérios definidos pela Circular 3.644, de 4 de março de 2013
+                                             `operações garantidas por outras entidade`: declarar as garantias prestadas pelas entidades descritas no item 3. Informações de Garantias (i) do documento 3040 - Bacen
+                                             `acordos de compensação`: operações que sejam abrangidas por acordos para a compensação e liquidação de obrigações no âmbito do SFN, nos termos da Resolução 3.263, de 24 de fevereiro de 2005
+                                             `não aplicável`
                                           example: CESSAO_DIREITOS_CREDITORIOS
                                         minItems: 1
                                         maxItems: 14
@@ -1488,38 +1308,36 @@ paths:
                                   minItems: 1
                                   maxItems: 6
                                   description: Lista de modalidades de empréstimos
-                              allOf:
-                                - type: object
-                                  properties:
-                                    cnpjNumber:
-                                      type: string
-                                      pattern: '^(\d{14})$|^NA$'
-                                      description: Número completo do CNPJ da instituição
-                                      maxLength: 14
-                                      example: '50685362000135'
                             minItems: 1
                             description: Companies traz uma lista de todas as instituições da Marca
                   links:
                     type: object
                     description: Referências para outros recusos da API requisitada.
+                    required:
+                      - self
                     properties:
                       self:
                         type: string
-                        description: URL da página atualmente requisitada
+                        format: URIString
+                        description: URI completo que gerou a resposta atual.
                         example: 'https://api.banco.com.br/open-banking/<api>/v1/<resource>'
                       first:
                         type: string
-                        description: URL da primeira página de registros
+                        format: URIString
+                        description: URI da primeira página que originou essa lista de resultados. Restrição - Obrigatório quando não for a primeira página da resposta
                         example: 'https://api.banco.com.br/open-banking/<api>/v1/<resource>'
                       prev:
                         type: string
-                        description: URL da página anterior de registros
+                        format: URIString
+                        description: "URI da página anterior dessa lista de resultados. Restrição - \tObrigatório quando não for a primeira página da resposta"
                       next:
                         type: string
-                        description: URL da próxima página de registros
+                        format: URIString
+                        description: URI da próxima página dessa lista de resultados. Restrição - Obrigatório quando não for a última página da resposta
                       last:
                         type: string
-                        description: URL da última página de registros
+                        format: URIString
+                        description: URI da última página dessa lista de resultados. Restrição - Obrigatório quando não for a última página da resposta
                         example: 'https://api.banco.com.br/open-banking/<api>/v1/<resource>'
                   meta:
                     type: object
@@ -1527,11 +1345,11 @@ paths:
                     properties:
                       totalRecords:
                         type: integer
-                        description: Total de registros encontrados
+                        description: Número total de registros no resultado
                         example: 1
                       totalPages:
                         type: integer
-                        description: Total de páginas para os registros encontrados
+                        description: Número total de páginas no resultado
                         example: 1
                     required:
                       - totalRecords
@@ -1974,6 +1792,7 @@ paths:
             application/json:
               schema:
                 type: object
+                description: Organização controladora do grupo de instituições financeiras
                 required:
                   - data
                   - links
@@ -1986,8 +1805,8 @@ paths:
                       - brand
                     properties:
                       brand:
-                        description: Organização controladora do grupo de instituições financeiras.
                         type: object
+                        description: Organização controladora do grupo de instituições financeiras
                         required:
                           - name
                           - companies
@@ -2013,9 +1832,16 @@ paths:
                                   maxLength: 80
                                   description: 'Nome da Instituição, pertencente à marca, responsável pela modalidade de Empréstimos. p.ex.''Empresa da Organização A'''
                                   example: Empresa A1
+                                cnpjNumber:
+                                  type: string
+                                  pattern: '^(\d{14})$|^NA$'
+                                  description: Número completo do CNPJ da instituição
+                                  maxLength: 14
+                                  example: '50685362000135'
                                 urlComplementaryList:
                                   type: string
                                   pattern: \w*\W*
+                                  format: URIString
                                   maxLength: 1024
                                   description: URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. Endereço eletrônico de acesso ao canal.
                                   example: 'https://example.com/mobile-banking'
@@ -2041,12 +1867,12 @@ paths:
                                           - EMPRESTIMO_CAPITAL_GIRO_ROTATIVO
                                         description: |
                                           Modalidades de empréstimos ofertados para pessoas Jurídicas, conforme Circular 4015-Bacen. Segundo cartilha do Bacen: Empréstimo é um contrato entre o cliente e uma instituição financeira (banco, cooperativa de crédito, caixa econômica) pelo qual o cliente recebe uma quantia em dinheiro que deverá ser devolvida em prazo determinado, acrescida dos juros acertados. Os recursos obtidos no empréstimo não tem destinação específica.
-                                          * Empréstimo-Microcrédito Produtivo Orientado - segundo PNMPO é o crédito concedido para financiamento das atividades produtivas, cuja metodologia será estabelecida em regulamento, observada a preferência do relacionamento direto com os empreendedores, admitido o uso de tecnologias digitais e eletrônicas que possam substituir o contato presencial
-                                          * Empréstimo-Cheque especial - operações de crédito vinculadas à conta corrente, nas quais determinado limite de crédito é disponibilizado aos clientes para utilização de acordo com suas conveniências, sem necessidade de comunicação prévia à instituição financeira
-                                          * Empréstimo-Conta garantida - operações de crédito rotativo, nas quais determinado limite de crédito é disponibilizado para utilização pelo cliente, através da simples movimentação da conta corrente e/ou solicitação formal à instituição financeira. As operações classificadas nessa modalidade não devem ter data definida para a amortização do saldo devedor, exceto a estabelecida para vigência do contrato
-                                          * Empréstimo-Capital de giro com prazo de vencimento até 365 dias: operações de crédito voltadas para o financiamento de curto prazo (igual ou inferior a 365 dias) das pessoas jurídicas, vinculadas às necessidades de capital de giro e a um contrato específico que estabeleça prazos, taxas e garantias
-                                          * Empréstimo-Capital de giro com prazo vencimento superior a 365 dias: operações de crédito voltadas para o financiamento de médio e longo prazo (superior a 365 dias) das pessoas jurídicas, vinculadas às necessidades de capital de giro e a um contrato específico que estabeleça prazos, taxas e garantias
-                                          * Empréstimo-Capital de giro rotativo: operações de crédito voltadas para o financiamento de capital de giro, vinculadas a um contrato que estabeleça linha de crédito rotativo, de forma que, à medida que a empresa devedora amortize os empréstimos já tomados, o limite disponível para utilização seja restituído, e amortizações com datas predeterminadas, podendo ser facultado ao devedor repactuar o fluxo de pagamentos ao longo da vigência do contrato
+                                           Empréstimo-Microcrédito Produtivo Orientado - segundo PNMPO é o crédito concedido para financiamento das atividades produtivas, cuja metodologia será estabelecida em regulamento, observada a preferência do relacionamento direto com os empreendedores, admitido o uso de tecnologias digitais e eletrônicas que possam substituir o contato presencial
+                                           Empréstimo-Cheque especial - operações de crédito vinculadas à conta corrente, nas quais determinado limite de crédito é disponibilizado aos clientes para utilização de acordo com suas conveniências, sem necessidade de comunicação prévia à instituição financeira
+                                           Empréstimo-Conta garantida - operações de crédito rotativo, nas quais determinado limite de crédito é disponibilizado para utilização pelo cliente, através da simples movimentação da conta corrente e/ou solicitação formal à instituição financeira. As operações classificadas nessa modalidade não devem ter data definida para a amortização do saldo devedor, exceto a estabelecida para vigência do contrato
+                                           Empréstimo-Capital de giro com prazo de vencimento até 365 dias: operações de crédito voltadas para o financiamento de curto prazo (igual ou inferior a 365 dias) das pessoas jurídicas, vinculadas às necessidades de capital de giro e a um contrato específico que estabeleça prazos, taxas e garantias
+                                           Empréstimo-Capital de giro com prazo vencimento superior a 365 dias: operações de crédito voltadas para o financiamento de médio e longo prazo (superior a 365 dias) das pessoas jurídicas, vinculadas às necessidades de capital de giro e a um contrato específico que estabeleça prazos, taxas e garantias
+                                           Empréstimo-Capital de giro rotativo: operações de crédito voltadas para o financiamento de capital de giro, vinculadas a um contrato que estabeleça linha de crédito rotativo, de forma que, à medida que a empresa devedora amortize os empréstimos já tomados, o limite disponível para utilização seja restituído, e amortizações com datas predeterminadas, podendo ser facultado ao devedor repactuar o fluxo de pagamentos ao longo da vigência do contrato
                                         example: EMPRESTIMO_MICROCREDITO_PRODUTIVO_ORIENTADO
                                       fees:
                                         $ref: '#/paths/~1personal-loans/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/properties/personalLoans/items/properties/fees'
@@ -2072,8 +1898,6 @@ paths:
                                   minItems: 1
                                   maxItems: 6
                                   description: Lista de modalidades de empréstimos
-                              allOf:
-                                - $ref: '#/paths/~1personal-loans/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/allOf/0'
                             minItems: 1
                             description: Companies traz uma lista de todas as instituições da Marca
                   links:
@@ -2529,13 +2353,17 @@ paths:
                       - brand
                     properties:
                       brand:
-                        description: Organização controladora do grupo de instituições financeiras.
                         type: object
+                        description: Organização controladora do grupo de instituições financeiras
                         required:
                           - companies
-                        allOf:
-                          - $ref: '#/paths/~1personal-financings/get/responses/200/content/application~1json/schema/properties/data/properties/brand/allOf/0'
                         properties:
+                          name:
+                            type: string
+                            maxLength: 80
+                            pattern: \w*\W*
+                            description: Nome da marca selecionada pela Organização
+                            example: Organização A
                           companies:
                             type: array
                             description: Companies traz uma lista de todas as instituições da Marca
@@ -2545,9 +2373,28 @@ paths:
                                 - name
                                 - cnpjNumber
                                 - personalCreditCards
-                              allOf:
-                                - $ref: '#/paths/~1personal-accounts/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/allOf/0'
                               properties:
+                                name:
+                                  type: string
+                                  description: 'Nome da Instituição, pertencente à marca, responsável pela modalidade de Empréstimos. p.ex.''Empresa da Organização A'''
+                                  maxLength: 80
+                                  pattern: \w*\W*
+                                  example: Empresa A1
+                                cnpjNumber:
+                                  type: string
+                                  pattern: '^(\d{14})$|^NA$'
+                                  description: Número completo do CNPJ da instituição
+                                  maxLength: 14
+                                  example: '50685362000135'
+                                urlComplementaryList:
+                                  type: string
+                                  pattern: \w*\W*
+                                  format: URIString
+                                  maxLength: 1024
+                                  description: |
+                                    URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. Endereço eletrônico de acesso ao canal. Será obrigatoriamente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada.
+                                    Restrição: Será obrigatorimente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada
+                                  example: 'https://empresadaorganizacaoa.com/complementarylist'
                                 personalCreditCards:
                                   type: array
                                   description: Lista das contas de pagamento pós-paga
@@ -2569,12 +2416,14 @@ paths:
                                         example: Cartão Universitário
                                       identification:
                                         type: object
+                                        description: Informações de identificação do cartão de crédito
                                         required:
                                           - product
                                           - creditCard
                                         properties:
                                           product:
                                             type: object
+                                            description: 'Categoria atribuída a um cartão de pagamento, sob uma certa denominação, que lhe agrega um conjunto de vantagens, diferenciando-o de acordo com o perfil do portador'
                                             required:
                                               - type
                                               - additionalInfo
@@ -2613,6 +2462,7 @@ paths:
                                                 example: NA
                                           creditCard:
                                             type: object
+                                            description: Categoria de Bandeiras de Cartões de Crédito
                                             required:
                                               - network
                                               - additionalInfo
@@ -2639,6 +2489,7 @@ paths:
                                                 example: NA
                                       rewardsProgram:
                                         type: object
+                                        description: Informações sobre programas de recompensa presentes no cartão de crédito
                                         required:
                                           - hasRewardProgram
                                         properties:
@@ -2662,98 +2513,7 @@ paths:
                                             type: array
                                             description: Lista das Tarifas cobradas sobre Serviço relacionadas a Modalidade de Pagamento Pós-Pagas
                                             items:
-                                              type: object
-                                              required:
-                                                - name
-                                                - code
-                                                - chargingTriggerInfo
-                                                - prices
-                                                - minimum
-                                                - maximum
-                                              properties:
-                                                name:
-                                                  type: string
-                                                  enum:
-                                                    - ANUIDADE_CARTAO_BASICO_NACIONAL
-                                                    - ANUIDADE_CARTAO_BASICO_INTERNACIONAL
-                                                    - ANUIDADE_DIFERENCIADA
-                                                    - UTILIZACAO_CANAIS_ATENDIMENTO_RETIRADA_ESPECIE_BRASIL
-                                                    - UTILIZACAO_CANAIS_ATENDIMENTO_RETIRADA_ESPECIE_EXTERIOR
-                                                    - AVALIACAO_EMERGENCIAL_CREDITO
-                                                    - FORNECIMENTO_SEGUNDA_VIA_FUNCAO_CREDITO
-                                                    - PAGAMENTO_CONTAS_UTILIZANDO_FUNCAO_CREDITO
-                                                    - SMS
-                                                  description: Denominação de Serviços relacionados à Modalidade de Contas de Pagamento Pós-Pagas (Vide ENUM)
-                                                  example: ANUIDADE_CARTAO_BASICO_NACIONAL
-                                                code:
-                                                  type: string
-                                                  enum:
-                                                    - ANUIDADE_NACIONAL
-                                                    - ANUIDADE_INTERNACIONAL
-                                                    - ANUIDADE_DIFERENCIADA
-                                                    - SAQUE_CARTAO_BRASIL
-                                                    - SAQUE_CARTAO_EXTERIOR
-                                                    - AVALIACAO_EMERGENCIAL_CREDITO
-                                                    - EMISSAO_SEGUNDA_VIA
-                                                    - TARIFA_PAGAMENTO_CONTAS
-                                                    - SMS
-                                                  description: Sigla de identificação do Serviço relacionado à Modalidade de Contas de Pagamento Pós-Pagas (Vide ENUM)
-                                                  example: ANUIDADE_NACIONAL
-                                                chargingTriggerInfo:
-                                                  type: string
-                                                  maxLength: 2000
-                                                  pattern: \w*\W*
-                                                  description: 'Fatos geradores de cobrança que incidem sobre as Modalidades de Contas de Pagamento Pós-Pagas informada, para pessoa jurídica. (Campo Livre)'
-                                                  example: 'Disponibilização de rede de estabelecimentos afiliados, instalada no País, para pagamentos de bens e serviços, cobrada no máximo uma vez a cada doze meses, admitido o parcelamento da cobrança'
-                                                prices:
-                                                  type: array
-                                                  description: Lista distribuição preços tarifas de serviços
-                                                  items:
-                                                    $ref: '#/paths/~1business-accounts/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/properties/businessAccounts/items/properties/fees/properties/services/items/properties/prices/items'
-                                                  minItems: 4
-                                                  maxItems: 4
-                                                minimum:
-                                                  type: object
-                                                  description: Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência.
-                                                  required:
-                                                    - value
-                                                    - currency
-                                                  properties:
-                                                    value:
-                                                      type: string
-                                                      pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
-                                                      maxLength: 12
-                                                      x-cds-type: AmountString
-                                                      description: Valor mínimo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
-                                                      example: '1350.00'
-                                                    currency:
-                                                      type: string
-                                                      pattern: '^(\w{3}){1}$'
-                                                      maxLength: 3
-                                                      x-cds-type: CurrencyString
-                                                      description: 'Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217'
-                                                      example: BRL
-                                                maximum:
-                                                  type: object
-                                                  description: Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência.
-                                                  required:
-                                                    - value
-                                                    - currency
-                                                  properties:
-                                                    value:
-                                                      type: string
-                                                      pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
-                                                      maxLength: 12
-                                                      x-cds-type: AmountString
-                                                      description: Valor máximo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
-                                                      example: '8800.00'
-                                                    currency:
-                                                      type: string
-                                                      pattern: '^(\w{3}){1}$'
-                                                      maxLength: 3
-                                                      x-cds-type: CurrencyString
-                                                      description: 'Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217'
-                                                      example: BRL
+                                              $ref: '#/paths/~1business-credit-cards/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/properties/businessCreditCards/items/properties/fees/properties/services/items'
                                             minItems: 1
                                             maxItems: 9
                                       interest:
@@ -2776,7 +2536,7 @@ paths:
                                                 - maximumRate
                                               properties:
                                                 referentialRateIndexer:
-                                                  $ref: '#/paths/~1personal-unarranged-account-overdraft/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/properties/personalUnarrangedAccountOverdraft/properties/interestRates/items/allOf/0/properties/referentialRateIndexer'
+                                                  $ref: '#/paths/~1personal-unarranged-account-overdraft/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/properties/personalUnarrangedAccountOverdraft/properties/interestRates/items/properties/referentialRateIndexer'
                                                 rate:
                                                   type: string
                                                   description: |
@@ -2837,7 +2597,7 @@ paths:
                                                 - maximumRate
                                               properties:
                                                 referentialRateIndexer:
-                                                  $ref: '#/paths/~1personal-unarranged-account-overdraft/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/properties/personalUnarrangedAccountOverdraft/properties/interestRates/items/allOf/0/properties/referentialRateIndexer'
+                                                  $ref: '#/paths/~1personal-unarranged-account-overdraft/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/properties/personalUnarrangedAccountOverdraft/properties/interestRates/items/properties/referentialRateIndexer'
                                                 rate:
                                                   type: string
                                                   description: |
@@ -2898,6 +2658,7 @@ paths:
                                             maxItems: 3
                                       termsConditions:
                                         type: object
+                                        description: Informações sobre termos e condições para aquisição e cancelamento
                                         required:
                                           - minimumFeeRate
                                           - elegibilityCriteriaInfo
@@ -3086,13 +2847,17 @@ paths:
                       - brand
                     properties:
                       brand:
-                        description: Organização controladora do grupo de instituições financeiras.
                         type: object
+                        description: Organização controladora do grupo de instituições financeiras
                         required:
                           - companies
-                        allOf:
-                          - $ref: '#/paths/~1personal-financings/get/responses/200/content/application~1json/schema/properties/data/properties/brand/allOf/0'
                         properties:
+                          name:
+                            type: string
+                            maxLength: 80
+                            pattern: \w*\W*
+                            description: Nome da marca selecionada pela Organização
+                            example: Organização A
                           companies:
                             type: array
                             description: Companies traz uma lista de todas as instituições da Marca
@@ -3101,9 +2866,28 @@ paths:
                               required:
                                 - name
                                 - cnpjNumber
-                              allOf:
-                                - $ref: '#/paths/~1personal-accounts/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/allOf/0'
                               properties:
+                                name:
+                                  type: string
+                                  description: 'Nome da Instituição, pertencente à marca, responsável pela modalidade de Empréstimos. p.ex.''Empresa da Organização A'''
+                                  maxLength: 80
+                                  pattern: \w*\W*
+                                  example: Empresa A1
+                                cnpjNumber:
+                                  type: string
+                                  pattern: '^(\d{14})$|^NA$'
+                                  description: Número completo do CNPJ da instituição
+                                  maxLength: 14
+                                  example: '50685362000135'
+                                urlComplementaryList:
+                                  type: string
+                                  pattern: \w*\W*
+                                  format: URIString
+                                  maxLength: 1024
+                                  description: |
+                                    URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. Endereço eletrônico de acesso ao canal. Será obrigatoriamente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada.
+                                    Restrição: Será obrigatorimente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada
+                                  example: 'https://empresadaorganizacaoa.com/complementarylist'
                                 businessCreditCards:
                                   type: array
                                   description: Lista dos nomes de conta de pagamento pós-paga
@@ -3137,7 +2921,90 @@ paths:
                                             type: array
                                             description: Lista das Tarifas cobradas sobre Serviço relacionadas a Modalidade de Pagamento Pós-Pagas
                                             items:
-                                              $ref: '#/paths/~1personal-credit-cards/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/properties/personalCreditCards/items/properties/fees/properties/services/items'
+                                              type: object
+                                              required:
+                                                - name
+                                                - code
+                                                - chargingTriggerInfo
+                                                - prices
+                                                - minimum
+                                                - maximum
+                                              properties:
+                                                name:
+                                                  type: string
+                                                  enum:
+                                                    - ANUIDADE_CARTAO_BASICO_NACIONAL
+                                                    - ANUIDADE_CARTAO_BASICO_INTERNACIONAL
+                                                    - ANUIDADE_DIFERENCIADA
+                                                    - UTILIZACAO_CANAIS_ATENDIMENTO_RETIRADA_ESPECIE_BRASIL
+                                                    - UTILIZACAO_CANAIS_ATENDIMENTO_RETIRADA_ESPECIE_EXTERIOR
+                                                    - AVALIACAO_EMERGENCIAL_CREDITO
+                                                    - FORNECIMENTO_SEGUNDA_VIA_FUNCAO_CREDITO
+                                                    - PAGAMENTO_CONTAS_UTILIZANDO_FUNCAO_CREDITO
+                                                    - SMS
+                                                  description: Denominação de Serviços relacionados à Modalidade de Contas de Pagamento Pós-Pagas (Vide ENUM)
+                                                  example: ANUIDADE_CARTAO_BASICO_NACIONAL
+                                                code:
+                                                  type: string
+                                                  enum:
+                                                    - ANUIDADE_NACIONAL
+                                                    - ANUIDADE_INTERNACIONAL
+                                                    - ANUIDADE_DIFERENCIADA
+                                                    - SAQUE_CARTAO_BRASIL
+                                                    - SAQUE_CARTAO_EXTERIOR
+                                                    - AVALIACAO_EMERGENCIAL_CREDITO
+                                                    - EMISSAO_SEGUNDA_VIA
+                                                    - TARIFA_PAGAMENTO_CONTAS
+                                                    - SMS
+                                                  description: Sigla de identificação do Serviço relacionado à Modalidade de Contas de Pagamento Pós-Pagas (Vide ENUM)
+                                                  example: ANUIDADE_NACIONAL
+                                                chargingTriggerInfo:
+                                                  type: string
+                                                  maxLength: 2000
+                                                  pattern: \w*\W*
+                                                  description: 'Fatos geradores de cobrança que incidem sobre as Modalidades de Contas de Pagamento Pós-Pagas informada, para pessoa jurídica. (Campo Livre)'
+                                                  example: 'Disponibilização de rede de estabelecimentos afiliados, instalada no País, para pagamentos de bens e serviços, cobrada no máximo uma vez a cada doze meses, admitido o parcelamento da cobrança'
+                                                prices:
+                                                  type: array
+                                                  description: Lista distribuição preços tarifas de serviços
+                                                  items:
+                                                    type: object
+                                                    required:
+                                                      - interval
+                                                      - value
+                                                      - currency
+                                                      - customers
+                                                    properties:
+                                                      interval:
+                                                        $ref: '#/paths/~1personal-accounts/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/properties/personalAccounts/items/properties/serviceBundles/items/properties/prices/items/properties/interval'
+                                                      value:
+                                                        type: string
+                                                        pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
+                                                        maxLength: 12
+                                                        format: AmountString
+                                                        description: |
+                                                          Valor da mediana de cada faixa relativa ao serviço ofertado, informado no período, conforme Res nº 32 BCB, 2020. p.ex. '45.00' (representa um valor monetário. p.ex: 1547368.92. Este valor, considerando que a moeda seja BRL, significa R$ 1.547.368,92. O único separador presente deve ser o '.' (ponto) para indicar a casa decimal. Não deve haver separador de milhar)
+                                                        example: '2000.00'
+                                                      currency:
+                                                        $ref: '#/paths/~1personal-accounts/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/properties/personalAccounts/items/properties/termsConditions/properties/minimumBalance/properties/currency'
+                                                      customers:
+                                                        type: object
+                                                        description: Percentual de clientes em cada faixa
+                                                        required:
+                                                          - rate
+                                                        properties:
+                                                          rate:
+                                                            type: string
+                                                            description: Percentual de clientes em cada faixa.
+                                                            pattern: '^[0-9](\.[0-9]{4})$|^NA$'
+                                                            example: '0.1500'
+                                                            maxLength: 6
+                                                  minItems: 4
+                                                  maxItems: 4
+                                                minimum:
+                                                  $ref: '#/paths/~1personal-accounts/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/properties/personalAccounts/items/properties/serviceBundles/items/properties/minimum'
+                                                maximum:
+                                                  $ref: '#/paths/~1personal-accounts/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/properties/personalAccounts/items/properties/serviceBundles/items/properties/maximum'
                                             minItems: 1
                                             maxItems: 9
                                       interest:
@@ -3301,21 +3168,18 @@ paths:
                       - brand
                     properties:
                       brand:
-                        description: Organização controladora do grupo de instituições financeiras.
                         type: object
+                        description: Organização controladora do grupo de instituições financeiras
                         required:
                           - name
                           - companies
-                        allOf:
-                          - type: object
-                            properties:
-                              name:
-                                type: string
-                                maxLength: 80
-                                pattern: \w*\W*
-                                description: Nome da marca selecionada pela Organização
-                                example: Organização A
                         properties:
+                          name:
+                            type: string
+                            maxLength: 80
+                            pattern: \w*\W*
+                            description: Nome da marca selecionada pela Organização
+                            example: Organização A
                           companies:
                             type: array
                             items:
@@ -3324,9 +3188,28 @@ paths:
                                 - name
                                 - cnpjNumber
                                 - personalFinancings
-                              allOf:
-                                - $ref: '#/paths/~1personal-accounts/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/allOf/0'
                               properties:
+                                name:
+                                  type: string
+                                  description: 'Nome da Instituição, pertencente à marca, responsável pela modalidade de Empréstimos. p.ex.''Empresa da Organização A'''
+                                  maxLength: 80
+                                  pattern: \w*\W*
+                                  example: Empresa A1
+                                cnpjNumber:
+                                  type: string
+                                  pattern: '^(\d{14})$|^NA$'
+                                  description: Número completo do CNPJ da instituição
+                                  maxLength: 14
+                                  example: '50685362000135'
+                                urlComplementaryList:
+                                  type: string
+                                  pattern: \w*\W*
+                                  format: URIString
+                                  maxLength: 1024
+                                  description: |
+                                    URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. Endereço eletrônico de acesso ao canal. Será obrigatoriamente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada.
+                                    Restrição: Será obrigatorimente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada
+                                  example: 'https://empresadaorganizacaoa.com/complementarylist'
                                 personalFinancings:
                                   type: array
                                   items:
@@ -3355,11 +3238,13 @@ paths:
                                         example: FINANCIAMENTO_AQUISICAO_BENS_VEICULOS_AUTOMOTORES
                                       fees:
                                         type: object
+                                        description: Objeto que reúne informações de tarifas de serviços
                                         required:
                                           - services
                                         properties:
                                           services:
                                             type: array
+                                            description: Lista das Tarifas cobradas sobre Serviços
                                             items:
                                               type: object
                                               properties:
@@ -3384,51 +3269,13 @@ paths:
                                                 prices:
                                                   type: array
                                                   items:
-                                                    $ref: '#/paths/~1business-accounts/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/properties/businessAccounts/items/properties/fees/properties/services/items/properties/prices/items'
+                                                    $ref: '#/paths/~1business-credit-cards/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/properties/businessCreditCards/items/properties/fees/properties/services/items/properties/prices/items'
                                                   minItems: 4
                                                   maxItems: 4
                                                 minimum:
-                                                  type: object
-                                                  description: Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência.
-                                                  required:
-                                                    - value
-                                                    - currency
-                                                  properties:
-                                                    value:
-                                                      type: string
-                                                      pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
-                                                      maxLength: 12
-                                                      x-cds-type: AmountString
-                                                      description: Valor mínimo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
-                                                      example: '1350.00'
-                                                    currency:
-                                                      type: string
-                                                      pattern: '^(\w{3}){1}$'
-                                                      maxLength: 3
-                                                      x-cds-type: CurrencyString
-                                                      description: 'Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217'
-                                                      example: BRL
+                                                  $ref: '#/paths/~1personal-accounts/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/properties/personalAccounts/items/properties/serviceBundles/items/properties/minimum'
                                                 maximum:
-                                                  type: object
-                                                  description: Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência.
-                                                  required:
-                                                    - value
-                                                    - currency
-                                                  properties:
-                                                    value:
-                                                      type: string
-                                                      pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
-                                                      maxLength: 12
-                                                      x-cds-type: AmountString
-                                                      description: Valor máximo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
-                                                      example: '8800.00'
-                                                    currency:
-                                                      type: string
-                                                      pattern: '^(\w{3}){1}$'
-                                                      maxLength: 3
-                                                      x-cds-type: CurrencyString
-                                                      description: 'Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217'
-                                                      example: BRL
+                                                  $ref: '#/paths/~1personal-accounts/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/properties/personalAccounts/items/properties/serviceBundles/items/properties/maximum'
                                               required:
                                                 - name
                                                 - code
@@ -3441,9 +3288,16 @@ paths:
                                         type: array
                                         items:
                                           type: object
-                                          allOf:
-                                            - $ref: '#/paths/~1personal-loans/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/properties/personalLoans/items/properties/interestRates/items/allOf/0'
                                           properties:
+                                            referentialRateIndexer:
+                                              $ref: '#/paths/~1personal-unarranged-account-overdraft/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/properties/personalUnarrangedAccountOverdraft/properties/interestRates/items/properties/referentialRateIndexer'
+                                            rate:
+                                              type: string
+                                              pattern: '(^[0-1](\.[0-9]{2})$|^NA$)'
+                                              description: |
+                                                Percentual que incide sobre a composição das taxas de juros remuneratórios. (representa uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O valor 1 representa 100%) A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)
+                                              example: '0.15'
+                                              maxLength: 4
                                             applications:
                                               type: array
                                               items:
@@ -3486,6 +3340,8 @@ paths:
                                               example: '0.6865'
                                               maxLength: 6
                                           required:
+                                            - referentialRateIndexer
+                                            - rate
                                             - applications
                                             - minimumRate
                                             - maximumRate
@@ -3685,14 +3541,18 @@ paths:
                       - brand
                     properties:
                       brand:
-                        description: Organização controladora do grupo de instituições financeiras.
                         type: object
+                        description: Organização controladora do grupo de instituições financeiras
                         required:
                           - name
                           - companies
-                        allOf:
-                          - $ref: '#/paths/~1personal-financings/get/responses/200/content/application~1json/schema/properties/data/properties/brand/allOf/0'
                         properties:
+                          name:
+                            type: string
+                            maxLength: 80
+                            pattern: \w*\W*
+                            description: Nome da marca selecionada pela Organização
+                            example: Organização A
                           companies:
                             type: array
                             items:
@@ -3701,9 +3561,28 @@ paths:
                                 - name
                                 - cnpjNumber
                                 - businessFinancings
-                              allOf:
-                                - $ref: '#/paths/~1personal-accounts/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/allOf/0'
                               properties:
+                                name:
+                                  type: string
+                                  description: 'Nome da Instituição, pertencente à marca, responsável pela modalidade de Empréstimos. p.ex.''Empresa da Organização A'''
+                                  maxLength: 80
+                                  pattern: \w*\W*
+                                  example: Empresa A1
+                                cnpjNumber:
+                                  type: string
+                                  pattern: '^(\d{14})$|^NA$'
+                                  description: Número completo do CNPJ da instituição
+                                  maxLength: 14
+                                  example: '50685362000135'
+                                urlComplementaryList:
+                                  type: string
+                                  pattern: \w*\W*
+                                  format: URIString
+                                  maxLength: 1024
+                                  description: |
+                                    URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. Endereço eletrônico de acesso ao canal. Será obrigatoriamente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada.
+                                    Restrição: Será obrigatorimente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada
+                                  example: 'https://empresadaorganizacaoa.com/complementarylist'
                                 businessFinancings:
                                   type: array
                                   items:
@@ -3939,8 +3818,8 @@ paths:
                       - brand
                     properties:
                       brand:
-                        description: Organização controladora do grupo de instituições financeiras.
                         type: object
+                        description: Organização controladora do grupo de instituições financeiras
                         required:
                           - name
                           - companies
@@ -3959,9 +3838,28 @@ paths:
                                 - name
                                 - cnpjNumber
                                 - personalInvoiceFinancings
-                              allOf:
-                                - $ref: '#/paths/~1personal-accounts/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/allOf/0'
                               properties:
+                                name:
+                                  type: string
+                                  description: 'Nome da Instituição, pertencente à marca, responsável pela modalidade de Empréstimos. p.ex.''Empresa da Organização A'''
+                                  maxLength: 80
+                                  pattern: \w*\W*
+                                  example: Empresa A1
+                                cnpjNumber:
+                                  type: string
+                                  pattern: '^(\d{14})$|^NA$'
+                                  description: Número completo do CNPJ da instituição
+                                  maxLength: 14
+                                  example: '50685362000135'
+                                urlComplementaryList:
+                                  type: string
+                                  pattern: \w*\W*
+                                  format: URIString
+                                  maxLength: 1024
+                                  description: |
+                                    URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. Endereço eletrônico de acesso ao canal. Será obrigatoriamente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada.
+                                    Restrição: Será obrigatorimente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada
+                                  example: 'https://empresadaorganizacaoa.com/complementarylist'
                                 personalInvoiceFinancings:
                                   type: array
                                   items:
@@ -4022,52 +3920,14 @@ paths:
                                                 prices:
                                                   type: array
                                                   items:
-                                                    $ref: '#/paths/~1business-accounts/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/properties/businessAccounts/items/properties/fees/properties/services/items/properties/prices/items'
+                                                    $ref: '#/paths/~1business-credit-cards/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/properties/businessCreditCards/items/properties/fees/properties/services/items/properties/prices/items'
                                                   minItems: 4
                                                   maxItems: 4
                                                   description: Lista distribuição preços tarifas de serviços
                                                 minimum:
-                                                  type: object
-                                                  description: Valor mínimo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência.
-                                                  required:
-                                                    - value
-                                                    - currency
-                                                  properties:
-                                                    value:
-                                                      type: string
-                                                      pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
-                                                      maxLength: 12
-                                                      x-cds-type: AmountString
-                                                      description: Valor mínimo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
-                                                      example: '1350.00'
-                                                    currency:
-                                                      type: string
-                                                      pattern: '^(\w{3}){1}$'
-                                                      maxLength: 3
-                                                      x-cds-type: CurrencyString
-                                                      description: 'Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217'
-                                                      example: BRL
+                                                  $ref: '#/paths/~1personal-accounts/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/properties/personalAccounts/items/properties/serviceBundles/items/properties/minimum'
                                                 maximum:
-                                                  type: object
-                                                  description: Valor máximo cobrado para a tarifa de serviços sobre a base de clientes no mês de referência.
-                                                  required:
-                                                    - value
-                                                    - currency
-                                                  properties:
-                                                    value:
-                                                      type: string
-                                                      pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
-                                                      maxLength: 12
-                                                      x-cds-type: AmountString
-                                                      description: Valor máximo apurado para a tarifa de serviços sobre a base de clientes no mês de referência
-                                                      example: '8800.00'
-                                                    currency:
-                                                      type: string
-                                                      pattern: '^(\w{3}){1}$'
-                                                      maxLength: 3
-                                                      x-cds-type: CurrencyString
-                                                      description: 'Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217'
-                                                      example: BRL
+                                                  $ref: '#/paths/~1personal-accounts/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/properties/personalAccounts/items/properties/serviceBundles/items/properties/maximum'
                                             minItems: 1
                                         required:
                                           - services
@@ -4075,9 +3935,16 @@ paths:
                                         type: array
                                         items:
                                           type: object
-                                          allOf:
-                                            - $ref: '#/paths/~1personal-loans/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/properties/personalLoans/items/properties/interestRates/items/allOf/0'
                                           properties:
+                                            referentialRateIndexer:
+                                              $ref: '#/paths/~1personal-unarranged-account-overdraft/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/properties/personalUnarrangedAccountOverdraft/properties/interestRates/items/properties/referentialRateIndexer'
+                                            rate:
+                                              type: string
+                                              pattern: '(^[0-1](\.[0-9]{2})$|^NA$)'
+                                              description: |
+                                                Percentual que incide sobre a composição das taxas de juros remuneratórios. (representa uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O valor 1 representa 100%) A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)
+                                              example: '0.15'
+                                              maxLength: 4
                                             applications:
                                               type: array
                                               description: Lista  das faixas de cobrança da taxa efetiva de remuneração
@@ -4098,6 +3965,8 @@ paths:
                                               pattern: '(^[0-9](\.[0-9]{4})$|^NA$)'
                                               example: '0.6865'
                                           required:
+                                            - referentialRateIndexer
+                                            - rate
                                             - applications
                                             - minimumRate
                                             - maximumRate
@@ -4512,8 +4381,8 @@ paths:
                       - brand
                     properties:
                       brand:
-                        description: Organização controladora do grupo de instituições financeiras.
                         type: object
+                        description: Organização controladora do grupo de instituições financeiras
                         required:
                           - name
                           - companies
@@ -4532,9 +4401,28 @@ paths:
                                 - name
                                 - cnpjNumber
                                 - businessInvoiceFinancings
-                              allOf:
-                                - $ref: '#/paths/~1personal-accounts/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/allOf/0'
                               properties:
+                                name:
+                                  type: string
+                                  description: 'Nome da Instituição, pertencente à marca, responsável pela modalidade de Empréstimos. p.ex.''Empresa da Organização A'''
+                                  maxLength: 80
+                                  pattern: \w*\W*
+                                  example: Empresa A1
+                                cnpjNumber:
+                                  type: string
+                                  pattern: '^(\d{14})$|^NA$'
+                                  description: Número completo do CNPJ da instituição
+                                  maxLength: 14
+                                  example: '50685362000135'
+                                urlComplementaryList:
+                                  type: string
+                                  pattern: \w*\W*
+                                  format: URIString
+                                  maxLength: 1024
+                                  description: |
+                                    URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. Endereço eletrônico de acesso ao canal. Será obrigatoriamente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada.
+                                    Restrição: Será obrigatorimente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada
+                                  example: 'https://empresadaorganizacaoa.com/complementarylist'
                                 businessInvoiceFinancings:
                                   type: array
                                   items:
@@ -4572,9 +4460,16 @@ paths:
                                         type: array
                                         items:
                                           type: object
-                                          allOf:
-                                            - $ref: '#/paths/~1personal-loans/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/properties/personalLoans/items/properties/interestRates/items/allOf/0'
                                           properties:
+                                            referentialRateIndexer:
+                                              $ref: '#/paths/~1personal-unarranged-account-overdraft/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/properties/personalUnarrangedAccountOverdraft/properties/interestRates/items/properties/referentialRateIndexer'
+                                            rate:
+                                              type: string
+                                              pattern: '(^[0-1](\.[0-9]{2})$|^NA$)'
+                                              description: |
+                                                Percentual que incide sobre a composição das taxas de juros remuneratórios. (representa uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O valor 1 representa 100%) A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)
+                                              example: '0.15'
+                                              maxLength: 4
                                             applications:
                                               type: array
                                               description: Lista  das faixas de cobrança da taxa efetiva de remuneração
@@ -4595,6 +4490,8 @@ paths:
                                               pattern: '(^[0-9](\.[0-9]{4})$|^NA$)'
                                               example: '0.6865'
                                           required:
+                                            - referentialRateIndexer
+                                            - rate
                                             - applications
                                             - minimumRate
                                             - maximumRate
@@ -5009,8 +4906,8 @@ paths:
                       - brand
                     properties:
                       brand:
-                        description: Organização titular das dependências
                         type: object
+                        description: Organização titular das dependências
                         required:
                           - name
                           - companies
@@ -5025,16 +4922,36 @@ paths:
                             type: array
                             items:
                               type: object
+                              description: Lista de produtos e serviços referente adiantamento a depositante
                               required:
                                 - name
                                 - cnpjNumber
                                 - personalUnarrangedAccountOverdraft
-                              allOf:
-                                - $ref: '#/paths/~1personal-accounts/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/allOf/0'
                               properties:
+                                name:
+                                  type: string
+                                  description: 'Nome da Instituição, pertencente à marca, responsável pela modalidade de Empréstimos. p.ex.''Empresa da Organização A'''
+                                  maxLength: 80
+                                  pattern: \w*\W*
+                                  example: Empresa A1
+                                cnpjNumber:
+                                  type: string
+                                  pattern: '^(\d{14})$|^NA$'
+                                  description: Número completo do CNPJ da instituição
+                                  maxLength: 14
+                                  example: '50685362000135'
+                                urlComplementaryList:
+                                  type: string
+                                  pattern: \w*\W*
+                                  format: URIString
+                                  maxLength: 1024
+                                  description: |
+                                    URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. Endereço eletrônico de acesso ao canal. Será obrigatoriamente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada.
+                                    Restrição: Será obrigatorimente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada
+                                  example: 'https://empresadaorganizacaoa.com/complementarylist'
                                 personalUnarrangedAccountOverdraft:
-                                  description: Lista de produtos e serviços referente adiantamento a depositante
                                   type: object
+                                  description: Lista de produtos e serviços referente adiantamento a depositante
                                   required:
                                     - fees
                                     - interestRates
@@ -5060,45 +4977,41 @@ paths:
                                           - applications
                                           - minimumRate
                                           - maximumRate
-                                        allOf:
-                                          - description: Tarifas cobradas sobre Serviços ofertados
-                                            type: object
-                                            required:
-                                              - referentialRateIndexer
-                                              - rate
-                                            properties:
-                                              referentialRateIndexer:
-                                                type: string
-                                                description: |
-                                                  Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial ou Indexador (Indx), do Documento 3040
-                                                enum:
-                                                  - SEM_INDEXADOR_TAXA
-                                                  - PRE_FIXADO
-                                                  - POS_FIXADO_TR_TBF
-                                                  - POS_FIXADO_TJLP
-                                                  - POS_FIXADO_LIBOR
-                                                  - POS_FIXADO_TLP
-                                                  - OUTRAS_TAXAS_POS_FIXADAS
-                                                  - FLUTUANTES_CDI
-                                                  - FLUTUANTES_SELIC
-                                                  - OUTRAS_TAXAS_FLUTUANTES
-                                                  - INDICES_PRECOS_IGPM
-                                                  - INDICES_PRECOS_IPCA
-                                                  - INDICES_PRECOS_IPCC
-                                                  - OUTROS_INDICES_PRECO
-                                                  - CREDITO_RURAL_TCR_PRE
-                                                  - CREDITO_RURAL_TCR_POS
-                                                  - CREDITO_RURAL_TRFC_PRE
-                                                  - CREDITO_RURAL_TRFC_POS
-                                                  - OUTROS_INDEXADORES
-                                                example: SEM_INDEXADOR_TAXA
-                                              rate:
-                                                type: string
-                                                description: |
-                                                  Percentual que incide sobre a composição das taxas de juros remuneratórios. (representa uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O valor '1 'representa 100%). A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)
-                                                pattern: '(^[0-9](\.[0-9]{2})|NA)$'
-                                                example: '0.15'
+                                          - referentialRateIndexer
+                                          - rate
                                         properties:
+                                          referentialRateIndexer:
+                                            type: string
+                                            description: |
+                                              Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial ou Indexador (Indx), do Documento 3040
+                                            enum:
+                                              - SEM_INDEXADOR_TAXA
+                                              - PRE_FIXADO
+                                              - POS_FIXADO_TR_TBF
+                                              - POS_FIXADO_TJLP
+                                              - POS_FIXADO_LIBOR
+                                              - POS_FIXADO_TLP
+                                              - OUTRAS_TAXAS_POS_FIXADAS
+                                              - FLUTUANTES_CDI
+                                              - FLUTUANTES_SELIC
+                                              - OUTRAS_TAXAS_FLUTUANTES
+                                              - INDICES_PRECOS_IGPM
+                                              - INDICES_PRECOS_IPCA
+                                              - INDICES_PRECOS_IPCC
+                                              - OUTROS_INDICES_PRECO
+                                              - CREDITO_RURAL_TCR_PRE
+                                              - CREDITO_RURAL_TCR_POS
+                                              - CREDITO_RURAL_TRFC_PRE
+                                              - CREDITO_RURAL_TRFC_POS
+                                              - OUTROS_INDEXADORES
+                                            example: SEM_INDEXADOR_TAXA
+                                          rate:
+                                            type: string
+                                            description: |
+                                              Percentual que incide sobre a composição das taxas de juros remuneratórios. (representa uma porcentagem Ex: 0.15 (O valor ao lado representa 15%. O valor '1 'representa 100%). A apuração pode acontecer com até 4 casas decimais. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)
+                                            pattern: '(^[0-9](\.[0-9]{2})|NA)$'
+                                            format: RateString
+                                            example: '0.15'
                                           applications:
                                             description: Lista  das faixas de cobrança da taxa efetiva de remuneração.
                                             type: array
@@ -5116,8 +5029,8 @@ paths:
                                                     Faixas para cobrança da taxa efetiva aplicada pela contratação do crédito, no intervalo informado: 1ª faixa, 2ª faixa, 3ª faixa e 4ª faixa. Segundo Normativa nº32 de 2020: 'Distribuição de frequência relativa dos valores de tarifas e taxas de juros cobrados dos clientes, de que trata o § 2º do art. 3º da Circular nº 4.015, de 2020, deve dar-se com base em quatro faixas de igual tamanho, com explicitação dos valores sobre a mediana e o percentual de clientes em cada uma dessas faixas.
                                                   example: 1_FAIXA
                                                 indexer:
-                                                  description: Percentual que corresponde a mediana (taxa efetiva) cobrada do cliente
                                                   type: object
+                                                  description: 'Percentual que corresponde a mediana da taxa efetiva cobrada do cliente pela contratação do Empréstimo, no intervalo informado.'
                                                   properties:
                                                     rate:
                                                       type: string
@@ -5128,6 +5041,7 @@ paths:
                                                       example: '0.8700'
                                                 customers:
                                                   type: object
+                                                  description: Percentual de clientes em cada faixa.
                                                   required:
                                                     - rate
                                                   properties:
@@ -5303,8 +5217,8 @@ paths:
                       - brand
                     properties:
                       brand:
-                        description: Organização titular das dependências.
                         type: object
+                        description: Organização titular das dependências
                         required:
                           - name
                           - companies
@@ -5319,16 +5233,36 @@ paths:
                             type: array
                             items:
                               type: object
+                              description: Lista de adiantamento a depositante
                               required:
                                 - name
                                 - cnpjNumber
                                 - businessUnarrangedAccountOverdraft
-                              allOf:
-                                - $ref: '#/paths/~1personal-accounts/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/allOf/0'
                               properties:
+                                name:
+                                  type: string
+                                  description: 'Nome da Instituição, pertencente à marca, responsável pela modalidade de Empréstimos. p.ex.''Empresa da Organização A'''
+                                  maxLength: 80
+                                  pattern: \w*\W*
+                                  example: Empresa A1
+                                cnpjNumber:
+                                  type: string
+                                  pattern: '^(\d{14})$|^NA$'
+                                  description: Número completo do CNPJ da instituição
+                                  maxLength: 14
+                                  example: '50685362000135'
+                                urlComplementaryList:
+                                  type: string
+                                  pattern: \w*\W*
+                                  format: URIString
+                                  maxLength: 1024
+                                  description: |
+                                    URL do link que conterá a lista complementar com os nomes e CNPJs agrupados sob o mesmo cnpjNumber. Os contidos nessa lista possuem as mesmas características para produtos e serviços. Endereço eletrônico de acesso ao canal. Será obrigatoriamente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada.
+                                    Restrição: Será obrigatorimente preenchido se houver lista complementar com os nomes e CNPJs a ser disponibilizada
+                                  example: 'https://empresadaorganizacaoa.com/complementarylist'
                                 businessUnarrangedAccountOverdraft:
-                                  description: Lista de produtos e serviços referente adiantamento a depositante
                                   type: object
+                                  description: Lista de adiantamento a depositante
                                   required:
                                     - fees
                                     - interestRates
@@ -5372,7 +5306,7 @@ paths:
                                               prices:
                                                 type: array
                                                 items:
-                                                  $ref: '#/paths/~1business-accounts/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/properties/businessAccounts/items/properties/fees/properties/services/items/properties/prices/items'
+                                                  $ref: '#/paths/~1business-credit-cards/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/properties/businessCreditCards/items/properties/fees/properties/services/items/properties/prices/items'
                                                 minItems: 4
                                                 maxItems: 4
                                                 description: lista das faixas dos  valores de tarfas cobradas

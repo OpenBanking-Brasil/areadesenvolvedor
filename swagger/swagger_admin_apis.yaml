@@ -33,17 +33,17 @@ paths:
             default: 25
             minimum: 1
         - in: query
+          description: 'O período a ser retornado. Se não for informado, o padrão será ALL'
           name: period
           schema:
             type: string
             enum:
               - CURRENT
               - ALL
-          required: false
-          description: |
-            Período a ser consultado
-              * `CURRENT` - Métricas do dia atual.
-              * `ALL` - Métricas de todo o período disponível.
+            description: |
+              Período a ser consultado
+                 `CURRENT` - Métricas do dia atual.
+                 `ALL` - Métricas de todo o período disponível.
       responses:
         '200':
           description: Dados das métricas
@@ -330,24 +330,31 @@ paths:
                   links:
                     type: object
                     description: Referências para outros recusos da API requisitada.
+                    required:
+                      - self
                     properties:
                       self:
                         type: string
-                        description: URL da página atualmente requisitada
+                        format: URIString
+                        description: URI completo que gerou a resposta atual.
                         example: 'https://api.banco.com.br/open-banking/<api>/v1/<resource>'
                       first:
                         type: string
-                        description: URL da primeira página de registros
+                        format: URIString
+                        description: URI da primeira página que originou essa lista de resultados. Restrição - Obrigatório quando não for a primeira página da resposta
                         example: 'https://api.banco.com.br/open-banking/<api>/v1/<resource>'
                       prev:
                         type: string
-                        description: URL da página anterior de registros
+                        format: URIString
+                        description: "URI da página anterior dessa lista de resultados. Restrição - \tObrigatório quando não for a primeira página da resposta"
                       next:
                         type: string
-                        description: URL da próxima página de registros
+                        format: URIString
+                        description: URI da próxima página dessa lista de resultados. Restrição - Obrigatório quando não for a última página da resposta
                       last:
                         type: string
-                        description: URL da última página de registros
+                        format: URIString
+                        description: URI da última página dessa lista de resultados. Restrição - Obrigatório quando não for a última página da resposta
                         example: 'https://api.banco.com.br/open-banking/<api>/v1/<resource>'
                   meta:
                     type: object
@@ -355,11 +362,11 @@ paths:
                     properties:
                       totalRecords:
                         type: integer
-                        description: Total de registros encontrados
+                        description: Número total de registros no resultado
                         example: 1
                       totalPages:
                         type: integer
-                        description: Total de páginas para os registros encontrados
+                        description: Número total de páginas no resultado
                         example: 1
                     required:
                       - totalRecords
