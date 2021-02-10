@@ -13,16 +13,20 @@ tags:
   - name: Accounts Transactions
   - name: Accounts Overdraft Limits
 paths:
-  /identification:
+  /accounts/identification:
     get:
       tags:
         - Accounts Identification
-      summary: Dados de identificação de uma conta
-      description: Obtém dados que identificam uma conta
+      summary: Obtém os dados de identificação da conta mantidos na instituição transmissora.
+      description: Método para obter os dados de identificação da conta na transmissora.
       operationId: getAccountsIdentification
       parameters:
-        - $ref: '#/paths/~1balances/get/parameters/0'
-        - $ref: '#/paths/~1balances/get/parameters/1'
+        - $ref: '#/paths/~1accounts~1balances/get/parameters/0'
+        - $ref: '#/paths/~1accounts~1balances/get/parameters/1'
+        - $ref: '#/paths/~1accounts~1balances/get/parameters/2'
+        - $ref: '#/paths/~1accounts~1balances/get/parameters/3'
+        - $ref: '#/paths/~1accounts~1balances/get/parameters/4'
+        - $ref: '#/paths/~1accounts~1balances/get/parameters/5'
       responses:
         '200':
           description: Dados de identificação de conta obtidos com sucesso.
@@ -150,17 +154,49 @@ paths:
                                   Indicador do tipo de conta Pessoal ou Jurídica
                                 example: PESSOAL
                   links:
-                    $ref: '#/paths/~1balances/get/responses/200/content/application~1json/schema/properties/links'
+                    $ref: '#/paths/~1accounts~1balances/get/responses/200/content/application~1json/schema/properties/links'
                   meta:
-                    $ref: '#/paths/~1balances/get/responses/200/content/application~1json/schema/properties/meta'
-  /balances:
+                    $ref: '#/paths/~1accounts~1balances/get/responses/200/content/application~1json/schema/properties/meta'
+  /accounts/balances:
     get:
       tags:
         - Accounts Balances
-      summary: Dados relativos aos saldos em conta
-      description: Obtém dados relativos aos saldos em conta
+      summary: Obtém os saldos da conta mantidos na instituição transmissora.
+      description: Método para obter os dados da conta na transmissora.
       operationId: getAccountsBalances
       parameters:
+        - name: ispbCode
+          in: query
+          description: 'Código identificador atribuído pelo Banco Central do Brasil às instituições participantes do STR (Sistema de Transferência de reservas). O número-código substituiu o antigo código COMPE. Todos os participantes do STR, exceto as Infraestruturas do Mercado Financeiro (IMF) e a Secretaria do Tesouro Nacional, possuem um número-código independentemente de participarem da Centralizadora da Compensação de Cheques (Compe). O campo tem a anotação “n/a” (“não se aplica”) para os participantes do STR aos quais não é atribuído um número-código'
+          schema:
+            type: string
+            maxLength: 8
+            pattern: '\d{8}|^NA$'
+          required: true
+        - name: branchCode
+          in: query
+          description: 'Código da Agência detentora da conta. (Agência é a dependência destinada ao atendimento aos clientes, ao público em geral e aos associados de cooperativas de crédito, no exercício de atividades da instituição, não podendo ser móvel ou transitória)'
+          schema:
+            type: string
+            maxLength: 4
+            pattern: '\d{4}|^NA$'
+          required: true
+        - name: number
+          in: query
+          description: Número da conta
+          schema:
+            type: string
+            maxLength: 20
+            pattern: '\d{20}|^NA$'
+          required: true
+        - name: checkDigit
+          in: query
+          description: Dígito da conta
+          schema:
+            type: string
+            maxLength: 2
+            pattern: '^\d{1}$|^NA$'
+          required: true
         - name: page
           in: query
           description: Número da página que está sendo requisitada (o valor da primeira página é 1).
@@ -342,16 +378,20 @@ paths:
                     required:
                       - totalRecords
                       - totalPages
-  /transactions:
+  /accounts/transactions:
     get:
       tags:
         - Accounts Transactions
-      summary: Transações de crédito e débito realizadas e autorizadas
-      description: Obtém dados relativos a Transações de crédito e débito realizadas e autorizadas
+      summary: Obtém a lista de transações da conta mantidos na instituição transmissora.
+      description: Método para obter a lista de transações da conta na transmissora.
       operationId: getAccountsTransactions
       parameters:
-        - $ref: '#/paths/~1balances/get/parameters/0'
-        - $ref: '#/paths/~1balances/get/parameters/1'
+        - $ref: '#/paths/~1accounts~1balances/get/parameters/0'
+        - $ref: '#/paths/~1accounts~1balances/get/parameters/1'
+        - $ref: '#/paths/~1accounts~1balances/get/parameters/2'
+        - $ref: '#/paths/~1accounts~1balances/get/parameters/3'
+        - $ref: '#/paths/~1accounts~1balances/get/parameters/4'
+        - $ref: '#/paths/~1accounts~1balances/get/parameters/5'
       responses:
         '200':
           description: Dados de Transações de crédito e débito realizadas e autorizadas obtidos com sucesso.
@@ -440,7 +480,7 @@ paths:
                                 example: '2020-07-21T08:30:00Z'
                                 description: 'Data e hora da consulta, conforme especificação RFC-3339, formato UTC.'
                               currency:
-                                $ref: '#/paths/~1balances/get/responses/200/content/application~1json/schema/properties/data/properties/account/properties/balances/properties/currency'
+                                $ref: '#/paths/~1accounts~1balances/get/responses/200/content/application~1json/schema/properties/data/properties/account/properties/balances/properties/currency'
                               statementAccount:
                                 type: array
                                 items:
@@ -534,19 +574,23 @@ paths:
                                 description: |
                                   Lista dos lançamentos referentes às transações realizadas e de pagamento autorizado para as contas de: depósito à vista, poupança e de pagamento pré-paga
                   links:
-                    $ref: '#/paths/~1balances/get/responses/200/content/application~1json/schema/properties/links'
+                    $ref: '#/paths/~1accounts~1balances/get/responses/200/content/application~1json/schema/properties/links'
                   meta:
-                    $ref: '#/paths/~1balances/get/responses/200/content/application~1json/schema/properties/meta'
-  /overdraft-limits:
+                    $ref: '#/paths/~1accounts~1balances/get/responses/200/content/application~1json/schema/properties/meta'
+  /accounts/overdraft-limits:
     get:
       tags:
         - Accounts Overdraft Limits
-      summary: Limites referentes ao valor das operações de crédito
-      description: Obtém dados relativos Limites referentes ao valor das operações de crédito (cheque especial e Adiantamento a Depositantes) vinculadas à conta de depósito à vista ou conta corrente.
+      summary: Obtém os dados de limite de cheque especial e de adiantamento a depositante  da conta mantidos na instituição transmissora.
+      description: Método para obter os dados de cheque especial e de adiantamento a depositante  da conta na transmissora.
       operationId: getAccountsOverdraftLimits
       parameters:
-        - $ref: '#/paths/~1balances/get/parameters/0'
-        - $ref: '#/paths/~1balances/get/parameters/1'
+        - $ref: '#/paths/~1accounts~1balances/get/parameters/0'
+        - $ref: '#/paths/~1accounts~1balances/get/parameters/1'
+        - $ref: '#/paths/~1accounts~1balances/get/parameters/2'
+        - $ref: '#/paths/~1accounts~1balances/get/parameters/3'
+        - $ref: '#/paths/~1accounts~1balances/get/parameters/4'
+        - $ref: '#/paths/~1accounts~1balances/get/parameters/5'
       responses:
         '200':
           description: Dados de Limites referentes ao valor das operações de crédito obtidos com sucesso.
@@ -634,7 +678,7 @@ paths:
                                 example: '2020-07-21T08:30:00Z'
                                 description: 'Data e hora da consulta, conforme especificação RFC-3339, formato UTC.'
                               currency:
-                                $ref: '#/paths/~1balances/get/responses/200/content/application~1json/schema/properties/data/properties/account/properties/balances/properties/currency'
+                                $ref: '#/paths/~1accounts~1balances/get/responses/200/content/application~1json/schema/properties/data/properties/account/properties/balances/properties/currency'
                               balances:
                                 type: array
                                 items:
@@ -664,74 +708,6 @@ paths:
                                 minItems: 1
                                 description: Lista dos valores referentes ao Limite de Cheque especial e ao adiantamento a depositante
                   links:
-                    $ref: '#/paths/~1balances/get/responses/200/content/application~1json/schema/properties/links'
+                    $ref: '#/paths/~1accounts~1balances/get/responses/200/content/application~1json/schema/properties/links'
                   meta:
-                    $ref: '#/paths/~1balances/get/responses/200/content/application~1json/schema/properties/meta'
-  /accounts/identification:
-    get:
-      tags:
-        - Accounts Identification
-      summary: Obtém os dados de identificação da conta mantidos na instituição transmissora.
-      description: Método para obter os dados de identificação da conta na transmissora.
-      operationId: getAccountsIdentification
-      parameters:
-        - $ref: '#/paths/~1balances/get/parameters/0'
-        - $ref: '#/paths/~1balances/get/parameters/1'
-      responses:
-        '200':
-          description: Dados de identificação de conta obtidos com sucesso.
-          content:
-            application/json:
-              schema:
-                $ref: '#/paths/~1identification/get/responses/200/content/application~1json/schema'
-  /accounts/balances:
-    get:
-      tags:
-        - Accounts Balances
-      summary: Obtém os saldos da conta mantidos na instituição transmissora.
-      description: Método para obter os dados da conta na transmissora.
-      operationId: getAccountsBalances
-      parameters:
-        - $ref: '#/paths/~1balances/get/parameters/0'
-        - $ref: '#/paths/~1balances/get/parameters/1'
-      responses:
-        '200':
-          description: Dados relativos aos saldos em conta obtidos com sucesso.
-          content:
-            application/json:
-              schema:
-                $ref: '#/paths/~1balances/get/responses/200/content/application~1json/schema'
-  /accounts/transactions:
-    get:
-      tags:
-        - Accounts Transactions
-      summary: Obtém a lista de transações da conta mantidos na instituição transmissora.
-      description: Método para obter a lista de transações da conta na transmissora.
-      operationId: getAccountsTransactions
-      parameters:
-        - $ref: '#/paths/~1balances/get/parameters/0'
-        - $ref: '#/paths/~1balances/get/parameters/1'
-      responses:
-        '200':
-          description: Dados de Transações de crédito e débito realizadas e autorizadas obtidos com sucesso.
-          content:
-            application/json:
-              schema:
-                $ref: '#/paths/~1transactions/get/responses/200/content/application~1json/schema'
-  /accounts/overdraft-limits:
-    get:
-      tags:
-        - Accounts Overdraft Limits
-      summary: Obtém os dados de limite de cheque especial e de adiantamento a depositante  da conta mantidos na instituição transmissora.
-      description: Método para obter os dados de cheque especial e de adiantamento a depositante  da conta na transmissora.
-      operationId: getAccountsOverdraftLimits
-      parameters:
-        - $ref: '#/paths/~1balances/get/parameters/0'
-        - $ref: '#/paths/~1balances/get/parameters/1'
-      responses:
-        '200':
-          description: Dados de Limites referentes ao valor das operações de crédito obtidos com sucesso.
-          content:
-            application/json:
-              schema:
-                $ref: '#/paths/~1overdraft-limits/get/responses/200/content/application~1json/schema'
+                    $ref: '#/paths/~1accounts~1balances/get/responses/200/content/application~1json/schema/properties/meta'
