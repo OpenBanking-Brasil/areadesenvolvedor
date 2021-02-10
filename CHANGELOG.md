@@ -1,6 +1,10 @@
 # {version}
 [{date}]
 
+## Novas funcionalidades
+
+* Adiciona exemplos de requisição para as APIs nas linguagens `Python` e `Java`
+
 ## Melhorias
 
 * Adiciona o valor do `cnpjNumber` nos exemplos de `branch` na área de `Identification`
