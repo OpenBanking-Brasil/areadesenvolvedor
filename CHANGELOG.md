@@ -7,6 +7,7 @@ Os commits relacionados à Fase 1 foram desconsiderados, visto que encontram-se 
 ## Novas funcionalidades
 
 * Adiciona exemplos de requisição para as APIs nas linguagens `Python` e `Java`
+
 * Disponibiliza dos endpoints que retornam os dados cadastrais dos clientes e de seus representantes, incluindo dados de identificação, de qualificação financeira, informações sobre representantes cadastrados e sobre o relacionamento financeiro do cliente com a instituição transmissora dos dados, a saber:
   - `/business-customers/financial-relation/`
   - `/personal-customers/identification/`
@@ -34,6 +35,7 @@ Os commits relacionados à Fase 1 foram desconsiderados, visto que encontram-se 
   - DER Lógico
   - Download de Exemplos na seção de Dicionário de Dados
 * Adiciona novos termos relacionados à fase 2 no glossário
+
 ## Correções
 
 * Corrige tags de glossário de `Dados cadastrais` e `Contas`
