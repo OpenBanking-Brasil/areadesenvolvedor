@@ -34,3 +34,9 @@ Os commits relacionados à Fase 1 foram desconsiderados, visto que encontram-se 
   - DER Lógico
   - Download de Exemplos na seção de Dicionário de Dados
 * Adiciona novos termos relacionados à fase 2 no glossário
+## Correções
+
+* Corrige tags de glossário de `Dados cadastrais` e `Contas`
+* Corrige exemplo de `socialName` em APIs de Dados Cadastrais
+* Corrige tags em APIs de Dados Cadastrais e Contas
+  
