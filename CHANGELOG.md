@@ -4,6 +4,23 @@
 ## Novas funcionalidades
 
 * Adiciona exemplos de requisição para as APIs nas linguagens `Python` e `Java`
+* Adiciona novos items relacionados à fase 2 no glossário
+* Adiciona ao menu o item API - Dados Cadastrais:
+  - Identificação Pessoa Jurídica
+  - Qualificação Pessoa Jurídica
+  - Relacionamento Pessoa Jurídica
+  - Identificação Pessoa Natural
+  - Qualificação Pessoa Natural
+  - Relacionamento Pessoa Natural
+* Adiciona ao menu o item API - Contas:
+  - Identificação da Conta
+  - Saldos da Conta
+  - Transações da Conta
+  - Limites da Conta
+* Adiciona novas seções aos items da fase 2:
+  - DER - Diagramas de Entidade e Relacionamento
+  - DER Lógico
+  - Adiciona download de exemplos na seção de Dicionário de Dados
 
 ## Melhorias
 
