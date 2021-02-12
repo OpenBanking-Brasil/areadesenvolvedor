@@ -35,6 +35,7 @@ Os commits relacionados à Fase 1 foram desconsiderados, visto que encontram-se 
   - DER Lógico
   - Download de Exemplos na seção de Dicionário de Dados
 * Adiciona novos termos relacionados à fase 2 no glossário
+* Criado submenu de cartões de crédito
 
 ## Correções
 
