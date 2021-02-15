@@ -1,31 +1,24 @@
 type: object
-description: Objeto que agrupa as informações referentes a fatura da conta de  pagamento pós-paga
+description: Conjunto das informações referentes a fatura associada à conta de pagamento pós-paga
 required:
-  - requestDateTime
-  - updateDateTime
+  - billIdentification
   - dueDate
-  - averageDate
-  - statementCreditCardAccounts
+  - paymentDate
+  - paymentMode
+  - payments
 properties:
-  requestDateTime:
+  billIdentification:
     type: string
-    pattern: ^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$
-    description: Data e hora da consulta, conforme especificação RFC-3339, formato UTC.
-    maxLength: 20
-    example: "2020-07-21T08:30:00Z"
-  updateDateTime:
-    type: string
-    pattern: ^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$
-    description: Data e hora da atualização do bloco, conforme especificação RFC-3339
-    maxLength: 20
-    example: "2020-07-21T08:30:00Z"
+    description: Informação que identifica a fatura que está sendo consultada
+    maxLength: 40
+    pattern: \w*\W*
   currency:
     type: string
     pattern: '^(\w{3}){1}$'
     maxLength: 3
     format: CurrencyString
     description: |
-      Moeda referente ao valor de todas  transações relacionadas com  fatura da conta de pagamento pós-paga, segundo modelo ISO-4217. p.ex. 'BRL' 
+      Moeda referente ao valor de todas transações relacionadas com fatura da conta de pagamento pós-paga, segundo modelo ISO-4217. p.ex. 'BRL' 
       Todos os saldos informados estão representados com a moeda vigente do Brasil.
     example: BRL
   dueDate:
@@ -33,16 +26,19 @@ properties:
     pattern: ^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$
     maxLength: 10
     format: DateString
-    description: Data de vencimento da Fatura
-  averageDate:
+    description: Data de vencimento da Fatura, que aparece para pagamento pelo cliente
+  paymentDate:
     type: string
     pattern: ^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$
     maxLength: 10
     format: DateString
     description: Data efetiva de quando o Pagamento da fatura foi realizado 
-  statementCreditCardAccounts:
+  paymentMode:
+    $ref: ../enum/EnumCreditCardAccountsPaymentMode.yaml
+  payments:
     type: array
     items:
-      $ref: ./CreditCardAccountStatementBilling.yaml
+      $ref: ./CreditCardAccountsBillingPayment.yaml
     minItems: 1
+    maxItems: 2
     description: Lista que traz os valores relativos aos pagamentos da Fatura da conta de pagamento pós-paga
