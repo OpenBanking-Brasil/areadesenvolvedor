@@ -1,46 +1,85 @@
 type: object
 description: Lista que traz os valores relativos aos saldos do Limite de crédito total da conta de pagamento pós-paga
 required:
-  - creditDebitIndicator
-  - type
-  - typeAdditionalInfo
-  - fee
-  - installmentIdentificator
-  - quantityInstallment
-  - transactionIdentication
+  - transactionName
+  - creditDebitType
+  - transactionType
+  - feeType
   - otherCreditsType
-  - otherCreditsAdditionalInfo
+  - chargeIdentificator
+  - charge
+  - brazilianAmount
+  - brazilianCurrency
+  - transactionDate
   - balances
 properties:
-  creditDebitIndicator:
+  transactionName:
+    type: string
+    maxLength: 40
+    description: Campo de livre preenchimento. Literal usada na instituição financeira para identificar a transação
+  billIdentification:
+    type: string
+    maxLength: 40
+    description: Informação que identifica a fatura onde consta a transação informada.
+  creditDebitType:
     $ref: ../enum/EnumCreditDebitIndicator.yaml
-  type:
+  transactionType:
     $ref: ../enum/EnumCreditCardTransactionType.yaml
-  typeAdditionalInfo:
+  transactionalAdditionalInfo:
     type: string
     description: Campo livre, de preenchimento obrigatório quando selecionado tipo de transação 'OUTROS'
     maxLength: 50
-  fee:
+  paymentType:
+    $ref: ../enum/EnumCreditCardAccountsPaymentType.yaml
+  feeType:
     $ref: ../enum/EnumCreditCardAccountFee.yaml
-  installmentIdentificator:
+  feeTypeAdditionalInfo:
+    type: string
+    maxLength: 50
+    description: Campo livre, de preenchimento obrigatório quando selecionada tipo de tarifa 'OUTRA'
+  otherCreditsType:
+    $ref: ../enum/EnumCreditCardAccountsOtherCreditType.yaml
+  otherCreditsAdditionalInfo:
+    type: string
+    maxLength: 50
+    description: Campo livre, de preenchimento obrigatório quando selecionado tipo de crédito 'OUTROS'
+  chargeIdentificator:
     type: string
     description: Identificador da parcela que está sendo informada. Campo de livre preenchimento
     maxLength: 50
     pattern: \w*\W*
-  billIdentificator:
-    type: string
-    description: Identificador da Fatura
-    maxLength: 50
-    pattern: \w*\W*
-  quantityInstallment:
+  charge:
     type: number
     description: Quantidade de parcelas
     maxLength: 2
-  transactionIdentication:
+  brazilianAmount:
+    type: number
+    maxLength: 12
+    description: Valor da transação expresso em valor monetário com 2 casas decimais, em moeda corrente do Brasil
+  brazilianCurrency:
     type: string
-    description: Identificação da transação na Instituição financeira. Campo de livre preenchimento
-    maxLength: 50
-  otherCredits:
-    $ref: ./CreditCardAccountsOtherCredits.yaml
-  balances:
-    $ref: ./CreditCardAccountBalances.yaml
+    maxLength: 3
+    description: Moeda referente ao valor da transação  no Brasil, segundo modelo ISO-4217. p.ex. 'BRL'
+      Todos os saldos informados estão representados com a moeda vigente do Brasil
+  amount:
+    type: number
+    maxLenght: 12
+    description: Valor da transação. Expresso em valor monetário com 2 casas decimais
+  currency:
+    type: string
+    maxLenght: 3
+    description: Moeda referente ao valor da transação, se a opoepração foi efeuatda em moeda  estrangeira, segundo modelo ISO-4217. p.ex. 'EUR'
+      Todos os saldos informados estão representados com a moeda vigente do Brasil
+  transactionDate:
+    type: string
+    description: Data lançamento da transação
+    pattern: ^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$
+    maxLength: 10
+  billPostDate:
+    type: string
+    description: Data de postagem na fatura
+    pattern: ^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$
+    maxLenght: 10
+  payeeMCC:
+    type: number
+    description: MCC é o Merchant Category Code, ou o código da categoria do estabelecimento comercial. Os MCCs são agrupados segundo suas similaridades
