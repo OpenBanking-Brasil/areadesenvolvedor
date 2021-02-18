@@ -17,6 +17,19 @@ Os commits relacionados à Fase 1 foram desconsiderados, visto que encontram-se 
 ## Melhorias
 
 * Remove a exibição de objetos-filho (») em todos os schemas para facilitar a visualização da estrutura na tabela
+* Inclui novo item do Glossário de `Customers`:
+  -  Sexo (Gender)
+
+* ## Correções
+* Corrige DER Conceitual das seguintes seções:
+  - `Dados Cadastrais`
+  - `Contas`
+* Corrige grafia em todos os DERs Lógico em `Contas`:
+  - `Identification` 
+  - `Balances`
+  - `Transactions`
+  - `OverdraftLimit`
+
 
 # {version}
 [{date}]
