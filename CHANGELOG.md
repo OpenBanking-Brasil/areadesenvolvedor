@@ -20,7 +20,7 @@ Os commits relacionados à Fase 1 foram desconsiderados, visto que encontram-se 
 * Inclui novo item do Glossário de `Customers`:
   -  Sexo (Gender)
 
-## Correções
+ ## Correções
   
 * Corrige DER Conceitual das seguintes seções:
   - `Dados Cadastrais`
@@ -30,7 +30,7 @@ Os commits relacionados à Fase 1 foram desconsiderados, visto que encontram-se 
   - `Balances`
   - `Transactions`
   - `OverdraftLimit`
-* Corrige grafia de país em todos os DERs Lógico em `Dados Cadastrais`:
+* Corrige acentuação de palavras como "país" em todos os DERs Lógico em `Dados Cadastrais`:
   - `Identification PJ` 
   - `Qualification PJ`
   - `Finance relation PJ`
