@@ -25,11 +25,13 @@ Os commits relacionados à Fase 1 foram desconsiderados, visto que encontram-se 
 * Corrige DER Conceitual das seguintes seções:
   - `Dados Cadastrais`
   - `Contas`
-* Corrige grafia de detentora em todos os DERs Lógico em `Contas`:
+* Corrige grafia de "detentora" em todos os DERs Lógico em `Contas`:
   - `Identification` 
   - `Balances`
   - `Transactions`
   - `OverdraftLimit`
+* Corrige grafia de "Tipo de Titularidade da Conta" em todos os DERs Lógico em `Contas`:
+  - `Identification` 
 * Corrige acentuação de palavras como "país" em todos os DERs Lógico em `Dados Cadastrais`:
   - `Identification PJ` 
   - `Qualification PJ`
