@@ -35,10 +35,39 @@ Os commits relacionados à Fase 1 foram desconsiderados, visto que encontram-se 
   - DER Lógico
   - Download de Exemplos na seção de Dicionário de Dados
 * Adiciona novos termos relacionados à fase 2 no glossário
+* Criado submenu de cartões de crédito
+* Adiciona ao menu o item API - Cartão de Crédito:
+  - Identificação de cartão de crédito
+  - Limites de cartão de crédito
+  - Transações de cartão de crédito
+  - Fatura do Cartão de Crédito
+* Atualiza glossário com os termos relacionados ao Cartão de Crédtio
+
+## Melhorias
+
+* Remove a exibição de objetos-filho (») em todos os schemas para facilitar a visualização da estrutura na tabela
+* Inclui novo item do Glossário de `Customers`:
+  -  Sexo (Gender)
 
 ## Correções
 
 * Corrige tags de glossário de `Dados cadastrais` e `Contas`
 * Corrige exemplo de `socialName` em APIs de Dados Cadastrais
 * Corrige tags em APIs de Dados Cadastrais e Contas
-  
+* Corrige DER Conceitual das seguintes seções:
+  - `Dados Cadastrais`
+  - `Contas`
+* Corrige grafia de "detentora" em todos os DERs Lógico em `Contas`:
+  - `Identification` 
+  - `Balances`
+  - `Transactions`
+  - `OverdraftLimit`
+* Corrige grafia de "Tipo de Titularidade da Conta" no DER Lógico em `Contas`:
+  - `Identification` 
+* Corrige acentuação de palavras como "país" em todos os DERs Lógico em `Dados Cadastrais`:
+  - `Identification PJ` 
+  - `Qualification PJ`
+  - `Finance relation PJ`
+  - `Identification PN` 
+  - `Qualification PN`
+  - `Finance relation PN`
