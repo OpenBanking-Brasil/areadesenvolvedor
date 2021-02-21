@@ -71,3 +71,11 @@ Os commits relacionados à Fase 1 foram desconsiderados, visto que encontram-se 
   - `Identification PN` 
   - `Qualification PN`
   - `Finance relation PN`
+* Atualiza CSVs dos dicionários e seus respectivos exemplos conforme as correções realizadas:
+  - `Accounts Identification` 
+  - `Accounts Overdraft Limits` 
+  - `Accounts Balances` 
+  - `Accounts Transactions` 
+  - `Customers Identification PN/PJ` 
+  - `Customers Qualification PN/PJ`
+  - `Customers Financial relation PN/PJ`
