@@ -41,7 +41,10 @@ Os commits relacionados à Fase 1 foram desconsiderados, visto que encontram-se 
   - Limites de cartão de crédito
   - Transações de cartão de crédito
   - Fatura do Cartão de Crédito
-* Atualiza glossário com os termos relacionados ao Cartão de Crédtio
+* Atualiza glossário com os termos relacionados ao Cartão de Crédito
+* Criado `BankBorrowing`
+* Criado `BankBorrowingPayment`
+* Criado `BankBorrowingInstalments`
 
 ## Melhorias
 
@@ -79,3 +82,14 @@ Os commits relacionados à Fase 1 foram desconsiderados, visto que encontram-se 
   - `Customers Identification PN/PJ` 
   - `Customers Qualification PN/PJ`
   - `Customers Financial relation PN/PJ`
+* Corrige glossário em `Transações Realizadas (Completed Transaction) (Scheduled Payment)` para `Transações Realizadas (Completed Transaction)`
+* Corrige glossário de `Saving Account` para `Savings Accounts`
+* Corrige regex de campos em `Identification Accounts`
+* Corrige `ISPB` para `COMPE` nas especificações de `Customers`
+* Corrige obrigatóriedade de `statementAccount` em `balancesAccounts`
+* Corrige regex de `accountsBalances` para 20 caracteres em todos os schemas de customers
+* Corrige regex de `checkDigit` para permitir outros caracteres além de números em todos os schemas de customers
+* Corrige quantidade máxima de caracteres em `accountBalances` em `transactionAccounts`
+* Corrige enum de `type` em `transactions`
+* Corrige descrição de `payer` e `payee` em `statementAccount`
+* Corrige enum de `overdraftLimit`
