@@ -41,7 +41,9 @@ Os commits relacionados à Fase 1 foram desconsiderados, visto que encontram-se 
   - Limites de cartão de crédito
   - Transações de cartão de crédito
   - Fatura do Cartão de Crédito
-* Atualiza glossário com os termos relacionados ao Cartão de Crédtio
+* Atualiza glossário com os termos relacionados ao Cartão de Crédito
+* Criado `BankBorrowing`
+* Criado `BankBorrowingPayment`
 
 ## Melhorias
 
