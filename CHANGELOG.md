@@ -44,6 +44,7 @@ Os commits relacionados à Fase 1 foram desconsiderados, visto que encontram-se 
 * Atualiza glossário com os termos relacionados ao Cartão de Crédito
 * Criado `BankBorrowing`
 * Criado `BankBorrowingPayment`
+* Criado `BankBorrowingInstalments`
 
 ## Melhorias
 
