@@ -1,22 +1,24 @@
 type: object
 description: Conjunto de informações referentes à identificação da operação de crédito
 required:
-  - contractId
+  - ipocCode
   - requestDateTime
   - productName
   - productType
+  - productSubType
   - contractDate
   - disbursementDate
   - contractAmount
   - currency
   - dueDate
   - instalmentPeriodicity
-  - dueFirstInstalmentDate
+  - firstInstalmentDueDate
   - totalNumberOfInstalments
+  - paidInstalments
+  - CET
   - interestRates
-  - financeChargeType
 properties:
-  contractId:
+  ipocCode:
     type: string
     maxLength: 67
     description: |
@@ -29,12 +31,13 @@ properties:
         2. Para clientes pessoa jurídica com CNPJ (tipo de cliente = 2), informar as 8 (oito) posições iniciais do CNPJ;
         3. Para os demais clientes (tipos de cliente 3, 4, 5 e 6), informar 14 (catorze) posições com complemento de zeros à esquerda se a identificação tiver tamanho inferior;
       - **Código do contrato:** 1 (uma) até 40 (quarenta) posições, sem complemento de caracteres.
+  example: '92792126019929279212650822221989319252576'
   requestDateTime:
     type: string
     maxLength: 20
     format: DateTimeString
     pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
-    example: "2020-07-21T08:30:00Z"
+    example: "2020-01-05T08:30:00Z"
     description: Data e hora da consulta, conforme especificação RFC-3339, formato UTC.
   productName:
     type: string
@@ -42,25 +45,30 @@ properties:
     pattern: \w*\W*
     description: |
       Denominação/Identificação do nome da Modalidade da Operação de Crédito divulgado ao cliente
+    example: "AD"
   productType:
     $ref: ../enum/EnumBankBorrowingContractProductType.yaml
+  productSubType:
+    $ref: ../enum/EnumBankBorrowingContractProductSubType.yaml
   contractDate:
     type: string
     description: Data de contratação da operação de crédito. Especificação RFC-3339
     maxLength: 10
     format: DateString
     pattern: ^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$
+    example: '2018-01-05T08:30:00Z'
   disbursementDate:
     type: string
     description: Data do Desembolso do valor contratado. Especificação RFC-3339
     maxLength: 10
     format: DateString
     pattern: ^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$
+    example: '2018-01-15T08:30:00Z'
   contractAmount:
-    type: string
-    maxLength: 12
-    format: AmountString
+    type: number
+    maxLength: 19
     description: Valor contratado da operação. Expresso em valor monetário com 2 casas decimais
+    example: 26000.00
   currency:
     type: string
     pattern: '^(\w{3}){1}$'
@@ -76,41 +84,52 @@ properties:
     format: DateString
     pattern: ^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$
     description: Data de vencimento Final da operação. Especificação RFC-3339
+    example: '2028-01-15T08:30:00Z'
   instalmentPeriodicity:
     $ref: ../enum/EnumBankBorrowingContractInstalmentPeriodicity.yaml
-  dueFirstInstalmentDate:
+  firstInstalmentDueDate:
     type: string
     maxLength: 10
     format: DateString
     pattern: ^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$
-    description: Data de vencimento primeira parcela
+    description: Data de vencimento primeira parcela do principal
+    example: '2018-02-15'
   totalNumberOfInstalments:
-    type: string
+    type: number
     description: Prazo Total em meses do contrato referente à Modalidade de Crédito informada
     maxLength: 3
+    example: 130
+  paidInstalments:
+    type: number
+    description: Quantidade de prestações pagas. (No caso de modalidades que não possuam parcelas, o número de prestações é igual a zero)
+    maxLength: 3
+    example: 73
+  CET:
+    type: number
+    description: |
+      CET – Custo Efetivo Total deve ser expresso na forma de taxa percentual anual e   incorpora todos os encargos e despesas incidentes nas operações de crédito (taxa de juro, mas também tarifas, tributos, seguros e outras despesas cobradas).
+      O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros
+      (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)
+    maxLength: 19
+    example: 0.2900
+  amortizationSchedule:
+    $ref: ../enum/EnumBankBorrowingContractAmortizationSchedule.yaml
   interestRates:
     type: array
     items:
       $ref: ./BankBorrowingContractInterestRate.yaml
+  contractedFees:
+    type: array
+    items:
+      $ref: ./BankBorrowingContractedFee.yaml
     minItems: 1
-  feeName:
-    type: string
-    maxLength: 140
-    pattern: \w*\W*
-    description: Denominação da Tarifa avulsa
-  feeCode:
-    type: string
-    maxLength: 140
-    pattern: \w*\W*
-    description: Sigla identificadora da tarifa avulsa
-  financeChargeType:
-    $ref: ../enum/EnumBankBorrowingContractFinanceChargeType.yaml
-  financeChargeAdditionalInfo:
-    type: string
-    description: Campo de preenchimento obrigatório se selecionada a opção 'OUTROS' em Tipo de encargo avulso
-    # maxLength: 
-    pattern: \w*\W*
-  cnpjGuarantor:
+  financeCharges:
+    type: array
+    description: Lista que traz os encargos pactuados no contrato
+    items:
+      $ref: ./BankBorrowingFinanceCharge.yaml
+    minItems: 1
+  cnpjConsignee:
     type: string
     description: | 
       CNPJ do consignante (CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica). Deve-se ter apenas os números do CNPJ, sem máscara. Informação adicional específica para Modalidade de Crédito: Empréstimo-Crédito Pessoal Consignado
