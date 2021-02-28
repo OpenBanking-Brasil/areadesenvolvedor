@@ -1,40 +1,54 @@
 ﻿openapi: 3.0.0
 info:
-  title: API's OpenData do Open Banking Brasil
-  description: As API's descritas neste documento são referentes as API's da fase OpenData do Open Banking Brasil.
-  version: 1.0.0-rc
+  title: API de contas de depósito à vista, poupança e contas pré-pagas do Open Banking Brasil – Fase 2.
+  description: |
+    API que retorna informações de contas de depósito à vista, contas de poupança e contas de pagamento pré-pagas mantidas nas instituições transmissoras por seus clientes, incluindo dados de identificação da conta, saldos, limites e transações.\
+    Não possui segregação entre pessoa natural e pessoa jurídica.\
+    Requer consentimento do cliente para todos os endpoints.
+  version: 1.0.0
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0
   contact:
-    email: apiteam@swagger.io
+    name: Governança do Open Banking Brasil – Interfaces
+    email: gt-interfaces@openbankingbr.org
+    url: https://openbanking-brasil.github.io/areadesenvolvedor/
 servers:
-  - url: "http://api.banco.com.br/open-banking/accounts/v1"
+  - url: 'https://api.banco.com.br/open-banking/accounts/v1'
+    description: Servidor de Produção
+  - url: 'https://apih.banco.com.br/open-banking/accounts/v1'
+    description: Servidor de Homologação
 tags:
   - name: Accounts Identification
   - name: Accounts Balances
   - name: Accounts Transactions
   - name: Accounts Overdraft Limits
 paths:
-  /accounts/identification:
+  /accounts/{accountId}:
     get:
       tags:
         - Accounts Identification
-      summary: Obtém os dados de identificação da conta mantidos na instituição transmissora.
-      description: Método para obter os dados de identificação da conta na transmissora.
-      operationId: getAccountsIdentification
+      summary: Obtém os dados de identificação da conta identificada por accountId.
+      description: Método para obter os dados de identificação da conta de depósito à vista, poupança ou pagamento pré-paga identificada por accountId mantida pelo cliente na instituição transmissora.
+      operationId: getAccountsAccountId
       parameters:
-        - $ref: ./parameters/AccountsIspbCode.yaml
+        - $ref: ./parameters/Authorization.yaml
+        - $ref: ./parameters/XFapiAuthDate.yaml
+        - $ref: ./parameters/XFapiCustomerIpAddress.yaml
+        - $ref: ./parameters/XFapiInteractionId.yaml
+        - $ref: ./parameters/XCustomerUserAgent.yaml
+        - $ref: ./parameters/AccountId.yaml
+        - $ref: ./parameters/AccountsCompeCode.yaml
         - $ref: ./parameters/AccountsBranchCode.yaml
         - $ref: ./parameters/AccountsNumber.yaml
         - $ref: ./parameters/AccountsCheckDigit.yaml
-        - $ref: ./parameters/Page.yaml
-        - $ref: ./parameters/PageSize.yaml
       responses:
         "200":
-          description: Dados de identificação de conta obtidos com sucesso.
+          description: Dados de identificação da conta identificada por accountId obtidos com sucesso.
           content:
             application/json:
               schema:
                 $ref: "./schemas/accounts_apis/ResponseAccountIdentification.yaml"
-
         '400':
           $ref: './schemas/ErrorHTTP.yaml#/400'
         '401':
@@ -47,36 +61,32 @@ paths:
           $ref: './schemas/ErrorHTTP.yaml#/405'
         '406':
           $ref: './schemas/ErrorHTTP.yaml#/406'
-        '410':
-          $ref: './schemas/ErrorHTTP.yaml#/410'
-        '422':
-          $ref: './schemas/ErrorHTTP.yaml#/422'
         '429':
           $ref: './schemas/ErrorHTTP.yaml#/429'
         '500':
           $ref: './schemas/ErrorHTTP.yaml#/500'
-        '503':
-          $ref: './schemas/ErrorHTTP.yaml#/503'
-        '504':
-          $ref: './schemas/ErrorHTTP.yaml#/504'
 
-  /accounts/balances:
+  /accounts/{accountId}/balances:
     get:
       tags:
         - Accounts Balances
-      summary: Obtém os saldos da conta mantidos na instituição transmissora.
-      description: Método para obter os dados da conta na transmissora.
+      summary: Obtém os saldos da conta identificada por accountId.
+      description: Método para obter os saldos da conta de depósito à vista, poupança ou pagamento pré-paga identificada por accountId mantida pelo cliente na instituição transmissora.
       operationId: getAccountsBalances
       parameters:
-        - $ref: ./parameters/AccountsIspbCode.yaml
+        - $ref: ./parameters/Authorization.yaml
+        - $ref: ./parameters/XFapiAuthDate.yaml
+        - $ref: ./parameters/XFapiCustomerIpAddress.yaml
+        - $ref: ./parameters/XFapiInteractionId.yaml
+        - $ref: ./parameters/XCustomerUserAgent.yaml
+        - $ref: ./parameters/AccountId.yaml
+        - $ref: ./parameters/AccountsCompeCode.yaml
         - $ref: ./parameters/AccountsBranchCode.yaml
         - $ref: ./parameters/AccountsNumber.yaml
         - $ref: ./parameters/AccountsCheckDigit.yaml
-        - $ref: ./parameters/Page.yaml
-        - $ref: ./parameters/PageSize.yaml
       responses:
         "200":
-          description: Dados relativos aos saldos em conta obtidos com sucesso.
+          description: Dados relativos aos saldos da conta identificada por accountId obtidos com sucesso.
           content:
             application/json:
               schema:
@@ -93,36 +103,37 @@ paths:
           $ref: './schemas/ErrorHTTP.yaml#/405'
         '406':
           $ref: './schemas/ErrorHTTP.yaml#/406'
-        '410':
-          $ref: './schemas/ErrorHTTP.yaml#/410'
-        '422':
-          $ref: './schemas/ErrorHTTP.yaml#/422'
         '429':
           $ref: './schemas/ErrorHTTP.yaml#/429'
         '500':
           $ref: './schemas/ErrorHTTP.yaml#/500'
-        '503':
-          $ref: './schemas/ErrorHTTP.yaml#/503'
-        '504':
-          $ref: './schemas/ErrorHTTP.yaml#/504'
 
-  /accounts/transactions:
+  /accounts/{accountId}/transactions:
     get:
       tags:
         - Accounts Transactions
-      summary: Obtém a lista de transações da conta mantidos na instituição transmissora.
-      description: Método para obter a lista de transações da conta na transmissora.
-      operationId: getAccountsTransactions
+      summary: Obtém a lista de transações da conta identificada por accountId.
+      description: Método para obter a lista de transações da conta de depósito à vista, poupança ou pagamento pré-paga identificada por accountId mantida pelo cliente na instituição transmissora.
+      operationId: getAccountsAccountIdTransactions
       parameters:
-        - $ref: ./parameters/AccountsIspbCode.yaml
+        - $ref: ./parameters/Authorization.yaml
+        - $ref: ./parameters/XFapiAuthDate.yaml
+        - $ref: ./parameters/XFapiCustomerIpAddress.yaml
+        - $ref: ./parameters/XFapiInteractionId.yaml
+        - $ref: ./parameters/XCustomerUserAgent.yaml
+        - $ref: ./parameters/AccountId.yaml
+        - $ref: ./parameters/AccountsCompeCode.yaml
         - $ref: ./parameters/AccountsBranchCode.yaml
         - $ref: ./parameters/AccountsNumber.yaml
         - $ref: ./parameters/AccountsCheckDigit.yaml
         - $ref: ./parameters/Page.yaml
         - $ref: ./parameters/PageSize.yaml
+        - $ref: ./parameters/FromBookingDate.yaml
+        - $ref: ./parameters/ToBookingDate.yaml
+        - $ref: ./parameters/CreditCardDebitIndicator.yaml
       responses:
         "200":
-          description: Dados de Transações de crédito e débito realizadas e autorizadas obtidos com sucesso.
+          description: Dados da lista de transações da conta identificada por accountId obtidos com sucesso.
           content:
             application/json:
               schema:
@@ -139,36 +150,32 @@ paths:
           $ref: './schemas/ErrorHTTP.yaml#/405'
         '406':
           $ref: './schemas/ErrorHTTP.yaml#/406'
-        '410':
-          $ref: './schemas/ErrorHTTP.yaml#/410'
-        '422':
-          $ref: './schemas/ErrorHTTP.yaml#/422'
         '429':
           $ref: './schemas/ErrorHTTP.yaml#/429'
         '500':
           $ref: './schemas/ErrorHTTP.yaml#/500'
-        '503':
-          $ref: './schemas/ErrorHTTP.yaml#/503'
-        '504':
-          $ref: './schemas/ErrorHTTP.yaml#/504'
 
-  /accounts/overdraft-limits:
+  /accounts/{accountId}/overdraft-limits:
     get:
       tags:
         - Accounts Overdraft Limits
-      summary: Obtém os dados de limite de cheque especial e de adiantamento a depositante  da conta mantidos na instituição transmissora.
-      description: Método para obter os dados de cheque especial e de adiantamento a depositante  da conta na transmissora.
-      operationId: getAccountsOverdraftLimits
+      summary: Obtém os limites da conta identificada por accountId.
+      description: Método para obter os limites da conta de depósito à vista, poupança ou pagamento pré-paga identificada por accountId mantida pelo cliente na instituição transmissora.
+      operationId: getAccountsAccountIdOverdraftLimits
       parameters:
-        - $ref: ./parameters/AccountsIspbCode.yaml
+        - $ref: ./parameters/Authorization.yaml
+        - $ref: ./parameters/XFapiAuthDate.yaml
+        - $ref: ./parameters/XFapiCustomerIpAddress.yaml
+        - $ref: ./parameters/XFapiInteractionId.yaml
+        - $ref: ./parameters/XCustomerUserAgent.yaml
+        - $ref: ./parameters/AccountId.yaml
+        - $ref: ./parameters/AccountsCompeCode.yaml
         - $ref: ./parameters/AccountsBranchCode.yaml
         - $ref: ./parameters/AccountsNumber.yaml
         - $ref: ./parameters/AccountsCheckDigit.yaml
-        - $ref: ./parameters/Page.yaml
-        - $ref: ./parameters/PageSize.yaml
       responses:
         "200":
-          description: Dados de Limites referentes ao valor das operações de crédito obtidos com sucesso.
+          description: Dados de limites da conta identificada por accountId obtidos com sucesso.
           content:
             application/json:
               schema:
@@ -185,15 +192,7 @@ paths:
           $ref: './schemas/ErrorHTTP.yaml#/405'
         '406':
           $ref: './schemas/ErrorHTTP.yaml#/406'
-        '410':
-          $ref: './schemas/ErrorHTTP.yaml#/410'
-        '422':
-          $ref: './schemas/ErrorHTTP.yaml#/422'
         '429':
           $ref: './schemas/ErrorHTTP.yaml#/429'
         '500':
           $ref: './schemas/ErrorHTTP.yaml#/500'
-        '503':
-          $ref: './schemas/ErrorHTTP.yaml#/503'
-        '504':
-          $ref: './schemas/ErrorHTTP.yaml#/504'

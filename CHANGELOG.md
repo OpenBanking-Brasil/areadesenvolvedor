@@ -6,68 +6,84 @@ Os commits relacionados à Fase 1 foram desconsiderados, visto que encontram-se 
 
 ## Novas funcionalidades
 
-* Adiciona exemplos de requisição para as APIs nas linguagens `Python` e `Java`
+* Adiciona a API de dados cadastrais dos clientes e de seus representantes (API - Dados Cadastrais) contendo os seguintes itens:
+  - Dicionário de dados (CSV); 
+  - Exemplos de dados (CSV); 
+  - DER Conceitual;
+  - Diagrama de alto nível;
+  - Especificações Open API dos seguintes endpoints:
+    * `/customers/v1/personal-customers/identifications`;
+    * `/customers/v1/personal-customers/qualifications`;
+    * `/customers/v1/personal-customers/relationships`;
+    * `/customers/v1/business-customers/identifications`;
+    * `/customers/v1/business-customers/qualifications`;  
+    * `/customers/v1/business-customers/relationships/`;
 
-* Disponibiliza dos endpoints que retornam os dados cadastrais dos clientes e de seus representantes, incluindo dados de identificação, de qualificação financeira, informações sobre representantes cadastrados e sobre o relacionamento financeiro do cliente com a instituição transmissora dos dados, a saber:
-  - `/business-customers/financial-relation/`
-  - `/personal-customers/identification/`
-  - `/personal-customers/qualification/`
-  - `/personal-customers/financial-relation/`
-* Disponibiliza dos endpoints que retornam informações de contas de depósito à vista, contas de poupança e contas pré-pagas mantidas nas instituições transmissoras por seus clientes, incluindo dados de identificação da conta, saldos, limites e transações, a saber:
-  - `/accounts/identification/`
-  - `/accounts/balances/`
-  - `/accounts/transactions/`
-  - `/accounts/overdraft-limits/`
-* Adiciona ao menu o item API - Dados Cadastrais:
-  - Identificação Pessoa Jurídica
-  - Qualificação Pessoa Jurídica
-  - Relacionamento Pessoa Jurídica
-  - Identificação Pessoa Natural
-  - Qualificação Pessoa Natural
-  - Relacionamento Pessoa Natural
-* Adiciona ao menu o item API - Contas:
-  - Identificação da Conta
-  - Saldos da Conta
-  - Transações da Conta
-  - Limites da Conta
-* Adiciona novas seções aos items da fase 2:
-  - DER - Diagramas de Entidade e Relacionamento
-  - DER Lógico
-  - Download de Exemplos na seção de Dicionário de Dados
-* Adiciona novos termos relacionados à fase 2 no glossário
-* Criado submenu de cartões de crédito
-* Adiciona ao menu o item API - Cartão de Crédito:
-  - Identificação de cartão de crédito
-  - Limites de cartão de crédito
-  - Transações de cartão de crédito
-  - Fatura do Cartão de Crédito
-* Atualiza glossário com os termos relacionados ao Cartão de Crédtio
+* Adiciona a API de cartões de crédito (API - Cartão de Crédito) contendo os seguintes itens:
+  - Dicionário de dados (CSV);
+  - Exemplos de dados (CSV);
+  - DER Conceitual;
+  - Diagrama de alto nível;
+  - Especificações Open API dos seguintes endpoints:
+    * `/credit-cards-accounts/v1/accounts/{creditCardAccountId}`;
+    * `/credit-cards-accounts/v1/accounts/{creditCardAccountId}/limits`;
+    * `/credit-cards-accounts/v1/accounts/{creditCardAccountId}/transactions`;
+    * `/credit-cards-accounts/v1/accounts/{creditCardAccountId}/bills`;
+  
+* Adiciona a API de contas (API - Contas) contendo os seguintes itens:
+  - Dicionário de dados (CSV);
+  - Exemplos de dados (CSV);
+  - DER Conceitual;
+  - Diagrama de alto nível;
+  - Especificações Open API dos seguintes endpoints:
+    * `/accounts/v1/accounts/{accountId}`;
+    * `/accounts/v1/accounts/{accountId}/balances`;
+    * `/accounts/v1/accounts/{accountId}/transactions`;
+    * `/accounts/v1/accounts/{accountId}/overdraft-limits`;
 
-## Melhorias
+* Adiciona a API de operações de crédito de Empréstimos (API - Operações de Crédito - Empréstimos) contendo os seguintes itens:
+  - Dicionário de dados (CSV);
+  - Exemplos de dados (CSV);
+  - DER Conceitual;
+  - Diagrama de alto nível;
+  - Especificações Open API dos seguintes endpoints: 
+    * `/loans/v1/contract/{contractId}`;
+    * `/loans/v1/contract/{contractId}/warranties`;
+    * `/loans/v1/contract/{contractId}/payments`;
+    * `/loans/v1/contract/{contractId}/instalments`;
 
-* Remove a exibição de objetos-filho (») em todos os schemas para facilitar a visualização da estrutura na tabela
-* Inclui novo item do Glossário de `Customers`:
-  -  Sexo (Gender)
+* Adiciona a API de operações de crédito de Financiamentos (API - Operações de Crédito - Financiamentos) contendo os seguintes itens:
+  - Dicionário de dados (CSV);
+  - Exemplos de dados (CSV);
+  - DER Conceitual;
+  - Diagrama de alto nível;
+  - Especificações Open API dos seguintes endpoints: 
+    * `/financings/v1/contract/{contractId}`;
+    * `/financings/v1/contract/{contractId}/warranties`;
+    * `/financings/v1/contract/{contractId}/payments`;
+    * `/financings/v1/contract/{contractId}/instalments`;
 
-## Correções
+* Adiciona a API de operações de crédito de Adiantamento a Depositantes (API - Operações de Crédito - Adiantamento a Depositantes) contendo os seguintes itens:
+  - Dicionário de dados (CSV);
+  - Exemplos de dados (CSV);
+  - DER Conceitual;
+  - Diagrama de alto nível;
+  - Especificações Open API dos seguintes endpoints: 
+    * `/unarranged-accounts-overdraft/v1/contract/{contractId}`;
+    * `/unarranged-accounts-overdraft/v1/contract/{contractId}/warranties`;
+    * `/unarranged-accounts-overdraft/v1/contract/{contractId}/payments`;
+    * `/unarranged-accounts-overdraft/v1/contract/{contractId}/instalments`;
 
-* Corrige tags de glossário de `Dados cadastrais` e `Contas`
-* Corrige exemplo de `socialName` em APIs de Dados Cadastrais
-* Corrige tags em APIs de Dados Cadastrais e Contas
-* Corrige DER Conceitual das seguintes seções:
-  - `Dados Cadastrais`
-  - `Contas`
-* Corrige grafia de "detentora" em todos os DERs Lógico em `Contas`:
-  - `Identification` 
-  - `Balances`
-  - `Transactions`
-  - `OverdraftLimit`
-* Corrige grafia de "Tipo de Titularidade da Conta" no DER Lógico em `Contas`:
-  - `Identification` 
-* Corrige acentuação de palavras como "país" em todos os DERs Lógico em `Dados Cadastrais`:
-  - `Identification PJ` 
-  - `Qualification PJ`
-  - `Finance relation PJ`
-  - `Identification PN` 
-  - `Qualification PN`
-  - `Finance relation PN`
+* Adiciona a API de operações de crédito de Direitos Creditórios Descontados (API - Operações de Crédito - Direitos Creditórios Descontados) contendo os seguintes itens:
+  - Dicionário de dados (CSV);
+  - Exemplos de dados (CSV);
+  - DER Conceitual;
+  - Diagrama de alto nível;
+  - Especificações Open API dos seguintes endpoints: 
+    * `/invoice-financings/v1/contract/{contractId}`;
+    * `/invoice-financings/v1/contract/{contractId}/warranties`;
+    * `/invoice-financings/v1/contract/{contractId}/payments`;
+    * `/invoice-financings/v1/contract/{contractId}/instalments`;
+
+* Adiciona exemplos de requisição para todas as APIs nas linguagens `Python` e `Java`;
+* Adiciona novos termos relacionados à fase 2 no glossário;
