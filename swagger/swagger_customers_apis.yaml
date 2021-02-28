@@ -1,26 +1,41 @@
 openapi: 3.0.0
 info:
-  title: API's OpenData do Open Banking Brasil
-  description: As API's descritas neste documento são referentes as API's da fase OpenData do Open Banking Brasil.
-  version: 1.0.0-rc
+  title: API de dados cadastrais de clientes do Open Banking Brasil – Fase 2.
+  description: |
+    API que retorna os dados cadastrais de clientes e de seus representantes, incluindo dados de identificação, de qualificação financeira, informações sobre representantes cadastrados e sobre o relacionamento financeiro do cliente com a instituição transmissora dos dados.\
+    Possui segregação entre pessoa natural e pessoa jurídica. Requer consentimento do cliente para todos os endpoints.
+  version: 1.0.0
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0'
   contact:
-    email: apiteam@swagger.io
+    name: Governança do Open Banking Brasil – Interfaces
+    email: gt-interfaces@openbankingbr.org
+    url: 'https://openbanking-brasil.github.io/areadesenvolvedor/'
 servers:
-  - url: 'http://api.banco.com.br/open-banking/customers/v1'
+  - url: 'https://api.banco.com.br/open-banking/customers/v1'
+    description: Servidor de Produção
+  - url: 'https://apih.banco.com.br/open-banking/customers/v1'
+    description: Servidor de Homologação
 tags:
   - name: Customers
     description: Operações para listagem das informações Cadastrais do Cliente
 paths:
-  /business-customers/identification:
+  /business-customers/identifications:
     get:
       tags:
         - Customers
-      summary: Obtém os dados de identificação da pessoa jurídica mantidos na instituição transmissora.
-      description: Método para obter os dados de identificação da pessoa jurídica na transmissora.
-      operationId: getBusinessCustomersIdentification
+      summary: Obtém os registros de identificação da pessoa jurídica.
+      description: Método para obter os registros de identificação da pessoa jurídica mantidos na instituição transmissora
+      operationId: getCustomersBusinessIdentifications
       parameters:
-        - $ref: '#/paths/~1business-customers~1qualification/get/parameters/0'
-        - $ref: '#/paths/~1business-customers~1qualification/get/parameters/1'
+        - $ref: '#/paths/~1business-customers~1relationships/get/parameters/0'
+        - $ref: '#/paths/~1business-customers~1relationships/get/parameters/1'
+        - $ref: '#/paths/~1business-customers~1relationships/get/parameters/2'
+        - $ref: '#/paths/~1business-customers~1relationships/get/parameters/3'
+        - $ref: '#/paths/~1business-customers~1relationships/get/parameters/4'
+        - $ref: '#/paths/~1business-customers~1relationships/get/parameters/5'
+        - $ref: '#/paths/~1business-customers~1relationships/get/parameters/6'
       responses:
         '200':
           description: Dados sobre identificação pessoa jurídica
@@ -85,7 +100,6 @@ paths:
                                         - requestDateTime
                                         - updateDateTime
                                         - cnpjNumber
-                                        - otherDocuments
                                         - companyName
                                         - parties
                                         - contacts
@@ -502,50 +516,41 @@ paths:
                             minItems: 1
                             description: Companies traz uma lista de todas as instituições da Marca
                   links:
-                    $ref: '#/paths/~1business-customers~1qualification/get/responses/200/content/application~1json/schema/properties/links'
+                    $ref: '#/paths/~1business-customers~1relationships/get/responses/200/content/application~1json/schema/properties/links'
                   meta:
-                    $ref: '#/paths/~1business-customers~1qualification/get/responses/200/content/application~1json/schema/properties/meta'
+                    $ref: '#/paths/~1business-customers~1relationships/get/responses/200/content/application~1json/schema/properties/meta'
                 example:
                   data:
                     brand:
                       name: Organização A
                       companies:
-                        - name: Empresa da Organização A
-                          cnpjNumber: '50685362000135'
+                        - name: Empresa A
+                          cnpjNumber: '21128159000166'
                           businessCustomers:
                             identification:
                               requestDateTime: '2020-07-21T08:30:00Z'
-                              updateDateTime: '2020-07-21T08:30:00Z'
+                              updateDateTime: '2020-07-21T08:58:00Z'
                               cnpjNumber: '50685362000135'
-                              otherDocuments:
-                                - type: string
-                                  number: string
-                                  country: CAN
-                                  expirationDate: '2014-03-19'
-                              companyName: string
-                              tradeName: string
-                              incorporationDate: '2014-03-19'
+                              companyName: Severino e Pedro Henrique Eletrônica Ltda
+                              incorporationDate: '2019-02-02'
                               parties:
                                 - type: SOCIO
-                                  civilName: Juan Kaique Cláudio Fernandes
-                                  socialName: Karina
-                                  startDate: string
-                                  shareholding: stri
+                                  civilName: Elza Milena Stefany Teixeira
+                                  startDate: '2019-02-02'
+                                  shareholding: '0.51'
                                   documentType: CPF
-                                  documentNumber: string
-                                  documentAdditionalInfo: string
-                                  documentCountry: CAN
-                                  documentExpirationDate: '2014-03-19'
+                                  documentNumber: '73677831148'
+                                  documentCountry: BRA
                               contacts:
                                 postalAddresses:
                                   - isMain: true
-                                    address: 'Av Naburo Ykesaki, 1270'
-                                    additionalInfo: Fundos
-                                    districtName: Centro
-                                    townName: Marília
-                                    ibgeTownCode: '3550308'
+                                    address: 'Rua Ormando Chisto, 395'
+                                    additionalInfo: Loja B
+                                    districtName: São Judas Tadeu
+                                    townName: Colatina
+                                    ibgeTownCode: '3201506'
                                     countrySubDivision: SP
-                                    postCode: '17500001'
+                                    postCode: '29700650'
                                     country: Brasil
                                     countryCode: BRA
                                     geographicCoordinates:
@@ -556,12 +561,12 @@ paths:
                                     type: FIXO
                                     additionalInfo: string
                                     countryCallingCode: '55'
-                                    areaCode: '19'
+                                    areaCode: '27'
                                     number: '29875132'
-                                    phoneExtension: string
+                                    phoneExtension: '932'
                                 emails:
                                   - isMain: true
-                                    email: karinafernandes-81@br.inter.net
+                                    email: elzamilenastefanyteixeira-81@br.inter.net
                   links:
                     self: 'https://api.banco.com.br/open-banking/<api>/v1/<resource>'
                     first: 'https://api.banco.com.br/open-banking/<api>/v1/<resource>'
@@ -572,51 +577,36 @@ paths:
                     totalRecords: 1
                     totalPages: 1
         '400':
-          $ref: '#/paths/~1business-customers~1qualification/get/responses/400'
+          $ref: '#/paths/~1business-customers~1relationships/get/responses/400'
         '401':
-          $ref: '#/paths/~1business-customers~1qualification/get/responses/401'
+          $ref: '#/paths/~1business-customers~1relationships/get/responses/401'
         '403':
-          $ref: '#/paths/~1business-customers~1qualification/get/responses/403'
+          $ref: '#/paths/~1business-customers~1relationships/get/responses/403'
         '404':
-          $ref: '#/paths/~1business-customers~1qualification/get/responses/404'
+          $ref: '#/paths/~1business-customers~1relationships/get/responses/404'
         '405':
-          $ref: '#/paths/~1business-customers~1qualification/get/responses/405'
+          $ref: '#/paths/~1business-customers~1relationships/get/responses/405'
         '406':
-          $ref: '#/paths/~1business-customers~1qualification/get/responses/406'
-        '410':
-          $ref: '#/paths/~1business-customers~1qualification/get/responses/410'
-        '422':
-          $ref: '#/paths/~1business-customers~1qualification/get/responses/422'
+          $ref: '#/paths/~1business-customers~1relationships/get/responses/406'
         '429':
-          $ref: '#/paths/~1business-customers~1qualification/get/responses/429'
+          $ref: '#/paths/~1business-customers~1relationships/get/responses/429'
         '500':
-          $ref: '#/paths/~1business-customers~1qualification/get/responses/500'
-        '503':
-          $ref: '#/paths/~1business-customers~1qualification/get/responses/503'
-        '504':
-          $ref: '#/paths/~1business-customers~1qualification/get/responses/504'
-  /business-customers/qualification:
+          $ref: '#/paths/~1business-customers~1relationships/get/responses/500'
+  /business-customers/qualifications:
     get:
       tags:
         - Customers
-      summary: Obtém os dados de qualificação da pessoa jurídica mantidos na instituição transmissora.
-      description: Método para obter os dados de qualificação da pessoa jurídica na transmissora.
-      operationId: getBusinessCustomersQualification
+      summary: Obtém os registros de qualificação da pessoa jurídica.
+      description: Método para obter os registros de qualificação da pessoa jurídica mantidos na instituição transmissora.
+      operationId: getCustomersBusinessQualifications
       parameters:
-        - name: page
-          in: query
-          description: Número da página que está sendo requisitada (o valor da primeira página é 1).
-          schema:
-            type: integer
-            default: 1
-            minimum: 1
-        - name: page-size
-          in: query
-          description: Quantidade total de registros por páginas.
-          schema:
-            type: integer
-            default: 25
-            minimum: 1
+        - $ref: '#/paths/~1business-customers~1relationships/get/parameters/0'
+        - $ref: '#/paths/~1business-customers~1relationships/get/parameters/1'
+        - $ref: '#/paths/~1business-customers~1relationships/get/parameters/2'
+        - $ref: '#/paths/~1business-customers~1relationships/get/parameters/3'
+        - $ref: '#/paths/~1business-customers~1relationships/get/parameters/4'
+        - $ref: '#/paths/~1business-customers~1relationships/get/parameters/5'
+        - $ref: '#/paths/~1business-customers~1relationships/get/parameters/6'
       responses:
         '200':
           description: Dados sobre qualificação pessoa jurídica
@@ -786,83 +776,81 @@ paths:
                             minItems: 1
                             description: Companies traz uma lista de todas as instituições da Marca
                   links:
-                    type: object
-                    description: Referências para outros recusos da API requisitada.
-                    required:
-                      - self
-                    properties:
-                      self:
-                        type: string
-                        format: URIString
-                        description: URI completo que gerou a resposta atual.
-                        example: 'https://api.banco.com.br/open-banking/<api>/v1/<resource>'
-                      first:
-                        type: string
-                        format: URIString
-                        description: URI da primeira página que originou essa lista de resultados. Restrição - Obrigatório quando não for a primeira página da resposta
-                        example: 'https://api.banco.com.br/open-banking/<api>/v1/<resource>'
-                      prev:
-                        type: string
-                        format: URIString
-                        description: "URI da página anterior dessa lista de resultados. Restrição - \tObrigatório quando não for a primeira página da resposta"
-                      next:
-                        type: string
-                        format: URIString
-                        description: URI da próxima página dessa lista de resultados. Restrição - Obrigatório quando não for a última página da resposta
-                      last:
-                        type: string
-                        format: URIString
-                        description: URI da última página dessa lista de resultados. Restrição - Obrigatório quando não for a última página da resposta
-                        example: 'https://api.banco.com.br/open-banking/<api>/v1/<resource>'
+                    $ref: '#/paths/~1business-customers~1relationships/get/responses/200/content/application~1json/schema/properties/links'
                   meta:
-                    type: object
-                    description: Meta informações referente a API requisitada.
-                    properties:
-                      totalRecords:
-                        type: integer
-                        description: Número total de registros no resultado
-                        example: 1
-                      totalPages:
-                        type: integer
-                        description: Número total de páginas no resultado
-                        example: 1
-                    required:
-                      - totalRecords
-                      - totalPages
+                    $ref: '#/paths/~1business-customers~1relationships/get/responses/200/content/application~1json/schema/properties/meta'
         '400':
-          description: 'A requisição foi malformada, omitindo atributos obrigatórios, seja no payload ou através de atributos na URL.'
+          $ref: '#/paths/~1business-customers~1relationships/get/responses/400'
         '401':
-          description: Cabeçalho de autenticação ausente/inválido ou token inválido.
+          $ref: '#/paths/~1business-customers~1relationships/get/responses/401'
         '403':
-          description: O token tem escopo incorreto ou uma política de segurança foi violada.
+          $ref: '#/paths/~1business-customers~1relationships/get/responses/403'
         '404':
-          description: O recurso solicitado não existe ou não foi implementado.
+          $ref: '#/paths/~1business-customers~1relationships/get/responses/404'
         '405':
-          description: O consumidor tentou acessar o recurso com um método não suportado.
+          $ref: '#/paths/~1business-customers~1relationships/get/responses/405'
         '406':
-          description: A solicitação continha um cabeçalho Accept diferente dos tipos de mídia permitidos ou um conjunto de caracteres diferente de UTF-8.
-        '410':
-          description: Indica que o recurso não está mais disponível.
-        '422':
-          description: 'A solicitação foi bem formada, mas não pôde ser processada devido à lógica de negócios específica da solicitação.'
+          $ref: '#/paths/~1business-customers~1relationships/get/responses/406'
         '429':
-          description: 'A operação foi recusada, pois muitas solicitações foram feitas dentro de um determinado período ou o limite global de requisições concorrentes foi atingido.'
+          $ref: '#/paths/~1business-customers~1relationships/get/responses/429'
         '500':
-          description: Ocorreu um erro no gateway da API ou no microsserviço.
-        '503':
-          description: O serviço está indisponível no momento.
-        '504':
-          description: O servidor não pôde responder em tempo hábil.
-  /business-customers/financial-relation:
+          $ref: '#/paths/~1business-customers~1relationships/get/responses/500'
+  /business-customers/relationships:
     get:
       tags:
         - Customers
-      summary: Obtém os dados de relacionamento financeiro da pessoa jurídica mantidos na instituição transmissora.
-      description: Método para obter os dados de relacionamento financeiro da pessoa jurídica na transmissora.
-      operationId: getBusinessCustomersFinancialRelation
+      summary: Obtém os registros de relacionamentos com a instituição financeira e de representantes da pessoa jurídica.
+      description: Método para obter registros de relacionamentos com a instituição financeira e de representantes da pessoa jurídica mantidos na instituição transmissora.
+      operationId: getCustomersBusinessRelationships
       parameters:
-        - $ref: '#/paths/~1business-customers~1qualification/get/parameters/0'
-        - $ref: '#/paths/~1business-customers~1qualification/get/parameters/1'
+        - name: Authorization
+          in: header
+          description: a definir
+          required: false
+          schema:
+            type: string
+        - name: x-fapi-auth-date
+          in: header
+          description: |
+            Data em que o usuário logou pela última vez com o receptor. Representada de acordo com a [RFC7231](https://tools.ietf.org/html/rfc7231).Exemplo: Sun, 10 Sep 2017 19:43:31 UTC
+          required: false
+          schema:
+            type: string
+            pattern: '^(Mon|Tue|Wed|Thu|Fri|Sat|Sun), \d{2} (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\d{4} \d{2}:\d{2}:\d{2}  (GMT|UTC)$'
+        - name: x-fapi-customer-ip-address
+          in: header
+          description: |
+            O endereço IP do usuário se estiver atualmente logado com o receptor.
+          required: false
+          schema:
+            type: string
+        - name: x-fapi-interaction-id
+          in: header
+          description: |
+            Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.
+          required: false
+          schema:
+            type: string
+        - name: x-customer-user-agent
+          in: header
+          description: Indica o user-agent que o usuário utiliza.
+          required: false
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: Número da página que está sendo requisitada (o valor da primeira página é 1).
+          schema:
+            type: integer
+            default: 1
+            minimum: 1
+        - name: page-size
+          in: query
+          description: Quantidade total de registros por páginas.
+          schema:
+            type: integer
+            default: 25
+            minimum: 1
       responses:
         '200':
           description: Dados sobre relacionamento pessoa jurídica
@@ -915,7 +903,7 @@ paths:
                                   description: Número completo do CNPJ da instituição responsável pelo Cadastro - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica.
                                   example: '00000000000100'
                                 businessCustomers:
-                                  type: array
+                                  type: object
                                   description: Conjunto de informações cadastrais do Cliente pessoa jurídica.
                                   items:
                                     type: object
@@ -923,13 +911,53 @@ paths:
                                       - financialRelation
                                     properties:
                                       financialRelation:
-                                        $ref: '#/paths/~1personal-customers~1financial-relation/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/properties/personalCustomers/properties/financialRelation'
+                                        $ref: '#/paths/~1personal-customers~1relationships/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/properties/personalCustomers/properties/financialRelation'
                             minItems: 1
                             description: Companies traz uma lista de todas as instituições da Marca
                   links:
-                    $ref: '#/paths/~1business-customers~1qualification/get/responses/200/content/application~1json/schema/properties/links'
+                    type: object
+                    description: Referências para outros recusos da API requisitada.
+                    required:
+                      - self
+                    properties:
+                      self:
+                        type: string
+                        format: URIString
+                        description: URI completo que gerou a resposta atual.
+                        example: 'https://api.banco.com.br/open-banking/<api>/v1/<resource>'
+                      first:
+                        type: string
+                        format: URIString
+                        description: URI da primeira página que originou essa lista de resultados. Restrição - Obrigatório quando não for a primeira página da resposta
+                        example: 'https://api.banco.com.br/open-banking/<api>/v1/<resource>'
+                      prev:
+                        type: string
+                        format: URIString
+                        description: "URI da página anterior dessa lista de resultados. Restrição - \tObrigatório quando não for a primeira página da resposta"
+                      next:
+                        type: string
+                        format: URIString
+                        description: URI da próxima página dessa lista de resultados. Restrição - Obrigatório quando não for a última página da resposta
+                      last:
+                        type: string
+                        format: URIString
+                        description: URI da última página dessa lista de resultados. Restrição - Obrigatório quando não for a última página da resposta
+                        example: 'https://api.banco.com.br/open-banking/<api>/v1/<resource>'
                   meta:
-                    $ref: '#/paths/~1business-customers~1qualification/get/responses/200/content/application~1json/schema/properties/meta'
+                    type: object
+                    description: Meta informações referente a API requisitada.
+                    properties:
+                      totalRecords:
+                        type: integer
+                        description: Número total de registros no resultado
+                        example: 1
+                      totalPages:
+                        type: integer
+                        description: Número total de páginas no resultado
+                        example: 1
+                    required:
+                      - totalRecords
+                      - totalPages
                 example:
                   data:
                     brand:
@@ -959,39 +987,36 @@ paths:
                     totalRecords: 1
                     totalPages: 1
         '400':
-          $ref: '#/paths/~1business-customers~1qualification/get/responses/400'
+          description: 'A requisição foi malformada, omitindo atributos obrigatórios, seja no payload ou através de atributos na URL.'
         '401':
-          $ref: '#/paths/~1business-customers~1qualification/get/responses/401'
+          description: Cabeçalho de autenticação ausente/inválido ou token inválido.
         '403':
-          $ref: '#/paths/~1business-customers~1qualification/get/responses/403'
+          description: O token tem escopo incorreto ou uma política de segurança foi violada.
         '404':
-          $ref: '#/paths/~1business-customers~1qualification/get/responses/404'
+          description: O recurso solicitado não existe ou não foi implementado.
         '405':
-          $ref: '#/paths/~1business-customers~1qualification/get/responses/405'
+          description: O consumidor tentou acessar o recurso com um método não suportado.
         '406':
-          $ref: '#/paths/~1business-customers~1qualification/get/responses/406'
-        '410':
-          $ref: '#/paths/~1business-customers~1qualification/get/responses/410'
-        '422':
-          $ref: '#/paths/~1business-customers~1qualification/get/responses/422'
+          description: A solicitação continha um cabeçalho Accept diferente dos tipos de mídia permitidos ou um conjunto de caracteres diferente de UTF-8.
         '429':
-          $ref: '#/paths/~1business-customers~1qualification/get/responses/429'
+          description: 'A operação foi recusada, pois muitas solicitações foram feitas dentro de um determinado período ou o limite global de requisições concorrentes foi atingido.'
         '500':
-          $ref: '#/paths/~1business-customers~1qualification/get/responses/500'
-        '503':
-          $ref: '#/paths/~1business-customers~1qualification/get/responses/503'
-        '504':
-          $ref: '#/paths/~1business-customers~1qualification/get/responses/504'
-  /personal-customers/identification:
+          description: Ocorreu um erro no gateway da API ou no microsserviço.
+  /personal-customers/identifications:
     get:
       tags:
         - Customers
-      summary: Obtém os dados de identificação da pessoa natural mantidos na instituição transmissora.
-      description: Método para obter os dados de identificação da pessoa natural na transmissora.
-      operationId: getPersonalCustomersIdentification
+      summary: Obtém os registros de identificação da pessoa natural.
+      description: Método para obter os registros de identificação da pessoa natural mantidos na instituição transmissora.
+      operationId: getCustomersPersonalIdentifications
       parameters:
-        - $ref: '#/paths/~1business-customers~1qualification/get/parameters/0'
-        - $ref: '#/paths/~1business-customers~1qualification/get/parameters/1'
+        - $ref: '#/paths/~1business-customers~1relationships/get/parameters/0'
+        - $ref: '#/paths/~1business-customers~1relationships/get/parameters/1'
+        - $ref: '#/paths/~1business-customers~1relationships/get/parameters/2'
+        - $ref: '#/paths/~1business-customers~1relationships/get/parameters/3'
+        - $ref: '#/paths/~1business-customers~1relationships/get/parameters/4'
+        - $ref: '#/paths/~1business-customers~1relationships/get/parameters/5'
+        - $ref: '#/paths/~1business-customers~1relationships/get/parameters/6'
       responses:
         '200':
           description: Dados sobre identificação pessoa física.
@@ -1062,7 +1087,7 @@ paths:
                                         - filiation
                                         - birthDate
                                         - maritalStatusCode
-                                        - gender
+                                        - sex
                                         - contacts
                                       properties:
                                         requestDateTime:
@@ -1168,12 +1193,14 @@ paths:
                                               example: false
                                             otherNationality:
                                               type: object
+                                              description: Conjunto de informações específicas para cliente que possue nacionalidade diferente da brasileira
                                               properties:
                                                 additionalInfo:
                                                   type: string
-                                                  description: Campo de preenchimento obrigatório caso o cliente não possua nacionalidade brasileira. Preencher utilizando o código de pais de acordo com o código “alpha3” do ISO-3166.
+                                                  description: |
+                                                    Campo de preenchimento obrigatório caso o cliente não possua nacionalidade brasileira. Preencher indicando todas suas demais nacionalidades utilizando o código de pais de acordo com o código “alpha3” do ISO-3166.p.ex.'CAN'
                                                   maxLength: 3
-                                                  example: USA
+                                                  example: CAN
                                                 complementaryDocuments:
                                                   type: array
                                                   description: Lista que traz relação de documentos complementares de pessoas com nacionalidade diferente de brasileira
@@ -1222,15 +1249,9 @@ paths:
                                                 description: |
                                                   Tipo de filiação.
                                                 enum:
-                                                  - PAI
-                                                  - MAE
-                                                  - OUTRA
-                                                example: MAE
-                                              additionalInfo:
-                                                type: string
-                                                description: 'Campo livre para complementar a informação relativa a filiação, quando selecionada a natureza da filiação igual `OUTRA`'
-                                                pattern: \w*\W*
-                                                maxLength: 70
+                                                  - 1_FILIACAO
+                                                  - 2_FILIACAO
+                                                example: 1_FILIACAO
                                               civilName:
                                                 type: string
                                                 description: 'Nome civil completo da pessoa relativa à filiação. (Direito fundamental da pessoa, o nome civil é aquele atribuído à pessoa natural desde o registro de seu nascimento, com o qual será identificada por toda a sua vida, bem como após a sua morte)'
@@ -1268,88 +1289,83 @@ paths:
                                           description: 'Campo livre para complementar a informação relativa ao estado civil, quando selecionada a opção `OUTROS`'
                                           pattern: \w*\W*
                                           maxLength: 50
-                                        gender:
+                                        sex:
                                           type: string
                                           description: |
-                                            Informar sexo
+                                            “Conjunto de características anatomofisiológicas que distinguem o homem e a mulher: Sexo masculino; sexo feminino”. No caso de não ser feminino nem masculino é classificado como outros.
                                           enum:
                                             - FEMININO
                                             - MASCULINO
                                             - OUTRO
                                           example: FEMININO
                                         contacts:
-                                          $ref: '#/paths/~1business-customers~1identification/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/properties/businessCustomers/properties/identification/properties/contacts'
+                                          $ref: '#/paths/~1business-customers~1identifications/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/properties/businessCustomers/properties/identification/properties/contacts'
                             minItems: 1
                             description: Companies traz uma lista de todas as instituições da Marca
                   links:
-                    $ref: '#/paths/~1business-customers~1qualification/get/responses/200/content/application~1json/schema/properties/links'
+                    $ref: '#/paths/~1business-customers~1relationships/get/responses/200/content/application~1json/schema/properties/links'
                   meta:
-                    $ref: '#/paths/~1business-customers~1qualification/get/responses/200/content/application~1json/schema/properties/meta'
+                    $ref: '#/paths/~1business-customers~1relationships/get/responses/200/content/application~1json/schema/properties/meta'
                 example:
                   data:
                     brand:
-                      name: Organização A
+                      name: Organização D
                       companies:
-                        - name: Empresa da Organização A
-                          cnpjNumber: '50685362000135'
+                        - name: Empresa D
+                          cnpjNumber: '68005525000153'
                           personalCustomers:
                             identification:
-                              requestDateTime: '2020-07-21T08:30:00Z'
-                              updateDateTime: '2020-07-21T08:30:00Z'
+                              requestDateTime: '2021-01-28T08:30:00Z'
+                              updateDateTime: '2021-01-28T08:30:00Z'
                               documents:
-                                cpfNumber: '25872252137'
-                                passportNumber: '75253468744594820620'
+                                cpfNumber: NA
+                                passportNumber: '79416097'
                                 passportCountry: CAN
-                                passportExpirationDate: '2014-03-19'
+                                passportExpirationDate: '2024-04-31'
                               otherDocuments:
-                                - type: CNH
-                                  typeAdditionalInfo: string
-                                  number: string
-                                  checkDigit: string
-                                  additionalInfo: string
-                                  expirationDate: '2014-03-19'
+                                - type: RNE
+                                  number: '15291908'
+                                  checkDigit: P
+                                  expirationDate: '2025-03-19'
                               nationality:
                                 hasBrazilianNationality: false
                                 otherNationality:
-                                  additionalInfo: USA
+                                  additionalInfo: CAN
                                   complementaryDocuments:
                                     - type: SOCIAL SEC
                                       number: '423929299'
-                                      expirationDate: '2014-03-19'
+                                      expirationDate: '2030-03-19'
                               civilName: Juan Kaique Cláudio Fernandes
-                              socialName: string
+                              socialName: Karina
                               filiation:
-                                - type: MAE
-                                  additionalInfo: string
-                                  civilName: string
-                                  socialName: string
-                              birthDate: '2014-03-19'
-                              maritalStatusCode: SOLTEIRO
-                              maritalStatusAdditionalInfo: string
-                              gender: FEMININO
+                                - type: 1_FILIACAO
+                                  civilName: Luís Fernando Caio Fernandes
+                                - type: 2_FILIACAO
+                                  civilName: Yolanda Penteado
+                              birthDate: '1958-05-02'
+                              maritalStatusCode: OUTROS
+                              maritalStatusAdditionalInfo: SEPARADO_EXTRAJUDICIALMENTE
+                              sex: MASCULINO
                               contacts:
                                 postalAddresses:
                                   - isMain: true
-                                    address: 'Av Naburo Ykesaki, 1270'
-                                    additionalInfo: Fundos
-                                    districtName: Centro
-                                    townName: Marília
-                                    ibgeTownCode: '3550308'
-                                    countrySubDivision: SP
-                                    postCode: '17500001'
+                                    address: 'Rua Ormando Chisto, 395'
+                                    districtName: São Judas Tadeu
+                                    townName: Vitória
+                                    ibgeTownCode: '3201506'
+                                    countrySubDivision: ES
+                                    postCode: '29700650'
                                     country: Brasil
                                     countryCode: BRA
                                     geographicCoordinates:
-                                      latitude: '-90.8365180'
-                                      longitude: '-180.836519'
+                                      latitude: '-19.5498025'
+                                      longitude: '-40.6272813'
                                 phones:
                                   - isMain: true
                                     type: FIXO
-                                    additionalInfo: string
                                     countryCallingCode: '55'
-                                    areaCode: '19'
+                                    areaCode: '27'
                                     number: '29875132'
-                                    phoneExtension: string
                                 emails:
                                   - isMain: true
                                     email: karinafernandes-81@br.inter.net
@@ -1363,39 +1379,36 @@ paths:
                     totalRecords: 1
                     totalPages: 1
         '400':
-          $ref: '#/paths/~1business-customers~1qualification/get/responses/400'
+          $ref: '#/paths/~1business-customers~1relationships/get/responses/400'
         '401':
-          $ref: '#/paths/~1business-customers~1qualification/get/responses/401'
+          $ref: '#/paths/~1business-customers~1relationships/get/responses/401'
         '403':
-          $ref: '#/paths/~1business-customers~1qualification/get/responses/403'
+          $ref: '#/paths/~1business-customers~1relationships/get/responses/403'
         '404':
-          $ref: '#/paths/~1business-customers~1qualification/get/responses/404'
+          $ref: '#/paths/~1business-customers~1relationships/get/responses/404'
         '405':
-          $ref: '#/paths/~1business-customers~1qualification/get/responses/405'
+          $ref: '#/paths/~1business-customers~1relationships/get/responses/405'
         '406':
-          $ref: '#/paths/~1business-customers~1qualification/get/responses/406'
-        '410':
-          $ref: '#/paths/~1business-customers~1qualification/get/responses/410'
-        '422':
-          $ref: '#/paths/~1business-customers~1qualification/get/responses/422'
+          $ref: '#/paths/~1business-customers~1relationships/get/responses/406'
         '429':
-          $ref: '#/paths/~1business-customers~1qualification/get/responses/429'
+          $ref: '#/paths/~1business-customers~1relationships/get/responses/429'
         '500':
-          $ref: '#/paths/~1business-customers~1qualification/get/responses/500'
-        '503':
-          $ref: '#/paths/~1business-customers~1qualification/get/responses/503'
-        '504':
-          $ref: '#/paths/~1business-customers~1qualification/get/responses/504'
-  /personal-customers/qualification:
+          $ref: '#/paths/~1business-customers~1relationships/get/responses/500'
+  /personal-customers/qualifications:
     get:
       tags:
         - Customers
-      summary: Obtém os dados de qualificação da pessoa natural mantidos na instituição transmissora.
-      description: Método para obter os dados de qualificação da pessoa natural na transmissora.
+      summary: Obtém os registros de qualificação da pessoa natural.
+      description: Método para obter os registros de qualificação da pessoa natural mantidos na instituição transmissora.
       operationId: getPersonalCustomersQualification
       parameters:
-        - $ref: '#/paths/~1business-customers~1qualification/get/parameters/0'
-        - $ref: '#/paths/~1business-customers~1qualification/get/parameters/1'
+        - $ref: '#/paths/~1business-customers~1relationships/get/parameters/0'
+        - $ref: '#/paths/~1business-customers~1relationships/get/parameters/1'
+        - $ref: '#/paths/~1business-customers~1relationships/get/parameters/2'
+        - $ref: '#/paths/~1business-customers~1relationships/get/parameters/3'
+        - $ref: '#/paths/~1business-customers~1relationships/get/parameters/4'
+        - $ref: '#/paths/~1business-customers~1relationships/get/parameters/5'
+        - $ref: '#/paths/~1business-customers~1relationships/get/parameters/6'
       responses:
         '200':
           description: Dados sobre qualificação da pessoa física
@@ -1559,43 +1572,40 @@ paths:
                             minItems: 1
                             description: Companies traz uma lista de todas as instituições da Marca
                   links:
-                    $ref: '#/paths/~1business-customers~1qualification/get/responses/200/content/application~1json/schema/properties/links'
+                    $ref: '#/paths/~1business-customers~1relationships/get/responses/200/content/application~1json/schema/properties/links'
                   meta:
-                    $ref: '#/paths/~1business-customers~1qualification/get/responses/200/content/application~1json/schema/properties/meta'
+                    $ref: '#/paths/~1business-customers~1relationships/get/responses/200/content/application~1json/schema/properties/meta'
         '400':
-          $ref: '#/paths/~1business-customers~1qualification/get/responses/400'
+          $ref: '#/paths/~1business-customers~1relationships/get/responses/400'
         '401':
-          $ref: '#/paths/~1business-customers~1qualification/get/responses/401'
+          $ref: '#/paths/~1business-customers~1relationships/get/responses/401'
         '403':
-          $ref: '#/paths/~1business-customers~1qualification/get/responses/403'
+          $ref: '#/paths/~1business-customers~1relationships/get/responses/403'
         '404':
-          $ref: '#/paths/~1business-customers~1qualification/get/responses/404'
+          $ref: '#/paths/~1business-customers~1relationships/get/responses/404'
         '405':
-          $ref: '#/paths/~1business-customers~1qualification/get/responses/405'
+          $ref: '#/paths/~1business-customers~1relationships/get/responses/405'
         '406':
-          $ref: '#/paths/~1business-customers~1qualification/get/responses/406'
-        '410':
-          $ref: '#/paths/~1business-customers~1qualification/get/responses/410'
-        '422':
-          $ref: '#/paths/~1business-customers~1qualification/get/responses/422'
+          $ref: '#/paths/~1business-customers~1relationships/get/responses/406'
         '429':
-          $ref: '#/paths/~1business-customers~1qualification/get/responses/429'
+          $ref: '#/paths/~1business-customers~1relationships/get/responses/429'
         '500':
-          $ref: '#/paths/~1business-customers~1qualification/get/responses/500'
-        '503':
-          $ref: '#/paths/~1business-customers~1qualification/get/responses/503'
-        '504':
-          $ref: '#/paths/~1business-customers~1qualification/get/responses/504'
-  /personal-customers/financial-relation:
+          $ref: '#/paths/~1business-customers~1relationships/get/responses/500'
+  /personal-customers/relationships:
     get:
       tags:
         - Customers
-      summary: Obtém os dados de relacionamento financeiro da pessoa natural mantidos na instituição transmissora.
-      description: Método para obter os dados de relacionamento financeiro da pessoa natural na transmissora.
-      operationId: getPersonalCustomersFinancialRelation
+      summary: Obtém os registros de relacionamentos com a instituição financeira e de representantes da pessoa natural.
+      description: Método para obter registros de relacionamentos com a instituição financeira e de representantes da pessoa natural mantidos na instituição transmissora.
+      operationId: getCustomersPersonalRelationships
       parameters:
-        - $ref: '#/paths/~1business-customers~1qualification/get/parameters/0'
-        - $ref: '#/paths/~1business-customers~1qualification/get/parameters/1'
+        - $ref: '#/paths/~1business-customers~1relationships/get/parameters/0'
+        - $ref: '#/paths/~1business-customers~1relationships/get/parameters/1'
+        - $ref: '#/paths/~1business-customers~1relationships/get/parameters/2'
+        - $ref: '#/paths/~1business-customers~1relationships/get/parameters/3'
+        - $ref: '#/paths/~1business-customers~1relationships/get/parameters/4'
+        - $ref: '#/paths/~1business-customers~1relationships/get/parameters/5'
+        - $ref: '#/paths/~1business-customers~1relationships/get/parameters/6'
       responses:
         '200':
           description: Dados sobre relacionamento da pessoa física
@@ -1743,30 +1753,22 @@ paths:
                             minItems: 1
                             description: Companies traz uma lista de todas as instituições da Marca
                   links:
-                    $ref: '#/paths/~1business-customers~1qualification/get/responses/200/content/application~1json/schema/properties/links'
+                    $ref: '#/paths/~1business-customers~1relationships/get/responses/200/content/application~1json/schema/properties/links'
                   meta:
-                    $ref: '#/paths/~1business-customers~1qualification/get/responses/200/content/application~1json/schema/properties/meta'
+                    $ref: '#/paths/~1business-customers~1relationships/get/responses/200/content/application~1json/schema/properties/meta'
         '400':
-          $ref: '#/paths/~1business-customers~1qualification/get/responses/400'
+          $ref: '#/paths/~1business-customers~1relationships/get/responses/400'
         '401':
-          $ref: '#/paths/~1business-customers~1qualification/get/responses/401'
+          $ref: '#/paths/~1business-customers~1relationships/get/responses/401'
         '403':
-          $ref: '#/paths/~1business-customers~1qualification/get/responses/403'
+          $ref: '#/paths/~1business-customers~1relationships/get/responses/403'
         '404':
-          $ref: '#/paths/~1business-customers~1qualification/get/responses/404'
+          $ref: '#/paths/~1business-customers~1relationships/get/responses/404'
         '405':
-          $ref: '#/paths/~1business-customers~1qualification/get/responses/405'
+          $ref: '#/paths/~1business-customers~1relationships/get/responses/405'
         '406':
-          $ref: '#/paths/~1business-customers~1qualification/get/responses/406'
-        '410':
-          $ref: '#/paths/~1business-customers~1qualification/get/responses/410'
-        '422':
-          $ref: '#/paths/~1business-customers~1qualification/get/responses/422'
+          $ref: '#/paths/~1business-customers~1relationships/get/responses/406'
         '429':
-          $ref: '#/paths/~1business-customers~1qualification/get/responses/429'
+          $ref: '#/paths/~1business-customers~1relationships/get/responses/429'
         '500':
-          $ref: '#/paths/~1business-customers~1qualification/get/responses/500'
-        '503':
-          $ref: '#/paths/~1business-customers~1qualification/get/responses/503'
-        '504':
-          $ref: '#/paths/~1business-customers~1qualification/get/responses/504'
+          $ref: '#/paths/~1business-customers~1relationships/get/responses/500'

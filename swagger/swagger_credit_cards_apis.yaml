@@ -1,29 +1,79 @@
 openapi: 3.0.0
 info:
-  title: API's OpenData do Open Banking Brasil
-  description: As API's descritas neste documento são referentes as API's da fase OpenData do Open Banking Brasil.
-  version: 1.0.0-rc
+  title: API de contas de pagamento pós-pagas do Open Banking Brasil – Fase 2.
+  description: |
+    API que retorna informações de contas de pagamento pós-paga mantidas nas instituições transmissoras por seus clientes, incluindo dados como denominação, produto, bandeira, limites de crédito, informações sobre transações de pagamento efetuadas e faturas.\
+    Não possui segregação entre pessoa natural e pessoa jurídica.\
+    Requer consentimento do cliente para todos os endpoints.
+  version: 1.0.0
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0'
   contact:
-    email: apiteam@swagger.io
+    name: Governança do Open Banking Brasil – Interfaces
+    email: gt-interfaces@openbankingbr.org
+    url: 'https://openbanking-brasil.github.io/areadesenvolvedor/'
 servers:
-  - url: 'http://api.banco.com.br/open-banking/credit-cards/v1'
+  - url: 'https://api.banco.com.br/open-banking/credit-cards-accounts/v1'
+    description: Servidor de Produção
+  - url: 'https://apih.banco.com.br/open-banking/credit-cards-accounts/v1'
+    description: Servidor de Homologação
 tags:
   - name: Credit Card
     description: Operações para listagem das informações de Cartão de Crédito
 paths:
-  /credit-cards/identification:
+  '/accounts/{creditCardAccountId}':
     get:
       tags:
         - Credit Card
-      summary: Obtém dados relativos ao conjunto de informações referentes à identificação da conta de pagamento pós-paga.
-      description: Método para obter os dados relativos ao conjunto de informações referentes à identificação da conta de pagamento pós-paga.
-      operationId: getCreditCardAccountsIdentification
+      summary: Obtém os dados de identificação da conta identificada por creditCardAccountId.
+      description: Método para obter os dados de identificação da conta de pagamento pós-paga identificada por creditCardAccountId mantida pelo cliente na instituição transmissora.
+      operationId: getAccountsCreditCardAccountId
       parameters:
-        - $ref: '#/paths/~1credit-cards~1bill/get/parameters/0'
-        - $ref: '#/paths/~1credit-cards~1bill/get/parameters/1'
+        - name: Authorization
+          in: header
+          description: a definir
+          required: false
+          schema:
+            type: string
+        - name: x-fapi-auth-date
+          in: header
+          description: |
+            Data em que o usuário logou pela última vez com o receptor. Representada de acordo com a [RFC7231](https://tools.ietf.org/html/rfc7231).Exemplo: Sun, 10 Sep 2017 19:43:31 UTC
+          required: false
+          schema:
+            type: string
+            pattern: '^(Mon|Tue|Wed|Thu|Fri|Sat|Sun), \d{2} (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\d{4} \d{2}:\d{2}:\d{2}  (GMT|UTC)$'
+        - name: x-fapi-customer-ip-address
+          in: header
+          description: |
+            O endereço IP do usuário se estiver atualmente logado com o receptor.
+          required: false
+          schema:
+            type: string
+        - name: x-fapi-interaction-id
+          in: header
+          description: |
+            Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.
+          required: false
+          schema:
+            type: string
+        - name: x-customer-user-agent
+          in: header
+          description: Indica o user-agent que o usuário utiliza.
+          required: false
+          schema:
+            type: string
+        - name: creditCardAccountId
+          in: path
+          description: Identificador da conta de pagamento pós-paga.
+          required: true
+          schema:
+            type: string
+            pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
       responses:
         '200':
-          description: Dados relativos ao conjunto de informações referentes à identificação da conta de pagamento pós-paga.
+          description: Dados de identificação da conta identificada por creditCardAccountId obtidos com sucesso.
           content:
             application/json:
               schema:
@@ -150,471 +200,88 @@ paths:
                                     description: |
                                       Número de identificação do cartão:  corresponde aos 4 últimos dígitos
                                     maxLength: 4
-                                    example: '4453'
+                                    example: 4453
                                   isMultipleCreditCard:
                                     type: boolean
                                     description: |
                                       Informa se a conta de Pagamento pós paga é Múltipla. "Cartões  denominados múltiplos possuem tanto a função crédito quanto a débito, devendo o proprietário do cartão, no momento de sua utilização, informar se o pagamento é na função crédito (que leva a um pagamento futuro, por meio de uma fatura do cartão de crédito) ou na função débito".
                                       Fonte: Tipos de cartão - Banco Central do Brasilwww.bcb.gov.br › port ›folder_serie_I_tipos_de_
                                       cartao
-                                    example: 'true'
+                                    example: true
                   links:
-                    $ref: '#/paths/~1credit-cards~1bill/get/responses/200/content/application~1json/schema/properties/links'
-                  meta:
-                    $ref: '#/paths/~1credit-cards~1bill/get/responses/200/content/application~1json/schema/properties/meta'
-        '400':
-          $ref: '#/paths/~1credit-cards~1bill/get/responses/400'
-        '401':
-          $ref: '#/paths/~1credit-cards~1bill/get/responses/401'
-        '403':
-          $ref: '#/paths/~1credit-cards~1bill/get/responses/403'
-        '404':
-          $ref: '#/paths/~1credit-cards~1bill/get/responses/404'
-        '405':
-          $ref: '#/paths/~1credit-cards~1bill/get/responses/405'
-        '406':
-          $ref: '#/paths/~1credit-cards~1bill/get/responses/406'
-        '410':
-          $ref: '#/paths/~1credit-cards~1bill/get/responses/410'
-        '422':
-          $ref: '#/paths/~1credit-cards~1bill/get/responses/422'
-        '429':
-          $ref: '#/paths/~1credit-cards~1bill/get/responses/429'
-        '500':
-          $ref: '#/paths/~1credit-cards~1bill/get/responses/500'
-        '503':
-          $ref: '#/paths/~1credit-cards~1bill/get/responses/503'
-        '504':
-          $ref: '#/paths/~1credit-cards~1bill/get/responses/504'
-  /credit-cards/limits:
-    get:
-      tags:
-        - Credit Card
-      summary: |
-        Obtém dados dos limites: de Crédito Total e por Modalidade de Crédito relativos à conta de pagamento pós-paga.
-      description: |
-        Método para obter os dados dos limites: de Crédito Total e por Modalidade de Crédito relativos à conta de pagamento pós-paga.
-      operationId: getCreditCardAccountsLimits
-      parameters:
-        - $ref: '#/paths/~1credit-cards~1bill/get/parameters/0'
-        - $ref: '#/paths/~1credit-cards~1bill/get/parameters/1'
-      responses:
-        '200':
-          description: Dados dos limites de Crédito Total e por Modalidade de Crédito relativos à conta de pagamento pós-paga.
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - data
-                  - links
-                  - meta
-                properties:
-                  data:
                     type: object
+                    description: Referências para outros recusos da API requisitada.
                     required:
-                      - creditCardAccounts
+                      - self
                     properties:
-                      creditCardAccounts:
-                        type: object
-                        required:
-                          - limits
-                        properties:
-                          limits:
-                            type: object
-                            description: Conjunto de informações referentes aos limites da conta de  pagamento pós-paga.
-                            required:
-                              - creditCardAccountId
-                              - requestDateTime
-                              - brandName
-                              - companyCnpj
-                              - statementCreditCardAccounts
-                            properties:
-                              creditCardAccountId:
-                                type: string
-                                description: 'Identificador para conta pagamento pós-paga é o creditCardAccountId, chave artificial que permite identificar a conta pagamento pós-paga especifica.'
-                                maxLength: 40
-                                example: XXZTR3459087
-                              requestDateTime:
-                                type: string
-                                pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
-                                description: 'Data e hora da consulta, conforme especificação RFC-3339, formato UTC.'
-                                maxLength: 20
-                                example: '2020-07-21T08:30:00Z'
-                              brandName:
-                                type: string
-                                pattern: \w*\W*
-                                description: 'Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes.'
-                                maxLength: 80
-                                example: Organização A
-                              companyCnpj:
-                                type: string
-                                pattern: '\d{14}|^NA$'
-                                description: 'Número completo do CNPJ da instituição responsável pelo Cadastro - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. Deve-se ter apenas os números do CNPJ, sem máscara.'
-                                maxLength: 14
-                                example: '21128159000166'
-                              currency:
-                                type: string
-                                description: 'Moeda referente ao valor da transação, segundo modelo ISO-4217.'
-                                maxLength: 3
-                                example: BRL
-                              statementCreditCardAccounts:
-                                type: array
-                                items:
-                                  type: object
-                                  description: Lista dos lançamentos referentes aos limites relativos à conta de  pagamento pós-paga
-                                  required:
-                                    - creditLineLimitType
-                                    - consolidationType
-                                    - balances
-                                  properties:
-                                    creditLineLimitType:
-                                      type: string
-                                      description: Indicador do tipo de limite
-                                      enum:
-                                        - LIMITE_CREDITO_TOTAL
-                                        - LIMITE_CREDITO_MODALIDADE_OPERACAO
-                                      example: LIMITE_CREDITO_TOTAL
-                                    consolidationType:
-                                      type: string
-                                      description: Indicador que permite informar se o valor do limite é consolidado ou individual.
-                                      enum:
-                                        - CONSOLIDADO
-                                        - INDIVIDUAL
-                                      example: CONSOLIDADO
-                                    lineName:
-                                      type: string
-                                      description: Modalidade de operação - Lista de   Modalidades de Operação relacionadas às Contas de Pagamento Pós-Pagas
-                                      enum:
-                                        - CREDITO_A_VISTA
-                                        - SAQUE_CREDITO_BRASIL
-                                        - SAQUE_CREDITO_EXTERIOR
-                                        - EMPRESTIMO_CARTAO_CONSIGNADO
-                                        - OUTRAS
-                                      example: CREDITO_A_VISTA
-                                    lineNameAdditionalInfo:
-                                      type: string
-                                      pattern: \w*\W*
-                                      description: Campo de preenchimento obrigatório se selecionada a opção 'OUTRAS' em nameLine
-                                    limitType:
-                                      type: string
-                                      description: Indicador que permite informar se a operação de crédito é com limite ou com limite flexível
-                                      enum:
-                                        - COM_LIMITE
-                                        - LIMITE_FLEXIVEL
-                                        - SEM_LIMITE
-                                      example: COM_LIMITE
-                                    balances:
-                                      type: array
-                                      description: Lista que traz os valores relativos aos saldos do Limite de crédito total da conta de pagamento pós-paga
-                                      items:
-                                        type: object
-                                        description: Lista que traz os valores relativos aos saldos do Limite de crédito total da conta de pagamento pós-pa
-                                        required:
-                                          - type
-                                          - amount
-                                        properties:
-                                          type:
-                                            type: string
-                                            description: Traz os tipos dos valores relativos aos saldos  do Limite de crédito total da conta de pagamento pós-paga.
-                                            enum:
-                                              - VALOR_TOTAL
-                                              - VALOR_UTILIZADO
-                                              - VALOR_DISPONIVEL
-                                            example: VALOR_TOTAL
-                                          amount:
-                                            type: string
-                                            description: 'Valor do limite de crédito informado (total ou por modalidade), relativo ao tipo selecionado. Expresso em valor monetário com 2 casas decimais'
-                                            maxLength: 12
-                  links:
-                    $ref: '#/paths/~1credit-cards~1bill/get/responses/200/content/application~1json/schema/properties/links'
+                      self:
+                        type: string
+                        format: URIString
+                        description: URI completo que gerou a resposta atual.
+                        example: 'https://api.banco.com.br/open-banking/<api>/v1/<resource>'
+                      first:
+                        type: string
+                        format: URIString
+                        description: URI da primeira página que originou essa lista de resultados. Restrição - Obrigatório quando não for a primeira página da resposta
+                        example: 'https://api.banco.com.br/open-banking/<api>/v1/<resource>'
+                      prev:
+                        type: string
+                        format: URIString
+                        description: "URI da página anterior dessa lista de resultados. Restrição - \tObrigatório quando não for a primeira página da resposta"
+                      next:
+                        type: string
+                        format: URIString
+                        description: URI da próxima página dessa lista de resultados. Restrição - Obrigatório quando não for a última página da resposta
+                      last:
+                        type: string
+                        format: URIString
+                        description: URI da última página dessa lista de resultados. Restrição - Obrigatório quando não for a última página da resposta
+                        example: 'https://api.banco.com.br/open-banking/<api>/v1/<resource>'
                   meta:
-                    $ref: '#/paths/~1credit-cards~1bill/get/responses/200/content/application~1json/schema/properties/meta'
-                example:
-                  data:
-                    creditCardAccount:
-                      limits:
-                        creditCardAccountId: XXZTR3459087
-                        requestDateTime: '2020-07-21T08:30:00Z'
-                        brandName: Organização A
-                        companyCnpj: '21128159000166'
-                        currency: BRL
-                        statementCreditCardAccounts:
-                          - creditLineLimitType: LIMITE_CREDITO_TOTAL
-                            consolidationType: CONSOLIDADO
-                            balances:
-                              - type: VALOR_TOTAL
-                                amount: '2000.00'
-                              - type: VALOR_UTILIZADO
-                                amount: '1654.00'
-                              - type: VALOR_DISPONIVEL
-                                amount: '1200.00'
-                          - creditLineLimitType: LIMITE_CREDITO_MODALIDADE_OPERACAO
-                            consolidationType: INDIVIDUAL
-                            lineName: SAQUE_CREDITO_BRASIL
-                            limitType: COM_LIMITE
-                            balances:
-                              - type: VALOR_TOTAL
-                                amount: '2000.00'
-                              - type: VALOR_UTILIZADO
-                                amount: '1654.00'
-                              - type: VALOR_DISPONIVEL
-                                amount: '1200.00'
-                  links:
-                    self: 'https://api.banco.com.br/open-banking/<api>/v1/<resource>'
-                    first: 'https://api.banco.com.br/open-banking/<api>/v1/<resource>'
-                    prev: string
-                    next: string
-                    last: 'https://api.banco.com.br/open-banking/<api>/v1/<resource>'
-                  meta:
-                    totalRecords: 1
-                    totalPages: 1
-        '400':
-          $ref: '#/paths/~1credit-cards~1bill/get/responses/400'
-        '401':
-          $ref: '#/paths/~1credit-cards~1bill/get/responses/401'
-        '403':
-          $ref: '#/paths/~1credit-cards~1bill/get/responses/403'
-        '404':
-          $ref: '#/paths/~1credit-cards~1bill/get/responses/404'
-        '405':
-          $ref: '#/paths/~1credit-cards~1bill/get/responses/405'
-        '406':
-          $ref: '#/paths/~1credit-cards~1bill/get/responses/406'
-        '410':
-          $ref: '#/paths/~1credit-cards~1bill/get/responses/410'
-        '422':
-          $ref: '#/paths/~1credit-cards~1bill/get/responses/422'
-        '429':
-          $ref: '#/paths/~1credit-cards~1bill/get/responses/429'
-        '500':
-          $ref: '#/paths/~1credit-cards~1bill/get/responses/500'
-        '503':
-          $ref: '#/paths/~1credit-cards~1bill/get/responses/503'
-        '504':
-          $ref: '#/paths/~1credit-cards~1bill/get/responses/504'
-  /credit-cards/transactions:
-    get:
-      tags:
-        - Credit Card
-      summary: Obtém dados das transações relativas à conta de pagamento pós-paga.
-      description: Método para obter os dados das transações relativas à conta de pagamento pós-paga.
-      operationId: getCreditCardAccountsTransactions
-      parameters:
-        - $ref: '#/paths/~1credit-cards~1bill/get/parameters/0'
-        - $ref: '#/paths/~1credit-cards~1bill/get/parameters/1'
-      responses:
-        '200':
-          description: Dados das transações relativas à conta de pagamento pós-paga.
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - data
-                  - links
-                  - meta
-                properties:
-                  data:
                     type: object
-                    required:
-                      - creditCardAccount
+                    description: Meta informações referente a API requisitada.
                     properties:
-                      creditCardAccount:
-                        type: object
-                        required:
-                          - transactions
-                        properties:
-                          transactions:
-                            type: object
-                            description: objeto que agrupa as informações referentes as transações de pagamentos realizadas na conta de  pagamento pós-paga
-                            required:
-                              - requestDateTime
-                              - brandName
-                              - companyCnpj
-                              - statementCreditCardAccounts
-                            properties:
-                              creditCardAccountId:
-                                type: string
-                                description: 'Identificador para conta pagamento pós-paga é o creditCardAccountId, chave artificial que permite identificar a conta pagamento pós-paga especifica.'
-                                maxLength: 40
-                                example: XXZTR3459087
-                              requestDateTime:
-                                type: string
-                                pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
-                                description: 'Data e hora da consulta, conforme especificação RFC-3339, formato UTC.'
-                                maxLength: 20
-                                example: '2020-07-21T08:30:00Z'
-                              brandName:
-                                type: string
-                                pattern: \w*\W*
-                                description: 'Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes.'
-                                maxLength: 80
-                                example: Organização A
-                              companyCnpj:
-                                type: string
-                                pattern: '\d{14}|^NA$'
-                                description: 'Número completo do CNPJ da instituição responsável pelo Cadastro - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. Deve-se ter apenas os números do CNPJ, sem máscara.'
-                                maxLength: 14
-                                example: '21128159000166'
-                              statementCreditCardAccounts:
-                                type: object
-                                description: Lista que traz os valores relativos aos saldos do Limite de crédito total da conta de pagamento pós-paga
-                                required:
-                                  - transactionName
-                                  - creditDebitType
-                                  - transactionType
-                                  - feeType
-                                  - otherCreditsType
-                                  - chargeIdentificator
-                                  - charge
-                                  - brazilianAmount
-                                  - brazilianCurrency
-                                  - transactionDate
-                                  - balances
-                                properties:
-                                  transactionName:
-                                    type: string
-                                    maxLength: 40
-                                    description: Campo de livre preenchimento. Literal usada na instituição financeira para identificar a transação
-                                  billIdentification:
-                                    type: string
-                                    maxLength: 40
-                                    description: Informação que identifica a fatura onde consta a transação informada.
-                                  creditDebitType:
-                                    type: string
-                                    enum:
-                                      - CREDITO
-                                      - DEBITO
-                                    description: |
-                                      Indicador do tipo de lançamento: a crédito ou a débito. 
-                                    example: CREDITO
-                                  transactionType:
-                                    type: string
-                                    description: Traz os tipos de Transação
-                                    enum:
-                                      - PAGAMENTO
-                                      - TARIFA
-                                      - OPERACOES_CREDITO_CONTRATADAS_CARTAO
-                                      - ESTORNO
-                                      - CASHBACK
-                                      - OUTROS
-                                    example: CASHBACK
-                                  transactionalAdditionalInfo:
-                                    type: string
-                                    description: 'Campo livre, de preenchimento obrigatório quando selecionado tipo de transação ''OUTROS'''
-                                    maxLength: 50
-                                  paymentType:
-                                    type: string
-                                    description: Traz os tipos de pagamento
-                                    enum:
-                                      - A_VISTA
-                                      - A_PRAZO
-                                    example: A_VISTA
-                                  feeType:
-                                    type: string
-                                    description: Traz os tipos de Tarifas
-                                    enum:
-                                      - ANUIDADE
-                                      - SAQUE_CARTAO_BRASIL
-                                      - SAQUE_CARTAO_EXTERIOR
-                                      - AVALIACAO_EMERGENCIAL_CREDITO
-                                      - EMISSAO_SEGUNDA_VIA
-                                      - TARIFA_PAGAMETNO_CONTAS
-                                      - SMS
-                                    example: ANUIDADE
-                                  feeTypeAdditionalInfo:
-                                    type: string
-                                    maxLength: 50
-                                    description: 'Campo livre, de preenchimento obrigatório quando selecionada tipo de tarifa ''OUTRA'''
-                                  otherCreditsType:
-                                    type: string
-                                    description: Traz outros tipos de crédito contratados no cartão.
-                                    enum:
-                                      - CREDITO_ROTATIVO
-                                      - PARCELAMENTO_FATURA
-                                      - EMPRESTIMO
-                                      - OUTROS
-                                    example: CREDITO_ROTATIVO
-                                  otherCreditsAdditionalInfo:
-                                    type: string
-                                    maxLength: 50
-                                    description: 'Campo livre, de preenchimento obrigatório quando selecionado tipo de crédito ''OUTROS'''
-                                  chargeIdentificator:
-                                    type: string
-                                    description: Identificador da parcela que está sendo informada. Campo de livre preenchimento
-                                    maxLength: 50
-                                    pattern: \w*\W*
-                                  charge:
-                                    type: number
-                                    description: Quantidade de parcelas
-                                    maxLength: 2
-                                  brazilianAmount:
-                                    type: number
-                                    maxLength: 12
-                                    description: 'Valor da transação expresso em valor monetário com 2 casas decimais, em moeda corrente do Brasil'
-                                  brazilianCurrency:
-                                    type: string
-                                    maxLength: 3
-                                    description: 'Moeda referente ao valor da transação  no Brasil, segundo modelo ISO-4217. p.ex. ''BRL'' Todos os saldos informados estão representados com a moeda vigente do Brasil'
-                                  amount:
-                                    type: number
-                                    maxLength: 12
-                                    description: Valor da transação. Expresso em valor monetário com 2 casas decimais
-                                  currency:
-                                    type: string
-                                    maxLength: 3
-                                    description: 'Moeda referente ao valor da transação, se a opoepração foi efeuatda em moeda  estrangeira, segundo modelo ISO-4217. p.ex. ''EUR'' Todos os saldos informados estão representados com a moeda vigente do Brasil'
-                                  transactionDate:
-                                    type: string
-                                    description: Data lançamento da transação
-                                    pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
-                                    maxLength: 10
-                                  billPostDate:
-                                    type: string
-                                    description: Data de postagem na fatura
-                                    pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
-                                    maxLength: 10
-                                  payeeMCC:
-                                    type: number
-                                    description: 'MCC é o Merchant Category Code, ou o código da categoria do estabelecimento comercial. Os MCCs são agrupados segundo suas similaridades'
-                                    maxLength: 4
-                  links:
-                    $ref: '#/paths/~1credit-cards~1bill/get/responses/200/content/application~1json/schema/properties/links'
-                  meta:
-                    $ref: '#/paths/~1credit-cards~1bill/get/responses/200/content/application~1json/schema/properties/meta'
+                      totalRecords:
+                        type: integer
+                        description: Número total de registros no resultado
+                        example: 1
+                      totalPages:
+                        type: integer
+                        description: Número total de páginas no resultado
+                        example: 1
+                    required:
+                      - totalRecords
+                      - totalPages
         '400':
-          $ref: '#/paths/~1credit-cards~1bill/get/responses/400'
+          description: 'A requisição foi malformada, omitindo atributos obrigatórios, seja no payload ou através de atributos na URL.'
         '401':
-          $ref: '#/paths/~1credit-cards~1bill/get/responses/401'
+          description: Cabeçalho de autenticação ausente/inválido ou token inválido.
         '403':
-          $ref: '#/paths/~1credit-cards~1bill/get/responses/403'
+          description: O token tem escopo incorreto ou uma política de segurança foi violada.
         '404':
-          $ref: '#/paths/~1credit-cards~1bill/get/responses/404'
+          description: O recurso solicitado não existe ou não foi implementado.
         '405':
-          $ref: '#/paths/~1credit-cards~1bill/get/responses/405'
+          description: O consumidor tentou acessar o recurso com um método não suportado.
         '406':
-          $ref: '#/paths/~1credit-cards~1bill/get/responses/406'
-        '410':
-          $ref: '#/paths/~1credit-cards~1bill/get/responses/410'
-        '422':
-          $ref: '#/paths/~1credit-cards~1bill/get/responses/422'
+          description: A solicitação continha um cabeçalho Accept diferente dos tipos de mídia permitidos ou um conjunto de caracteres diferente de UTF-8.
         '429':
-          $ref: '#/paths/~1credit-cards~1bill/get/responses/429'
+          description: 'A operação foi recusada, pois muitas solicitações foram feitas dentro de um determinado período ou o limite global de requisições concorrentes foi atingido.'
         '500':
-          $ref: '#/paths/~1credit-cards~1bill/get/responses/500'
-        '503':
-          $ref: '#/paths/~1credit-cards~1bill/get/responses/503'
-        '504':
-          $ref: '#/paths/~1credit-cards~1bill/get/responses/504'
-  /credit-cards/bill:
+          description: Ocorreu um erro no gateway da API ou no microsserviço.
+  '/accounts/{creditCardAccountId}/bills':
     get:
       tags:
         - Credit Card
-      summary: Obtém dados referentes à fatura da conta de pagamento pós-paga.
-      description: Método para obter os dados referentes à fatura da conta de pagamento pós-paga.
-      operationId: getCrediCardsBilling
+      summary: Obtém a lista de faturas da conta identificada por creditCardAccountId.
+      description: Método para obter a lista de faturas da conta de pagamento pós-paga identificada por creditCardAccountId mantida pelo cliente na instituição transmissora.
+      operationId: getAccountsCreditCardAccountIdBills
       parameters:
+        - $ref: '#/paths/~1accounts~1%7BcreditCardAccountId%7D/get/parameters/0'
+        - $ref: '#/paths/~1accounts~1%7BcreditCardAccountId%7D/get/parameters/1'
+        - $ref: '#/paths/~1accounts~1%7BcreditCardAccountId%7D/get/parameters/2'
+        - $ref: '#/paths/~1accounts~1%7BcreditCardAccountId%7D/get/parameters/3'
+        - $ref: '#/paths/~1accounts~1%7BcreditCardAccountId%7D/get/parameters/4'
+        - $ref: '#/paths/~1accounts~1%7BcreditCardAccountId%7D/get/parameters/5'
         - name: page
           in: query
           description: Número da página que está sendo requisitada (o valor da primeira página é 1).
@@ -629,9 +296,27 @@ paths:
             type: integer
             default: 25
             minimum: 1
+        - name: fromDueDate
+          description: Data inicial de filtragem.
+          required: false
+          in: query
+          schema:
+            type: string
+            format: DateString
+            maxLength: 10
+            pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
+        - name: toDueDate
+          description: Data final de filtragem.
+          required: false
+          in: query
+          schema:
+            type: string
+            format: DateString
+            maxLength: 10
+            pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
       responses:
         '200':
-          description: Dados referentes à fatura da conta de pagamento pós-paga.
+          description: Dados referentes à lista de faturas da conta identificada por creditCardAccountId obtidos com sucesso.
           content:
             application/json:
               schema:
@@ -784,49 +469,9 @@ paths:
                                 maxItems: 2
                                 description: Lista que traz os valores relativos aos pagamentos da Fatura da conta de pagamento pós-paga
                   links:
-                    type: object
-                    description: Referências para outros recusos da API requisitada.
-                    required:
-                      - self
-                    properties:
-                      self:
-                        type: string
-                        format: URIString
-                        description: URI completo que gerou a resposta atual.
-                        example: 'https://api.banco.com.br/open-banking/<api>/v1/<resource>'
-                      first:
-                        type: string
-                        format: URIString
-                        description: URI da primeira página que originou essa lista de resultados. Restrição - Obrigatório quando não for a primeira página da resposta
-                        example: 'https://api.banco.com.br/open-banking/<api>/v1/<resource>'
-                      prev:
-                        type: string
-                        format: URIString
-                        description: "URI da página anterior dessa lista de resultados. Restrição - \tObrigatório quando não for a primeira página da resposta"
-                      next:
-                        type: string
-                        format: URIString
-                        description: URI da próxima página dessa lista de resultados. Restrição - Obrigatório quando não for a última página da resposta
-                      last:
-                        type: string
-                        format: URIString
-                        description: URI da última página dessa lista de resultados. Restrição - Obrigatório quando não for a última página da resposta
-                        example: 'https://api.banco.com.br/open-banking/<api>/v1/<resource>'
+                    $ref: '#/paths/~1accounts~1%7BcreditCardAccountId%7D/get/responses/200/content/application~1json/schema/properties/links'
                   meta:
-                    type: object
-                    description: Meta informações referente a API requisitada.
-                    properties:
-                      totalRecords:
-                        type: integer
-                        description: Número total de registros no resultado
-                        example: 1
-                      totalPages:
-                        type: integer
-                        description: Número total de páginas no resultado
-                        example: 1
-                    required:
-                      - totalRecords
-                      - totalPages
+                    $ref: '#/paths/~1accounts~1%7BcreditCardAccountId%7D/get/responses/200/content/application~1json/schema/properties/meta'
                 example:
                   data:
                     creditCardAccount:
@@ -859,26 +504,462 @@ paths:
                     totalRecords: 1
                     totalPages: 1
         '400':
-          description: 'A requisição foi malformada, omitindo atributos obrigatórios, seja no payload ou através de atributos na URL.'
+          $ref: '#/paths/~1accounts~1%7BcreditCardAccountId%7D/get/responses/400'
         '401':
-          description: Cabeçalho de autenticação ausente/inválido ou token inválido.
+          $ref: '#/paths/~1accounts~1%7BcreditCardAccountId%7D/get/responses/401'
         '403':
-          description: O token tem escopo incorreto ou uma política de segurança foi violada.
+          $ref: '#/paths/~1accounts~1%7BcreditCardAccountId%7D/get/responses/403'
         '404':
-          description: O recurso solicitado não existe ou não foi implementado.
+          $ref: '#/paths/~1accounts~1%7BcreditCardAccountId%7D/get/responses/404'
         '405':
-          description: O consumidor tentou acessar o recurso com um método não suportado.
+          $ref: '#/paths/~1accounts~1%7BcreditCardAccountId%7D/get/responses/405'
         '406':
-          description: A solicitação continha um cabeçalho Accept diferente dos tipos de mídia permitidos ou um conjunto de caracteres diferente de UTF-8.
-        '410':
-          description: Indica que o recurso não está mais disponível.
-        '422':
-          description: 'A solicitação foi bem formada, mas não pôde ser processada devido à lógica de negócios específica da solicitação.'
+          $ref: '#/paths/~1accounts~1%7BcreditCardAccountId%7D/get/responses/406'
         '429':
-          description: 'A operação foi recusada, pois muitas solicitações foram feitas dentro de um determinado período ou o limite global de requisições concorrentes foi atingido.'
+          $ref: '#/paths/~1accounts~1%7BcreditCardAccountId%7D/get/responses/429'
         '500':
-          description: Ocorreu um erro no gateway da API ou no microsserviço.
-        '503':
-          description: O serviço está indisponível no momento.
-        '504':
-          description: O servidor não pôde responder em tempo hábil.
+          $ref: '#/paths/~1accounts~1%7BcreditCardAccountId%7D/get/responses/500'
+  '/accounts/{creditCardAccountId}/limits':
+    get:
+      tags:
+        - Credit Card
+      summary: |
+        Obtém os limites da conta identificada por creditCardAccountId.
+      description: |
+        Método para obter os limites da conta de pagamento pós-paga identificada por creditCardAccountId mantida pelo cliente na instituição transmissora.
+      operationId: getAccountsCreditCardAccountIdLimits
+      parameters:
+        - $ref: '#/paths/~1accounts~1%7BcreditCardAccountId%7D/get/parameters/0'
+        - $ref: '#/paths/~1accounts~1%7BcreditCardAccountId%7D/get/parameters/1'
+        - $ref: '#/paths/~1accounts~1%7BcreditCardAccountId%7D/get/parameters/2'
+        - $ref: '#/paths/~1accounts~1%7BcreditCardAccountId%7D/get/parameters/3'
+        - $ref: '#/paths/~1accounts~1%7BcreditCardAccountId%7D/get/parameters/4'
+        - $ref: '#/paths/~1accounts~1%7BcreditCardAccountId%7D/get/parameters/5'
+      responses:
+        '200':
+          description: Dados dos limites da conta identificada por creditCardAccountId obtidos com sucesso.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                  - links
+                  - meta
+                properties:
+                  data:
+                    type: object
+                    required:
+                      - creditCardAccounts
+                    properties:
+                      creditCardAccounts:
+                        type: object
+                        required:
+                          - limits
+                        properties:
+                          limits:
+                            type: object
+                            description: Conjunto de informações referentes aos limites da conta de  pagamento pós-paga.
+                            required:
+                              - creditCardAccountId
+                              - requestDateTime
+                              - brandName
+                              - companyCnpj
+                              - statementCreditCardAccounts
+                            properties:
+                              creditCardAccountId:
+                                type: string
+                                description: 'Identificador para conta pagamento pós-paga é o creditCardAccountId, chave artificial que permite identificar a conta pagamento pós-paga especifica.'
+                                maxLength: 40
+                                example: XXZTR3459087
+                              requestDateTime:
+                                type: string
+                                pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
+                                description: 'Data e hora da consulta, conforme especificação RFC-3339, formato UTC.'
+                                maxLength: 20
+                                example: '2020-07-21T08:30:00Z'
+                              brandName:
+                                type: string
+                                pattern: \w*\W*
+                                description: 'Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes.'
+                                maxLength: 80
+                                example: Organização A
+                              companyCnpj:
+                                type: string
+                                pattern: '\d{14}|^NA$'
+                                description: 'Número completo do CNPJ da instituição responsável pelo Cadastro - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. Deve-se ter apenas os números do CNPJ, sem máscara.'
+                                maxLength: 14
+                                example: '21128159000166'
+                              currency:
+                                type: string
+                                description: 'Moeda referente ao valor da transação, segundo modelo ISO-4217.'
+                                maxLength: 3
+                                example: BRL
+                              statementCreditCardAccounts:
+                                type: array
+                                items:
+                                  type: object
+                                  description: Lista dos lançamentos referentes aos limites relativos à conta de  pagamento pós-paga
+                                  required:
+                                    - creditLineLimitType
+                                    - consolidationType
+                                    - balances
+                                  properties:
+                                    creditLineLimitType:
+                                      type: string
+                                      description: Indicador do tipo de limite
+                                      enum:
+                                        - LIMITE_CREDITO_TOTAL
+                                        - LIMITE_CREDITO_MODALIDADE_OPERACAO
+                                      example: LIMITE_CREDITO_TOTAL
+                                    consolidationType:
+                                      type: string
+                                      description: Indicador que permite informar se o valor do limite é consolidado ou individual.
+                                      enum:
+                                        - CONSOLIDADO
+                                        - INDIVIDUAL
+                                      example: CONSOLIDADO
+                                    lineName:
+                                      type: string
+                                      description: Modalidade de operação - Lista de   Modalidades de Operação relacionadas às Contas de Pagamento Pós-Pagas
+                                      enum:
+                                        - CREDITO_A_VISTA
+                                        - SAQUE_CREDITO_BRASIL
+                                        - SAQUE_CREDITO_EXTERIOR
+                                        - EMPRESTIMO_CARTAO_CONSIGNADO
+                                        - OUTRAS
+                                      example: CREDITO_A_VISTA
+                                    lineNameAdditionalInfo:
+                                      type: string
+                                      pattern: \w*\W*
+                                      description: Campo de preenchimento obrigatório se selecionada a opção 'OUTRAS' em nameLine
+                                    limitType:
+                                      type: string
+                                      description: Indicador que permite informar se a operação de crédito é com limite ou com limite flexível
+                                      enum:
+                                        - COM_LIMITE
+                                        - LIMITE_FLEXIVEL
+                                        - SEM_LIMITE
+                                      example: COM_LIMITE
+                                    balances:
+                                      type: array
+                                      description: Lista que traz os valores relativos aos saldos do Limite de crédito total da conta de pagamento pós-paga
+                                      items:
+                                        type: object
+                                        description: Lista que traz os valores relativos aos saldos do Limite de crédito total da conta de pagamento pós-pa
+                                        required:
+                                          - type
+                                          - amount
+                                        properties:
+                                          type:
+                                            type: string
+                                            description: Traz os tipos dos valores relativos aos saldos  do Limite de crédito total da conta de pagamento pós-paga.
+                                            enum:
+                                              - VALOR_TOTAL
+                                              - VALOR_UTILIZADO
+                                              - VALOR_DISPONIVEL
+                                            example: VALOR_TOTAL
+                                          amount:
+                                            type: string
+                                            description: 'Valor do limite de crédito informado (total ou por modalidade), relativo ao tipo selecionado. Expresso em valor monetário com 2 casas decimais'
+                                            maxLength: 12
+                  links:
+                    $ref: '#/paths/~1accounts~1%7BcreditCardAccountId%7D/get/responses/200/content/application~1json/schema/properties/links'
+                  meta:
+                    $ref: '#/paths/~1accounts~1%7BcreditCardAccountId%7D/get/responses/200/content/application~1json/schema/properties/meta'
+                example:
+                  data:
+                    creditCardAccounts:
+                      limits:
+                        creditCardAccountId: XXZTR3459087
+                        requestDateTime: '2020-07-21T08:30:00Z'
+                        brandName: Organização A
+                        companyCnpj: '21128159000166'
+                        currency: BRL
+                        statementCreditCardAccounts:
+                          - creditLineLimitType: LIMITE_CREDITO_TOTAL
+                            consolidationType: CONSOLIDADO
+                            balances:
+                              - type: VALOR_TOTAL
+                                amount: '2000.00'
+                              - type: VALOR_UTILIZADO
+                                amount: '1654.00'
+                              - type: VALOR_DISPONIVEL
+                                amount: '1200.00'
+                          - creditLineLimitType: LIMITE_CREDITO_MODALIDADE_OPERACAO
+                            consolidationType: INDIVIDUAL
+                            lineName: SAQUE_CREDITO_BRASIL
+                            limitType: COM_LIMITE
+                            balances:
+                              - type: VALOR_TOTAL
+                                amount: '2000.00'
+                              - type: VALOR_UTILIZADO
+                                amount: '1654.00'
+                              - type: VALOR_DISPONIVEL
+                                amount: '1200.00'
+                  links:
+                    self: 'https://api.banco.com.br/open-banking/<api>/v1/<resource>'
+                    first: 'https://api.banco.com.br/open-banking/<api>/v1/<resource>'
+                    prev: string
+                    next: string
+                    last: 'https://api.banco.com.br/open-banking/<api>/v1/<resource>'
+                  meta:
+                    totalRecords: 1
+                    totalPages: 1
+        '400':
+          $ref: '#/paths/~1accounts~1%7BcreditCardAccountId%7D/get/responses/400'
+        '401':
+          $ref: '#/paths/~1accounts~1%7BcreditCardAccountId%7D/get/responses/401'
+        '403':
+          $ref: '#/paths/~1accounts~1%7BcreditCardAccountId%7D/get/responses/403'
+        '404':
+          $ref: '#/paths/~1accounts~1%7BcreditCardAccountId%7D/get/responses/404'
+        '405':
+          $ref: '#/paths/~1accounts~1%7BcreditCardAccountId%7D/get/responses/405'
+        '406':
+          $ref: '#/paths/~1accounts~1%7BcreditCardAccountId%7D/get/responses/406'
+        '429':
+          $ref: '#/paths/~1accounts~1%7BcreditCardAccountId%7D/get/responses/429'
+        '500':
+          $ref: '#/paths/~1accounts~1%7BcreditCardAccountId%7D/get/responses/500'
+  '/accounts/{creditCardAccountId}/transactions':
+    get:
+      tags:
+        - Credit Card
+      summary: Obtém a lista de transações da conta identificada por creditCardAccountId.
+      description: Método para obter a lista de transações da conta de pagamento pós-paga identificada por creditCardAccountId mantida pelo cliente na instituição transmissora.
+      operationId: getAccountsCreditCardAccountIdTransactions
+      parameters:
+        - $ref: '#/paths/~1accounts~1%7BcreditCardAccountId%7D/get/parameters/0'
+        - $ref: '#/paths/~1accounts~1%7BcreditCardAccountId%7D/get/parameters/1'
+        - $ref: '#/paths/~1accounts~1%7BcreditCardAccountId%7D/get/parameters/2'
+        - $ref: '#/paths/~1accounts~1%7BcreditCardAccountId%7D/get/parameters/3'
+        - $ref: '#/paths/~1accounts~1%7BcreditCardAccountId%7D/get/parameters/4'
+        - $ref: '#/paths/~1accounts~1%7BcreditCardAccountId%7D/get/parameters/5'
+        - $ref: '#/paths/~1accounts~1%7BcreditCardAccountId%7D~1bills/get/parameters/6'
+        - $ref: '#/paths/~1accounts~1%7BcreditCardAccountId%7D~1bills/get/parameters/7'
+        - name: fromTransactionDate
+          description: Data inicial de filtragem.
+          required: false
+          in: query
+          schema:
+            type: string
+            format: DateString
+            maxLength: 10
+            pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
+        - name: toTransactionDate
+          description: Data final de filtragem.
+          required: false
+          in: query
+          schema:
+            type: string
+            format: DateString
+            maxLength: 10
+            pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
+        - name: transactionType
+          in: query
+          schema:
+            type: string
+            description: Traz os tipos de Transação
+            enum:
+              - PAGAMENTO
+              - TARIFA
+              - OPERACOES_CREDITO_CONTRATADAS_CARTAO
+              - ESTORNO
+              - CASHBACK
+              - OUTROS
+            example: CASHBACK
+        - name: payeeMCC
+          in: query
+          schema:
+            type: number
+            maxLength: 4
+            description: 'MCC é o Merchant Category Code, ou o código da categoria do estabelecimento comercial. Os MCCs são agrupados segundo suas similaridades'
+            example: 8299
+      responses:
+        '200':
+          description: Dados das lista de transações da conta identificada por creditCardAccountId obtidos com sucesso.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                  - links
+                  - meta
+                properties:
+                  data:
+                    type: object
+                    required:
+                      - creditCardAccount
+                    properties:
+                      creditCardAccount:
+                        type: object
+                        required:
+                          - transactions
+                        properties:
+                          transactions:
+                            type: object
+                            description: objeto que agrupa as informações referentes as transações de pagamentos realizadas na conta de  pagamento pós-paga
+                            required:
+                              - requestDateTime
+                              - brandName
+                              - companyCnpj
+                              - statementCreditCardAccounts
+                            properties:
+                              creditCardAccountId:
+                                type: string
+                                description: 'Identificador para conta pagamento pós-paga é o creditCardAccountId, chave artificial que permite identificar a conta pagamento pós-paga especifica.'
+                                maxLength: 40
+                                example: XXZTR3459087
+                              requestDateTime:
+                                type: string
+                                pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
+                                description: 'Data e hora da consulta, conforme especificação RFC-3339, formato UTC.'
+                                maxLength: 20
+                                example: '2020-07-21T08:30:00Z'
+                              brandName:
+                                type: string
+                                pattern: \w*\W*
+                                description: 'Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes.'
+                                maxLength: 80
+                                example: Organização A
+                              companyCnpj:
+                                type: string
+                                pattern: '\d{14}|^NA$'
+                                description: 'Número completo do CNPJ da instituição responsável pelo Cadastro - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. Deve-se ter apenas os números do CNPJ, sem máscara.'
+                                maxLength: 14
+                                example: '21128159000166'
+                              statementCreditCardAccounts:
+                                type: object
+                                description: Lista que traz os valores relativos aos saldos do Limite de crédito total da conta de pagamento pós-paga
+                                required:
+                                  - transactionName
+                                  - creditDebitType
+                                  - transactionType
+                                  - feeType
+                                  - otherCreditsType
+                                  - chargeIdentificator
+                                  - charge
+                                  - brazilianAmount
+                                  - brazilianCurrency
+                                  - transactionDate
+                                  - balances
+                                properties:
+                                  transactionName:
+                                    type: string
+                                    maxLength: 40
+                                    description: Campo de livre preenchimento. Literal usada na instituição financeira para identificar a transação
+                                  billIdentification:
+                                    type: string
+                                    maxLength: 40
+                                    description: Informação que identifica a fatura onde consta a transação informada.
+                                  creditDebitType:
+                                    type: string
+                                    enum:
+                                      - CREDITO
+                                      - DEBITO
+                                    description: |
+                                      Indicador do tipo de lançamento: a crédito ou a débito. 
+                                    example: CREDITO
+                                  transactionType:
+                                    $ref: '#/paths/~1accounts~1%7BcreditCardAccountId%7D~1transactions/get/parameters/10/schema'
+                                  transactionalAdditionalInfo:
+                                    type: string
+                                    description: 'Campo livre, de preenchimento obrigatório quando selecionado tipo de transação ''OUTROS'''
+                                    maxLength: 50
+                                  paymentType:
+                                    type: string
+                                    description: Traz os tipos de pagamento
+                                    enum:
+                                      - A_VISTA
+                                      - A_PRAZO
+                                    example: A_VISTA
+                                  feeType:
+                                    type: string
+                                    description: Traz os tipos de Tarifas
+                                    enum:
+                                      - ANUIDADE
+                                      - SAQUE_CARTAO_BRASIL
+                                      - SAQUE_CARTAO_EXTERIOR
+                                      - AVALIACAO_EMERGENCIAL_CREDITO
+                                      - EMISSAO_SEGUNDA_VIA
+                                      - TARIFA_PAGAMETNO_CONTAS
+                                      - SMS
+                                    example: ANUIDADE
+                                  feeTypeAdditionalInfo:
+                                    type: string
+                                    maxLength: 50
+                                    description: 'Campo livre, de preenchimento obrigatório quando selecionada tipo de tarifa ''OUTRA'''
+                                  otherCreditsType:
+                                    type: string
+                                    description: Traz outros tipos de crédito contratados no cartão.
+                                    enum:
+                                      - CREDITO_ROTATIVO
+                                      - PARCELAMENTO_FATURA
+                                      - EMPRESTIMO
+                                      - OUTROS
+                                    example: CREDITO_ROTATIVO
+                                  otherCreditsAdditionalInfo:
+                                    type: string
+                                    maxLength: 50
+                                    description: 'Campo livre, de preenchimento obrigatório quando selecionado tipo de crédito ''OUTROS'''
+                                  chargeIdentificator:
+                                    type: string
+                                    description: Identificador da parcela que está sendo informada. Campo de livre preenchimento
+                                    maxLength: 50
+                                    pattern: \w*\W*
+                                  charge:
+                                    type: number
+                                    description: Quantidade de parcelas
+                                    maxLength: 2
+                                  brazilianAmount:
+                                    type: number
+                                    maxLength: 12
+                                    description: 'Valor da transação expresso em valor monetário com 2 casas decimais, em moeda corrente do Brasil'
+                                  brazilianCurrency:
+                                    type: string
+                                    maxLength: 3
+                                    description: 'Moeda referente ao valor da transação  no Brasil, segundo modelo ISO-4217. p.ex. ''BRL'' Todos os saldos informados estão representados com a moeda vigente do Brasil'
+                                  amount:
+                                    type: number
+                                    maxLength: 12
+                                    description: Valor da transação. Expresso em valor monetário com 2 casas decimais
+                                  currency:
+                                    type: string
+                                    maxLength: 3
+                                    description: 'Moeda referente ao valor da transação, se a opoepração foi efeuatda em moeda  estrangeira, segundo modelo ISO-4217. p.ex. ''EUR'' Todos os saldos informados estão representados com a moeda vigente do Brasil'
+                                  transactionDate:
+                                    type: string
+                                    description: Data lançamento da transação
+                                    pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
+                                    maxLength: 10
+                                  billPostDate:
+                                    type: string
+                                    description: Data de postagem na fatura
+                                    pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
+                                    maxLength: 10
+                                  payeeMCC:
+                                    type: number
+                                    description: 'MCC é o Merchant Category Code, ou o código da categoria do estabelecimento comercial. Os MCCs são agrupados segundo suas similaridades'
+                                    maxLength: 4
+                  links:
+                    $ref: '#/paths/~1accounts~1%7BcreditCardAccountId%7D/get/responses/200/content/application~1json/schema/properties/links'
+                  meta:
+                    $ref: '#/paths/~1accounts~1%7BcreditCardAccountId%7D/get/responses/200/content/application~1json/schema/properties/meta'
+        '400':
+          $ref: '#/paths/~1accounts~1%7BcreditCardAccountId%7D/get/responses/400'
+        '401':
+          $ref: '#/paths/~1accounts~1%7BcreditCardAccountId%7D/get/responses/401'
+        '403':
+          $ref: '#/paths/~1accounts~1%7BcreditCardAccountId%7D/get/responses/403'
+        '404':
+          $ref: '#/paths/~1accounts~1%7BcreditCardAccountId%7D/get/responses/404'
+        '405':
+          $ref: '#/paths/~1accounts~1%7BcreditCardAccountId%7D/get/responses/405'
+        '406':
+          $ref: '#/paths/~1accounts~1%7BcreditCardAccountId%7D/get/responses/406'
+        '429':
+          $ref: '#/paths/~1accounts~1%7BcreditCardAccountId%7D/get/responses/429'
+        '500':
+          $ref: '#/paths/~1accounts~1%7BcreditCardAccountId%7D/get/responses/500'
