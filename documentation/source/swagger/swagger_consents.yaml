@@ -1,7 +1,7 @@
 openapi: "3.0.0"
 info:
   title: "API de Consentimentos do Open Banking Brasil."
-  description: "API que trata da criação, consulta e revogação de consentimentos para o Open Banking Brasil- Fase 2"
+  description: "API que trata da criação, consulta e revogação de consentimentos para o Open Banking Brasil- Fase 2 e posteriores."
   version: 1.0.0
   license:
     name: Apache 2.0
@@ -14,13 +14,17 @@ servers:
   - url: 'https://api.banco.com.br/open-banking/consents/v1'
     description: Servidor de Produção
   - url: 'https://apih.banco.com.br/open-banking/consents/v1'
-    description: Servidor de Homologação    
+    description: Servidor de Homologação  
+tags:
+  - name: Consents
+    description: "Operações para manipulação do consentimento dado pelo cliente."    
 paths:
   /consents:
     post:
       tags:
         - "Consents"
-      summary: "Criar consentimento"
+      summary: "Criar consentimento."
+      description: "Método para a criação de um novo consentimento."
       operationId: "createConsents"
       parameters:
         - $ref: "#/components/parameters/x-fapi-auth-date"
@@ -42,23 +46,23 @@ paths:
         description: "Default"
         required: true
       responses:
-        201:
+        "201":
           $ref: "#/components/responses/201ConsentsCreated"
-        400:
+        "400":
           $ref: "#/components/responses/400Error"
-        401:
+        "401":
           $ref: "#/components/responses/401Error"
-        403:
+        "403":
           $ref: "#/components/responses/403Error"
-        405:
+        "405":
           $ref: "#/components/responses/405Error"
-        406:
+        "406":
           $ref: "#/components/responses/406Error"
-        415:
+        "415":
           $ref: "#/components/responses/415Error"
-        429:
+        "429":
           $ref: "#/components/responses/429Error"
-        500:
+        "500":
           $ref: "#/components/responses/500Error"
       security:
         - OAuth2Security:
@@ -67,7 +71,8 @@ paths:
     get:
       tags:
         - "Consents"
-      summary: "Obter detalhes do consentimento"
+      summary: "Obter detalhes do consentimento identificado por consentId."
+      description: "Método para obter detalhes do consentimento identificado por consentId."
       operationId: "getConsentsConsentId"
       parameters:
         - $ref: "#/components/parameters/ConsentId"
@@ -77,23 +82,23 @@ paths:
         - $ref: "#/components/parameters/Authorization"
         - $ref: "#/components/parameters/x-customer-user-agent"
       responses:
-        200:
+        "200":
           $ref: "#/components/responses/200ConsentsConsentIdRead"
-        400:
+        "400":
           $ref: "#/components/responses/400Error"
-        401:
+        "401":
           $ref: "#/components/responses/401Error"
-        403:
+        "403":
           $ref: "#/components/responses/403Error"
-        404:
+        "404":
           $ref: "#/components/responses/404Error"          
-        405:
+        "405":
           $ref: "#/components/responses/405Error"
-        406:
+        "406":
           $ref: "#/components/responses/406Error"
-        429:
+        "429":
           $ref: "#/components/responses/429Error"
-        500:
+        "500":
           $ref: "#/components/responses/500Error"
       security:
         - OAuth2Security:
@@ -101,7 +106,8 @@ paths:
     delete:
       tags:
         - "Consents"
-      summary: "Delete Consents"
+      summary: "Deletar/revogar o consentimento identificado por consentId."
+      description: "Método para deletar/revogar o consentimento identificado por consentId."
       operationId: "deleteConsentsConsentId"
       parameters:
         - $ref: "#/components/parameters/ConsentId"
@@ -111,23 +117,23 @@ paths:
         - $ref: "#/components/parameters/Authorization"
         - $ref: "#/components/parameters/x-customer-user-agent"
       responses:
-        204:
+        "204":
           $ref: "#/components/responses/204ConsentsConsentIdDeleted"
-        400:
+        "400":
           $ref: "#/components/responses/400Error"
-        401:
+        "401":
           $ref: "#/components/responses/401Error"
-        403:
+        "403":
           $ref: "#/components/responses/403Error"
-        404:
+        "404":
           $ref: "#/components/responses/404Error"            
-        405:
+        "405":
           $ref: "#/components/responses/405Error"
-        406:
+        "406":
           $ref: "#/components/responses/406Error"
-        429:
+        "429":
           $ref: "#/components/responses/429Error"
-        500:
+        "500":
           $ref: "#/components/responses/500Error"
       security:
         - OAuth2Security:
@@ -169,7 +175,8 @@ components:
       name: "x-fapi-auth-date"
       required: false
       description: |
-        Data em que o usuário logou pela última vez com o receptor. Representada de acordo com a [RFC7231](https://tools.ietf.org/html/rfc7231).
+        Data em que o usuário logou pela última vez com o receptor.  
+        Representada de acordo com a [RFC7231](https://tools.ietf.org/html/rfc7231).
           Exemplo: Sun, 10 Sep 2017 19:43:31 UTC 
       schema:
         type: "string"
@@ -179,7 +186,8 @@ components:
       name: "x-fapi-interaction-id"
       required: false
       description: |
-        Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.
+        Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação.  
+        Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.
       schema:
         type: "string"
     x-idempotency-key:
@@ -205,9 +213,11 @@ components:
       description: "Consents Created"
       headers:
         x-fapi-interaction-id:
-          description: "An RFC4122 UID used as a correlation id."
+          description: |
+            Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação.  
+            Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.          
           schema:
-            type: "string"
+            type: "string"      
       content:
         application/json; charset=utf-8:
           schema:
@@ -219,12 +229,14 @@ components:
           schema:
             $ref: "#/components/schemas/OBReadConsentResponse1"
     200ConsentsConsentIdRead:
-      description: "Account Access Consents Read"
+      description: "Consents Read"
       headers:
         x-fapi-interaction-id:
-          description: "An RFC4122 UID used as a correlation id."
+          description: |
+            Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação.  
+            Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.          
           schema:
-            type: "string"
+            type: "string" 
       content:
         application/json; charset=utf-8:
           schema:
@@ -236,19 +248,23 @@ components:
           schema:
             $ref: "#/components/schemas/OBReadConsentResponse1"
     204ConsentsConsentIdDeleted:
-      description: "Account Access Consents Deleted"
+      description: "Consents Deleted"
       headers:
         x-fapi-interaction-id:
-          description: "An RFC4122 UID used as a correlation id."
+          description: |
+            Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação.  
+            Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.          
           schema:
-            type: "string"
+            type: "string" 
     400Error:
       description: "Bad request"
       headers:
         x-fapi-interaction-id:
-          description: "An RFC4122 UID used as a correlation id."
+          description: |
+            Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação.  
+            Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.          
           schema:
-            type: "string"
+            type: "string" 
       content:
         application/json; charset=utf-8:
           schema:
@@ -261,18 +277,22 @@ components:
             $ref: "#/components/schemas/OBErrorResponse1"
     401Error:
       description: "Unauthorized"
-      headers:
+      headers:      
         x-fapi-interaction-id:
-          description: "An RFC4122 UID used as a correlation id."
+          description: |
+            Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação.  
+            Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.          
           schema:
-            type: "string"
+            type: "string" 
     403Error:
       description: "Forbidden"
       headers:
         x-fapi-interaction-id:
-          description: "An RFC4122 UID used as a correlation id."
+          description: |
+            Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação.  
+            Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.          
           schema:
-            type: "string"
+            type: "string" 
       content:
         application/json; charset=utf-8:
           schema:
@@ -287,30 +307,38 @@ components:
       description: "Not found"
       headers:
         x-fapi-interaction-id:
-          description: "An RFC4122 UID used as a correlation id."
+          description: |
+            Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação.  
+            Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.          
           schema:
-            type: "string"
+            type: "string" 
     405Error:
       description: "Method Not Allowed"
       headers:
         x-fapi-interaction-id:
-          description: "An RFC4122 UID used as a correlation id."
+          description: |
+            Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação.  
+            Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.          
           schema:
-            type: "string"
+            type: "string" 
     406Error:
       description: "Not Acceptable"
       headers:
         x-fapi-interaction-id:
-          description: "An RFC4122 UID used as a correlation id."
+          description: |
+            Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação.  
+            Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.          
           schema:
-            type: "string"
+            type: "string" 
     415Error:
       description: "Unsupported Media Type"
       headers:
         x-fapi-interaction-id:
-          description: "An RFC4122 UID used as a correlation id."
+          description: |
+            Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação.  
+            Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.          
           schema:
-            type: "string"
+            type: "string" 
     429Error:
       description: "Too Many Requests"
       headers:
@@ -319,16 +347,20 @@ components:
           schema:
             type: "integer"
         x-fapi-interaction-id:
-          description: "An RFC4122 UID used as a correlation id."
+          description: |
+            Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação.  
+            Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.          
           schema:
-            type: "string"
+            type: "string" 
     500Error:
       description: "Internal Server Error"
       headers:
         x-fapi-interaction-id:
-          description: "An RFC4122 UID used as a correlation id."
+          description: |
+            Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação.  
+            Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.          
           schema:
-            type: "string"
+            type: "string" 
       content:
         application/json; charset=utf-8:
           schema:
@@ -624,9 +656,3 @@ components:
       description: "Date and time at which the resource status was updated.All dates in the JSON payloads are represented in ISO 8601 date-time format. \nAll date-time fields in responses must include the timezone. An example is below:\n2017-04-05T10:43:07+00:00"
       type: "string"
       format: "date-time"
-    Model:
-      type: "object"
-      properties:
-        id:
-          type: "integer"
-          format: "int64"
