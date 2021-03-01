@@ -42,540 +42,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                required:
-                  - data
-                  - links
-                  - meta
-                properties:
-                  data:
-                    type: object
-                    required:
-                      - brand
-                    properties:
-                      brand:
-                        type: object
-                        description: Objeto que define a Organização controladora do grupo de instituições financeiras
-                        required:
-                          - name
-                          - companies
-                        properties:
-                          name:
-                            type: string
-                            pattern: \w*\W*
-                            maxLength: 80
-                            description: 'Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes'
-                            example: Organização A
-                          companies:
-                            type: array
-                            items:
-                              type: object
-                              required:
-                                - name
-                                - cnpjNumber
-                                - businessCustomers
-                              properties:
-                                name:
-                                  description: 'Nome da Instituição, pertencente à Marca, responsável pelo Cadastro.'
-                                  type: string
-                                  pattern: \w*\W*
-                                  maxLength: 80
-                                  example: Empresa da Organização A
-                                cnpjNumber:
-                                  description: 'Número completo do CNPJ da instituição responsável pelo Cadastro - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. Deve-se ter apenas os números do CNPJ, sem máscara'
-                                  type: string
-                                  pattern: '\d{14}|^NA$'
-                                  maxLength: 14
-                                  example: '50685362000135'
-                                businessCustomers:
-                                  type: object
-                                  description: Conjunto de informações Cadastrais do Cliente Pessoa jurídica
-                                  required:
-                                    - identification
-                                  properties:
-                                    identification:
-                                      type: object
-                                      description: Conjunto de informações relativas a Identificação ou seja a ação e o efeito de identificar de forma única a pessoa jurídica através de seus dados cadastrais
-                                      required:
-                                        - requestDateTime
-                                        - updateDateTime
-                                        - cnpjNumber
-                                        - companyName
-                                        - parties
-                                        - contacts
-                                      properties:
-                                        requestDateTime:
-                                          type: string
-                                          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
-                                          description: 'Data e hora da consulta, conforme especificação RFC-3339, formato UTC.'
-                                          maxLength: 20
-                                          example: '2020-07-21T08:30:00Z'
-                                        updateDateTime:
-                                          type: string
-                                          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
-                                          description: 'Data e hora da atualização do bloco, conforme especificação RFC-3339'
-                                          maxLength: 20
-                                          example: '2020-07-21T08:30:00Z'
-                                        cnpjNumber:
-                                          description: 'Número completo do CNPJ da instituição responsável pelo Cadastro - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. Deve-se ter apenas os números do CNPJ, sem máscara'
-                                          type: string
-                                          pattern: '^(\d{14})$|^NA$'
-                                          maxLength: 14
-                                          example: '50685362000135'
-                                        otherDocuments:
-                                          type: array
-                                          items:
-                                            type: object
-                                            properties:
-                                              type:
-                                                type: string
-                                                maxLength: 20
-                                                pattern: \w*\W*
-                                                description: 'Tipo do outro documento informado. De preenchimento obrigatório, para a Pessoa jurídica com domicílio ou sede no exterior, desobrigada de inscrição no CNPJ'
-                                              number:
-                                                type: string
-                                                maxLength: 20
-                                                pattern: \w*\W*
-                                                description: 'Número do outro documento. De preenchimento obrigatório, para a Pessoa jurídica com domicílio ou sede no exterior, desobrigada de inscrição no CNPJ'
-                                              country:
-                                                type: string
-                                                description: Campo de preenchimento obrigatório caso o cliente não possua nacionalidade brasileira. Preencher utilizando o código de pais de acordo com o código “alpha3” do ISO-3166.
-                                                maxLength: 3
-                                                example: CAN
-                                              expirationDate:
-                                                type: string
-                                                pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
-                                                format: DateString
-                                                maxLength: 10
-                                                description: 'Data de validade do documento informado, conforme especificação RFC-3339.'
-                                                example: '2014-03-19'
-                                          minItems: 1
-                                          description: Relação dos demais documentos
-                                        companyName:
-                                          type: string
-                                          maxLength: 70
-                                          pattern: \w*\W*
-                                          description: Razão social da empresa consultada é o termo registrado sob o qual uma pessoa jurídica (PJ) se individualiza e exerce suas atividades. Também pode ser chamada por denominação social ou firma empresarial
-                                        tradeName:
-                                          type: string
-                                          maxLength: 70
-                                          pattern: \w*\W*
-                                          description: 'Nome fantasia da pessoa jurídica, se houver. (É o nome popular da empresa, utilizado para divulgação da empresa e melhor fixação com o público). De preenchimento obrigatório se houver'
-                                        incorporationDate:
-                                          type: string
-                                          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
-                                          format: DateString
-                                          maxLength: 10
-                                          description: 'Data de constituição da empresa, conforme especificação RFC-3339.'
-                                          example: '2014-03-19'
-                                        parties:
-                                          type: array
-                                          items:
-                                            type: object
-                                            description: Objeto relativo às informações de composição da participação societária
-                                            required:
-                                              - type
-                                              - civilName
-                                              - shareholding
-                                              - documentType
-                                              - documentNumber
-                                            properties:
-                                              type:
-                                                type: string
-                                                description: |
-                                                  Indica o perfil de atuação na empresa. Vide Enum
-                                                  O administrador é o responsável por desempenhar todas as funções administrativas da empresa. É ele quem conduz o dia a dia do negócio, assinando documentos, respondendo legalmente pela sociedade, realizando empréstimos e outras ações gerenciais. Apesar de estar na linha de frente da empresa, ele é denominado sócio por também possuir sua parcela de participação no Capital Social.
-                                                  Sócio não tem qualquer envolvimento nas atividades administrativas da sociedade.
-                                                enum:
-                                                  - SOCIO
-                                                  - ADMINISTRADOR
-                                              civilName:
-                                                type: string
-                                                description: 'Nome civil completo da pessoa natural (Direito fundamental da pessoa, o nome civil é aquele atribuído à pessoa natural desde o registro de seu nascimento, com o qual será identificada por toda a sua vida, bem como após a sua morte)'
-                                                maxLength: 70
-                                                pattern: \w*\W*
-                                                example: Juan Kaique Cláudio Fernandes
-                                              socialName:
-                                                type: string
-                                                description: 'Nome social da pessoa natural, se houver. (aquele pelo qual travestis e transexuais se reconhecem, bem como são identificados por sua comunidade e em seu meio social, conforme Decreto Nº 51.180, de 14 de janeiro de 2010)'
-                                                maxLength: 70
-                                                pattern: \w*\W*
-                                                example: Karina
-                                              startDate:
-                                                type: string
-                                                maxLength: 10
-                                                pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$|^NA$'
-                                                format: DateString
-                                                description: 'Data de início da participação, conforme especificação RFC-3339.'
-                                              shareholding:
-                                                type: string
-                                                maxLength: 4
-                                                pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
-                                                description: |
-                                                  Percentual de participação societária. Só deve ser informada se igual ou superior a 25%. Ex: 0.25 (O valor ao lado representa 25%. O valor '1 'representa 100%)
-                                                  A apuração pode acontecer com até 2 casas decimais.O preenchimento deve respeitar as 2 casas decimais, mesmo que venham preenchidas com zeros
-                                              documentType:
-                                                type: string
-                                                enum:
-                                                  - CPF
-                                                  - PASSAPORTE
-                                                  - OUTRO_DOCUMENTO_VIAGEM
-                                                  - CNPJ
-                                                description: |
-                                                  Tipo do documento informado. 
-                                              documentNumber:
-                                                type: string
-                                                maxLength: 20
-                                                pattern: \w*\W*
-                                                description: Número do documento informado. Campo Texto Livre para preencher número e dígito do documento se houver
-                                              documentAdditionalInfo:
-                                                type: string
-                                                maxLength: 100
-                                                pattern: \w*\W*
-                                                description: 'Campo livre, de preenchimento obrigatório quando o documento informado tiver informações complementares relevantes para a sua identificação'
-                                              documentCountry:
-                                                type: string
-                                                description: País de emissão do documento. Código do pais de acordo com o código “alpha3” do ISO-3166.
-                                                maxLength: 3
-                                                example: CAN
-                                              documentExpirationDate:
-                                                type: string
-                                                pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
-                                                format: DateString
-                                                maxLength: 10
-                                                description: 'Data de validade do documento informado, conforme especificação RFC-3339.'
-                                                example: '2014-03-19'
-                                          minItems: 1
-                                          description: |
-                                            Lista relativa às informações das partes envolvidas, como: sócio e /ou administrador
-                                        contacts:
-                                          type: object
-                                          description: Conjunto de informações referentes às formas para contatar o cliente.
-                                          required:
-                                            - postalAddresses
-                                            - phones
-                                            - emails
-                                          properties:
-                                            postalAddresses:
-                                              type: array
-                                              items:
-                                                type: object
-                                                required:
-                                                  - isMain
-                                                  - address
-                                                  - townName
-                                                  - countrySubDivision
-                                                  - postCode
-                                                  - country
-                                                  - countryCode
-                                                properties:
-                                                  isMain:
-                                                    type: boolean
-                                                    description: Indica se o endereço informado é o principal
-                                                  address:
-                                                    type: string
-                                                    description: |
-                                                      Deverá trazer toda a informação referente ao endereço da dependência informada: Tipo de logradouro + Nome do logradouro + Número do Logradouro (se não existir usar ' s/n') + complemento (se houver), como, p.ex.: 'R Diamatina, 59, bloco 35, fundos' 'Praça da Boa Vontade s/n'
-                                                    maxLength: 150
-                                                    pattern: \w*\W*
-                                                    example: 'Av Naburo Ykesaki, 1270'
-                                                  additionalInfo:
-                                                    type: string
-                                                    description: Alguns logradouros ainda necessitam ser especificados por meio de complemento
-                                                    maxLength: 30
-                                                    pattern: \w*\W*
-                                                    example: Fundos
-                                                  districtName:
-                                                    type: string
-                                                    description: |
-                                                      Bairro é uma comunidade ou região localizada em uma cidade ou município de acordo com as suas subdivisões geográficas. p.ex: 'Paraíso'
-                                                    maxLength: 50
-                                                    pattern: \w*\W*
-                                                    example: Centro
-                                                  townName:
-                                                    type: string
-                                                    description: |
-                                                      Localidade: O nome da localidade corresponde à designação da cidade ou município no qual o endereço está localizado. p.ex. 'São Paulo'
-                                                    maxLength: 50
-                                                    pattern: \w*\W*
-                                                    example: Marília
-                                                  ibgeTownCode:
-                                                    type: string
-                                                    description: Código IBGE do município
-                                                    pattern: '^(\d{7})$'
-                                                    maxLength: 7
-                                                    example: '3550308'
-                                                  countrySubDivision:
-                                                    type: string
-                                                    description: 'Enumeração referente a cada sigla da unidade da federação que identifica o estado ou o distrito federal, no qual o endereço está localizado. p.ex. ''AC''. São consideradas apenas as siglas para os estados brasileiros'
-                                                    enum:
-                                                      - AC
-                                                      - AL
-                                                      - AP
-                                                      - AM
-                                                      - BA
-                                                      - CE
-                                                      - DF
-                                                      - ES
-                                                      - GO
-                                                      - MA
-                                                      - MT
-                                                      - MS
-                                                      - MG
-                                                      - PA
-                                                      - PB
-                                                      - PR
-                                                      - PE
-                                                      - PI
-                                                      - RJ
-                                                      - RN
-                                                      - RS
-                                                      - RO
-                                                      - RR
-                                                      - SC
-                                                      - SP
-                                                      - SE
-                                                      - TO
-                                                    example: SP
-                                                  postCode:
-                                                    type: string
-                                                    description: Código de Endereçamento Postal
-                                                    pattern: '(\d{8}|^NA$)'
-                                                    maxLength: 8
-                                                    example: '17500001'
-                                                  country:
-                                                    type: string
-                                                    description: Nome do país
-                                                    maxLength: 80
-                                                    pattern: \w*\W*
-                                                    example: Brasil
-                                                  countryCode:
-                                                    type: string
-                                                    description: Código do país
-                                                    maxLength: 3
-                                                    example: BRA
-                                                  geographicCoordinates:
-                                                    type: object
-                                                    description: |
-                                                      Objeto agrupador das informações que compõem as Coordenadas geográficas: latitude e longitude
-                                                    properties:
-                                                      latitude:
-                                                        description: Informação da latitude referente a geolocalização informada.
-                                                        type: string
-                                                        pattern: '^-?\d{1,2}\.\d{1,9}$'
-                                                        maxLength: 13
-                                                        example: '-90.8365180'
-                                                      longitude:
-                                                        description: Informação da longitude referente a geolocalização informada.
-                                                        type: string
-                                                        pattern: '^-?\d{1,3}\.\d{1,8}$'
-                                                        maxLength: 13
-                                                        example: '-180.836519'
-                                              minItems: 1
-                                              description: Lista de endereços
-                                            phones:
-                                              type: array
-                                              items:
-                                                type: object
-                                                required:
-                                                  - isMain
-                                                  - type
-                                                  - countryCallingCode
-                                                  - areaCode
-                                                  - number
-                                                properties:
-                                                  isMain:
-                                                    type: boolean
-                                                    description: Indica se o telefone informado é o principal
-                                                    example: true
-                                                  type:
-                                                    type: string
-                                                    enum:
-                                                      - FIXO
-                                                      - MOVEL
-                                                      - OUTRO
-                                                    example: FIXO
-                                                    description: |
-                                                      Identificação do Tipo de telefone do cliente.
-                                                  additionalInfo:
-                                                    type: string
-                                                    description: Informação complementar relativa ao tipo de telefone selecionado. De preenchimento obrigatório quando selecionado o tipo `OUTRO`
-                                                    pattern: \w*\W*
-                                                    maxLength: 70
-                                                  countryCallingCode:
-                                                    type: string
-                                                    maxLength: 4
-                                                    pattern: '^\d{1,4}$|^NA$'
-                                                    example: '55'
-                                                    description: Número de DDI (Discagem Direta Internacional) para telefone de acesso ao Cliente - se houver
-                                                  areaCode:
-                                                    type: string
-                                                    example: '19'
-                                                    description: Número de DDD (Discagem Direta à Distância) do telefone do cliente - se houver
-                                                    enum:
-                                                      - '11'
-                                                      - '12'
-                                                      - '13'
-                                                      - '14'
-                                                      - '15'
-                                                      - '16'
-                                                      - '17'
-                                                      - '18'
-                                                      - '19'
-                                                      - '21'
-                                                      - '22'
-                                                      - '24'
-                                                      - '27'
-                                                      - '28'
-                                                      - '31'
-                                                      - '32'
-                                                      - '33'
-                                                      - '34'
-                                                      - '35'
-                                                      - '37'
-                                                      - '38'
-                                                      - '41'
-                                                      - '42'
-                                                      - '43'
-                                                      - '44'
-                                                      - '45'
-                                                      - '46'
-                                                      - '47'
-                                                      - '48'
-                                                      - '49'
-                                                      - '51'
-                                                      - '53'
-                                                      - '54'
-                                                      - '55'
-                                                      - '61'
-                                                      - '62'
-                                                      - '63'
-                                                      - '64'
-                                                      - '65'
-                                                      - '66'
-                                                      - '67'
-                                                      - '68'
-                                                      - '69'
-                                                      - '71'
-                                                      - '73'
-                                                      - '74'
-                                                      - '75'
-                                                      - '77'
-                                                      - '79'
-                                                      - '81'
-                                                      - '82'
-                                                      - '83'
-                                                      - '84'
-                                                      - '85'
-                                                      - '86'
-                                                      - '87'
-                                                      - '88'
-                                                      - '89'
-                                                      - '91'
-                                                      - '92'
-                                                      - '93'
-                                                      - '94'
-                                                      - '95'
-                                                      - '96'
-                                                      - '97'
-                                                      - '98'
-                                                      - '99'
-                                                  number:
-                                                    type: string
-                                                    maxLength: 11
-                                                    pattern: '^([0-9]{8,11})$'
-                                                    example: '29875132'
-                                                    description: Número de telefone do cliente
-                                                  phoneExtension:
-                                                    type: string
-                                                    maxLength: 5
-                                                    pattern: '^\d{1,5}$'
-                                                    description: Número do ramal. De preenchimento obrigatório se fizer parte da identificação do número do telefone informado
-                                              minItems: 1
-                                              description: Lista com telefones de contato
-                                            emails:
-                                              type: array
-                                              items:
-                                                type: object
-                                                required:
-                                                  - isMain
-                                                  - email
-                                                properties:
-                                                  isMain:
-                                                    type: boolean
-                                                    description: Indica se o email informado é o principal
-                                                    example: true
-                                                  email:
-                                                    type: string
-                                                    description: Endereço de email
-                                                    maxLength: 320
-                                                    pattern: \w*\W*
-                                                    example: karinafernandes-81@br.inter.net
-                                              minItems: 1
-                                              description: Lista e-mails de contato
-                            minItems: 1
-                            description: Companies traz uma lista de todas as instituições da Marca
-                  links:
-                    $ref: '#/paths/~1business-customers~1relationships/get/responses/200/content/application~1json/schema/properties/links'
-                  meta:
-                    $ref: '#/paths/~1business-customers~1relationships/get/responses/200/content/application~1json/schema/properties/meta'
-                example:
-                  data:
-                    brand:
-                      name: Organização A
-                      companies:
-                        - name: Empresa A
-                          cnpjNumber: '21128159000166'
-                          businessCustomers:
-                            identification:
-                              requestDateTime: '2020-07-21T08:30:00Z'
-                              updateDateTime: '2020-07-21T08:58:00Z'
-                              cnpjNumber: '50685362000135'
-                              companyName: Severino e Pedro Henrique Eletrônica Ltda
-                              incorporationDate: '2019-02-02'
-                              parties:
-                                - type: SOCIO
-                                  civilName: Elza Milena Stefany Teixeira
-                                  startDate: '2019-02-02'
-                                  shareholding: '0.51'
-                                  documentType: CPF
-                                  documentNumber: '73677831148'
-                                  documentCountry: BRA
-                              contacts:
-                                postalAddresses:
-                                  - isMain: true
-                                    address: 'Rua Ormando Chisto, 395'
-                                    additionalInfo: Loja B
-                                    districtName: São Judas Tadeu
-                                    townName: Colatina
-                                    ibgeTownCode: '3201506'
-                                    countrySubDivision: SP
-                                    postCode: '29700650'
-                                    country: Brasil
-                                    countryCode: BRA
-                                    geographicCoordinates:
-                                      latitude: '-90.8365180'
-                                      longitude: '-180.836519'
-                                phones:
-                                  - isMain: true
-                                    type: FIXO
-                                    additionalInfo: string
-                                    countryCallingCode: '55'
-                                    areaCode: '27'
-                                    number: '29875132'
-                                    phoneExtension: '932'
-                                emails:
-                                  - isMain: true
-                                    email: elzamilenastefanyteixeira-81@br.inter.net
-                  links:
-                    self: 'https://api.banco.com.br/open-banking/<api>/v1/<resource>'
-                    first: 'https://api.banco.com.br/open-banking/<api>/v1/<resource>'
-                    prev: string
-                    next: string
-                    last: 'https://api.banco.com.br/open-banking/<api>/v1/<resource>'
-                  meta:
-                    totalRecords: 1
-                    totalPages: 1
+                $ref: '#/components/schemas/ResponseBusinessCustomersIdentification'
         '400':
           $ref: '#/paths/~1business-customers~1relationships/get/responses/400'
         '401':
@@ -613,172 +80,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                required:
-                  - data
-                  - links
-                  - meta
-                properties:
-                  data:
-                    type: object
-                    required:
-                      - brand
-                    properties:
-                      brand:
-                        type: object
-                        description: Objeto que define a Organização controladora do grupo de instituições financeiras
-                        required:
-                          - name
-                          - companies
-                        properties:
-                          name:
-                            type: string
-                            pattern: \w*\W*
-                            maxLength: 80
-                            description: 'Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes'
-                            example: Organização A
-                          companies:
-                            type: array
-                            items:
-                              type: object
-                              required:
-                                - name
-                                - cnpjNumber
-                                - businessCustomers
-                              properties:
-                                name:
-                                  description: 'Nome da Instituição, pertencente à Marca, responsável pelo Cadastro.'
-                                  type: string
-                                  pattern: \w*\W*
-                                  maxLength: 80
-                                  example: Empresa da Organização A
-                                cnpjNumber:
-                                  description: 'Número completo do CNPJ da instituição responsável pelo Cadastro - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. Deve-se ter apenas os números do CNPJ, sem máscara'
-                                  type: string
-                                  pattern: '\d{14}|^NA$'
-                                  maxLength: 14
-                                  example: '50685362000135'
-                                businessCustomers:
-                                  type: object
-                                  description: Objeto que agrupa as informações Cadastrais do Cliente Pessoa jurídica
-                                  required:
-                                    - qualification
-                                  properties:
-                                    qualification:
-                                      type: object
-                                      description: 'Objeto que reúne as informações relativas ao processo de qualificação. Considera-se qualificação as informações que permitam as instituições apreciar, avaliar, caracterizar e classificar o cliente com a finalidade de conhecer o seu perfil de risco e sua capacidade econômico-financeira'
-                                      required:
-                                        - requestDateTime
-                                        - updateDateTime
-                                        - economicActivities
-                                        - informedRevenue
-                                        - informedPatrimony
-                                      properties:
-                                        requestDateTime:
-                                          type: string
-                                          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
-                                          description: 'Data e hora da consulta, conforme especificação RFC-3339, formato UTC.'
-                                          maxLength: 20
-                                          example: '2020-07-21T08:30:00Z'
-                                        updateDateTime:
-                                          type: string
-                                          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
-                                          description: 'Data e hora da atualização do bloco, conforme especificação RFC-3339'
-                                          maxLength: 20
-                                          example: '2020-07-21T08:30:00Z'
-                                        economicActivities:
-                                          type: array
-                                          items:
-                                            type: object
-                                            required:
-                                              - code
-                                              - isMain
-                                            properties:
-                                              code:
-                                                type: string
-                                                pattern: '^\d{7}$|^NA$'
-                                                maxLength: 7
-                                                description: |
-                                                  Traz o código do ramo da atividade principal da empresa consultada, segundo padrão CNAE (Classificação Nacional de Atividades Econômicas)
-                                              isMain:
-                                                type: boolean
-                                                description: Informa se é o principal ramo de atividade
-                                          minItems: 1
-                                          description: 'Lista dos demais códigos relativos às demais atividades econômicas da empresa, segundo padrão CNAE (Classificação Nacional de Atividades Econômicas). De preenchimento obrigatório, se houver'
-                                        informedRevenue:
-                                          type: object
-                                          description: Objeto que agrupa informações relativas ao faturamento da empresa informado
-                                          required:
-                                            - frequency
-                                            - year
-                                          properties:
-                                            frequency:
-                                              type: string
-                                              description: |
-                                                Traz a frequência ou período do faturamento informado. 
-                                                "O faturamento é calculado a partir de todos os benefícios que a empresa conseguiu com sua atividade econômica em um determinado período. Esses benefícios são os rendimentos ou ganhos da organização através de suas vendas ou serviços prestados".
-                                              enum:
-                                                - DIARIO
-                                                - SEMANAL
-                                                - QUINZENAL
-                                                - MENSAL
-                                                - BIMESTRAL
-                                                - TRIMESTRAL
-                                                - SEMESTRAL
-                                                - ANUAL
-                                            amount:
-                                              type: string
-                                              description: |
-                                                Valor do faturamento informado. Expresso em valor monetário com 2 casas decimais. 
-                                                "O faturamento corresponde à soma das vendas de produtos e/ou serviços em determinado período. Ou seja, é todo o dinheiro que entra no caixa da empresa, a partir da venda de produtos, mercadorias e serviços". 
-                                              maxLength: 12
-                                              pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
-                                            currency:
-                                              type: string
-                                              pattern: '^(\w{3}){1}$'
-                                              maxLength: 3
-                                              format: CurrencyString
-                                              description: 'Moeda referente ao valor da faturamento, segundo modelo ISO-4217.'
-                                              example: BRL
-                                            year:
-                                              type: string
-                                              pattern: '^\d{4}$'
-                                              maxLength: 4
-                                              description: 'Ano de referência do Faturamento, conforme especificação RFC-3339.'
-                                              example: '2014'
-                                        informedPatrimony:
-                                          type: object
-                                          description: Objeto que agrupa informações relativas ao patrimônio da empresa
-                                          required:
-                                            - amount
-                                            - year
-                                          properties:
-                                            amount:
-                                              type: string
-                                              description: |
-                                                Valor do patrimônio informado. Expresso em valor monetário com 2 casas decimais.
-                                                "Patrimônio é o conjunto de bens vinculado a uma pessoa ou a uma entidade".
-                                              maxLength: 12
-                                              pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
-                                            currency:
-                                              type: string
-                                              pattern: '^(\w{3}){1}$'
-                                              maxLength: 3
-                                              format: CurrencyString
-                                              description: 'Moeda referente ao valor do patrimônio, segundo modelo ISO-4217.'
-                                              example: BRL
-                                            year:
-                                              type: string
-                                              pattern: '^\d{4}$'
-                                              maxLength: 4
-                                              description: 'Ano do Patrimônio, conforme especificação RFC-3339.'
-                                              example: '2014'
-                            minItems: 1
-                            description: Companies traz uma lista de todas as instituições da Marca
-                  links:
-                    $ref: '#/paths/~1business-customers~1relationships/get/responses/200/content/application~1json/schema/properties/links'
-                  meta:
-                    $ref: '#/paths/~1business-customers~1relationships/get/responses/200/content/application~1json/schema/properties/meta'
+                $ref: '#/components/schemas/ResponseBusinessCustomersQualification'
         '400':
           $ref: '#/paths/~1business-customers~1relationships/get/responses/400'
         '401':
@@ -857,135 +159,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                required:
-                  - data
-                  - links
-                  - meta
-                properties:
-                  data:
-                    type: object
-                    required:
-                      - brand
-                    properties:
-                      brand:
-                        type: object
-                        description: Objeto que define a Organização controladora do grupo de instituições financeiras
-                        required:
-                          - name
-                          - companies
-                        properties:
-                          name:
-                            type: string
-                            pattern: \w*\W*
-                            maxLength: 80
-                            description: 'Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes'
-                            example: Organização A
-                          companies:
-                            type: array
-                            items:
-                              type: object
-                              required:
-                                - name
-                                - cnpjNumber
-                                - businessCustomers
-                              properties:
-                                name:
-                                  type: string
-                                  maxLength: 80
-                                  pattern: \w*\W*
-                                  description: Nome da marca selecionada pela Organização
-                                  example: Organização A
-                                cnpjNumber:
-                                  type: string
-                                  maxLength: 14
-                                  pattern: '\d{14}|^NA$'
-                                  description: Número completo do CNPJ da instituição responsável pelo Cadastro - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica.
-                                  example: '00000000000100'
-                                businessCustomers:
-                                  type: object
-                                  description: Conjunto de informações cadastrais do Cliente pessoa jurídica.
-                                  items:
-                                    type: object
-                                    required:
-                                      - financialRelation
-                                    properties:
-                                      financialRelation:
-                                        $ref: '#/paths/~1personal-customers~1relationships/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/properties/personalCustomers/properties/financialRelation'
-                            minItems: 1
-                            description: Companies traz uma lista de todas as instituições da Marca
-                  links:
-                    type: object
-                    description: Referências para outros recusos da API requisitada.
-                    required:
-                      - self
-                    properties:
-                      self:
-                        type: string
-                        format: URIString
-                        description: URI completo que gerou a resposta atual.
-                        example: 'https://api.banco.com.br/open-banking/<api>/v1/<resource>'
-                      first:
-                        type: string
-                        format: URIString
-                        description: URI da primeira página que originou essa lista de resultados. Restrição - Obrigatório quando não for a primeira página da resposta
-                        example: 'https://api.banco.com.br/open-banking/<api>/v1/<resource>'
-                      prev:
-                        type: string
-                        format: URIString
-                        description: "URI da página anterior dessa lista de resultados. Restrição - \tObrigatório quando não for a primeira página da resposta"
-                      next:
-                        type: string
-                        format: URIString
-                        description: URI da próxima página dessa lista de resultados. Restrição - Obrigatório quando não for a última página da resposta
-                      last:
-                        type: string
-                        format: URIString
-                        description: URI da última página dessa lista de resultados. Restrição - Obrigatório quando não for a última página da resposta
-                        example: 'https://api.banco.com.br/open-banking/<api>/v1/<resource>'
-                  meta:
-                    type: object
-                    description: Meta informações referente a API requisitada.
-                    properties:
-                      totalRecords:
-                        type: integer
-                        description: Número total de registros no resultado
-                        example: 1
-                      totalPages:
-                        type: integer
-                        description: Número total de páginas no resultado
-                        example: 1
-                    required:
-                      - totalRecords
-                      - totalPages
-                example:
-                  data:
-                    brand:
-                      name: Organização A
-                      companies:
-                        - cnpjNumber: '50685362000135'
-                          name: Empresa A1
-                          businessCustomers:
-                            financialRelation:
-                              - requestDateTime: '2020-07-21T08:30:00Z'
-                                updateDateTime: '2020-07-21T08:30:00Z'
-                                startDate: '2020-07-21'
-                                productServices:
-                                  - type: SEGURO
-                                procurators:
-                                  - type: PROCURADOR
-                                    cpfNumber: '00000000000'
-                                    civilName: string
-                                    socialName: string
-                  links:
-                    self: 'https://api.banco.com.br/open-banking/products-services/v1/<resource>'
-                    first: 'https://api.banco.com.br/open-banking/products-services/v1/<resource>'
-                    prev: string
-                    next: string
-                    last: 'https://api.banco.com.br/open-banking/products-services/v1/<resource>'
-                  meta:
-                    totalRecords: 1
-                    totalPages: 1
+                $ref: '#/components/schemas/ResponseBusinessCustomersFinancialRelation'
         '400':
           description: 'A requisição foi malformada, omitindo atributos obrigatórios, seja no payload ou através de atributos na URL.'
         '401':
@@ -1023,361 +197,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                required:
-                  - data
-                  - links
-                  - meta
-                properties:
-                  data:
-                    type: object
-                    required:
-                      - brand
-                    properties:
-                      brand:
-                        type: object
-                        description: Objeto que define a Organização controladora do grupo de instituições financeiras
-                        required:
-                          - name
-                          - companies
-                        properties:
-                          name:
-                            type: string
-                            pattern: \w*\W*
-                            maxLength: 80
-                            description: 'Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes'
-                            example: Organização A
-                          companies:
-                            type: array
-                            items:
-                              type: object
-                              required:
-                                - name
-                                - cnpjNumber
-                                - personalCustomers
-                              properties:
-                                name:
-                                  description: 'Nome da Instituição, pertencente à Marca, responsável pelo Cadastro.'
-                                  type: string
-                                  pattern: \w*\W*
-                                  maxLength: 80
-                                  example: Empresa da Organização A
-                                cnpjNumber:
-                                  description: 'Número completo do CNPJ da instituição responsável pelo Cadastro - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. Deve-se ter apenas os números do CNPJ, sem máscara'
-                                  type: string
-                                  pattern: '\d{14}|^NA$'
-                                  maxLength: 14
-                                  example: '50685362000135'
-                                personalCustomers:
-                                  type: object
-                                  description: Conjunto de informações Cadastrais do Cliente Pessoa natural
-                                  required:
-                                    - identification
-                                  properties:
-                                    identification:
-                                      type: object
-                                      description: Conjunto de informações relativas a Identificação ou seja a ação e o efeito de identificar de forma única a pessoa natural através de seus dados cadastrais.
-                                      required:
-                                        - requestDateTime
-                                        - updateDateTime
-                                        - documents
-                                        - otherDocuments
-                                        - nationality
-                                        - civilName
-                                        - filiation
-                                        - birthDate
-                                        - maritalStatusCode
-                                        - sex
-                                        - contacts
-                                      properties:
-                                        requestDateTime:
-                                          type: string
-                                          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
-                                          description: 'Data e hora da consulta, conforme especificação RFC-3339, formato UTC.'
-                                          format: DateTimeString
-                                          maxLength: 20
-                                          example: '2020-07-21T08:30:00Z'
-                                        updateDateTime:
-                                          type: string
-                                          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
-                                          description: 'Data e hora da atualização do bloco, conforme especificação RFC-3339'
-                                          format: DateTimeString
-                                          maxLength: 20
-                                          example: '2020-07-21T08:30:00Z'
-                                        documents:
-                                          type: object
-                                          description: Objeto agrupador de informações relativas a Documentos da pessoa natural
-                                          required:
-                                            - cpfNumber
-                                          properties:
-                                            cpfNumber:
-                                              type: string
-                                              pattern: '^\d{11}$|^NA$'
-                                              description: 'Número completo do CPF. O CPF é o Cadastro de Pessoa natural. Ele é um documento feito pela Receita Federal e serve para identificar os contribuintes. O CPF é uma numeração com 11 dígitos, que só mudam por decisão judicial. O documento é emitido pela receita federal'
-                                              maxLength: 11
-                                              example: '25872252137'
-                                            passportNumber:
-                                              type: string
-                                              maxLength: 20
-                                              pattern: \w*\W*
-                                              description: Número do Passaporte. Documento concedido aos viajantes por uma autoridade administrativa nacional a fim de certificar sua identidade perante autoridades estrangeiras. De preenchimento obrigatório. Aplicável somente à Pessoa natural residente no exterior desobrigada de inscrição no CPF.
-                                              example: '75253468744594820620'
-                                            passportCountry:
-                                              type: string
-                                              description: Pais de emissão do passaporte. Código do pais de acordo com o código “alpha3” do ISO-3166.
-                                              maxLength: 3
-                                              example: CAN
-                                            passportExpirationDate:
-                                              type: string
-                                              pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
-                                              maxLength: 10
-                                              description: 'Data vigência do Passaporte, conforme especificação RFC-3339.'
-                                              format: DateString
-                                              example: '2014-03-19'
-                                        otherDocuments:
-                                          type: array
-                                          items:
-                                            type: object
-                                            required:
-                                              - number
-                                            properties:
-                                              type:
-                                                type: string
-                                                enum:
-                                                  - CNH
-                                                  - RG
-                                                  - NIF
-                                                  - RNE
-                                                  - OUTROS
-                                                description: |
-                                                  Relação dos Códigos dos demais documentos pessoa natural.
-                                              typeAdditionalInfo:
-                                                type: string
-                                                maxLength: 70
-                                                pattern: \w*\W*
-                                                description: Campo livre de preenchimento obrigatório se selecionada a opção OUTROS tipos de documentos
-                                              number:
-                                                type: string
-                                                maxLength: 11
-                                                pattern: \w*\W*
-                                                description: Identificação/Número do documento informado
-                                              checkDigit:
-                                                type: string
-                                                maxLength: 2
-                                                pattern: \w*\W*
-                                                description: Dígito verificador do documento informado. De preenchimento obrigatório se o documento informado tiver dígito verificador
-                                              additionalInfo:
-                                                type: string
-                                                maxLength: 50
-                                                pattern: \w*\W*
-                                                description: |
-                                                  Campo livre, de preenchimento obrigatório quando o documento informado tiver informações complementares. p.ex. RG, este campo deve trazer: "SSP-SP' para RGs emitidos no estado de São Paulo - SP
-                                              expirationDate:
-                                                type: string
-                                                pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
-                                                format: DateString
-                                                maxLength: 10
-                                                description: 'Data de validade do documento informado, conforme especificação RFC-3339.'
-                                                example: '2014-03-19'
-                                          minItems: 1
-                                          description: Relação dos demais documentos
-                                        nationality:
-                                          type: object
-                                          description: Objeto que agrupa informações relativas à nacionalidade da Pessoa Natural
-                                          required:
-                                            - hasBrazilianNationality
-                                          properties:
-                                            hasBrazilianNationality:
-                                              type: boolean
-                                              description: Informa se o Cliente tem nacionalidade brasileira.
-                                              example: false
-                                            otherNationality:
-                                              type: object
-                                              description: Conjunto de informações específicas para cliente que possue nacionalidade diferente da brasileira
-                                              properties:
-                                                additionalInfo:
-                                                  type: string
-                                                  description: |
-                                                    Campo de preenchimento obrigatório caso o cliente não possua nacionalidade brasileira. Preencher indicando todas suas demais nacionalidades utilizando o código de pais de acordo com o código “alpha3” do ISO-3166.p.ex.'CAN'
-                                                  maxLength: 3
-                                                  example: CAN
-                                                complementaryDocuments:
-                                                  type: array
-                                                  description: Lista que traz relação de documentos complementares de pessoas com nacionalidade diferente de brasileira
-                                                  items:
-                                                    type: object
-                                                    properties:
-                                                      type:
-                                                        type: string
-                                                        maxLength: 10
-                                                        pattern: \w*\W*
-                                                        description: 'Tipo de documento. Campo livre, de preenchimento obrigatório quando a nacionalidade for diferente de brasileira. Informar tipo e número do documento, além da, vigência e demais informações complementares para se identificar o documento de pessoa estrangeira'
-                                                      number:
-                                                        type: string
-                                                        maxLength: 40
-                                                        pattern: \w*\W*
-                                                        description: 'Número de identificação do documento. Campo livre, de preenchimento obrigatório quando a nacionalidade for diferente de brasileira. Informar o número do documento e demais informações complementares para se identificar o documento de pessoa estrangeira'
-                                                        example: '423929299'
-                                                      expirationDate:
-                                                        type: string
-                                                        pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
-                                                        format: DateString
-                                                        maxLength: 10
-                                                        description: 'Data de validade do documento informado, conforme especificação RFC-3339.'
-                                                        example: '2014-03-19'
-                                        civilName:
-                                          type: string
-                                          description: 'Nome civil completo da pessoa natural (Direito fundamental da pessoa, o nome civil é aquele atribuído à pessoa natural desde o registro de seu nascimento, com o qual será identificada por toda a sua vida, bem como após a sua morte)'
-                                          maxLength: 70
-                                          pattern: \w*\W*
-                                          example: Juan Kaique Cláudio Fernandes
-                                        socialName:
-                                          type: string
-                                          description: 'Nome social da pessoa natural, se houver. (aquele pelo qual travestis e transexuais se reconhecem, bem como são identificados por sua comunidade e em seu meio social, conforme Decreto Nº 51.180, de 14 de janeiro de 2010)'
-                                          maxLength: 70
-                                          pattern: \w*\W*
-                                        filiation:
-                                          type: array
-                                          items:
-                                            type: object
-                                            required:
-                                              - type
-                                              - civilName
-                                            properties:
-                                              type:
-                                                type: string
-                                                description: |
-                                                  Tipo de filiação.
-                                                enum:
-                                                  - 1_FILIACAO
-                                                  - 2_FILIACAO
-                                                example: 1_FILIACAO
-                                              civilName:
-                                                type: string
-                                                description: 'Nome civil completo da pessoa relativa à filiação. (Direito fundamental da pessoa, o nome civil é aquele atribuído à pessoa natural desde o registro de seu nascimento, com o qual será identificada por toda a sua vida, bem como após a sua morte)'
-                                                maxLength: 70
-                                                pattern: \w*\W*
-                                              socialName:
-                                                type: string
-                                                description: 'Nome social da pessoa natural, se houver. (aquele pelo qual travestis e transexuais se reconhecem, bem como são identificados por sua comunidade e em seu meio social, conforme Decreto Nº 51.180, de 14 de janeiro de 2010)'
-                                                maxLength: 70
-                                                pattern: \w*\W*
-                                          minItems: 1
-                                          description: Lista que traz as informações relativas à Filiação da pessoa natural
-                                        birthDate:
-                                          type: string
-                                          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
-                                          format: DateString
-                                          maxLength: 10
-                                          description: 'Data de nascimento, conforme especificação RFC-3339'
-                                          example: '2014-03-19'
-                                        maritalStatusCode:
-                                          type: string
-                                          description: |
-                                            Estado civil do cliente. 
-                                          enum:
-                                            - SOLTEIRO
-                                            - CASADO
-                                            - VIUVO
-                                            - SEPARADO_JUDICIALMENTE
-                                            - DIVORCIADO
-                                            - UNIAO_ESTAVEL
-                                            - OUTROS
-                                          example: SOLTEIRO
-                                        maritalStatusAdditionalInfo:
-                                          type: string
-                                          description: 'Campo livre para complementar a informação relativa ao estado civil, quando selecionada a opção `OUTROS`'
-                                          pattern: \w*\W*
-                                          maxLength: 50
-                                        sex:
-                                          type: string
-                                          description: |
-                                            “Conjunto de características anatomofisiológicas que distinguem o homem e a mulher: Sexo masculino; sexo feminino”. No caso de não ser feminino nem masculino é classificado como outros.
-                                          enum:
-                                            - FEMININO
-                                            - MASCULINO
-                                            - OUTRO
-                                          example: FEMININO
-                                        contacts:
-                                          $ref: '#/paths/~1business-customers~1identifications/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/properties/businessCustomers/properties/identification/properties/contacts'
-                            minItems: 1
-                            description: Companies traz uma lista de todas as instituições da Marca
-                  links:
-                    $ref: '#/paths/~1business-customers~1relationships/get/responses/200/content/application~1json/schema/properties/links'
-                  meta:
-                    $ref: '#/paths/~1business-customers~1relationships/get/responses/200/content/application~1json/schema/properties/meta'
-                example:
-                  data:
-                    brand:
-                      name: Organização D
-                      companies:
-                        - name: Empresa D
-                          cnpjNumber: '68005525000153'
-                          personalCustomers:
-                            identification:
-                              requestDateTime: '2021-01-28T08:30:00Z'
-                              updateDateTime: '2021-01-28T08:30:00Z'
-                              documents:
-                                cpfNumber: NA
-                                passportNumber: '79416097'
-                                passportCountry: CAN
-                                passportExpirationDate: '2024-04-31'
-                              otherDocuments:
-                                - type: RNE
-                                  number: '15291908'
-                                  checkDigit: P
-                                  expirationDate: '2025-03-19'
-                              nationality:
-                                hasBrazilianNationality: false
-                                otherNationality:
-                                  additionalInfo: CAN
-                                  complementaryDocuments:
-                                    - type: SOCIAL SEC
-                                      number: '423929299'
-                                      expirationDate: '2030-03-19'
-                              civilName: Juan Kaique Cláudio Fernandes
-                              socialName: Karina
-                              filiation:
-                                - type: 1_FILIACAO
-                                  civilName: Luís Fernando Caio Fernandes
-                                - type: 2_FILIACAO
-                                  civilName: Yolanda Penteado
-                              birthDate: '1958-05-02'
-                              maritalStatusCode: OUTROS
-                              maritalStatusAdditionalInfo: SEPARADO_EXTRAJUDICIALMENTE
-                              sex: MASCULINO
-                              contacts:
-                                postalAddresses:
-                                  - isMain: true
-                                    address: 'Rua Ormando Chisto, 395'
-                                    districtName: São Judas Tadeu
-                                    townName: Vitória
-                                    ibgeTownCode: '3201506'
-                                    countrySubDivision: ES
-                                    postCode: '29700650'
-                                    country: Brasil
-                                    countryCode: BRA
-                                    geographicCoordinates:
-                                      latitude: '-19.5498025'
-                                      longitude: '-40.6272813'
-                                phones:
-                                  - isMain: true
-                                    type: FIXO
-                                    countryCallingCode: '55'
-                                    areaCode: '27'
-                                    number: '29875132'
-                                emails:
-                                  - isMain: true
-                                    email: karinafernandes-81@br.inter.net
-                  links:
-                    self: 'https://api.banco.com.br/open-banking/<api>/v1/<resource>'
-                    first: 'https://api.banco.com.br/open-banking/<api>/v1/<resource>'
-                    prev: string
-                    next: string
-                    last: 'https://api.banco.com.br/open-banking/<api>/v1/<resource>'
-                  meta:
-                    totalRecords: 1
-                    totalPages: 1
+                $ref: '#/components/schemas/ResponsePersonalCustomersIdentification'
         '400':
           $ref: '#/paths/~1business-customers~1relationships/get/responses/400'
         '401':
@@ -1415,166 +235,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                required:
-                  - data
-                  - links
-                  - meta
-                properties:
-                  data:
-                    type: object
-                    required:
-                      - brand
-                    properties:
-                      brand:
-                        type: object
-                        description: Objeto que define a Organização controladora do grupo de instituições financeiras
-                        required:
-                          - name
-                          - companies
-                        properties:
-                          name:
-                            type: string
-                            pattern: \w*\W*
-                            maxLength: 80
-                            description: 'Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes'
-                            example: Organização A
-                          companies:
-                            type: array
-                            items:
-                              type: object
-                              required:
-                                - name
-                                - cnpjNumber
-                                - personalCustomers
-                              properties:
-                                name:
-                                  description: 'Nome da Instituição, pertencente à Marca, responsável pelo Cadastro.'
-                                  type: string
-                                  pattern: \w*\W*
-                                  maxLength: 80
-                                  example: Empresa da Organização A
-                                cnpjNumber:
-                                  description: 'Número completo do CNPJ da instituição responsável pelo Cadastro - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. Deve-se ter apenas os números do CNPJ, sem máscara'
-                                  type: string
-                                  pattern: '\d{14}|^NA$'
-                                  maxLength: 14
-                                  example: '50685362000135'
-                                personalCustomers:
-                                  type: object
-                                  description: Conjunto de informações Cadastrais do Cliente Pessoa natural
-                                  required:
-                                    - qualification
-                                  properties:
-                                    qualification:
-                                      type: object
-                                      description: 'Conjunto de informações relativas ao processo de qualificação. Considera-se qualificação as informações que permitam as instituições apreciar, avaliar, caracterizar e classificar o cliente com a finalidade de conhecer o seu perfil de risco e sua capacidade econômico-financeira'
-                                      required:
-                                        - requestDateTime
-                                        - updateDateTime
-                                        - informedIncome
-                                        - informedPatrimony
-                                        - occupationCode
-                                        - occupationDescription
-                                      properties:
-                                        requestDateTime:
-                                          type: string
-                                          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
-                                          description: 'Data e hora da consulta, conforme especificação RFC-3339, formato UTC.'
-                                          maxLength: 20
-                                          example: '2020-07-21T08:30:00Z'
-                                        updateDateTime:
-                                          type: string
-                                          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
-                                          description: 'Data e hora da atualização do bloco, conforme especificação RFC-3339'
-                                          maxLength: 20
-                                          example: '2020-07-21T08:30:00Z'
-                                        informedIncome:
-                                          type: object
-                                          description: Conjunto de informações referentes à renda total informada
-                                          required:
-                                            - frequency
-                                            - date
-                                          properties:
-                                            frequency:
-                                              type: string
-                                              description: |
-                                                Traz a frequência ou período da renda informada.
-                                              enum:
-                                                - DIARIA
-                                                - SEMANAL
-                                                - QUINZENAL
-                                                - MENSAL
-                                                - BIMESTRAL
-                                                - TRIMESTRAL
-                                                - SEMESTRAL
-                                                - ANUAL
-                                            amount:
-                                              type: string
-                                              description: |
-                                                Valor total da renda informada. Expresso em valor monetário com 2 casas decimais.
-                                                "Renda primária indica os montantes a pagar ou a receber em troca do uso temporário de recursos financeiros, trabalho ou ativos não financeiros não produzidos, a saber, remuneração de trabalhadores, renda de investimentos e demais rendas primárias. Fazem parte da primeira a remuneração do trabalho assalariado (salários e ordenados); da segunda, renda de investimento direto, renda de investimento em carteira, renda de outros investimentos e renda de ativos de reserva; e da terceira, tributos sobre a produção e importação, subsídios e aluguéis". Fonte: Banco Central do Brasil – Departamento Econômico
-                                              maxLength: 12
-                                              pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
-                                            currency:
-                                              type: string
-                                              pattern: '^(\w{3}){1}$'
-                                              maxLength: 3
-                                              format: CurrencyString
-                                              description: 'Moeda referente ao valor da renda, segundo modelo ISO-4217.'
-                                              example: BRL
-                                            date:
-                                              type: string
-                                              pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
-                                              maxLength: 10
-                                              format: DateString
-                                              description: 'Data da renda, conforme especificação RFC-3339.'
-                                              example: '2014-03-19'
-                                        informedPatrimony:
-                                          type: object
-                                          description: Conjunto de informações referentes ao patrimônio informado
-                                          required:
-                                            - amount
-                                          properties:
-                                            amount:
-                                              type: string
-                                              description: |
-                                                Valor do patrimônio informado. Expresso em valor monetário com 2 casas decimais.
-                                                "Patrimônio é o conjunto de bens vinculado a uma pessoa ou a uma entidade".
-                                              maxLength: 12
-                                              pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
-                                            currency:
-                                              type: string
-                                              pattern: '^(\w{3}){1}$'
-                                              maxLength: 3
-                                              format: CurrencyString
-                                              description: 'Moeda referente ao valor do patrimônio, segundo modelo ISO-4217.'
-                                              example: BRL
-                                            year:
-                                              type: string
-                                              pattern: '^\d{4}$'
-                                              maxLength: 4
-                                              description: 'Ano de referência do Patrimônio, conforme especificação RFC-3339.'
-                                              example: '2014'
-                                        occupationCode:
-                                          type: string
-                                          description: |
-                                            Traz a relação dos códigos relativos à ocupação.
-                                          enum:
-                                            - RECEITA_FEDERAL
-                                            - CBO
-                                            - OUTRO
-                                        occupationDescription:
-                                          type: string
-                                          pattern: \w*\W*
-                                          maxLength: 100
-                                          description: 'Campo livre, de preenchimento obrigatório. Traz o código da ocupação ou o descritivo da ocupação, se selecionada a opção ''OUTRO'''
-                            minItems: 1
-                            description: Companies traz uma lista de todas as instituições da Marca
-                  links:
-                    $ref: '#/paths/~1business-customers~1relationships/get/responses/200/content/application~1json/schema/properties/links'
-                  meta:
-                    $ref: '#/paths/~1business-customers~1relationships/get/responses/200/content/application~1json/schema/properties/meta'
+                $ref: '#/components/schemas/ResponsePersonalCustomersQualification'
         '400':
           $ref: '#/paths/~1business-customers~1relationships/get/responses/400'
         '401':
@@ -1612,150 +273,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                required:
-                  - data
-                  - links
-                  - meta
-                properties:
-                  data:
-                    type: object
-                    required:
-                      - brand
-                    properties:
-                      brand:
-                        type: object
-                        description: Objeto que define a Organização controladora do grupo de instituições financeiras
-                        required:
-                          - name
-                          - companies
-                        properties:
-                          name:
-                            type: string
-                            pattern: \w*\W*
-                            maxLength: 80
-                            description: 'Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes'
-                            example: Organização A
-                          companies:
-                            type: array
-                            items:
-                              type: object
-                              required:
-                                - name
-                                - cnpjNumber
-                                - personalCustomers
-                              properties:
-                                name:
-                                  type: string
-                                  maxLength: 80
-                                  pattern: \w*\W*
-                                  description: Nome da marca selecionada pela Organização
-                                  example: Organização A
-                                cnpjNumber:
-                                  type: string
-                                  maxLength: 14
-                                  pattern: '\d{14}|^NA$'
-                                  description: Número completo do CNPJ da instituição responsável pelo Cadastro - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica.
-                                  example: '00000000000100'
-                                personalCustomers:
-                                  type: object
-                                  description: Conjunto de informações Cadastrais do Cliente Pessoa natural
-                                  required:
-                                    - financialRelation
-                                  properties:
-                                    financialRelation:
-                                      type: object
-                                      description: 'Objeto que reúne as informações relativas ao processo de Relacionamento. Considera-se relacionamento as informações que permitam conhecer desde quando a pessoa consultada é cliente da instituição, bem como um indicador dos produtos e serviços que ela consome atualmente e seus representantes'
-                                      required:
-                                        - requestDateTime
-                                        - updateDateTime
-                                        - startDate
-                                        - serviceType
-                                        - procurators
-                                      properties:
-                                        requestDateTime:
-                                          type: string
-                                          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
-                                          description: 'Data e hora da consulta, conforme especificação RFC-3339, formato UTC.'
-                                          maxLength: 20
-                                          example: '2020-07-21T08:30:00Z'
-                                        updateDateTime:
-                                          type: string
-                                          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
-                                          description: 'Data e hora da atualização do bloco de Relacionamento, conforme especificação RFC-3339, formato UTC.'
-                                          maxLength: 20
-                                          example: '2020-07-21T08:30:00Z'
-                                        startDate:
-                                          type: string
-                                          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
-                                          description: Data de início de relacionamento com a Instituição Financeira. Deve trazer o menor valor entre a informação reportada ao BACEN pelo DOC 3040 e CCS.
-                                          example: '2020-07-21'
-                                          maxLength: 10
-                                        productsServices:
-                                          type: array
-                                          items:
-                                            type: object
-                                            required:
-                                              - type
-                                            properties:
-                                              type:
-                                                type: string
-                                                enum:
-                                                  - CONTA_DEPOSITO_A_VISTA
-                                                  - CONTA_POUPANCA
-                                                  - CONTA_PAGAMENTO_PRE_PAGA
-                                                  - CONTA_CREDITO
-                                                  - OPERACAO_CREDITO
-                                                  - SEGURO
-                                                  - PREVIDENCIA
-                                                  - INVESTIMENTO
-                                                  - OPERACOES_CAMBIO
-                                                  - CONTA_SALARIO
-                                                  - CREDENCIAMENTO
-                                                description: |
-                                                  Relação dos produtos e serviços com contrato vigente.
-                                                example: SEGURO
-                                          minItems: 1
-                                          maxItems: 14
-                                          description: Lista de produtos e serviços com contratos vigentes
-                                        procurators:
-                                          type: array
-                                          items:
-                                            type: object
-                                            properties:
-                                              type:
-                                                type: string
-                                                enum:
-                                                  - REPRESENTANTE_LOCAL
-                                                  - PROCURADOR
-                                                description: |
-                                                  Tipo de representante.
-                                                  Representante legal - Nome Civil completo da Pessoa Natural que represente uma entidade ou uma empresa e é nomeado em seu ato constitutivo, ou seja, no contrato social ou estatuto social.
-                                                  Procurador - é qualquer pessoa que represente a Pessoa Natural em algum negócio, mediante autorização escrita do mesmo.
-                                                example: PROCURADOR
-                                              cpfNumber:
-                                                type: string
-                                                pattern: '^\d{11}$'
-                                                description: 'Número completo do CPF. O CPF é o Cadastro de Pessoa natural. Ele é um documento feito pela Receita Federal e serve para identificar os contribuintes. O CPF é uma numeração com 11 dígitos, que só mudam por decisão judicial. O documento é emitido pela receita federal'
-                                                example: '00000000000'
-                                                maxLength: 11
-                                              civilName:
-                                                type: string
-                                                pattern: \w*\W*
-                                                description: 'Nome civil completo da pessoa natural. (Direito fundamental da pessoa, o nome civil é aquele atribuído à pessoa natural desde o registro de seu nascimento, com o qual será identificada por toda a sua vida, bem como após a sua morte)'
-                                                maxLength: 70
-                                              socialName:
-                                                type: string
-                                                pattern: \w*\W*
-                                                description: 'Nome social da pessoa natural, se houver. (aquele pelo qual travestis e transexuais se reconhecem, bem como são identificados por sua comunidade e em seu meio social, conforme Decreto Nº 51.180, de 14 de janeiro de 2010)'
-                                                maxLength: 70
-                                          description: Lista dos representantes. De preenchimento obrigatório se houver representante.
-                            minItems: 1
-                            description: Companies traz uma lista de todas as instituições da Marca
-                  links:
-                    $ref: '#/paths/~1business-customers~1relationships/get/responses/200/content/application~1json/schema/properties/links'
-                  meta:
-                    $ref: '#/paths/~1business-customers~1relationships/get/responses/200/content/application~1json/schema/properties/meta'
+                $ref: '#/components/schemas/ResponsePersonalCustomersFinancialRelation'
         '400':
           $ref: '#/paths/~1business-customers~1relationships/get/responses/400'
         '401':
@@ -1772,3 +290,1499 @@ paths:
           $ref: '#/paths/~1business-customers~1relationships/get/responses/429'
         '500':
           $ref: '#/paths/~1business-customers~1relationships/get/responses/500'
+components:
+  schemas:
+    ResponseBusinessCustomersFinancialRelation:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          type: object
+          required:
+            - brand
+          properties:
+            brand:
+              type: object
+              description: Objeto que define a Organização controladora do grupo de instituições financeiras
+              required:
+                - name
+                - companies
+              properties:
+                name:
+                  type: string
+                  pattern: \w*\W*
+                  maxLength: 80
+                  description: 'Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes'
+                  example: Organização A
+                companies:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - name
+                      - cnpjNumber
+                      - businessCustomers
+                    properties:
+                      name:
+                        type: string
+                        maxLength: 80
+                        pattern: \w*\W*
+                        description: Nome da marca selecionada pela Organização
+                        example: Organização A
+                      cnpjNumber:
+                        type: string
+                        maxLength: 14
+                        pattern: '\d{14}|^NA$'
+                        description: Número completo do CNPJ da instituição responsável pelo Cadastro - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica.
+                        example: '00000000000100'
+                      businessCustomers:
+                        type: object
+                        description: Conjunto de informações cadastrais do Cliente pessoa jurídica.
+                        items:
+                          type: object
+                          required:
+                            - financialRelation
+                          properties:
+                            financialRelation:
+                              $ref: '#/paths/~1personal-customers~1relationships/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/properties/personalCustomers/properties/financialRelation'
+                  minItems: 1
+                  description: Companies traz uma lista de todas as instituições da Marca
+        links:
+          $ref: '#/components/schemas/ResponseBusinessCustomersQualification/properties/links'
+        meta:
+          $ref: '#/components/schemas/ResponseBusinessCustomersQualification/properties/meta'
+      example:
+        data:
+          brand:
+            name: Organização A
+            companies:
+              - cnpjNumber: '50685362000135'
+                name: Empresa A1
+                businessCustomers:
+                  financialRelation:
+                    - requestDateTime: '2020-07-21T08:30:00Z'
+                      updateDateTime: '2020-07-21T08:30:00Z'
+                      startDate: '2020-07-21'
+                      productServices:
+                        - type: SEGURO
+                      procurators:
+                        - type: PROCURADOR
+                          cpfNumber: '00000000000'
+                          civilName: string
+                          socialName: string
+        links:
+          self: 'https://api.banco.com.br/open-banking/products-services/v1/<resource>'
+          first: 'https://api.banco.com.br/open-banking/products-services/v1/<resource>'
+          prev: string
+          next: string
+          last: 'https://api.banco.com.br/open-banking/products-services/v1/<resource>'
+        meta:
+          totalRecords: 1
+          totalPages: 1
+    ResponseBusinessCustomersIdentification:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          type: object
+          required:
+            - brand
+          properties:
+            brand:
+              type: object
+              description: Objeto que define a Organização controladora do grupo de instituições financeiras
+              required:
+                - name
+                - companies
+              properties:
+                name:
+                  type: string
+                  pattern: \w*\W*
+                  maxLength: 80
+                  description: 'Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes'
+                  example: Organização A
+                companies:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - name
+                      - cnpjNumber
+                      - businessCustomers
+                    properties:
+                      name:
+                        description: 'Nome da Instituição, pertencente à Marca, responsável pelo Cadastro.'
+                        type: string
+                        pattern: \w*\W*
+                        maxLength: 80
+                        example: Empresa da Organização A
+                      cnpjNumber:
+                        description: 'Número completo do CNPJ da instituição responsável pelo Cadastro - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. Deve-se ter apenas os números do CNPJ, sem máscara'
+                        type: string
+                        pattern: '\d{14}|^NA$'
+                        maxLength: 14
+                        example: '50685362000135'
+                      businessCustomers:
+                        type: object
+                        description: Conjunto de informações Cadastrais do Cliente Pessoa jurídica
+                        required:
+                          - identification
+                        properties:
+                          identification:
+                            type: object
+                            description: Conjunto de informações relativas a Identificação ou seja a ação e o efeito de identificar de forma única a pessoa jurídica através de seus dados cadastrais
+                            required:
+                              - requestDateTime
+                              - updateDateTime
+                              - cnpjNumber
+                              - companyName
+                              - parties
+                              - contacts
+                            properties:
+                              requestDateTime:
+                                type: string
+                                pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
+                                description: 'Data e hora da consulta, conforme especificação RFC-3339, formato UTC.'
+                                maxLength: 20
+                                example: '2020-07-21T08:30:00Z'
+                              updateDateTime:
+                                type: string
+                                pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
+                                description: 'Data e hora da atualização do bloco, conforme especificação RFC-3339'
+                                maxLength: 20
+                                example: '2020-07-21T08:30:00Z'
+                              cnpjNumber:
+                                description: 'Número completo do CNPJ da instituição responsável pelo Cadastro - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. Deve-se ter apenas os números do CNPJ, sem máscara'
+                                type: string
+                                pattern: '^(\d{14})$|^NA$'
+                                maxLength: 14
+                                example: '50685362000135'
+                              otherDocuments:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    type:
+                                      type: string
+                                      maxLength: 20
+                                      pattern: \w*\W*
+                                      description: 'Tipo do outro documento informado. De preenchimento obrigatório, para a Pessoa jurídica com domicílio ou sede no exterior, desobrigada de inscrição no CNPJ'
+                                    number:
+                                      type: string
+                                      maxLength: 20
+                                      pattern: \w*\W*
+                                      description: 'Número do outro documento. De preenchimento obrigatório, para a Pessoa jurídica com domicílio ou sede no exterior, desobrigada de inscrição no CNPJ'
+                                    country:
+                                      type: string
+                                      description: Campo de preenchimento obrigatório caso o cliente não possua nacionalidade brasileira. Preencher utilizando o código de pais de acordo com o código “alpha3” do ISO-3166.
+                                      maxLength: 3
+                                      example: CAN
+                                    expirationDate:
+                                      type: string
+                                      pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
+                                      format: DateString
+                                      maxLength: 10
+                                      description: 'Data de validade do documento informado, conforme especificação RFC-3339.'
+                                      example: '2014-03-19'
+                                minItems: 1
+                                description: Relação dos demais documentos
+                              companyName:
+                                type: string
+                                maxLength: 70
+                                pattern: \w*\W*
+                                description: Razão social da empresa consultada é o termo registrado sob o qual uma pessoa jurídica (PJ) se individualiza e exerce suas atividades. Também pode ser chamada por denominação social ou firma empresarial
+                              tradeName:
+                                type: string
+                                maxLength: 70
+                                pattern: \w*\W*
+                                description: 'Nome fantasia da pessoa jurídica, se houver. (É o nome popular da empresa, utilizado para divulgação da empresa e melhor fixação com o público). De preenchimento obrigatório se houver'
+                              incorporationDate:
+                                type: string
+                                pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
+                                format: DateString
+                                maxLength: 10
+                                description: 'Data de constituição da empresa, conforme especificação RFC-3339.'
+                                example: '2014-03-19'
+                              parties:
+                                type: array
+                                items:
+                                  type: object
+                                  description: Objeto relativo às informações de composição da participação societária
+                                  required:
+                                    - type
+                                    - civilName
+                                    - shareholding
+                                    - documentType
+                                    - documentNumber
+                                  properties:
+                                    type:
+                                      type: string
+                                      description: |
+                                        Indica o perfil de atuação na empresa. Vide Enum
+                                        O administrador é o responsável por desempenhar todas as funções administrativas da empresa. É ele quem conduz o dia a dia do negócio, assinando documentos, respondendo legalmente pela sociedade, realizando empréstimos e outras ações gerenciais. Apesar de estar na linha de frente da empresa, ele é denominado sócio por também possuir sua parcela de participação no Capital Social.
+                                        Sócio não tem qualquer envolvimento nas atividades administrativas da sociedade.
+                                      enum:
+                                        - SOCIO
+                                        - ADMINISTRADOR
+                                    civilName:
+                                      type: string
+                                      description: 'Nome civil completo da pessoa natural (Direito fundamental da pessoa, o nome civil é aquele atribuído à pessoa natural desde o registro de seu nascimento, com o qual será identificada por toda a sua vida, bem como após a sua morte)'
+                                      maxLength: 70
+                                      pattern: \w*\W*
+                                      example: Juan Kaique Cláudio Fernandes
+                                    socialName:
+                                      type: string
+                                      description: 'Nome social da pessoa natural, se houver. (aquele pelo qual travestis e transexuais se reconhecem, bem como são identificados por sua comunidade e em seu meio social, conforme Decreto Nº 51.180, de 14 de janeiro de 2010)'
+                                      maxLength: 70
+                                      pattern: \w*\W*
+                                      example: Karina
+                                    startDate:
+                                      type: string
+                                      maxLength: 10
+                                      pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$|^NA$'
+                                      format: DateString
+                                      description: 'Data de início da participação, conforme especificação RFC-3339.'
+                                    shareholding:
+                                      type: string
+                                      maxLength: 4
+                                      pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
+                                      description: |
+                                        Percentual de participação societária. Só deve ser informada se igual ou superior a 25%. Ex: 0.25 (O valor ao lado representa 25%. O valor '1 'representa 100%)
+                                        A apuração pode acontecer com até 2 casas decimais.O preenchimento deve respeitar as 2 casas decimais, mesmo que venham preenchidas com zeros
+                                    documentType:
+                                      type: string
+                                      enum:
+                                        - CPF
+                                        - PASSAPORTE
+                                        - OUTRO_DOCUMENTO_VIAGEM
+                                        - CNPJ
+                                      description: |
+                                        Tipo do documento informado. 
+                                    documentNumber:
+                                      type: string
+                                      maxLength: 20
+                                      pattern: \w*\W*
+                                      description: Número do documento informado. Campo Texto Livre para preencher número e dígito do documento se houver
+                                    documentAdditionalInfo:
+                                      type: string
+                                      maxLength: 100
+                                      pattern: \w*\W*
+                                      description: 'Campo livre, de preenchimento obrigatório quando o documento informado tiver informações complementares relevantes para a sua identificação'
+                                    documentCountry:
+                                      type: string
+                                      description: País de emissão do documento. Código do pais de acordo com o código “alpha3” do ISO-3166.
+                                      maxLength: 3
+                                      example: CAN
+                                    documentExpirationDate:
+                                      type: string
+                                      pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
+                                      format: DateString
+                                      maxLength: 10
+                                      description: 'Data de validade do documento informado, conforme especificação RFC-3339.'
+                                      example: '2014-03-19'
+                                minItems: 1
+                                description: |
+                                  Lista relativa às informações das partes envolvidas, como: sócio e /ou administrador
+                              contacts:
+                                type: object
+                                description: Conjunto de informações referentes às formas para contatar o cliente.
+                                required:
+                                  - postalAddresses
+                                  - phones
+                                  - emails
+                                properties:
+                                  postalAddresses:
+                                    type: array
+                                    items:
+                                      type: object
+                                      required:
+                                        - isMain
+                                        - address
+                                        - townName
+                                        - countrySubDivision
+                                        - postCode
+                                        - country
+                                        - countryCode
+                                      properties:
+                                        isMain:
+                                          type: boolean
+                                          description: Indica se o endereço informado é o principal
+                                        address:
+                                          type: string
+                                          description: |
+                                            Deverá trazer toda a informação referente ao endereço da dependência informada: Tipo de logradouro + Nome do logradouro + Número do Logradouro (se não existir usar ' s/n') + complemento (se houver), como, p.ex.: 'R Diamatina, 59, bloco 35, fundos' 'Praça da Boa Vontade s/n'
+                                          maxLength: 150
+                                          pattern: \w*\W*
+                                          example: 'Av Naburo Ykesaki, 1270'
+                                        additionalInfo:
+                                          type: string
+                                          description: Alguns logradouros ainda necessitam ser especificados por meio de complemento
+                                          maxLength: 30
+                                          pattern: \w*\W*
+                                          example: Fundos
+                                        districtName:
+                                          type: string
+                                          description: |
+                                            Bairro é uma comunidade ou região localizada em uma cidade ou município de acordo com as suas subdivisões geográficas. p.ex: 'Paraíso'
+                                          maxLength: 50
+                                          pattern: \w*\W*
+                                          example: Centro
+                                        townName:
+                                          type: string
+                                          description: |
+                                            Localidade: O nome da localidade corresponde à designação da cidade ou município no qual o endereço está localizado. p.ex. 'São Paulo'
+                                          maxLength: 50
+                                          pattern: \w*\W*
+                                          example: Marília
+                                        ibgeTownCode:
+                                          type: string
+                                          description: Código IBGE do município
+                                          pattern: '^(\d{7})$'
+                                          maxLength: 7
+                                          example: '3550308'
+                                        countrySubDivision:
+                                          type: string
+                                          description: 'Enumeração referente a cada sigla da unidade da federação que identifica o estado ou o distrito federal, no qual o endereço está localizado. p.ex. ''AC''. São consideradas apenas as siglas para os estados brasileiros'
+                                          enum:
+                                            - AC
+                                            - AL
+                                            - AP
+                                            - AM
+                                            - BA
+                                            - CE
+                                            - DF
+                                            - ES
+                                            - GO
+                                            - MA
+                                            - MT
+                                            - MS
+                                            - MG
+                                            - PA
+                                            - PB
+                                            - PR
+                                            - PE
+                                            - PI
+                                            - RJ
+                                            - RN
+                                            - RS
+                                            - RO
+                                            - RR
+                                            - SC
+                                            - SP
+                                            - SE
+                                            - TO
+                                          example: SP
+                                        postCode:
+                                          type: string
+                                          description: Código de Endereçamento Postal
+                                          pattern: '(\d{8}|^NA$)'
+                                          maxLength: 8
+                                          example: '17500001'
+                                        country:
+                                          type: string
+                                          description: Nome do país
+                                          maxLength: 80
+                                          pattern: \w*\W*
+                                          example: Brasil
+                                        countryCode:
+                                          type: string
+                                          description: Código do país
+                                          maxLength: 3
+                                          example: BRA
+                                        geographicCoordinates:
+                                          type: object
+                                          description: |
+                                            Objeto agrupador das informações que compõem as Coordenadas geográficas: latitude e longitude
+                                          properties:
+                                            latitude:
+                                              description: Informação da latitude referente a geolocalização informada.
+                                              type: string
+                                              pattern: '^-?\d{1,2}\.\d{1,9}$'
+                                              maxLength: 13
+                                              example: '-90.8365180'
+                                            longitude:
+                                              description: Informação da longitude referente a geolocalização informada.
+                                              type: string
+                                              pattern: '^-?\d{1,3}\.\d{1,8}$'
+                                              maxLength: 13
+                                              example: '-180.836519'
+                                    minItems: 1
+                                    description: Lista de endereços
+                                  phones:
+                                    type: array
+                                    items:
+                                      type: object
+                                      required:
+                                        - isMain
+                                        - type
+                                        - countryCallingCode
+                                        - areaCode
+                                        - number
+                                      properties:
+                                        isMain:
+                                          type: boolean
+                                          description: Indica se o telefone informado é o principal
+                                          example: true
+                                        type:
+                                          type: string
+                                          enum:
+                                            - FIXO
+                                            - MOVEL
+                                            - OUTRO
+                                          example: FIXO
+                                          description: |
+                                            Identificação do Tipo de telefone do cliente.
+                                        additionalInfo:
+                                          type: string
+                                          description: Informação complementar relativa ao tipo de telefone selecionado. De preenchimento obrigatório quando selecionado o tipo `OUTRO`
+                                          pattern: \w*\W*
+                                          maxLength: 70
+                                        countryCallingCode:
+                                          type: string
+                                          maxLength: 4
+                                          pattern: '^\d{1,4}$|^NA$'
+                                          example: '55'
+                                          description: Número de DDI (Discagem Direta Internacional) para telefone de acesso ao Cliente - se houver
+                                        areaCode:
+                                          type: string
+                                          example: '19'
+                                          description: Número de DDD (Discagem Direta à Distância) do telefone do cliente - se houver
+                                          enum:
+                                            - '11'
+                                            - '12'
+                                            - '13'
+                                            - '14'
+                                            - '15'
+                                            - '16'
+                                            - '17'
+                                            - '18'
+                                            - '19'
+                                            - '21'
+                                            - '22'
+                                            - '24'
+                                            - '27'
+                                            - '28'
+                                            - '31'
+                                            - '32'
+                                            - '33'
+                                            - '34'
+                                            - '35'
+                                            - '37'
+                                            - '38'
+                                            - '41'
+                                            - '42'
+                                            - '43'
+                                            - '44'
+                                            - '45'
+                                            - '46'
+                                            - '47'
+                                            - '48'
+                                            - '49'
+                                            - '51'
+                                            - '53'
+                                            - '54'
+                                            - '55'
+                                            - '61'
+                                            - '62'
+                                            - '63'
+                                            - '64'
+                                            - '65'
+                                            - '66'
+                                            - '67'
+                                            - '68'
+                                            - '69'
+                                            - '71'
+                                            - '73'
+                                            - '74'
+                                            - '75'
+                                            - '77'
+                                            - '79'
+                                            - '81'
+                                            - '82'
+                                            - '83'
+                                            - '84'
+                                            - '85'
+                                            - '86'
+                                            - '87'
+                                            - '88'
+                                            - '89'
+                                            - '91'
+                                            - '92'
+                                            - '93'
+                                            - '94'
+                                            - '95'
+                                            - '96'
+                                            - '97'
+                                            - '98'
+                                            - '99'
+                                        number:
+                                          type: string
+                                          maxLength: 11
+                                          pattern: '^([0-9]{8,11})$'
+                                          example: '29875132'
+                                          description: Número de telefone do cliente
+                                        phoneExtension:
+                                          type: string
+                                          maxLength: 5
+                                          pattern: '^\d{1,5}$'
+                                          description: Número do ramal. De preenchimento obrigatório se fizer parte da identificação do número do telefone informado
+                                    minItems: 1
+                                    description: Lista com telefones de contato
+                                  emails:
+                                    type: array
+                                    items:
+                                      type: object
+                                      required:
+                                        - isMain
+                                        - email
+                                      properties:
+                                        isMain:
+                                          type: boolean
+                                          description: Indica se o email informado é o principal
+                                          example: true
+                                        email:
+                                          type: string
+                                          description: Endereço de email
+                                          maxLength: 320
+                                          pattern: \w*\W*
+                                          example: karinafernandes-81@br.inter.net
+                                    minItems: 1
+                                    description: Lista e-mails de contato
+                  minItems: 1
+                  description: Companies traz uma lista de todas as instituições da Marca
+        links:
+          $ref: '#/components/schemas/ResponseBusinessCustomersQualification/properties/links'
+        meta:
+          $ref: '#/components/schemas/ResponseBusinessCustomersQualification/properties/meta'
+      example:
+        data:
+          brand:
+            name: Organização A
+            companies:
+              - name: Empresa A
+                cnpjNumber: '21128159000166'
+                businessCustomers:
+                  identification:
+                    requestDateTime: '2020-07-21T08:30:00Z'
+                    updateDateTime: '2020-07-21T08:58:00Z'
+                    cnpjNumber: '50685362000135'
+                    companyName: Severino e Pedro Henrique Eletrônica Ltda
+                    incorporationDate: '2019-02-02'
+                    parties:
+                      - type: SOCIO
+                        civilName: Elza Milena Stefany Teixeira
+                        startDate: '2019-02-02'
+                        shareholding: '0.51'
+                        documentType: CPF
+                        documentNumber: '73677831148'
+                        documentCountry: BRA
+                    contacts:
+                      postalAddresses:
+                        - isMain: true
+                          address: 'Rua Ormando Chisto, 395'
+                          additionalInfo: Loja B
+                          districtName: São Judas Tadeu
+                          townName: Colatina
+                          ibgeTownCode: '3201506'
+                          countrySubDivision: SP
+                          postCode: '29700650'
+                          country: Brasil
+                          countryCode: BRA
+                          geographicCoordinates:
+                            latitude: '-90.8365180'
+                            longitude: '-180.836519'
+                      phones:
+                        - isMain: true
+                          type: FIXO
+                          additionalInfo: string
+                          countryCallingCode: '55'
+                          areaCode: '27'
+                          number: '29875132'
+                          phoneExtension: '932'
+                      emails:
+                        - isMain: true
+                          email: elzamilenastefanyteixeira-81@br.inter.net
+        links:
+          self: 'https://api.banco.com.br/open-banking/<api>/v1/<resource>'
+          first: 'https://api.banco.com.br/open-banking/<api>/v1/<resource>'
+          prev: string
+          next: string
+          last: 'https://api.banco.com.br/open-banking/<api>/v1/<resource>'
+        meta:
+          totalRecords: 1
+          totalPages: 1
+    ResponseBusinessCustomersQualification:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          type: object
+          required:
+            - brand
+          properties:
+            brand:
+              type: object
+              description: Objeto que define a Organização controladora do grupo de instituições financeiras
+              required:
+                - name
+                - companies
+              properties:
+                name:
+                  type: string
+                  pattern: \w*\W*
+                  maxLength: 80
+                  description: 'Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes'
+                  example: Organização A
+                companies:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - name
+                      - cnpjNumber
+                      - businessCustomers
+                    properties:
+                      name:
+                        description: 'Nome da Instituição, pertencente à Marca, responsável pelo Cadastro.'
+                        type: string
+                        pattern: \w*\W*
+                        maxLength: 80
+                        example: Empresa da Organização A
+                      cnpjNumber:
+                        description: 'Número completo do CNPJ da instituição responsável pelo Cadastro - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. Deve-se ter apenas os números do CNPJ, sem máscara'
+                        type: string
+                        pattern: '\d{14}|^NA$'
+                        maxLength: 14
+                        example: '50685362000135'
+                      businessCustomers:
+                        type: object
+                        description: Objeto que agrupa as informações Cadastrais do Cliente Pessoa jurídica
+                        required:
+                          - qualification
+                        properties:
+                          qualification:
+                            type: object
+                            description: 'Objeto que reúne as informações relativas ao processo de qualificação. Considera-se qualificação as informações que permitam as instituições apreciar, avaliar, caracterizar e classificar o cliente com a finalidade de conhecer o seu perfil de risco e sua capacidade econômico-financeira'
+                            required:
+                              - requestDateTime
+                              - updateDateTime
+                              - economicActivities
+                              - informedRevenue
+                              - informedPatrimony
+                            properties:
+                              requestDateTime:
+                                type: string
+                                pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
+                                description: 'Data e hora da consulta, conforme especificação RFC-3339, formato UTC.'
+                                maxLength: 20
+                                example: '2020-07-21T08:30:00Z'
+                              updateDateTime:
+                                type: string
+                                pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
+                                description: 'Data e hora da atualização do bloco, conforme especificação RFC-3339'
+                                maxLength: 20
+                                example: '2020-07-21T08:30:00Z'
+                              economicActivities:
+                                type: array
+                                items:
+                                  type: object
+                                  required:
+                                    - code
+                                    - isMain
+                                  properties:
+                                    code:
+                                      type: string
+                                      pattern: '^\d{7}$|^NA$'
+                                      maxLength: 7
+                                      description: |
+                                        Traz o código do ramo da atividade principal da empresa consultada, segundo padrão CNAE (Classificação Nacional de Atividades Econômicas)
+                                    isMain:
+                                      type: boolean
+                                      description: Informa se é o principal ramo de atividade
+                                minItems: 1
+                                description: 'Lista dos demais códigos relativos às demais atividades econômicas da empresa, segundo padrão CNAE (Classificação Nacional de Atividades Econômicas). De preenchimento obrigatório, se houver'
+                              informedRevenue:
+                                type: object
+                                description: Objeto que agrupa informações relativas ao faturamento da empresa informado
+                                required:
+                                  - frequency
+                                  - year
+                                properties:
+                                  frequency:
+                                    type: string
+                                    description: |
+                                      Traz a frequência ou período do faturamento informado. 
+                                      "O faturamento é calculado a partir de todos os benefícios que a empresa conseguiu com sua atividade econômica em um determinado período. Esses benefícios são os rendimentos ou ganhos da organização através de suas vendas ou serviços prestados".
+                                    enum:
+                                      - DIARIO
+                                      - SEMANAL
+                                      - QUINZENAL
+                                      - MENSAL
+                                      - BIMESTRAL
+                                      - TRIMESTRAL
+                                      - SEMESTRAL
+                                      - ANUAL
+                                  amount:
+                                    type: string
+                                    description: |
+                                      Valor do faturamento informado. Expresso em valor monetário com 2 casas decimais. 
+                                      "O faturamento corresponde à soma das vendas de produtos e/ou serviços em determinado período. Ou seja, é todo o dinheiro que entra no caixa da empresa, a partir da venda de produtos, mercadorias e serviços". 
+                                    maxLength: 12
+                                    pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
+                                  currency:
+                                    type: string
+                                    pattern: '^(\w{3}){1}$'
+                                    maxLength: 3
+                                    format: CurrencyString
+                                    description: 'Moeda referente ao valor da faturamento, segundo modelo ISO-4217.'
+                                    example: BRL
+                                  year:
+                                    type: string
+                                    pattern: '^\d{4}$'
+                                    maxLength: 4
+                                    description: 'Ano de referência do Faturamento, conforme especificação RFC-3339.'
+                                    example: '2014'
+                              informedPatrimony:
+                                type: object
+                                description: Objeto que agrupa informações relativas ao patrimônio da empresa
+                                required:
+                                  - amount
+                                  - year
+                                properties:
+                                  amount:
+                                    type: string
+                                    description: |
+                                      Valor do patrimônio informado. Expresso em valor monetário com 2 casas decimais.
+                                      "Patrimônio é o conjunto de bens vinculado a uma pessoa ou a uma entidade".
+                                    maxLength: 12
+                                    pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
+                                  currency:
+                                    type: string
+                                    pattern: '^(\w{3}){1}$'
+                                    maxLength: 3
+                                    format: CurrencyString
+                                    description: 'Moeda referente ao valor do patrimônio, segundo modelo ISO-4217.'
+                                    example: BRL
+                                  year:
+                                    type: string
+                                    pattern: '^\d{4}$'
+                                    maxLength: 4
+                                    description: 'Ano do Patrimônio, conforme especificação RFC-3339.'
+                                    example: '2014'
+                  minItems: 1
+                  description: Companies traz uma lista de todas as instituições da Marca
+        links:
+          type: object
+          description: Referências para outros recusos da API requisitada.
+          required:
+            - self
+          properties:
+            self:
+              type: string
+              format: URIString
+              description: URI completo que gerou a resposta atual.
+              example: 'https://api.banco.com.br/open-banking/<api>/v1/<resource>'
+            first:
+              type: string
+              format: URIString
+              description: URI da primeira página que originou essa lista de resultados. Restrição - Obrigatório quando não for a primeira página da resposta
+              example: 'https://api.banco.com.br/open-banking/<api>/v1/<resource>'
+            prev:
+              type: string
+              format: URIString
+              description: "URI da página anterior dessa lista de resultados. Restrição - \tObrigatório quando não for a primeira página da resposta"
+            next:
+              type: string
+              format: URIString
+              description: URI da próxima página dessa lista de resultados. Restrição - Obrigatório quando não for a última página da resposta
+            last:
+              type: string
+              format: URIString
+              description: URI da última página dessa lista de resultados. Restrição - Obrigatório quando não for a última página da resposta
+              example: 'https://api.banco.com.br/open-banking/<api>/v1/<resource>'
+        meta:
+          type: object
+          description: Meta informações referente a API requisitada.
+          properties:
+            totalRecords:
+              type: integer
+              description: Número total de registros no resultado
+              example: 1
+            totalPages:
+              type: integer
+              description: Número total de páginas no resultado
+              example: 1
+          required:
+            - totalRecords
+            - totalPages
+    ResponsePersonalCustomersFinancialRelation:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          type: object
+          required:
+            - brand
+          properties:
+            brand:
+              type: object
+              description: Objeto que define a Organização controladora do grupo de instituições financeiras
+              required:
+                - name
+                - companies
+              properties:
+                name:
+                  type: string
+                  pattern: \w*\W*
+                  maxLength: 80
+                  description: 'Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes'
+                  example: Organização A
+                companies:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - name
+                      - cnpjNumber
+                      - personalCustomers
+                    properties:
+                      name:
+                        type: string
+                        maxLength: 80
+                        pattern: \w*\W*
+                        description: Nome da marca selecionada pela Organização
+                        example: Organização A
+                      cnpjNumber:
+                        type: string
+                        maxLength: 14
+                        pattern: '\d{14}|^NA$'
+                        description: Número completo do CNPJ da instituição responsável pelo Cadastro - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica.
+                        example: '00000000000100'
+                      personalCustomers:
+                        type: object
+                        description: Conjunto de informações Cadastrais do Cliente Pessoa natural
+                        required:
+                          - financialRelation
+                        properties:
+                          financialRelation:
+                            type: object
+                            description: 'Objeto que reúne as informações relativas ao processo de Relacionamento. Considera-se relacionamento as informações que permitam conhecer desde quando a pessoa consultada é cliente da instituição, bem como um indicador dos produtos e serviços que ela consome atualmente e seus representantes'
+                            required:
+                              - requestDateTime
+                              - updateDateTime
+                              - startDate
+                              - serviceType
+                              - procurators
+                            properties:
+                              requestDateTime:
+                                type: string
+                                pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
+                                description: 'Data e hora da consulta, conforme especificação RFC-3339, formato UTC.'
+                                maxLength: 20
+                                example: '2020-07-21T08:30:00Z'
+                              updateDateTime:
+                                type: string
+                                pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
+                                description: 'Data e hora da atualização do bloco de Relacionamento, conforme especificação RFC-3339, formato UTC.'
+                                maxLength: 20
+                                example: '2020-07-21T08:30:00Z'
+                              startDate:
+                                type: string
+                                pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
+                                description: Data de início de relacionamento com a Instituição Financeira. Deve trazer o menor valor entre a informação reportada ao BACEN pelo DOC 3040 e CCS.
+                                example: '2020-07-21'
+                                maxLength: 10
+                              productsServices:
+                                type: array
+                                items:
+                                  type: object
+                                  required:
+                                    - type
+                                  properties:
+                                    type:
+                                      type: string
+                                      enum:
+                                        - CONTA_DEPOSITO_A_VISTA
+                                        - CONTA_POUPANCA
+                                        - CONTA_PAGAMENTO_PRE_PAGA
+                                        - CONTA_CREDITO
+                                        - OPERACAO_CREDITO
+                                        - SEGURO
+                                        - PREVIDENCIA
+                                        - INVESTIMENTO
+                                        - OPERACOES_CAMBIO
+                                        - CONTA_SALARIO
+                                        - CREDENCIAMENTO
+                                      description: |
+                                        Relação dos produtos e serviços com contrato vigente.
+                                      example: SEGURO
+                                minItems: 1
+                                maxItems: 14
+                                description: Lista de produtos e serviços com contratos vigentes
+                              procurators:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    type:
+                                      type: string
+                                      enum:
+                                        - REPRESENTANTE_LOCAL
+                                        - PROCURADOR
+                                      description: |
+                                        Tipo de representante.
+                                        Representante legal - Nome Civil completo da Pessoa Natural que represente uma entidade ou uma empresa e é nomeado em seu ato constitutivo, ou seja, no contrato social ou estatuto social.
+                                        Procurador - é qualquer pessoa que represente a Pessoa Natural em algum negócio, mediante autorização escrita do mesmo.
+                                      example: PROCURADOR
+                                    cpfNumber:
+                                      type: string
+                                      pattern: '^\d{11}$'
+                                      description: 'Número completo do CPF. O CPF é o Cadastro de Pessoa natural. Ele é um documento feito pela Receita Federal e serve para identificar os contribuintes. O CPF é uma numeração com 11 dígitos, que só mudam por decisão judicial. O documento é emitido pela receita federal'
+                                      example: '00000000000'
+                                      maxLength: 11
+                                    civilName:
+                                      type: string
+                                      pattern: \w*\W*
+                                      description: 'Nome civil completo da pessoa natural. (Direito fundamental da pessoa, o nome civil é aquele atribuído à pessoa natural desde o registro de seu nascimento, com o qual será identificada por toda a sua vida, bem como após a sua morte)'
+                                      maxLength: 70
+                                    socialName:
+                                      type: string
+                                      pattern: \w*\W*
+                                      description: 'Nome social da pessoa natural, se houver. (aquele pelo qual travestis e transexuais se reconhecem, bem como são identificados por sua comunidade e em seu meio social, conforme Decreto Nº 51.180, de 14 de janeiro de 2010)'
+                                      maxLength: 70
+                                description: Lista dos representantes. De preenchimento obrigatório se houver representante.
+                  minItems: 1
+                  description: Companies traz uma lista de todas as instituições da Marca
+        links:
+          $ref: '#/components/schemas/ResponseBusinessCustomersQualification/properties/links'
+        meta:
+          $ref: '#/components/schemas/ResponseBusinessCustomersQualification/properties/meta'
+    ResponsePersonalCustomersIdentification:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          type: object
+          required:
+            - brand
+          properties:
+            brand:
+              type: object
+              description: Objeto que define a Organização controladora do grupo de instituições financeiras
+              required:
+                - name
+                - companies
+              properties:
+                name:
+                  type: string
+                  pattern: \w*\W*
+                  maxLength: 80
+                  description: 'Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes'
+                  example: Organização A
+                companies:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - name
+                      - cnpjNumber
+                      - personalCustomers
+                    properties:
+                      name:
+                        description: 'Nome da Instituição, pertencente à Marca, responsável pelo Cadastro.'
+                        type: string
+                        pattern: \w*\W*
+                        maxLength: 80
+                        example: Empresa da Organização A
+                      cnpjNumber:
+                        description: 'Número completo do CNPJ da instituição responsável pelo Cadastro - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. Deve-se ter apenas os números do CNPJ, sem máscara'
+                        type: string
+                        pattern: '\d{14}|^NA$'
+                        maxLength: 14
+                        example: '50685362000135'
+                      personalCustomers:
+                        type: object
+                        description: Conjunto de informações Cadastrais do Cliente Pessoa natural
+                        required:
+                          - identification
+                        properties:
+                          identification:
+                            type: object
+                            description: Conjunto de informações relativas a Identificação ou seja a ação e o efeito de identificar de forma única a pessoa natural através de seus dados cadastrais.
+                            required:
+                              - requestDateTime
+                              - updateDateTime
+                              - documents
+                              - otherDocuments
+                              - nationality
+                              - civilName
+                              - filiation
+                              - birthDate
+                              - maritalStatusCode
+                              - sex
+                              - contacts
+                            properties:
+                              requestDateTime:
+                                type: string
+                                pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
+                                description: 'Data e hora da consulta, conforme especificação RFC-3339, formato UTC.'
+                                format: DateTimeString
+                                maxLength: 20
+                                example: '2020-07-21T08:30:00Z'
+                              updateDateTime:
+                                type: string
+                                pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
+                                description: 'Data e hora da atualização do bloco, conforme especificação RFC-3339'
+                                format: DateTimeString
+                                maxLength: 20
+                                example: '2020-07-21T08:30:00Z'
+                              documents:
+                                type: object
+                                description: Objeto agrupador de informações relativas a Documentos da pessoa natural
+                                required:
+                                  - cpfNumber
+                                properties:
+                                  cpfNumber:
+                                    type: string
+                                    pattern: '^\d{11}$|^NA$'
+                                    description: 'Número completo do CPF. O CPF é o Cadastro de Pessoa natural. Ele é um documento feito pela Receita Federal e serve para identificar os contribuintes. O CPF é uma numeração com 11 dígitos, que só mudam por decisão judicial. O documento é emitido pela receita federal'
+                                    maxLength: 11
+                                    example: '25872252137'
+                                  passportNumber:
+                                    type: string
+                                    maxLength: 20
+                                    pattern: \w*\W*
+                                    description: Número do Passaporte. Documento concedido aos viajantes por uma autoridade administrativa nacional a fim de certificar sua identidade perante autoridades estrangeiras. De preenchimento obrigatório. Aplicável somente à Pessoa natural residente no exterior desobrigada de inscrição no CPF.
+                                    example: '75253468744594820620'
+                                  passportCountry:
+                                    type: string
+                                    description: Pais de emissão do passaporte. Código do pais de acordo com o código “alpha3” do ISO-3166.
+                                    maxLength: 3
+                                    example: CAN
+                                  passportExpirationDate:
+                                    type: string
+                                    pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
+                                    maxLength: 10
+                                    description: 'Data vigência do Passaporte, conforme especificação RFC-3339.'
+                                    format: DateString
+                                    example: '2014-03-19'
+                              otherDocuments:
+                                type: array
+                                items:
+                                  type: object
+                                  required:
+                                    - number
+                                  properties:
+                                    type:
+                                      type: string
+                                      enum:
+                                        - CNH
+                                        - RG
+                                        - NIF
+                                        - RNE
+                                        - OUTROS
+                                      description: |
+                                        Relação dos Códigos dos demais documentos pessoa natural.
+                                    typeAdditionalInfo:
+                                      type: string
+                                      maxLength: 70
+                                      pattern: \w*\W*
+                                      description: Campo livre de preenchimento obrigatório se selecionada a opção OUTROS tipos de documentos
+                                    number:
+                                      type: string
+                                      maxLength: 11
+                                      pattern: \w*\W*
+                                      description: Identificação/Número do documento informado
+                                    checkDigit:
+                                      type: string
+                                      maxLength: 2
+                                      pattern: \w*\W*
+                                      description: Dígito verificador do documento informado. De preenchimento obrigatório se o documento informado tiver dígito verificador
+                                    additionalInfo:
+                                      type: string
+                                      maxLength: 50
+                                      pattern: \w*\W*
+                                      description: |
+                                        Campo livre, de preenchimento obrigatório quando o documento informado tiver informações complementares. p.ex. RG, este campo deve trazer: "SSP-SP' para RGs emitidos no estado de São Paulo - SP
+                                    expirationDate:
+                                      type: string
+                                      pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
+                                      format: DateString
+                                      maxLength: 10
+                                      description: 'Data de validade do documento informado, conforme especificação RFC-3339.'
+                                      example: '2014-03-19'
+                                minItems: 1
+                                description: Relação dos demais documentos
+                              nationality:
+                                type: object
+                                description: Objeto que agrupa informações relativas à nacionalidade da Pessoa Natural
+                                required:
+                                  - hasBrazilianNationality
+                                properties:
+                                  hasBrazilianNationality:
+                                    type: boolean
+                                    description: Informa se o Cliente tem nacionalidade brasileira.
+                                    example: false
+                                  otherNationality:
+                                    type: object
+                                    description: Conjunto de informações específicas para cliente que possue nacionalidade diferente da brasileira
+                                    properties:
+                                      additionalInfo:
+                                        type: string
+                                        description: |
+                                          Campo de preenchimento obrigatório caso o cliente não possua nacionalidade brasileira. Preencher indicando todas suas demais nacionalidades utilizando o código de pais de acordo com o código “alpha3” do ISO-3166.p.ex.'CAN'
+                                        maxLength: 3
+                                        example: CAN
+                                      complementaryDocuments:
+                                        type: array
+                                        description: Lista que traz relação de documentos complementares de pessoas com nacionalidade diferente de brasileira
+                                        items:
+                                          type: object
+                                          properties:
+                                            type:
+                                              type: string
+                                              maxLength: 10
+                                              pattern: \w*\W*
+                                              description: 'Tipo de documento. Campo livre, de preenchimento obrigatório quando a nacionalidade for diferente de brasileira. Informar tipo e número do documento, além da, vigência e demais informações complementares para se identificar o documento de pessoa estrangeira'
+                                            number:
+                                              type: string
+                                              maxLength: 40
+                                              pattern: \w*\W*
+                                              description: 'Número de identificação do documento. Campo livre, de preenchimento obrigatório quando a nacionalidade for diferente de brasileira. Informar o número do documento e demais informações complementares para se identificar o documento de pessoa estrangeira'
+                                              example: '423929299'
+                                            expirationDate:
+                                              type: string
+                                              pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
+                                              format: DateString
+                                              maxLength: 10
+                                              description: 'Data de validade do documento informado, conforme especificação RFC-3339.'
+                                              example: '2014-03-19'
+                              civilName:
+                                type: string
+                                description: 'Nome civil completo da pessoa natural (Direito fundamental da pessoa, o nome civil é aquele atribuído à pessoa natural desde o registro de seu nascimento, com o qual será identificada por toda a sua vida, bem como após a sua morte)'
+                                maxLength: 70
+                                pattern: \w*\W*
+                                example: Juan Kaique Cláudio Fernandes
+                              socialName:
+                                type: string
+                                description: 'Nome social da pessoa natural, se houver. (aquele pelo qual travestis e transexuais se reconhecem, bem como são identificados por sua comunidade e em seu meio social, conforme Decreto Nº 51.180, de 14 de janeiro de 2010)'
+                                maxLength: 70
+                                pattern: \w*\W*
+                              filiation:
+                                type: array
+                                items:
+                                  type: object
+                                  required:
+                                    - type
+                                    - civilName
+                                  properties:
+                                    type:
+                                      type: string
+                                      description: |
+                                        Tipo de filiação.
+                                      enum:
+                                        - 1_FILIACAO
+                                        - 2_FILIACAO
+                                      example: 1_FILIACAO
+                                    civilName:
+                                      type: string
+                                      description: 'Nome civil completo da pessoa relativa à filiação. (Direito fundamental da pessoa, o nome civil é aquele atribuído à pessoa natural desde o registro de seu nascimento, com o qual será identificada por toda a sua vida, bem como após a sua morte)'
+                                      maxLength: 70
+                                      pattern: \w*\W*
+                                    socialName:
+                                      type: string
+                                      description: 'Nome social da pessoa natural, se houver. (aquele pelo qual travestis e transexuais se reconhecem, bem como são identificados por sua comunidade e em seu meio social, conforme Decreto Nº 51.180, de 14 de janeiro de 2010)'
+                                      maxLength: 70
+                                      pattern: \w*\W*
+                                minItems: 1
+                                description: Lista que traz as informações relativas à Filiação da pessoa natural
+                              birthDate:
+                                type: string
+                                pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
+                                format: DateString
+                                maxLength: 10
+                                description: 'Data de nascimento, conforme especificação RFC-3339'
+                                example: '2014-03-19'
+                              maritalStatusCode:
+                                type: string
+                                description: |
+                                  Estado civil do cliente. 
+                                enum:
+                                  - SOLTEIRO
+                                  - CASADO
+                                  - VIUVO
+                                  - SEPARADO_JUDICIALMENTE
+                                  - DIVORCIADO
+                                  - UNIAO_ESTAVEL
+                                  - OUTROS
+                                example: SOLTEIRO
+                              maritalStatusAdditionalInfo:
+                                type: string
+                                description: 'Campo livre para complementar a informação relativa ao estado civil, quando selecionada a opção `OUTROS`'
+                                pattern: \w*\W*
+                                maxLength: 50
+                              sex:
+                                type: string
+                                description: |
+                                  “Conjunto de características anatomofisiológicas que distinguem o homem e a mulher: Sexo masculino; sexo feminino”. No caso de não ser feminino nem masculino é classificado como outros.
+                                enum:
+                                  - FEMININO
+                                  - MASCULINO
+                                  - OUTRO
+                                example: FEMININO
+                              contacts:
+                                $ref: '#/paths/~1business-customers~1identifications/get/responses/200/content/application~1json/schema/properties/data/properties/brand/properties/companies/items/properties/businessCustomers/properties/identification/properties/contacts'
+                  minItems: 1
+                  description: Companies traz uma lista de todas as instituições da Marca
+        links:
+          $ref: '#/components/schemas/ResponseBusinessCustomersQualification/properties/links'
+        meta:
+          $ref: '#/components/schemas/ResponseBusinessCustomersQualification/properties/meta'
+      example:
+        data:
+          brand:
+            name: Organização D
+            companies:
+              - name: Empresa D
+                cnpjNumber: '68005525000153'
+                personalCustomers:
+                  identification:
+                    requestDateTime: '2021-01-28T08:30:00Z'
+                    updateDateTime: '2021-01-28T08:30:00Z'
+                    documents:
+                      cpfNumber: NA
+                      passportNumber: '79416097'
+                      passportCountry: CAN
+                      passportExpirationDate: '2024-04-31'
+                    otherDocuments:
+                      - type: RNE
+                        number: '15291908'
+                        checkDigit: P
+                        expirationDate: '2025-03-19'
+                    nationality:
+                      hasBrazilianNationality: false
+                      otherNationality:
+                        additionalInfo: CAN
+                        complementaryDocuments:
+                          - type: SOCIAL SEC
+                            number: '423929299'
+                            expirationDate: '2030-03-19'
+                    civilName: Juan Kaique Cláudio Fernandes
+                    socialName: Karina
+                    filiation:
+                      - type: 1_FILIACAO
+                        civilName: Luís Fernando Caio Fernandes
+                      - type: 2_FILIACAO
+                        civilName: Yolanda Penteado
+                    birthDate: '1958-05-02'
+                    maritalStatusCode: OUTROS
+                    maritalStatusAdditionalInfo: SEPARADO_EXTRAJUDICIALMENTE
+                    sex: MASCULINO
+                    contacts:
+                      postalAddresses:
+                        - isMain: true
+                          address: 'Rua Ormando Chisto, 395'
+                          districtName: São Judas Tadeu
+                          townName: Vitória
+                          ibgeTownCode: '3201506'
+                          countrySubDivision: ES
+                          postCode: '29700650'
+                          country: Brasil
+                          countryCode: BRA
+                          geographicCoordinates:
+                            latitude: '-19.5498025'
+                            longitude: '-40.6272813'
+                      phones:
+                        - isMain: true
+                          type: FIXO
+                          countryCallingCode: '55'
+                          areaCode: '27'
+                          number: '29875132'
+                      emails:
+                        - isMain: true
+                          email: karinafernandes-81@br.inter.net
+        links:
+          self: 'https://api.banco.com.br/open-banking/<api>/v1/<resource>'
+          first: 'https://api.banco.com.br/open-banking/<api>/v1/<resource>'
+          prev: string
+          next: string
+          last: 'https://api.banco.com.br/open-banking/<api>/v1/<resource>'
+        meta:
+          totalRecords: 1
+          totalPages: 1
+    ResponsePersonalCustomersQualification:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          type: object
+          required:
+            - brand
+          properties:
+            brand:
+              type: object
+              description: Objeto que define a Organização controladora do grupo de instituições financeiras
+              required:
+                - name
+                - companies
+              properties:
+                name:
+                  type: string
+                  pattern: \w*\W*
+                  maxLength: 80
+                  description: 'Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes'
+                  example: Organização A
+                companies:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - name
+                      - cnpjNumber
+                      - personalCustomers
+                    properties:
+                      name:
+                        description: 'Nome da Instituição, pertencente à Marca, responsável pelo Cadastro.'
+                        type: string
+                        pattern: \w*\W*
+                        maxLength: 80
+                        example: Empresa da Organização A
+                      cnpjNumber:
+                        description: 'Número completo do CNPJ da instituição responsável pelo Cadastro - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. Deve-se ter apenas os números do CNPJ, sem máscara'
+                        type: string
+                        pattern: '\d{14}|^NA$'
+                        maxLength: 14
+                        example: '50685362000135'
+                      personalCustomers:
+                        type: object
+                        description: Conjunto de informações Cadastrais do Cliente Pessoa natural
+                        required:
+                          - qualification
+                        properties:
+                          qualification:
+                            type: object
+                            description: 'Conjunto de informações relativas ao processo de qualificação. Considera-se qualificação as informações que permitam as instituições apreciar, avaliar, caracterizar e classificar o cliente com a finalidade de conhecer o seu perfil de risco e sua capacidade econômico-financeira'
+                            required:
+                              - requestDateTime
+                              - updateDateTime
+                              - informedIncome
+                              - informedPatrimony
+                              - occupationCode
+                              - occupationDescription
+                            properties:
+                              requestDateTime:
+                                type: string
+                                pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
+                                description: 'Data e hora da consulta, conforme especificação RFC-3339, formato UTC.'
+                                maxLength: 20
+                                example: '2020-07-21T08:30:00Z'
+                              updateDateTime:
+                                type: string
+                                pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
+                                description: 'Data e hora da atualização do bloco, conforme especificação RFC-3339'
+                                maxLength: 20
+                                example: '2020-07-21T08:30:00Z'
+                              informedIncome:
+                                type: object
+                                description: Conjunto de informações referentes à renda total informada
+                                required:
+                                  - frequency
+                                  - date
+                                properties:
+                                  frequency:
+                                    type: string
+                                    description: |
+                                      Traz a frequência ou período da renda informada.
+                                    enum:
+                                      - DIARIA
+                                      - SEMANAL
+                                      - QUINZENAL
+                                      - MENSAL
+                                      - BIMESTRAL
+                                      - TRIMESTRAL
+                                      - SEMESTRAL
+                                      - ANUAL
+                                  amount:
+                                    type: string
+                                    description: |
+                                      Valor total da renda informada. Expresso em valor monetário com 2 casas decimais.
+                                      "Renda primária indica os montantes a pagar ou a receber em troca do uso temporário de recursos financeiros, trabalho ou ativos não financeiros não produzidos, a saber, remuneração de trabalhadores, renda de investimentos e demais rendas primárias. Fazem parte da primeira a remuneração do trabalho assalariado (salários e ordenados); da segunda, renda de investimento direto, renda de investimento em carteira, renda de outros investimentos e renda de ativos de reserva; e da terceira, tributos sobre a produção e importação, subsídios e aluguéis". Fonte: Banco Central do Brasil – Departamento Econômico
+                                    maxLength: 12
+                                    pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
+                                  currency:
+                                    type: string
+                                    pattern: '^(\w{3}){1}$'
+                                    maxLength: 3
+                                    format: CurrencyString
+                                    description: 'Moeda referente ao valor da renda, segundo modelo ISO-4217.'
+                                    example: BRL
+                                  date:
+                                    type: string
+                                    pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
+                                    maxLength: 10
+                                    format: DateString
+                                    description: 'Data da renda, conforme especificação RFC-3339.'
+                                    example: '2014-03-19'
+                              informedPatrimony:
+                                type: object
+                                description: Conjunto de informações referentes ao patrimônio informado
+                                required:
+                                  - amount
+                                properties:
+                                  amount:
+                                    type: string
+                                    description: |
+                                      Valor do patrimônio informado. Expresso em valor monetário com 2 casas decimais.
+                                      "Patrimônio é o conjunto de bens vinculado a uma pessoa ou a uma entidade".
+                                    maxLength: 12
+                                    pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
+                                  currency:
+                                    type: string
+                                    pattern: '^(\w{3}){1}$'
+                                    maxLength: 3
+                                    format: CurrencyString
+                                    description: 'Moeda referente ao valor do patrimônio, segundo modelo ISO-4217.'
+                                    example: BRL
+                                  year:
+                                    type: string
+                                    pattern: '^\d{4}$'
+                                    maxLength: 4
+                                    description: 'Ano de referência do Patrimônio, conforme especificação RFC-3339.'
+                                    example: '2014'
+                              occupationCode:
+                                type: string
+                                description: |
+                                  Traz a relação dos códigos relativos à ocupação.
+                                enum:
+                                  - RECEITA_FEDERAL
+                                  - CBO
+                                  - OUTRO
+                              occupationDescription:
+                                type: string
+                                pattern: \w*\W*
+                                maxLength: 100
+                                description: 'Campo livre, de preenchimento obrigatório. Traz o código da ocupação ou o descritivo da ocupação, se selecionada a opção ''OUTRO'''
+                  minItems: 1
+                  description: Companies traz uma lista de todas as instituições da Marca
+        links:
+          $ref: '#/components/schemas/ResponseBusinessCustomersQualification/properties/links'
+        meta:
+          $ref: '#/components/schemas/ResponseBusinessCustomersQualification/properties/meta'

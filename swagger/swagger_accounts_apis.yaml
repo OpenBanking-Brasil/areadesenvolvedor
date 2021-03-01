@@ -112,162 +112,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                required:
-                  - data
-                  - links
-                  - meta
-                properties:
-                  data:
-                    type: object
-                    required:
-                      - account
-                    properties:
-                      account:
-                        type: object
-                        description: |
-                          Conjunto de informações das Contas de: depósito à vista, poupança e de pagamento pré-paga
-                        required:
-                          - identification
-                        properties:
-                          identification:
-                            type: object
-                            description: |
-                              Conjunto dos atributos que caracterizam as Contas de: depósito à vista, poupança e de pagamento pré-paga
-                            required:
-                              - compeCode
-                              - branchCode
-                              - number
-                              - checkDigit
-                              - brandName
-                              - companyCnpj
-                              - requestDateTime
-                              - updateDateTime
-                              - type
-                              - subtype
-                              - personalBusinessIndicator
-                            properties:
-                              compeCode:
-                                type: string
-                                maxLength: 3
-                                pattern: '\d{3}|^NA$'
-                                description: |
-                                  Código identificador atribuído pelo Banco Central do Brasil às instituições participantes do STR (Sistema de Transferência de reservas). O número-código substituiu o antigo código COMPE. Todos os participantes do STR, exceto as Infraestruturas do Mercado Financeiro (IMF) e a Secretaria do Tesouro Nacional, possuem um número-código independentemente de participarem da Centralizadora da Compensação de Cheques (Compe). O campo tem a anotação “n/a” (“não se aplica”) para os participantes do STR aos quais não é atribuído um número-código
-                                example: '001'
-                              branchCode:
-                                type: string
-                                maxLength: 4
-                                pattern: '\d{4}|^NA$'
-                                description: |
-                                  Código da Agência detentora da conta
-                                example: '6272'
-                              number:
-                                type: string
-                                maxLength: 20
-                                pattern: '^\d{8,20}$|^NA$'
-                                description: |
-                                  Número da conta
-                                example: '24550245'
-                              checkDigit:
-                                type: string
-                                maxLength: 1
-                                pattern: \w*\W*
-                                description: |
-                                  Dígito da conta
-                                example: '4'
-                              brandName:
-                                type: string
-                                maxLength: 80
-                                pattern: \w*\W*
-                                description: |
-                                  Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a marca é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes
-                                example: Organização A
-                              companyCnpj:
-                                type: string
-                                maxLength: 14
-                                pattern: '\d{14}|^NA$'
-                                description: |
-                                  Número completo do CNPJ da instituição responsável pelo Cadastro - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. Deve-se ter apenas os números do CNPJ, sem máscara
-                                example: '21128159000166'
-                              requestDateTime:
-                                type: string
-                                maxLength: 20
-                                pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
-                                example: '2020-07-21T08:30:00Z'
-                                description: 'Data e hora da consulta, conforme especificação RFC-3339, formato UTC.'
-                              updateDateTime:
-                                type: string
-                                maxLength: 20
-                                pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
-                                example: '2020-07-21T08:30:00Z'
-                                description: 'Data e hora da atualização, conforme especificação RFC-3339.'
-                              type:
-                                type: string
-                                enum:
-                                  - CONTA_DEPOSITO_A_VISTA
-                                  - CONTA_POUPANCA
-                                  - CONTA_PAGAMENTO_PRE_PAGA
-                                description: |
-                                  Tipos de contas ofertadas para pessoa natural ou jurídica, p.ex. 'CONTA_DEPOSITO_A_VISTA'.
-                                  Conta de depósito à vista ou Conta corrente - é o tipo mais comum. Nela, o dinheiro fica à sua disposição para ser sacado a qualquer momento. Essa conta não gera rendimentos para o depositante
-                                  Conta poupança - foi criada para estimular as pessoas a pouparem. O dinheiro que ficar na conta por trinta dias passa a gerar rendimentos, com isenção de imposto de renda para quem declara. Ou seja, o dinheiro “cresce” (rende) enquanto ficar guardado na conta. Cada depósito terá rendimentos de mês em mês, sempre no dia do mês em que o dinheiro tiver sido depositado
-                                  Conta de pagamento pré-paga: segundo CIRCULAR Nº 3.680, BCB de  2013, é a 'destinada à execução de transações de pagamento em moeda eletrônica realizadas com base em fundos denominados em reais previamente aportados'
-                                example: CONTA_DEPOSITO_A_VISTA
-                              subtype:
-                                type: string
-                                enum:
-                                  - INDIVIDUAL
-                                  - CONJUNTA_SOLIDARIA
-                                  - CONJUNTA_NAO_SOLIDARIA
-                                description: |
-                                  Conta individual - possui um único titular
-                                  Conta conjunta solidária - é a modalidade cujos titulares podem realizar movimentações de forma isolada, isto é, sem que seja necessária a autorização dos demais titulares
-                                  Conta conjunta não solidária - onde as movimentações financeiras só podem serem realizadas mediante autorização de TODOS os correntistas da conta.
-                                example: INDIVIDUAL
-                  links:
-                    type: object
-                    description: Referências para outros recusos da API requisitada.
-                    required:
-                      - self
-                    properties:
-                      self:
-                        type: string
-                        format: URIString
-                        description: URI completo que gerou a resposta atual.
-                        example: 'https://api.banco.com.br/open-banking/<api>/v1/<resource>'
-                      first:
-                        type: string
-                        format: URIString
-                        description: URI da primeira página que originou essa lista de resultados. Restrição - Obrigatório quando não for a primeira página da resposta
-                        example: 'https://api.banco.com.br/open-banking/<api>/v1/<resource>'
-                      prev:
-                        type: string
-                        format: URIString
-                        description: "URI da página anterior dessa lista de resultados. Restrição - \tObrigatório quando não for a primeira página da resposta"
-                      next:
-                        type: string
-                        format: URIString
-                        description: URI da próxima página dessa lista de resultados. Restrição - Obrigatório quando não for a última página da resposta
-                      last:
-                        type: string
-                        format: URIString
-                        description: URI da última página dessa lista de resultados. Restrição - Obrigatório quando não for a última página da resposta
-                        example: 'https://api.banco.com.br/open-banking/<api>/v1/<resource>'
-                  meta:
-                    type: object
-                    description: Meta informações referente a API requisitada.
-                    properties:
-                      totalRecords:
-                        type: integer
-                        description: Número total de registros no resultado
-                        example: 1
-                      totalPages:
-                        type: integer
-                        description: Número total de páginas no resultado
-                        example: 1
-                    required:
-                      - totalRecords
-                      - totalPages
+                $ref: '#/components/schemas/ResponseAccountIdentification'
         '400':
           description: 'A requisição foi malformada, omitindo atributos obrigatórios, seja no payload ou através de atributos na URL.'
         '401':
@@ -308,126 +153,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                required:
-                  - data
-                  - links
-                  - meta
-                properties:
-                  data:
-                    type: object
-                    required:
-                      - account
-                    properties:
-                      account:
-                        type: object
-                        description: |
-                          Conjunto de informações das Contas de: depósito à vista, poupança e de pagamento pré-paga
-                        required:
-                          - balances
-                        properties:
-                          balances:
-                            type: object
-                            description: |
-                              Traz as informações relativas aos saldos para  Contas de: depósito à vista, poupança e de pagamento pré-paga
-                            required:
-                              - compeCode
-                              - branchCode
-                              - number
-                              - checkDigit
-                              - brandName
-                              - companyCnpj
-                              - requestDateTime
-                              - currency
-                            properties:
-                              compeCode:
-                                type: string
-                                maxLength: 3
-                                pattern: '\d{3}|^NA$'
-                                description: |
-                                  Código identificador atribuído pelo Banco Central do Brasil às instituições participantes do STR (Sistema de Transferência de reservas). O número-código substituiu o antigo código COMPE. Todos os participantes do STR, exceto as Infraestruturas do Mercado Financeiro (IMF) e a Secretaria do Tesouro Nacional, possuem um número-código independentemente de participarem da Centralizadora da Compensação de Cheques (Compe). O campo tem a anotação “n/a” (“não se aplica”) para os participantes do STR aos quais não é atribuído um número-código
-                                example: '001'
-                              branchCode:
-                                type: string
-                                maxLength: 4
-                                pattern: '\d{4}|^NA$'
-                                description: |
-                                  Código da Agência detentora da conta
-                                example: '6272'
-                              number:
-                                type: string
-                                maxLength: 20
-                                pattern: '^\d{8,20}$|^NA$'
-                                description: |
-                                  Número da conta
-                                example: '94088392'
-                              checkDigit:
-                                type: string
-                                maxLength: 1
-                                pattern: \w*\W*
-                                description: |
-                                  Dígito da conta
-                                example: '4'
-                              brandName:
-                                type: string
-                                maxLength: 80
-                                pattern: \w*\W*
-                                description: |
-                                  Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a marca é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes
-                                example: Organização A
-                              companyCnpj:
-                                type: string
-                                maxLength: 14
-                                pattern: '\d{14}|^NA$'
-                                description: |
-                                  Número completo do CNPJ da instituição responsável pelo Cadastro - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. Deve-se ter apenas os números do CNPJ, sem máscara
-                                example: '21128159000166'
-                              requestDateTime:
-                                type: string
-                                maxLength: 20
-                                pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
-                                example: '2020-07-21T08:30:00Z'
-                                description: 'Data e hora da consulta, conforme especificação RFC-3339, formato UTC.'
-                              currency:
-                                type: string
-                                pattern: '^(\w{3}){1}$'
-                                maxLength: 3
-                                format: CurrencyString
-                                description: 'Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217'
-                                example: BRL
-                              statementAccount:
-                                type: array
-                                items:
-                                  type: object
-                                  required:
-                                    - type
-                                    - amount
-                                  properties:
-                                    type:
-                                      type: string
-                                      enum:
-                                        - SALDO_DISPONIVEL
-                                        - SALDO_BLOQUEADO
-                                        - SALDO_DISPONIVEL_APLICACAO_AUTOMATICA
-                                      description: |
-                                        tipos de saldo em conta: (vide enum) informados:
-                                        Saldo disponível para utilização imediata. No caso de conta de depósito a vista, sem considerar cheque especial e investimentos atrelados a conta. Admite saldo negativo.
-                                        Saldo bloqueado não disponível para utilização imediata, por motivo de bloqueio por compensação, ou bloqueio judicial
-                                        Saldo disponível com aplicação automática - saldo disponível para utilização imediata, referente ao tipo de conta que remunera automaticamente o saldo em conta 
-                                      example: SALDO_DISPONIVEL
-                                    amount:
-                                      type: number
-                                      nullable: true
-                                      maxLength: 12
-                                      description: 'Valor do Saldo disponível, representado em valor monetário com 2 casas decimais. O tipo SALDO_DISPONIVEL admite valor negativo.'
-                                      example: 800.87
-                                minItems: 1
-                                description: |
-                                  Lista os saldos referentes às contas de: depósito à vista, poupança ou de pagamento pré-paga
-                  links:
-                    $ref: '#/paths/~1accounts~1%7BaccountId%7D/get/responses/200/content/application~1json/schema/properties/links'
-                  meta:
-                    $ref: '#/paths/~1accounts~1%7BaccountId%7D/get/responses/200/content/application~1json/schema/properties/meta'
+                $ref: '#/components/schemas/ResponseAccountBalances'
         '400':
           $ref: '#/paths/~1accounts~1%7BaccountId%7D/get/responses/400'
         '401':
@@ -510,184 +236,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                required:
-                  - data
-                  - links
-                  - meta
-                properties:
-                  data:
-                    type: object
-                    required:
-                      - account
-                    properties:
-                      account:
-                        type: object
-                        description: |
-                          Conjunto de informações das Contas de: depósito à vista, poupança e de pagamento pré-paga
-                        required:
-                          - transactions
-                        properties:
-                          transactions:
-                            type: object
-                            description: |
-                              Conjunto de informações relativas às Transações de crédito e débito realizadas e de pagamento autorizado para  Contas de: depósito à vista, poupança e de pagamento pré-paga
-                            required:
-                              - compeCode
-                              - branchCode
-                              - number
-                              - checkDigit
-                              - brandName
-                              - companyCnpj
-                              - requestDateTime
-                              - currency
-                              - statementAccount
-                            properties:
-                              compeCode:
-                                type: string
-                                maxLength: 3
-                                pattern: '\d{3}|^NA$'
-                                description: |
-                                  Código identificador atribuído pelo Banco Central do Brasil às instituições participantes do STR (Sistema de Transferência de reservas). O número-código substituiu o antigo código COMPE. Todos os participantes do STR, exceto as Infraestruturas do Mercado Financeiro (IMF) e a Secretaria do Tesouro Nacional, possuem um número-código independentemente de participarem da Centralizadora da Compensação de Cheques (Compe). O campo tem a anotação “n/a” (“não se aplica”) para os participantes do STR aos quais não é atribuído um número-código
-                                example: '001'
-                              branchCode:
-                                type: string
-                                maxLength: 4
-                                pattern: '\d{4}|^NA$'
-                                description: |
-                                  Código da Agência detentora da conta
-                                example: '6272'
-                              number:
-                                type: string
-                                maxLength: 20
-                                pattern: '^\d{8,20}$|^NA$'
-                                description: |
-                                  Número da conta
-                                example: '94088392'
-                              checkDigit:
-                                type: string
-                                maxLength: 1
-                                pattern: \w*\W*
-                                description: |
-                                  Dígito da conta
-                                example: '4'
-                              brandName:
-                                type: string
-                                maxLength: 80
-                                pattern: \w*\W*
-                                description: |
-                                  Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a marca é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes
-                                example: Organização A
-                              companyCnpj:
-                                type: string
-                                maxLength: 14
-                                pattern: '\d{14}|^NA$'
-                                description: |
-                                  Número completo do CNPJ da instituição responsável pelo Cadastro - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. Deve-se ter apenas os números do CNPJ, sem máscara
-                                example: '21128159000166'
-                              requestDateTime:
-                                type: string
-                                maxLength: 20
-                                pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
-                                example: '2020-07-21T08:30:00Z'
-                                description: 'Data e hora da consulta, conforme especificação RFC-3339, formato UTC.'
-                              currency:
-                                $ref: '#/paths/~1accounts~1%7BaccountId%7D~1balances/get/responses/200/content/application~1json/schema/properties/data/properties/account/properties/balances/properties/currency'
-                              statementAccount:
-                                type: array
-                                items:
-                                  type: object
-                                  description: |
-                                    Agrupador das informações relativas às Transações de crédito e débito realizadas e autorizadas
-                                  required:
-                                    - completedAuthorisedPaymentType
-                                    - creditDebitType
-                                    - transactionIdentification
-                                    - type
-                                    - amount
-                                    - transactionDate
-                                    - payer
-                                    - payee
-                                  properties:
-                                    completedAuthorisedPaymentType:
-                                      type: string
-                                      enum:
-                                        - TRANSACAO_EFETIVADA
-                                        - PAGAMENTO_AUTORIZADO
-                                      description: |
-                                        Indicador da transação
-                                      example: TRANSACAO_EFETIVADA
-                                    creditDebitType:
-                                      $ref: '#/paths/~1accounts~1%7BaccountId%7D~1transactions/get/parameters/14/schema'
-                                    transactionIdentification:
-                                      type: string
-                                      maxLength: 60
-                                      pattern: \w*\W*
-                                      description: Campo livre que corresponde ao identificador da transação na instituição financeira
-                                      example: TRANSFCWAR5TXHCX5I9IDBHML8082N8NEO30M6LNNG7ANAYIJYRM00ZBZPU8
-                                    type:
-                                      type: string
-                                      enum:
-                                        - TED
-                                        - DOC
-                                        - PIX
-                                        - TRANSFERENCIA_MESMA_INSTITUICAO
-                                        - BOLETO
-                                        - CONVENIO
-                                        - ARRECADACAO
-                                        - PACOTE_TARIFA_SERVICOS
-                                        - TARIFA_SERVICOS_AVULSOS
-                                        - FOLHA_PAGAMENTO
-                                        - DEPOSITO
-                                        - SAQUE
-                                        - CARTAO
-                                        - JUROS_CHEQUE_ESPECIAL
-                                        - RENDIMENTO
-                                        - OUTRO
-                                      description: |
-                                        Tipo de Transação
-                                      example: OUTRO
-                                    additionalInfo:
-                                      type: string
-                                      maxLength: 30
-                                      pattern: \w*\W*
-                                      description: |
-                                        Campo livre, de preenchimento obrigatório para complementar informação, quando selecionado o tipo de transação: OUTRO
-                                      example: Transferência
-                                    amount:
-                                      type: number
-                                      description: 'Valor do Saldo disponível, representado em valor monetário com 2 casas decimais. O tipo SALDO_DISPONIVEL admite valor negativo.'
-                                      example: 500.54
-                                    transactionDate:
-                                      type: string
-                                      maxLength: 10
-                                      pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
-                                      description: |
-                                        Se indicador de transação:
-                                         TRANSACAO_EFETIVADA - corresponde a data de lançamento da transação
-                                         PAGAMENTO_AUTORIZADO - corresponde a data prevista de efetivação da transação
-                                      example: '2021-01-07'
-                                    payer:
-                                      type: string
-                                      maxLength: 14
-                                      pattern: '^\d{11}$|^\d{14}$|^NA$'
-                                      description: |
-                                        Identificação do Pagador da transação (Preencher com o CPF ou CNPJ, sem formatação)
-                                      example: '43908445778'
-                                    payee:
-                                      type: string
-                                      maxLength: 14
-                                      pattern: '^\d{11}$|^\d{14}$|^NA$'
-                                      description: |
-                                        Identificação do Recebedor da transação (Preencher com o CPF ou CNPJ, sem formatação)
-                                      example: '67890854360'
-                                minItems: 1
-                                description: |
-                                  Lista dos lançamentos referentes às transações realizadas e de pagamento autorizado para as contas de: depósito à vista, poupança e de pagamento pré-paga
-                  links:
-                    $ref: '#/paths/~1accounts~1%7BaccountId%7D/get/responses/200/content/application~1json/schema/properties/links'
-                  meta:
-                    $ref: '#/paths/~1accounts~1%7BaccountId%7D/get/responses/200/content/application~1json/schema/properties/meta'
+                $ref: '#/components/schemas/ResponseAccountTransactions'
         '400':
           $ref: '#/paths/~1accounts~1%7BaccountId%7D/get/responses/400'
         '401':
@@ -728,134 +277,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                required:
-                  - data
-                  - links
-                  - meta
-                properties:
-                  data:
-                    type: object
-                    required:
-                      - account
-                    properties:
-                      account:
-                        type: object
-                        description: |
-                          Conjunto de informações das Contas de: depósito à vista, poupança e de pagamento pré-paga
-                        required:
-                          - overdraftLimits
-                        properties:
-                          overdraftLimits:
-                            type: object
-                            description: Conjunto das informações relativas aos Limites referentes ao valor das operações de crédito (Cheque especial e Adiantamento a Depositantes) vinculadas à conta de depósito à vista ou conta corrente
-                            required:
-                              - compeCode
-                              - branchCode
-                              - number
-                              - checkDigit
-                              - brandName
-                              - companyCnpj
-                              - requestDateTime
-                              - currency
-                              - balances
-                            properties:
-                              compeCode:
-                                type: string
-                                maxLength: 3
-                                pattern: '\d{3}|^NA$'
-                                description: |
-                                  Código identificador atribuído pelo Banco Central do Brasil às instituições participantes do STR (Sistema de Transferência de reservas). O número-código substituiu o antigo código COMPE. Todos os participantes do STR, exceto as Infraestruturas do Mercado Financeiro (IMF) e a Secretaria do Tesouro Nacional, possuem um número-código independentemente de participarem da Centralizadora da Compensação de Cheques (Compe). O campo tem a anotação “n/a” (“não se aplica”) para os participantes do STR aos quais não é atribuído um número-código
-                                example: '001'
-                              branchCode:
-                                type: string
-                                maxLength: 4
-                                pattern: '\d{4}|^NA$'
-                                description: |
-                                  Código da Agência detentora da conta
-                                example: '6272'
-                              number:
-                                type: string
-                                maxLength: 20
-                                pattern: '^\d{8,20}$|^NA$'
-                                description: |
-                                  Número da conta
-                                example: '94088392'
-                              checkDigit:
-                                type: string
-                                maxLength: 1
-                                pattern: \w*\W*
-                                description: |
-                                  Dígito da conta
-                                example: '4'
-                              brandName:
-                                type: string
-                                maxLength: 80
-                                pattern: \w*\W*
-                                description: |
-                                  Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a marca é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes
-                                example: Organização A
-                              companyCnpj:
-                                type: string
-                                maxLength: 14
-                                pattern: '\d{14}|^NA$'
-                                description: |
-                                  Número completo do CNPJ da instituição responsável pelo Cadastro - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. Deve-se ter apenas os números do CNPJ, sem máscara
-                                example: '21128159000166'
-                              requestDateTime:
-                                type: string
-                                maxLength: 20
-                                pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
-                                example: '2020-07-21T08:30:00Z'
-                                description: 'Data e hora da consulta, conforme especificação RFC-3339, formato UTC.'
-                              currency:
-                                type: string
-                                pattern: '^(\w{3}){1}$'
-                                maxLength: 3
-                                format: CurrencyString
-                                description: |
-                                  Moeda referente aos valores de Limite de Cheque Especial e de Adiantamento a depositante , segundo modelo ISO-4217. p.ex. 'BRL'. Todos os saldos informados estão representados com a moeda vigente do Brasil.
-                                example: BRL
-                              balances:
-                                type: array
-                                items:
-                                  type: object
-                                  required:
-                                    - type
-                                    - amount
-                                  properties:
-                                    overdraftLimit:
-                                      type: string
-                                      description: Faixa de valor que corresponde ao valor monetário do limite de cheque esepciaql contratado. Cada faixa corresponde a um range de valor. São previstos valores diferentes das faixas para Contratos de Cheque Especial de Pessoa Natural e de Pessoa jurídica
-                                      enum:
-                                        - FAIXA_1
-                                        - FAIXA_2
-                                        - FAIXA_3
-                                        - FAIXA_4
-                                        - FAIXA_5
-                                      example: FAIXA_1
-                                    type:
-                                      type: string
-                                      enum:
-                                        - VALOR_UTILIZADO_LIMITE
-                                        - SALDO_DESCOBERTO
-                                      description: |
-                                        Tipo de  saldo informado: (vide Enum)
-                                        - valor utilizado do limite do cheque especial
-                                        - saldo a descoberto em conta de depósito à vista (relativo ao excesso do limite de cheque especial ou ao adiantamento a depositante)
-                                      example: VALOR_UTILIZADO_LIMITE
-                                    amount:
-                                      type: number
-                                      nullable: true
-                                      maxLength: 12
-                                      description: Valor do saldo. Expressa em valor monetário com 2 casas decimais.
-                                      example: 500
-                                minItems: 1
-                                description: Lista dos valores referentes ao Limite de Cheque especial e ao adiantamento a depositante
-                  links:
-                    $ref: '#/paths/~1accounts~1%7BaccountId%7D/get/responses/200/content/application~1json/schema/properties/links'
-                  meta:
-                    $ref: '#/paths/~1accounts~1%7BaccountId%7D/get/responses/200/content/application~1json/schema/properties/meta'
+                $ref: '#/components/schemas/ResponseAccountOverdraftLimits'
         '400':
           $ref: '#/paths/~1accounts~1%7BaccountId%7D/get/responses/400'
         '401':
@@ -872,3 +294,591 @@ paths:
           $ref: '#/paths/~1accounts~1%7BaccountId%7D/get/responses/429'
         '500':
           $ref: '#/paths/~1accounts~1%7BaccountId%7D/get/responses/500'
+components:
+  schemas:
+    ResponseAccountBalances:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          type: object
+          required:
+            - account
+          properties:
+            account:
+              type: object
+              description: |
+                Conjunto de informações das Contas de: depósito à vista, poupança e de pagamento pré-paga
+              required:
+                - balances
+              properties:
+                balances:
+                  type: object
+                  description: |
+                    Traz as informações relativas aos saldos para  Contas de: depósito à vista, poupança e de pagamento pré-paga
+                  required:
+                    - compeCode
+                    - branchCode
+                    - number
+                    - checkDigit
+                    - brandName
+                    - companyCnpj
+                    - requestDateTime
+                    - currency
+                  properties:
+                    compeCode:
+                      type: string
+                      maxLength: 3
+                      pattern: '\d{3}|^NA$'
+                      description: |
+                        Código identificador atribuído pelo Banco Central do Brasil às instituições participantes do STR (Sistema de Transferência de reservas). O número-código substituiu o antigo código COMPE. Todos os participantes do STR, exceto as Infraestruturas do Mercado Financeiro (IMF) e a Secretaria do Tesouro Nacional, possuem um número-código independentemente de participarem da Centralizadora da Compensação de Cheques (Compe). O campo tem a anotação “n/a” (“não se aplica”) para os participantes do STR aos quais não é atribuído um número-código
+                      example: '001'
+                    branchCode:
+                      type: string
+                      maxLength: 4
+                      pattern: '\d{4}|^NA$'
+                      description: |
+                        Código da Agência detentora da conta
+                      example: '6272'
+                    number:
+                      type: string
+                      maxLength: 20
+                      pattern: '^\d{8,20}$|^NA$'
+                      description: |
+                        Número da conta
+                      example: '94088392'
+                    checkDigit:
+                      type: string
+                      maxLength: 1
+                      pattern: \w*\W*
+                      description: |
+                        Dígito da conta
+                      example: '4'
+                    brandName:
+                      type: string
+                      maxLength: 80
+                      pattern: \w*\W*
+                      description: |
+                        Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a marca é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes
+                      example: Organização A
+                    companyCnpj:
+                      type: string
+                      maxLength: 14
+                      pattern: '\d{14}|^NA$'
+                      description: |
+                        Número completo do CNPJ da instituição responsável pelo Cadastro - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. Deve-se ter apenas os números do CNPJ, sem máscara
+                      example: '21128159000166'
+                    requestDateTime:
+                      type: string
+                      maxLength: 20
+                      pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
+                      example: '2020-07-21T08:30:00Z'
+                      description: 'Data e hora da consulta, conforme especificação RFC-3339, formato UTC.'
+                    currency:
+                      type: string
+                      pattern: '^(\w{3}){1}$'
+                      maxLength: 3
+                      format: CurrencyString
+                      description: 'Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217'
+                      example: BRL
+                    statementAccount:
+                      type: array
+                      items:
+                        type: object
+                        required:
+                          - type
+                          - amount
+                        properties:
+                          type:
+                            type: string
+                            enum:
+                              - SALDO_DISPONIVEL
+                              - SALDO_BLOQUEADO
+                              - SALDO_DISPONIVEL_APLICACAO_AUTOMATICA
+                            description: |
+                              tipos de saldo em conta: (vide enum) informados:
+                              Saldo disponível para utilização imediata. No caso de conta de depósito a vista, sem considerar cheque especial e investimentos atrelados a conta. Admite saldo negativo.
+                              Saldo bloqueado não disponível para utilização imediata, por motivo de bloqueio por compensação, ou bloqueio judicial
+                              Saldo disponível com aplicação automática - saldo disponível para utilização imediata, referente ao tipo de conta que remunera automaticamente o saldo em conta 
+                            example: SALDO_DISPONIVEL
+                          amount:
+                            type: number
+                            nullable: true
+                            maxLength: 12
+                            description: 'Valor do Saldo disponível, representado em valor monetário com 2 casas decimais. O tipo SALDO_DISPONIVEL admite valor negativo.'
+                            example: 800.87
+                      minItems: 1
+                      description: |
+                        Lista os saldos referentes às contas de: depósito à vista, poupança ou de pagamento pré-paga
+        links:
+          type: object
+          description: Referências para outros recusos da API requisitada.
+          required:
+            - self
+          properties:
+            self:
+              type: string
+              format: URIString
+              description: URI completo que gerou a resposta atual.
+              example: 'https://api.banco.com.br/open-banking/<api>/v1/<resource>'
+            first:
+              type: string
+              format: URIString
+              description: URI da primeira página que originou essa lista de resultados. Restrição - Obrigatório quando não for a primeira página da resposta
+              example: 'https://api.banco.com.br/open-banking/<api>/v1/<resource>'
+            prev:
+              type: string
+              format: URIString
+              description: "URI da página anterior dessa lista de resultados. Restrição - \tObrigatório quando não for a primeira página da resposta"
+            next:
+              type: string
+              format: URIString
+              description: URI da próxima página dessa lista de resultados. Restrição - Obrigatório quando não for a última página da resposta
+            last:
+              type: string
+              format: URIString
+              description: URI da última página dessa lista de resultados. Restrição - Obrigatório quando não for a última página da resposta
+              example: 'https://api.banco.com.br/open-banking/<api>/v1/<resource>'
+        meta:
+          type: object
+          description: Meta informações referente a API requisitada.
+          properties:
+            totalRecords:
+              type: integer
+              description: Número total de registros no resultado
+              example: 1
+            totalPages:
+              type: integer
+              description: Número total de páginas no resultado
+              example: 1
+          required:
+            - totalRecords
+            - totalPages
+    ResponseAccountIdentification:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          type: object
+          required:
+            - account
+          properties:
+            account:
+              type: object
+              description: |
+                Conjunto de informações das Contas de: depósito à vista, poupança e de pagamento pré-paga
+              required:
+                - identification
+              properties:
+                identification:
+                  type: object
+                  description: |
+                    Conjunto dos atributos que caracterizam as Contas de: depósito à vista, poupança e de pagamento pré-paga
+                  required:
+                    - compeCode
+                    - branchCode
+                    - number
+                    - checkDigit
+                    - brandName
+                    - companyCnpj
+                    - requestDateTime
+                    - updateDateTime
+                    - type
+                    - subtype
+                    - personalBusinessIndicator
+                  properties:
+                    compeCode:
+                      type: string
+                      maxLength: 3
+                      pattern: '\d{3}|^NA$'
+                      description: |
+                        Código identificador atribuído pelo Banco Central do Brasil às instituições participantes do STR (Sistema de Transferência de reservas). O número-código substituiu o antigo código COMPE. Todos os participantes do STR, exceto as Infraestruturas do Mercado Financeiro (IMF) e a Secretaria do Tesouro Nacional, possuem um número-código independentemente de participarem da Centralizadora da Compensação de Cheques (Compe). O campo tem a anotação “n/a” (“não se aplica”) para os participantes do STR aos quais não é atribuído um número-código
+                      example: '001'
+                    branchCode:
+                      type: string
+                      maxLength: 4
+                      pattern: '\d{4}|^NA$'
+                      description: |
+                        Código da Agência detentora da conta
+                      example: '6272'
+                    number:
+                      type: string
+                      maxLength: 20
+                      pattern: '^\d{8,20}$|^NA$'
+                      description: |
+                        Número da conta
+                      example: '24550245'
+                    checkDigit:
+                      type: string
+                      maxLength: 1
+                      pattern: \w*\W*
+                      description: |
+                        Dígito da conta
+                      example: '4'
+                    brandName:
+                      type: string
+                      maxLength: 80
+                      pattern: \w*\W*
+                      description: |
+                        Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a marca é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes
+                      example: Organização A
+                    companyCnpj:
+                      type: string
+                      maxLength: 14
+                      pattern: '\d{14}|^NA$'
+                      description: |
+                        Número completo do CNPJ da instituição responsável pelo Cadastro - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. Deve-se ter apenas os números do CNPJ, sem máscara
+                      example: '21128159000166'
+                    requestDateTime:
+                      type: string
+                      maxLength: 20
+                      pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
+                      example: '2020-07-21T08:30:00Z'
+                      description: 'Data e hora da consulta, conforme especificação RFC-3339, formato UTC.'
+                    updateDateTime:
+                      type: string
+                      maxLength: 20
+                      pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
+                      example: '2020-07-21T08:30:00Z'
+                      description: 'Data e hora da atualização, conforme especificação RFC-3339.'
+                    type:
+                      type: string
+                      enum:
+                        - CONTA_DEPOSITO_A_VISTA
+                        - CONTA_POUPANCA
+                        - CONTA_PAGAMENTO_PRE_PAGA
+                      description: |
+                        Tipos de contas ofertadas para pessoa natural ou jurídica, p.ex. 'CONTA_DEPOSITO_A_VISTA'.
+                        Conta de depósito à vista ou Conta corrente - é o tipo mais comum. Nela, o dinheiro fica à sua disposição para ser sacado a qualquer momento. Essa conta não gera rendimentos para o depositante
+                        Conta poupança - foi criada para estimular as pessoas a pouparem. O dinheiro que ficar na conta por trinta dias passa a gerar rendimentos, com isenção de imposto de renda para quem declara. Ou seja, o dinheiro “cresce” (rende) enquanto ficar guardado na conta. Cada depósito terá rendimentos de mês em mês, sempre no dia do mês em que o dinheiro tiver sido depositado
+                        Conta de pagamento pré-paga: segundo CIRCULAR Nº 3.680, BCB de  2013, é a 'destinada à execução de transações de pagamento em moeda eletrônica realizadas com base em fundos denominados em reais previamente aportados'
+                      example: CONTA_DEPOSITO_A_VISTA
+                    subtype:
+                      type: string
+                      enum:
+                        - INDIVIDUAL
+                        - CONJUNTA_SOLIDARIA
+                        - CONJUNTA_NAO_SOLIDARIA
+                      description: |
+                        Conta individual - possui um único titular
+                        Conta conjunta solidária - é a modalidade cujos titulares podem realizar movimentações de forma isolada, isto é, sem que seja necessária a autorização dos demais titulares
+                        Conta conjunta não solidária - onde as movimentações financeiras só podem serem realizadas mediante autorização de TODOS os correntistas da conta.
+                      example: INDIVIDUAL
+        links:
+          $ref: '#/components/schemas/ResponseAccountBalances/properties/links'
+        meta:
+          $ref: '#/components/schemas/ResponseAccountBalances/properties/meta'
+    ResponseAccountOverdraftLimits:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          type: object
+          required:
+            - account
+          properties:
+            account:
+              type: object
+              description: |
+                Conjunto de informações das Contas de: depósito à vista, poupança e de pagamento pré-paga
+              required:
+                - overdraftLimits
+              properties:
+                overdraftLimits:
+                  type: object
+                  description: Conjunto das informações relativas aos Limites referentes ao valor das operações de crédito (Cheque especial e Adiantamento a Depositantes) vinculadas à conta de depósito à vista ou conta corrente
+                  required:
+                    - compeCode
+                    - branchCode
+                    - number
+                    - checkDigit
+                    - brandName
+                    - companyCnpj
+                    - requestDateTime
+                    - currency
+                    - balances
+                  properties:
+                    compeCode:
+                      type: string
+                      maxLength: 3
+                      pattern: '\d{3}|^NA$'
+                      description: |
+                        Código identificador atribuído pelo Banco Central do Brasil às instituições participantes do STR (Sistema de Transferência de reservas). O número-código substituiu o antigo código COMPE. Todos os participantes do STR, exceto as Infraestruturas do Mercado Financeiro (IMF) e a Secretaria do Tesouro Nacional, possuem um número-código independentemente de participarem da Centralizadora da Compensação de Cheques (Compe). O campo tem a anotação “n/a” (“não se aplica”) para os participantes do STR aos quais não é atribuído um número-código
+                      example: '001'
+                    branchCode:
+                      type: string
+                      maxLength: 4
+                      pattern: '\d{4}|^NA$'
+                      description: |
+                        Código da Agência detentora da conta
+                      example: '6272'
+                    number:
+                      type: string
+                      maxLength: 20
+                      pattern: '^\d{8,20}$|^NA$'
+                      description: |
+                        Número da conta
+                      example: '94088392'
+                    checkDigit:
+                      type: string
+                      maxLength: 1
+                      pattern: \w*\W*
+                      description: |
+                        Dígito da conta
+                      example: '4'
+                    brandName:
+                      type: string
+                      maxLength: 80
+                      pattern: \w*\W*
+                      description: |
+                        Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a marca é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes
+                      example: Organização A
+                    companyCnpj:
+                      type: string
+                      maxLength: 14
+                      pattern: '\d{14}|^NA$'
+                      description: |
+                        Número completo do CNPJ da instituição responsável pelo Cadastro - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. Deve-se ter apenas os números do CNPJ, sem máscara
+                      example: '21128159000166'
+                    requestDateTime:
+                      type: string
+                      maxLength: 20
+                      pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
+                      example: '2020-07-21T08:30:00Z'
+                      description: 'Data e hora da consulta, conforme especificação RFC-3339, formato UTC.'
+                    currency:
+                      type: string
+                      pattern: '^(\w{3}){1}$'
+                      maxLength: 3
+                      format: CurrencyString
+                      description: |
+                        Moeda referente aos valores de Limite de Cheque Especial e de Adiantamento a depositante , segundo modelo ISO-4217. p.ex. 'BRL'. Todos os saldos informados estão representados com a moeda vigente do Brasil.
+                      example: BRL
+                    balances:
+                      type: array
+                      items:
+                        type: object
+                        required:
+                          - type
+                          - amount
+                        properties:
+                          overdraftLimit:
+                            type: string
+                            description: Faixa de valor que corresponde ao valor monetário do limite de cheque esepciaql contratado. Cada faixa corresponde a um range de valor. São previstos valores diferentes das faixas para Contratos de Cheque Especial de Pessoa Natural e de Pessoa jurídica
+                            enum:
+                              - FAIXA_1
+                              - FAIXA_2
+                              - FAIXA_3
+                              - FAIXA_4
+                              - FAIXA_5
+                            example: FAIXA_1
+                          type:
+                            type: string
+                            enum:
+                              - VALOR_UTILIZADO_LIMITE
+                              - SALDO_DESCOBERTO
+                            description: |
+                              Tipo de  saldo informado: (vide Enum)
+                              - valor utilizado do limite do cheque especial
+                              - saldo a descoberto em conta de depósito à vista (relativo ao excesso do limite de cheque especial ou ao adiantamento a depositante)
+                            example: VALOR_UTILIZADO_LIMITE
+                          amount:
+                            type: number
+                            nullable: true
+                            maxLength: 12
+                            description: Valor do saldo. Expressa em valor monetário com 2 casas decimais.
+                            example: 500
+                      minItems: 1
+                      description: Lista dos valores referentes ao Limite de Cheque especial e ao adiantamento a depositante
+        links:
+          $ref: '#/components/schemas/ResponseAccountBalances/properties/links'
+        meta:
+          $ref: '#/components/schemas/ResponseAccountBalances/properties/meta'
+    ResponseAccountTransactions:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          type: object
+          required:
+            - account
+          properties:
+            account:
+              type: object
+              description: |
+                Conjunto de informações das Contas de: depósito à vista, poupança e de pagamento pré-paga
+              required:
+                - transactions
+              properties:
+                transactions:
+                  type: object
+                  description: |
+                    Conjunto de informações relativas às Transações de crédito e débito realizadas e de pagamento autorizado para  Contas de: depósito à vista, poupança e de pagamento pré-paga
+                  required:
+                    - compeCode
+                    - branchCode
+                    - number
+                    - checkDigit
+                    - brandName
+                    - companyCnpj
+                    - requestDateTime
+                    - currency
+                    - statementAccount
+                  properties:
+                    compeCode:
+                      type: string
+                      maxLength: 3
+                      pattern: '\d{3}|^NA$'
+                      description: |
+                        Código identificador atribuído pelo Banco Central do Brasil às instituições participantes do STR (Sistema de Transferência de reservas). O número-código substituiu o antigo código COMPE. Todos os participantes do STR, exceto as Infraestruturas do Mercado Financeiro (IMF) e a Secretaria do Tesouro Nacional, possuem um número-código independentemente de participarem da Centralizadora da Compensação de Cheques (Compe). O campo tem a anotação “n/a” (“não se aplica”) para os participantes do STR aos quais não é atribuído um número-código
+                      example: '001'
+                    branchCode:
+                      type: string
+                      maxLength: 4
+                      pattern: '\d{4}|^NA$'
+                      description: |
+                        Código da Agência detentora da conta
+                      example: '6272'
+                    number:
+                      type: string
+                      maxLength: 20
+                      pattern: '^\d{8,20}$|^NA$'
+                      description: |
+                        Número da conta
+                      example: '94088392'
+                    checkDigit:
+                      type: string
+                      maxLength: 1
+                      pattern: \w*\W*
+                      description: |
+                        Dígito da conta
+                      example: '4'
+                    brandName:
+                      type: string
+                      maxLength: 80
+                      pattern: \w*\W*
+                      description: |
+                        Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a marca é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes
+                      example: Organização A
+                    companyCnpj:
+                      type: string
+                      maxLength: 14
+                      pattern: '\d{14}|^NA$'
+                      description: |
+                        Número completo do CNPJ da instituição responsável pelo Cadastro - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. Deve-se ter apenas os números do CNPJ, sem máscara
+                      example: '21128159000166'
+                    requestDateTime:
+                      type: string
+                      maxLength: 20
+                      pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
+                      example: '2020-07-21T08:30:00Z'
+                      description: 'Data e hora da consulta, conforme especificação RFC-3339, formato UTC.'
+                    currency:
+                      $ref: '#/paths/~1accounts~1%7BaccountId%7D~1balances/get/responses/200/content/application~1json/schema/properties/data/properties/account/properties/balances/properties/currency'
+                    statementAccount:
+                      type: array
+                      items:
+                        type: object
+                        description: |
+                          Agrupador das informações relativas às Transações de crédito e débito realizadas e autorizadas
+                        required:
+                          - completedAuthorisedPaymentType
+                          - creditDebitType
+                          - transactionIdentification
+                          - type
+                          - amount
+                          - transactionDate
+                          - payer
+                          - payee
+                        properties:
+                          completedAuthorisedPaymentType:
+                            type: string
+                            enum:
+                              - TRANSACAO_EFETIVADA
+                              - PAGAMENTO_AUTORIZADO
+                            description: |
+                              Indicador da transação
+                            example: TRANSACAO_EFETIVADA
+                          creditDebitType:
+                            $ref: '#/paths/~1accounts~1%7BaccountId%7D~1transactions/get/parameters/14/schema'
+                          transactionIdentification:
+                            type: string
+                            maxLength: 60
+                            pattern: \w*\W*
+                            description: Campo livre que corresponde ao identificador da transação na instituição financeira
+                            example: TRANSFCWAR5TXHCX5I9IDBHML8082N8NEO30M6LNNG7ANAYIJYRM00ZBZPU8
+                          type:
+                            type: string
+                            enum:
+                              - TED
+                              - DOC
+                              - PIX
+                              - TRANSFERENCIA_MESMA_INSTITUICAO
+                              - BOLETO
+                              - CONVENIO
+                              - ARRECADACAO
+                              - PACOTE_TARIFA_SERVICOS
+                              - TARIFA_SERVICOS_AVULSOS
+                              - FOLHA_PAGAMENTO
+                              - DEPOSITO
+                              - SAQUE
+                              - CARTAO
+                              - JUROS_CHEQUE_ESPECIAL
+                              - RENDIMENTO
+                              - OUTRO
+                            description: |
+                              Tipo de Transação
+                            example: OUTRO
+                          additionalInfo:
+                            type: string
+                            maxLength: 30
+                            pattern: \w*\W*
+                            description: |
+                              Campo livre, de preenchimento obrigatório para complementar informação, quando selecionado o tipo de transação: OUTRO
+                            example: Transferência
+                          amount:
+                            type: number
+                            description: 'Valor do Saldo disponível, representado em valor monetário com 2 casas decimais. O tipo SALDO_DISPONIVEL admite valor negativo.'
+                            example: 500.54
+                          transactionDate:
+                            type: string
+                            maxLength: 10
+                            pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
+                            description: |
+                              Se indicador de transação:
+                               TRANSACAO_EFETIVADA - corresponde a data de lançamento da transação
+                               PAGAMENTO_AUTORIZADO - corresponde a data prevista de efetivação da transação
+                            example: '2021-01-07'
+                          payer:
+                            type: string
+                            maxLength: 14
+                            pattern: '^\d{11}$|^\d{14}$|^NA$'
+                            description: |
+                              Identificação do Pagador da transação (Preencher com o CPF ou CNPJ, sem formatação)
+                            example: '43908445778'
+                          payee:
+                            type: string
+                            maxLength: 14
+                            pattern: '^\d{11}$|^\d{14}$|^NA$'
+                            description: |
+                              Identificação do Recebedor da transação (Preencher com o CPF ou CNPJ, sem formatação)
+                            example: '67890854360'
+                      minItems: 1
+                      description: |
+                        Lista dos lançamentos referentes às transações realizadas e de pagamento autorizado para as contas de: depósito à vista, poupança e de pagamento pré-paga
+        links:
+          $ref: '#/components/schemas/ResponseAccountBalances/properties/links'
+        meta:
+          $ref: '#/components/schemas/ResponseAccountBalances/properties/meta'
