@@ -1,0 +1,65 @@
+## Perfil de segurança
+
+### Sobre os padrões de perfil de segurança de API.
+É necessário que os participantes do Open Banking adotem padrões de autenticação e autorização para as APIs e *End-Users*, utilizando frameworks e mecanismos aprovados pelo mercado, garantindo assim, a integridade, a confidencialidade e a disponibilidade dos dados.
+
+Conjunto de referências normativas adotadas pelo Open Banking:
+
+|Referência|Link|
+|---------|---------|      
+|FAPI-RW - Financial-grade API - Part 2: Read and Write API Security Profile|<a href='https://openid.net/specs/openid-financial-api-part-2.html'target="_blank"> https://openid.net/specs/openid-financial-api-part-2.html</a>|
+|CIBA (opcional) - OpenID Connect Client Initiated Backchannel Authentication Flow - Core 1.0|<a href='https://openid.net/specs/openid-client-initiated-backchannel-authentication-core-1_0.html'target="_blank"> https://openid.net/specs/openid-client-initiated-backchannel-authentication-core-1_0.html</a>|
+|JSON - The JavaScript Object Notation (JSON) Data Interchange Format|<a href='https://tools.ietf.org/html/rfc8259'target="_blank"> https://tools.ietf.org/html/rfc8259</a>|
+|JWT - JSON Web Token (JWT)|<a href='https://tools.ietf.org/html/rfc7519'target="_blank"> https://tools.ietf.org/html/rfc7519</a>|
+|JWS - JSON Web Signature|<a href='https://tools.ietf.org/html/rfc7797'target="_blank"> https://tools.ietf.org/html/rfc7797</a>|
+|MTLS - OAuth 2.0 Mutual TLS Client, Authentication and Certificate Bound, Access Tokens|<a href='https://tools.ietf.org/html/draft-ietf-oauth-mtls-17'target="_blank"> https://tools.ietf.org/html/draft-ietf-oauth-mtls-17</a>|
+|OAUTH2 - The OAuth 2.0 Authorization Framework|<a href='https://tools.ietf.org/html/rfc6749'target="_blank"> https://tools.ietf.org/html/rfc6749</a>|
+|OIDC - OpenID Connect Core 1.0 incorporating errata set 1|<a href='http://openid.net/specs/openid-connect-core-1_0.html'target="_blank"> http://openid.net/specs/openid-connect-core-1_0.html</a>|
+|RFC7009 - OAuth 2.0 Token Revocation|<a href='https://tools.ietf.org/html/rfc7009'target="_blank"> https://tools.ietf.org/html/rfc7009</a>|
+|RFC7662 - OAuth 2.0 Token Introspection|<a href='https://tools.ietf.org/html/rfc7662'target="_blank"> https://tools.ietf.org/html/rfc7662</a>|
+|RFC6750 - The OAuth 2.0 Authorization Framework: Bearer Token Usage|<a href='https://tools.ietf.org/html/rfc6750'target="_blank"> https://tools.ietf.org/html/rfc6750</a>|
+|RFC7591 - OAuth 2.0 Dynamic Client Registration Protocol|<a href='https://tools.ietf.org/html/rfc7591'target="_blank"> https://tools.ietf.org/html/rfc7591</a>|
+
+Para melhor entendimento do *FAPI-Read and Write API Profile* e do *CIBA-Financial-grade API: Client Initiated Backchannel Authentication Profile*,  é preciso ter conhecimento sobre OAuth2 e OpenID Connect.
+
+### OAuth 2.0
+
+OAuth 2.0 é um framework de autorização que habilita um aplicativo a obter acesso limitado para um serviço de terceiro, introduzindo uma camada de autorização e segmentando as funções do *client*.
+Ao invés de utilizar credenciais fornecidas pelo proprietário do recurso, o *client* recebe um *Access Token*, contendo o escopo do acesso, tempo de vida, entre outros atributos. Os *Access Tokens* são emitidos para *clients* terceiros por um servidor de autorização com a aprovação do proprietário do recurso. 
+
+O OAuth 2.0, define 4 papéis. 
+
+* *End-User*: Uma entidade capaz de conceder acesso a recursos protegidos. Quando o proprietário do recurso é um usuário, ele provê o nível de acesso, limitando o escopo de autorização (leitura ou escrita).  
+* *Resource Server*: Servidor que hospeda os recursos protegidos, capaz de aceitar e responder a solicitações de recursos protegidos utilizando tokens de acesso.
+* *Client*: Um aplicativo que faz solicitações a recursos protegidos em nome do proprietário do recurso, com a sua autorização. 
+* *Authorization Server*: É o servidor que emite tokens de acesso ao *client*, após autenticar com sucesso e obter autorização do *End-User*. 
+
+
+### Tokens 
+
+O OAuth 2.0 faz o uso de diversos tokens, entre eles, o *access token*, *refresh token* e *Authorization "code"*.
+
+* *Access token*: Um token de acesso é utilizado por um *client* para acessar um recurso, geralmente possuem ciclo de vida curto (minutos ou horas), sendo consumidos durante uma sessão. O *Access token* indica que o client está autorizado a consumir um recurso protegido, respeitando os *scopes* para qual o token foi emitido. O token pode ser renovado através de um *refresh token*. O tipo de *Access Token* será o *"Bearer" OAuth Access Token*, referenciado em <a href='https://tools.ietf.org/html/rfc6750'target="_blank">[RFC 6750]</a>.
+* *Refresh token*: Representa uma autorização de longa duração de um *client*. Esses tokens são trocados entre o *client* e o *Authorization Server* e são utilizados para obter (“atualizar”) novos tokens de acesso. 
+* *Authorization code*: É um código de autorização que representa o resultado do processo de autorização bem sucedido do usuário final e é utilizado pelo *client* para obter acesso e atualizar status dos tokens. 
+
+É necessário a implementação de um *endpoint* adicional no *Authorization Server* que possibilita a revogação do *Access Token* e do *Refresh Token*. Um *request* de revogação invalidará um ou mais Tokens (se aplicável), baseados na mesma concessão de acesso, conforme <a href='https://tools.ietf.org/html/rfc7009'target="_blank">[RFC 7009]</a>.<br>
+Também será adotado o *OAuth Token Introspection* que define um método para um recurso protegido consultar um *Authorization Server* sobre o estado e os metadados de um Token, conforme <a href='https://tools.ietf.org/html/rfc7662'target="_blank">[RFC 7662]</a>.<br>
+Devido a ampla aplicação do uso do OAuth 2.0, as melhores práticas de segurança do OAuth 2.0 estão em constate atualização e podem ser consultadas neste endereço <a href='https://tools.ietf.org/html/draft-ietf-oauth-security-topics-16'target="_blank">https://tools.ietf.org/html/draft-ietf-oauth-security-topics-16</a>.
+    
+Início do fluxo de uma API com a obtenção de um *Access Token*.
+
+<img class='lazy' src='images/loading.gif' data-src='images/security/Initial_API_Flow_Getting_Access_Token.png'/>
+
+Diagrama – Obtendo um *Access Token*.
+
+1.	Estabelece conexão TLS 1.2 entre o usuário e o *client*.
+2.	Estabelece conexão mTLS 1.2 entre o *client* e o *Authorization Server*.
+3.	Efetua um POST com as credenciais de autenticação do *client* e o escopo da solicitação.
+4.	Valida a autenticação de credenciais do *client*, o escopo e o certificado SSL.
+5.	Devolve o *Access Token* com a mensagem HTTP 200 (OK).
+6.	Estabelece conexão mTLS 1.2 entre o *Client* e o *Resource Server*.
+7.	Efetua um POST com o *Access Token* e o escopo.
+8.	Valida o *Access Token*, o escopo e o certificado.
+9.	Resposta com a mensagem HTTP 201 com o ID da transação.
+10.	Início do *Hybrid Flow*.

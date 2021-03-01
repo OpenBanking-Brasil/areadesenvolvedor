@@ -1,0 +1,110 @@
+## JWT
+
+O formato JWT (JSON Web Token) é projetado para transmitir *claims* entre duas partes. O JWT consiste em um *Header*, um *payload* e uma assinatura. O cabeçalho do *ID Token* contém informações sobre o tipo de objeto (JWT) e o algoritmo de assinatura utilizado para proteger a integridade dos *claims* do *payload*. O algoritmo de assinatura exigido é o PS256 (RSASSA-PSS utilizando SHA-256 e MGF1 com SHA-256). A seção do *payload* contém as *claims* sobre um usuário e o evento de autenticação. A seção de assinatura contém uma assinatura digital com base no *payload* do *ID Token* e uma chave secreta conhecida pelo provedor OpenID. 
+
+O JWT é formado por três seções: *Header, Payload* e *Signature*.<br>
+O *Header* contém somente a informação tipo e algoritmo:
+
+<span style="background-color:black">
+<span style="color:white">
+{<br>
+    "typ": "JWT",<br>
+    "alg": " PS256"<br>
+}<br>
+</span>
+</span>
+
+### *Payload*
+
+O *Payload* é um objeto JSON com as *Claims* da entidade tratada, normalmente o usuário autenticado.<br>
+*Claims* são informações afirmadas sobre um sujeito, por exemplo um *ID Token*, pode conter uma *claim* chamada *name* que afirma que o usuário autenticado é quem diz ser. Em um JWT uma claim aparece como um par nome/valor em que o nome é sempre uma *string* e o valor pode conter qualquer conteúdo JSON.
+Essas *claims* podem ser de 3 tipos:
+
+*__Reserved claims__*: São *claims* definidas pela especificação do JWT e contém atributos não obrigatórios (mais recomendados) que são usados na validação do token pelos protocolos de segurança das APIs. É possível verificar a lista completa de *Reserved Claims* em <a href='https://www.iana.org/assignments/jwt/jwt.xhtml#claims'target="_blank">[IANA JSON Web Token Claims Registry]</a>.
+
+<span style="background-color:black">
+<span style="color:white">
+sub (subject) = Entidade à quem o token pertence, normalmente o ID do usuário;<br>
+iss (issuer) = Emissor do token;<br>
+exp (expiration) = Timestamp de quando o token irá expirar;<br>
+iat (issued at) = Timestamp de quando o token foi criado;<br>
+aud (audience) = Destinatário do token, representa a aplicação que irá usá-lo.<br>
+</span>
+</span>
+
+
+*__Public claims__*: atributos utilizados nas aplicações. Normalmente armazenamos as informações do usuário autenticado na aplicação.
+
+<span style="background-color:black">
+<span style="color:white">
+name<br>
+roles<br>
+permissions<br>
+</span>
+</span>
+
+*__Private claims__*: são *claims* personalizadas e contém atributos definidos  para compartilhar informações entre aplicações.
+
+<span style="background-color:black">
+<span style="color:white">
+{<br>
+    "sub": "1234567890",<br>
+    "name": "Jose Doe"<br>
+    "admin": "true"<br>
+}<br>
+</span>
+</span>
+
+Conjunto de *claims* para um *ID Token* do Open Banking:
+
+<span style="background-color:black">
+<span style="color:white">
+{<br>
+" iss": Emissor do token<br>
+"sub": Identificador único do subject<br>
+"openbanking_intent_id": Intent ID da solicitação<br>
+"aud": Público alvo para o qual o ID Token é destinado (deve incluir o Client ID)<br>
+"exp": Data/hora de expiração do token<br>
+"iat": Data/hora de emissão do token<br>
+"auth_time": Data/hora de autenticação do End-user<br>
+"nonce": Valor string que associa uma sessão do cliente com um ID Token usado para ajudar na mitigação de ataques de replay<br>
+"acr": Authentication Context Class Reference<br>
+"amr": Authentication Methods References<br>
+"azp": Authorized party<br>
+"s_hash": State hash value<br>
+"at_hash": Access Token hash value<br>
+"c_hash": Code hash value<br>
+}<br>
+</span>
+</span>
+
+
+### Assinatura
+
+A assinatura é o *header* e o *payload* criptografados com um *secret*.
+
+<span style="background-color:black">
+<span style="color:white">
+PS256-RSASSA-PSS(<br>
+base64UrlEncode(header) + "." +<br>
+base64UrlEncode(payload),<br>
+secret)<br>
+</span>
+</span>
+
+Para obter o token JWT, as três seções *(header, payload, signature)* são codificadas com Base64-URL e unidas por pontos.
+
+<font size="6">
+<span style="color:red">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9</span>.<span style="color:purple">eyJz</span><br>
+<span style="color:purple">dWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4g</span><br>
+<span style="color:purple">RG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ</span>.<span style="color:blue">SflKxwRJSM</span><br>
+<span style="color:blue">eKKF2QT4fwpMeJf36POk6yJV_adQssw5c</span><br>
+</font>
+
+Este token JWT deve ser enviado no cabeçalho *Authentication* HTTP usando o esquema *Bearer*. O conteúdo do cabeçalho deve seguir este formato:
+
+<span style="background-color:black">
+<span style="color:white">
+Authorization: Bearer <token>
+</span>
+</span>

@@ -1,0 +1,126 @@
+## Certificados
+
+Dois tipos de certificados serão emitidos pelo ICP-Brasil para serem utilizados no Open Banking  com as funções de transporte e  assinatura. 
+Atributos comuns a ambos os certificados:
+
+|Atributo|Utilização|
+|---------|---------|  
+|Data de validade|Intervalo de tempo para qual o certificado será válido.|
+|Data de emissão|Data em que foi emitido o certificado.|
+|Autoridade Certificadora|AC- Autoridade Certificadora, entidade pública ou privada, subordinada à hierarquia da ICP-Brasil, responsável por emitir, distribuir, renovar, revogar e gerenciar certificados digitais.|
+|Chave pública e privada|Chaves públicas e privadas.|
+|Tipo|A1 ou A2 ou A3.|
+|Código de registro do participante|2.16.76.1.3.3 otherName Código que identifica o participante do Open Banking (CNPJ).|
+|Nome do participante|2.16.76.1.3.8 otherName Nome que identifica o participante do Open Banking (Nome que consta no CNPJ).|
+|Código do Diretório (OID 2.16.76.1.3.X)|Campo otherName em certificado de pessoa jurídica, contendo identificação do código de participante junto ao diretório do Open Banking. OID a ser definido.|
+
+### Transporte
+
+Certificado de transporte para a proteção e autenticação do canal (mTLS) e será utilizado para criptografar requisições e respostas entre Third Parties e bancos.
+Atributos específicos do certificado de transporte:
+
+|Atributo|Utilização|
+|---------|---------|
+|Endpoint (OID 2.16.76.1.3.X)|Campo otherName em certificado de pessoa jurídica, contendo endereço de endpoints associados ao Open Banking. OID a ser definido.|
+|Key Usage|critical, digitalSignature|
+|extendedKeyUsage|clientAuth, serverAuth| 
+
+### Assinatura
+
+O certificado de assinatura de mensagens é utilizado para criar o JWS para assinar o payload JWT durante o processo de onboarding e authorization.
+Atributos específicos do certificado de assinatura:
+
+|Atributo|Utilização|
+|---------|---------|
+|Key Usage|critical, digitalSignature, nonRepudiation|
+
+### Algoritmo de criptorgrafia
+
+|Algoritmo|Bits|
+|---------|---------|
+|RSA|2048bits ou 4096bits|
+|(PS256) RSASSA-PSS|SHA-256 e MGF1 com SHA-256|
+
+### Tipos de certificados
+
+|Tipo|Validade|Processo de geração|Armazenamento|
+|---------|---------|---------|---------|
+A1|1 ano|Software|Repositório protegido por senha e/ou identificação biométrica, cifrado por software.|
+|A2|Até 2 anos|Software|Cartão Inteligente ou Token, ambos sem capacidade de geração de chave e protegidos por senha e/ou identificação biométrico|
+|A3|Até 5 anos|Hardware|Hardware criptográfico, homologado junto à ICP-Brasil ou com certificação INMETRO.|
+
+### Requisitos adicionais
+
+* Protocolo HTTP versão 1.1.
+* Criptografia TLS versão 1.2 suportando somente as seguintes cifras:
+  * TLS_DHE_RSA_WITH_AES_128_GCM_SHA256
+  * TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+  * TLS_DHE_RSA_WITH_AES_256_GCM_SHA384
+  * TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+* Autenticação mútua.
+* Algoritmo ECDSA.
+* Algoritmo de troca de chaves de curva elíptica ECDHE.
+* Criptografia simétrica AES com chave de 128 bits
+* MAC com SHA de chaves de 256 bits.
+
+###	Definições
+
+A ICP-Brasil (Infraestrutura de Chaves Públicas Brasileira) consiste em uma cadeia hierárquica composta por uma autoridade gestora de políticas e autoridades certificadoras que utilizam um conjunto de tecnologias, práticas, técnicas e procedimentos para realizar a transação de documentos eletrônicos com segurança. O objetivo da ICP é fazer com que a utilização de criptografia de chaves públicas se torne mais fácil, tendo como principais componentes as autoridades certificadoras, autoridades de registro e o repositório.
+Sua hierarquia se dá da seguinte forma:
+
+* 1º. Comitê Gestor (CG);
+* 2º. Autoridade Certificadora (AC Raiz);
+* 3º. Autoridades Certificadoras de 1º e 2º nível (ACs);
+* 4º. Autoridades de Registros (ARs);
+* 5º. usuário final.
+
+A validação requer um par de chaves, sendo que uma delas é de conhecimento geral, ou seja, de acesso ao público, e a outra de conhecimento apenas do proprietário. Por isso, seus dados precisam estar contidos em um certificado digital para que seja possível fazer a tramitação do documento.
+
+Além disso, é preciso que a entidade certificadora seja integrante da infraestrutura do governo e receba uma classificação quanto ao seu nível de segurança. Desse modo, é possível garantir a validade jurídica dos documentos eletrônicos, bem como sua autenticidade e integridade.
+
+As Autoridades Certificadoras (ACs) são responsáveis por gerenciar o ciclo de vida dos certificados digitais, controlando os processos de solicitação, emissão e revogação dos mesmos. 
+
+A Autoridade de Registro (AR) e o Repositório de Certificados Digitais também recebem tarefas delegadas da AC Raiz. À AR cabe a tarefa de verificar o conteúdo de requisições de certificados, enquanto o Repositório de Certificados Digitais tem como objetivo publicar os certificados digitais e as listas de certificados revogados emitidos por uma ou mais ACs.
+No Brasil, a hierarquia da Certificação Digital obedece ao ICP-Brasil, que deve ser:
+
+* 1º nível – Autoridades Certificadoras Raiz (AC Raiz): Instituto Nacional de Tecnologia da Informação.
+* 2º Nível – Autoridades Certificadoras de primeiro nível: Responsável pela emissão, revogação e gerenciamento dos Certificados Digitais de AC.
+* 3º nível – Autoridades Certificadoras de segundo nível: Responsável pela emissão, revogação e gerenciamento dos Certificados Digitais.
+* 4º nível – Autoridades de Registro: Responsável por identificar o usuário e solicitar e emitir os certificados.
+
+Após o prazo de encerramento do Certificado Digital, ele é automaticamente expirado e, qualquer documento assinado após a data de vencimento não possui qualquer validade legal. Já os documentos que forem assinados dentro do período de validade do certificado, tem sua validade assegurada por tempo indeterminado.
+
+A Certificação Digital é a tecnologia que permite que as transações eletrônicas sejam realizadas com segurança, por meio de algoritmos matemáticos capazes de garantir que as informações sejam manipuladas com autenticidade, integridade e confiabilidade.
+
+A Assinatura Digital nada mais é que um processo eletrônico que faz uso de chaves criptografadas. De maneira geral, documentos que são assinados digitalmente passam por um processo de codificação das informações eletrônicas, de forma que somente receptor e emissor possam acessar os documentos compartilhados.
+
+O uso do Certificado Digital é utilizado entre outras atividades para validar as transações bancárias on-line. Ou seja, para comprovar a autenticidade do serviço, o banco utiliza um certificado que assegura ao usuário que ele realmente está acessando o servidor do banco. Assim, ao acessar a sua conta bancária, por exemplo, o usuário pode utilizar seu certificado para autenticar-se diante do banco.
+
+### Guia das Etapas de Solicitação
+
+<img class='lazy' src='images/loading.gif' data-src='images/security/ICPBrasil_flow.png'/>
+
+Diagrama - Solicitação de um certificado digital.
+
+A obtenção de um Certificado Digital compreende 4 etapas:
+
+1.	Solicitação: O interessado (pessoa física ou jurídica) deve acessar uma das Autoridades Certificadoras, escolher o tipo e a validade do Certificado Digital e encaminhar para o processo de compra.
+2.	Identificação Presencial: Após feita a solicitação, o interessado deve providenciar os documentos necessários para a emissão do certificado escolhido e agendar uma visita presencial em uma das Autoridades de Registro para realizar a identificação.
+3.	Validação e Verificação dos documentos: Depois de apresentar os documentos obrigatórios, o interessado deve aguardar a liberação da validação e verificação realizadas pela Autoridade de Registro. Caso esteja em conformidade com as exigências, é possível seguir para o processo de emissão.
+4.	Emissão: Na emissão, é gerado um par de chaves RSA com tamanho de 2048 bits e algoritmo de assinatura SHA 256 na mídia criptográfica do usuário.
+
+Contudo, antes de requerer um Certificado Digital, o interessado deve analisar qual a finalidade de uso, a forma de armazenamento e o período de validade no qual deve obter seu documento para, então, solicitar o tipo de certificado adequado. É imprescindível que o interessado conheça as características de cada certificado antes de comprá-lo pelo site em uma das Autoridades Certificadoras habilitadas.
+
+###	Emissão de certificados pelo Diretório de Participantes
+
+O Diretório de Participantes foi escolhido como uma alternativa para a emissão de certificados, tornando-se uma Autoridade Certificadora para emissão de certificados para Clients (aplicativos).
+
+<img class='lazy' src='images/loading.gif' data-src='images/security/Directory_cert_flow.png'/>
+
+Diagrama - Emitindo um certificado pelo Diretório
+
+A obtenção de um Certificado Digital pelo Diretório, compreende 3 etapas:
+
+1. Solicitação: O solicitante deve assinar a solicitação (CSR) utilizando o e-CNPJ e efetuar o upload no Diretório de Participantes.
+2. Verificação: O Diretório realiza a verificação, estando em conformidade, prossegue para o processo de emissão.
+3. Emissão: O Diretório emite um certificado e retorna para o solicitante.

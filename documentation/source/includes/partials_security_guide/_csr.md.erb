@@ -1,0 +1,105 @@
+## CSR
+
+Esse bloco consiste em um exemplo de como gerar o Certificate Signing Requests (CSR) para o PKI do Open Banking.<br>
+Existem vários utilitários para gerar CSRs para serem enviados a uma autoridade certificadora, neste exemplo vamos utilizar OpenSSL para demonstrar como um CSR válido é gerado para enviar ao Open Banking para emitir um certificado x509 de transporte ou assinatura.<br>
+OpenSSL é compatível com Windows ou Linux, podendo ser emitido no sistema operacional preferido:<br>
+
+Gerando CSR de transporte<br>
+$ openssl req -new -config transporte.cnf -out transporte.csr -keyout transporte.key
+
+Gerando CSR de assinatura<br>
+$ openssl req -new -config assinatura.cnf -out assinatura.csr -keyout assinatura.key
+
+Exemplo
+
+<img class='lazy' src='images/loading.gif' data-src='images/security/Generate_CSR.png'/>
+
+O CSR resultante deve ser carregado para o Open Banking PKI para emitir um certificado público de transporte ou assinatura associado à sua chave privada. Os arquivos resultantes devem ser protegidos pelas políticas de segurança da instituição. 
+
+###	Perfil de solicitação de assinatura de certificado X509 de transporte
+
+Este bloco demonstra como gerar um CSR válido por um client que requer um Certificado de transporte X.509 utilizando um arquivo .cnf como base.<br>
+O seguinte arquivo de configuração é utilizado para gerar um CSR para um certificado de transporte usando OpenSSL.
+
+Arquivo CNF OPENSSL Transporte apenas de exemplo, as configurações podem variar de acordo com a Autoridade Certificadora e para quem será emitido o certificado, alterar os campos como CNPJ e NOME da instituição:
+
+<span style="font-family: Courier New">
+\# OPENSSL CSR REQUEST CONFIGURATION FILE<br>
+\# ======================================<br>
+otherName = 2.16.76.1.3.3<br>
+otherName = 2.16.76.1.3.8<br>
+\#otherName = 2.16.76.1.3.X #OID a ser confirmado com a informação dos endpoints<br>
+subjectAltName=@san<br>
+\#CNPJ<br>
+otherName.1=2.16.76.1.3.3;UTF8:64721803000118<br>
+\#Nome conforme consta no CNPJ<br>
+otherName.2=2.16.76.1.3.8;UTF8:Nome da instituicao<br>
+\#Endpoints<br>
+\#otherName.3=2.16.76.1.3.X;UTF8:Endpoints<br>
+\# OpenSSL may not recognize this OID so need to add.<br>
+[ req ]<br>
+default_bits = 2048<br>
+\#ou<br>
+\#default_bits = 4096<br>
+\# RSA key size<br>
+encrypt_key = yes<br>
+\# Protect private key: yes or no. yes recommended<br>
+default_md = sha256<br>
+\# MD to use. sha256 recommended<br>
+utf8 = yes<br>
+\# Input is UTF-8.<br>
+string_mask = utf8only<br>
+\# Emit UTF-8 strings<br>
+distinguished_name = client_dn<br>
+req_extensions = client_reqext<br>
+[ client_dn ]<br>
+countryName = "BR"<br>
+[ client_reqext ]<br>
+keyUsage = critical,digitalSignature<br>
+subjectKeyIdentifier = hash<br>
+extendedKeyUsage = clientAuth, serverAuth<br>
+</span>
+
+###	Perfil de solicitação de assinatura de certificado X509 de assinatura
+
+Este bloco demonstra como gerar um CSR válido por um client que requer um Certificado de assinatura X.509 utilizando um arquivo .cnf como base.<br>
+O seguinte arquivo de configuração é utilizado para gerar um CSR para um certificado de assinatura usando OpenSSL.<br>
+
+Arquivo CNF OPENSSL de Assinatura apenas de exemplo, as configurações podem variar de acordo com a Autoridade Certificadora e para quem será emitido o certificado, alterar os campos como CNPJ e NOME da instituição:<br>
+
+<span style="font-family: Courier New">
+\# OPENSSL CSR REQUEST CONFIGURATION FILE<br>
+\# ======================================<br>
+otherName = 2.16.76.1.3.3<br>
+otherName = 2.16.76.1.3.8<br>
+subjectAltName=@san<br>
+\#CNPJ<br>
+otherName.1=2.16.76.1.3.3;UTF8:64721803000118<br>
+\#Nome conforme consta no CNPJ<br>
+otherName.2=2.16.76.1.3.8;UTF8:Nome da instituicao<br>
+\# OpenSSL may not recognize this OID so need to add.<br>
+[ req ]<br>
+default_bits = 2048<br>
+\#ou<br>
+\#default_bits = 4096<br>
+\# RSA key size<br>
+encrypt_key = yes<br>
+\# Protect private key: yes or no. yes recommended<br>
+default_md = sha256<br>
+\# MD to use. sha256 recommended<br>
+utf8 = yes<br>
+\# Input is UTF-8.<br>
+string_mask = utf8only<br>
+\# Emit UTF-8 strings<br>
+distinguished_name = client_dn<br>
+req_extensions = client_reqext<br>
+[ client_dn ]<br>
+countryName = "BR"<br>
+[ client_reqext ]<br>
+keyUsage = critical,digitalSignature,nonRepudiation<br>
+subjectKeyIdentifier = hash<br>
+</span>
+
+O arquivo CSR OPENSSL resultante pode ser analisado com o seguinte comando:
+
+$ openssl req -new -config assinatura.cnf -out assinatura.csr -keyout assinatura.key
