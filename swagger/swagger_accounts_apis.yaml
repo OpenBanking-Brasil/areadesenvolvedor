@@ -32,80 +32,16 @@ paths:
       description: 'Método para obter os dados de identificação da conta de depósito à vista, poupança ou pagamento pré-paga identificada por accountId mantida pelo cliente na instituição transmissora.'
       operationId: getAccountsAccountId
       parameters:
-        - name: Authorization
-          in: header
-          description: a definir
-          required: false
-          schema:
-            type: string
-        - name: x-fapi-auth-date
-          in: header
-          description: |
-            Data em que o usuário logou pela última vez com o receptor. Representada de acordo com a [RFC7231](https://tools.ietf.org/html/rfc7231).Exemplo: Sun, 10 Sep 2017 19:43:31 UTC
-          required: false
-          schema:
-            type: string
-            pattern: '^(Mon|Tue|Wed|Thu|Fri|Sat|Sun), \d{2} (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\d{4} \d{2}:\d{2}:\d{2}  (GMT|UTC)$'
-        - name: x-fapi-customer-ip-address
-          in: header
-          description: |
-            O endereço IP do usuário se estiver atualmente logado com o receptor.
-          required: false
-          schema:
-            type: string
-        - name: x-fapi-interaction-id
-          in: header
-          description: |
-            Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.
-          required: false
-          schema:
-            type: string
-        - name: x-customer-user-agent
-          in: header
-          description: Indica o user-agent que o usuário utiliza.
-          required: false
-          schema:
-            type: string
-        - name: accountId
-          in: path
-          description: |
-            Identificador da conta de depósito à vista, de poupança ou de pagamento pré-paga.
-          required: true
-          schema:
-            type: string
-            pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
-        - name: compeCode
-          in: query
-          description: 'Código identificador atribuído pelo Banco Central do Brasil às instituições participantes do STR (Sistema de Transferência de reservas). O número-código substituiu o antigo código COMPE. Todos os participantes do STR, exceto as Infraestruturas do Mercado Financeiro (IMF) e a Secretaria do Tesouro Nacional, possuem um número-código independentemente de participarem da Centralizadora da Compensação de Cheques (Compe). O campo tem a anotação “n/a” (“não se aplica”) para os participantes do STR aos quais não é atribuído um número-código'
-          schema:
-            type: string
-            maxLength: 3
-            pattern: '\d{3}|^NA$'
-          required: true
-        - name: branchCode
-          in: query
-          description: 'Código da Agência detentora da conta. (Agência é a dependência destinada ao atendimento aos clientes, ao público em geral e aos associados de cooperativas de crédito, no exercício de atividades da instituição, não podendo ser móvel ou transitória)'
-          schema:
-            type: string
-            maxLength: 4
-            pattern: '\d{4}|^NA$'
-          required: true
-        - name: number
-          in: query
-          description: Número da conta
-          schema:
-            type: string
-            maxLength: 20
-            pattern: '\d{20}|^NA$'
-          required: true
-        - name: checkDigit
-          in: query
-          description: Dígito da conta
-          schema:
-            type: string
-            maxLength: 1
-            pattern: \w*\W*
-          required: true
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/xFapiAuthDate'
+        - $ref: '#/components/parameters/xFapiCustomerIpAddress'
+        - $ref: '#/components/parameters/xFapiInteractionId'
+        - $ref: '#/components/parameters/xCustomerUserAgent'
+        - $ref: '#/components/parameters/accountId'
+        - $ref: '#/components/parameters/accountsCompeCode'
+        - $ref: '#/components/parameters/accountsBranchCode'
+        - $ref: '#/components/parameters/accountsNumber'
+        - $ref: '#/components/parameters/accountsCheckDigit'
       responses:
         '200':
           description: Dados de identificação da conta identificada por accountId obtidos com sucesso.
@@ -135,18 +71,18 @@ paths:
         - Accounts Balances
       summary: Obtém os saldos da conta identificada por accountId.
       description: 'Método para obter os saldos da conta de depósito à vista, poupança ou pagamento pré-paga identificada por accountId mantida pelo cliente na instituição transmissora.'
-      operationId: getAccountsBalances
+      operationId: getAccountsAccountIdBalances
       parameters:
-        - $ref: '#/paths/~1accounts~1%7BaccountId%7D/get/parameters/0'
-        - $ref: '#/paths/~1accounts~1%7BaccountId%7D/get/parameters/1'
-        - $ref: '#/paths/~1accounts~1%7BaccountId%7D/get/parameters/2'
-        - $ref: '#/paths/~1accounts~1%7BaccountId%7D/get/parameters/3'
-        - $ref: '#/paths/~1accounts~1%7BaccountId%7D/get/parameters/4'
-        - $ref: '#/paths/~1accounts~1%7BaccountId%7D/get/parameters/5'
-        - $ref: '#/paths/~1accounts~1%7BaccountId%7D/get/parameters/6'
-        - $ref: '#/paths/~1accounts~1%7BaccountId%7D/get/parameters/7'
-        - $ref: '#/paths/~1accounts~1%7BaccountId%7D/get/parameters/8'
-        - $ref: '#/paths/~1accounts~1%7BaccountId%7D/get/parameters/9'
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/xFapiAuthDate'
+        - $ref: '#/components/parameters/xFapiCustomerIpAddress'
+        - $ref: '#/components/parameters/xFapiInteractionId'
+        - $ref: '#/components/parameters/xCustomerUserAgent'
+        - $ref: '#/components/parameters/accountId'
+        - $ref: '#/components/parameters/accountsCompeCode'
+        - $ref: '#/components/parameters/accountsBranchCode'
+        - $ref: '#/components/parameters/accountsNumber'
+        - $ref: '#/components/parameters/accountsCheckDigit'
       responses:
         '200':
           description: Dados relativos aos saldos da conta identificada por accountId obtidos com sucesso.
@@ -178,58 +114,21 @@ paths:
       description: 'Método para obter a lista de transações da conta de depósito à vista, poupança ou pagamento pré-paga identificada por accountId mantida pelo cliente na instituição transmissora.'
       operationId: getAccountsAccountIdTransactions
       parameters:
-        - $ref: '#/paths/~1accounts~1%7BaccountId%7D/get/parameters/0'
-        - $ref: '#/paths/~1accounts~1%7BaccountId%7D/get/parameters/1'
-        - $ref: '#/paths/~1accounts~1%7BaccountId%7D/get/parameters/2'
-        - $ref: '#/paths/~1accounts~1%7BaccountId%7D/get/parameters/3'
-        - $ref: '#/paths/~1accounts~1%7BaccountId%7D/get/parameters/4'
-        - $ref: '#/paths/~1accounts~1%7BaccountId%7D/get/parameters/5'
-        - $ref: '#/paths/~1accounts~1%7BaccountId%7D/get/parameters/6'
-        - $ref: '#/paths/~1accounts~1%7BaccountId%7D/get/parameters/7'
-        - $ref: '#/paths/~1accounts~1%7BaccountId%7D/get/parameters/8'
-        - $ref: '#/paths/~1accounts~1%7BaccountId%7D/get/parameters/9'
-        - name: page
-          in: query
-          description: Número da página que está sendo requisitada (o valor da primeira página é 1).
-          schema:
-            type: integer
-            default: 1
-            minimum: 1
-        - name: page-size
-          in: query
-          description: Quantidade total de registros por páginas.
-          schema:
-            type: integer
-            default: 25
-            minimum: 1
-        - name: fromBookingDate
-          description: Data inicial de filtragem.
-          required: false
-          in: query
-          schema:
-            type: string
-            format: DateString
-            maxLength: 10
-            pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
-        - name: toBookingDate
-          description: Data final de filtragem.
-          required: false
-          in: query
-          schema:
-            type: string
-            format: DateString
-            maxLength: 10
-            pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
-        - name: creditDebitIndicator
-          in: query
-          schema:
-            type: string
-            enum:
-              - CREDITO
-              - DEBITO
-            description: |
-              Indicador do tipo de lançamento: a crédito ou a débito. 
-            example: CREDITO
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/xFapiAuthDate'
+        - $ref: '#/components/parameters/xFapiCustomerIpAddress'
+        - $ref: '#/components/parameters/xFapiInteractionId'
+        - $ref: '#/components/parameters/xCustomerUserAgent'
+        - $ref: '#/components/parameters/accountId'
+        - $ref: '#/components/parameters/accountsCompeCode'
+        - $ref: '#/components/parameters/accountsBranchCode'
+        - $ref: '#/components/parameters/accountsNumber'
+        - $ref: '#/components/parameters/accountsCheckDigit'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/fromBookingDate'
+        - $ref: '#/components/parameters/toBookingDate'
+        - $ref: '#/components/parameters/creditDebitIndicator'
       responses:
         '200':
           description: Dados da lista de transações da conta identificada por accountId obtidos com sucesso.
@@ -261,16 +160,16 @@ paths:
       description: 'Método para obter os limites da conta de depósito à vista, poupança ou pagamento pré-paga identificada por accountId mantida pelo cliente na instituição transmissora.'
       operationId: getAccountsAccountIdOverdraftLimits
       parameters:
-        - $ref: '#/paths/~1accounts~1%7BaccountId%7D/get/parameters/0'
-        - $ref: '#/paths/~1accounts~1%7BaccountId%7D/get/parameters/1'
-        - $ref: '#/paths/~1accounts~1%7BaccountId%7D/get/parameters/2'
-        - $ref: '#/paths/~1accounts~1%7BaccountId%7D/get/parameters/3'
-        - $ref: '#/paths/~1accounts~1%7BaccountId%7D/get/parameters/4'
-        - $ref: '#/paths/~1accounts~1%7BaccountId%7D/get/parameters/5'
-        - $ref: '#/paths/~1accounts~1%7BaccountId%7D/get/parameters/6'
-        - $ref: '#/paths/~1accounts~1%7BaccountId%7D/get/parameters/7'
-        - $ref: '#/paths/~1accounts~1%7BaccountId%7D/get/parameters/8'
-        - $ref: '#/paths/~1accounts~1%7BaccountId%7D/get/parameters/9'
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/xFapiAuthDate'
+        - $ref: '#/components/parameters/xFapiCustomerIpAddress'
+        - $ref: '#/components/parameters/xFapiInteractionId'
+        - $ref: '#/components/parameters/xCustomerUserAgent'
+        - $ref: '#/components/parameters/accountId'
+        - $ref: '#/components/parameters/accountsCompeCode'
+        - $ref: '#/components/parameters/accountsBranchCode'
+        - $ref: '#/components/parameters/accountsNumber'
+        - $ref: '#/components/parameters/accountsCheckDigit'
       responses:
         '200':
           description: Dados de limites da conta identificada por accountId obtidos com sucesso.
@@ -786,7 +685,12 @@ components:
                       example: '2020-07-21T08:30:00Z'
                       description: 'Data e hora da consulta, conforme especificação RFC-3339, formato UTC.'
                     currency:
-                      $ref: '#/paths/~1accounts~1%7BaccountId%7D~1balances/get/responses/200/content/application~1json/schema/properties/data/properties/account/properties/balances/properties/currency'
+                      type: string
+                      pattern: '^(\w{3}){1}$'
+                      maxLength: 3
+                      format: CurrencyString
+                      description: 'Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217'
+                      example: BRL
                     statementAccount:
                       type: array
                       items:
@@ -812,7 +716,7 @@ components:
                               Indicador da transação
                             example: TRANSACAO_EFETIVADA
                           creditDebitType:
-                            $ref: '#/paths/~1accounts~1%7BaccountId%7D~1transactions/get/parameters/14/schema'
+                            $ref: '#/components/parameters/creditDebitIndicator/schema'
                           transactionIdentification:
                             type: string
                             maxLength: 60
@@ -882,3 +786,131 @@ components:
           $ref: '#/components/schemas/ResponseAccountBalances/properties/links'
         meta:
           $ref: '#/components/schemas/ResponseAccountBalances/properties/meta'
+  parameters:
+    accountId:
+      name: accountId
+      in: path
+      description: 'Identificador da conta de depósito à vista, de poupança ou de pagamento pré-paga.'
+      required: true
+      schema:
+        type: string
+        pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
+    accountsBranchCode:
+      name: branchCode
+      in: query
+      description: 'Código da Agência detentora da conta. (Agência é a dependência destinada ao atendimento aos clientes, ao público em geral e aos associados de cooperativas de crédito, no exercício de atividades da instituição, não podendo ser móvel ou transitória)'
+      schema:
+        type: string
+        maxLength: 4
+        pattern: '\d{4}|^NA$'
+      required: true
+    accountsCheckDigit:
+      name: checkDigit
+      in: query
+      description: Dígito da conta
+      schema:
+        type: string
+        maxLength: 1
+        pattern: \w*\W*
+      required: true
+    accountsCompeCode:
+      name: compeCode
+      in: query
+      description: 'Código identificador atribuído pelo Banco Central do Brasil às instituições participantes do STR (Sistema de Transferência de reservas). O número-código substituiu o antigo código COMPE. Todos os participantes do STR, exceto as Infraestruturas do Mercado Financeiro (IMF) e a Secretaria do Tesouro Nacional, possuem um número-código independentemente de participarem da Centralizadora da Compensação de Cheques (Compe). O campo tem a anotação “n/a” (“não se aplica”) para os participantes do STR aos quais não é atribuído um número-código'
+      schema:
+        type: string
+        maxLength: 3
+        pattern: '\d{3}|^NA$'
+      required: true
+    accountsNumber:
+      name: number
+      in: query
+      description: Número da conta
+      schema:
+        type: string
+        maxLength: 20
+        pattern: '\d{20}|^NA$'
+      required: true
+    Authorization:
+      name: Authorization
+      in: header
+      description: a definir
+      required: false
+      schema:
+        type: string
+    creditDebitIndicator:
+      name: creditDebitIndicator
+      in: query
+      schema:
+        type: string
+        enum:
+          - CREDITO
+          - DEBITO
+        description: |
+          Indicador do tipo de lançamento: a crédito ou a débito. 
+        example: CREDITO
+    fromBookingDate:
+      name: fromBookingDate
+      description: Data inicial de filtragem.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: DateString
+        maxLength: 10
+        pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
+    page:
+      name: page
+      in: query
+      description: Número da página que está sendo requisitada (o valor da primeira página é 1).
+      schema:
+        type: integer
+        default: 1
+        minimum: 1
+    pageSize:
+      name: page-size
+      in: query
+      description: Quantidade total de registros por páginas.
+      schema:
+        type: integer
+        default: 25
+        minimum: 1
+    toBookingDate:
+      name: toBookingDate
+      description: Data final de filtragem.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: DateString
+        maxLength: 10
+        pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
+    xCustomerUserAgent:
+      name: x-customer-user-agent
+      in: header
+      description: Indica o user-agent que o usuário utiliza.
+      required: false
+      schema:
+        type: string
+    xFapiAuthDate:
+      name: x-fapi-auth-date
+      in: header
+      description: 'Data em que o usuário logou pela última vez com o receptor. Representada de acordo com a [RFC7231](https://tools.ietf.org/html/rfc7231).Exemplo: Sun, 10 Sep 2017 19:43:31 UTC'
+      required: false
+      schema:
+        type: string
+        pattern: '^(Mon|Tue|Wed|Thu|Fri|Sat|Sun), \d{2} (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\d{4} \d{2}:\d{2}:\d{2}  (GMT|UTC)$'
+    xFapiCustomerIpAddress:
+      name: x-fapi-customer-ip-address
+      in: header
+      description: O endereço IP do usuário se estiver atualmente logado com o receptor.
+      required: false
+      schema:
+        type: string
+    xFapiInteractionId:
+      name: x-fapi-interaction-id
+      in: header
+      description: 'Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.'
+      required: false
+      schema:
+        type: string
