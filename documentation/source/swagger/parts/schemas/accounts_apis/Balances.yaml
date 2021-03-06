@@ -2,57 +2,11 @@ type: object
 description: |
   Traz as informações relativas aos saldos para  Contas de: depósito à vista, poupança e de pagamento pré-paga
 required:
-  - compeCode
-  - branchCode
-  - number
-  - checkDigit
-  - brandName
-  - companyCnpj
   - requestDateTime
   - currency
+  - avaiableAmount
+  - blockedAmount
 properties:
-  compeCode:
-    type: string
-    maxLength: 3
-    pattern: \d{3}|^NA$
-    description: |
-      Código identificador atribuído pelo Banco Central do Brasil às instituições participantes do STR (Sistema de Transferência de reservas). O número-código substituiu o antigo código COMPE. Todos os participantes do STR, exceto as Infraestruturas do Mercado Financeiro (IMF) e a Secretaria do Tesouro Nacional, possuem um número-código independentemente de participarem da Centralizadora da Compensação de Cheques (Compe). O campo tem a anotação “n/a” (“não se aplica”) para os participantes do STR aos quais não é atribuído um número-código
-    example: '001'
-  branchCode:
-    type: string
-    maxLength: 4
-    pattern: \d{4}|^NA$
-    description: |
-      Código da Agência detentora da conta
-    example: '6272'
-  number:
-    type: string
-    maxLength: 20
-    pattern: ^\d{8,20}$|^NA$
-    description: |
-      Número da conta
-    example: '94088392'
-  checkDigit:
-    type: string
-    maxLength: 1
-    pattern: \w*\W*
-    description: |
-      Dígito da conta
-    example: '4'
-  brandName:
-    type: string
-    maxLength: 80
-    pattern: \w*\W*
-    description: |
-      Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a marca é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes
-    example: Organização A
-  companyCnpj:
-    type: string
-    maxLength: 14
-    pattern: \d{14}|^NA$
-    description: |
-      Número completo do CNPJ da instituição responsável pelo Cadastro - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. Deve-se ter apenas os números do CNPJ, sem máscara
-    example: '21128159000166'
   requestDateTime:
     type: string
     maxLength: 20
@@ -65,11 +19,15 @@ properties:
     maxLength: 3
     format: CurrencyString
     description: Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217
-    example: "BRL"
-  statementAccount:
-    type: array
-    items:
-      $ref: ./StatementAccountBalance.yaml
-    minItems: 1
-    description: |
-      Lista os saldos referentes às contas de: depósito à vista, poupança ou de pagamento pré-paga
+  avaiableAmount:
+    type: number
+    nullable: true
+    description: Saldo disponível para utilização imediata. No caso de conta de depósito a vista, sem considerar cheque especial e investimentos atrelados a conta. Admite saldo negativo. Expresso em valor monetário com 4 casas decimais
+    maxLength: 19
+  blockedAmount:
+    type: number
+    nullable: true
+    description: Saldo disponível com aplicação automática - corresponde a soma do saldo disponível acrescido do valor obtido a partir da aplicação automática Expresso em valor monetário com 4 casas decimais
+    maxLength: 19
+
+
