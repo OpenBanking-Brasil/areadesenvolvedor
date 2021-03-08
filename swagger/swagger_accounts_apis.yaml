@@ -371,14 +371,13 @@ components:
           description: |
             Traz as informações relativas aos saldos para  Contas de: depósito à vista, poupança e de pagamento pré-paga
           required:
-            - account
+            - accounts
             - requestDateTime
-            - currency
             - avaiableAmount
             - blockedAmount
             - automaticallyInvestedAmount
           properties:
-            account:
+            accounts:
               type: object
               required:
                 - accountId
@@ -395,13 +394,6 @@ components:
               pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
               example: '2020-07-21T08:30:00Z'
               description: 'Data e hora da consulta, conforme especificação RFC-3339, formato UTC.'
-            currency:
-              type: string
-              pattern: '^(\w{3}){1}$'
-              maxLength: 3
-              format: CurrencyString
-              description: 'Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217'
-              example: BRL
             avaiableAmount:
               type: number
               nullable: true
@@ -454,7 +446,7 @@ components:
                 - personalBusinessIndicator
               properties:
                 accounts:
-                  $ref: '#/paths/~1accounts~1%7BaccountId%7D~1balances/get/responses/200/content/application~1json/schema/properties/data/properties/account'
+                  $ref: '#/paths/~1accounts~1%7BaccountId%7D~1balances/get/responses/200/content/application~1json/schema/properties/data/properties/accounts'
                 compeCode:
                   type: string
                   maxLength: 3
@@ -539,73 +531,66 @@ components:
           properties:
             account:
               type: object
-              description: |
-                Conjunto de informações da Conta de: depósito à vista
+              description: Conjunto das informações relativas aos Limites referentes ao valor das operações de crédito (Cheque especial e Adiantamento a Depositantes) vinculadas à conta de depósito à vista ou conta corrente
               required:
-                - overdraftLimits
+                - accounts
+                - requestDateTime
+                - currency
+                - overdraftLimit
+                - balances
               properties:
-                overdraftLimits:
-                  type: object
-                  description: Conjunto das informações relativas aos Limites referentes ao valor das operações de crédito (Cheque especial e Adiantamento a Depositantes) vinculadas à conta de depósito à vista ou conta corrente
-                  required:
-                    - account
-                    - requestDateTime
-                    - currency
-                    - overdraftLimit
-                    - balances
-                  properties:
-                    account:
-                      $ref: '#/paths/~1accounts~1%7BaccountId%7D~1balances/get/responses/200/content/application~1json/schema/properties/data/properties/account'
-                    requestDateTime:
-                      type: string
-                      maxLength: 20
-                      pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
-                      example: '2020-07-21T08:30:00Z'
-                      description: 'Data e hora da consulta, conforme especificação RFC-3339, formato UTC.'
-                    currency:
-                      type: string
-                      pattern: '^(\w{3}){1}$'
-                      maxLength: 3
-                      format: CurrencyString
-                      description: |
-                        Moeda referente aos valores de Limite de Cheque Especial e de Adiantamento a depositante , segundo modelo ISO-4217. p.ex. 'BRL'. Todos os saldos informados estão representados com a moeda vigente do Brasil.
-                      example: BRL
-                    overdraftLimit:
-                      type: string
-                      description: Faixa de valor que corresponde ao valor monetário do limite de cheque esepciaql contratado. Cada faixa corresponde a um range de valor. São previstos valores diferentes das faixas para Contratos de Cheque Especial de Pessoa Natural e de Pessoa jurídica
-                      enum:
-                        - FAIXA_1
-                        - FAIXA_2
-                        - FAIXA_3
-                        - FAIXA_4
-                        - FAIXA_5
-                      example: FAIXA_1
-                    balances:
-                      type: array
-                      description: Lista dos valores referentes ao utilizado do Limite de Cheque especial e do adiantamento a depositante
-                      items:
-                        type: object
-                        required:
-                          - type
-                          - amount
-                        properties:
-                          type:
-                            type: string
-                            enum:
-                              - VALOR_UTILIZADO_LIMITE
-                              - SALDO_DESCOBERTO
-                            description: |
-                              Tipo de  saldo informado: (vide Enum)
-                              - valor utilizado do limite do cheque especial
-                              - saldo a descoberto em conta de depósito à vista (relativo ao excesso do limite de cheque especial ou ao adiantamento a depositante)
-                            example: VALOR_UTILIZADO_LIMITE
-                          amount:
-                            type: number
-                            description: Valor do saldo. Expressa em valor monetário com 4 casas decimais.
-                            nullable: true
-                            maxLength: 19
-                            example: 500
-                      minItems: 1
+                accounts:
+                  $ref: '#/paths/~1accounts~1%7BaccountId%7D~1balances/get/responses/200/content/application~1json/schema/properties/data/properties/accounts'
+                requestDateTime:
+                  type: string
+                  maxLength: 20
+                  pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
+                  example: '2020-07-21T08:30:00Z'
+                  description: 'Data e hora da consulta, conforme especificação RFC-3339, formato UTC.'
+                currency:
+                  type: string
+                  pattern: '^(\w{3}){1}$'
+                  maxLength: 3
+                  format: CurrencyString
+                  description: |
+                    Moeda referente aos valores de Limite de Cheque Especial e de Adiantamento a depositante , segundo modelo ISO-4217. p.ex. 'BRL'. Todos os saldos informados estão representados com a moeda vigente do Brasil.
+                  example: BRL
+                overdraftLimit:
+                  type: string
+                  description: Faixa de valor que corresponde ao valor monetário do limite de cheque esepciaql contratado. Cada faixa corresponde a um range de valor. São previstos valores diferentes das faixas para Contratos de Cheque Especial de Pessoa Natural e de Pessoa jurídica
+                  enum:
+                    - FAIXA_1
+                    - FAIXA_2
+                    - FAIXA_3
+                    - FAIXA_4
+                    - FAIXA_5
+                  example: FAIXA_1
+                balances:
+                  type: array
+                  description: Lista dos valores referentes ao utilizado do Limite de Cheque especial e do adiantamento a depositante
+                  items:
+                    type: object
+                    required:
+                      - type
+                      - amount
+                    properties:
+                      type:
+                        type: string
+                        enum:
+                          - VALOR_UTILIZADO_LIMITE
+                          - SALDO_DESCOBERTO
+                        description: |
+                          Tipo de  saldo informado: (vide Enum)
+                          - valor utilizado do limite do cheque especial
+                          - saldo a descoberto em conta de depósito à vista (relativo ao excesso do limite de cheque especial ou ao adiantamento a depositante)
+                        example: VALOR_UTILIZADO_LIMITE
+                      amount:
+                        type: number
+                        description: Valor do saldo. Expressa em valor monetário com 4 casas decimais.
+                        nullable: true
+                        maxLength: 19
+                        example: 500
+                  minItems: 1
         links:
           $ref: '#/components/schemas/ResponseAccount/properties/links'
         meta:
@@ -632,7 +617,7 @@ components:
                 - requestDateTime
               properties:
                 account:
-                  $ref: '#/paths/~1accounts~1%7BaccountId%7D~1balances/get/responses/200/content/application~1json/schema/properties/data/properties/account'
+                  $ref: '#/paths/~1accounts~1%7BaccountId%7D~1balances/get/responses/200/content/application~1json/schema/properties/data/properties/accounts'
                 requestDateTime:
                   type: string
                   maxLength: 20

@@ -99,6 +99,10 @@ paths:
           $ref: '#/paths/~1accounts~1v1~1accounts/get/responses/429'
         '500':
           $ref: '#/paths/~1accounts~1v1~1accounts/get/responses/500'
+      security:
+        - OpenId:
+            - openId
+            - customers
   /customers/v1/personal/qualifications:
     get:
       tags:
@@ -177,7 +181,11 @@ paths:
           $ref: '#/paths/~1accounts~1v1~1accounts/get/responses/429'
         '500':
           $ref: '#/paths/~1accounts~1v1~1accounts/get/responses/500'
-  /customers/v1/personal/relationships:
+      security:
+        - OpenId:
+            - openId
+            - customers
+  /customers/v1/personal/finantial-relations:
     get:
       tags:
         - API - Dados Cadastrais
@@ -255,6 +263,10 @@ paths:
           $ref: '#/paths/~1accounts~1v1~1accounts/get/responses/429'
         '500':
           $ref: '#/paths/~1accounts~1v1~1accounts/get/responses/500'
+      security:
+        - OpenId:
+            - openId
+            - customers
   /customers/v1/business/identifications:
     get:
       tags:
@@ -332,6 +344,10 @@ paths:
           $ref: '#/paths/~1accounts~1v1~1accounts/get/responses/429'
         '500':
           $ref: '#/paths/~1accounts~1v1~1accounts/get/responses/500'
+      security:
+        - OpenId:
+            - openId
+            - customers
   /customers/v1/business/qualifications:
     get:
       tags:
@@ -410,7 +426,11 @@ paths:
           $ref: '#/paths/~1accounts~1v1~1accounts/get/responses/429'
         '500':
           $ref: '#/paths/~1accounts~1v1~1accounts/get/responses/500'
-  /customers/v1/business/relationships:
+      security:
+        - OpenId:
+            - openId
+            - customers
+  /customers/v1/business/finantial-relations:
     get:
       tags:
         - API - Dados Cadastrais
@@ -488,6 +508,10 @@ paths:
           $ref: '#/paths/~1accounts~1v1~1accounts/get/responses/429'
         '500':
           $ref: '#/paths/~1accounts~1v1~1accounts/get/responses/500'
+      security:
+        - OpenId:
+            - openId
+            - customers
   '/credit-cards-accounts/v1/accounts/{creditCardAccountId}':
     get:
       tags:
@@ -2536,7 +2560,7 @@ components:
         - account
       properties:
         account:
-          $ref: '#/components/schemas/AccountOverdraftLimits'
+          $ref: '#/components/schemas/OverdraftLimits'
     AccountsIdentification:
       type: object
       description: 'Conjunto de informações das Contas de: depósito à vista, poupança e de pagamento pré-paga'
@@ -2559,7 +2583,7 @@ components:
         - requestDateTime
       properties:
         account:
-          $ref: '#/components/schemas/Balances/properties/account'
+          $ref: '#/components/schemas/Balances/properties/accounts'
         requestDateTime:
           type: string
           maxLength: 20
@@ -2587,14 +2611,13 @@ components:
       description: |
         Traz as informações relativas aos saldos para  Contas de: depósito à vista, poupança e de pagamento pré-paga
       required:
-        - account
+        - accounts
         - requestDateTime
-        - currency
         - avaiableAmount
         - blockedAmount
         - automaticallyInvestedAmount
       properties:
-        account:
+        accounts:
           type: object
           required:
             - accountId
@@ -2611,13 +2634,6 @@ components:
           pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
           example: '2020-07-21T08:30:00Z'
           description: 'Data e hora da consulta, conforme especificação RFC-3339, formato UTC.'
-        currency:
-          type: string
-          pattern: '^(\w{3}){1}$'
-          maxLength: 3
-          format: CurrencyString
-          description: 'Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217'
-          example: BRL
         avaiableAmount:
           type: number
           nullable: true
@@ -5100,7 +5116,7 @@ components:
         - personalBusinessIndicator
       properties:
         accounts:
-          $ref: '#/components/schemas/Balances/properties/account'
+          $ref: '#/components/schemas/Balances/properties/accounts'
         compeCode:
           type: string
           maxLength: 3
@@ -6577,14 +6593,14 @@ components:
       type: object
       description: Conjunto das informações relativas aos Limites referentes ao valor das operações de crédito (Cheque especial e Adiantamento a Depositantes) vinculadas à conta de depósito à vista ou conta corrente
       required:
-        - account
+        - accounts
         - requestDateTime
         - currency
         - overdraftLimit
         - balances
       properties:
-        account:
-          $ref: '#/components/schemas/Balances/properties/account'
+        accounts:
+          $ref: '#/components/schemas/Balances/properties/accounts'
         requestDateTime:
           type: string
           maxLength: 20
@@ -8483,3 +8499,7 @@ components:
       required: false
       schema:
         type: string
+  securitySchemes:
+    OpenId:
+      type: openIdConnect
+      openIdConnectUrl: 'https://authserver.example/.well-known/openid-configuration'
