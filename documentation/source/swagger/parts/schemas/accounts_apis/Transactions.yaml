@@ -9,7 +9,12 @@ required:
   - amount
   - transactionDate
   - payer
-  - payee
+  - payeeCnpjCpf
+  - payerCheckDigit
+  - payerNumber
+  - payerBranchCode
+  - payerCompeCode
+  - payerPersonType
 properties:
   completedAuthorisedPaymentType:
     $ref: ../enum/EnumCompletedAuthorisedPaymentIndicator.yaml
@@ -41,8 +46,34 @@ properties:
     description: |
       Se indicador de transação:
        TRANSACAO_EFETIVADA - corresponde a data de lançamento da transação
-       PAGAMENTO_AUTORIZADO - corresponde a data prevista de efetivação da transação
+       LANCAMENTO_FUTURO - corresponde a data prevista de efetivação da transação
     example: "2021-01-07"
+  payerPersonType:
+    $ref: ../enum/EnumPayerPersonType.yaml
+  payerCompeCode:
+    type: string
+    maxLength: 3
+    pattern: \d{3}|^NA$
+    description: Código identificador atribuído pelo Banco Central do Brasil às instituições participantes do STR (Sistema de Transferência de reservas). O Compe (Sistema de Compensação de Cheques e Outros Papéis) é um sistema que identifica e processa as compensações bancárias. Ele é representado por um código de três dígitos que serve como identificador de bancos, sendo assim, cada instituição bancária possui um número exclusivo 
+    example: "001"
+  payerBranchCode:
+    type: string
+    maxLength: 4
+    pattern: \d{4}|^NA$
+    description: Código da Agência detentora da conta. (Agência é a dependência destinada ao atendimento aos clientes, ao público em geral e aos associados de cooperativas de crédito, no exercício de atividades da instituição, não podendo ser móvel ou transitória) 
+    example: "6272"
+  payerNumber:
+    type: string
+    maxLength: 20
+    pattern: ^\d{8,20}$|^NA$
+    description: Número da conta
+    example: "94088392"
+  payerCheckDigit:
+    type: string
+    maxLength: 1
+    pattern: \w*\W*
+    description: Dígito da conta
+    example: "4"
   payer:
     type: string
     maxLength: 14
@@ -50,10 +81,17 @@ properties:
     description: |
       Identificação do Pagador da transação (Preencher com o CPF ou CNPJ, sem formatação)
     example: "43908445778"
-  payee:
+  payeeCnpjCpf:
     type: string
     maxLength: 14
     pattern: ^\d{11}$|^\d{14}$|^NA$
     description: |
-      Identificação do Recebedor da transação (Preencher com o CPF ou CNPJ, sem formatação)
+      Identificação do Recebedor da transação. Número do cadastro nas Receita Federal  (Preencher com CPF ou CNPJ sem formatação)
+    example: "67890854360"
+  payeePersonType:
+    type: string
+    maxLength: 14
+    pattern: ^\d{11}$|^\d{14}$|^NA$
+    description: |
+      Identificação do Recebedor da transação. Número do cadastro nas Receita Federal  (Preencher com CPF ou CNPJ sem formatação)
     example: "67890854360"
