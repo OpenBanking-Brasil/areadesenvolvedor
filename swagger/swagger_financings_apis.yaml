@@ -58,6 +58,10 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
+      security:
+        - OpenId:
+            - openId
+            - financings
   '/contracts/{contractId}/warranties':
     get:
       tags:
@@ -97,6 +101,10 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
+      security:
+        - OpenId:
+            - openId
+            - financings
   '/contracts/{contractId}/instalments':
     get:
       tags:
@@ -136,6 +144,10 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
+      security:
+        - OpenId:
+            - openId
+            - financings
   '/contracts/{contractId}/payments':
     get:
       tags:
@@ -175,6 +187,10 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
+      security:
+        - OpenId:
+            - openId
+            - financings
 components:
   schemas:
     EnumBankBorrowingContractAmortizationSchedule:
@@ -634,22 +650,6 @@ components:
           items:
             $ref: '#/components/schemas/FinancingsFinanceCharge'
           minItems: 1
-    FinancingsContractBank:
-      type: object
-      description: |
-        Conjunto de informações de operações de crédito de financiamentos contratadas
-      required:
-        - contract
-      properties:
-        contract:
-          $ref: '#/components/schemas/FinancingsContract'
-    FinancingsContractData:
-      type: object
-      required:
-        - financings
-      properties:
-        financings:
-          $ref: '#/components/schemas/FinancingsContractBank'
     FinancingsContractedFee:
       type: object
       description: Objeto que traz o conjunto de informações necessárias para demonstrar a composição das taxas de juros remuneratórios da Modalidade de crédito
@@ -1068,7 +1068,7 @@ components:
         - meta
       properties:
         data:
-          $ref: '#/components/schemas/FinancingsContractData'
+          $ref: '#/components/schemas/FinancingsContract'
         links:
           $ref: '#/components/schemas/Links'
         meta:
@@ -1173,6 +1173,10 @@ components:
       required: false
       schema:
         type: string
+  securitySchemes:
+    OpenId:
+      type: openIdConnect
+      openIdConnectUrl: 'https://authserver.example/.well-known/openid-configuration'
   responses:
     BadRequest:
       description: 'A requisição foi malformada, omitindo atributos obrigatórios, seja no payload ou através de atributos na URL.'
