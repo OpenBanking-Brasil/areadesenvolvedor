@@ -17,45 +17,45 @@ A comunicação entre os aplicativos terceiros e os recursos protegidos, devem s
 
 ### Fluxo *client* credentials
 
-Com aplicativos machine-to-machine (M2M), como serviços em execução no back-end, o sistema autentica e autoriza o *Client* em vez de um usuário. Para este cenário, esquemas de autenticação típicos como nome de usuário + senha ou logins sociais não fazem sentido.
+Com aplicativos machine-to-machine (M2M), como serviços em execução no *back-end*, o sistema autentica e autoriza o *Client* em vez de um usuário. Para este cenário, esquemas de autenticação típicos como nome de usuário + senha ou logins sociais não fazem sentido.
 
-Em vez disso, as aplicações M2M usam o fluxo  *Client* Credentials utilizando mTLS (definido em <a href='https://tools.ietf.org/html/rfc8705'target="_blank">OAuth 2.0 Mutual-TLS *Client* Authentication and Certificate-Bound RFC 8705)</a> e infraestrutura de chave pública (PKI). No qual o *Client*, o Authorization Server e o Servidor API são autenticados usando certificados X.509. O Access Token também é vinculado ao *Client* e validado utilizando certificados X.509.
+Em vez disso, as aplicações M2M usam o fluxo  *Client* *Credentials* utilizando mTLS (definido em <a href='https://tools.ietf.org/html/rfc8705'target="_blank">OAuth 2.0 Mutual-TLS *Client* *Authentication and Certificate-Bound* RFC 8705)</a> e infraestrutura de chave pública (PKI). No qual o *Client*, o *Authorization Server* e o Servidor API são autenticados usando certificados X.509. O *Access Token* também é vinculado ao *Client* e validado utilizando certificados X.509.
 
-Este método acrescenta uma restrição com chave de confirmação (ou prova de posse) ao *Client* que deseja utilizar um token emitido, com isso ele mitiga a possibilidade de uso abusivo dos Access Tokens Oauth tradicionais em caso de vazamento.
+Este método acrescenta uma restrição com chave de confirmação (ou prova de posse) ao *Client* que deseja utilizar um token emitido, com isso ele mitiga a possibilidade de uso abusivo dos *Access Tokens* Oauth tradicionais em caso de vazamento.
 
 <img class='lazy' src='images/loading.gif' data-src='images/security/Client_Credentials.png'/>
 
 Diagrama – Fluxo de credenciais do *client*.
 
-1.	O *client* e o servidor de autenticação estabelecem uma conexão mTLS, e o *Client* solicita um Access Token.
-2.	O Servidor de Autenticação gera uma impressão digital SHA-256 do certificado do *Client* e a incorpora em um Access Token JWT. Isto limita o Access Token ao *Client*.
-3.	O servidor de autenticação emite o Access Token como uma resposta ao *Client*.
-4.	Os *Clients* fazem uma solicitação de recursos ao Servidor API usando o Access Token.
-5.	O Servidor de API solicita ao Authorization Server que valide o Access Token.
-6.	O Servidor API usa a impressão digital embutida para validar o Access Token.
+1.	O *client* e o servidor de autenticação estabelecem uma conexão mTLS, e o *Client* solicita um *Access Token*.
+2.	O Servidor de Autenticação gera uma impressão digital SHA-256 do certificado do *Client* e a incorpora em um Access Token JWT. Isto limita o *Access Token* ao *Client*.
+3.	O servidor de autenticação emite o *Access Token* como uma resposta ao *Client*.
+4.	Os *Clients* fazem uma solicitação de recursos ao Servidor API usando o *Access Token*.
+5.	O Servidor de API solicita ao *Authorization Server* que valide o *Access Token*.
+6.	O Servidor API usa a impressão digital embutida para validar o *Access Token*.
 7.	O Servidor de Autenticação retorna o resultado da validação do token.
 8.	O Servidor API responde com o recurso solicitado.
 
 
-Conforme definido na Seção 6.1 do RFC8705, os endpoints utilizados para emissão e validação de tokens que requerem uma conexão mTLS são endpoints convencionais separados por hostname ou porta diferente.
+Conforme definido na Seção 6.1 do RFC8705, os *endpoints* utilizados para emissão e validação de tokens que requerem uma conexão mTLS são *endpoints* convencionais separados por *hostname* ou porta diferente.
 
-### Fluxo do Authorization Code
+### Fluxo do *Authorization Code*
     
-No Fluxo do Authorization Code, o *Client* pode recuperar um Access Token e, opcionalmente, um Refresh Token. É considerada a escolha mais segura, pois o Access Token é passado diretamente para o servidor que hospeda o *Client*, sem passar pelo navegador do usuário e correr o risco de exposição.
+No Fluxo do *Authorization Code*, o *Client* pode recuperar um *Access Token* e, opcionalmente, um *Refresh Token*. É considerada a escolha mais segura, pois o *Access Token* é passado diretamente para o servidor que hospeda o *Client*, sem passar pelo navegador do usuário e correr o risco de exposição.
 
-Como os *Clients* são aplicativos do lado do servidor em que o código-fonte não é exposto publicamente, eles podem usar o fluxo do Authorization Code (definido no OAuth 2.0  <a href='https://tools.ietf.org/html/rfc6749#section-4.1'target="_blank">[RFC 6749]</a>, seção 4.1 ), que troca um Authorization Code por um token. Seu *Client* deve estar no lado do servidor, porque durante essa troca, você também deve passar adiante o *client* secret do seu *Client*, que deve ser mantido sempre seguro, e deve armazená-lo em seu *client*.
+Como os *Clients* são aplicativos do lado do servidor em que o código-fonte não é exposto publicamente, eles podem usar o fluxo do *Authorization Code* (definido no OAuth 2.0  <a href='https://tools.ietf.org/html/rfc6749#section-4.1'target="_blank">[RFC 6749]</a>, seção 4.1 ), que troca um *Authorization Code* por um token. Seu *Client* deve estar no lado do servidor, porque durante essa troca, você também deve passar adiante o *client* *secret* do seu *Client*, que deve ser mantido sempre seguro, e deve armazená-lo em seu *client*.
 
 <img class='lazy' src='images/loading.gif' data-src='images/security/Authorization_code.png'/>
 
 Diagrama - Fluxo do código de autorização.
 
-1.	O usuário clica em Login no *Client*.
-2.	O *client* redireciona o usuário para o Authorization Server. 
-3.	O Authorization Server redireciona o usuário para o prompt de login e autorização.
+1.	O usuário clica em *Login* no *Client*.
+2.	O *client* redireciona o usuário para o *Authorization Server*. 
+3.	O *Authorization Server* redireciona o usuário para o *prompt* de *login* e autorização.
 4.	O usuário se autentica usando uma das opções de login configuradas e verá uma página de consentimento listando as permissões que o Autorizador dará ao *Client*.
-5.	O Authorization Server redireciona o usuário de volta ao *client* com um Authorization Code, que é válido para um uso.
+5.	*O Authorization Server* redireciona o usuário de volta ao *client* com um *Authorization Code*, que é válido para um uso.
 6.	O *client* envia esse código para o Authorization Server junto com o  *Client* ID e o *client* secret do *Client*.
-7.	O Authorization Server verifica o código, o *Client* ID e o *client* secret do *client*.
-8.	O Authorization Server responde com um ID Token e um Access Token (e, opcionalmente, um Refresh Token).
-9.	O *Client* usa o Access Token para chamar uma API para acessar informações sobre o usuário.
+7.	O *Authorization Server* verifica o código, o *Client* ID e o *client* *secret* do *client*.
+8.	O *Authorization Server* responde com um *ID Token* e um *Access Token* (e, opcionalmente, um *Refresh Token*).
+9.	O *Client* usa o *Access Token* para chamar uma API para acessar informações sobre o usuário.
 10.	A API responde com os dados solicitados.
