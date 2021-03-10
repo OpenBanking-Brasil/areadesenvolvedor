@@ -8,14 +8,26 @@ required:
   - type
   - amount
   - transactionDate
-  - payer
+  - payerCnpjCpf
   - payeeCnpjCpf
   - payerCheckDigit
   - payerNumber
   - payerBranchCode
   - payerCompeCode
   - payerPersonType
+  - accountID
+  - payeePersonType
+  - payeeCompeCode
+  - payeeBranchCode
+  - payeeNumber
+  - payeeCheckDigit
 properties:
+  accountID:
+    type: string
+    description: Um identificador único e imutável usado para identificar o recurso da conta (depósito à vista, poupapança e de pagamento pré-paga). Este identificador não tem significado para o proprietário da conta
+    pattern: \w*\W*
+    maxLength: 100
+    example: "92792126019929279212650822221989319252576"
   completedAuthorisedPaymentType:
     $ref: ../enum/EnumCompletedAuthorisedPaymentIndicator.yaml
   creditDebitType:
@@ -74,12 +86,12 @@ properties:
     pattern: \w*\W*
     description: Dígito da conta
     example: "4"
-  payer:
+  payerCnpjCpf:
     type: string
     maxLength: 14
     pattern: ^\d{11}$|^\d{14}$|^NA$
     description: |
-      Identificação do Pagador da transação (Preencher com o CPF ou CNPJ, sem formatação)
+      Identificação do Pagador da transação. Número do cadastro nas Receita Federal (Preencher com CPF ou CNPJ sem formatação)
     example: "43908445778"
   payeeCnpjCpf:
     type: string
@@ -89,9 +101,28 @@ properties:
       Identificação do Recebedor da transação. Número do cadastro nas Receita Federal  (Preencher com CPF ou CNPJ sem formatação)
     example: "67890854360"
   payeePersonType:
+    $ref: ../enum/EnumPayeePersonType.yaml
+  payeeCompeCode:
     type: string
-    maxLength: 14
-    pattern: ^\d{11}$|^\d{14}$|^NA$
-    description: |
-      Identificação do Recebedor da transação. Número do cadastro nas Receita Federal  (Preencher com CPF ou CNPJ sem formatação)
-    example: "67890854360"
+    maxLength: 3
+    pattern: \d{3}|^NA$
+    description: Código identificador atribuído pelo Banco Central do Brasil às instituições participantes do STR (Sistema de Transferência de reservas). O Compe (Sistema de Compensação de Cheques e Outros Papéis) é um sistema que identifica e processa as compensações bancárias. Ele é representado por um código de três dígitos que serve como identificador de bancos, sendo assim, cada instituição bancária possui um número exclusivo  
+    example: "001"
+  payeeBranchCode:
+    type: string
+    maxLength: 4
+    pattern: \d{4}|^NA$
+    description: Código da Agência detentora da conta. (Agência é a dependência destinada ao atendimento aos clientes, ao público em geral e aos associados de cooperativas de crédito, no exercício de atividades da instituição, não podendo ser móvel ou transitória) 
+    example: "6272"
+  payeeNumber:
+    type: string
+    maxLength: 20
+    pattern: ^\d{8,20}$|^NA$
+    description: Número da conta
+    example: "94088392"
+  payeeCheckDigit:
+    type: string
+    maxLength: 1
+    pattern: \w*\W*
+    description: Dígito da conta
+    example: "4"
