@@ -1,6 +1,81 @@
 type: object
+description: Objeto que reúne as informações relativas ao processo de qualificação. Considera-se qualificação as informações que permitam as instituições apreciar, avaliar, caracterizar e classificar o cliente com a finalidade de conhecer o seu perfil de risco e sua capacidade econômico-financeira
 required:
-  - business
+  - requestDateTime
+  - updateDateTime
+  - businessId
+  - economicActivities
+  - informedRevenueFrequency
+  - informedRevenueAmount
+  - informedRevenueCurrency
+  - informedRevenueYear
+  - informedPatrimonyAmount
+  - informedPatrimonyCurrency
+  - informedPatrimoneYear
 properties:
-  business:
-    $ref: ./BusinessQualificationBrand.yaml
+  requestDateTime:
+    type: string
+    pattern: ^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$
+    description: Data e hora da consulta, conforme especificação RFC-3339, formato UTC.
+    maxLength: 20
+    example: "2020-07-21T08:30:00Z"
+  updateDateTime:
+    type: string
+    pattern: ^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$
+    description: Data e hora da atualização do bloco, conforme especificação RFC-3339
+    maxLength: 20
+    example: "2020-07-21T08:30:00Z"
+  businessId:
+    type: string
+    pattern: \w*\W*
+    description: Um identificador único e imutável usado para identificar o recurso cliente pessoa jurídica. Este identificador não tem significado para o cliente que deu o consentimento
+    maxLength: 100
+    example: "578-psd-71md6971kjh-2d414"
+  economicActivities:
+    type: array
+    items:
+      $ref: ./EconomicActivity.yaml
+    minItems: 1
+    description: Lista dos demais códigos relativos às demais atividades econômicas da empresa, segundo padrão CNAE (Classificação Nacional de Atividades Econômicas). De preenchimento obrigatório, se houver
+  informedRevenueFrequency:
+    $ref:  ../enum/EnumInformedRevenueFrequency.yaml
+  informedRevenueAmount:
+    type: number
+    nullable: true
+    description: |
+      Valor do faturamento informado. Expresso em valor monetário com 2 casas decimais. 
+      "O faturamento corresponde à soma das vendas de produtos e/ou serviços em determinado período. Ou seja, é todo o dinheiro que entra no caixa da empresa, a partir da venda de produtos, mercadorias e serviços". 
+    maxLength: 19
+    example: 2500.00
+  informedRevenueCurrency:
+    type: string
+    pattern: ^(\w{3}){1}$
+    maxLength: 3
+    format: CurrencyString
+    description: Moeda referente ao valor da faturamento, segundo modelo ISO-4217.
+    example: "BRL"    
+  informedRevenueYear:
+    type: number
+    description: Ano de referência do Faturamento, conforme especificação RFC-3339
+    maxLength: 4
+    example: 2014
+  informedPatrimonyAmount:
+    type: number
+    nullable: true
+    description: |
+      Valor do patrimônio informado. Expresso em valor monetário com 4 casas decimais.  
+      "Patrimônio é o conjunto de bens vinculado a uma pessoa ou a uma entidade"
+    maxLength: 19
+    example: 200000.00
+  informedPatrimonyCurrency:
+    type: string
+    pattern: ^(\w{3}){1}$
+    maxLength: 3
+    format: CurrencyString
+    description: Moeda referente ao valor do patrimônio, segundo modelo ISO-4217.
+    example: "BRL"
+  informedPatrimoneYear:
+    type: number
+    maxLength: 4
+    description: Ano do Patrimônio, conforme especificação RFC-3339
+    example: 2014
