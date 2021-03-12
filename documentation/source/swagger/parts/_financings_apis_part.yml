@@ -41,6 +41,48 @@ servers:
 tags:
   - name: Financings
 paths:
+  /contracts:
+    get:
+      tags:
+        - Financings
+      summary: Obtém os dados dos contratos de financiamentos
+      description: Método para obter a lista de contratos de empréstimo mantidos pelo cliente na instituição transmissora e para os quais ele tenha fornecido consentimento
+      operationId: getContracts
+      parameters:
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/xFapiAuthDate'
+        - $ref: '#/components/parameters/xFapiCustomerIpAddress'
+        - $ref: '#/components/parameters/xFapiInteractionId'
+        - $ref: '#/components/parameters/xCustomerUserAgent'
+      responses:
+        '200':
+          description: Dados dos contratos de financiamentos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseFinancingsListContract'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      security:
+        - OpenId:
+            - openId
+            - financings
+
+
   /contracts/{contractId}:
     get:
       tags:
@@ -269,6 +311,8 @@ components:
       $ref: ./schemas/financings_apis/FinancingsInstalmentsBank.yaml
     FinancingsInstalmentsData:
       $ref: ./schemas/financings_apis/FinancingsInstalmentsData.yaml
+    FinancingsListContract:
+      $ref: ./schemas/financings_apis/FinancingsListContract.yaml
     FinancingsNonRegulatedCharge:
       $ref: ./schemas/financings_apis/FinancingsNonRegulatedCharge.yaml
     FinancingsPayments:
@@ -293,6 +337,8 @@ components:
       $ref: ./schemas/Meta.yaml
     ResponseError:
       $ref: ./schemas/ResponseError.yaml
+    ResponseFinancingsListContract:
+      $ref: ./schemas/financings_apis/ResponseFinancingsListContract.yaml
     ResponseFinancingsContract:
       $ref: ./schemas/financings_apis/ResponseFinancingsContract.yaml
     ResponseFinancingsInstalments:
