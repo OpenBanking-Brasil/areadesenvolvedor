@@ -1,6 +1,86 @@
 type: object
+description: Conjunto de informações relativas ao processo de qualificação. Considera-se qualificação as informações que permitam as instituições apreciar, avaliar, caracterizar e classificar o cliente com a finalidade de conhecer o seu perfil de risco e sua capacidade econômico-financeira
 required:
-  - brand
+  - requestDateTime
+  - updateDateTime
+  - personalId
+  - informedIncomeFrequency
+  - informedIncomeAmount
+  - informedIncomeCurrency
+  - informedIncomeDate
+  - informedPatrimonyAmount
+  - informedPatrimonyCurrency
+  - informedPatrimonyYear
+  - occupationCode
+  - occupationDescription
 properties:
-  brand:
-    $ref: ./PersonalQualificationBrand.yaml
+  requestDateTime:
+    type: string
+    pattern: ^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$
+    description: Data e hora da consulta, conforme especificação RFC-3339, formato UTC.
+    maxLength: 20
+    example: "2020-07-21T08:30:00Z"
+  updateDateTime:
+    type: string
+    pattern: ^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$
+    description: Data e hora da atualização do bloco, conforme especificação RFC-3339
+    maxLength: 20
+    example: "2020-07-21T08:30:00Z"
+  personalId:
+    type: string
+    pattern: \w*\W*
+    maxLength: 100
+    description: Um identificador único e imutável usado para identificar o recurso cliente pessoa natural. Este identificador não tem significado para o cliente que deu o consentimento
+    example: "578-psd-71md6971kjh-2d414"
+  informedIncomeFrequency:
+    $ref:  ../enum/EnumInformedIncomeFrequency.yaml
+  informedIncomeAmount:
+    type: number
+    nullable: true
+    description: |
+      Valor total da renda informada. Expresso em valor monetário com 4 casas decimais. 
+      "Renda primária indica os montantes a pagar ou a receber em troca do uso temporário de recursos financeiros, trabalho ou ativos não financeiros não produzidos, a saber, remuneração de trabalhadores, renda de investimentos e demais rendas primárias. Fazem parte da primeira a remuneração do trabalho assalariado (salários e ordenados); da segunda, renda de investimento direto, renda de investimento em carteira, renda de outros investimentos e renda de ativos de reserva; e da terceira, tributos sobre a produção e importação, subsídios e aluguéis". Fonte: Banco Central do Brasil – Departamento Econômico
+    maxLength: 19
+    example: 3500.00
+  informedIncomeCurrency:
+    type: string
+    pattern: ^(\w{3}){1}$
+    maxLength: 3
+    format: CurrencyString
+    description: Moeda referente ao valor da renda, segundo modelo ISO-4217.
+    example: "BRL"
+  informedIncomeDate:
+    type: string
+    pattern: ^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$
+    maxLength: 10
+    format: DateString
+    description: Data da renda, conforme especificação RFC-3339. 
+    example: "2020-12-01"
+  informedPatrimonyAmount:
+    type: number
+    nullable: true
+    description: |
+      Valor do patrimônio informado. Expresso em valor monetário com 4 casas decimais.
+      "Patrimônio é o conjunto de bens vinculado a uma pessoa ou a uma entidade".
+    maxLength: 19
+    example: 50000.00
+  informedPatrimonyCurrency:
+    type: string
+    pattern: ^(\w{3}){1}$
+    maxLength: 3
+    format: CurrencyString
+    description: Moeda referente ao valor do patrimônio, segundo modelo ISO-4217.
+    example: "BRL"
+  informedPatrimonyYear:
+    type: number
+    maxLength: 4
+    description: Ano de referência do Patrimônio, conforme especificação RFC-3339.
+    example: 2010
+  occupationCode:
+    $ref:  ../enum/EnumOccupationMainCodeType.yaml
+  occupationDescription:
+    type: string
+    pattern: \w*\W*
+    maxLength: 100
+    description: Campo livre, de preenchimento obrigatório. Traz o código da ocupação ou o descritivo da ocupação, se selecionada a opção 'OUTRO'
+    example: "01"
