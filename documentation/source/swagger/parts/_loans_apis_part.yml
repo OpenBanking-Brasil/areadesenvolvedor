@@ -21,6 +21,47 @@ servers:
 tags:
   - name: Loans
 paths:
+  /contracts:
+    get:
+      tags:
+        - Loans
+      summary: Conjunto de informações  de contratos de empréstimo mantidos pelo cliente na instituição transmissora e para os quais ele tenha fornecido consentimento
+      description: Método para obter a lista de contratos de empréstimo mantidos pelo cliente na instituição transmissora e para os quais ele tenha fornecido consentimento
+      operationId: getContracts
+      parameters:
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/xFapiAuthDate'
+        - $ref: '#/components/parameters/xFapiCustomerIpAddress'
+        - $ref: '#/components/parameters/xFapiInteractionId'
+        - $ref: '#/components/parameters/xCustomerUserAgent'
+      responses:
+        '200':
+          description: Dados dos contratos de empréstimos obtidos com sucesso.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseLoansListContract'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      security:
+        - OpenId:
+            - openId
+            - loans
+
   /contracts/{contractId}:
     get:
       tags:
@@ -253,6 +294,8 @@ components:
       $ref: ./schemas/loans_apis/LoansInstalmentsBank.yaml
     LoansInstalmentsData:
       $ref: ./schemas/loans_apis/LoansInstalmentsData.yaml
+    LoansListContract:
+      $ref: ./schemas/loans_apis/LoansListContract.yaml
     LoansNonRegulatedCharge:
       $ref: ./schemas/loans_apis/LoansNonRegulatedCharge.yaml
     LoansPayments:
@@ -275,6 +318,8 @@ components:
       $ref: ./schemas/Meta.yaml
     ResponseError:
       $ref: ./schemas/ResponseError.yaml
+    ResponseLoansListContract:
+      $ref: ./schemas/loans_apis/ResponseLoansListContract.yaml
     ResponseLoansContract:
       $ref: ./schemas/loans_apis/ResponseLoansContract.yaml
     ResponseLoansInstalments:
