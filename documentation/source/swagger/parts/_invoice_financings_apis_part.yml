@@ -2,28 +2,28 @@
 info:
   title: API Invoice-financings - Open Banking Brasil
   description: |
-    API de informações de operações de antecipação de recebíveis do Open Banking Brasil – Fase 2.  
+    API de informações de operações de antecipação de recebíveis do Open Banking Brasil – Fase 2.
     API que retorna informações de operações de crédito do tipo antecipação de recebíveis – direitos creditórios descontados - mantidas nas instituições transmissoras por seus clientes, incluindo dados como denominação, modalidade, número do contrato, tarifas, prazo, prestações, pagamentos, amortizações, garantias, encargos e taxas de juros remuneratórios.\
     Não possui segregação entre pessoa natural e pessoa jurídica.\
     Requer consentimento do cliente para todos os `endpoints`.
-    
+
     # Permissions necessárias para a API Invoice-financings
 
-    Para cada um dos paths desta API, além dos escopos (`scopes`) indicados existem `permissions` que deverão ser observadas: 
-     
+    Para cada um dos paths desta API, além dos escopos (`scopes`) indicados existem `permissions` que deverão ser observadas:
+
     ### `/contracts`
       - permissions:
         - GET: **invoice-financings.read**
     ### `/contracts/{contractId}`
       - permissions: **invoice-financings.read**
-    ### `/contracts/{contractId}/warranties` 
-      - permissions: 
-        - GET: **invoice-financings.warranties.read**   
+    ### `/contracts/{contractId}/warranties`
+      - permissions:
+        - GET: **invoice-financings.warranties.read**
     ### `/contracts/{contractId}/instalments`
-      - permissions: 
+      - permissions:
         - GET: **invoice-financings.instalments.read**
     ### `/contracts/{contractId}/payments`
-      - permissions: 
+      - permissions:
         - GET: **invoice-financings.payments.read**
   version: 1.0.0
   license:
@@ -41,6 +41,47 @@ servers:
 tags:
   - name: Invoice Financings
 paths:
+  /contracts:
+    get:
+      tags:
+        - Invoice Financings
+      summary: Obtém os dados dos contratos de antecipação de recebíveis
+      description: Método para obter os dados dos contratos de antecipação de recebíveis mantidos pelos clientes na instituição transmissora
+      operationId: getContracts
+      parameters:
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/xFapiAuthDate'
+        - $ref: '#/components/parameters/xFapiCustomerIpAddress'
+        - $ref: '#/components/parameters/xFapiInteractionId'
+        - $ref: '#/components/parameters/xCustomerUserAgent'
+      responses:
+        '200':
+          description: Dados dos contratos de antecipação de recebíveis
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseInvoiceFinancingsListContract'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      security:
+        - OpenId:
+            - openId
+            - invoice-financings
+
   /contracts/{contractId}:
     get:
       tags:
@@ -267,28 +308,18 @@ components:
       $ref: ./schemas/invoice_financings_apis/InvoiceFinancingsBalloonPayment.yaml
     InvoiceFinancingsInstalments:
       $ref: ./schemas/invoice_financings_apis/InvoiceFinancingsInstalments.yaml
-    InvoiceFinancingsInstalmentsBank:
-      $ref: ./schemas/invoice_financings_apis/InvoiceFinancingsInstalmentsBank.yaml
-    InvoiceFinancingsInstalmentsData:
-      $ref: ./schemas/invoice_financings_apis/InvoiceFinancingsInstalmentsData.yaml
+    InvoiceFinancingsListContract:
+      $ref: ./schemas/invoice_financings_apis/InvoiceFinancingsListContract.yaml
     InvoiceFinancingsNonRegulatedCharge:
       $ref: ./schemas/invoice_financings_apis/InvoiceFinancingsNonRegulatedCharge.yaml
     InvoiceFinancingsPayments:
       $ref: ./schemas/invoice_financings_apis/InvoiceFinancingsPayments.yaml
-    InvoiceFinancingsPaymentBank:
-      $ref: ./schemas/invoice_financings_apis/InvoiceFinancingsPaymentBank.yaml
-    InvoiceFinancingsPaymentsData:
-      $ref: ./schemas/invoice_financings_apis/InvoiceFinancingsPaymentsData.yaml
     InvoiceFinancingsReleases:
       $ref: ./schemas/invoice_financings_apis/InvoiceFinancingsReleases.yaml
     InvoiceFinancingsTaxesOverParcel:
       $ref: ./schemas/invoice_financings_apis/InvoiceFinancingsTaxesOverParcel.yaml
     InvoiceFinancingsWarranties:
       $ref: ./schemas/invoice_financings_apis/InvoiceFinancingsWarranties.yaml
-    InvoiceFinancingsWarrantiesBank:
-      $ref: ./schemas/invoice_financings_apis/InvoiceFinancingsWarrantiesBank.yaml
-    InvoiceFinancingsWarrantiesData:
-      $ref: ./schemas/invoice_financings_apis/InvoiceFinancingsWarrantiesData.yaml
     Links:
       $ref: ./schemas/Links.yaml
     Meta:
@@ -299,6 +330,8 @@ components:
       $ref: ./schemas/invoice_financings_apis/ResponseInvoiceFinancingsContract.yaml
     ResponseInvoiceFinancingsInstalments:
       $ref: ./schemas/invoice_financings_apis/ResponseInvoiceFinancingsInstalments.yaml
+    ResponseInvoiceFinancingsListContract:
+      $ref: ./schemas/invoice_financings_apis/ResponseInvoiceFinancingsListContract.yaml
     ResponseInvoiceFinancingsPayments:
       $ref: ./schemas/invoice_financings_apis/ResponseInvoiceFinancingsPayments.yaml
     ResponseInvoiceFinancingsWarranties:
