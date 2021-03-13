@@ -2175,6 +2175,81 @@ paths:
             - openId
             - financings
 
+  /unarranged-accounts-overdraft/v1/contracts:
+    get:
+      tags:
+        - API - Operações de Crédito - Adiantamento a Depositantes
+      summary: Adiantamento a Depositantes
+      description: |
+        |Versão|
+        |:-----|
+        |1     |
+
+        ### Visão Geral
+
+        Obtém dados referentes à operação de crédito de Adiantamento a Depositantes
+
+        Tags: [Adiantamento a Depositante (Unarranged Account Overdraft)](#glossarioAdiantamentoDepositante), [Custo Efetivo Total (CET)](#glossarioCET), [Encargo (Charge)](#glossarioEncargo), [Identificador padronizado da operação de crédito – Ipoc Code](#glossarioIPOC), [Indexador (Indexer)](#glossarioIndexador), [Sistema de Amortização Constante (SAC)](#glossarioSAC), [Sistema Francês de Amortização (Price)](#glossarioPrice), [Sociedade de arrendamento mercantil  (SAM)](#glossarioSAM), [Tarifa (Fee)](#glossarioTarifa), [Taxa Efetiva (EffectiveTax)](#glossarioTaxaEfetiva) e [Taxa nominal (NominalTax)](#glossarioTaxaNominal).
+
+        ### Visão de alto de nível das estruturas de dados
+
+        <img class="lazy" src="images/loading.gif" data-src="images/tld/unarranged_accounts_overdraft/TLD_UnarrangedAccOverdraft_List.png"/>
+
+        ### DER - Diagramas de Entidade e Relacionamento
+
+        * DER Conceitual
+
+        <img class="lazy" src="images/loading.gif" data-src="images/der/unarranged_accounts_overdraft/DER_UnarrangedAccOverdraft_List_Conceitual.png"/>
+
+        <a href="images/der/unarranged_accounts_overdraft/DER_UnarrangedAccOverdraft_List_Conceitual.png" target="_blank">Fazer download do DER Conceitual</a>
+
+        * DER Lógico
+
+        <img class="lazy" src="images/loading.gif" data-src="images/der/unarranged_accounts_overdraft/DER_UnarrangedAccountOverdraft_List.png"/>
+
+        <a href="images/der/unarranged_accounts_overdraft/DER_UnarrangedAccountOverdraft_List.png" target="_blank">Fazer download do DER Lógico</a>
+
+        ### Dicionário de dados
+
+        <a href='dictionary/unarranged_accounts_overdraft_contract_list.csv' target="_blank">Fazer download do dicionário de dados</a>
+
+        <a href="dictionary/example/examples_unarranged_accounts_overdraft_contract_list.csv" target="_blank">Fazer download dos exemplos</a>
+
+        ### Especificação em OAS 3.0
+
+        <a href='swagger/swagger_unarranged_accounts_overdraft_apis.yaml'>Download da Especificação (OAS 3.0)</a>
+
+      operationId: "getContracts"
+      parameters:
+        - $ref: "#/components/parameters/Authorization"
+        - $ref: "#/components/parameters/xFapiAuthDate"
+        - $ref: "#/components/parameters/xFapiCustomerIpAddress"
+        - $ref: "#/components/parameters/xFapiInteractionId"
+        - $ref: "#/components/parameters/xCustomerUserAgent"
+      responses:
+        '200':
+          $ref: '#/components/responses/OKResponseUnarrangedAccountOverdraftContracts'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      security:
+        - OpenId:
+            - openId
+            - unarranged-accounts-overdraft
+
   /unarranged-accounts-overdraft/v1/contracts/{contractId}:
     get:
       tags:
@@ -2253,7 +2328,7 @@ paths:
       security:
         - OpenId:
             - openId
-            - financings
+            - unarranged-accounts-overdraft
 
   /unarranged-accounts-overdraft/v1/contracts/{contractId}/warranties:
     get:
@@ -2335,7 +2410,7 @@ paths:
       security:
         - OpenId:
             - openId
-            - financings
+            - unarranged-accounts-overdraft
 
   /unarranged-accounts-overdraft/v1/contracts/{contractId}/payments:
     get:
@@ -3308,6 +3383,8 @@ components:
       $ref: ./schemas/invoice_financings_apis/ResponseInvoiceFinancingsWarranties.yaml
     ResponseUnarrangedAccountOverdraftContract:
       $ref: ./schemas/unarranged_account_overdraft_apis/ResponseUnarrangedAccountOverdraftContract.yaml
+    ResponseUnarrangedAccountOverdraftContracts:
+      $ref: ./schemas/unarranged_account_overdraft_apis/ResponseUnarrangedAccountOverdraftContracts.yaml
     ResponseUnarrangedAccountOverdraftInstalments:
       $ref: ./schemas/unarranged_account_overdraft_apis/ResponseUnarrangedAccountOverdraftInstalments.yaml
     ResponseUnarrangedAccountOverdraftPayments:
@@ -3415,6 +3492,16 @@ components:
       description: O OpenID Connect é uma camada de identidade sobre o protocolo OAuth 2.0, que permite a identificação de um usuário final com base na autenticação realizada por um Authorization Server.
       openIdConnectUrl: "https://authserver.example/.well-known/openid-configuration"
   responses:
+    OKResponseUnarrangedAccountOverdraftContracts:
+        description: Lista de contratos obtida com sucesso.
+        headers:
+          x-fapi-interaction-id:       
+            schema:
+              $ref: ./headers/XFapiInteractionId.yaml
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResponseUnarrangedAccountOverdraftContracts'
     BadRequest:
       $ref: ./responses/BadRequest.yaml
     Forbidden:
