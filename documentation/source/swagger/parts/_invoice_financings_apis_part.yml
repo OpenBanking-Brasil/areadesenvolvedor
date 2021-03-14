@@ -45,8 +45,8 @@ paths:
     get:
       tags:
         - Invoice Financings
-      summary: Obtém os dados dos contratos de antecipação de recebíveis
-      description: Método para obter os dados dos contratos de antecipação de recebíveis mantidos pelos clientes na instituição transmissora
+      summary: Obtém a lista de contratos de financiamento consentidos pelo cliente.
+      description: Método para obter a lista de contratos de financiamento mantidos pelo cliente na instituição transmissora e para os quais ele tenha fornecido consentimento.
       operationId: getContracts
       parameters:
         - $ref: '#/components/parameters/Authorization'
@@ -54,13 +54,11 @@ paths:
         - $ref: '#/components/parameters/xFapiCustomerIpAddress'
         - $ref: '#/components/parameters/xFapiInteractionId'
         - $ref: '#/components/parameters/xCustomerUserAgent'
+        - $ref: "#/components/parameters/page"
+        - $ref: "#/components/parameters/pageSize"
       responses:
         '200':
-          description: Dados dos contratos de antecipação de recebíveis
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResponseInvoiceFinancingsListContract'
+          $ref: '#/components/responses/OKResponseInvoiceFinancingsContractList'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -77,6 +75,8 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/OKResponseInvoiceFinancingsContractList'
       security:
         - OpenId:
             - openId
@@ -308,8 +308,8 @@ components:
       $ref: ./schemas/invoice_financings_apis/InvoiceFinancingsBalloonPayment.yaml
     InvoiceFinancingsInstalments:
       $ref: ./schemas/invoice_financings_apis/InvoiceFinancingsInstalments.yaml
-    InvoiceFinancingsListContract:
-      $ref: ./schemas/invoice_financings_apis/InvoiceFinancingsListContract.yaml
+    InvoiceFinancingsContractData:
+      $ref: ./schemas/invoice_financings_apis/InvoiceFinancingsContractData.yaml
     InvoiceFinancingsNonRegulatedCharge:
       $ref: ./schemas/invoice_financings_apis/InvoiceFinancingsNonRegulatedCharge.yaml
     InvoiceFinancingsPayments:
@@ -330,8 +330,8 @@ components:
       $ref: ./schemas/invoice_financings_apis/ResponseInvoiceFinancingsContract.yaml
     ResponseInvoiceFinancingsInstalments:
       $ref: ./schemas/invoice_financings_apis/ResponseInvoiceFinancingsInstalments.yaml
-    ResponseInvoiceFinancingsListContract:
-      $ref: ./schemas/invoice_financings_apis/ResponseInvoiceFinancingsListContract.yaml
+    ResponseInvoiceFinancingsContractList:
+      $ref: ./schemas/invoice_financings_apis/ResponseInvoiceFinancingsContractList.yaml
     ResponseInvoiceFinancingsPayments:
       $ref: ./schemas/invoice_financings_apis/ResponseInvoiceFinancingsPayments.yaml
     ResponseInvoiceFinancingsWarranties:
@@ -358,6 +358,16 @@ components:
       type: openIdConnect
       openIdConnectUrl: "https://authserver.example/.well-known/openid-configuration"
   responses:
+    OKResponseInvoiceFinancingsContractList:
+        description: Lista de contratos obtida com sucesso.
+        headers:
+          x-fapi-interaction-id:       
+            schema:
+              $ref: ./headers/XFapiInteractionId.yaml
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResponseInvoiceFinancingsContractList'
     BadRequest:
       $ref: ./responses/BadRequest.yaml
     Forbidden:
