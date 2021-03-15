@@ -1,6 +1,7 @@
 type: object
 description: Conjunto de informações referentes à identificação da operação de crédito de adiantamento a depositantes
 required:
+  - contractId
   - ipocCode
   - requestDateTime
   - productName
@@ -15,12 +16,17 @@ required:
   - firstInstalmentDueDate
   - totalNumberOfInstalments
   - paidInstalments
-  - CET
+  - cet
   - amortizationSchedule
   - interestRates
   - contractedFees
   - contractedFinancesCharges
 properties:
+  contractId:
+    type: string
+    description: Um identificador único e imutável usado para identificar o contrato de uma operação de crédito. Este identificador não tem significado para o tomador do crédito
+    maxLength: 100
+    example: "92792126019929279212650822221989319252576"
   ipocCode:
     type: string
     maxLength: 67
@@ -70,7 +76,7 @@ properties:
   contractAmount:
     type: number
     maxLength: 19
-    description: Valor contratado da operação. Expresso em valor monetário com 2 casas decimais
+    description: Valor contratado da operação. Expresso em valor monetário com até 4 casas decimais
     example: 26000.00
   currency:
     type: string
@@ -107,7 +113,7 @@ properties:
     description: Quantidade de prestações pagas. (No caso de modalidades que não possuam parcelas, o número de prestações é igual a zero)
     maxLength: 3
     example: 73
-  CET:
+  cet:
     type: number
     description: |
       CET – Custo Efetivo Total deve ser expresso na forma de taxa percentual anual e   incorpora todos os encargos e despesas incidentes nas operações de crédito (taxa de juro, mas também tarifas, tributos, seguros e outras despesas cobradas).
@@ -121,11 +127,13 @@ properties:
     type: array
     items:
       $ref: ./UnarrangedAccountOverdraftContractInterestRate.yaml
+    minItems: 1
   contractedFees:
     type: array
     items:
       $ref: ./UnarrangedAccountOverdraftContractedFee.yaml
     minItems: 1
+    description: Lista que traz a relação de tarifas pactuadas no contrato
   contractedFinancesCharges:
     type: array
     description: Lista que traz os encargos pactuados no contrato

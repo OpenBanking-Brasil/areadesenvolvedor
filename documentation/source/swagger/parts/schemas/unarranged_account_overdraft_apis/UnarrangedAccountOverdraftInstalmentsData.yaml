@@ -1,7 +1,51 @@
 type: object
+description: Conjunto de informações referentes ao prazo remanescente e às parcelas de uma operação de crédito de adiantamento a depositante
 required:
-  - unarrangedAccountOverdraft
+  - contractId
+  - requestDateTime
+  - contractRemainingDays
+  - dueInstalments
+  - pastDueInstalments
+  - balloonPayment
 properties:
-  unarrangedAccountOverdraft:
-    $ref: ./UnarrangedAccountOverdraftInstalmentsBank.yaml
+  contractId:
+    type: string
+    description: Um identificador único e imutável usado para identificar o contrato de uma operação de crédito. Este identificador não tem significado para o tomador do crédito
+    maxLength: 100
+    example: "92792126019929279212650822221989319252576"
+  requestDateTime:
+    type: string
+    maxLength: 20
+    pattern: ^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$
+    example: "2020-01-05T08:30:00Z"
+    description: Data e hora da consulta, conforme especificação RFC-3339, formato UTC.
+  contractRemainingDays:
+    type: number
+    maxLength: 6
+    description: Prazo Remanescente em dias do contrato referente à Modalidade de Crédito informada
+    example: 57
+  dueInstalments:
+    type: number
+    maxLength: 3
+    description: Quantidade de prestações a vencer. (No caso de modalidades que não possuam parcelas, o número de prestações é igual a zero)
+    example: 57
+  pastDueInstalments:
+    type: number
+    maxLength: 3
+    description: Quantidade de prestações vencidas. (No caso de modalidades que não possuam parcelas, o número de prestações é igual a zero)
+    example: 73
+  currency:
+    type: string
+    pattern: ^(\w{3}){1}$
+    maxLength: 3
+    format: CurrencyString
+    description: | 
+      Moeda referente ao valor monetário informado, segundo modelo ISO-4217. p.ex. 'BRL' 
+      Todos os valores monetários informados estão representados com a moeda vigente do Brasil
+  balloonPayments:
+    type: array
+    items:
+      $ref: ./UnarrangedAccountOverdraftBalloonPayment.yaml
+    minItems: 1
+    description: Lista que traz as datas de vencimento e valor das parcelas não regulares  do contrato da modalidade de crédito consultada
 additionalProperties: false
