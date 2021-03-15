@@ -1,30 +1,121 @@
 type: object
-description: |
-  Conjunto de informações das Contas de: depósito à vista, poupança e de pagamento pré-paga
 required:
-  - accountId
-  - transactions
-  - requestDateTime
+  - completedAuthorisedPaymentType
+  - creditDebitType
+  - transactionIdentification
+  - type
+  - amount
+  - transactionDate
+  - payerCnpjCpf
+  - payerPersonType
+  - payerCompeCode
+  - payerBranchCode
+  - payerNumber
+  - payerCheckDigit
+  - payeeCnpjCpf
+  - payeePersonType
+  - payeeCompeCode
+  - payeeBranchCode
+  - payeeNumber
+  - payeeCheckDigit
 properties:
-  accountId:
+  completedAuthorisedPaymentType:
+    $ref: ../enum/EnumCompletedAuthorisedPaymentIndicator.yaml
+  creditDebitType:
+    $ref: ../enum/EnumCreditDebitIndicator.yaml
+  transactionIdentification:
     type: string
-    description: Um identificador único e imutável usado para identificar o recurso do contrato da operação de crédito. Este identificador não tem significado para oproprietário da conta
+    maxLength: 60
     pattern: \w*\W*
-    maxLength: 100
-    example: "92792126019929279212650822221989319252576"
-  requestDateTime:
+    description: Campo livre que corresponde ao identificador da transação na instituição financeira
+    example: "TRANSFCWAR5TXHCX5I9IDBHML8082N8NEO30M6LNNG7ANAYIJYRM00ZBZPU8"
+  type:
+    $ref: ../enum/EnumTransactionTypes.yaml
+  additionalInfo:
+    type: string
+    maxLength: 60
+    pattern: \w*\W*
+    description: |
+      Campo livre, de preenchimento obrigatório para complementar informação, quando selecionado o tipo de transação: OUTRO
+    example: "Transferência"
+  amount:
+    type: number
+    description: Valor da transação. Expressa em valor monetário com 4 casas decimais.
+    maxLength: 19
+    example: 500.54
+  transactionDate:
+    type: string
+    maxLength: 10
+    pattern: ^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$
+    description: |
+      Se indicador de transação:
+      TRANSACAO_EFETIVADA - corresponde a data de lançamento da transação
+      LANCAMENTO_FUTURO - corresponde a data prevista de efetivação da transação
+    example: "2021-01-07"
+  payerCnpjCpf:
+    type: string
+    maxLength: 14
+    pattern: ^\d{11}$|^\d{14}$|^NA$
+    description: |
+      Identificação do Pagador da transação (Preencher com o CPF ou CNPJ, sem formatação)
+    example: "43908445778"
+  payerPersonType:
+    $ref: ../enum/EnumPayerPersonType.yaml
+  payerCompeCode:
+    type: string
+    maxLength: 3
+    pattern: \d{3}|^NA$
+    description: Código identificador atribuído pelo Banco Central do Brasil às instituições participantes do STR (Sistema de Transferência de reservas) referente ao Pagador da transação. O número-código substituiu o antigo código COMPE. Todos os participantes do STR, exceto as Infraestruturas do Mercado Financeiro (IMF) e a Secretaria do Tesouro Nacional, possuem um número-código independentemente de participarem da Centralizadora da Compensação de Cheques (Compe). O campo tem a anotação “n/a” (“não se aplica”) para os participantes do STR aos quais não é atribuído um número-código
+    example: "001"
+  payerBranchCode:
+    type: string
+    maxLength: 4
+    pattern: \d{4}|^NA$
+    description: Código da Agência detentora da conta do Pagador. (Agência é a dependência destinada ao atendimento aos clientes, ao público em geral e aos associados de cooperativas de crédito, no exercício de atividades da instituição, não podendo ser móvel ou transitória)
+    example: "6272"
+  payerNumber:
     type: string
     maxLength: 20
-    pattern: ^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$
-    example: '2020-07-21T08:30:00Z'
-    description: Data e hora da consulta, conforme especificação RFC-3339, formato UTC.
-  currency:
+    pattern: ^\d{8,20}$|^NA$
+    description: Número da conta do Pagador
+    example: "94088392"
+  payerCheckDigit:
     type: string
-    pattern: ^(\w{3}){1}$
+    maxLength: 1
+    pattern: \w*\W*
+    description: Dígito da conta do Pagador
+    example: "4"
+  payeeCnpjCpf:
+    type: string
+    maxLength: 14
+    pattern: ^\d{11}$|^\d{14}$|^NA$
+    description: |
+      Identificação do Recebedor da transação (Preencher com o CPF ou CNPJ, sem formatação)
+    example: "67890854360"
+  payeePersonType:
+    $ref: ../enum/EnumPayeePersonType.yaml
+  payeeCompeCode:
+    type: string
     maxLength: 3
-    format: CurrencyString
-    description: Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217
-    example: "BRL"
-  transactions:
-    $ref: ./Transaction.yaml
+    pattern: \d{3}|^NA$
+    description: Código identificador atribuído pelo Banco Central do Brasil às instituições participantes do STR (Sistema de Transferência de reservas) referente ao Recebedor da transação. O número-código substituiu o antigo código COMPE. Todos os participantes do STR, exceto as Infraestruturas do Mercado Financeiro (IMF) e a Secretaria do Tesouro Nacional, possuem um número-código independentemente de participarem da Centralizadora da Compensação de Cheques (Compe). O campo tem a anotação “n/a” (“não se aplica”) para os participantes do STR aos quais não é atribuído um número-código
+    example: "001"
+  payeeBranchCode:
+    type: string
+    maxLength: 4
+    pattern: \d{4}|^NA$
+    description: Código da Agência detentora da conta do Recebedor. (Agência é a dependência destinada ao atendimento aos clientes, ao público em geral e aos associados de cooperativas de crédito, no exercício de atividades da instituição, não podendo ser móvel ou transitória)
+    example: "6272"
+  payeeNumber:
+    type: string
+    maxLength: 20
+    pattern: ^\d{8,20}$|^NA$
+    description: Número da conta do Recebedor
+    example: "94088392"
+  payeeCheckDigit:
+    type: string
+    maxLength: 1
+    pattern: \w*\W*
+    description: Dígito da conta do Recebedor
+    example: "4"
 additionalProperties: false

@@ -41,6 +41,48 @@ servers:
 tags:
   - name: Unarranged Accounts Overdraft
 paths:
+
+  /contracts:
+    get:
+      tags:
+        - Unarranged Accounts Overdraft
+      summary: Obtém a lista de contratos de adiantamento a depositantes consentidos pelo cliente.
+      description: Método para obter a lista de contratos de adiantamento a depositantes mantidos pelo cliente na instituição transmissora e para os quais ele tenha fornecido consentimento.
+      operationId: getContracts
+      parameters:
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/xFapiAuthDate'
+        - $ref: '#/components/parameters/xFapiCustomerIpAddress'
+        - $ref: '#/components/parameters/xFapiInteractionId'
+        - $ref: '#/components/parameters/xCustomerUserAgent'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'    
+      responses:
+        '200':
+          $ref: '#/components/responses/OKResponseUnarrangedAccountOverdraftContractList'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/OKResponseUnarrangedAccountOverdraftContractList'
+      security:
+        - OpenId:
+            - openId
+            - unarranged-accounts-overdraft
+
   /contracts/{contractId}:
     get:
       tags:
@@ -251,6 +293,8 @@ components:
       $ref: ./schemas/ResponseError.yaml
     ResponseUnarrangedAccountOverdraftContract:
       $ref: ./schemas/unarranged_account_overdraft_apis/ResponseUnarrangedAccountOverdraftContract.yaml
+    ResponseUnarrangedAccountOverdraftContractList:
+      $ref: ./schemas/unarranged_account_overdraft_apis/ResponseUnarrangedAccountOverdraftContractList.yaml
     ResponseUnarrangedAccountOverdraftInstalments:
       $ref: ./schemas/unarranged_account_overdraft_apis/ResponseUnarrangedAccountOverdraftInstalments.yaml
     ResponseUnarrangedAccountOverdraftPayments:
@@ -259,6 +303,8 @@ components:
       $ref: ./schemas/unarranged_account_overdraft_apis/ResponseUnarrangedAccountOverdraftWarranties.yaml
     UnarrangedAccountOverdraftContract:
       $ref: ./schemas/unarranged_account_overdraft_apis/UnarrangedAccountOverdraftContract.yaml
+    UnarrangedAccountOverdraftData:
+      $ref: ./schemas/unarranged_account_overdraft_apis/UnarrangedAccountOverdraftData.yaml
     UnarrangedAccountOverdraftContractedFee:
       $ref: ./schemas/unarranged_account_overdraft_apis/UnarrangedAccountOverdraftContractedFee.yaml
     UnarrangedAccountOverdraftFinanceCharge:
@@ -287,6 +333,16 @@ components:
       type: openIdConnect
       openIdConnectUrl: "https://authserver.example/.well-known/openid-configuration"
   responses:
+    OKResponseUnarrangedAccountOverdraftContractList:
+        description: Lista de contratos obtida com sucesso.
+        headers:
+          x-fapi-interaction-id:       
+            schema:
+              $ref: ./headers/XFapiInteractionId.yaml
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResponseUnarrangedAccountOverdraftContractList'
     BadRequest:
       $ref: ./responses/BadRequest.yaml
     Forbidden:
