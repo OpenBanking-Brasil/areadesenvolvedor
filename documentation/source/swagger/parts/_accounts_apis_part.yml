@@ -1,14 +1,36 @@
 ﻿openapi: 3.0.0
 info:
-  title: API de contas de depósito à vista, poupança e contas pré-pagas do Open Banking Brasil – Fase 2.
+  title: API Accounts - Open Banking Brasil
   description: |
-    API que retorna informações de contas de depósito à vista, contas de poupança e contas de pagamento pré-pagas mantidas nas instituições transmissoras por seus clientes, incluindo dados de identificação da conta, saldos, limites e transações.\
+    API de contas de depósito à vista, contas de poupança e contas pré-pagas do Open Banking Brasil – Fase 2.
+    API que retorna informações de contas de depósito à vista, contas de poupança e contas de pagamento pré-pagas mantidas nas instituições transmissoras por seus clientes,
+    incluindo dados de identificação da conta, saldos, limites e transações.\
     Não possui segregação entre pessoa natural e pessoa jurídica.\
-    Requer consentimento do cliente para todos os endpoints.
+    Requer consentimento do cliente para todos os `endpoints`.
+
+    # Permissions necessárias para a API Accounts
+
+    Para cada um dos paths desta API, além dos escopos (`scopes`) indicados existem `permissions` que deverão ser observadas:
+
+    ### `/accounts`
+      - permissions:
+        - GET: **accounts.read**
+    ### `/accounts/{accountId}`
+      - permissions:
+        - GET: **accounts.read**
+    ### `/accounts/{accountId}/balances`
+      - permissions:
+        - GET: **accounts.balances.read**
+    ### `/accounts/{accountId}/transactions`
+      - permissions:
+        - GET: **accounts.transactions.read**
+    ### `/accounts/{accountId}/overdraft-limits`
+      - permissions:
+        - GET: **accounts.overdfraft.limits.read**
   version: 1.0.0
   license:
     name: Apache 2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
   contact:
     name: Governança do Open Banking Brasil – Interfaces
     email: gt-interfaces@openbankingbr.org
@@ -19,6 +41,7 @@ servers:
   - url: 'https://apih.banco.com.br/open-banking/accounts/v1'
     description: Servidor de Homologação
 tags:
+  - name: Accounts
   - name: Accounts Identification
   - name: Accounts Balances
   - name: Accounts Transactions
@@ -27,7 +50,7 @@ paths:
   /accounts:
     get:
       tags:
-        - Accounts Identification
+        - Accounts
       summary: Obtém a lista de contas consentidas pelo cliente.
       description: Método para obter a lista de contas depósito à vista, poupança e pagamento pré-pagas mantidas pelo cliente na instituição transmissora e para as quais ele tenha fornecido consentimento.
       operationId: getAccounts
@@ -39,13 +62,10 @@ paths:
         - $ref: '#/components/parameters/xCustomerUserAgent'
         - $ref: '#/components/parameters/page'
         - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/accountType'
       responses:
-        "200":
-          description: Dados de identificação das contas obtidos com sucesso.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ResponseAccount"
+        '200':
+          $ref: '#/components/responses/OKResponseAccountList'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -62,6 +82,8 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/OKResponseAccountList'
       security:
         - OpenId:
             - openId
@@ -82,12 +104,8 @@ paths:
         - $ref: '#/components/parameters/xCustomerUserAgent'
         - $ref: '#/components/parameters/accountId'
       responses:
-        "200":
-          description: Dados de identificação da conta identificada por accountId obtidos com sucesso.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ResponseAccountIdentification"
+        '200':
+          $ref: '#/components/responses/OKResponseAccountIdentification'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -104,6 +122,8 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/OKResponseAccountIdentification'
       security:
         - OpenId:
             - openId
@@ -128,12 +148,8 @@ paths:
         - $ref: '#/components/parameters/accountsNumber'
         - $ref: '#/components/parameters/accountsCheckDigit'
       responses:
-        "200":
-          description: Dados relativos aos saldos da conta identificada por accountId obtidos com sucesso.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ResponseAccountBalances"
+        '200':
+          $ref: '#/components/responses/OKResponseAccountBalances'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -150,6 +166,8 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/OKResponseAccountBalances'
       security:
         - OpenId:
             - openId
@@ -179,12 +197,8 @@ paths:
         - $ref: '#/components/parameters/toBookingDate'
         - $ref: '#/components/parameters/creditDebitIndicator'
       responses:
-        "200":
-          description: Dados da lista de transações da conta identificada por accountId obtidos com sucesso.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ResponseAccountTransactions"
+        '200':
+          $ref: '#/components/responses/OKResponseAccountTransactions'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -201,6 +215,8 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/OKResponseAccountTransactions'
       security:
         - OpenId:
             - openId
@@ -225,12 +241,8 @@ paths:
         - $ref: '#/components/parameters/accountsNumber'
         - $ref: '#/components/parameters/accountsCheckDigit'
       responses:
-        "200":
-          description: Dados de limites da conta identificada por accountId obtidos com sucesso.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ResponseAccountOverdraftLimits"
+        '200':
+          $ref: '#/components/responses/OKResponseAccountOverdraftLimits'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -247,6 +259,8 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/OKResponseAccountOverdraftLimits'
       security:
         - OpenId:
             - openId
@@ -254,12 +268,16 @@ paths:
 
 components:
   schemas:
-    Account:
-      $ref: ./schemas/accounts_apis/Account.yaml
-    AccountBrand:
-      $ref: ./schemas/accounts_apis/AccountBrand.yaml
-    Balances:
-      $ref: ./schemas/accounts_apis/Balances.yaml
+    AccountBalancesData:
+      $ref: ./schemas/accounts_apis/AccountBalancesData.yaml
+    AccountData:
+      $ref: ./schemas/accounts_apis/AccountData.yaml
+    AccountIdentificationData:
+      $ref: ./schemas/accounts_apis/AccountIdentificationData.yaml
+    AccountOverdraftLimitsData:
+      $ref: ./schemas/accounts_apis/AccountOverdraftLimitsData.yaml
+    AccountTransactionsData:
+      $ref: ./schemas/accounts_apis/AccountTransactionsData.yaml
     EnumAccountSubType:
       $ref: ./schemas/enum/EnumAccountSubType.yaml
     EnumAccountType:
@@ -278,20 +296,14 @@ components:
       $ref: ./schemas/enum/EnumPayeePersonType.yaml
     EnumTransactionTypes:
       $ref: ./schemas/enum/EnumTransactionTypes.yaml
-    EnumTypeAccount:
-      $ref: ./schemas/enum/EnumTypeAccount.yaml
-    Identification:
-      $ref: ./schemas/accounts_apis/Identification.yaml
     Links:
       $ref: ./schemas/Links.yaml
     Meta:
       $ref: ./schemas/Meta.yaml
-    OverdraftLimits:
-      $ref: ./schemas/accounts_apis/OverdraftLimits.yaml
     OverdraftLimitsBalance:
       $ref: ./schemas/accounts_apis/OverdraftLimitsBalance.yaml
-    ResponseAccount:
-      $ref: ./schemas/accounts_apis/ResponseAccount.yaml
+    ResponseAccountList:
+      $ref: ./schemas/accounts_apis/ResponseAccountList.yaml
     ResponseAccountBalances:
       $ref: ./schemas/accounts_apis/ResponseAccountBalances.yaml
     ResponseAccountIdentification:
@@ -302,8 +314,6 @@ components:
       $ref: ./schemas/accounts_apis/ResponseAccountTransactions.yaml
     ResponseError:
       $ref: ./schemas/ResponseError.yaml
-    Transactions:
-      $ref: ./schemas/accounts_apis/Transactions.yaml
   parameters:
     accountId:
       $ref: ./parameters/AccountId.yaml
@@ -315,6 +325,8 @@ components:
       $ref: ./parameters/AccountsCompeCode.yaml
     accountsNumber:
       $ref: ./parameters/AccountsNumber.yaml
+    accountType:
+      $ref: ./parameters/AccountsType.yaml
     Authorization:
       $ref: ./parameters/Authorization.yaml
     creditDebitIndicator:
@@ -338,8 +350,58 @@ components:
   securitySchemes:
     OpenId:
       type: openIdConnect
-      openIdConnectUrl: "https://authserver.example/.well-known/openid-configuration"
+      openIdConnectUrl: 'https://authserver.example/.well-known/openid-configuration'
   responses:
+    OKResponseAccountList:
+      description: Dados de identificação das contas obtidos com sucesso.
+      headers:
+        x-fapi-interaction-id:
+          schema:
+            $ref: ./headers/XFapiInteractionId.yaml
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ResponseAccountList'
+    OKResponseAccountIdentification:
+      description: Dados de identificação da conta identificada por accountId obtidos com sucesso.
+      headers:
+        x-fapi-interaction-id:
+          schema:
+            $ref: ./headers/XFapiInteractionId.yaml
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ResponseAccountIdentification'
+    OKResponseAccountBalances:
+      description: Dados relativos aos saldos da conta identificada por accountId obtidos com sucesso.
+      headers:
+        x-fapi-interaction-id:
+          schema:
+            $ref: ./headers/XFapiInteractionId.yaml
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ResponseAccountBalances'
+    OKResponseAccountTransactions:
+      description: Dados da lista de transações da conta identificada por accountId obtidos com sucesso.
+      headers:
+        x-fapi-interaction-id:
+          schema:
+            $ref: ./headers/XFapiInteractionId.yaml
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ResponseAccountTransactions'
+    OKResponseAccountOverdraftLimits:
+      description: Dados de limites da conta identificada por accountId obtidos com sucesso.
+      headers:
+        x-fapi-interaction-id:
+          schema:
+            $ref: ./headers/XFapiInteractionId.yaml
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ResponseAccountOverdraftLimits'
     BadRequest:
       $ref: ./responses/BadRequest.yaml
     Forbidden:

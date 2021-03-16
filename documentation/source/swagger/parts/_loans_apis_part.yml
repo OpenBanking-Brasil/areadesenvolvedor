@@ -1,14 +1,34 @@
 ﻿openapi: 3.0.0
 info:
-  title: API de informações de operações de empréstimos do Open Banking Brasil – Fase 2.
+  title: API Loans - Open Banking Brasil
   description: |
+    API de informações de operações de empréstimos do Open Banking Brasil – Fase 2.
     API que retorna informações de operações de crédito do tipo empréstimo, mantidas nas instituições transmissoras por seus clientes, incluindo dados como denominação, modalidade, número do contrato, tarifas, prazo, prestações, pagamentos, amortizações, garantias, encargos e taxas de juros remuneratórios.\
     Não possui segregação entre pessoa natural e pessoa jurídica.\
     Requer consentimento do cliente para todos os `endpoints`.
+
+    # Permissions necessárias para a API Loans
+
+    Para cada um dos paths desta API, além dos escopos (`scopes`) indicados existem `permissions` que deverão ser observadas:
+
+    ### `/contracts`
+      - permissions:
+        - GET: **loans.read**
+    ### `/contracts/{contractId}`
+      - permissions: **loans.read**
+    ### `/contracts/{contractId}/warranties`
+      - permissions:
+        - GET: **loans.warranties.read**
+    ### `/contracts/{contractId}/scheduled-instalments`
+      - permissions:
+        - GET: **loans.scheduled-instalments.read**
+    ### `/contracts/{contractId}/payments`
+      - permissions:
+        - GET: **loans.payments.read**
   version: 1.0.0
   license:
     name: Apache 2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
   contact:
     name: Governança do Open Banking Brasil – Interfaces
     email: gt-interfaces@openbankingbr.org
@@ -21,15 +41,14 @@ servers:
 tags:
   - name: Loans
 paths:
-  /contracts/{contractId}:
+  /contracts:
     get:
       tags:
         - Loans
-      summary: Obtém os dados do contrato de empréstimo identificado por contractId
-      description: Método para obter os dados do contrato de empréstimo identificado por contractId mantido pelo cliente na instituição transmissora
-      operationId: getContractsContractId
+      summary: Conjunto de informações  de contratos de empréstimo mantidos pelo cliente na instituição transmissora e para os quais ele tenha fornecido consentimento
+      description: Método para obter a lista de contratos de empréstimo mantidos pelo cliente na instituição transmissora e para os quais ele tenha fornecido consentimento
+      operationId: getContracts
       parameters:
-        - $ref: '#/components/parameters/contractId'
         - $ref: '#/components/parameters/Authorization'
         - $ref: '#/components/parameters/xFapiAuthDate'
         - $ref: '#/components/parameters/xFapiCustomerIpAddress'
@@ -37,11 +56,7 @@ paths:
         - $ref: '#/components/parameters/xCustomerUserAgent'
       responses:
         '200':
-          description: Dados do contrato de empréstimo identificado por contractId
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResponseLoansContract'
+          $ref: '#/components/responses/OKResponseLoansContractList'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -58,6 +73,48 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/OKResponseLoansContractList'
+      security:
+        - OpenId:
+            - openId
+            - loans
+
+  /contracts/{contractId}:
+    get:
+      tags:
+        - Loans
+      summary: Obtém os dados do contrato de empréstimo identificado por contractId
+      description: Método para obter os dados do contrato de empréstimo identificado por contractId mantido pelo cliente na instituição transmissora
+      operationId: getContractsContractId
+      parameters:
+        - $ref: '#/components/parameters/contractId'
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/xFapiAuthDate'
+        - $ref: '#/components/parameters/xFapiCustomerIpAddress'
+        - $ref: '#/components/parameters/xFapiInteractionId'
+        - $ref: '#/components/parameters/xCustomerUserAgent'
+      responses:
+        '200':
+          $ref: '#/components/responses/OKResponseLoansContract'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/OKResponseLoansContract'
       security:
         - OpenId:
             - openId
@@ -81,11 +138,7 @@ paths:
         - $ref: '#/components/parameters/xCustomerUserAgent'
       responses:
         '200':
-          description: Lista de garantias vinculadas ao contrato de empréstimo identificado por contractId
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResponseLoansWarranties'
+          $ref: '#/components/responses/OKResponseLoansWarranties'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -102,12 +155,14 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/OKResponseLoansWarranties'
       security:
         - OpenId:
             - openId
             - loans
 
-  /contracts/{contractId}/instalments:
+  /contracts/{contractId}/scheduled-instalments:
     get:
       tags:
         - Loans
@@ -125,11 +180,7 @@ paths:
         - $ref: '#/components/parameters/xCustomerUserAgent'
       responses:
         '200':
-          description: Dados do cronograma de parcelas do contrato de empréstimo identificado por contractId
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResponseLoansInstalments'
+          $ref: '#/components/responses/OKResponseLoansInstalments'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -146,6 +197,8 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/OKResponseLoansInstalments'
       security:
         - OpenId:
             - openId
@@ -169,11 +222,7 @@ paths:
         - $ref: '#/components/parameters/xCustomerUserAgent'
       responses:
         '200':
-          description: Dados de pagamentos do contrato de empréstimo identificado por contractId
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResponseLoansPayments'
+          $ref: '#/components/responses/OKResponseLoansPayments'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -190,6 +239,8 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/OKResponseLoansPayments'
       security:
         - OpenId:
             - openId
@@ -197,32 +248,32 @@ paths:
 
 components:
   schemas:
-    EnumBankBorrowingContractAmortizationSchedule:
-      $ref: ./schemas/enum/EnumBankBorrowingContractAmortizationSchedule.yaml
-    EnumBankBorrowingContractCalculation:
-      $ref: ./schemas/enum/EnumBankBorrowingContractCalculation.yaml
-    EnumBankBorrowingContractFeeCharge:
-      $ref: ./schemas/enum/EnumBankBorrowingContractFeeCharge.yaml
-    EnumBankBorrowingContractFeeChargeType:
-      $ref: ./schemas/enum/EnumBankBorrowingContractFeeChargeType.yaml
-    EnumBankBorrowingContractFinanceChargeType:
-      $ref: ./schemas/enum/EnumBankBorrowingContractFinanceChargeType.yaml
-    EnumBankBorrowingContractInstalmentPeriodicity:
-      $ref: ./schemas/enum/EnumBankBorrowingContractInstalmentPeriodicity.yaml
-    EnumBankBorrowingContractInterestRateType:
-      $ref: ./schemas/enum/EnumBankBorrowingContractInterestRateType.yaml
-    EnumBankBorrowingContractReferentialRateIndexerSubType:
-      $ref: ./schemas/enum/EnumBankBorrowingContractReferentialRateIndexerSubType.yaml
-    EnumBankBorrowingContractReferentialRateIndexerType:
-      $ref: ./schemas/enum/EnumBankBorrowingContractReferentialRateIndexerType.yaml
-    EnumBankBorrowingContractTaxPeriodicity:
-      $ref: ./schemas/enum/EnumBankBorrowingContractTaxPeriodicity.yaml
-    EnumBankBorrowingContractTaxType:
-      $ref: ./schemas/enum/EnumBankBorrowingContractTaxType.yaml
-    EnumBankBorrowingWarrantySubType:
-      $ref: ./schemas/enum/EnumBankBorrowingWarrantySubType.yaml
-    EnumBankBorrowingWarrantyType:
-      $ref: ./schemas/enum/EnumBankBorrowingWarrantyType.yaml
+    EnumContractAmortizationScheduled:
+      $ref: ./schemas/enum/EnumContractAmortizationScheduled.yaml
+    EnumContractCalculation:
+      $ref: ./schemas/enum/EnumContractCalculation.yaml
+    EnumContractFeeCharge:
+      $ref: ./schemas/enum/EnumContractFeeCharge.yaml
+    EnumContractFeeChargeType:
+      $ref: ./schemas/enum/EnumContractFeeChargeType.yaml
+    EnumContractFinanceChargeType:
+      $ref: ./schemas/enum/EnumContractFinanceChargeType.yaml
+    EnumContractInstalmentPeriodicity:
+      $ref: ./schemas/enum/EnumContractInstalmentPeriodicity.yaml
+    EnumContractInterestRateType:
+      $ref: ./schemas/enum/EnumContractInterestRateType.yaml
+    EnumContractReferentialRateIndexerSubType:
+      $ref: ./schemas/enum/EnumContractReferentialRateIndexerSubType.yaml
+    EnumContractReferentialRateIndexerType:
+      $ref: ./schemas/enum/EnumContractReferentialRateIndexerType.yaml
+    EnumContractTaxPeriodicity:
+      $ref: ./schemas/enum/EnumContractTaxPeriodicity.yaml
+    EnumContractTaxType:
+      $ref: ./schemas/enum/EnumContractTaxType.yaml
+    EnumWarrantySubType:
+      $ref: ./schemas/enum/EnumWarrantySubType.yaml
+    EnumWarrantyType:
+      $ref: ./schemas/enum/EnumWarrantyType.yaml
     EnumContractProductSubTypeLoans:
       $ref: ./schemas/enum/EnumContractProductSubTypeLoans.yaml
     EnumContractProductTypeLoans:
@@ -231,52 +282,40 @@ components:
       $ref: ./schemas/enum/EnumTaxType.yaml
     Links:
       $ref: ./schemas/Links.yaml
-    LoansBalloonInstalments:
-      $ref: ./schemas/loans_apis/LoansBalloonInstalments.yaml
     LoansBalloonPayment:
       $ref: ./schemas/loans_apis/LoansBalloonPayment.yaml
     LoansContract:
-      $ref: ./schemas/loans_apis/LoansContract.yaml
+      $ref: ./schemas/loans_apis/LoansFinancingsContract.yaml
     LoansContractedFee:
-      $ref: ./schemas/loans_apis/LoansContractedFee.yaml
+      $ref: ./schemas/loans_apis/LoansFinancingsContractedFee.yaml
     LoansContractedWarranty:
-      $ref: ./schemas/loans_apis/LoansContractedWarranty.yaml
+      $ref: ./schemas/loans_apis/LoansFinancingsContractedWarranty.yaml
     LoansContractInterestRate:
-      $ref: ./schemas/loans_apis/LoansContractInterestRate.yaml
+      $ref: ./schemas/loans_apis/LoansFinancingsContractInterestRate.yaml
     LoansChargeOverParcel:
       $ref: ./schemas/loans_apis/LoansChargeOverParcel.yaml
     LoansFinanceCharge:
       $ref: ./schemas/loans_apis/LoansFinanceCharge.yaml
     LoansInstalments:
       $ref: ./schemas/loans_apis/LoansInstalments.yaml
-    LoansInstalmentsBank:
-      $ref: ./schemas/loans_apis/LoansInstalmentsBank.yaml
-    LoansInstalmentsData:
-      $ref: ./schemas/loans_apis/LoansInstalmentsData.yaml
-    LoansNonRegulatedCharge:
-      $ref: ./schemas/loans_apis/LoansNonRegulatedCharge.yaml
+    LoansListContract:
+      $ref: ./schemas/loans_apis/LoansListContractData.yaml
     LoansPayments:
       $ref: ./schemas/loans_apis/LoansPayments.yaml
-    LoansPaymentBank:
-      $ref: ./schemas/loans_apis/LoansPaymentBank.yaml
-    LoansPaymentsData:
-      $ref: ./schemas/loans_apis/LoansPaymentsData.yaml
     LoansReleases:
       $ref: ./schemas/loans_apis/LoansReleases.yaml
     LoansTaxesOverParcel:
       $ref: ./schemas/loans_apis/LoansTaxesOverParcel.yaml
     LoansWarranties:
       $ref: ./schemas/loans_apis/LoansWarranties.yaml
-    LoansWarrantiesBank:
-      $ref: ./schemas/loans_apis/LoansWarrantiesBank.yaml
-    LoansWarrantiesData:
-      $ref: ./schemas/loans_apis/LoansWarrantiesData.yaml
     Meta:
       $ref: ./schemas/Meta.yaml
     ResponseError:
       $ref: ./schemas/ResponseError.yaml
+    ResponseLoansContractList:
+      $ref: ./schemas/loans_apis/ResponseLoansContractList.yaml
     ResponseLoansContract:
-      $ref: ./schemas/loans_apis/ResponseLoansContract.yaml
+      $ref: ./schemas/loans_apis/ResponseLoansFinancingsContract.yaml
     ResponseLoansInstalments:
       $ref: ./schemas/loans_apis/ResponseLoansInstalments.yaml
     ResponseLoansPayments:
@@ -303,8 +342,58 @@ components:
   securitySchemes:
     OpenId:
       type: openIdConnect
-      openIdConnectUrl: "https://authserver.example/.well-known/openid-configuration"
+      openIdConnectUrl: 'https://authserver.example/.well-known/openid-configuration'
   responses:
+    OKResponseLoansContractList:
+      description: Dados dos contratos de empréstimos obtidos com sucesso.
+      headers:
+        x-fapi-interaction-id:
+          schema:
+            $ref: ./headers/XFapiInteractionId.yaml
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ResponseLoansContractList"
+    OKResponseLoansContract:
+      description: Dados do contrato de empréstimo identificado por contractId
+      headers:
+        x-fapi-interaction-id:
+          schema:
+            $ref: ./headers/XFapiInteractionId.yaml
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ResponseLoansContract'
+    OKResponseLoansWarranties:
+      description: Lista de garantias vinculadas ao contrato de empréstimo identificado por contractId
+      headers:
+        x-fapi-interaction-id:
+          schema:
+            $ref: ./headers/XFapiInteractionId.yaml
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ResponseLoansWarranties'
+    OKResponseLoansInstalments:
+      description: Dados do cronograma de parcelas do contrato de empréstimo identificado por contractId
+      headers:
+        x-fapi-interaction-id:
+          schema:
+            $ref: ./headers/XFapiInteractionId.yaml
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ResponseLoansInstalments'
+    OKResponseLoansPayments:
+      description: Dados de pagamentos do contrato de empréstimo identificado por contractId
+      headers:
+        x-fapi-interaction-id:
+          schema:
+            $ref: ./headers/XFapiInteractionId.yaml
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ResponseLoansPayments'
     BadRequest:
       $ref: ./responses/BadRequest.yaml
     Forbidden:
