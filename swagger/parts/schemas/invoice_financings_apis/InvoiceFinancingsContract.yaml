@@ -1,6 +1,7 @@
 type: object
 description: Conjunto de informações referentes à identificação da operação de crédito de direitos creditórios descontados
 required:
+  - contractId
   - ipocCode
   - requestDateTime
   - productName
@@ -16,11 +17,16 @@ required:
   - totalNumberOfInstalments
   - paidInstalments
   - CET
-  - amortizationSchedule
+  - amortizationScheduled
   - interestRates
   - contractedFees
-  - contractedFinancesCharges
+  - contractedFinanceCharges
 properties:
+  contractId:
+    type: string
+    description: Um identificador único e imutável usado para identificar o contrato de uma operação de crédito. Este identificador não tem significado para o tomador do crédito
+    maxLength: 100
+    example: "92792126019929279212650822221989319252576"
   ipocCode:
     type: string
     maxLength: 67
@@ -70,7 +76,7 @@ properties:
   contractAmount:
     type: number
     maxLength: 19
-    description: Valor contratado da operação. Expresso em valor monetário com 2 casas decimais
+    description: Valor contratado da operação. Expresso em valor monetário com até 4 casas decimais
     example: 26000.00
   currency:
     type: string
@@ -89,7 +95,7 @@ properties:
     description: Data de vencimento Final da operação. Especificação RFC-3339
     example: '2028-01-15'
   instalmentPeriodicity:
-    $ref: ../enum/EnumBankBorrowingContractInstalmentPeriodicity.yaml
+    $ref: ../enum/EnumContractInstalmentPeriodicity.yaml
   firstInstalmentDueDate:
     type: string
     maxLength: 10
@@ -115,8 +121,8 @@ properties:
       (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)
     maxLength: 19
     example: 0.2900
-  amortizationSchedule:
-    $ref: ../enum/EnumBankBorrowingContractAmortizationSchedule.yaml
+  amortizationScheduled:
+    $ref: ../enum/EnumContractAmortizationScheduled.yaml
   interestRates:
     type: array
     items:
@@ -126,9 +132,16 @@ properties:
     items:
       $ref: ./InvoiceFinancingsContractedFee.yaml
     minItems: 1
-  contractedFinancesCharges:
+  contractedFinanceCharges:
     type: array
     description: Lista que traz os encargos pactuados no contrato
     items:
       $ref: ./InvoiceFinancingsFinanceCharge.yaml
     minItems: 1
+  cnpjConsignee:
+    type: string
+    maxLength: 14
+    pattern: \d{14}
+    description: |
+      CNPJ do consignante (CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica). Deve-se ter apenas os números do CNPJ, sem máscara. Informação adicional específica para Modalidade de Crédito: Empréstimo-Crédito Pessoal Consignado
+additionalProperties: false
