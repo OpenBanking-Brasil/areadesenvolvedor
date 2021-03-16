@@ -296,6 +296,14 @@ components:
           description: Valor utilizado do limite informado Expresso em valor monetário com 4 casas decimais
           maxLength: 19
           example: 2000
+      example:
+        creditLineLimitType: LIMITE_CREDITO_MODALIDADE_OPERACAO
+        consolidationType: INDIVIDUAL
+        lineName: SAQUE_CREDITO_BRASIL
+        limitType: COM_LIMITE
+        limitAmount: 1000
+        avaiableAmount: 600
+        usedAmount: 400
       additionalProperties: false
     CreditCardAccountsBillsData:
       type: object
@@ -344,7 +352,7 @@ components:
           $ref: '#/components/schemas/EnumCreditCardAccountsFinanceChargeType'
         additionalInfo:
           type: string
-          maxLength: 60
+          maxLength: 140
           pattern: \w*\W*
           description: 'Campo livre, de preenchimento obrigatório se selecionado tipo de encargo ''OUTROS'''
         amount:
@@ -441,6 +449,70 @@ components:
           description: Um identificador único e imutável usado para identificar o recurso da conta de pagamento pós paga. Este identificador não tem significado para o proprietário da conta
           maxLength: 100
           example: XXZTR3459087
+      example:
+        brandName: Organização A
+        companyCnpj: '21128159000166'
+        name: Cartão Universitário
+        productType: CLASSIC_NACIONAL
+        creditCardNetwork: VISA
+        creditCardAccountId: XXZTR3459087
+      additionalProperties: false
+    CreditCardsAccountsIdentificationData:
+      type: object
+      description: Conjunto de informações referentes à identificação da conta de pagamento pós-paga.
+      required:
+        - creditCardAccountId
+        - requestDateTime
+        - name
+        - productType
+        - creditCardNetwork
+        - paymentMethod
+      properties:
+        creditCardAccountId:
+          type: string
+          description: Um identificador único e imutável usado para identificar o recurso da conta de pagamento pós paga. Este identificador não tem significado para o proprietário da conta
+          maxLength: 100
+          example: XXZTR3459087
+        requestDateTime:
+          type: string
+          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
+          description: 'Data e hora da consulta, conforme especificação RFC-3339, formato UTC.'
+          maxLength: 20
+          example: '2020-07-21T08:30:00Z'
+        name:
+          type: string
+          pattern: \w*\W*
+          description: |
+            Denominação/Identificação do nome da conta de pagamento pós-paga (cartão). Conforme CIRCULAR Nº 3.680,BCB, 2013: 'conta de pagamento pós-paga: destinada à execução de transações de pagamento que independem do aporte prévio de recursos'.
+          maxLength: 50
+          example: Cartão Universitário
+        productType:
+          $ref: '#/components/schemas/EnumCreditCardAccountsProductType'
+        productAdditionalInfo:
+          type: string
+          pattern: \w*\W*
+          description: Informações complementares se tipo de Cartão 'OUTROS'
+          maxLength: 50
+          example: OURO_INTERNACIONAL
+        creditCardNetwork:
+          $ref: '#/components/schemas/EnumCreditCardAccountNetwork'
+        networkAdditionalInfo:
+          type: string
+          pattern: \w*\W*
+          description: Texto livre para especificar categoria de bandeira marcada como 'OUTRAS'.
+          maxLength: 50
+          example: NA
+        paymentMethod:
+          $ref: '#/components/schemas/CreditCardsAccountPaymentMethod'
+      example:
+        creditCardAccountId: XXZTR3459087
+        requestDateTime: '2020-07-21T08:30:00Z'
+        name: Cartão Universitário
+        productType: CLASSIC_NACIONAL
+        creditCardNetwork: VISA
+        paymentMethod:
+          identificationNumber: 4453
+          isMultipleCreditCard: true
       additionalProperties: false
     CreditCardAccountsLimitsData:
       type: object
@@ -493,8 +565,8 @@ components:
         isMultipleCreditCard:
           type: boolean
           description: |
-            Informa se a conta de Pagamento pós paga é Múltipla. "Cartões denominados múltiplos possuem tanto a função crédito quanto a débito, devendo o proprietário do cartão, no momento de sua utilização, informar se o pagamento é na função crédito (que leva a um pagamento futuro, por meio de uma fatura do cartão de crédito) ou na função débito".
-            Fonte: Tipos de cartão - Banco Central do Brasil www.bcb.gov.br › port › folder_serie_I_tipos_de_cartao
+            Para Pessoa Natural, informa se a conta de Pagamento pós paga é Múltipla. "Cartões denominados múltiplos possuem tanto a função crédito quanto a débito, devendo o proprietário do cartão, no momento de sua utilização, informar se o pagamento é na função crédito (que leva a um pagamento futuro, por meio de uma fatura do cartão de crédito) ou na função débito".
+            Fonte: Tipos de cartão - Banco Central do Brasilwww.bcb.gov.br › port › folder_serie_I_tipos_de_cartao 
           example: true
       additionalProperties: false
     CreditCardAccountsTransaction:
@@ -516,12 +588,12 @@ components:
       properties:
         transactionName:
           type: string
-          maxLength: 100
+          maxLength: 40
           description: Campo de livre preenchimento. Literal usada na instituição financeira para identificar a transação
           example: PGTO
         billIdentification:
           type: string
-          maxLength: 100
+          maxLength: 40
           description: Informação que identifica a fatura onde consta a transação informada.
           example: 3459087XXZTR
         creditDebitType:
@@ -544,7 +616,7 @@ components:
           $ref: '#/components/schemas/EnumCreditCardAccountsOtherCreditType'
         otherCreditsAdditionalInfo:
           type: string
-          maxLength: 50
+          maxLength: 140
           description: 'Campo livre, de preenchimento obrigatório quando selecionado tipo de crédito ''OUTROS'''
         chargeIdentificator:
           type: string
@@ -598,6 +670,21 @@ components:
             O MCC ou o código da categoria do estabelecimento comercial. Os MCCs são agrupados segundo suas similaridades. O MCC é usado para classificar o negócio pelo tipo fornecido de bens ou serviços. Os MCCs são atribuídos por tipo de comerciante (por exemplo, um para hotéis, um para lojas de materiais de escritório, etc.) ou por nome de comerciante (por exemplo, 3000 para a United Airlines).
           maxLength: 4
           example: 5137
+      example:
+        transactionName: PGTO
+        billIdentification: 3459087XXZTR
+        creditDebitType: DEBITO
+        transactionType: PAGAMENTO
+        paymentType: A_VISTA
+        chargeIdentificator: PARCELA_1
+        chargeNumber: 3
+        brazilianAmount: 100.87
+        brazilianCurrency: BRL
+        amount: 0
+        currency: BRL
+        transactionDate: '2021-01-30'
+        billPostDate: '2020-12-30'
+        payeeMCC: 5137
       additionalProperties: false
     CreditCardAccountsTransactionsData:
       type: object
@@ -605,9 +692,7 @@ components:
       required:
         - creditCardAccountId
         - requestDateTime
-        - brandName
-        - companyCnpj
-        - statementCreditCardAccounts
+        - transactions
       properties:
         creditCardAccountId:
           type: string
@@ -656,6 +741,7 @@ components:
     EnumCreditCardAccountsConsolidationType:
       type: string
       description: Indicador que permite informar se o valor do limite é consolidado ou individual.
+      maxLength: 11
       enum:
         - CONSOLIDADO
         - INDIVIDUAL
@@ -698,6 +784,7 @@ components:
       enum:
         - LIMITE_CREDITO_TOTAL
         - LIMITE_CREDITO_MODALIDADE_OPERACAO
+      maxLength: 34
       example: LIMITE_CREDITO_TOTAL
     EnumCreditCardAccountsLineName:
       type: string
@@ -708,6 +795,7 @@ components:
         - SAQUE_CREDITO_EXTERIOR
         - EMPRESTIMO_CARTAO_CONSIGNADO
         - OUTRAS
+      maxLength: 28
       example: CREDITO_A_VISTA
     EnumCreditCardAccountNetwork:
       type: string
@@ -797,7 +885,7 @@ components:
         - ESTORNO
         - CASHBACK
         - OUTROS
-      example: CASHBACK
+      example: PAGAMENTO
     EnumCreditDebitIndicator:
       type: string
       description: |
@@ -808,7 +896,7 @@ components:
       enum:
         - CREDITO
         - DEBITO
-      example: CREDITO
+      example: DEBITO
     Links:
       type: object
       description: Referências para outros recusos da API requisitada.
@@ -934,53 +1022,7 @@ components:
         - meta
       properties:
         data:
-          type: object
-          description: Conjunto de informações referentes à identificação da conta de pagamento pós-paga.
-          required:
-            - creditCardAccountId
-            - requestDateTime
-            - name
-            - productType
-            - creditCardNetwork
-            - paymentMethod
-          properties:
-            creditCardAccountId:
-              type: string
-              description: Um identificador único e imutável usado para identificar o recurso da conta de pagamento pós paga. Este identificador não tem significado para o proprietário da conta
-              maxLength: 100
-              example: XXZTR3459087
-            requestDateTime:
-              type: string
-              pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
-              description: 'Data e hora da consulta, conforme especificação RFC-3339, formato UTC.'
-              maxLength: 20
-              example: '2020-07-21T08:30:00Z'
-            name:
-              type: string
-              pattern: \w*\W*
-              description: |
-                Denominação/Identificação do nome da conta de pagamento pós-paga (cartão). Conforme CIRCULAR Nº 3.680,BCB, 2013: 'conta de pagamento pós-paga: destinada à execução de transações de pagamento que independem do aporte prévio de recursos'.
-              maxLength: 50
-              example: Cartão Universitário
-            productType:
-              $ref: '#/components/schemas/EnumCreditCardAccountsProductType'
-            productAdditionalInfo:
-              type: string
-              pattern: \w*\W*
-              description: Informações complementares se tipo de Cartão 'OUTROS'
-              maxLength: 50
-              example: OURO_INTERNACIONAL
-            creditCardNetwork:
-              $ref: '#/components/schemas/EnumCreditCardAccountNetwork'
-            networkAdditionalInfo:
-              type: string
-              pattern: \w*\W*
-              description: Texto livre para especificar categoria de bandeira marcada como 'OUTRAS'.
-              maxLength: 50
-              example: NA
-            paymentMethod:
-              $ref: '#/components/schemas/CreditCardsAccountPaymentMethod'
-          additionalProperties: false
+          $ref: '#/components/schemas/CreditCardsAccountsIdentificationData'
         links:
           $ref: '#/components/schemas/Links'
         meta:

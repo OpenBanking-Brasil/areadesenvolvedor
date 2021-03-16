@@ -283,13 +283,13 @@ components:
           maxLength: 140
           pattern: \w*\W*
           description: Denominação da Tarifa pactuada
-          example: Excesso em Conta
+          example: Avaliação Bordero Cheques
         feeCode:
           type: string
           maxLength: 140
           pattern: \w*\W*
           description: Sigla identificadora da tarifa pactuada
-          example: EXCESSO_CONTA
+          example: AVALIACAO
         feeChargeType:
           $ref: '#/components/schemas/EnumContractFeeChargeType'
         feeCharge:
@@ -422,7 +422,6 @@ components:
       description: |
         Informação relativa à periodicidade regular das parcelas. (Vide Enum)
         sem periodicidade regular, semanal, quinzenal, mensal, bimestral, trimestral, semestral, anual
-      maxLength: 24
       enum:
         - SEM_PERIODICIDADE_REGULAR
         - SEMANAL
@@ -520,7 +519,7 @@ components:
         - ANTECIPACAO_FATURA_CARTAO_CREDITO
         - OUTROS_DIREITOS_CREDITORIOS_DESCONTADOS
         - OUTROS_TITULOS_DESCONTADOS
-      example: DESCONTO_DUPLICATAS
+      example: DESCONTO_CHEQUES
     EnumContractProductTypeInvoiceFinancings:
       type: string
       description: |
@@ -560,7 +559,7 @@ components:
         - firstInstalmentDueDate
         - totalNumberOfInstalments
         - paidInstalments
-        - CET
+        - cet
         - amortizationScheduled
         - interestRates
         - contractedFees
@@ -598,7 +597,7 @@ components:
           pattern: \w*\W*
           description: |
             Denominação/Identificação do nome da Modalidade da Operação de Crédito divulgado ao cliente
-          example: AD
+          example: Desconto de Cheques
         productType:
           $ref: '#/components/schemas/EnumContractProductTypeInvoiceFinancings'
         productSubType:
@@ -651,13 +650,13 @@ components:
           type: number
           description: Prazo Total em meses do contrato referente à Modalidade de Crédito informada
           maxLength: 3
-          example: 130
+          example: 0
         paidInstalments:
           type: number
           description: 'Quantidade de prestações pagas. (No caso de modalidades que não possuam parcelas, o número de prestações é igual a zero)'
           maxLength: 3
-          example: 73
-        CET:
+          example: 0
+        cet:
           type: number
           description: |
             CET – Custo Efetivo Total deve ser expresso na forma de taxa percentual anual e   incorpora todos os encargos e despesas incidentes nas operações de crédito (taxa de juro, mas também tarifas, tributos, seguros e outras despesas cobradas).
@@ -688,6 +687,44 @@ components:
           pattern: '\d{14}'
           description: |
             CNPJ do consignante (CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica). Deve-se ter apenas os números do CNPJ, sem máscara. Informação adicional específica para Modalidade de Crédito: Empréstimo-Crédito Pessoal Consignado
+      example:
+        contractId: '92792126019929279212650822221989319252576'
+        ipocCode: '92792126019929279212650822221989319252576'
+        requestDateTime: '2020-01-05T08:30:00Z'
+        productName: Desconto de Cheques
+        productType: DIREITOS_CREDITORIOS_DESCONTADOS
+        productSubType: DESCONTO_CHEQUES
+        contractDate: '2018-01-05'
+        disbursementDate: '2018-01-15'
+        contractAmount: 26000
+        currency: BRL
+        dueDate: '2028-01-15'
+        instalmentPeriodicity: SEMANAL
+        firstInstalmentDueDate: '2018-02-15'
+        totalNumberOfInstalments: 0
+        paidInstalments: 0
+        cet: 0.29
+        amortizationScheduled: SEM_SISTEMA_AMORTIZACAO
+        interestRates:
+          - taxType: EFETIVA
+            interestRateType: SIMPLES
+            taxPeriodicity: AA
+            calculation: 21/25
+            referentialRateIndexerType: PRE_FIXADO
+            referentialRateIndexerSubType: TJLP
+            preFixedRate: 0.6
+            postFixedRate: 0.55
+            additionalInfo: ''
+        contractedFees:
+          - feeName: Avaliação Bordero Cheques
+            feeCode: AVALIACAO
+            feeChargeType: UNICA
+            feeCharge: MINIMO
+            feeAmount: 50
+            feeRate: 50
+        contractedFinanceCharges:
+          - chargeType: JUROS_REMUNERATORIOS_POR_ATRASO
+        cnpjConsignee: '60500998000135'
       additionalProperties: false
     InvoiceFinancingsContractedWarranty:
       type: object
@@ -773,13 +810,13 @@ components:
           description: Denominação da Tarifa avulsa paga fora da parcela
           maxLength: 250
           pattern: \w*\W*
-          example: reavaliação periódica do bem
+          example: ''
         feeCode:
           type: string
           description: Sigla identificadora da tarifa avulsa fora da parcela
           maxLength: 140
           pattern: \w*\W*
-          example: aval_bem
+          example: ''
         feePaidDate:
           type: string
           description: Data efetiva do pagamento da tarifa  conforme especificação RFC-3339. p.ex. 2014-03-19
@@ -790,7 +827,7 @@ components:
           type: number
           description: Traz o valor do pagamento da tarifa avulsa fora da parcela. Expresso em valor monetário com 2 casas decimais
           maxLength: 19
-          example: 200
+          example: 0
       additionalProperties: false
     InvoiceFinancingsFinanceCharge:
       type: object
@@ -810,6 +847,8 @@ components:
             Representa o valor do encargo em percentual pactuado no contrato. Exemplo: 0.0210 (=2.1%). Deve-se preencher as 4 casas decimais obrigatoriamente.
           maxLength: 19
           example: 0.07
+      example:
+        chargeType: JUROS_REMUNERATORIOS_POR_ATRASO
       additionalProperties: false
     InvoiceFinancingsBalloonPayment:
       type: object
@@ -905,15 +944,9 @@ components:
           maxLength: 14
           example: '21128159000166'
         productType:
-          type: string
-          description: 'Tipo da modalidade de crédito contratada, conforme  circular 4.015 e descrição do DOC3040 do SCR). (Vide Domínio).'
-          maxLength: 35
-          example: DIREITOS_CREDITORIOS_DESCONTADOS
+          $ref: '#/components/schemas/EnumContractProductTypeInvoiceFinancings'
         productSubType:
-          type: string
-          description: 'Sub tipo da modalidades de crédito de direistos creditórios descontados contratadas, conforme  circular 4.015 e descrição do DOC3040 do SCR). (Vide Domínio). Desconto de duplicatas, Desconto de cheques,  Antecipação da fatura do cartão de crédito, Outros direitos creditórios descontados, Outros títulos descontados'
-          maxLength: 40
-          example: DESCONTO_CHEQUES
+          $ref: '#/components/schemas/EnumContractProductSubTypeInvoiceFinancings'
         ipocCode:
           type: string
           maxLength: 67
@@ -959,13 +992,14 @@ components:
           type: number
           maxLength: 3
           description: Quantidade total de parcelas pagas do contrato referente à Modalidade de Crédito informada
-          example: 73
+          example: 0
         currency:
           type: string
           pattern: '^(\w{3}){1}$'
           maxLength: 3
           format: CurrencyString
           description: 'Moeda referente ao valor monetário informado, segundo modelo ISO-4217. p.ex. ''BRL''. Todos os valores monetários informados estão representados com a moeda vigente do Brasil'
+          example: BRL
         contractOutstandingBalance:
           type: string
           maxLength: 19
@@ -998,13 +1032,13 @@ components:
           description: Texto livre de responsabilidade de cada Instituição transmissora para identificar o pagamento informado
           maxLength: 80
           pattern: \w*\W*
-          example: Parcela regular
+          example: ''
         instalmentId:
           type: string
           description: Texto livre de responsabilidade de cada Instituição transmissora para identificar a parcela informada
           maxLength: 40
           pattern: \w*\W*
-          example: '15'
+          example: ''
         paidDate:
           type: string
           description: 'Traz a data de efetivação do pagamento referente ao contrato da modalidade de crédito consultada, conforme especificação RFC-3339.'
@@ -1015,7 +1049,7 @@ components:
           type: number
           description: Traz o valor do pagamento referente ao  contrato da modalidade de crédito consultada. Expresso em valor monetário com 2 casas decimais
           maxLength: 19
-          example: 200
+          example: 0
       additionalProperties: false
     InvoiceFinancingsTaxesOverParcel:
       type: object
@@ -1031,6 +1065,7 @@ components:
           description: Campo de preenchimento obrigatório se selecionada a opção 'OUTROS' em Tipo de encargo pago fora da parcela
           pattern: \w*\W*
           maxLength: 140
+          example: ''
         taxpaidDate:
           type: string
           description: 'Data efetiva  do pagamento do encargo pago fora da parcela, conforme especificação RFC-3339. p.ex. 2014-03-19'
@@ -1040,7 +1075,7 @@ components:
         taxAmount:
           type: number
           description: Valor do pagamento do encargo pago fora da parcela. Expresso em valor monetário com até 4 casas decimais.
-          example: 200
+          example: 0
           maxLength: 19
       additionalProperties: false
     InvoiceFinancingsWarranties:

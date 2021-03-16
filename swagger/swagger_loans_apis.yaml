@@ -307,7 +307,6 @@ components:
       description: |
         Informação relativa à periodicidade regular das parcelas. (Vide Enum)
         sem periodicidade regular, semanal, quinzenal, mensal, bimestral, trimestral, semestral, anual
-      maxLength: 24
       enum:
         - SEM_PERIODICIDADE_REGULAR
         - SEMANAL
@@ -393,6 +392,40 @@ components:
         - NOMINAL
         - EFETIVA
       example: EFETIVA
+    EnumContractProductSubTypeLoans:
+      type: string
+      description: 'Sub tipo da modalidades de crédito Empréstimos contratadas, conforme  circular 4.015 e descrição do DOC3040 do SCR).'
+      maxLength: 42
+      enum:
+        - CREDITO_PESSOAL_SEM_CONSIGNACAO
+        - CREDITO_PESSOAL_COM_CONSIGNACAO
+        - HOME_EQUITY
+        - MICROCREDITO_PRODUTIVO_ORIENTADO
+        - CHEQUE_ESPECIAL
+        - CONTA_GARANTIDA
+        - CAPITAL_GIRO_PRAZO_VENCIMENTO_ATE_365_DIAS
+        - CAPITAL_GIRO_PRAZO_VENCIMENTO_SUPERIOR_365_DIAS
+        - CAPITAL_GIRO_TETO_ROTATIVO
+      example: CREDITO_PESSOAL_COM_CONSIGNACAO
+    EnumContractProductTypeLoans:
+      type: string
+      description: 'Tipo da modalidade de crédito contratada, conforme  circular 4.015 e descrição do DOC3040 do SCR).'
+      maxLength: 10
+      enum:
+        - EMPRESTIMO
+      example: EMPRESTIMO
+    EnumTaxType:
+      type: string
+      description: Tipo de encargo pago fora da parcela
+      maxLength: 35
+      enum:
+        - JUROS_REMUNERATORIOS_POR_ATRASO
+        - MULTA_ATRASO_PAGAMENTO
+        - JUROS_MORA_ATRASO
+        - IOF_CONTRATACAO
+        - IOF_POR_ATRASO
+        - OUTROS
+      example: JUROS_REMUNERATORIOS_POR_ATRASO
     EnumWarrantySubType:
       type: string
       description: 'Denominação/Identificação do sub tipo da garantia que avaliza a Modalidade da Operação de Crédito contratada (Doc 3040, Anexo 12)'
@@ -469,40 +502,6 @@ components:
         - OPERACOES_GARANTIDAS_OUTRAS_ENTIDADES
         - ACORDOS_COMPENSACAO
       example: CESSAO_DIREITOS_CREDITORIOS
-    EnumContractProductSubTypeLoans:
-      type: string
-      description: 'Sub tipo da modalidades de crédito Empréstimos contratadas, conforme  circular 4.015 e descrição do DOC3040 do SCR).'
-      maxLength: 42
-      enum:
-        - CREDITO_PESSOAL_SEM_CONSIGNACAO
-        - CREDITO_PESSOAL_COM_CONSIGNACAO
-        - HOME_EQUITY
-        - MICROCREDITO_PRODUTIVO_ORIENTADO
-        - CHEQUE_ESPECIAL
-        - CONTA_GARANTIDA
-        - CAPITAL_GIRO_PRAZO_VENCIMENTO_ATE_365_DIAS
-        - CAPITAL_GIRO_PRAZO_VENCIMENTO_SUPERIOR_365_DIAS
-        - CAPITAL_GIRO_TETO_ROTATIVO
-      example: CREDITO_PESSOAL_SEM_CONSIGNACAO
-    EnumContractProductTypeLoans:
-      type: string
-      description: 'Tipo da modalidade de crédito contratada, conforme  circular 4.015 e descrição do DOC3040 do SCR).'
-      maxLength: 10
-      enum:
-        - EMPRESTIMO
-      example: EMPRESTIMO
-    EnumTaxType:
-      type: string
-      description: Tipo de encargo pago fora da parcela
-      maxLength: 35
-      enum:
-        - JUROS_REMUNERATORIOS_POR_ATRASO
-        - MULTA_ATRASO_PAGAMENTO
-        - JUROS_MORA_ATRASO
-        - IOF_CONTRATACAO
-        - IOF_POR_ATRASO
-        - OUTROS
-      example: JUROS_REMUNERATORIOS_POR_ATRASO
     Links:
       type: object
       description: Referências para outros recusos da API requisitada.
@@ -614,7 +613,7 @@ components:
           pattern: \w*\W*
           description: |
             Denominação/Identificação do nome da Modalidade da Operação de Crédito divulgado ao cliente
-          example: AD
+          example: Crédito Pessoal Consignado
         productType:
           $ref: '#/components/schemas/EnumContractProductTypeLoans'
         productSubType:
@@ -704,6 +703,7 @@ components:
           pattern: '\d{14}'
           description: |
             CNPJ do consignante (CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica). Deve-se ter apenas os números do CNPJ, sem máscara. Informação adicional específica para Modalidade de Crédito: Empréstimo-Crédito Pessoal Consignado
+          example: '60500998000135'
       additionalProperties: false
     LoansContractedFee:
       type: object
@@ -719,13 +719,13 @@ components:
           maxLength: 140
           pattern: \w*\W*
           description: Denominação da Tarifa pactuada
-          example: Excesso em Conta
+          example: Renovação de cadastro
         feeCode:
           type: string
           maxLength: 140
           pattern: \w*\W*
           description: Sigla identificadora da tarifa pactuada
-          example: EXCESSO_CONTA
+          example: CADASTRO
         feeChargeType:
           $ref: '#/components/schemas/EnumContractFeeChargeType'
         feeCharge:
@@ -748,8 +748,6 @@ components:
       description: Conjunto de informações referentes às garantias que avalizam a operação de crédito contratada
       required:
         - warrantyType
-        - warrantySubType
-        - warrantyAmount
       properties:
         warrantyType:
           $ref: '#/components/schemas/EnumWarrantyType'
@@ -761,6 +759,8 @@ components:
           nullable: true
           description: 'Valor original da garantia. Valor monetário, expresso com até 4 casas decimais.'
           example: 200
+      example:
+        warrantyType: SEM_TIPO_GARANTIA
       additionalProperties: false
     LoansContractInterestRate:
       type: object
@@ -792,6 +792,7 @@ components:
           description: 'Campo livre de preenchimento obrigatório para complementar a informação relativa ao Tipo de taxa referencial ou indexador, quando selecionada o tipo ou subtipo OUTRO'
           maxLength: 140
           pattern: \w*\W*
+          example: ''
         preFixedRate:
           type: number
           description: |
@@ -813,6 +814,17 @@ components:
           maxLength: 1200
           description: Texto com informações adicionais sobre a composição das taxas de juros pactuadas
           pattern: \w*\W*
+          example: ''
+      example:
+        taxType: EFETIVA
+        interestRateType: SIMPLES
+        taxPeriodicity: AA
+        calculation: 21/25
+        referentialRateIndexerType: PRE_FIXADO
+        referentialRateIndexerSubType: TJLP
+        preFixedRate: 0.6
+        postFixedRate: 0.55
+        additionalInfo: ''
       additionalProperties: false
     LoansChargeOverParcel:
       type: object
@@ -827,13 +839,13 @@ components:
           description: Denominação da Tarifa avulsa paga fora da parcela
           maxLength: 250
           pattern: \w*\W*
-          example: reavaliação periódica do bem
+          example: Reavaliação Periódica do Bem
         feeCode:
           type: string
           description: Sigla identificadora da tarifa avulsa fora da parcela
           maxLength: 140
           pattern: \w*\W*
-          example: aval_bem
+          example: avaliação do bem
         feePaidDate:
           type: string
           description: Data efetiva do pagamento da tarifa  conforme especificação RFC-3339. p.ex. 2014-03-19
@@ -858,12 +870,16 @@ components:
           type: string
           description: Campo de preenchimento obrigatório se selecionada a opção 'OUTROS' em Tipo de encargo pactuado no contrato
           pattern: \w*\W*
+          example: ''
         chargeRate:
           type: number
           description: |
             Representa o valor do encargo em percentual pactuado no contrato. Exemplo: 0.0210 (=2.1%). Deve-se preencher as 4 casas decimais obrigatoriamente.
           maxLength: 19
           example: 0.07
+      example:
+        chargeType: JUROS_REMUNERATORIOS_POR_ATRASO
+        chargeRate: 0.07
       additionalProperties: false
     LoansInstalments:
       type: object
@@ -892,17 +908,17 @@ components:
           type: number
           maxLength: 6
           description: Prazo Remanescente em dias do contrato referente à Modalidade de Crédito informada
-          example: 57
+          example: 300
         dueInstalments:
           type: number
           maxLength: 3
           description: 'Quantidade de prestações a vencer. (No caso de modalidades que não possuam parcelas, o número de prestações é igual a zero)'
-          example: 57
+          example: 10
         pastDueInstalments:
           type: number
           maxLength: 3
           description: 'Quantidade de prestações vencidas. (No caso de modalidades que não possuam parcelas, o número de prestações é igual a zero)'
-          example: 73
+          example: 0
         currency:
           type: string
           description: |
@@ -942,24 +958,9 @@ components:
           maxLength: 14
           example: '21128159000166'
         productType:
-          type: string
-          description: 'Tipo da modalidade de crédito contratada, conforme  circular 4.015 e descrição do DOC3040 do SCR). (Vide Domínio).'
-          maxLength: 10
-          example: EMPRESTIMO
+          $ref: '#/components/schemas/EnumContractProductTypeLoans'
         productSubType:
-          type: string
-          description: 'Sub tipo da modalidades de crédito Empréstimos contratadas, conforme  circular 4.015 e descrição do DOC3040 do SCR). (Vide Domínio). Crédito pessoal sem consignação, Crédito pessoal com consignação, Home equity, Microcrédito produtivo orientado, Cheque especial, Conta garantida, Capital de giro com prazo de vencimento até 365 dias, capital de giro com prazo de vencimento superior a 365 dias, Capital de giro com teto rotativo'
-          enum:
-            - CREDITO_PESSOAL_SEM_CONSIGNACAO
-            - CREDITO_PESSOAL_COM_CONSIGNACAO
-            - HOME_EQUITY
-            - MICROCREDITO_PRODUTIVO_ORIENTADO
-            - CHEQUE_ESPECIAL
-            - CONTA_GARANTIDA
-            - CAPITAL_GIRO_PRAZO_VENCIMENTO_ATE_365_DIAS
-            - CAPITAL_GIRO_PRAZO_VENCIMENTO_SUPERIOR_365_DIAS
-            - CAPITAL_GIRO_TETO_ROTATIVO
-          example: CREDITO_PESSOAL_SEM_CONSIGNACAO
+          $ref: '#/components/schemas/EnumContractProductSubTypeLoans'
         ipocCode:
           type: string
           maxLength: 67
@@ -1015,6 +1016,7 @@ components:
           maxLength: 3
           format: CurrencyString
           description: 'Moeda referente ao valor monetário informado, segundo modelo ISO-4217. p.ex. ''BRL''. Todos os valores monetários informados estão representados com a moeda vigente do Brasil'
+          example: BRL
         contractOutstandingBalance:
           type: string
           maxLength: 19
