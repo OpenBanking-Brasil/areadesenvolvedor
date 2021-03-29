@@ -2,16 +2,10 @@ type: object
 required:
   - completedAuthorisedPaymentType
   - creditDebitType
-  - transactionIdentification
+  - transactionName
   - type
   - amount
   - transactionDate
-  - payerCnpjCpf
-  - payerPersonType
-  - payerCompeCode
-  - payerBranchCode
-  - payerNumber
-  - payerCheckDigit
   - payeeCnpjCpf
   - payeePersonType
   - payeeCompeCode
@@ -23,7 +17,7 @@ properties:
     $ref: ../enum/EnumCompletedAuthorisedPaymentIndicator.yaml
   creditDebitType:
     $ref: ../enum/EnumCreditDebitIndicator.yaml
-  transactionIdentification:
+  transactionName:
     type: string
     maxLength: 60
     pattern: \w*\W*
@@ -31,17 +25,13 @@ properties:
     example: "TRANSFCWAR5TXHCX5I9IDBHML8082N8NEO30M6LNNG7ANAYIJYRM00ZBZPU8"
   type:
     $ref: ../enum/EnumTransactionTypes.yaml
-  additionalInfo:
-    type: string
-    maxLength: 60
-    pattern: \w*\W*
-    description: |
-      Campo livre, de preenchimento obrigatório para complementar informação, quando selecionado o tipo de transação: OUTRO
-    example: "Transferência"
   amount:
     type: number
+    format: double
+    pattern: '(-?\d{15}(.\d{4}?))$'
     description: Valor da transação. Expressa em valor monetário com 4 casas decimais.
     maxLength: 19
+    minLength: 0
     example: 500.54
   transactionDate:
     type: string
@@ -52,70 +42,37 @@ properties:
       TRANSACAO_EFETIVADA - corresponde a data de lançamento da transação
       LANCAMENTO_FUTURO - corresponde a data prevista de efetivação da transação
     example: "2021-01-07"
-  payerCnpjCpf:
+  partieCnpjCpf:
     type: string
     maxLength: 14
     pattern: ^\d{11}$|^\d{14}$|^NA$
     description: |
-      Identificação do Pagador da transação (Preencher com o CPF ou CNPJ, sem formatação)
+      Identificação da pessoa envolvida na transação: pagador ou recebedor (Preencher com o CPF ou CNPJ, sem formatação)
     example: "43908445778"
-  payerPersonType:
-    $ref: ../enum/EnumPayerPersonType.yaml
-  payerCompeCode:
+  partiePersonType:
+    $ref: ../enum/EnumPartiePersonType.yaml
+  partieCompeCode:
     type: string
     maxLength: 3
     pattern: \d{3}|^NA$
-    description: Código identificador atribuído pelo Banco Central do Brasil às instituições participantes do STR (Sistema de Transferência de reservas) referente ao Pagador da transação. O número-código substituiu o antigo código COMPE. Todos os participantes do STR, exceto as Infraestruturas do Mercado Financeiro (IMF) e a Secretaria do Tesouro Nacional, possuem um número-código independentemente de participarem da Centralizadora da Compensação de Cheques (Compe). O campo tem a anotação “n/a” (“não se aplica”) para os participantes do STR aos quais não é atribuído um número-código
+    description: Código identificador atribuído pelo Banco Central do Brasil às instituições participantes do STR (Sistema de Transferência de reservas) referente à pessoa envolvida na transação. O número-código substituiu o antigo código COMPE. Todos os participantes do STR, exceto as Infraestruturas do Mercado Financeiro (IMF) e a Secretaria do Tesouro Nacional, possuem um número-código independentemente de participarem da Centralizadora da Compensação de Cheques (Compe). O campo tem a anotação “n/a” (“não se aplica”) para os participantes do STR aos quais não é atribuído um número-código
     example: "001"
-  payerBranchCode:
+  partieBranchCode:
     type: string
     maxLength: 4
     pattern: \d{4}|^NA$
-    description: Código da Agência detentora da conta do Pagador. (Agência é a dependência destinada ao atendimento aos clientes, ao público em geral e aos associados de cooperativas de crédito, no exercício de atividades da instituição, não podendo ser móvel ou transitória)
+    description: Código da Agência detentora da conta da pessoa envolvida na transação. (Agência é a dependência destinada ao atendimento aos clientes, ao público em geral e aos associados de cooperativas de crédito, no exercício de atividades da instituição, não podendo ser móvel ou transitória)
     example: "6272"
-  payerNumber:
+  partieNumber:
     type: string
     maxLength: 20
     pattern: ^\d{8,20}$|^NA$
-    description: Número da conta do Pagador
-    example: "94088392"
-  payerCheckDigit:
-    type: string
-    maxLength: 1
-    pattern: \w*\W*
-    description: Dígito da conta do Pagador
-    example: "4"
-  payeeCnpjCpf:
-    type: string
-    maxLength: 14
-    pattern: ^\d{11}$|^\d{14}$|^NA$
-    description: |
-      Identificação do Recebedor da transação (Preencher com o CPF ou CNPJ, sem formatação)
+    description: Número da conta da pessoa envolvida na transação
     example: "67890854360"
-  payeePersonType:
-    $ref: ../enum/EnumPayeePersonType.yaml
-  payeeCompeCode:
-    type: string
-    maxLength: 3
-    pattern: \d{3}|^NA$
-    description: Código identificador atribuído pelo Banco Central do Brasil às instituições participantes do STR (Sistema de Transferência de reservas) referente ao Recebedor da transação. O número-código substituiu o antigo código COMPE. Todos os participantes do STR, exceto as Infraestruturas do Mercado Financeiro (IMF) e a Secretaria do Tesouro Nacional, possuem um número-código independentemente de participarem da Centralizadora da Compensação de Cheques (Compe). O campo tem a anotação “n/a” (“não se aplica”) para os participantes do STR aos quais não é atribuído um número-código
-    example: "001"
-  payeeBranchCode:
-    type: string
-    maxLength: 4
-    pattern: \d{4}|^NA$
-    description: Código da Agência detentora da conta do Recebedor. (Agência é a dependência destinada ao atendimento aos clientes, ao público em geral e aos associados de cooperativas de crédito, no exercício de atividades da instituição, não podendo ser móvel ou transitória)
-    example: "6272"
-  payeeNumber:
-    type: string
-    maxLength: 20
-    pattern: ^\d{8,20}$|^NA$
-    description: Número da conta do Recebedor
-    example: "94088392"
-  payeeCheckDigit:
+  partieCheckDigit:
     type: string
     maxLength: 1
     pattern: \w*\W*
-    description: Dígito da conta do Recebedor
+    description: Dígito da conta da pessoa envolvida na transação
     example: "4"
 additionalProperties: false
