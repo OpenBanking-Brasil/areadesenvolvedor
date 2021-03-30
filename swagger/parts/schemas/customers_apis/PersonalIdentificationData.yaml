@@ -1,7 +1,6 @@
 type: object
 description: Conjunto de informações relativas a Identificação ou seja a ação e o efeito de identificar de forma única a pessoa natural através de seus dados cadastrais.
 required:
-  - requestDateTime
   - updateDateTime
   - personalId
   - brandName
@@ -11,28 +10,18 @@ required:
   - nationality
   - civilName
   - socialName
-  - filiationType
-  - filiationCivilName
-  - filiationSocialName
+  - filiation
   - birthDate
   - maritalStatusCode
   - sex
   - contacts
 properties:
-  requestDateTime:
-    type: string
-    pattern: ^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$
-    description: Data e hora da consulta, conforme especificação RFC-3339, formato UTC.
-    format: DateTimeString
-    maxLength: 20
-    example: "2020-07-21T08:30:00Z"
   updateDateTime:
-    type: string
-    pattern: ^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$
-    description: Data e hora da atualização do bloco, conforme especificação RFC-3339
-    format: DateTimeString
+    description: 'Data e hora da atualização do bloco, conforme especificação RFC-3339'
+    type: "string"
     maxLength: 20
-    example: "2020-07-21T08:30:00Z"
+    format: "date-time"
+    example: '2021-05-21T08:30:00Z'
   personalId:
     type: string
     pattern: \w*\W*
@@ -49,10 +38,11 @@ properties:
     description: |
       Número completo do CNPJ da instituição responsável pelo Cadastro - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. 
       Deve-se ter apenas os números do CNPJ, sem máscara
-    type: string
-    pattern: \d{14}|^NA$
-    maxLength: 14
-    example: '50685362000135'
+    type: array
+    items:
+      type: string
+      pattern: '\d{14}|^NA$'
+      maxLength: 14
   documents:
     $ref: ./PersonalDocument.yaml
   otherDocuments:
@@ -61,6 +51,10 @@ properties:
       $ref: ./PersonalOtherDocument.yaml
     minItems: 1
     description: Relação dos demais documentos
+  hasBrazilianNationality:
+    type: boolean
+    description: Informa se o Cliente tem nacionalidade brasileira.
+    example: false
   nationality:
     $ref: ./Nationality.yaml
   civilName:
@@ -71,28 +65,33 @@ properties:
     example: 'Juan Kaique Cláudio Fernandes'
   socialName:
     type: string
-    description: Nome social da pessoa natural, se houver. (aquele pelo qual travestis e transexuais se reconhecem, bem como são identificados por sua comunidade e em seu meio social, conforme Decreto Nº 51.180, de 14 de janeiro de 2010)
+    description: 'Nome social da pessoa natural, se houver. (aquele pelo qual travestis e transexuais se reconhecem, bem como são identificados por sua comunidade e em seu meio social, conforme Decreto Local)'
     maxLength: 70
     pattern: \w*\W*
-  filiationType:
-    $ref: ../enum/EnumFiliationType.yaml
-  filiationCivilName:
-    type: string
-    description: Nome civil completo da pessoa relativa à filiação. (Direito fundamental da pessoa, o nome civil é aquele atribuído à pessoa natural desde o registro de seu nascimento, com o qual será identificada por toda a sua vida, bem como após a sua morte)
-    maxLength: 70
-    pattern: \w*\W*
-  filiationSocialName:
-    type: string
-    description: Nome social da pessoa natural, se houver. (aquele pelo qual travestis e transexuais se reconhecem, bem como são identificados por sua comunidade e em seu meio social, conforme Decreto Nº 51.180, de 14 de janeiro de 2010)
-    maxLength: 70
-    pattern: \w*\W*
+  filiation:
+    type: array          
+    items:
+      type: object
+      properties:
+        type: 
+          $ref: ../enum/EnumFiliationType.yaml
+        civilName:
+          type: string
+          description: 'Nome civil completo da pessoa relativa à filiação. (Direito fundamental da pessoa, o nome civil é aquele atribuído à pessoa natural desde o registro de seu nascimento, com o qual será identificada por toda a sua vida, bem como após a sua morte)'
+          maxLength: 70 
+          pattern: \w*\W*
+        socialName:
+          type: string
+          description: 'Nome social da pessoa natural, se houver. (aquele pelo qual travestis e transexuais se reconhecem, bem como são identificados por sua comunidade e em seu meio social, conforme Decreto Local)'
+          maxLength: 70
+          pattern: \w*\W*
+      additionalProperties: false
   birthDate:
-    type: string
-    pattern: ^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$
-    format: DateString
-    maxLength: 10
-    description: Data de nascimento, conforme especificação RFC-3339
-    example: '2014-03-19'
+    description: 'Data de nascimento, conforme especificação RFC-3339'
+    type: "string"
+    maxLength: 20
+    format: "date-time"
+    example: '2021-05-21T08:30:00Z'
   maritalStatusCode:
     $ref: ../enum/EnumMaritalStatusCode.yaml
   maritalStatusAdditionalInfo:

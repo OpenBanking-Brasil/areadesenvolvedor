@@ -13,18 +13,19 @@ info:
 
     ### `/contracts`
       - permissions:
-        - GET: **invoice-financings.read**
+        - GET: **INVOICE_FINANCINGS_READ**
     ### `/contracts/{contractId}`
-      - permissions: **invoice-financings.read**
+      - permissions: 
+        - GET: **INVOICE_FINANCINGS_READ**
     ### `/contracts/{contractId}/warranties`
       - permissions:
-        - GET: **invoice-financings.warranties.read**
+        - GET: **INVOICE_FINANCINGS_WARRANTIES_READ**
     ### `/contracts/{contractId}/scheduled-instalments`
       - permissions:
-        - GET: **invoice-financings.scheduled-instalments.read**
+        - GET: **INVOICE_FINANCINGS_SCHEDULED_INSTALMENTS_READ**
     ### `/contracts/{contractId}/payments`
       - permissions:
-        - GET: **invoice-financings.payments.read**
+        - GET: **INVOICE_FINANCINGS_PAYMENTS_READ**
   version: 1.0.0
   license:
     name: Apache 2.0
@@ -167,7 +168,7 @@ paths:
         - Invoice Financings
       summary: Obtém os dados do cronograma de parcelas do contrato de antecipação de recebíveis identificado por contractId
       description: Método para obter os dados do cronograma de parcelas do contrato de antecipação de recebíveis identificado por contractId mantido pelo cliente na instituição transmissora
-      operationId: getContractsContractIdInstalments
+      operationId: getContractsContractIdScheduledInstalments
       parameters:
         - $ref: '#/components/parameters/contractId'
         - $ref: '#/components/parameters/page'
@@ -283,23 +284,26 @@ components:
           maxLength: 140
           pattern: \w*\W*
           description: Denominação da Tarifa pactuada
-          example: Avaliação Bordero Cheques
+          example: Excesso em Conta
         feeCode:
           type: string
           maxLength: 140
           pattern: \w*\W*
           description: Sigla identificadora da tarifa pactuada
-          example: AVALIACAO
+          example: EXCESSO_CONTA
         feeChargeType:
           $ref: '#/components/schemas/EnumContractFeeChargeType'
         feeCharge:
           $ref: '#/components/schemas/EnumContractFeeCharge'
         feeAmount:
-          type: number
           description: |
             Valor monetário da tarifa pactuada no contrato. Preenchimento obrigatório quando a forma de cobrança for: Mínimo, Máximo ou Fixo
+          type: number
+          format: double
+          pattern: '(-?\d{15}(.\d{4}?))$'
           maxLength: 19
-          example: 50
+          minLength: 0
+          example: 100000.04
         feeRate:
           type: number
           description: |
@@ -406,17 +410,6 @@ components:
         - AM
         - AA
       example: AA
-    EnumContractTaxType:
-      type: string
-      description: |
-        Tipo de Taxa (vide  Enum)
-        - NOMINAL (taxa nominal é uma taxa de juros em que a unidade referencial não coincide com a unidade de tempo da capitalização. Ela é sempre fornecida em termos anuais, e seus períodos de capitalização podem ser diários, mensais, trimestrais ou semestrais. p.ex. Uma taxa de 12% ao ano com capitalização mensal)
-        - EFETIVA (É a taxa de juros em que a unidade referencial coincide com a unidade de tempo da capitalização. Como as unidades de medida de tempo da taxa de juros e dos períodos de capitalização são iguais, usa-se exemplos simples como 1% ao mês, 60% ao ano)
-      maxLength: 10
-      enum:
-        - NOMINAL
-        - EFETIVA
-      example: EFETIVA
     EnumContractInstalmentPeriodicity:
       type: string
       description: |
@@ -544,9 +537,7 @@ components:
       type: object
       description: Conjunto de informações referentes à identificação da operação de crédito de direitos creditórios descontados
       required:
-        - contractId
         - ipocCode
-        - requestDateTime
         - productName
         - productType
         - productSubType
@@ -559,17 +550,12 @@ components:
         - firstInstalmentDueDate
         - totalNumberOfInstalments
         - paidInstalments
-        - cet
+        - CET
         - amortizationScheduled
         - interestRates
         - contractedFees
         - contractedFinanceCharges
       properties:
-        contractId:
-          type: string
-          description: Um identificador único e imutável usado para identificar o contrato de uma operação de crédito. Este identificador não tem significado para o tomador do crédito
-          maxLength: 100
-          example: '92792126019929279212650822221989319252576'
         ipocCode:
           type: string
           maxLength: 67
@@ -584,79 +570,79 @@ components:
               3. Para os demais clientes (tipos de cliente 3, 4, 5 e 6), informar 14 (catorze) posições com complemento de zeros à esquerda se a identificação tiver tamanho inferior;
             - **Código do contrato:** 1 (uma) até 40 (quarenta) posições, sem complemento de caracteres.
           example: '92792126019929279212650822221989319252576'
-        requestDateTime:
-          type: string
-          maxLength: 20
-          format: DateTimeString
-          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
-          example: '2020-01-05T08:30:00Z'
-          description: 'Data e hora da consulta, conforme especificação RFC-3339, formato UTC.'
         productName:
           type: string
           maxLength: 140
           pattern: \w*\W*
           description: |
             Denominação/Identificação do nome da Modalidade da Operação de Crédito divulgado ao cliente
-          example: Desconto de Cheques
+          example: AD
         productType:
           $ref: '#/components/schemas/EnumContractProductTypeInvoiceFinancings'
         productSubType:
           $ref: '#/components/schemas/EnumContractProductSubTypeInvoiceFinancings'
         contractDate:
-          type: string
           description: Data de contratação da operação de crédito. Especificação RFC-3339
-          maxLength: 10
-          format: DateString
-          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
-          example: '2018-01-05'
-        disbursementDate:
           type: string
+          maxLength: 20
+          format: date-time
+          example: '2021-05-21T08:30:00Z'
+        disbursementDate:
           description: Data do Desembolso do valor contratado. Especificação RFC-3339
-          maxLength: 10
-          format: DateString
-          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
-          example: '2018-01-15'
+          type: string
+          maxLength: 20
+          format: date-time
+          example: '2021-05-21T08:30:00Z'
         contractAmount:
-          type: number
-          maxLength: 19
           description: Valor contratado da operação. Expresso em valor monetário com até 4 casas decimais
-          example: 26000
+          type: number
+          format: double
+          pattern: '(-?\d{15}(.\d{4}?))$'
+          maxLength: 19
+          minLength: 0
+          example: 100000.04
         currency:
           type: string
           pattern: '^(\w{3}){1}$'
           maxLength: 3
-          format: CurrencyString
           description: |
             Moeda referente ao valor da garantia, segundo modelo ISO-4217. p.ex. 'BRL'
             Todos os valores monetários informados estão representados com a moeda vigente do Brasil
           example: BRL
         dueDate:
-          type: string
-          maxLength: 10
-          format: DateString
-          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
           description: Data de vencimento Final da operação. Especificação RFC-3339
-          example: '2028-01-15'
+          type: string
+          maxLength: 20
+          format: date-time
+          example: '2021-05-21T08:30:00Z'
         instalmentPeriodicity:
           $ref: '#/components/schemas/EnumContractInstalmentPeriodicity'
         firstInstalmentDueDate:
-          type: string
-          maxLength: 10
-          format: DateString
-          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
           description: Data de vencimento primeira parcela do principal
-          example: '2018-02-15'
+          type: string
+          maxLength: 20
+          format: date-time
+          example: '2021-05-21T08:30:00Z'
+        typeNumberOfInstalments:
+          type: string
+          description: Tipo de prazo total do contrato referente à modalidade de crédito informada.
+          enum:
+            - DIA
+            - SEMANA
+            - MES
+            - ANO
+          example: MES
         totalNumberOfInstalments:
           type: number
           description: Prazo Total em meses do contrato referente à Modalidade de Crédito informada
           maxLength: 3
-          example: 0
+          example: 130
         paidInstalments:
           type: number
           description: 'Quantidade de prestações pagas. (No caso de modalidades que não possuam parcelas, o número de prestações é igual a zero)'
           maxLength: 3
-          example: 0
-        cet:
+          example: 73
+        CET:
           type: number
           description: |
             CET – Custo Efetivo Total deve ser expresso na forma de taxa percentual anual e   incorpora todos os encargos e despesas incidentes nas operações de crédito (taxa de juro, mas também tarifas, tributos, seguros e outras despesas cobradas).
@@ -681,75 +667,38 @@ components:
           items:
             $ref: '#/components/schemas/InvoiceFinancingsFinanceCharge'
           minItems: 1
-        cnpjConsignee:
-          type: string
-          maxLength: 14
-          pattern: '\d{14}'
-          description: |
-            CNPJ do consignante (CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica). Deve-se ter apenas os números do CNPJ, sem máscara. Informação adicional específica para Modalidade de Crédito: Empréstimo-Crédito Pessoal Consignado
-      example:
-        contractId: '92792126019929279212650822221989319252576'
-        ipocCode: '92792126019929279212650822221989319252576'
-        requestDateTime: '2020-01-05T08:30:00Z'
-        productName: Desconto de Cheques
-        productType: DIREITOS_CREDITORIOS_DESCONTADOS
-        productSubType: DESCONTO_CHEQUES
-        contractDate: '2018-01-05'
-        disbursementDate: '2018-01-15'
-        contractAmount: 26000
-        currency: BRL
-        dueDate: '2028-01-15'
-        instalmentPeriodicity: SEMANAL
-        firstInstalmentDueDate: '2018-02-15'
-        totalNumberOfInstalments: 0
-        paidInstalments: 0
-        cet: 0.29
-        amortizationScheduled: SEM_SISTEMA_AMORTIZACAO
-        interestRates:
-          - taxType: EFETIVA
-            interestRateType: SIMPLES
-            taxPeriodicity: AA
-            calculation: 21/25
-            referentialRateIndexerType: PRE_FIXADO
-            referentialRateIndexerSubType: TJLP
-            preFixedRate: 0.6
-            postFixedRate: 0.55
-            additionalInfo: ''
-        contractedFees:
-          - feeName: Avaliação Bordero Cheques
-            feeCode: AVALIACAO
-            feeChargeType: UNICA
-            feeCharge: MINIMO
-            feeAmount: 50
-            feeRate: 50
-        contractedFinanceCharges:
-          - chargeType: JUROS_REMUNERATORIOS_POR_ATRASO
-        cnpjConsignee: '60500998000135'
       additionalProperties: false
     InvoiceFinancingsContractedWarranty:
       type: object
       description: Conjunto de informações referentes às garantias que avalizam a operação de crédito contratada
       required:
+        - currency
         - warrantyType
         - warrantySubType
-        - warrantyAmount
       properties:
+        currency:
+          type: string
+          pattern: '^(\w{3}){1}$'
+          maxLength: 3
+          description: 'Moeda referente ao valor da garantia, segundo modelo ISO-4217. p.ex. ''BRL''. Todos os valores monetários informados estão representados com a moeda vigente do Brasil'
+          example: BRL
         warrantyType:
           $ref: '#/components/schemas/EnumWarrantyType.yaml'
         warrantySubType:
           $ref: '#/components/schemas/EnumWarrantySubType'
         warrantyAmount:
-          type: number
-          maxLength: 19
-          nullable: true
           description: 'Valor original da garantia. Valor monetário, expresso com até 4 casas decimais.'
-          example: 200
+          type: number
+          format: double
+          pattern: '(-?\d{15}(.\d{4}?))$'
+          maxLength: 19
+          minLength: 0
+          example: 100000.04
       additionalProperties: false
     InvoiceFinancingsContractInterestRate:
       type: object
-      description: Objeto que traz o conjunto de informações necessárias para demonstrar a composição das taxas de juros remuneratórios da Modalidade de crédito
+      description: Objeto das taxas nominais para demonstrar a composição das taxas de juros remuneratórios  da Modalidade de crédito.
       required:
-        - taxType
         - interestRateType
         - taxPeriodicity
         - calculation
@@ -758,8 +707,6 @@ components:
         - postFixedRate
         - additionalInfo
       properties:
-        taxType:
-          $ref: '#/components/schemas/EnumContractTaxType'
         interestRateType:
           $ref: '#/components/schemas/EnumContractInterestRateType'
         taxPeriodicity:
@@ -797,38 +744,6 @@ components:
           description: Texto com informações adicionais sobre a composição das taxas de juros pactuadas
           pattern: \w*\W*
       additionalProperties: false
-    InvoiceFinancingsChargeOverParcel:
-      type: object
-      required:
-        - feeName
-        - feeCode
-        - feePaidDate
-        - feeAmount
-      properties:
-        feeName:
-          type: string
-          description: Denominação da Tarifa avulsa paga fora da parcela
-          maxLength: 250
-          pattern: \w*\W*
-          example: ''
-        feeCode:
-          type: string
-          description: Sigla identificadora da tarifa avulsa fora da parcela
-          maxLength: 140
-          pattern: \w*\W*
-          example: ''
-        feePaidDate:
-          type: string
-          description: Data efetiva do pagamento da tarifa  conforme especificação RFC-3339. p.ex. 2014-03-19
-          maxLength: 10
-          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
-          example: '2020-01-10'
-        feeAmount:
-          type: number
-          description: Traz o valor do pagamento da tarifa avulsa fora da parcela. Expresso em valor monetário com 2 casas decimais
-          maxLength: 19
-          example: 0
-      additionalProperties: false
     InvoiceFinancingsFinanceCharge:
       type: object
       description: Conjunto de informações referentes à identificação da operação de crédito
@@ -846,16 +761,15 @@ components:
           description: |
             Representa o valor do encargo em percentual pactuado no contrato. Exemplo: 0.0210 (=2.1%). Deve-se preencher as 4 casas decimais obrigatoriamente.
           maxLength: 19
-          example: 0.07
-      example:
-        chargeType: JUROS_REMUNERATORIOS_POR_ATRASO
+          example: 0.0507
       additionalProperties: false
     InvoiceFinancingsBalloonPayment:
       type: object
       description: Conjunto de informações relativas às parcelas não regulares do contrato da modalidade de crédito consultada
       required:
+        - dueDate
         - currency
-        - instalments
+        - amount
       properties:
         dueDate:
           type: string
@@ -863,50 +777,6 @@ components:
           description: 'Data de vencimento da parcela não regular  a vencer do contrato da modalidade de crédito consultada, conforme especificação RFC-3339. p.ex. 2014-03-19'
           maxLength: 10
           example: '2020-01-10'
-        amount:
-          type: number
-          nullable: true
-          description: Valor monetário da parcela não regular a vencer.  Expresso em valor monetário com 2 casas decimais
-          maxLength: 19
-          example: 200
-      additionalProperties: false
-    InvoiceFinancingsInstalments:
-      type: object
-      description: Conjunto de informações referentes às parcelas / prestações da operação de crédito contratada
-      required:
-        - contractId
-        - requestDateTime
-        - contractRemainingMonths
-        - dueInstalments
-        - pastDueInstalments
-        - balloonPayment
-      properties:
-        contractId:
-          type: string
-          description: Um identificador único e imutável usado para identificar o contrato de uma operação de crédito. Este identificador não tem significado para o tomador do crédito
-          maxLength: 100
-          example: '92792126019929279212650822221989319252576'
-        requestDateTime:
-          type: string
-          maxLength: 20
-          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
-          example: '2020-01-05T08:30:00Z'
-          description: 'Data e hora da consulta, conforme especificação RFC-3339, formato UTC.'
-        contractRemainingDays:
-          type: number
-          maxLength: 6
-          description: Prazo Remanescente em dias do contrato referente à Modalidade de Crédito informada
-          example: 57
-        dueInstalments:
-          type: number
-          maxLength: 3
-          description: 'Quantidade de prestações a vencer. (No caso de modalidades que não possuam parcelas, o número de prestações é igual a zero)'
-          example: 57
-        pastDueInstalments:
-          type: number
-          maxLength: 3
-          description: 'Quantidade de prestações vencidas. (No caso de modalidades que não possuam parcelas, o número de prestações é igual a zero)'
-          example: 73
         currency:
           type: string
           description: |
@@ -914,8 +784,42 @@ components:
             Todos os valores monetários informados estão representados com a moeda vigente do Brasil
           pattern: '^(\w{3}){1}$'
           maxLength: 3
-          format: CurrencyString
           example: BRL
+        amount:
+          description: Valor monetário da parcela não regular a vencer.  Expresso em valor monetário com 4 casas decimais
+          type: number
+          format: double
+          pattern: '(-?\d{15}(.\d{4}?))$'
+          maxLength: 19
+          minLength: 0
+          example: 100000.04
+      additionalProperties: false
+    InvoiceFinancingsInstalments:
+      type: object
+      description: Conjunto de informações referentes às parcelas / prestações da operação de crédito contratada
+      required:
+        - contractRemainingDays
+        - dueInstalments
+        - pastDueInstalments
+        - balloonPayments
+      properties:
+        contractRemainingDays:
+          type: number
+          maxLength: 6
+          description: Prazo Remanescente em dias do contrato referente à Modalidade de Crédito informada
+          maximum: 14600
+          minimum: 0
+          example: 14600
+        dueInstalments:
+          type: number
+          maxLength: 3
+          description: 'Quantidade de prestações a vencer. (No caso de modalidades que não possuam parcelas, o número de prestações é igual a zero)'
+          example: 60
+        pastDueInstalments:
+          type: number
+          maxLength: 3
+          description: 'Quantidade de prestações vencidas. (No caso de modalidades que não possuam parcelas, o número de prestações é igual a zero)'
+          example: 73
         balloonPayments:
           type: array
           items:
@@ -924,6 +828,7 @@ components:
     InvoiceFinancingsContractData:
       type: object
       required:
+        - brandID
         - brandName
         - companyCnpj
         - productType
@@ -931,6 +836,12 @@ components:
         - ipocCode
         - contractId
       properties:
+        brandID:
+          type: string
+          description: 'Identifica a Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes.'
+          maxLength: 100
+          pattern: \w*\W*
+          example: '29698749425984912674'
         brandName:
           type: string
           description: 'Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes'
@@ -963,7 +874,7 @@ components:
           example: '92792126019929279212650822221989319252576'
         contractId:
           type: string
-          description: Um identificador único e imutável usado para identificar o contrato de uma operação de crédito. Este identificador não tem significado para o tomador do crédito.
+          description: 'Identifica de forma única o contrato da operação de crédito do cliente, mantendo as regras de imutabilidade dentro da instituição transmissora.'
           maxLength: 100
           example: '92792126019929279212650822221989319252576'
       additionalProperties: false
@@ -971,85 +882,29 @@ components:
       type: object
       description: Conjunto de informações dos pagamentos referentes às operações de direitos creditórios descontados  contratadas
       required:
-        - requestDateTime
         - paidInstalments
-        - nonRegulatedCharge
+        - currency
         - contractOutstandingBalance
         - releases
       properties:
-        contractId:
-          type: string
-          description: Um identificador único e imutável usado para identificar o contrato de uma operação de crédito. Este identificador não tem significado para o tomador do crédito
-          maxLength: 100
-          example: '92792126019929279212650822221989319252576'
-        requestDateTime:
-          type: string
-          maxLength: 20
-          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
-          example: '2020-01-05T08:30:00Z'
-          description: 'Data e hora da consulta, conforme especificação RFC-3339, formato UTC.'
         paidInstalments:
           type: number
           maxLength: 3
           description: Quantidade total de parcelas pagas do contrato referente à Modalidade de Crédito informada
-          example: 0
-        currency:
-          type: string
-          pattern: '^(\w{3}){1}$'
-          maxLength: 3
-          format: CurrencyString
-          description: 'Moeda referente ao valor monetário informado, segundo modelo ISO-4217. p.ex. ''BRL''. Todos os valores monetários informados estão representados com a moeda vigente do Brasil'
-          example: BRL
+          example: 73
         contractOutstandingBalance:
-          type: string
+          description: 'Saldo devedor Remanescente, divulgado nos canais eletrônicos, do contrato referente à Modalidade de Crédito informada. Expresso em valor monetário com 4 casas decimais'
+          type: number
+          format: double
+          pattern: '(-?\d{15}(.\d{4}?))$'
           maxLength: 19
-          description: 'Saldo devedor Remanescente, divulgado nos canais eletrônicos, do contrato referente à Modalidade de Crédito informada. Expresso em valor monetário com 2 casas decimais'
-          example: '11400.00'
+          minLength: 0
+          example: 100000.04
         releases:
-          $ref: '#/components/schemas/InvoiceFinancingsReleases'
-        chargesOverParcel:
           type: array
-          description: 'Lista das tarifas que foram pagas fora da parcela, só para pagamento avulso.'
-          items:
-            $ref: '#/components/schemas/InvoiceFinancingsChargeOverParcel'
-        taxesOverParcel:
-          type: array
-          description: Lista dos encargos que foram pagos fora da parcela
+          description: Lista dos pagamentos realizados no período
           items:
             $ref: '#/components/schemas/InvoiceFinancingsTaxesOverParcel'
-      additionalProperties: false
-    InvoiceFinancingsReleases:
-      type: object
-      description: Lista dos pagamentos realizados no período
-      required:
-        - paymentId
-        - instalmentId
-        - paidDate
-        - paidAmount
-      properties:
-        paymentId:
-          type: string
-          description: Texto livre de responsabilidade de cada Instituição transmissora para identificar o pagamento informado
-          maxLength: 80
-          pattern: \w*\W*
-          example: ''
-        instalmentId:
-          type: string
-          description: Texto livre de responsabilidade de cada Instituição transmissora para identificar a parcela informada
-          maxLength: 40
-          pattern: \w*\W*
-          example: ''
-        paidDate:
-          type: string
-          description: 'Traz a data de efetivação do pagamento referente ao contrato da modalidade de crédito consultada, conforme especificação RFC-3339.'
-          maxLength: 10
-          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
-          example: '2020-01-10'
-        paidAmount:
-          type: number
-          description: Traz o valor do pagamento referente ao  contrato da modalidade de crédito consultada. Expresso em valor monetário com 2 casas decimais
-          maxLength: 19
-          example: 0
       additionalProperties: false
     InvoiceFinancingsTaxesOverParcel:
       type: object
@@ -1152,9 +1007,16 @@ components:
       type: object
       description: Meta informações referente a API requisitada.
       required:
+        - requestDateTime
         - totalRecords
         - totalPages
       properties:
+        requestDateTime:
+          description: 'Data e hora da consulta, conforme especificação RFC-3339, formato UTC.'
+          type: string
+          maxLength: 20
+          format: date-time
+          example: '2021-05-21T08:30:00Z'
         totalRecords:
           type: integer
           format: int32
@@ -1268,7 +1130,10 @@ components:
         - meta
       properties:
         data:
-          $ref: '#/components/schemas/InvoiceFinancingsWarranties'
+          type: array
+          description: Conjunto de informações referentes às garantias que avalizam a operação de direitos creditórios descontados contratada
+          items:
+            $ref: '#/components/schemas/InvoiceFinancingsWarranties'
         links:
           $ref: '#/components/schemas/Links'
         meta:
