@@ -14,19 +14,19 @@ info:
 
     ### `/accounts`
       - permissions:
-        - GET: **accounts.read**
+        - GET: **ACCOUNTS_READ**
     ### `/accounts/{accountId}`
       - permissions:
-        - GET: **accounts.read**
+        - GET: **ACCOUNTS_READ**
     ### `/accounts/{accountId}/balances`
       - permissions:
-        - GET: **accounts.balances.read**
+        - GET: **ACCOUNTS_BALANCES_READ**
     ### `/accounts/{accountId}/transactions`
       - permissions:
-        - GET: **accounts.transactions.read**
+        - GET: **ACCOUNTS_TRANSACTIONS_READ**
     ### `/accounts/{accountId}/overdraft-limits`
       - permissions:
-        - GET: **accounts.overdfraft.limits.read**
+        - GET: **ACCOUNTS_OVERDFRAFT_LIMITS_READ**
   version: 1.0.0
   license:
     name: Apache 2.0
@@ -60,6 +60,7 @@ paths:
         - $ref: '#/components/parameters/xFapiCustomerIpAddress'
         - $ref: '#/components/parameters/xFapiInteractionId'
         - $ref: '#/components/parameters/xCustomerUserAgent'
+        - $ref: '#/components/parameters/xJwsSignature'
         - $ref: '#/components/parameters/page'
         - $ref: '#/components/parameters/pageSize'
         - $ref: '#/components/parameters/accountType'
@@ -101,6 +102,7 @@ paths:
         - $ref: '#/components/parameters/xFapiCustomerIpAddress'
         - $ref: '#/components/parameters/xFapiInteractionId'
         - $ref: '#/components/parameters/xCustomerUserAgent'
+        - $ref: '#/components/parameters/xJwsSignature'
         - $ref: '#/components/parameters/accountId'
       responses:
         '200':
@@ -140,11 +142,8 @@ paths:
         - $ref: '#/components/parameters/xFapiCustomerIpAddress'
         - $ref: '#/components/parameters/xFapiInteractionId'
         - $ref: '#/components/parameters/xCustomerUserAgent'
+        - $ref: '#/components/parameters/xJwsSignature'
         - $ref: '#/components/parameters/accountId'
-        - $ref: '#/components/parameters/accountsCompeCode'
-        - $ref: '#/components/parameters/accountsBranchCode'
-        - $ref: '#/components/parameters/accountsNumber'
-        - $ref: '#/components/parameters/accountsCheckDigit'
       responses:
         '200':
           $ref: '#/components/responses/OKResponseAccountBalances'
@@ -183,11 +182,8 @@ paths:
         - $ref: '#/components/parameters/xFapiCustomerIpAddress'
         - $ref: '#/components/parameters/xFapiInteractionId'
         - $ref: '#/components/parameters/xCustomerUserAgent'
+        - $ref: '#/components/parameters/xJwsSignature'
         - $ref: '#/components/parameters/accountId'
-        - $ref: '#/components/parameters/accountsCompeCode'
-        - $ref: '#/components/parameters/accountsBranchCode'
-        - $ref: '#/components/parameters/accountsNumber'
-        - $ref: '#/components/parameters/accountsCheckDigit'
         - $ref: '#/components/parameters/page'
         - $ref: '#/components/parameters/pageSize'
         - $ref: '#/components/parameters/fromBookingDate'
@@ -231,11 +227,8 @@ paths:
         - $ref: '#/components/parameters/xFapiCustomerIpAddress'
         - $ref: '#/components/parameters/xFapiInteractionId'
         - $ref: '#/components/parameters/xCustomerUserAgent'
+        - $ref: '#/components/parameters/xJwsSignature'
         - $ref: '#/components/parameters/accountId'
-        - $ref: '#/components/parameters/accountsCompeCode'
-        - $ref: '#/components/parameters/accountsBranchCode'
-        - $ref: '#/components/parameters/accountsNumber'
-        - $ref: '#/components/parameters/accountsCheckDigit'
       responses:
         '200':
           $ref: '#/components/responses/OKResponseAccountOverdraftLimits'
@@ -274,26 +267,33 @@ components:
       properties:
         avaiableAmount:
           type: number
-          nullable: true
+          format: double
+          pattern: '(-?\d{15}(.\d{4}?))$'
           description: 'Saldo disponível para utilização imediata. No caso de conta de depósito a vista, sem considerar cheque especial e investimentos atrelados a conta. Admite saldo negativo. Expresso em valor monetário com 4 casas decimais'
           maxLength: 19
-          example: 100000
+          minLength: 0
+          example: 100000.04
         blockedAmount:
           type: number
-          nullable: true
+          format: double
+          pattern: '(-?\d{15}(.\d{4}?))$'
           description: 'Saldo bloqueado, não disponível para utilização imediata, por motivo de bloqueio apresentado para o cliente nos canais eletrônicos Expresso em valor monetário com 4 casas decimais'
           maxLength: 19
-          example: 100000
+          minLength: 0
+          example: 99.9999
         automaticallyInvestedAmount:
           type: number
-          nullable: true
+          format: double
+          pattern: '(-?\d{15}(.\d{4}?))$'
           description: Saldo disponível com aplicação automática - corresponde a soma do saldo disponível acrescido do valor obtido a partir da aplicação automática Expresso em valor monetário com 4 casas decimais
           maxLength: 19
-          example: 100000
+          minLength: 0
+          example: 2566449494219
       additionalProperties: false
     AccountData:
       type: object
       required:
+        - brandID
         - brandName
         - companyCnpj
         - type
@@ -303,6 +303,12 @@ components:
         - checkDigit
         - accountID
       properties:
+        brandID:
+          type: string
+          description: 'Identifica a Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes.'
+          maxLength: 100
+          pattern: \w*\W*
+          example: '29698749425984912674'
         brandName:
           type: string
           description: 'Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes.'
@@ -343,7 +349,7 @@ components:
           example: '4'
         accountID:
           type: string
-          description: Um identificador único e imutável usado para identificar a conta do cliente. Este identificador não tem significado para o proprietário da conta
+          description: 'Identifica de forma única  a conta do cliente, mantendo as regras de imutabilidade dentro da instituição transmissora.'
           pattern: \w*\W*
           maxLength: 100
           example: '92792126019929279212650822221989319252576'
@@ -357,10 +363,6 @@ components:
         - branchCode
         - number
         - checkDigit
-        - brandName
-        - companyCnpj
-        - requestDateTime
-        - updateDateTime
         - type
         - subtype
         - currency
@@ -392,32 +394,6 @@ components:
           description: |
             Dígito da conta
           example: '4'
-        brandName:
-          type: string
-          maxLength: 80
-          pattern: \w*\W*
-          description: |
-            Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a marca é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes
-          example: Organização A
-        companyCnpj:
-          type: string
-          maxLength: 14
-          pattern: '\d{14}|^NA$'
-          description: |
-            Número completo do CNPJ da instituição responsável pelo Cadastro - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. Deve-se ter apenas os números do CNPJ, sem máscara
-          example: '21128159000166'
-        requestDateTime:
-          type: string
-          maxLength: 20
-          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
-          example: '2020-07-21T08:30:00Z'
-          description: 'Data e hora da consulta, conforme especificação RFC-3339, formato UTC.'
-        updateDateTime:
-          type: string
-          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
-          description: 'Data e hora da atualização, conforme especificação RFC-3339.'
-          maxLength: 20
-          example: '2020-07-21T08:30:00Z'
         type:
           $ref: '#/components/schemas/EnumAccountType'
         subtype:
@@ -426,7 +402,6 @@ components:
           type: string
           pattern: '^(\w{3}){1}$'
           maxLength: 3
-          format: CurrencyString
           description: |
             Moeda referente ao valor da transação, segundo modelo ISO-4217. p.ex. 'BRL' 
             Todos os saldos informados estão representados com a moeda vigente do Brasil
@@ -437,33 +412,35 @@ components:
       description: |
         Conjunto de informações da Conta de: depósito à vista
       required:
-        - overdraftLimit
-        - balances
+        - overdraftContractedLimit
+        - overdraftUsedLimit
       properties:
-        overdraftLimit:
-          $ref: '#/components/schemas/EnumOverdraftLimit'
-        balances:
-          type: array
-          description: Lista dos valores referentes ao utilizado do Limite de Cheque especial e do adiantamento a depositante
-          items:
-            $ref: '#/components/schemas/OverdraftLimitsBalance'
-          minItems: 1
+        overdraftContractedLimit:
+          type: number
+          format: double
+          pattern: '(-?\d{15}(.\d{4}?))$'
+          description: Valor do limite contratado do cheque especial
+          maxLength: 19
+          minLength: 0
+          example: 99.9999
+        overdraftUsedLimit:
+          type: number
+          format: double
+          pattern: '(-?\d{15}(.\d{4}?))$'
+          description: Valor utilizado total do limite do cheque especial e o adiantamento a depositante.
+          maxLength: 19
+          minLength: 0
+          example: 10000.9999
       additionalProperties: false
     AccountTransactionsData:
       type: object
       required:
         - completedAuthorisedPaymentType
         - creditDebitType
-        - transactionIdentification
+        - transactionName
         - type
         - amount
         - transactionDate
-        - payerCnpjCpf
-        - payerPersonType
-        - payerCompeCode
-        - payerBranchCode
-        - payerNumber
-        - payerCheckDigit
         - payeeCnpjCpf
         - payeePersonType
         - payeeCompeCode
@@ -475,7 +452,7 @@ components:
           $ref: '#/components/schemas/EnumCompletedAuthorisedPaymentIndicator'
         creditDebitType:
           $ref: '#/components/schemas/EnumCreditDebitIndicator'
-        transactionIdentification:
+        transactionName:
           type: string
           maxLength: 60
           pattern: \w*\W*
@@ -483,17 +460,13 @@ components:
           example: TRANSFCWAR5TXHCX5I9IDBHML8082N8NEO30M6LNNG7ANAYIJYRM00ZBZPU8
         type:
           $ref: '#/components/schemas/EnumTransactionTypes'
-        additionalInfo:
-          type: string
-          maxLength: 60
-          pattern: \w*\W*
-          description: |
-            Campo livre, de preenchimento obrigatório para complementar informação, quando selecionado o tipo de transação: OUTRO
-          example: Transferência
         amount:
           type: number
+          format: double
+          pattern: '(-?\d{15}(.\d{4}?))$'
           description: Valor da transação. Expressa em valor monetário com 4 casas decimais.
           maxLength: 19
+          minLength: 0
           example: 500.54
         transactionDate:
           type: string
@@ -504,71 +477,38 @@ components:
             TRANSACAO_EFETIVADA - corresponde a data de lançamento da transação
             LANCAMENTO_FUTURO - corresponde a data prevista de efetivação da transação
           example: '2021-01-07'
-        payerCnpjCpf:
+        partieCnpjCpf:
           type: string
           maxLength: 14
           pattern: '^\d{11}$|^\d{14}$|^NA$'
           description: |
-            Identificação do Pagador da transação (Preencher com o CPF ou CNPJ, sem formatação)
+            Identificação da pessoa envolvida na transação: pagador ou recebedor (Preencher com o CPF ou CNPJ, sem formatação)
           example: '43908445778'
-        payerPersonType:
-          $ref: '#/components/schemas/EnumPayerPersonType'
-        payerCompeCode:
+        partiePersonType:
+          $ref: '#/components/schemas/EnumPartiePersonType'
+        partieCompeCode:
           type: string
           maxLength: 3
           pattern: '\d{3}|^NA$'
-          description: 'Código identificador atribuído pelo Banco Central do Brasil às instituições participantes do STR (Sistema de Transferência de reservas) referente ao Pagador da transação. O número-código substituiu o antigo código COMPE. Todos os participantes do STR, exceto as Infraestruturas do Mercado Financeiro (IMF) e a Secretaria do Tesouro Nacional, possuem um número-código independentemente de participarem da Centralizadora da Compensação de Cheques (Compe). O campo tem a anotação “n/a” (“não se aplica”) para os participantes do STR aos quais não é atribuído um número-código'
+          description: 'Código identificador atribuído pelo Banco Central do Brasil às instituições participantes do STR (Sistema de Transferência de reservas) referente à pessoa envolvida na transação. O número-código substituiu o antigo código COMPE. Todos os participantes do STR, exceto as Infraestruturas do Mercado Financeiro (IMF) e a Secretaria do Tesouro Nacional, possuem um número-código independentemente de participarem da Centralizadora da Compensação de Cheques (Compe). O campo tem a anotação “n/a” (“não se aplica”) para os participantes do STR aos quais não é atribuído um número-código'
           example: '001'
-        payerBranchCode:
+        partieBranchCode:
           type: string
           maxLength: 4
           pattern: '\d{4}|^NA$'
-          description: 'Código da Agência detentora da conta do Pagador. (Agência é a dependência destinada ao atendimento aos clientes, ao público em geral e aos associados de cooperativas de crédito, no exercício de atividades da instituição, não podendo ser móvel ou transitória)'
+          description: 'Código da Agência detentora da conta da pessoa envolvida na transação. (Agência é a dependência destinada ao atendimento aos clientes, ao público em geral e aos associados de cooperativas de crédito, no exercício de atividades da instituição, não podendo ser móvel ou transitória)'
           example: '6272'
-        payerNumber:
+        partieNumber:
           type: string
           maxLength: 20
           pattern: '^\d{8,20}$|^NA$'
-          description: Número da conta do Pagador
-          example: '94088392'
-        payerCheckDigit:
-          type: string
-          maxLength: 1
-          pattern: \w*\W*
-          description: Dígito da conta do Pagador
-          example: '4'
-        payeeCnpjCpf:
-          type: string
-          maxLength: 14
-          pattern: '^\d{11}$|^\d{14}$|^NA$'
-          description: |
-            Identificação do Recebedor da transação (Preencher com o CPF ou CNPJ, sem formatação)
+          description: Número da conta da pessoa envolvida na transação
           example: '67890854360'
-        payeePersonType:
-          $ref: '#/components/schemas/EnumPayeePersonType'
-        payeeCompeCode:
-          type: string
-          maxLength: 3
-          pattern: '\d{3}|^NA$'
-          description: 'Código identificador atribuído pelo Banco Central do Brasil às instituições participantes do STR (Sistema de Transferência de reservas) referente ao Recebedor da transação. O número-código substituiu o antigo código COMPE. Todos os participantes do STR, exceto as Infraestruturas do Mercado Financeiro (IMF) e a Secretaria do Tesouro Nacional, possuem um número-código independentemente de participarem da Centralizadora da Compensação de Cheques (Compe). O campo tem a anotação “n/a” (“não se aplica”) para os participantes do STR aos quais não é atribuído um número-código'
-          example: '001'
-        payeeBranchCode:
-          type: string
-          maxLength: 4
-          pattern: '\d{4}|^NA$'
-          description: 'Código da Agência detentora da conta do Recebedor. (Agência é a dependência destinada ao atendimento aos clientes, ao público em geral e aos associados de cooperativas de crédito, no exercício de atividades da instituição, não podendo ser móvel ou transitória)'
-          example: '6272'
-        payeeNumber:
-          type: string
-          maxLength: 20
-          pattern: '^\d{8,20}$|^NA$'
-          description: Número da conta do Recebedor
-          example: '94088392'
-        payeeCheckDigit:
+        partieCheckDigit:
           type: string
           maxLength: 1
           pattern: \w*\W*
-          description: Dígito da conta do Recebedor
+          description: Dígito da conta da pessoa envolvida na transação
           example: '4'
       additionalProperties: false
     EnumAccountSubType:
@@ -617,47 +557,10 @@ components:
         - CREDITO
         - DEBITO
       example: DEBITO
-    EnumOverdraftLimit:
+    EnumPartiePersonType:
       type: string
       description: |
-        Faixa de valor que corresponde ao valor monetário do limite de cheque especial contratado. Cada faixa corresponde a um range de valor. São previstos valores diferentes das faixas para Contratos de Cheque Especial de Pessoa Natural e de Pessoa jurídica (vide Enum)
-        - Faixa1
-        - Faixa2
-        - Faixa3
-        - Faixa4
-        - Faixa5
-      enum:
-        - FAIXA_1
-        - FAIXA_2
-        - FAIXA_3
-        - FAIXA_4
-        - FAIXA_5
-      example: FAIXA_1
-    EnumOverdraftLimitType:
-      type: string
-      enum:
-        - VALOR_CONTRATADO_LIMITE
-        - VALOR_UTILIZADO_LIMITE
-        - SALDO_DESCOBERTO
-      description: |
-        Tipo de  saldo informado: (vide Enum)
-        - Valor utilizado do limite do cheque especial
-        - Saldo a descoberto em conta de depósito à vista (relativo ao excesso do limite de cheque especial ou ao adiantamento a depositante)
-      example: VALOR_UTILIZADO_LIMITE
-    EnumPayerPersonType:
-      type: string
-      description: |
-        Identificação do Tipo de Pessoa do Pagador da transação. Vide Enum
-        Pessoa Natural - Informar CPF no campo “payerCnpjCpf”
-        Pessoa Jurídica - Informar CNPJ no campo “payerCnpjCpf”
-      enum:
-        - PESSOA_NATURAL
-        - PESSOA_JURIDICA
-      example: PESSOA_NATURAL
-    EnumPayeePersonType:
-      type: string
-      description: |
-        Identificação do Tipo de Pessoa do Recebedor da transação. Vide Enum
+        Identificação do Tipo de Pessoa da pessoa envolvida na transação.
         Pessoa Natural - Informar CPF no campo “payerCnpjCpf”
         Pessoa Jurídica - Informar CNPJ no campo “payerCnpjCpf”
       enum:
@@ -741,21 +644,6 @@ components:
           format: int32
           description: Número total de páginas no resultado
           example: 1
-      additionalProperties: false
-    OverdraftLimitsBalance:
-      type: object
-      required:
-        - type
-        - amount
-      properties:
-        type:
-          $ref: '#/components/schemas/EnumOverdraftLimitType'
-        amount:
-          type: number
-          description: Valor do saldo. Expressa em valor monetário com 4 casas decimais.
-          nullable: true
-          maxLength: 19
-          example: 500
       additionalProperties: false
     ResponseAccountList:
       type: object
@@ -947,9 +835,9 @@ components:
       in: query
       schema:
         type: string
-        format: DateString
-        pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
-        maxLength: 10
+        maxLength: 20
+        format: date-time
+        example: '2021-05-21T08:30:00Z'
     page:
       name: page
       in: query
@@ -968,6 +856,7 @@ components:
         default: 25
         minimum: 1
         format: int32
+        maximum: 10000
     toBookingDate:
       name: toBookingDate
       description: Data final de filtragem.
@@ -975,9 +864,9 @@ components:
       in: query
       schema:
         type: string
-        format: DateString
-        pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
-        maxLength: 10
+        maxLength: 20
+        format: date-time
+        example: '2021-05-21T08:30:00Z'
     xCustomerUserAgent:
       name: x-customer-user-agent
       in: header
@@ -994,7 +883,7 @@ components:
       required: false
       schema:
         type: string
-        pattern: '^(Mon|Tue|Wed|Thu|Fri|Sat|Sun), \d{2} (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\d{4} \d{2}:\d{2}:\d{2}  (GMT|UTC)$'
+        pattern: '^(Mon|Tue|Wed|Thu|Fri|Sat|Sun), \d{2} (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\d{4} \d{2}:\d{2}:\d{2} (GMT|UTC)$'
         maxLength: 2048
     xFapiCustomerIpAddress:
       name: x-fapi-customer-ip-address
@@ -1012,6 +901,15 @@ components:
       required: false
       schema:
         $ref: '#/components/responses/OKResponseAccountList/headers/x-fapi-interaction-id/schema'
+    xJwsSignature:
+      name: x-jws-signature
+      in: header
+      description: Cabeçalho contendo uma assinatura JWS separada do corpo do payload.
+      required: true
+      schema:
+        type: string
+        pattern: \w*\W*
+        maxLength: 2048
   securitySchemes:
     OpenId:
       type: openIdConnect
