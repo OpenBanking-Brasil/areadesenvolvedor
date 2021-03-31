@@ -23,4 +23,3 @@ widdershins source/swagger/swagger_open_banking_apis.yml -o source/includes/part
 
 spectral lint source/swagger/*_apis.yaml
 
-bundle exec middleman serve

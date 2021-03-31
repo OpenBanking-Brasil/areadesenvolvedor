@@ -1,0 +1,123 @@
+﻿openapi: "3.0.0"
+info:
+  title: API Resources - Open Banking Brasil
+  description: |
+    API que trata da consulta do status de recursos para o Open Banking Brasil.\
+    Não possui segregação entre pessoa natural e pessoa jurídica.\
+    Requer consentimento do cliente para todos os `endpoints`.
+
+    # Permissions necessárias para a API Resources
+
+    Para cada um dos paths desta API, além dos escopos (`scopes`) indicados existem `permissions` que deverão ser observadas:
+
+    ### `/resources`
+      - permissions:
+        - GET: **RESOURCES_READ**
+  version: 1.0.0
+  license:
+    name: Apache 2.0
+    url: 'https://www.apache.org/licenses/LICENSE-2.0'
+  contact:
+    name: Governança do Open Banking Brasil – Interfaces
+    email: gt-interfaces@openbankingbr.org
+    url: 'https://openbanking-brasil.github.io/areadesenvolvedor/'
+servers:
+  - url: 'https://api.banco.com.br/open-banking/resources/v1'
+    description: Servidor de Produção
+  - url: 'https://apih.banco.com.br/open-banking/resources/v1'
+    description: Servidor de Homologação
+tags:
+  - name: Resources
+paths:
+  /resources:
+    get:
+      tags:
+        - Resources
+      summary: Obtém a lista de recursos consentidos pelo cliente.
+      description: 'Método para obter a lista de recursos mantidos pelo cliente na instituição transmissora e para as quais ele tenha fornecido consentimento.'
+      operationId: getResourcesResources
+      parameters:
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/xFapiAuthDate'
+        - $ref: '#/components/parameters/xFapiCustomerIpAddress'
+        - $ref: '#/components/parameters/xFapiInteractionId'
+        - $ref: '#/components/parameters/xCustomerUserAgent'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+      responses:
+        '200':
+          $ref: '#/components/responses/OKResponseResourceList'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/OKResponseResourceList'
+      security:
+        - OpenId:
+            - openId
+            - resources
+components:
+  schemas:
+    ResponseResourceList:
+      $ref: ./schemas/resources_apis/ResponseResourceList.yaml
+  parameters:
+    Authorization:
+      $ref: ./parameters/Authorization.yaml
+    page:
+      $ref: ./parameters/Page.yaml
+    pageSize:
+      $ref: ./parameters/PageSize.yaml
+    xCustomerUserAgent:
+      $ref: ./parameters/XCustomerUserAgent.yaml
+    xFapiAuthDate:
+      $ref: ./parameters/XFapiAuthDate.yaml
+    xFapiCustomerIpAddress:
+      $ref: ./parameters/XFapiCustomerIpAddress.yaml
+    xFapiInteractionId:
+      $ref: ./parameters/XFapiInteractionId.yaml
+    xJwsSignature:
+      $ref: ./parameters/XJwsSignature.yaml
+  securitySchemes:
+    OpenId:
+      type: openIdConnect
+      openIdConnectUrl: 'https://authserver.example/.well-known/openid-configuration'
+  responses:
+    OKResponseResourceList:
+      description: Dados de status dos recursos obtidos com sucesso.
+      headers:
+        x-fapi-interaction-id:
+          schema:
+            $ref: ./headers/XFapiInteractionId.yaml
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ResponseResourceList'
+    BadRequest:
+      $ref: ./responses/BadRequest.yaml
+    Forbidden:
+      $ref: ./responses/Forbidden.yaml
+    InternalServerError:
+      $ref: ./responses/InternalServerError.yaml
+    MethodNotAllowed:
+      $ref: ./responses/MethodNotAllowed.yaml
+    NotAcceptable:
+      $ref: ./responses/NotAcceptable.yaml
+    NotFound:
+      $ref: ./responses/NotFound.yaml
+    TooManyRequests:
+      $ref: ./responses/TooManyRequests.yaml
+    Unauthorized:
+      $ref: ./responses/Unauthorized.yaml

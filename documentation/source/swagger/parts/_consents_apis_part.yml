@@ -1,0 +1,263 @@
+﻿openapi: "3.0.0"
+info:
+  title: API Consents - Open Banking Brasil
+  description: |
+    API que trata da criação, consulta e revogação de consentimentos para o Open Banking Brasil.  
+    Não possui segregação entre pessoa natural e pessoa jurídica.     
+  version: 1.0.0
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0
+  contact:
+    name: Governança do Open Banking Brasil - Interfaces
+    email: gt-interfaces@openbankingbr.org
+    url: https://openbanking-brasil.github.io/areadesenvolvedor/
+servers:
+  - url: 'https://api.banco.com.br/open-banking/consents/v1'
+    description: Servidor de Produção
+  - url: 'https://apih.banco.com.br/open-banking/consents/v1'
+    description: Servidor de Homologação  
+tags:
+  - name: Consents
+    description: "Operações para criação, consulta e revogação do consentimento dado pelo cliente."    
+paths:
+  /consents:
+    post:
+      tags:
+        - "Consents"
+      summary: "Criar novo pedido de consentimento."
+      description: "Método para a criação de um novo consentimento."
+      operationId: "postCreateConsents"
+      parameters:
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/xFapiAuthDate'
+        - $ref: '#/components/parameters/xFapiCustomerIpAddress'
+        - $ref: '#/components/parameters/xFapiInteractionId'
+        - $ref: '#/components/parameters/xCustomerUserAgent'
+        - $ref: '#/components/parameters/xJwsSignature'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateConsent"
+        description: "Payload para criação do consentimento."
+        required: true
+      responses:
+        '201':
+          $ref: "#/components/responses/201ConsentsCreated"
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'  
+        default:
+          description: Erro inesperado.
+          content:  
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+      security:
+        - OAuth2Security:
+            - consents 
+  /consents/{consentId}:
+    get:
+      tags:
+        - "Consents"
+      summary: "Obter detalhes do consentimento identificado por consentId."
+      description: "Método para obter detalhes do consentimento identificado por consentId."
+      operationId: "getConsentsConsentId"
+      parameters:
+        - $ref: "#/components/parameters/consentId"
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/xFapiAuthDate'
+        - $ref: '#/components/parameters/xFapiCustomerIpAddress'
+        - $ref: '#/components/parameters/xFapiInteractionId'
+        - $ref: '#/components/parameters/xCustomerUserAgent'
+        - $ref: '#/components/parameters/xJwsSignature'
+      responses:
+        '200':
+          $ref: "#/components/responses/200ConsentsConsentIdRead"
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          description: Erro inesperado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+      security:
+        - OAuth2Security:
+            - consents 
+    delete:
+      tags:
+        - "Consents"
+      summary: "Deletar/revogar o consentimento identificado por consentId."
+      description: "Método para deletar/revogar o consentimento identificado por consentId."
+      operationId: "deleteConsentsConsentId"
+      parameters:
+        - $ref: "#/components/parameters/consentId"
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/xFapiAuthDate'
+        - $ref: '#/components/parameters/xFapiCustomerIpAddress'
+        - $ref: '#/components/parameters/xFapiInteractionId'
+        - $ref: '#/components/parameters/xCustomerUserAgent'
+        - $ref: '#/components/parameters/xJwsSignature'
+      responses:
+        '204':
+          $ref: "#/components/responses/204ConsentsConsentIdDeleted"
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'   
+        default:
+          description: Erro inesperado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+      security:
+        - OAuth2Security:
+            - consents
+
+components:
+  schemas:
+    Links:
+      $ref: ./schemas/Links.yaml
+    Meta:
+      $ref: ./schemas/Meta.yaml
+    CreateConsent:
+      $ref: ./schemas/consents_apis/CreateConsent.yaml
+    ResponseConsent:
+      $ref: ./schemas/consents_apis/ResponseConsent.yaml
+    ResponseError:
+      $ref: ./schemas/ResponseError.yaml
+    LoggedUser:
+      $ref: ./schemas/consents_apis/LoggedUser.yaml
+    BusinessEntity:
+      $ref: ./schemas/consents_apis/BusinessEntity.yaml
+  parameters:
+    consentId:
+      $ref: ./parameters/ConsentId.yaml
+    Authorization:
+      $ref: ./parameters/Authorization.yaml
+    xCustomerUserAgent:
+      $ref: ./parameters/XCustomerUserAgent.yaml    
+    xFapiAuthDate:
+      $ref: ./parameters/XFapiAuthDate.yaml
+    xFapiCustomerIpAddress:
+      $ref: ./parameters/XFapiCustomerIpAddress.yaml
+    xFapiInteractionId:
+      $ref: ./parameters/XFapiInteractionId.yaml
+    xJwsSignature:
+      $ref: ./parameters/XJwsSignature.yaml
+  securitySchemes:
+    OAuth2Security:
+      type: "oauth2"
+      flows:
+        clientCredentials:
+          tokenUrl: "https://authserver.example/token"
+          scopes:
+            consents: Criação do consentimento.
+  responses:
+    UnsupportedMediaType:
+      $ref: ./responses/UnsupportedMediaType.yaml
+    BadRequest:
+      $ref: ./responses/BadRequest.yaml
+    Forbidden:
+      $ref: ./responses/Forbidden.yaml
+    InternalServerError:
+      $ref: ./responses/InternalServerError.yaml
+    MethodNotAllowed:
+      $ref: ./responses/MethodNotAllowed.yaml
+    NotAcceptable:
+      $ref: ./responses/NotAcceptable.yaml
+    NotFound:
+      $ref: ./responses/NotFound.yaml
+    TooManyRequests:
+      $ref: ./responses/TooManyRequests.yaml
+    Unauthorized:
+      $ref: ./responses/Unauthorized.yaml
+    201ConsentsCreated:
+      description: "Consentimento criado com sucesso."
+      headers:
+        x-fapi-interaction-id:
+          description: |
+            Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação.  
+            Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.          
+          schema:
+            type: string   
+            pattern: ^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$
+            minLength: 1
+            maxLength: 100             
+      content:
+        application/json:
+          schema:
+            $ref: ./schemas/consents_apis/ResponseConsent.yaml  
+    200ConsentsConsentIdRead:
+      description: "Consentimento consultado com sucesso."
+      headers:
+        x-fapi-interaction-id:
+          description: |
+            Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação.  
+            Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.          
+          schema:
+            type: string   
+            pattern: ^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$
+            minLength: 1
+            maxLength: 100             
+      content:
+        application/json:
+          schema:
+            $ref: ./schemas/consents_apis/ResponseConsent.yaml            
+    204ConsentsConsentIdDeleted:
+      description: "Consentimento revogado com sucesso."
+      headers:
+        x-fapi-interaction-id:
+          description: |
+            Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação.  
+            Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.          
+          schema:
+            type: string   
+            pattern: ^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$
+            minLength: 1
+            maxLength: 100   
+    
