@@ -3,63 +3,65 @@ info:
   title: API Credit-cards-accounts - Open Banking Brasil
   description: |
     API de contas de pagamento pós-pagas do Open Banking Brasil – Fase 2.
-    API que retorna informações de contas de pagamento pós-paga mantidas nas instituições transmissoras por seus clientes, incluindo dados como denominação, produto, bandeira,\
-    limites de crédito, informações sobre transações de pagamento efetuadas e faturas.\
-    Não possui segregação entre pessoa natural e pessoa jurídica.
-    Requer consentimento do cliente para todos os `endpoints`.
+    API que retorna informações de contas de pagamento pós-paga mantidas nas instituições transmissoras por seus clientes, incluindo dados como denominação, produto, bandeira, limites de crédito, informações sobre transações de pagamento efetuadas e faturas.
+    
+    Não possui segregação entre pessoa natural e pessoa jurídica. Requer consentimento do cliente para todos os `endpoints`. 
 
-    ## Permissions necessárias para a API Credit-cards-accounts
-
+    Permissions necessárias para a API Credit-cards-accounts
+    
     Para cada um dos paths desta API, além dos escopos (`scopes`) indicados existem `permissions` que deverão ser observadas:
-
+    
     ### `/accounts`
       - permissions:
-        - GET: **credit-cards-accounts.read**
+        - GET: **CREDIT_CARDS_ACCOUNTS_READ**
     ### `/accounts/{creditCardAccountId}`
       - permissions:
-        - GET: **credit-cards-accounts.read**
+        - GET: **CREDIT_CARDS_ACCOUNTS_READ**
     ### `/accounts/{creditCardAccountId}/bills`
       - permissions:
-        - GET: **credit-cards-accounts.bills.read**
+        - GET: **CREDIT_CARDS_ACCOUNTS_BILLS_READ**
     ### `/accounts/{creditCardAccountId}/{billId}/transactions`
       - permissions:
-        - GET: **credit-cards-accounts.bills.transactions.read**
-    ### `/accounts/{creditCardAccountId}/limits`
+        - GET: **CREDIT_CARDS_ACCOUNTS_BILLS_TRANSACTIONS_READ**
+    ### `/accounts/{creditCardAccountId}/limits`        
       - permissions:
-        - GET: **credit-cards-accounts.limits.read**
+        - GET: **CREDIT_CARDS_ACCOUNTS_LIMITS_READ**
     ### `/accounts/{creditCardAccountId}/transactions`
       - permissions:
-        - GET: **credit-cards-accounts.transactions.read**
+        - GET: **CREDIT_CARDS_ACCOUNTS_TRANSACTIONS_READ**
+  
   version: 1.0.0
   license:
     name: Apache 2.0
-    url: https://www.apache.org/licenses/LICENSE-2.0
+    url: 'https://www.apache.org/licenses/LICENSE-2.0'
   contact:
     name: Governança do Open Banking Brasil – Interfaces
     email: gt-interfaces@openbankingbr.org
-    url: https://openbanking-brasil.github.io/areadesenvolvedor/
+    url: 'https://openbanking-brasil.github.io/areadesenvolvedor/'
 servers:
-    - url: 'https://api.banco.com.br/open-banking/credit-cards-accounts/v1'
-      description: Servidor de Produção
-    - url: 'https://apih.banco.com.br/open-banking/credit-cards-accounts/v1'
-      description: Servidor de Homologação
+  - url: 'https://api.banco.com.br/open-banking/credit-cards-accounts/v1'
+    description: Servidor de Produção
+  - url: 'https://apih.banco.com.br/open-banking/credit-cards-accounts/v1'
+    description: Servidor de Homologação
 tags:
   - name: Credit Card
     description: Operações para listagem das informações de Cartão de Crédito
 paths:
-  /accounts:
+  '/accounts':
     get:
       tags:
         - Credit Card
       summary: Conjunto de informações das Contas de pagamento pós paga
       description: Método para obter a lista de contas de pagamento pós-paga mantidas pelo cliente na instituição transmissora e para as quais ele tenha fornecido consentimento
-      operationId: getAccountsCreditCard
+      operationId: getAccounts
       parameters:
         - $ref: '#/components/parameters/Authorization'
         - $ref: '#/components/parameters/xFapiAuthDate'
         - $ref: '#/components/parameters/xFapiCustomerIpAddress'
         - $ref: '#/components/parameters/xFapiInteractionId'
         - $ref: '#/components/parameters/xCustomerUserAgent'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
       responses:
         '200':
           $ref: '#/components/responses/OKResponseCreditCardAccountsList'
@@ -84,9 +86,8 @@ paths:
       security:
         - OpenId:
             - openId
-            - credit-card
-
-  /accounts/{creditCardAccountId}:
+            - credit-cards-accounts
+  '/accounts/{creditCardAccountId}':
     get:
       tags:
         - Credit Card
@@ -124,9 +125,8 @@ paths:
       security:
         - OpenId:
             - openId
-            - credit-card
-
-  /accounts/{creditCardAccountId}/bills:
+            - credit-cards-accounts
+  '/accounts/{creditCardAccountId}/bills':
     get:
       tags:
         - Credit Card
@@ -168,9 +168,54 @@ paths:
       security:
         - OpenId:
             - openId
-            - credit-card
-
-  /accounts/{creditCardAccountId}/limits:
+            - credit-cards-accounts
+  '/accounts/{creditCardAccountId}/bills/{billId}/transactions':
+    get:
+      tags:
+        - Credit Card
+      summary: Obtém a lista de transações da conta identificada por creditCardAccountId e billId.
+      description: Método para obter a lista de transações da conta de pagamento pós-paga identificada por creditCardAccountId e billId mantida pelo cliente na instituição transmissora.
+      operationId:  getAccountsCreditCardAccountIdBillIdTransactions
+      parameters:
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/xFapiAuthDate'
+        - $ref: '#/components/parameters/xFapiCustomerIpAddress'
+        - $ref: '#/components/parameters/xFapiInteractionId'
+        - $ref: '#/components/parameters/xCustomerUserAgent'
+        - $ref: '#/components/parameters/creditCardAccountId'
+        - $ref: '#/components/parameters/billId'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/fromTransactionDate'
+        - $ref: '#/components/parameters/toTransactionDate'
+        - $ref: '#/components/parameters/creditCardTransactionType'
+        - $ref: '#/components/parameters/creditCardPayeeMCC'
+      responses:
+        '200':
+          $ref: '#/components/responses/OKResponseCreditCardAccountsTransactions'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/OKResponseCreditCardAccountsTransactions'
+      security:
+        - OpenId:
+            - openId
+            - credit-cards-accounts
+  '/accounts/{creditCardAccountId}/limits':
     get:
       tags:
         - Credit Card
@@ -210,9 +255,8 @@ paths:
       security:
         - OpenId:
             - openId
-            - credit-card
-
-  /accounts/{creditCardAccountId}/transactions:
+            - credit-cards-accounts
+  '/accounts/{creditCardAccountId}/transactions':
     get:
       tags:
         - Credit Card
@@ -256,12 +300,9 @@ paths:
       security:
         - OpenId:
             - openId
-            - credit-card
-
+            - credit-card-accounts
 components:
   schemas:
-    AccountsLimits:
-      $ref: ./schemas/credit_cards_apis/AccountsLimits.yaml
     CreditCardAccountsBillsData:
       $ref: ./schemas/credit_cards_apis/CreditCardAccountsBillsData.yaml
     CreditCardAccountsBillsFinanceCharge:
@@ -270,16 +311,12 @@ components:
       $ref: ./schemas/credit_cards_apis/CreditCardAccountsBillsPayment.yaml
     CreditCardAccountsData:
       $ref: ./schemas/credit_cards_apis/CreditCardAccountsData.yaml
-    CreditCardsAccountsIdentificationData:
-      $ref: ./schemas/credit_cards_apis/CreditCardsAccountsIdentificationData.yaml
     CreditCardAccountsLimitsData:
       $ref: ./schemas/credit_cards_apis/CreditCardAccountsLimitsData.yaml
     CreditCardsAccountPaymentMethod:
       $ref: ./schemas/credit_cards_apis/CreditCardsAccountsPaymentMethod.yaml
     CreditCardAccountsTransaction:
       $ref: ./schemas/credit_cards_apis/CreditCardAccountsTransaction.yaml
-    CreditCardAccountsTransactionsData:
-      $ref: ./schemas/credit_cards_apis/CreditCardAccountsTransactionsData.yaml
     EnumCreditCardAccountFee:
       $ref: ./schemas/enum/EnumCreditCardAccountFee.yaml
     EnumCreditCardAccountsBillingValueType:
@@ -327,6 +364,8 @@ components:
   parameters:
     Authorization:
       $ref: ./parameters/Authorization.yaml
+    billId:
+      $ref: ./parameters/BillId.yaml
     creditCardAccountId:
       $ref: ./parameters/CreditCardAccountId.yaml
     creditCardPayeeMCC:
@@ -362,65 +401,117 @@ components:
       description: Conjunto de informações das Contas de pagamento pós paga
       headers:
         x-fapi-interaction-id:
+          description: 'Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.'
           schema:
-            $ref: ./headers/XFapiInteractionId.yaml
+            type: string
+            pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
+            maxLength: 100
+            description: 'Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.'
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ResponseCreditCardAccountsList'
+            $ref: ./schemas/credit_cards_apis/ResponseCreditCardAccountsList.yaml
     OKResponseCreditCardAccountsIdentification:
       description: Dados de identificação da conta identificada por creditCardAccountId obtidos com sucesso.
       headers:
         x-fapi-interaction-id:
+          description: 'Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.'
           schema:
-            $ref: ./headers/XFapiInteractionId.yaml
+            type: string
+            pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
+            maxLength: 100
+            description: 'Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.'
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ResponseCreditCardAccountsIdentification'
+            $ref: ./schemas/credit_cards_apis/ResponseCreditCardAccountsIdentification.yaml
     OKResponseCreditCardAccountsBills:
       description: Dados referentes à lista de faturas da conta identificada por creditCardAccountId obtidos com sucesso.
       headers:
         x-fapi-interaction-id:
+          description: 'Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.'
           schema:
-            $ref: ./headers/XFapiInteractionId.yaml
+            type: string
+            pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
+            maxLength: 100
+            description: 'Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.'
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ResponseCreditCardAccountsBills'
+            $ref: ./schemas/credit_cards_apis/ResponseCreditCardAccountsBills.yaml
     OKResponseCreditCardAccountsLimits:
       description: Dados dos limites da conta identificada por creditCardAccountId obtidos com sucesso.
       headers:
         x-fapi-interaction-id:
+          description: 'Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.'
           schema:
-            $ref: ./headers/XFapiInteractionId.yaml
+            type: string
+            pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
+            maxLength: 100
+            description: 'Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.'
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ResponseCreditCardAccountsLimits'
+            $ref: ./schemas/credit_cards_apis/ResponseCreditCardAccountsLimits.yaml
     OKResponseCreditCardAccountsTransactions:
-      description: Dados das lista de transações da conta identificada por creditCardAccountId obtidos com sucesso.
+      description: Dados das lista de transações da conta identificada obtidos com sucesso.
       headers:
         x-fapi-interaction-id:
+          description: 'Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.'
           schema:
-            $ref: ./headers/XFapiInteractionId.yaml
+            type: string
+            pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
+            maxLength: 100
+            description: 'Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.'
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ResponseCreditCardAccountsTransactions'
+            $ref: ./schemas/credit_cards_apis/ResponseCreditCardAccountsTransactions.yaml
     BadRequest:
-      $ref: ./responses/BadRequest.yaml
+      description: 'A requisição foi malformada, omitindo atributos obrigatórios, seja no payload ou através de atributos na URL.'
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: ./schemas/ResponseError.yaml
     Forbidden:
-      $ref: ./responses/Forbidden.yaml
+      description: O token tem escopo incorreto ou uma política de segurança foi violada
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: ./schemas/ResponseError.yaml
     InternalServerError:
-      $ref: ./responses/InternalServerError.yaml
+      description: Ocorreu um erro no gateway da API ou no microsserviço
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: ./schemas/ResponseError.yaml
     MethodNotAllowed:
-      $ref: ./responses/MethodNotAllowed.yaml
+      description: O consumidor tentou acessar o recurso com um método não suportado
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: ./schemas/ResponseError.yaml
     NotAcceptable:
-      $ref: ./responses/NotAcceptable.yaml
+      description: A solicitação continha um cabeçalho Accept diferente dos tipos de mídia permitidos ou um conjunto de caracteres diferente de UTF-8
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: ./schemas/ResponseError.yaml
     NotFound:
-      $ref: ./responses/NotFound.yaml
+      description: O recurso solicitado não existe ou não foi implementado
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: ./schemas/ResponseError.yaml
     TooManyRequests:
-      $ref: ./responses/TooManyRequests.yaml
+      description: 'A operação foi recusada, pois muitas solicitações foram feitas dentro de um determinado período ou o limite global de requisições concorrentes foi atingido'
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: ./schemas/ResponseError.yaml
     Unauthorized:
-      $ref: ./responses/Unauthorized.yaml
+      description: Cabeçalho de autenticação ausente/inválido ou token inválido
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: ./schemas/ResponseError.yaml
