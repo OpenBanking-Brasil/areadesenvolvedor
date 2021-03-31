@@ -13,18 +13,19 @@ info:
 
     ### `/contracts`
       - permissions:
-        - GET: **financings.read**
+        - GET: **FINANCINGS_READ**
     ### `/contracts/{contractId}`
-      - permissions: **financings.read**
+      - permissions:
+        - GET **FINANCINGS_READ**
     ### `/contracts/{contractId}/warranties`
       - permissions:
-        - GET: **financings.warranties.read**
+        - GET: **FINANCINGS_WARRANTIES_READ**
     ### `/contracts/{contractId}/scheduled-instalments`
       - permissions:
-        - GET: **financings.scheduled-instalments.read**
+        - GET: **FINANCINGS_INSTALMENTS_READ**
     ### `/contracts/{contractId}/payments`
       - permissions:
-        - GET: **financings.payments.read**
+        - GET: **FINANCINGS_PAYMENTS_READ**
   version: 1.0.0
   license:
     name: Apache 2.0
@@ -512,8 +513,8 @@ components:
       type: object
       description: Conjunto de informações relativas às parcelas não regulares do contrato da modalidade de crédito consultada
       required:
-        - currency
-        - instalments
+        - dueDate
+        - amount
       properties:
         dueDate:
           type: string
@@ -522,11 +523,13 @@ components:
           maxLength: 10
           example: '2020-01-10'
         amount:
+          description: Valor monetário da parcela não regular a vencer.  Expresso em valor monetário com 4 casas decimais
           type: number
-          nullable: true
-          description: Valor monetário da parcela não regular a vencer.  Expresso em valor monetário com 2 casas decimais
+          format: double
+          pattern: '(-?\d{15}(.\d{4}?))$'
           maxLength: 19
-          example: 200
+          minLength: 0
+          example: 100000.04
       additionalProperties: false
     FinancingsChargeOverParcel:
       type: object
@@ -555,18 +558,19 @@ components:
           pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
           example: '2020-01-10'
         feeAmount:
+          description: Traz o valor do pagamento da tarifa avulsa fora da parcela. Expresso em valor monetário com 4 casas decimais
           type: number
-          description: Traz o valor do pagamento da tarifa avulsa fora da parcela. Expresso em valor monetário com 2 casas decimais
+          format: double
+          pattern: '(-?\d{15}(.\d{4}?))$'
           maxLength: 19
-          example: 200
+          minLength: 0
+          example: 100000.04
       additionalProperties: false
     FinancingsContract:
       type: object
       description: Conjunto de informações referentes à identificação da operação de crédito de financiamentos
       required:
-        - contractId
         - ipocCode
-        - requestDateTime
         - productName
         - productType
         - productSubType
@@ -584,11 +588,6 @@ components:
         - interestRates
         - contractedFees
       properties:
-        contractId:
-          type: string
-          description: Um identificador único e imutável usado para identificar o contrato de uma operação de crédito. Este identificador não tem significado para o tomador do crédito.
-          maxLength: 100
-          example: '92792126019929279212650822221989319252576'
         ipocCode:
           type: string
           maxLength: 67
@@ -603,68 +602,59 @@ components:
               3. Para os demais clientes (tipos de cliente 3, 4, 5 e 6), informar 14 (catorze) posições com complemento de zeros à esquerda se a identificação tiver tamanho inferior;
             - **Código do contrato:** 1 (uma) até 40 (quarenta) posições, sem complemento de caracteres.
           example: '92792126019929279212650822221989319252576'
-        requestDateTime:
-          type: string
-          maxLength: 20
-          format: DateTimeString
-          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
-          example: '2020-01-05T08:30:00Z'
-          description: 'Data e hora da consulta, conforme especificação RFC-3339, formato UTC.'
         productName:
           type: string
           maxLength: 140
           pattern: \w*\W*
           description: |
             Denominação/Identificação do nome da Modalidade da Operação de Crédito divulgado ao cliente
-          example: Financiamentos veículos automotores
+          example: AD
         productType:
           $ref: '#/components/schemas/EnumContractProductTypeFinancings'
         productSubType:
           $ref: '#/components/schemas/EnumContractProductSubTypeFinancings'
         contractDate:
-          type: string
           description: Data de contratação da operação de crédito. Especificação RFC-3339
-          maxLength: 10
-          format: DateString
-          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
-          example: '2018-01-05'
-        disbursementDate:
           type: string
+          maxLength: 20
+          format: date-time
+          example: '2021-05-21T08:30:00Z'
+        disbursementDate:
           description: Data do Desembolso do valor contratado. Especificação RFC-3339
-          maxLength: 10
-          format: DateString
-          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
-          example: '2018-01-15'
+          type: string
+          maxLength: 20
+          format: date-time
+          example: '2021-05-21T08:30:00Z'
         contractAmount:
+          description: Valor contratado da operação. Expresso em valor monetário com 4 casas decimais
           type: number
+          format: double
+          pattern: '(-?\d{15}(.\d{4}?))$'
           maxLength: 19
-          description: Valor contratado da operação. Expresso em valor monetário com 2 casas decimais
-          example: 26000
+          minLength: 0
+          example: 100000.04
         currency:
           type: string
           pattern: '^(\w{3}){1}$'
           maxLength: 3
-          format: CurrencyString
           description: |
             Moeda referente ao valor da garantia, segundo modelo ISO-4217. p.ex. 'BRL'
             Todos os valores monetários informados estão representados com a moeda vigente do Brasil
           example: BRL
         dueDate:
-          type: string
-          maxLength: 10
-          format: DateString
-          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
           description: Data de vencimento Final da operação. Especificação RFC-3339
-          example: '2028-01-15'
+          type: string
+          maxLength: 20
+          format: date-time
+          example: '2021-05-21T08:30:00Z'
         instalmentPeriodicity:
           $ref: '#/components/schemas/EnumContractInstalmentPeriodicity'
         firstInstalmentDueDate:
-          type: string
-          maxLength: 10
-          format: DateString
-          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
           description: Data de vencimento primeira parcela do principal
-          example: '2018-02-15'
+          type: string
+          maxLength: 20
+          format: date-time
+          example: '2021-05-21T08:30:00Z'
         totalNumberOfInstalments:
           type: number
           description: Prazo Total em meses do contrato referente à Modalidade de Crédito informada
@@ -715,23 +705,26 @@ components:
           maxLength: 140
           pattern: \w*\W*
           description: Denominação da Tarifa pactuada
-          example: Avaliação do Veículo
+          example: Excesso em Conta
         feeCode:
           type: string
           maxLength: 140
           pattern: \w*\W*
           description: Sigla identificadora da tarifa pactuada
-          example: AVALICAO_BEM
+          example: EXCESSO_CONTA
         feeChargeType:
           $ref: '#/components/schemas/EnumContractFeeChargeType'
         feeCharge:
           $ref: '#/components/schemas/EnumContractFeeCharge'
         feeAmount:
-          type: number
           description: |
             Valor monetário da tarifa pactuada no contrato. Preenchimento obrigatório quando a forma de cobrança for: Mínimo, Máximo ou Fixo
+          type: number
+          format: double
+          pattern: '(-?\d{15}(.\d{4}?))$'
           maxLength: 19
-          example: 50
+          minLength: 0
+          example: 100000.04
         feeRate:
           type: number
           description: |
@@ -752,15 +745,13 @@ components:
         warrantySubType:
           $ref: '#/components/schemas/EnumWarrantySubType'
         warrantyAmount:
+          description: 'Valor original da garantia. Valor monetário, expresso com 4 casas decimais'
           type: number
+          format: double
+          pattern: '(-?\d{15}(.\d{4}?))$'
           maxLength: 19
-          nullable: true
-          description: 'Valor original da garantia. Valor monetário, expresso com 2 casas decimais'
-          example: 200
-      example:
-        warrantyType: BENS_ARRENDADOS
-        warrantySubType: VEICULOS_AUTOMOTORES
-        warrantyAmount: 200
+          minLength: 0
+          example: 100000.04
       additionalProperties: false
     FinancingsContractInterestRate:
       type: object
@@ -847,39 +838,25 @@ components:
       type: object
       description: Conjunto de informações referentes às parcelas / prestações da operação de crédito de financiamentos contratada
       required:
-        - contractId
-        - requestDateTime
-        - contractRemainingMonths
         - dueInstalments
         - pastDueInstalments
-        - balloonPayment
+        - balloonPayments
       properties:
-        contractId:
-          type: string
-          description: Um identificador único e imutável usado para identificar o contrato de uma operação de crédito. Este identificador não tem significado para o tomador do crédito
-          maxLength: 100
-          example: '92792126019929279212650822221989319252576'
-        requestDateTime:
-          type: string
-          maxLength: 20
-          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
-          example: '2020-01-05T08:30:00Z'
-          description: 'Data e hora da consulta, conforme especificação RFC-3339, formato UTC.'
         contractRemainingDays:
           type: number
           maxLength: 6
           description: Prazo Remanescente em dias do contrato referente à Modalidade de Crédito informada
-          example: 300
+          example: 57
         dueInstalments:
           type: number
           maxLength: 3
           description: 'Quantidade de prestações a vencer. (No caso de modalidades que não possuam parcelas, o número de prestações é igual a zero)'
-          example: 10
+          example: 57
         pastDueInstalments:
           type: number
           maxLength: 3
           description: 'Quantidade de prestações vencidas. (No caso de modalidades que não possuam parcelas, o número de prestações é igual a zero)'
-          example: 0
+          example: 73
         currency:
           type: string
           description: |
@@ -887,7 +864,6 @@ components:
             Todos os valores monetários informados estão representados com a moeda vigente do Brasil
           pattern: '^(\w{3}){1}$'
           maxLength: 3
-          format: CurrencyString
           example: BRL
         balloonPayments:
           type: array
@@ -897,6 +873,7 @@ components:
     FinancingsListContract:
       type: object
       required:
+        - brandID
         - brandName
         - companyCnpj
         - productType
@@ -904,6 +881,12 @@ components:
         - ipocCode
         - contractId
       properties:
+        brandID:
+          type: string
+          description: 'Identifica a Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes.'
+          maxLength: 100
+          pattern: \w*\W*
+          example: '29698749425984912674'
         brandName:
           type: string
           description: 'Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes'
@@ -917,9 +900,24 @@ components:
           maxLength: 14
           example: '21128159000166'
         productType:
-          $ref: '#/components/schemas/EnumContractProductTypeFinancings'
+          type: string
+          description: 'Tipo da modalidade de crédito contratada, conforme  circular 4.015 e descrição do DOC3040 do SCR). (Vide Domínio).'
+          maxLength: 10
+          example: EMPRESTIMO
         productSubType:
-          $ref: '#/components/schemas/EnumContractProductSubTypeFinancings'
+          type: string
+          description: 'Sub tipo da modalidades de crédito Empréstimos contratadas, conforme  circular 4.015 e descrição do DOC3040 do SCR). (Vide Domínio). Crédito pessoal sem consignação, Crédito pessoal com consignação, Home equity, Microcrédito produtivo orientado, Cheque especial, Conta garantida, Capital de giro com prazo de vencimento até 365 dias, capital de giro com prazo de vencimento superior a 365 dias, Capital de giro com teto rotativo'
+          enum:
+            - CREDITO_PESSOAL_SEM_CONSIGNACAO
+            - CREDITO_PESSOAL_COM_CONSIGNACAO
+            - HOME_EQUITY
+            - MICROCREDITO_PRODUTIVO_ORIENTADO
+            - CHEQUE_ESPECIAL
+            - CONTA_GARANTIDA
+            - CAPITAL_GIRO_PRAZO_VENCIMENTO_ATE_365_DIAS
+            - CAPITAL_GIRO_PRAZO_VENCIMENTO_SUPERIOR_365_DIAS
+            - CAPITAL_GIRO_TETO_ROTATIVO
+          example: CREDITO_PESSOAL_SEM_CONSIGNACAO
         ipocCode:
           type: string
           maxLength: 67
@@ -939,36 +937,16 @@ components:
           description: Um identificador único e imutável usado para identificar o contrato de uma operação de crédito. Este identificador não tem significado para o tomador do crédito.
           maxLength: 100
           example: '92792126019929279212650822221989319252576'
-      example:
-        brandName: Organização A
-        companyCnpj: '21128159000166'
-        productType: FINANCIAMENTOS
-        productSubType: AQUISICAO_BENS_VEICULOS_AUTOMOTORES
-        ipocCode: '92792126019929279212650822221989319252576'
-        contractId: '92792126019929279212650822221989319252576'
       additionalProperties: false
     FinancingsPayments:
       type: object
       description: Conjunto de informações dos pagamentos referentes às operações de crédito de financiamentos contratadas
       required:
-        - contractId
-        - requestDateTime
         - paidInstalments
         - currency
         - contractOutstandingBalance
         - releases
       properties:
-        contractId:
-          type: string
-          description: Um identificador único e imutável usado para identificar o contrato de uma operação de crédito. Este identificador não tem significado para o tomador do crédito.
-          maxLength: 100
-          example: '92792126019929279212650822221989319252576'
-        requestDateTime:
-          type: string
-          maxLength: 20
-          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
-          example: '2020-01-05T08:30:00Z'
-          description: 'Data e hora da consulta, conforme especificação RFC-3339, formato UTC.'
         paidInstalments:
           type: number
           maxLength: 3
@@ -978,16 +956,19 @@ components:
           type: string
           pattern: '^(\w{3}){1}$'
           maxLength: 3
-          format: CurrencyString
           description: 'Moeda referente ao valor mínimo da Tarifa, segundo modelo ISO-4217'
-          example: BRL
         contractOutstandingBalance:
-          type: string
+          description: 'Saldo devedor Remanescente, divulgado nos canais eletrônicos, do contrato referente à Modalidade de Crédito informada. Expresso em valor monetário com 4 casas decimais'
+          type: number
+          format: double
+          pattern: '(-?\d{15}(.\d{4}?))$'
           maxLength: 19
-          description: 'Saldo devedor Remanescente, divulgado nos canais eletrônicos, do contrato referente à Modalidade de Crédito informada. Expresso em valor monetário com 2 casas decimais'
-          example: '11400.00'
+          minLength: 0
+          example: 100000.04
         releases:
-          $ref: '#/components/schemas/FinancingsReleases'
+          type: array
+          items:
+            $ref: '#/components/schemas/FinancingsReleases'
         chargesOverParcel:
           type: array
           description: 'Lista das tarifas que foram pagas fora da parcela, só para pagamento avulso.'
@@ -1025,10 +1006,13 @@ components:
           pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
           example: '2020-01-10'
         paidAmount:
-          type: number
           description: Valor do pagamento referente ao  contrato da modalidade de crédito consultada. Expresso em valor monetário com até 4 casas decimais
+          type: number
+          format: double
+          pattern: '(-?\d{15}(.\d{4}?))$'
           maxLength: 19
-          example: 200
+          minLength: 0
+          example: 100000.04
       additionalProperties: false
     FinancingsTaxesOverParcel:
       type: object
@@ -1043,7 +1027,6 @@ components:
           type: string
           description: Campo de preenchimento obrigatório se selecionada a opção 'OUTROS' em Tipo de encargo pago fora da parcela
           pattern: \w*\W*
-          example: ''
         taxpaidDate:
           type: string
           description: 'Traz a data de efetivação do pagamento do encargo pago fora da parcela, conforme especificação RFC-3339'
@@ -1051,10 +1034,13 @@ components:
           maxLength: 10
           example: '2020-01-10'
         taxAmount:
+          description: Traz o valor do pagamento do encargo pago fora da parcela. Expresso em valor monetário com 4 casas decimais
           type: number
-          description: Traz o valor do pagamento do encargo pago fora da parcela. Expresso em valor monetário com 2 casas decimais
-          example: 200
+          format: double
+          pattern: '(-?\d{15}(.\d{4}?))$'
           maxLength: 19
+          minLength: 0
+          example: 100000.04
       additionalProperties: false
     FinancingsWarranties:
       type: object
@@ -1101,32 +1087,39 @@ components:
       properties:
         self:
           type: string
-          format: URIString
+          format: uri
+          maxLength: 2000
           description: URI completo que gerou a resposta atual.
-          example: 'https://api.banco.com.br/open-banking/<api>/v1/<resource>'
-          maxLength: 2048
+          example: 'https://api.banco.com.br/open-banking/api/v1/resource'
+          pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
         first:
           type: string
-          format: URIString
+          format: uri
+          maxLength: 2000
           description: URI da primeira página que originou essa lista de resultados. Restrição - Obrigatório quando não for a primeira página da resposta
-          example: 'https://api.banco.com.br/open-banking/<api>/v1/<resource>'
-          maxLength: 2048
+          example: 'https://api.banco.com.br/open-banking/api/v1/resource'
+          pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
         prev:
           type: string
-          format: URIString
+          format: uri
+          maxLength: 2000
           description: "URI da página anterior dessa lista de resultados. Restrição - \tObrigatório quando não for a primeira página da resposta"
-          maxLength: 2048
+          example: 'https://api.banco.com.br/open-banking/api/v1/resource'
+          pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
         next:
           type: string
-          format: URIString
+          format: uri
+          maxLength: 2000
           description: URI da próxima página dessa lista de resultados. Restrição - Obrigatório quando não for a última página da resposta
-          maxLength: 2048
+          example: 'https://api.banco.com.br/open-banking/api/v1/resource'
+          pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
         last:
           type: string
-          format: URIString
+          format: uri
+          maxLength: 2000
           description: URI da última página dessa lista de resultados. Restrição - Obrigatório quando não for a última página da resposta
-          example: 'https://api.banco.com.br/open-banking/<api>/v1/<resource>'
-          maxLength: 2048
+          example: 'https://api.banco.com.br/open-banking/api/v1/resource'
+          pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
       additionalProperties: false
     Meta:
       type: object
@@ -1175,7 +1168,7 @@ components:
                 pattern: \w*\W*
                 maxLength: 255
               title:
-                description: Título legível por humanos do erro deste erro específico
+                description: Título legível por humanos deste erro específico
                 type: string
                 pattern: \w*\W*
                 maxLength: 255
@@ -1255,7 +1248,9 @@ components:
         - meta
       properties:
         data:
-          $ref: '#/components/schemas/FinancingsWarranties'
+          type: array
+          items:
+            $ref: '#/components/schemas/FinancingsWarranties'
         links:
           $ref: '#/components/schemas/Links'
         meta:
@@ -1307,7 +1302,8 @@ components:
       schema:
         type: string
         pattern: \w*\W*
-        maxLength: 2048
+        minLength: 1
+        maxLength: 100
     xFapiAuthDate:
       name: x-fapi-auth-date
       in: header
@@ -1315,8 +1311,9 @@ components:
       required: false
       schema:
         type: string
-        pattern: '^(Mon|Tue|Wed|Thu|Fri|Sat|Sun), \d{2} (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\d{4} \d{2}:\d{2}:\d{2} (GMT|UTC)$'
-        maxLength: 2048
+        pattern: '^(Mon|Tue|Wed|Thu|Fri|Sat|Sun), \d{2} (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) \d{4} \d{2}:\d{2}:\d{2} (GMT|UTC)$'
+        minLength: 29
+        maxLength: 29
     xFapiCustomerIpAddress:
       name: x-fapi-customer-ip-address
       in: header
@@ -1325,14 +1322,18 @@ components:
       schema:
         type: string
         pattern: \w*\W*
-        maxLength: 2048
+        minLength: 1
+        maxLength: 100
     xFapiInteractionId:
       name: x-fapi-interaction-id
       in: header
       description: 'Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.'
       required: false
       schema:
-        $ref: '#/components/responses/OKResponseFinancingsContract/headers/x-fapi-interaction-id/schema'
+        type: string
+        pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
+        minLength: 1
+        maxLength: 100
   securitySchemes:
     OpenId:
       type: openIdConnect

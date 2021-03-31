@@ -976,32 +976,39 @@ components:
       properties:
         self:
           type: string
-          format: URIString
+          format: uri
+          maxLength: 2000
           description: URI completo que gerou a resposta atual.
-          example: 'https://api.banco.com.br/open-banking/<api>/v1/<resource>'
-          maxLength: 2048
+          example: 'https://api.banco.com.br/open-banking/api/v1/resource'
+          pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
         first:
           type: string
-          format: URIString
+          format: uri
+          maxLength: 2000
           description: URI da primeira página que originou essa lista de resultados. Restrição - Obrigatório quando não for a primeira página da resposta
-          example: 'https://api.banco.com.br/open-banking/<api>/v1/<resource>'
-          maxLength: 2048
+          example: 'https://api.banco.com.br/open-banking/api/v1/resource'
+          pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
         prev:
           type: string
-          format: URIString
+          format: uri
+          maxLength: 2000
           description: "URI da página anterior dessa lista de resultados. Restrição - \tObrigatório quando não for a primeira página da resposta"
-          maxLength: 2048
+          example: 'https://api.banco.com.br/open-banking/api/v1/resource'
+          pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
         next:
           type: string
-          format: URIString
+          format: uri
+          maxLength: 2000
           description: URI da próxima página dessa lista de resultados. Restrição - Obrigatório quando não for a última página da resposta
-          maxLength: 2048
+          example: 'https://api.banco.com.br/open-banking/api/v1/resource'
+          pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
         last:
           type: string
-          format: URIString
+          format: uri
+          maxLength: 2000
           description: URI da última página dessa lista de resultados. Restrição - Obrigatório quando não for a última página da resposta
-          example: 'https://api.banco.com.br/open-banking/<api>/v1/<resource>'
-          maxLength: 2048
+          example: 'https://api.banco.com.br/open-banking/api/v1/resource'
+          pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
       additionalProperties: false
     Meta:
       type: object
@@ -1050,7 +1057,7 @@ components:
                 pattern: \w*\W*
                 maxLength: 255
               title:
-                description: Título legível por humanos do erro deste erro específico
+                description: Título legível por humanos deste erro específico
                 type: string
                 pattern: \w*\W*
                 maxLength: 255
@@ -1185,7 +1192,8 @@ components:
       schema:
         type: string
         pattern: \w*\W*
-        maxLength: 2048
+        minLength: 1
+        maxLength: 100
     xFapiAuthDate:
       name: x-fapi-auth-date
       in: header
@@ -1193,8 +1201,9 @@ components:
       required: false
       schema:
         type: string
-        pattern: '^(Mon|Tue|Wed|Thu|Fri|Sat|Sun), \d{2} (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\d{4} \d{2}:\d{2}:\d{2} (GMT|UTC)$'
-        maxLength: 2048
+        pattern: '^(Mon|Tue|Wed|Thu|Fri|Sat|Sun), \d{2} (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) \d{4} \d{2}:\d{2}:\d{2} (GMT|UTC)$'
+        minLength: 29
+        maxLength: 29
     xFapiCustomerIpAddress:
       name: x-fapi-customer-ip-address
       in: header
@@ -1203,14 +1212,18 @@ components:
       schema:
         type: string
         pattern: \w*\W*
-        maxLength: 2048
+        minLength: 1
+        maxLength: 100
     xFapiInteractionId:
       name: x-fapi-interaction-id
       in: header
       description: 'Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.'
       required: false
       schema:
-        $ref: '#/components/responses/OKResponseInvoiceFinancingsContract/headers/x-fapi-interaction-id/schema'
+        type: string
+        pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
+        minLength: 1
+        maxLength: 100
   securitySchemes:
     OpenId:
       type: openIdConnect
