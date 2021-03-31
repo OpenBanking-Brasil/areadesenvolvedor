@@ -2,7 +2,7 @@
 ![Stoplight](https://github.com/openbanking-brasil/areadesenvolvedor/workflows/Stoplight/badge.svg)
 ![Deploy](https://github.com/openbanking-brasil/areadesenvolvedor/workflows/Deploy/badge.svg)
 
-![](/home/joaosantana/Documentos/projetos/openbanking/areadesenvolvedor-fase2/documentation/source/images/logo.png)
+![OpenBanking](./documentation/source/images/logo.png)
 
 # Repositório Open Banking Brasil
 
