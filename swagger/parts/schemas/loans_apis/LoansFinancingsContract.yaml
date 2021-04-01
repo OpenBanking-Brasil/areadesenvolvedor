@@ -1,9 +1,7 @@
 type: object
 description: Conjunto de informações referentes à identificação da operação de crédito de empréstimo
 required:
-  - contractId
   - ipocCode
-  - requestDateTime
   - productName
   - productType
   - productSubType
@@ -22,11 +20,6 @@ required:
   - contractedFees
   - contractedFinanceCharges
 properties:
-  contractId:
-    type: string
-    description: Um identificador único e imutável usado para identificar o contrato de uma operação de crédito. Este identificador não tem significado para o tomador do crédito
-    maxLength: 100
-    example: "92792126019929279212650822221989319252576"
   ipocCode:
     type: string
     maxLength: 67
@@ -41,13 +34,6 @@ properties:
         3. Para os demais clientes (tipos de cliente 3, 4, 5 e 6), informar 14 (catorze) posições com complemento de zeros à esquerda se a identificação tiver tamanho inferior;
       - **Código do contrato:** 1 (uma) até 40 (quarenta) posições, sem complemento de caracteres.
     example: '92792126019929279212650822221989319252576'
-  requestDateTime:
-    type: string
-    maxLength: 20
-    format: DateTimeString
-    pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
-    example: "2020-01-05T08:30:00Z"
-    description: Data e hora da consulta, conforme especificação RFC-3339, formato UTC.
   productName:
     type: string
     maxLength: 140
@@ -63,26 +49,29 @@ properties:
     type: string
     description: Data de contratação da operação de crédito. Especificação RFC-3339
     maxLength: 10
-    format: DateString
+    format: "date"
     pattern: ^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$
     example: '2018-01-05'
   disbursementDate:
     type: string
     description: Data do Desembolso do valor contratado. Especificação RFC-3339
     maxLength: 10
-    format: DateString
+    format: "date"
     pattern: ^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$
     example: '2018-01-15'
   contractAmount:
-    type: number
-    maxLength: 19
     description: Valor contratado da operação. Expresso em valor monetário com até 4 casas decimais
-    example: 26000.00
+    type: number
+    format: double
+    pattern: '(-?\d{15}(.\d{4}?))$'
+    maxLength: 19
+    minLength: 0
+    example: 100000.0400
   currency:
     type: string
     pattern: '^(\w{3}){1}$'
     maxLength: 3
-    format: CurrencyString
+    format: string
     description: |
       Moeda referente ao valor da garantia, segundo modelo ISO-4217. p.ex. 'BRL'
       Todos os valores monetários informados estão representados com a moeda vigente do Brasil
@@ -90,7 +79,7 @@ properties:
   dueDate:
     type: string
     maxLength: 10
-    format: DateString
+    format: "date"
     pattern: ^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$
     description: Data de vencimento Final da operação. Especificação RFC-3339
     example: '2028-01-15'
@@ -99,7 +88,7 @@ properties:
   firstInstalmentDueDate:
     type: string
     maxLength: 10
-    format: DateString
+    format: "date"
     pattern: ^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$
     description: Data de vencimento primeira parcela do principal
     example: '2018-02-15'
