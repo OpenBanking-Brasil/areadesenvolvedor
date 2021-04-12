@@ -1,0 +1,686 @@
+﻿openapi: 3.0.0
+info:
+  title: API Consents - Open Banking Brasil
+  description: |
+    API que trata da criação, consulta e revogação de consentimentos para o Open Banking Brasil.  
+    Não possui segregação entre pessoa natural e pessoa jurídica.     
+  version: 1.0.0
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0'
+  contact:
+    name: Governança do Open Banking Brasil - Interfaces
+    email: gt-interfaces@openbankingbr.org
+    url: 'https://openbanking-brasil.github.io/areadesenvolvedor/'
+servers:
+  - url: 'https://api.banco.com.br/open-banking/consents/v1'
+    description: Servidor de Produção
+  - url: 'https://apih.banco.com.br/open-banking/consents/v1'
+    description: Servidor de Homologação
+tags:
+  - name: Consents
+    description: 'Operações para criação, consulta e revogação do consentimento dado pelo cliente.'
+paths:
+  /consents:
+    post:
+      tags:
+        - Consents
+      summary: Criar novo pedido de consentimento.
+      description: Método para a criação de um novo consentimento.
+      operationId: postCreateConsents
+      parameters:
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/xFapiAuthDate'
+        - $ref: '#/components/parameters/xFapiCustomerIpAddress'
+        - $ref: '#/components/parameters/xFapiInteractionId'
+        - $ref: '#/components/parameters/xCustomerUserAgent'
+        - $ref: '#/components/parameters/xJwsSignature'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateConsent'
+        description: Payload para criação do consentimento.
+        required: true
+      responses:
+        '201':
+          $ref: '#/components/responses/201ConsentsCreated'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          description: Erro inesperado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+      security:
+        - OAuth2Security:
+            - consents
+  '/consents/{consentId}':
+    get:
+      tags:
+        - Consents
+      summary: Obter detalhes do consentimento identificado por consentId.
+      description: Método para obter detalhes do consentimento identificado por consentId.
+      operationId: getConsentsConsentId
+      parameters:
+        - $ref: '#/components/parameters/consentId'
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/xFapiAuthDate'
+        - $ref: '#/components/parameters/xFapiCustomerIpAddress'
+        - $ref: '#/components/parameters/xFapiInteractionId'
+        - $ref: '#/components/parameters/xCustomerUserAgent'
+        - $ref: '#/components/parameters/xJwsSignature'
+      responses:
+        '200':
+          $ref: '#/components/responses/200ConsentsConsentIdRead'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          description: Erro inesperado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+      security:
+        - OAuth2Security:
+            - consents
+    delete:
+      tags:
+        - Consents
+      summary: Deletar/revogar o consentimento identificado por consentId.
+      description: Método para deletar/revogar o consentimento identificado por consentId.
+      operationId: deleteConsentsConsentId
+      parameters:
+        - $ref: '#/components/parameters/consentId'
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/xFapiAuthDate'
+        - $ref: '#/components/parameters/xFapiCustomerIpAddress'
+        - $ref: '#/components/parameters/xFapiInteractionId'
+        - $ref: '#/components/parameters/xCustomerUserAgent'
+        - $ref: '#/components/parameters/xJwsSignature'
+      responses:
+        '204':
+          $ref: '#/components/responses/204ConsentsConsentIdDeleted'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          description: Erro inesperado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+      security:
+        - OAuth2Security:
+            - consents
+components:
+  schemas:
+    Links:
+      type: object
+      description: Referências para outros recusos da API requisitada.
+      required:
+        - self
+      properties:
+        self:
+          type: string
+          format: uri
+          maxLength: 2000
+          description: URI completo que gerou a resposta atual.
+          example: 'https://api.banco.com.br/open-banking/api/v1/resource'
+          pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
+        first:
+          type: string
+          format: uri
+          maxLength: 2000
+          description: URI da primeira página que originou essa lista de resultados. Restrição - Obrigatório quando não for a primeira página da resposta
+          example: 'https://api.banco.com.br/open-banking/api/v1/resource'
+          pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
+        prev:
+          type: string
+          format: uri
+          maxLength: 2000
+          description: "URI da página anterior dessa lista de resultados. Restrição - \tObrigatório quando não for a primeira página da resposta"
+          example: 'https://api.banco.com.br/open-banking/api/v1/resource'
+          pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
+        next:
+          type: string
+          format: uri
+          maxLength: 2000
+          description: URI da próxima página dessa lista de resultados. Restrição - Obrigatório quando não for a última página da resposta
+          example: 'https://api.banco.com.br/open-banking/api/v1/resource'
+          pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
+        last:
+          type: string
+          format: uri
+          maxLength: 2000
+          description: URI da última página dessa lista de resultados. Restrição - Obrigatório quando não for a última página da resposta
+          example: 'https://api.banco.com.br/open-banking/api/v1/resource'
+          pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
+      additionalProperties: false
+    Meta:
+      type: object
+      description: Meta informações referente a API requisitada.
+      required:
+        - totalRecords
+        - totalPages
+        - requestDateTime
+      properties:
+        totalRecords:
+          type: integer
+          format: int32
+          description: Número total de registros no resultado
+          example: 1
+        totalPages:
+          type: integer
+          format: int32
+          description: Número total de páginas no resultado
+          example: 1
+        requestDateTime:
+          description: 'Data e hora da consulta, conforme especificação RFC-3339, formato UTC.'
+          type: string
+          maxLength: 20
+          format: date-time
+          example: '2021-05-21T08:30:00Z'
+      additionalProperties: false
+    CreateConsent:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: object
+          required:
+            - permissions
+            - loggedUser
+          properties:
+            brandID:
+              type: string
+              description: 'Identifica a Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes.'
+              maxLength: 100
+              pattern: \w*\W*
+              example: '29698749425984912674'
+            loggedUser:
+              $ref: '#/components/schemas/LoggedUser'
+            businessEntity:
+              $ref: '#/components/schemas/BusinessEntity'
+            permissions:
+              type: array
+              items:
+                description: 'Especifica os tipos de permissões de acesso às APIs no escopo do Open Banking Brasil - Fase 2, de acordo com os blocos de consentimento fornecidos pelo usuário e necessários ao acesso a cada endpoint das APIs.'
+                type: string
+                enum:
+                  - ACCOUNTS_READ
+                  - ACCOUNTS_BALANCES_READ
+                  - ACCOUNTS_TRANSACTIONS_READ
+                  - ACCOUNTS_OVERDFRAFT_LIMITS_READ
+                  - CREDIT_CARDS_ACCOUNTS_READ
+                  - CREDIT_CARDS_ACCOUNTS_BILLS_READ
+                  - CREDIT_CARDS_ACCOUNTS_BILLS_TRANSACTIONS_READ
+                  - CREDIT_CARDS_ACCOUNTS_LIMITS_READ
+                  - CREDIT_CARDS_ACCOUNTS_TRANSACTIONS_READ
+                  - CUSTOMERS_PERSONAL_IDENTIFICATIONS_READ
+                  - CUSTOMERS_PERSONAL_ADITTIONALINFO_READ
+                  - CUSTOMERS_BUSINESS_IDENTIFICATIONS_READ
+                  - CUSTOMERS_BUSINESS_ADITTIONALINFO_READ
+                  - INVOICE_FINANCINGS_READ
+                  - INVOICE_FINANCINGS_INSTALMENTS_READ
+                  - INVOICE_FINANCINGS_PAYMENTS_READ
+                  - INVOICE_FINANCINGS_WARRANTIES_READ
+                  - INVOICE_FINANCINGS_SCHEDULED_INSTALMENTS_READ
+                  - FINANCINGS_READ
+                  - FINANCINGS_INSTALMENTS_READ
+                  - FINANCINGS_PAYMENTS_READ
+                  - FINANCINGS_WARRANTIES_READ
+                  - LOANS_READ
+                  - LOANS_INSTALMENTS_READ
+                  - LOANS_PAYMENTS_READ
+                  - LOANS_WARRANTIES_READ
+                  - LOANS_SCHEDULED_INSTALMENTS_READ
+                  - UNARRANGED_ACCOUNTS_OVERDRAFT_READ
+                  - UNARRANGED_ACCOUNTS_OVERDRAFT_INSTALMENTS_READ
+                  - UNARRANGED_ACCOUNTS_OVERDRAFT_PAYMENTS_READ
+                  - UNARRANGED_ACCOUNTS_OVERDRAFT_WARRANTIES_READ
+                  - UNARRANGED_ACCOUNTS_OVERDRAFT_SCHEDULED_INSTALMENTS_READ
+                  - RESOURCES_READ
+              minItems: 1
+              maxItems: 29
+            expirationDateTime:
+              description: 'Data e hora de expiração da permissão. Se não for preenchido, a permissão terá a data aberta. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).'
+              type: string
+              maxLength: 20
+              format: date-time
+              example: '2021-05-21T08:30:00Z'
+            transactionFromDateTime:
+              description: 'Data e hora da transação inicial. Se não for preenchido, a transação terá a data aberta e a data será retornada com a primeira transação disponível. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).'
+              type: string
+              maxLength: 20
+              format: date-time
+              example: '2021-01-01T00:00:00Z'
+            transactionToDateTime:
+              description: 'Data e hora final da transação. Se não for preenchido, a transação terá a data aberta e a data será retornada com a ultima transação disponível. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).'
+              type: string
+              maxLength: 20
+              format: date-time
+              example: '2021-02-01T23:59:59Z'
+          additionalProperties: false
+      additionalProperties: false
+    ResponseConsent:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: object
+          required:
+            - consentId
+            - creationDateTime
+            - status
+            - statusUpdateDateTime
+            - permissions
+          properties:
+            brandID:
+              type: string
+              description: 'Identifica a Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes.'
+              maxLength: 100
+              pattern: \w*\W*
+              example: '29698749425984912674'
+            brandName:
+              type: string
+              maxLength: 80
+              pattern: \w*\W*
+              description: 'Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes'
+              example: Organização A
+            consentId:
+              description: Identificador único do consentimento.
+              type: string
+              pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
+              minLength: 1
+              maxLength: 100
+            creationDateTime:
+              description: 'Data e hora em que o recurso foi criado. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).'
+              type: string
+              format: date-time
+              example: '2021-05-21T08:30:00Z'
+              maxLength: 20
+            status:
+              description: Estado atual do consentimento cadastrado.
+              type: string
+              enum:
+                - AUTHORISED
+                - AWAITING_AUTHORISATION
+                - REJECTED
+                - REVOKED
+            statusUpdateDateTime:
+              description: 'Data e hora em que o recurso foi atualizado. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).'
+              type: string
+              format: date-time
+              example: '2021-05-21T08:30:00Z'
+              maxLength: 20
+            permissions:
+              type: array
+              maxItems: 29
+              minItems: 1
+              items:
+                description: 'Especifica os tipos de permissões de acesso às APIs no escopo do Open Banking Brasil - Fase 2, de acordo com os blocos de consentimento fornecidos pelo usuário e necessários ao acesso a cada endpoint das APIs.'
+                type: string
+                enum:
+                  - ACCOUNTS_READ
+                  - ACCOUNTS_BALANCES_READ
+                  - ACCOUNTS_TRANSACTIONS_READ
+                  - ACCOUNTS_OVERDFRAFT_LIMITS_READ
+                  - CREDIT_CARDS_ACCOUNTS_READ
+                  - CREDIT_CARDS_ACCOUNTS_BILLS_READ
+                  - CREDIT_CARDS_ACCOUNTS_BILLS_TRANSACTIONS_READ
+                  - CREDIT_CARDS_ACCOUNTS_LIMITS_READ
+                  - CREDIT_CARDS_ACCOUNTS_TRANSACTIONS_READ
+                  - CUSTOMERS_PERSONAL_IDENTIFICATIONS_READ
+                  - CUSTOMERS_PERSONAL_ADITTIONALINFO_READ
+                  - CUSTOMERS_BUSINESS_IDENTIFICATIONS_READ
+                  - CUSTOMERS_BUSINESS_ADITTIONALINFO_READ
+                  - INVOICE_FINANCINGS_READ
+                  - INVOICE_FINANCINGS_INSTALMENTS_READ
+                  - INVOICE_FINANCINGS_PAYMENTS_READ
+                  - INVOICE_FINANCINGS_WARRANTIES_READ
+                  - FINANCINGS_READ
+                  - FINANCINGS_INSTALMENTS_READ
+                  - FINANCINGS_PAYMENTS_READ
+                  - FINANCINGS_WARRANTIES_READ
+                  - LOANS_READ
+                  - LOANS_INSTALMENTS_READ
+                  - LOANS_PAYMENTS_READ
+                  - LOANS_WARRANTIES_READ
+                  - UNARRANGED_ACCOUNTS_OVERDRAFT_READ
+                  - UNARRANGED_ACCOUNTS_OVERDRAFT_INSTALMENTS_READ
+                  - UNARRANGED_ACCOUNTS_OVERDRAFT_PAYMENTS_READ
+                  - UNARRANGED_ACCOUNTS_OVERDRAFT_WARRANTIES_READ
+            expirationDateTime:
+              description: 'Data e hora de expiração da permissão. Se não for preenchido, a permissão terá a data aberta. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).'
+              type: string
+              format: date-time
+              example: '2021-05-21T08:30:00Z'
+              maxLength: 20
+            transactionFromDateTime:
+              description: 'Data e hora da transação inicial. Se não for preenchido, a transação terá a data aberta e a data será retornada com a primeira transação disponível. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).'
+              type: string
+              format: date-time
+              example: '2021-01-01T00:00:00Z'
+              maxLength: 20
+            transactionToDateTime:
+              description: 'Data e hora final da transação. Se não for preenchido, a transação terá a data aberta e a data será retornada com a ultima transação disponível. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).'
+              type: string
+              format: date-time
+              example: '2021-02-01T23:59:59Z'
+              maxLength: 20
+          additionalProperties: false
+        links:
+          $ref: '#/components/schemas/Links'
+        meta:
+          $ref: '#/components/schemas/Meta'
+      additionalProperties: false
+    ResponseError:
+      type: object
+      required:
+        - errors
+      properties:
+        errors:
+          type: array
+          minItems: 1
+          maxItems: 13
+          items:
+            type: object
+            required:
+              - code
+              - title
+              - detail
+            properties:
+              code:
+                description: Código de erro específico do endpoint
+                type: string
+                pattern: \w*\W*
+                maxLength: 255
+              title:
+                description: Título legível por humanos deste erro específico
+                type: string
+                pattern: \w*\W*
+                maxLength: 255
+              detail:
+                description: Descrição legível por humanos deste erro específico
+                type: string
+                pattern: \w*\W*
+                maxLength: 2048
+            additionalProperties: false
+        meta:
+          $ref: '#/components/schemas/Meta'
+      additionalProperties: false
+    LoggedUser:
+      type: object
+      description: 'Titular, pessoa natural a quem se referem os dados que são objeto de compartilhamento'
+      additionalProperties: false
+      required:
+        - document
+      properties:
+        document:
+          type: object
+          additionalProperties: false
+          required:
+            - identification
+            - rel
+          properties:
+            identification:
+              type: string
+              maxLength: 11
+              description: Número do documento de identificação oficial do titular.
+              example: '11111111111'
+              pattern: '^\d{11}$'
+            rel:
+              type: string
+              maxLength: 3
+              description: Tipo do documento de identificação oficial do titular.
+              example: CPF
+              pattern: '^[A-Z]{3}$'
+    BusinessEntity:
+      type: object
+      description: 'Titular, pessoa jurídica a quem se referem os dados que são objeto de compartilhamento'
+      additionalProperties: false
+      required:
+        - document
+      properties:
+        document:
+          type: object
+          additionalProperties: false
+          required:
+            - identification
+            - rel
+          properties:
+            identification:
+              type: string
+              maxLength: 14
+              description: Número do documento de identificação oficial do titular pessoa jurídica.
+              example: '11111111111111'
+              pattern: '^\d{14}$'
+            rel:
+              type: string
+              maxLength: 4
+              description: Tipo do documento de identificação oficial do titular pessoa jurídica.
+              example: CNPJ
+              pattern: '^[A-Z]{4}$'
+  parameters:
+    consentId:
+      name: consentId
+      in: path
+      description: Identificador do consentimento.
+      required: true
+      schema:
+        type: string
+        pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
+        minLength: 1
+        maxLength: 100
+    Authorization:
+      name: Authorization
+      in: header
+      description: Cabeçalho HTTP padrão. Permite que as credenciais sejam fornecidas dependendo do tipo de recurso solicitado
+      required: true
+      schema:
+        type: string
+        pattern: \w*\W*
+        maxLength: 2048
+    xCustomerUserAgent:
+      name: x-customer-user-agent
+      in: header
+      description: Indica o user-agent que o usuário utiliza.
+      required: false
+      schema:
+        type: string
+        pattern: \w*\W*
+        minLength: 1
+        maxLength: 100
+    xFapiAuthDate:
+      name: x-fapi-auth-date
+      in: header
+      description: 'Data em que o usuário logou pela última vez com o receptor. Representada de acordo com a [RFC7231](https://tools.ietf.org/html/rfc7231).Exemplo: Sun, 10 Sep 2017 19:43:31 UTC'
+      required: false
+      schema:
+        type: string
+        pattern: '^(Mon|Tue|Wed|Thu|Fri|Sat|Sun), \d{2} (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) \d{4} \d{2}:\d{2}:\d{2} (GMT|UTC)$'
+        minLength: 29
+        maxLength: 29
+    xFapiCustomerIpAddress:
+      name: x-fapi-customer-ip-address
+      in: header
+      description: O endereço IP do usuário se estiver atualmente logado com o receptor.
+      required: false
+      schema:
+        type: string
+        pattern: \w*\W*
+        minLength: 1
+        maxLength: 100
+    xFapiInteractionId:
+      name: x-fapi-interaction-id
+      in: header
+      description: 'Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.'
+      required: false
+      schema:
+        type: string
+        pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
+        minLength: 1
+        maxLength: 100
+    xJwsSignature:
+      name: x-jws-signature
+      in: header
+      description: Cabeçalho contendo uma assinatura JWS separada do corpo do payload.
+      required: true
+      schema:
+        type: string
+        pattern: \w*\W*
+        maxLength: 2048
+  securitySchemes:
+    OAuth2Security:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: 'https://authserver.example/token'
+          scopes:
+            consents: Criação do consentimento.
+  responses:
+    UnsupportedMediaType:
+      description: O formato do payload não é um formato suportado.
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/ResponseError'
+    BadRequest:
+      description: 'A requisição foi malformada, omitindo atributos obrigatórios, seja no payload ou através de atributos na URL.'
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/ResponseError'
+    Forbidden:
+      description: O token tem escopo incorreto ou uma política de segurança foi violada
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/ResponseError'
+    InternalServerError:
+      description: Ocorreu um erro no gateway da API ou no microsserviço
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/ResponseError'
+    MethodNotAllowed:
+      description: O consumidor tentou acessar o recurso com um método não suportado
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/ResponseError'
+    NotAcceptable:
+      description: A solicitação continha um cabeçalho Accept diferente dos tipos de mídia permitidos ou um conjunto de caracteres diferente de UTF-8
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/ResponseError'
+    NotFound:
+      description: O recurso solicitado não existe ou não foi implementado
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/ResponseError'
+    TooManyRequests:
+      description: 'A operação foi recusada, pois muitas solicitações foram feitas dentro de um determinado período ou o limite global de requisições concorrentes foi atingido'
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/ResponseError'
+    Unauthorized:
+      description: Cabeçalho de autenticação ausente/inválido ou token inválido
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/ResponseError'
+    201ConsentsCreated:
+      description: Consentimento criado com sucesso.
+      headers:
+        x-fapi-interaction-id:
+          description: |
+            Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação.  
+            Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.          
+          schema:
+            type: string
+            pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
+            minLength: 1
+            maxLength: 100
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ResponseConsent'
+    200ConsentsConsentIdRead:
+      description: Consentimento consultado com sucesso.
+      headers:
+        x-fapi-interaction-id:
+          description: |
+            Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação.  
+            Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.          
+          schema:
+            type: string
+            pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
+            minLength: 1
+            maxLength: 100
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ResponseConsent'
+    204ConsentsConsentIdDeleted:
+      description: Consentimento revogado com sucesso.
+      headers:
+        x-fapi-interaction-id:
+          description: |
+            Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação.  
+            Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.          
+          schema:
+            type: string
+            pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
+            minLength: 1
+            maxLength: 100
