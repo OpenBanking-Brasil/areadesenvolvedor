@@ -14,6 +14,8 @@ swagger-cli bundle source/swagger/parts/_open_banking_apis_part.yml --outfile so
 swagger-cli bundle source/swagger/parts/_open_banking_fase1_apis_part.yml --outfile source/swagger/swagger_open_banking_fase1_apis.yml --type=yaml
 
 sed -i '1s/^\(\xef\xbb\xbf\)\?/\xef\xbb\xbf/' source/swagger/swagger_*
+sed -i '1s/^\(\xef\xbb\xbf\)\?/\xef\xbb\xbf/' source/dictionary/*.csv
+sed -i '1s/^\(\xef\xbb\xbf\)\?/\xef\xbb\xbf/' source/dictionary/example/*.csv
 
 swagger-cli validate source/swagger/swagger_accounts_apis.yaml
 swagger-cli validate source/swagger/swagger_consents_apis.yaml
