@@ -1,0 +1,109 @@
+type: object
+description: 'Conjunto de informações relativas ao processo de qualificação. Considera-se qualificação as informações que permitam as instituições apreciar, avaliar, caracterizar e classificar o cliente com a finalidade de conhecer o seu perfil de risco e sua capacidade econômico-financeira'
+required:
+  - updateDateTime
+  - personalId
+  - brandID
+  - brandName
+  - companyCnpj
+  - informedIncome
+  - informedPatrimony
+  - occupationCode
+  - occupationDescription
+properties:
+  updateDateTime:
+    description: 'Data e hora da atualização do bloco, conforme especificação RFC-3339'
+    type: "string"
+    maxLength: 20
+    format: "date-time"
+    example: '2021-05-21T08:30:00Z'
+  personalId:
+    type: string
+    pattern: \w*\W*
+    maxLength: 100
+    description: Um identificador único e imutável usado para identificar o recurso cliente pessoa natural. Este identificador não tem significado para o cliente que deu o consentimento
+    example: 578-psd-71md6971kjh-2d414
+  brandID:
+    type: string
+    description: 'Identifica a Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes.'
+    maxLength: 100
+    pattern: \w*\W*
+    example: '29698749425984912674'
+  brandName:
+    type: string
+    pattern: \w*\W*
+    maxLength: 80
+    description: 'Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes'
+    example: 'Organização A'
+  companyCnpj:
+    description: |
+      Número completo do CNPJ da instituição responsável pelo Cadastro - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. 
+      Deve-se ter apenas os números do CNPJ, sem máscara
+    type: string
+    pattern: '\d{14}|^NA$'
+    maxLength: 14
+    example: '50685362000135'
+  informedIncome:
+    type: object
+    properties:
+      frequency:
+        $ref:  ../enum/EnumInformedIncomeFrequency.yaml
+      amount:
+        description: |
+          Valor total da renda informada. Expresso em valor monetário com 4 casas decimais. 
+          "Renda primária indica os montantes a pagar ou a receber em troca do uso temporário de recursos financeiros, trabalho ou ativos não financeiros não produzidos, a saber, remuneração de trabalhadores, renda de investimentos e demais rendas primárias. Fazem parte da primeira a remuneração do trabalho assalariado (salários e ordenados); da segunda, renda de investimento direto, renda de investimento em carteira, renda de outros investimentos e renda de ativos de reserva; e da terceira, tributos sobre a produção e importação, subsídios e aluguéis". Fonte: Banco Central do Brasil – Departamento Econômico
+        type: number
+        format: double
+        pattern: '(-?\d{15}(.\d{4}?))$'
+        maxLength: 19
+        minLength: 0
+        example: 100000.0400
+      currency:
+        type: string
+        pattern: '^(\w{3}){1}$'
+        maxLength: 3
+        description: 'Moeda referente ao valor da renda, segundo modelo ISO-4217.'
+        example: BRL
+      date:
+        description: 'Data da renda, conforme especificação RFC-3339.'
+        type: "string"
+        maxLength: 10
+        format: "date"
+        pattern: ^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$
+        example: '2021-05-21'
+    additionalProperties: false
+  informedPatrimony:
+    type: object
+    properties:
+      amount:
+        description: |
+          Valor do patrimônio informado. Expresso em valor monetário com 4 casas decimais.
+          "Patrimônio é o conjunto de bens vinculado a uma pessoa ou a uma entidade".
+        type: number
+        format: double
+        pattern: '(-?\d{15}(.\d{4}?))$'
+        maxLength: 19
+        minLength: 0
+        example: 100000.0400
+      currency:
+        type: string
+        pattern: '^(\w{3}){1}$'
+        maxLength: 3
+        description: 'Moeda referente ao valor do patrimônio, segundo modelo ISO-4217.'
+        example: BRL
+      year:
+        type: number
+        maxLength: 4
+        description: 'Ano de referência do Patrimônio, conforme especificação RFC-3339.'
+        example: 2010
+        maximum: 9999
+    additionalProperties: false
+  occupationCode:
+    $ref:  ../enum/EnumOccupationMainCodeType.yaml
+  occupationDescription:
+    type: string
+    pattern: \w*\W*
+    maxLength: 100
+    description: Campo livre, de preenchimento obrigatório. Traz o código da ocupação ou o descritivo da ocupação, se selecionada a opção 'OUTRO'
+    example: "01"
+additionalProperties: false
