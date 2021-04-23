@@ -14,6 +14,8 @@ swagger-cli bundle source/swagger/parts/_open_banking_apis_part.yml --outfile so
 swagger-cli bundle source/swagger/parts/_open_banking_fase1_apis_part.yml --outfile source/swagger/swagger_open_banking_fase1_apis.yml --type=yaml
 
 sed -i '1s/^\(\xef\xbb\xbf\)\?/\xef\xbb\xbf/' source/swagger/swagger_*
+sed -i '1s/^\(\xef\xbb\xbf\)\?/\xef\xbb\xbf/' source/dictionary/*.csv
+sed -i '1s/^\(\xef\xbb\xbf\)\?/\xef\xbb\xbf/' source/dictionary/example/*.csv
 
 swagger-cli validate source/swagger/swagger_accounts_apis.yaml
 swagger-cli validate source/swagger/swagger_consents_apis.yaml
@@ -26,6 +28,7 @@ swagger-cli validate source/swagger/swagger_resources_apis.yaml
 swagger-cli validate source/swagger/swagger_unarranged_accounts_overdraft_apis.yaml
 
 swagger-cli validate source/swagger/swagger_open_banking_apis.yml
+swagger-cli validate source/swagger/swagger_open_banking_fase1_apis.yml
 
 widdershins source/swagger/swagger_open_banking_apis.yml -o source/includes/partials_open_banking/_open_banking_apis.md.erb --user_templates source/templates/openapi3/ --language_tabs "javascript:JavaScript:request" "python:Python:request" "java:Java::request" --omitHeader --summary --httpsnippet
 
