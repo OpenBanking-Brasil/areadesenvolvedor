@@ -1,21 +1,31 @@
 openapi: 3.0.0
 info:
-  title: APIs do Open Banking Brasil
-  description: ""
+  title: Fase 2 - APIs do Open Banking Brasil
+  description: |
+    Clientes poderão solicitar o compartilhamento entre instituições participantes de seus dados cadastrais, de informações sobre transações em suas contas, cartão de crédito e produtos de crédito contratados. 
+    
+    O compartilhamento ocorre apenas se a pessoa autorizar através da API de Consentimento, sempre para finalidades determinadas e por um prazo específico. E será possível para o cliente cancelar essa autorização a qualquer momento em qualquer uma das instituições envolvidas no compartilhamento.
   version: 1.0.0
-  license:
-    name: Apache 2.0
-    url: https://www.apache.org/licenses/LICENSE-2.0
-  contact:
-    name: Governança do Open Banking Brasil - Interfaces
-    email: gt-interfaces@openbankingbr.org
-    url: https://openbanking-brasil.github.io/areadesenvolvedor/
-servers:
-  - url: https://api.banco.com.br/open-banking
-    description: Servidor de Produção
-  - url: https://apih.banco.com.br/open-banking
-    description: Servidor de Homologação
 tags:
+  - name: API - Consentimento
+    description: |
+      |Versão|
+      |:-----|
+      |1     |
+
+      #### Visão Geral
+      
+      A API tem como objetivo garantir que o usuário esteja ciente e concordando com a disponibilização e compartilhamento de determinados dados entre bancos e instituições financeiras e acessível também à estabelecimentos comerciais participantes do Open Banking Brasil.
+      
+      É possível realizar a criação (não possuindo restrição de uso entre pessoa física e pessoa jurídica), consulta e revogação de um consentimento mediante a integração entre as instituições autorizadas.
+      
+      [EM REVISÃO/ALTERAÇÃO - ABRIL DE 2021]
+      
+      #### Especificação em OAS 3.0
+
+      <a href="swagger/swagger_consents_apis.yaml">Download da Especificação (OAS 3.0)</a>
+      
+  - name: API - Resources
   - name: API - Dados Cadastrais
   - name: API - Cartão de Crédito
   - name: API - Contas
@@ -25,6 +35,207 @@ tags:
   - name: API - Operações de Crédito - Direitos Creditórios Descontados
 
 paths:
+  /consents/v1/consents:
+    post:
+      tags:
+        - "API - Consentimento"
+      summary: "Criar novo pedido de consentimento."
+      description: |
+        Método para a criação de um novo consentimento.
+
+        ### Especificação em OAS 3.0
+
+        <a href="swagger/swagger_consents_apis.yaml">Download da Especificação (OAS 3.0)</a>
+
+      operationId: "postCreateConsents"
+      parameters:
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/xFapiAuthDate'
+        - $ref: '#/components/parameters/xFapiCustomerIpAddress'
+        - $ref: '#/components/parameters/xFapiInteractionId'
+        - $ref: '#/components/parameters/xCustomerUserAgent'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateConsent"
+        description: "Payload para criação do consentimento."
+        required: true
+      responses:
+        '201':
+          $ref: "#/components/responses/201ConsentsCreated"
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          description: Erro inesperado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+      security:
+        - OAuth2Security:
+          - consents
+  /consents/v1/consents/{consentId}:
+    get:
+      tags:
+        - "API - Consentimento"
+      summary: "Obter detalhes do consentimento identificado por consentId."
+      description: |
+        Método para obter detalhes do consentimento identificado por consentId.
+
+        ### Especificação em OAS 3.0
+
+        <a href="swagger/swagger_consents_apis.yaml">Download da Especificação (OAS 3.0)</a>
+
+      operationId: "getConsentsConsentId"
+      parameters:
+        - $ref: "#/components/parameters/consentId"
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/xFapiAuthDate'
+        - $ref: '#/components/parameters/xFapiCustomerIpAddress'
+        - $ref: '#/components/parameters/xFapiInteractionId'
+        - $ref: '#/components/parameters/xCustomerUserAgent'
+      responses:
+        '200':
+          $ref: "#/components/responses/200ConsentsConsentIdRead"
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          description: Erro inesperado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+      security:
+        - OAuth2Security:
+          - consents
+    delete:
+      tags:
+        - "API - Consentimento"
+      summary: "Deletar/revogar o consentimento identificado por consentId."
+
+      description: |
+        Método para deletar/revogar o consentimento identificado por consentId.
+
+        ### Especificação em OAS 3.0
+
+        <a href="swagger/swagger_consents_apis.yaml">Download da Especificação (OAS 3.0)</a>
+
+      operationId: "deleteConsentsConsentId"
+      parameters:
+        - $ref: "#/components/parameters/consentId"
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/xFapiAuthDate'
+        - $ref: '#/components/parameters/xFapiCustomerIpAddress'
+        - $ref: '#/components/parameters/xFapiInteractionId'
+        - $ref: '#/components/parameters/xCustomerUserAgent'
+      responses:
+        '204':
+          $ref: "#/components/responses/204ConsentsConsentIdDeleted"
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          description: Erro inesperado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+  /resources/v1/resources:
+    get:
+      tags:
+        - "API - Resources"
+      summary: Obtém a lista de recursos consentidos pelo cliente.
+      description: |
+        |Versão|
+        |:-----|
+        |1     |
+
+        ### Visão Geral
+
+        Método para obter a lista de recursos mantidos pelo cliente na instituição transmissora e para as quais ele tenha fornecido consentimento.
+
+        ### Especificação em OAS 3.0
+
+        <a href="swagger/swagger_resources_apis.yaml">Download da Especificação (OAS 3.0)</a>
+
+      operationId: getResources
+      parameters:
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/xFapiAuthDate'
+        - $ref: '#/components/parameters/xFapiCustomerIpAddress'
+        - $ref: '#/components/parameters/xFapiInteractionId'
+        - $ref: '#/components/parameters/xCustomerUserAgent'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+      responses:
+        '200':
+          $ref: '#/components/responses/OKResponseResourceList'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/OKResponseResourceList'  
+      security:
+        - OpenId:
+          - openId
+          - resources
   /customers/v1/personal/identifications:
     get:
       tags:
@@ -100,11 +311,6 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      security:
-        - OpenId:
-            - openId
-            - customers
-
   /customers/v1/business/identifications:
     get:
       tags:
@@ -179,11 +385,6 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      security:
-        - OpenId:
-            - openId
-            - customers
-
   /customers/v1/personal/qualifications:
     get:
       tags:
@@ -259,11 +460,6 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      security:
-        - OpenId:
-            - openId
-            - customers
-
   /customers/v1/business/qualifications:
     get:
       tags:
@@ -339,12 +535,7 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      security:
-        - OpenId:
-            - openId
-            - customers
-
-  /customers/v1/personal/finantial-relations:
+  /customers/v1/personal/financial-relations:
     get:
       tags:
         - API - Dados Cadastrais
@@ -419,12 +610,7 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      security:
-        - OpenId:
-            - openId
-            - customers
-
-  /customers/v1/business/finantial-relations:
+  /customers/v1/business/financial-relations:
     get:
       tags:
         - API - Dados Cadastrais
@@ -499,11 +685,6 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      security:
-        - OpenId:
-            - openId
-            - customers
-
   /credit-cards-accounts/v1/accounts:
     get:
       tags:
@@ -575,11 +756,6 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      security:
-        - OpenId:
-            - openId
-            - credit-card
-
   /credit-cards-accounts/v1/accounts/{creditCardAccountId}:
     get:
       tags:
@@ -652,11 +828,6 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      security:
-        - OpenId:
-            - openId
-            - credit-card
-
   /credit-cards-accounts/v1/accounts/{creditCardAccountId}/limits:
     get:
       tags:
@@ -729,11 +900,6 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      security:
-        - OpenId:
-            - openId
-            - credit-card
-
   /credit-cards-accounts/v1/accounts/{creditCardAccountId}/transactions:
     get:
       tags:
@@ -812,11 +978,6 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      security:
-        - OpenId:
-            - openId
-            - credit-card
-
   /credit-cards-accounts/v1/accounts/{creditCardAccountId}/bills:
     get:
       tags:
@@ -892,11 +1053,88 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
+  /credit-cards-accounts/v1/accounts/{creditCardAccountId}/bills/{billId}/transactions:
+    get:
+      tags:
+        - API - Cartão de Crédito
+      summary: Transações de cartão de crédito por fatura
+      description: |
+        |Versão|
+        |:-----|
+        |1     |
+
+        ### Visão Geral
+
+        Obtém a lista de transações da conta identificada por creditCardAccountId e billId.
+
+        Tags: [CNPJ (CNPJ Number)](#glossarioCNPJ), [Conta de pagamento pós-paga (Credit Card)](#glossarioContaPagamentoPosPaga), [Crédito Rotativo (Overdraft)](#glossarioCreditoRotativo) e [MCC (Merchant Category Code)](#glossarioMCC).
+
+        ### Visão de alto de nível das estruturas de dados
+
+        <img class="lazy" src="images/loading.gif" data-src="images/tld/credit_cards/TLD_CreditCardAccount_Transactions.png"/>
+
+        ### DER - Diagramas de Entidade e Relacionamento
+
+        * DER Conceitual
+
+        <img class="lazy" src="images/loading.gif" data-src="images/der/credit_cards/DER_CreditCardAccount.png"/>
+
+        <a href="images/der/credit_cards/DER_CreditCardAccount.png" target="_blank">Fazer download do DER Conceitual</a>
+
+        * DER Lógico
+
+        <img class="lazy" src="images/loading.gif" data-src="images/der/credit_cards/DER_CreditCardAccount_Transactions.png"/>
+
+        <a href="images/der/credit_cards/DER_CreditCardAccount_Transactions.png" target="_blank">Fazer download do DER Lógico</a>
+
+        ### Dicionário de dados
+
+        <a href="dictionary/credit_cards_accounts_transactions.csv" target="_blank">Fazer download do dicionário de dados</a>
+
+        <a href="dictionary/example/examples_credit_cards_accounts_transactions.csv" target="_blank">Fazer download dos exemplos</a>
+
+
+        ### Especificação em OAS 3.0
+
+        <a href="swagger/swagger_credit_cards_apis.yaml">Download da Especificação (OAS 3.0)</a>
+
+      operationId: getAccountsCreditCardAccountIdTransactions
+      parameters:
+        - $ref: "#/components/parameters/Authorization"
+        - $ref: "#/components/parameters/xFapiAuthDate"
+        - $ref: "#/components/parameters/xFapiCustomerIpAddress"
+        - $ref: "#/components/parameters/xFapiInteractionId"
+        - $ref: "#/components/parameters/xCustomerUserAgent"
+        - $ref: '#/components/parameters/creditCardAccountId'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/fromTransactionDate'
+        - $ref: '#/components/parameters/toTransactionDate'
+        - $ref: '#/components/parameters/creditCardTransactionType'
+        - $ref: '#/components/parameters/creditCardPayeeMCC'
+      responses:
+        '200':
+          $ref: '#/components/responses/OKResponseCreditCardAccountsTransactions'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'  
       security:
         - OpenId:
-            - openId
-            - credit-card
-
+          - openId
+          - credit-card
   /accounts/v1/accounts:
     get:
       tags:
@@ -970,11 +1208,6 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      security:
-        - OpenId:
-            - openId
-            - accounts
-
   /accounts/v1/accounts/{accountId}:
       get:
         tags:
@@ -1048,11 +1281,6 @@ paths:
             $ref: '#/components/responses/TooManyRequests'
           '500':
             $ref: '#/components/responses/InternalServerError'
-        security:
-          - OpenId:
-              - openId
-              - accounts
-
   /accounts/v1/accounts/{accountId}/balances:
     get:
       tags:
@@ -1130,11 +1358,6 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      security:
-        - OpenId:
-            - openId
-            - accounts
-
   /accounts/v1/accounts/{accountId}/transactions:
     get:
       tags:
@@ -1217,11 +1440,6 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      security:
-        - OpenId:
-            - openId
-            - accounts
-
   /accounts/v1/accounts/{accountId}/overdraft-limits:
     get:
       tags:
@@ -1299,11 +1517,6 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      security:
-        - OpenId:
-            - openId
-            - accounts
-
   /loans/v1/contracts:
     get:
       tags:
@@ -1348,7 +1561,7 @@ paths:
 
         <a href='swagger/swagger_loans_apis.yaml'>Download da Especificação (OAS 3.0)</a>
 
-      operationId: "getContracts"
+      operationId: "getLoansContracts"
       parameters:
         - $ref: "#/components/parameters/Authorization"
         - $ref: "#/components/parameters/xFapiAuthDate"
@@ -1374,11 +1587,6 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      security:
-        - OpenId:
-            - openId
-            - loans
-
   /loans/v1/contracts/{contractId}:
     get:
       tags:
@@ -1423,7 +1631,7 @@ paths:
 
         <a href='swagger/swagger_loans_apis.yaml'>Download da Especificação (OAS 3.0)</a>
 
-      operationId: "getContractsContractId"
+      operationId: "getLoansContractsContractId"
       parameters:
         - $ref: "#/components/parameters/contractId"
         - $ref: "#/components/parameters/Authorization"
@@ -1450,11 +1658,6 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      security:
-        - OpenId:
-            - openId
-            - loans
-
   /loans/v1/contracts/{contractId}/warranties:
     get:
       tags:
@@ -1499,7 +1702,7 @@ paths:
 
         <a href='swagger/swagger_loans_apis.yaml'>Download da Especificação (OAS 3.0)</a>
 
-      operationId: "getContractsContractIdWarranties"
+      operationId: "getLoansContractsContractIdWarranties"
       parameters:
         - $ref: "#/components/parameters/contractId"
         - $ref: "#/components/parameters/page"
@@ -1528,11 +1731,6 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      security:
-        - OpenId:
-            - openId
-            - loans
-
   /loans/v1/contracts/{contractId}/payments:
     get:
       tags:
@@ -1577,7 +1775,7 @@ paths:
 
         <a href='swagger/swagger_loans_apis.yaml'>Download da Especificação (OAS 3.0)</a>
 
-      operationId: "getContractsContractIdPayments"
+      operationId: "getLoansContractsContractIdPayments"
       parameters:
         - $ref: "#/components/parameters/contractId"
         - $ref: "#/components/parameters/page"
@@ -1606,11 +1804,6 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      security:
-        - OpenId:
-            - openId
-            - loans
-
   /loans/v1/contracts/{contractId}/scheduled-instalments:
     get:
       tags:
@@ -1655,7 +1848,7 @@ paths:
 
         <a href='swagger/swagger_loans_apis.yaml'>Download da Especificação (OAS 3.0)</a>
 
-      operationId: "getContractsContractIdInstalments"
+      operationId: "getLoansContractsContractIdInstalments"
       parameters:
         - $ref: "#/components/parameters/contractId"
         - $ref: "#/components/parameters/page"
@@ -1684,11 +1877,6 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      security:
-        - OpenId:
-            - openId
-            - loans
-
   /financings/v1/contracts:
     get:
       tags:
@@ -1733,7 +1921,7 @@ paths:
 
         <a href='swagger/swagger_financings_apis.yaml'>Download da Especificação (OAS 3.0)</a>
 
-      operationId: "getContracts"
+      operationId: "getFinancingsContracts"
       parameters:
         - $ref: "#/components/parameters/Authorization"
         - $ref: "#/components/parameters/xFapiAuthDate"
@@ -1759,11 +1947,6 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      security:
-        - OpenId:
-            - openId
-            - financings
-
   /financings/v1/contracts/{contractId}:
     get:
       tags:
@@ -1808,7 +1991,7 @@ paths:
 
         <a href='swagger/swagger_financings_apis.yaml'>Download da Especificação (OAS 3.0)</a>
 
-      operationId: "getContractsContractId"
+      operationId: "getFinancingsContractsContractId"
       parameters:
         - $ref: "#/components/parameters/contractId"
         - $ref: "#/components/parameters/Authorization"
@@ -1835,11 +2018,6 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      security:
-        - OpenId:
-            - openId
-            - financings
-
   /financings/v1/contracts/{contractId}/warranties:
     get:
       tags:
@@ -1884,7 +2062,7 @@ paths:
 
         <a href='swagger/swagger_financings_apis.yaml'>Download da Especificação (OAS 3.0)</a>
 
-      operationId: "getContractsContractIdWarranties"
+      operationId: "getFinancingsContractsContractIdWarranties"
       parameters:
         - $ref: "#/components/parameters/contractId"
         - $ref: "#/components/parameters/page"
@@ -1913,11 +2091,6 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      security:
-        - OpenId:
-            - openId
-            - financings
-
   /financings/v1/contracts/{contractId}/payments:
     get:
       tags:
@@ -1962,7 +2135,7 @@ paths:
 
         <a href='swagger/swagger_financings_apis.yaml'>Download da Especificação (OAS 3.0)</a>
 
-      operationId: "getContractsContractIdPayments"
+      operationId: "getFinancingsContractsContractIdPayments"
       parameters:
         - $ref: "#/components/parameters/contractId"
         - $ref: "#/components/parameters/page"
@@ -1991,11 +2164,6 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      security:
-        - OpenId:
-            - openId
-            - financings
-
   /financings/v1/contracts/{contractId}/scheduled-instalments:
     get:
       tags:
@@ -2040,7 +2208,7 @@ paths:
 
         <a href='swagger/swagger_financings_apis.yaml'>Download da Especificação (OAS 3.0)</a>
 
-      operationId: "getContractsContractIdInstalments"
+      operationId: "getFinancingsContractsContractIdInstalments"
       parameters:
         - $ref: "#/components/parameters/contractId"
         - $ref: "#/components/parameters/page"
@@ -2069,11 +2237,6 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      security:
-        - OpenId:
-            - openId
-            - financings
-
   /unarranged-accounts-overdraft/v1/contracts:
     get:
       tags:
@@ -2118,7 +2281,7 @@ paths:
 
         <a href='swagger/swagger_unarranged_accounts_overdraft_apis.yaml'>Download da Especificação (OAS 3.0)</a>
 
-      operationId: "getContracts"
+      operationId: "getUnarrangedContracts"
       parameters:
         - $ref: "#/components/parameters/Authorization"
         - $ref: "#/components/parameters/xFapiAuthDate"
@@ -2144,11 +2307,6 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      security:
-        - OpenId:
-            - openId
-            - unarranged-accounts-overdraft
-
   /unarranged-accounts-overdraft/v1/contracts/{contractId}:
     get:
       tags:
@@ -2193,7 +2351,7 @@ paths:
 
         <a href='swagger/swagger_unarranged_accounts_overdraft_apis.yaml'>Download da Especificação (OAS 3.0)</a>
 
-      operationId: "getContractsContractId"
+      operationId: "getUnarrangedContractsContractId"
       parameters:
         - $ref: "#/components/parameters/contractId"
         - $ref: "#/components/parameters/Authorization"
@@ -2224,11 +2382,6 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      security:
-        - OpenId:
-            - openId
-            - unarranged-accounts-overdraft
-
   /unarranged-accounts-overdraft/v1/contracts/{contractId}/warranties:
     get:
       tags:
@@ -2273,7 +2426,7 @@ paths:
 
         <a href='swagger/swagger_unarranged_accounts_overdraft_apis.yaml'>Download da Especificação (OAS 3.0)</a>
 
-      operationId: "getContractsContractIdWarranties"
+      operationId: "getUnarrangedContractsContractIdWarranties"
       parameters:
         - $ref: "#/components/parameters/contractId"
         - $ref: "#/components/parameters/page"
@@ -2306,11 +2459,6 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      security:
-        - OpenId:
-            - openId
-            - unarranged-accounts-overdraft
-
   /unarranged-accounts-overdraft/v1/contracts/{contractId}/payments:
     get:
       tags:
@@ -2355,7 +2503,7 @@ paths:
 
         <a href='swagger/swagger_unarranged_accounts_overdraft_apis.yaml'>Download da Especificação (OAS 3.0)</a>
 
-      operationId: "getContractsContractIdPayments"
+      operationId: "getUnarrangedContractsContractIdPayments"
       parameters:
         - $ref: "#/components/parameters/contractId"
         - $ref: "#/components/parameters/page"
@@ -2388,11 +2536,6 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      security:
-        - OpenId:
-            - openId
-            - unarranged-accounts-overdraft
-
   /unarranged-accounts-overdraft/v1/contracts/{contractId}/scheduled-instalments:
     get:
       tags:
@@ -2437,7 +2580,7 @@ paths:
 
         <a href='swagger/swagger_unarranged_accounts_overdraft_apis.yaml'>Download da Especificação (OAS 3.0)</a>
 
-      operationId: "getContractsContractIdInstalments"
+      operationId: "getUnarrangedContractsContractIdInstalments"
       parameters:
         - $ref: "#/components/parameters/contractId"
         - $ref: "#/components/parameters/page"
@@ -2470,11 +2613,6 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      security:
-        - OpenId:
-            - openId
-            - unarranged-accounts-overdraft
-
   /invoice-financings/v1/contracts:
     get:
       tags:
@@ -2519,7 +2657,7 @@ paths:
 
         <a href='swagger/swagger_invoice_financings_apis.yaml'>Download da Especificação (OAS 3.0)</a>
 
-      operationId: "getContracts"
+      operationId: "getInvoiceContracts"
       parameters:
         - $ref: "#/components/parameters/Authorization"
         - $ref: "#/components/parameters/xFapiAuthDate"
@@ -2545,11 +2683,6 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      security:
-        - OpenId:
-            - openId
-            - invoice-financings
-
   /invoice-financings/v1/contracts/{contractId}:
     get:
       tags:
@@ -2594,7 +2727,7 @@ paths:
 
         <a href='swagger/swagger_invoice_financings_apis.yaml'>Download da Especificação (OAS 3.0)</a>
 
-      operationId: "getContractsContractId"
+      operationId: "getInvoiceContractsContractId"
       parameters:
         - $ref: "#/components/parameters/contractId"
         - $ref: "#/components/parameters/Authorization"
@@ -2621,11 +2754,6 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      security:
-        - OpenId:
-            - openId
-            - invoice-financings
-
   /invoice-financings/v1/contracts/{contractId}/warranties:
     get:
       tags:
@@ -2670,7 +2798,7 @@ paths:
 
         <a href='swagger/swagger_invoice_financings_apis.yaml'>Download da Especificação (OAS 3.0)</a>
 
-      operationId: "getContractsContractIdWarranties"
+      operationId: "getInvoiceContractsContractIdWarranties"
       parameters:
         - $ref: "#/components/parameters/contractId"
         - $ref: "#/components/parameters/page"
@@ -2699,11 +2827,6 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      security:
-        - OpenId:
-            - openId
-            - invoice-financings
-
   /invoice-financings/v1/contracts/{contractId}/payments:
     get:
       tags:
@@ -2748,7 +2871,7 @@ paths:
 
         <a href='swagger/swagger_invoice_financings_apis.yaml'>Download da Especificação (OAS 3.0)</a>
 
-      operationId: "getContractsContractIdPayments"
+      operationId: "getInvoiceContractsContractIdPayments"
       parameters:
         - $ref: "#/components/parameters/contractId"
         - $ref: "#/components/parameters/page"
@@ -2777,11 +2900,6 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      security:
-        - OpenId:
-            - openId
-            - invoice-financings
-
   /invoice-financings/v1/contracts/{contractId}/scheduled-instalments:
     get:
       tags:
@@ -2826,7 +2944,7 @@ paths:
 
         <a href='swagger/swagger_invoice_financings_apis.yaml'>Download da Especificação (OAS 3.0)</a>
 
-      operationId: "getContractsContractIdInstalments"
+      operationId: "getInvoiceContractsContractIdInstalments"
       parameters:
         - $ref: "#/components/parameters/contractId"
         - $ref: "#/components/parameters/page"
@@ -2855,13 +2973,18 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      security:
-        - OpenId:
-            - openId
-            - invoice-financings
-
 components:
   schemas:
+    CreateConsent:
+      $ref: ./schemas/consents_apis/CreateConsent.yaml
+    ResponseConsent:
+      $ref: ./schemas/consents_apis/ResponseConsent.yaml
+    LoggedUser:
+      $ref: ./schemas/consents_apis/LoggedUser.yaml
+    BusinessEntity:
+      $ref: ./schemas/consents_apis/BusinessEntity.yaml
+    ResponseResourceList:
+      $ref: ./schemas/resources_apis/ResponseResourceList.yaml
     AccountBalancesData:
       $ref: ./schemas/accounts_apis/AccountBalancesData.yaml
     AccountData:
@@ -3121,7 +3244,7 @@ components:
     LoansContractedFee:
       $ref: ./schemas/loans_apis/LoansFinancingsContractedFee.yaml
     LoansContractedWarranty:
-      $ref: ./schemas/loans_apis/LoansFinancingsContractedWarranty.yaml
+      $ref: ./schemas/loans_apis/LoansWarranties.yaml
     LoansContractInterestRate:
       $ref: ./schemas/loans_apis/LoansFinancingsContractInterestRate.yaml
     LoansFinanceCharge:
@@ -3132,8 +3255,8 @@ components:
       $ref: ./schemas/loans_apis/LoansPayments.yaml
     LoansReleases:
       $ref: ./schemas/loans_apis/LoansReleases.yaml
-    LoansTaxesOverParcel:
-      $ref: ./schemas/loans_apis/LoansTaxesOverParcel.yaml
+    LoansFeeOverParcel:
+      $ref: ./schemas/loans_apis/LoansFeeOverParcel.yaml
     LoansWarranties:
       $ref: ./schemas/loans_apis/LoansWarranties.yaml
     Meta:
@@ -3258,9 +3381,9 @@ components:
       $ref: ./schemas/unarranged_account_overdraft_apis/UnarrangedAccountOverdraftReleases.yaml
     UnarrangedAccountOverdraftTaxesOverParcel:
       $ref: ./schemas/unarranged_account_overdraft_apis/UnarrangedAccountOverdraftTaxesOverParcel.yaml
-    UnarrangedAccountOverdraftWarrantiesData:
-      $ref: ./schemas/unarranged_account_overdraft_apis/UnarrangedAccountOverdraftWarrantiesData.yaml
   parameters:
+    consentId:
+      $ref: ./parameters/ConsentId.yaml
     accountId:
       $ref: ./parameters/AccountId.yaml
     accountsBranchCode:
@@ -3313,12 +3436,43 @@ components:
       $ref: ./parameters/XFapiCustomerIpAddress.yaml
     xFapiInteractionId:
       $ref: ./parameters/XFapiInteractionId.yaml
-  securitySchemes:
-    OpenId:
-      type: openIdConnect
-      description: O OpenID Connect é uma camada de identidade sobre o protocolo OAuth 2.0, que permite a identificação de um usuário final com base na autenticação realizada por um Authorization Server.
-      openIdConnectUrl: 'https://authserver.example/.well-known/openid-configuration'
   responses:
+    201ConsentsCreated:
+      description: "Consentimento criado com sucesso."
+      headers:
+        x-fapi-interaction-id:
+          schema:
+            $ref: ./headers/XFapiInteractionId.yaml
+      content:
+        application/json:
+          schema:
+            $ref: ./schemas/consents_apis/ResponseConsent.yaml
+    200ConsentsConsentIdRead:
+      description: "Consentimento consultado com sucesso."
+      headers:
+        x-fapi-interaction-id:
+          schema:
+            $ref: ./headers/XFapiInteractionId.yaml
+      content:
+        application/json:
+          schema:
+            $ref: ./schemas/consents_apis/ResponseConsent.yaml
+    204ConsentsConsentIdDeleted:
+      description: "Consentimento revogado com sucesso."
+      headers:
+        x-fapi-interaction-id:
+          schema:
+            $ref: ./headers/XFapiInteractionId.yaml
+    OKResponseResourceList:
+      description: Dados de status dos recursos obtidos com sucesso.
+      headers:
+        x-fapi-interaction-id:
+          schema:
+            $ref: ./headers/XFapiInteractionId.yaml
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ResponseResourceList'
     OKResponsePersonalCustomersIdentification:
       description: Dados sobre identificação pessoa física.
       content:
@@ -3551,3 +3705,5 @@ components:
       $ref: ./responses/TooManyRequests.yaml
     Unauthorized:
       $ref: ./responses/Unauthorized.yaml
+    UnsupportedMediaType:
+      $ref: ./responses/UnsupportedMediaType.yaml
