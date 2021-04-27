@@ -1,0 +1,385 @@
+﻿openapi: 3.0.0
+info:
+  title: APIs Admin do Open Banking Brasil
+  description: As API's administrativas são recursos que podem ser consumidos apenas pelo diretório para avaliação e controle da qualidade dos serviços fornecidos pelas instituições financeiras
+  version: 1.0.0-rc5.2
+  contact:
+    email: "apiteam@swagger.io"
+servers:
+  - url: 'http://api.banco.com.br/open-banking/admin/v1'
+tags:
+- name: "Metrics"
+paths:
+  /metrics:
+    get:
+      tags:
+        - Metrics
+      summary: Obtém as métricas de disponibilidade das APIs
+      description: "Obtém as métricas de disponibilidade das APIs"
+      operationId: "getMetrics"
+      parameters:
+        - $ref: "#/components/parameters/page"
+        - $ref: "#/components/parameters/pageSize"
+        - in: query
+          name: period
+          schema:
+            type: string
+            enum:
+              - CURRENT
+              - ALL
+          required: false
+          description: |
+            Período a ser consultado
+              * `CURRENT` - Métricas do dia atual.
+              * `ALL` - Métricas de todo o período disponível.
+      responses:
+        '200':
+          description: Dados das métricas
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseMetricsList'
+components:
+  schemas:
+    ResponseMetricsList:
+      type: object
+      required:
+        - data
+        - links
+      properties:
+        data:
+          type: object
+          required:
+            - requestTime
+            - availability
+            - invocations
+            - averageResponse
+            - averageTps
+            - peakTps
+            - errors
+            - rejections
+          properties:
+            requestTime:
+              type: string
+              description: Data e hora que as métricas foram requisitadas.
+              format: date-time
+            availability:
+              $ref: '#/components/schemas/AvailabilityMetrics'
+            invocations:
+              $ref: '#/components/schemas/InvocationMetrics'
+            averageResponse:
+              $ref: '#/components/schemas/AverageMetrics'
+            averageTps:
+              $ref: '#/components/schemas/AverageTPSMetrics'
+            peakTps:
+              $ref: '#/components/schemas/PeakTPSMetrics'
+            errors:
+              $ref: '#/components/schemas/ErrorMetrics'
+            rejections:
+              $ref: '#/components/schemas/RejectionMetrics'
+        links:
+          $ref: '#/components/schemas/Links'
+        meta:
+          $ref: '#/components/schemas/Meta'
+    AvailabilityMetrics:
+      type: object
+      required:
+        - uptime
+        - downtime
+      properties:
+        uptime:
+          type: object
+          required:
+            - generalUptimeRate
+            - endpoints
+          properties:
+            generalUptimeRate:
+              type: string
+              description: Taxa de disponibilidade (considerando todos os serviços ativos ao mesmo tempo).
+            endpoints:
+              $ref: '#/components/schemas/EndpointUptime'
+        downtime:
+          type: object
+          required:
+            - generalDowntime
+            - scheduledOutage
+            - endpoints
+          properties:
+            generalDowntime:
+              type: integer
+              description: Quantidade de segundos de downtime (considerando qualquer api em downtime).
+            scheduledOutage:
+              type: integer
+              description: Quantidade de segundos de indisponibilidade agendada.
+            endpoints:
+              $ref: '#/components/schemas/EndpointDowntime'
+    EndpointUptime:
+      type: object
+      description: Tempos de uptime por endpoint.
+      required:
+        - url
+        - uptimeRate
+      properties:
+        url:
+          type: string
+          description: URL do endpoint
+        uptimeRate:
+          type: string
+          description: Taxa de disponibilidade do endpoint.
+    EndpointDowntime:
+      type: object
+      description: Tempos de downtime por endpoint.
+      required:
+        - url
+        - partialDowntime
+      properties:
+        url:
+          type: string
+          description: URL do endpoint
+        partialDowntime:
+          type: integer
+          description: Quantidade de segundos de indisponibilidade do endpoint.
+    InvocationMetrics:
+      type: object
+      required:
+        - unauthenticated
+        - highPriority
+        - mediumPriority
+        - unattended
+      properties:
+        unauthenticated:
+          type: object
+          description: Número de chamadas não autenticadas.
+          required:
+            - currentDay
+            - previousDays
+          properties:
+            currentDay:
+              type: integer
+              description: Número de chamadas não autenticadas no dia atual.
+            previousDays:
+              type: array
+              description: Número de chamadas não autenticadas nos dias anteriores. O primeiro item do array é referente a ontem, e assim por diante. Devem ser retornados no máximo sete dias caso estejam disponíveis.
+              items:
+                type: integer
+        highPriority:
+          type: object
+          description: Número de chamadas para o nível de alta prioridade.
+          required:
+            - currentDay
+            - previousDays
+          properties:
+            currentDay:
+              type: integer
+              description: Número de chamadas no dia atual para o nível de alta prioridade.
+            previousDays:
+              type: array
+              description: Número de chamadas nos dias anteriores para o nível de alta prioridade. O primeiro item do array é referente a ontem, e assim por diante. Devem ser retornados no máximo sete dias caso estejam disponíveis.
+              items:
+                type: integer
+        mediumPriority:
+          type: object
+          description: Número de chamadas para o nível de média prioridade.
+          required:
+            - currentDay
+            - previousDays
+          properties:
+            currentDay:
+              type: integer
+              description: Número de chamadas no dia atual para o nível de média prioridade.
+            previousDays:
+              type: array
+              description: Número de chamadas nos dias anteriores para o nível de média prioridade. O primeiro item do array é referente a ontem, e assim por diante. Devem ser retornados no máximo sete dias caso estejam disponíveis.
+              items:
+                type: integer
+        unattended:
+          type: object
+          description: Número de chamadas para o nível não acompanhado.
+          required:
+            - currentDay
+            - previousDays
+          properties:
+            currentDay:
+              description: Número de chamadas no dia atual para o nível não acompanhado.
+              type: integer
+            previousDays:
+              type: array
+              description: Número de chamadas nos dias anteriores para o nível não acompanhado. O primeiro item do array é referente a ontem, e assim por diante. Devem ser retornados no máximo sete dias caso estejam disponíveis.
+              items:
+                type: integer
+    AverageMetrics:
+      type: object
+      required:
+        - unauthenticated
+        - highPriority
+        - mediumPriority
+        - unattended
+      properties:
+        unauthenticated:
+          type: object
+          description: Tempo médio de resposta para chamadas não autenticadas.
+          required:
+            - currentDay
+            - previousDays
+          properties:
+            currentDay:
+              type: integer
+              description: Tempo médio de resposta para chamadas no dia atual.
+            previousDays:
+              type: array
+              description: Tempo médio de resposta para chamadas nos dias anteriores. O primeiro item do array é referente a ontem, e assim por diante. Devem ser retornados no máximo sete dias caso estejam disponíveis.
+              items:
+                type: integer
+        highPriority:
+          type: object
+          description: Tempo médio de resposta de chamadas para o nível de alta prioridade.
+          required:
+            - currentDay
+            - previousDays
+          properties:
+            currentDay:
+              type: integer
+              description: Tempo médio de resposta para chamadas no dia atual.
+            previousDays:
+              type: array
+              description: Tempo médio de resposta para chamadas nos dias anteriores. O primeiro item do array é referente a ontem, e assim por diante. Devem ser retornados no máximo sete dias caso estejam disponíveis.
+              items:
+                type: integer
+        mediumPriority:
+          type: object
+          description: Tempo médio de resposta para chamadas para o nível de média prioridade.
+          required:
+            - currentDay
+            - previousDays
+          properties:
+            currentDay:
+              type: integer
+              description: Tempo médio de resposta para chamadas no dia atual.
+            previousDays:
+              type: array
+              description: Tempo médio de resposta para chamadas nos dias anteriores. O primeiro item do array é referente a ontem, e assim por diante. Devem ser retornados no máximo sete dias caso estejam disponíveis.
+              items:
+                type: integer
+        unattended:
+          type: object
+          description: Tempo médio de resposta para chamadas para o nível não acompanhado.
+          required:
+            - currentDay
+            - previousDays
+          properties:
+            currentDay:
+              type: integer
+              description: Tempo médio de resposta para chamadas no dia atual.
+            previousDays:
+              type: array
+              description: Tempo médio de resposta para chamadas nos dias anteriores. O primeiro item do array é referente a ontem, e assim por diante. Devem ser retornados no máximo sete dias caso estejam disponíveis.
+              items:
+                type: integer
+    AverageTPSMetrics:
+      type: object
+      required:
+        - currentDay
+        - previousDays
+      properties:
+        currentDay:
+          type: integer
+          description: Número médio de chamadas por segundo no dia.
+        previousDays:
+          type: array
+          description: Número médio de chamadas por segundo nos dias anteriores. O primeiro item do array é referente a ontem, e assim por diante. Devem ser retornados no máximo sete dias caso estejam disponíveis.
+          items:
+            type: integer
+    PeakTPSMetrics:
+      type: object
+      required:
+        - currentDay
+        - previousDays
+      properties:
+        currentDay:
+          type: integer
+          description: Pico de chamadas por segundo no dia.
+        previousDays:
+          type: array
+          description: Pico de chamadas por segundo nos dias anteriores. O primeiro item do array é referente a ontem, e assim por diante. Devem ser retornados no máximo sete dias caso estejam disponíveis.
+          items:
+            type: integer
+    ErrorMetrics:
+      type: object
+      required:
+        - currentDay
+        - previousDays
+      properties:
+        currentDay:
+          type: integer
+          description: Número de chamadas com erro no dia atual.
+        previousDays:
+          type: array
+          description: Número de chamadas com erro nos dias anteriores. O primeiro item do array é referente a ontem, e assim por diante. Devem ser retornados no máximo sete dias caso estejam disponíveis.
+          items:
+            type: integer
+    RejectionMetrics:
+      type: object
+      required:
+        - currentDay
+        - previousDays
+      properties:
+        currentDay:
+          type: integer
+          description: Número de chamadas rejeitadas no dia atual.
+        previousDays:
+          type: array
+          description: Número de chamadas rejeitadas nos dias anteriores. O primeiro item do array é referente a ontem, e assim por diante. Devem ser retornados no máximo sete dias caso estejam disponíveis.
+          items:
+            type: integer
+    Links:
+      type: object
+      properties:
+        self:
+          type: string
+          description: URL da página atualmente requisitada
+          example: 'https://api.banco.com.br/open-banking/admin/v1/<resource>'
+        first:
+          type: string
+          description: URL da primeira página de registros
+          example: 'https://api.banco.com.br/open-banking/admin/v1/<resource>'
+        prev:
+          type: string
+          description: URL da página anterior de registros
+        next:
+          type: string
+          description: URL da próxima página de registros
+        last:
+          type: string
+          description: URL da última página de registros
+          example: 'https://api.banco.com.br/open-banking/admin/v1/<resource>'
+    Meta:
+      type: object
+      properties:
+        totalRecords:
+          type: integer
+          description: Total de registros encontrados
+          example: 1
+        totalPages:
+          type: integer
+          description: Total de páginas para os registros encontrados
+          example: 1
+      required:
+        - totalRecords
+        - totalPages
+  parameters:
+    page:
+      name: page
+      in: query
+      description: Número da página que está sendo requisitada (o valor da primeira página é 1).
+      schema:
+        type: integer
+        default: 1
+        minimum: 1
+    pageSize:
+      name: page-size
+      in: query
+      description: Quantidade total de registros por páginas.
+      schema:
+        type: integer
+        default: 25
+        minimum: 1

@@ -1,0 +1,200 @@
+﻿openapi: 3.0.0
+info:
+  title: APIs OpenData do Open Banking Brasil
+  description: As APIs descritas neste documento são referentes as APIs da fase OpenData do Open Banking Brasil.
+  version: 1.0.0-rc5.2
+  contact:
+    email: "apiteam@swagger.io"
+servers:
+  - url: 'http://api.banco.com.br/open-banking/discovery/v1'
+tags:
+- name: "Discovery"
+paths:
+  /status:
+    get:
+      tags:
+        - Discovery
+      summary: a descrição referente ao código de status retornado pelas APIs
+      description: " descrição referente ao código de status retornado pelas APIs"
+      operationId: "getStatus"
+      parameters:
+        - $ref: "#/components/parameters/page"
+        - $ref: "#/components/parameters/pageSize"
+      responses:
+        '200':
+          description: código de status retornado pelas APIs
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDiscoveryStatusList'
+  /outages:
+    get:
+      tags:
+        - Discovery
+      summary: a descrição referente ao código de status retornado pelas APIs
+      description: "a descrição referente ao código de status retornado pelas APIs"
+      operationId: "getOutage"
+      parameters:
+        - $ref: "#/components/parameters/page"
+        - $ref: "#/components/parameters/pageSize"
+      responses:
+        '200':
+          description: código de status retornado pelas APIs
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDiscoveryOutageList'
+components:
+  schemas:
+    ResponseDiscoveryStatusList:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          type: object
+          required:
+            - status
+          properties:
+            status:
+              type: array
+              items:
+                $ref: '#/components/schemas/Status'
+        links:
+          $ref: '#/components/schemas/Links'
+        meta:
+          $ref: '#/components/schemas/Meta'
+    ResponseDiscoveryOutageList:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          type: array
+          items:
+            required:
+              - outageTime
+              - duration
+              - isPartial
+              - explanation
+            properties:
+              outageTime:
+                type: string
+                description: Data e hora planejada do início da indisponibilidade
+                example: '2020-07-21T08:30:00Z'
+              duration:
+                type: string
+                description: Duração prevista da indisponibilidade
+                example: PT2H30M
+              isPartial:
+                type: boolean
+                description: Flag que indica se a indisponibilidade é parcial (atingindo apenas alguns end points) ou total (atingindo todos os end points)
+                example: false
+              explanation:
+                type: string
+                description: Explicação sobre os motivos da indisponibilidade.
+                example: Atualização do API Gateway
+        links:
+          $ref: '#/components/schemas/Links'
+        meta:
+          $ref: '#/components/schemas/Meta'
+    Links:
+      type: object
+      properties:
+        self:
+          type: string
+          description: URL da página atualmente requisitada
+          example: 'https://api.banco.com.br/open-banking/channels/v1/<resource>'
+        first:
+          type: string
+          description: URL da primeira página de registros
+          example: 'https://api.banco.com.br/open-banking/channels/v1/<resource>'
+        prev:
+          type: string
+          description: URL da página anterior de registros
+        next:
+          type: string
+          description: URL da próxima página de registros
+        last:
+          type: string
+          description: URL da última página de registros
+          example: 'https://api.banco.com.br/open-banking/channels/v1/<resource>'
+    Meta:
+      type: object
+      properties:
+        totalRecords:
+          type: integer
+          description: Total de registros encontrados
+          example: 1
+        totalPages:
+          type: integer
+          description: Total de páginas para os registros encontrados
+          example: 1
+      required:
+        - totalRecords
+        - totalPages
+    Status:
+      type: object
+      required:
+        - code
+        - explanation
+      properties:
+        code:
+          type: string
+          enum:
+            - OK
+            - PARTIAL_FAILURE
+            - UNAVAILABLE
+            - SCHEDULED_OUTAGE
+          description: >
+            Condição atual da API:
+              * `OK` - A implementação é totalmente funcional
+              * `PARTIAL_FAILURE` - Um ou mais endpoints estão indisponíveis
+              * `UNAVAILABLE` - A implementação completa está indisponível
+              * `SCHEDULED_OUTAGE` - Uma interrupção anunciada está em vigor
+          example: OK
+        explanation:
+          type: string
+          description: Fornece uma explicação da interrupção atual que pode ser exibida para um cliente final. Será obrigatoriamente preenchido se code tiver algum valor que não seja OK
+          example: Retorno com Sucesso
+        detectionTime:
+          type: string
+          description: A data e hora em que a interrupção atual foi detectada. Será obrigatoriamente preenchido se a propriedade code for PARTIAL_FAILURE ou UNAVAILABLE
+          example: '2020-07-21T08:30:00Z'
+        expectedResolutionTime:
+          type: string
+          description: A data e hora em que o serviço completo deve continuar (se conhecido). Será obrigatoriamente preenchido se code tiver algum valor que não seja OK
+          example: '2020-07-21T08:30:00Z'
+        updateTime:
+          type: string
+          description: A data e hora em que esse status foi atualizado pela última vez pelo titular dos dados.
+          example: '2020-01-02T01:00:00Z'
+        unavailableEndpoints:
+          type: array
+          description: Endpoints com indisponibilidade
+          items:
+            type: string
+          example:
+            - 'https://api.banco.com.br/open-banking/channels/v1/electronic-channels'
+  parameters:
+    page:
+      name: page
+      in: query
+      description: Número da página que está sendo requisitada (o valor da primeira página é 1).
+      schema:
+        type: integer
+        default: 1
+        minimum: 1
+    pageSize:
+      name: page-size
+      in: query
+      description: Quantidade total de registros por páginas.
+      schema:
+        type: integer
+        default: 25
+        minimum: 1
+
