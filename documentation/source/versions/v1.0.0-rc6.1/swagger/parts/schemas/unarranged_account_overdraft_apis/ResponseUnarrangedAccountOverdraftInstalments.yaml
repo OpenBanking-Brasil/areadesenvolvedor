@@ -1,0 +1,71 @@
+type: object
+required:
+  - data
+  - links
+  - meta
+properties:
+  data:
+    type: object
+    description: "Conjunto de informações referentes ao prazo remanescente e às parcelas de uma operação de crédito de adiantamento a depositante"
+    required:
+      - contractRemainingDays
+      - dueInstalments
+      - pastDueInstalments
+      - balloonPayments
+    properties:
+      contractRemainingDays:
+        type: number
+        maxLength: 6
+        description: "Prazo Remanescente em dias do contrato referente à Modalidade de Crédito informada"
+        example: 14600
+      dueInstalments:
+        type: number
+        maxLength: 3
+        description: "Quantidade de prestações a vencer. (No caso de modalidades que não possuam parcelas, o número de prestações é igual a zero)"
+        example: 57
+      pastDueInstalments:
+        type: number
+        maxLength: 3
+        description: "Quantidade de prestações vencidas. (No caso de modalidades que não possuam parcelas, o número de prestações é igual a zero)"
+        example: 73
+      balloonPayments:
+        type: array
+        items:
+          type: object
+          description: "Conjunto de informações relativas às parcelas não regulares do contrato da modalidade de crédito consultada"
+          required:
+            - dueDate
+            - currency            
+            - amount
+          properties:
+            dueDate:
+              description: "Data de vencimento da parcela não regular  a vencer do contrato da modalidade de crédito consultada, conforme especificação RFC-3339. p.ex. 2014-03-19"
+              type: string
+              maxLength: 20
+              format: date-time
+              example: "2021-05-21T08:30:00Z"
+            currency:
+              type: string
+              pattern: '^(\w{3}){1}$'
+              maxLength: 3
+              description: |
+                "Moeda referente ao valor monetário informado, segundo modelo ISO-4217. p.ex. 'BRL' 
+                Todos os valores monetários informados estão representados com a moeda vigente do Brasil"
+              example: "BRL"
+            amount:
+              description: "Valor monetário da parcela não regular a vencer.  Expresso em valor monetário com até 4 casas decimais"
+              type: number
+              format: double
+              pattern: '(-?\d{15}(.\d{4}?))$'
+              maxLength: 19
+              minLength: 0
+              example: 100000.0400
+          additionalProperties: false
+        minItems: 1
+        description: "Lista que traz as datas de vencimento e valor das parcelas não regulares  do contrato da modalidade de crédito consultada"
+    additionalProperties: false
+  links:
+    $ref: ../Links.yaml
+  meta:
+    $ref: ../Meta.yaml
+additionalProperties: false
