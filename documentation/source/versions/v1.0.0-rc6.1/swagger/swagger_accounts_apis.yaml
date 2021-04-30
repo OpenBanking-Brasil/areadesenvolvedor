@@ -1,0 +1,1038 @@
+﻿openapi: 3.0.0
+info:
+  title: API Accounts - Open Banking Brasil
+  description: |
+    API de contas de depósito à vista, contas de poupança e contas pré-pagas do Open Banking Brasil – Fase 2.
+    API que retorna informações de contas de depósito à vista, contas de poupança e contas de pagamento pré-pagas mantidas nas instituições transmissoras por seus clientes,
+    incluindo dados de identificação da conta, saldos, limites e transações.\
+    Não possui segregação entre pessoa natural e pessoa jurídica.\
+    Requer consentimento do cliente para todos os `endpoints`.
+
+    # Permissions necessárias para a API Accounts
+
+    Para cada um dos paths desta API, além dos escopos (`scopes`) indicados existem `permissions` que deverão ser observadas:
+
+    ### `/accounts`
+      - permissions:
+        - GET: **ACCOUNTS_READ**
+    ### `/accounts/{accountId}`
+      - permissions:
+        - GET: **ACCOUNTS_READ**
+    ### `/accounts/{accountId}/balances`
+      - permissions:
+        - GET: **ACCOUNTS_BALANCES_READ**
+    ### `/accounts/{accountId}/transactions`
+      - permissions:
+        - GET: **ACCOUNTS_TRANSACTIONS_READ**
+    ### `/accounts/{accountId}/overdraft-limits`
+      - permissions:
+        - GET: **ACCOUNTS_OVERDRAFT_LIMITS_READ**
+  version: 1.0.0
+  license:
+    name: Apache 2.0
+    url: 'https://www.apache.org/licenses/LICENSE-2.0'
+  contact:
+    name: Governança do Open Banking Brasil – Interfaces
+    email: gt-interfaces@openbankingbr.org
+    url: 'https://openbanking-brasil.github.io/areadesenvolvedor/'
+servers:
+  - url: 'https://api.banco.com.br/open-banking/accounts/v1'
+    description: Servidor de Produção
+  - url: 'https://apih.banco.com.br/open-banking/accounts/v1'
+    description: Servidor de Homologação
+tags:
+  - name: Accounts
+  - name: Accounts Identification
+  - name: Accounts Balances
+  - name: Accounts Transactions
+  - name: Accounts Overdraft Limits
+paths:
+  /accounts:
+    get:
+      tags:
+        - Accounts
+      summary: Obtém a lista de contas consentidas pelo cliente.
+      description: 'Método para obter a lista de contas depósito à vista, poupança e pagamento pré-pagas mantidas pelo cliente na instituição transmissora e para as quais ele tenha fornecido consentimento.'
+      operationId: getAccounts
+      parameters:
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/xFapiAuthDate'
+        - $ref: '#/components/parameters/xFapiCustomerIpAddress'
+        - $ref: '#/components/parameters/xFapiInteractionId'
+        - $ref: '#/components/parameters/xCustomerUserAgent'
+        - $ref: '#/components/parameters/xJwsSignature'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/accountType'
+      responses:
+        '200':
+          $ref: '#/components/responses/OKResponseAccountList'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/OKResponseAccountList'
+      security:
+        - OpenId:
+            - openId
+            - accounts
+  '/accounts/{accountId}':
+    get:
+      tags:
+        - Accounts Identification
+      summary: Obtém os dados de identificação da conta identificada por accountId.
+      description: 'Método para obter os dados de identificação da conta de depósito à vista, poupança ou pagamento pré-paga identificada por accountId mantida pelo cliente na instituição transmissora.'
+      operationId: getAccountsAccountId
+      parameters:
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/xFapiAuthDate'
+        - $ref: '#/components/parameters/xFapiCustomerIpAddress'
+        - $ref: '#/components/parameters/xFapiInteractionId'
+        - $ref: '#/components/parameters/xCustomerUserAgent'
+        - $ref: '#/components/parameters/xJwsSignature'
+        - $ref: '#/components/parameters/accountId'
+      responses:
+        '200':
+          $ref: '#/components/responses/OKResponseAccountIdentification'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/OKResponseAccountIdentification'
+      security:
+        - OpenId:
+            - openId
+            - accounts
+  '/accounts/{accountId}/balances':
+    get:
+      tags:
+        - Accounts Balances
+      summary: Obtém os saldos da conta identificada por accountId.
+      description: 'Método para obter os saldos da conta de depósito à vista, poupança ou pagamento pré-paga identificada por accountId mantida pelo cliente na instituição transmissora.'
+      operationId: getAccountsAccountIdBalances
+      parameters:
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/xFapiAuthDate'
+        - $ref: '#/components/parameters/xFapiCustomerIpAddress'
+        - $ref: '#/components/parameters/xFapiInteractionId'
+        - $ref: '#/components/parameters/xCustomerUserAgent'
+        - $ref: '#/components/parameters/xJwsSignature'
+        - $ref: '#/components/parameters/accountId'
+      responses:
+        '200':
+          $ref: '#/components/responses/OKResponseAccountBalances'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/OKResponseAccountBalances'
+      security:
+        - OpenId:
+            - openId
+            - accounts
+  '/accounts/{accountId}/transactions':
+    get:
+      tags:
+        - Accounts Transactions
+      summary: Obtém a lista de transações da conta identificada por accountId.
+      description: 'Método para obter a lista de transações da conta de depósito à vista, poupança ou pagamento pré-paga identificada por accountId mantida pelo cliente na instituição transmissora.'
+      operationId: getAccountsAccountIdTransactions
+      parameters:
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/xFapiAuthDate'
+        - $ref: '#/components/parameters/xFapiCustomerIpAddress'
+        - $ref: '#/components/parameters/xFapiInteractionId'
+        - $ref: '#/components/parameters/xCustomerUserAgent'
+        - $ref: '#/components/parameters/xJwsSignature'
+        - $ref: '#/components/parameters/accountId'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/fromBookingDate'
+        - $ref: '#/components/parameters/toBookingDate'
+        - $ref: '#/components/parameters/creditDebitIndicator'
+      responses:
+        '200':
+          $ref: '#/components/responses/OKResponseAccountTransactions'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/OKResponseAccountTransactions'
+      security:
+        - OpenId:
+            - openId
+            - accounts
+  '/accounts/{accountId}/overdraft-limits':
+    get:
+      tags:
+        - Accounts Overdraft Limits
+      summary: Obtém os limites da conta identificada por accountId.
+      description: 'Método para obter os limites da conta de depósito à vista, poupança ou pagamento pré-paga identificada por accountId mantida pelo cliente na instituição transmissora.'
+      operationId: getAccountsAccountIdOverdraftLimits
+      parameters:
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/xFapiAuthDate'
+        - $ref: '#/components/parameters/xFapiCustomerIpAddress'
+        - $ref: '#/components/parameters/xFapiInteractionId'
+        - $ref: '#/components/parameters/xCustomerUserAgent'
+        - $ref: '#/components/parameters/xJwsSignature'
+        - $ref: '#/components/parameters/accountId'
+      responses:
+        '200':
+          $ref: '#/components/responses/OKResponseAccountOverdraftLimits'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/OKResponseAccountOverdraftLimits'
+      security:
+        - OpenId:
+            - openId
+            - accounts
+components:
+  schemas:
+    AccountBalancesData:
+      type: object
+      description: |
+        Conjunto de informações das Contas de: depósito à vista, poupança e de pagamento pré-paga
+      required:
+        - avaiableAmount
+        - blockedAmount
+        - automaticallyInvestedAmount
+      properties:
+        avaiableAmount:
+          type: number
+          format: double
+          pattern: '(-?\d{15}(.\d{4}?))$'
+          description: 'Saldo disponível para utilização imediata. No caso de conta de depósito a vista, sem considerar cheque especial e investimentos atrelados a conta. Admite saldo negativo. Expresso em valor monetário com 4 casas decimais'
+          maxLength: 19
+          minLength: 0
+          example: 100000.04
+        blockedAmount:
+          type: number
+          format: double
+          pattern: '(-?\d{15}(.\d{4}?))$'
+          description: 'Saldo bloqueado, não disponível para utilização imediata, por motivo de bloqueio apresentado para o cliente nos canais eletrônicos Expresso em valor monetário com 4 casas decimais'
+          maxLength: 19
+          minLength: 0
+          example: 99.9999
+        automaticallyInvestedAmount:
+          type: number
+          format: double
+          pattern: '(-?\d{15}(.\d{4}?))$'
+          description: Saldo disponível com aplicação automática - corresponde a soma do saldo disponível acrescido do valor obtido a partir da aplicação automática Expresso em valor monetário com 4 casas decimais
+          maxLength: 19
+          minLength: 0
+          example: 2566449494219
+      additionalProperties: false
+    AccountData:
+      type: object
+      required:
+        - brandID
+        - brandName
+        - companyCnpj
+        - type
+        - compeCode
+        - branchCode
+        - number
+        - checkDigit
+        - accountID
+      properties:
+        brandID:
+          type: string
+          description: 'Identifica a Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes.'
+          maxLength: 100
+          pattern: \w*\W*
+          example: '29698749425984912674'
+        brandName:
+          type: string
+          description: 'Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes.'
+          maxLength: 80
+          pattern: \w*\W*
+          example: Organização A
+        companyCnpj:
+          type: string
+          maxLength: 14
+          pattern: '\d{14}|^NA$'
+          description: 'Número completo do CNPJ da instituição responsável pelo Cadastro - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. Deve-se ter apenas os números do CNPJ, sem máscara'
+          example: '21128159000166'
+        type:
+          $ref: '#/components/schemas/EnumAccountType'
+        compeCode:
+          type: string
+          description: 'Código identificador atribuído pelo Banco Central do Brasil às instituições participantes do STR (Sistema de Transferência de reservas).O Compe (Sistema de Compensação de Cheques e Outros Papéis) é um sistema que identifica e processa as compensações bancárias. Ele é representado por um código de três dígitos que serve como identificador de bancos, sendo assim, cada instituição bancária possui um número exclusivo'
+          pattern: '\d{3}|^NA$'
+          maxLength: 3
+          example: '001'
+        branchCode:
+          type: string
+          description: 'Código da Agência detentora da conta. (Agência é a dependência destinada ao atendimento aos clientes, ao público em geral e aos associados de cooperativas de crédito, no exercício de atividades da instituição, não podendo ser móvel ou transitória)'
+          pattern: '\d{4}|^NA$'
+          maxLength: 4
+          example: '6272'
+        number:
+          type: string
+          description: Número da conta
+          pattern: '^\d{8,20}$|^NA$'
+          maxLength: 20
+          example: '94088392'
+        checkDigit:
+          type: string
+          description: Dígito da conta
+          pattern: \w*\W*
+          maxLength: 1
+          example: '4'
+        accountID:
+          type: string
+          description: 'Identifica de forma única  a conta do cliente, mantendo as regras de imutabilidade dentro da instituição transmissora.'
+          pattern: \w*\W*
+          maxLength: 100
+          example: '92792126019929279212650822221989319252576'
+      additionalProperties: false
+    AccountIdentificationData:
+      type: object
+      description: |
+        Conjunto dos atributos que caracterizam as Contas de: depósito à vista, poupança e de pagamento pré-paga
+      required:
+        - compeCode
+        - branchCode
+        - number
+        - checkDigit
+        - type
+        - subtype
+        - currency
+      properties:
+        compeCode:
+          type: string
+          maxLength: 3
+          pattern: '\d{3}|^NA$'
+          description: 'Código identificador atribuído pelo Banco Central do Brasil às instituições participantes do STR (Sistema de Transferência de reservas). O número-código substituiu o antigo código COMPE. Todos os participantes do STR, exceto as Infraestruturas do Mercado Financeiro (IMF) e a Secretaria do Tesouro Nacional, possuem um número-código independentemente de participarem da Centralizadora da Compensação de Cheques (Compe). O campo tem a anotação “n/a” (“não se aplica”) para os participantes do STR aos quais não é atribuído um número-código'
+          example: '001'
+        branchCode:
+          type: string
+          maxLength: 4
+          pattern: '\d{4}|^NA$'
+          description: |
+            Código da Agência detentora da conta. (Agência é a dependência destinada ao atendimento aos clientes, ao público em geral e aos associados de cooperativas de crédito, no exercício de atividades da instituição, não podendo ser móvel ou transitória)
+          example: '6272'
+        number:
+          type: string
+          maxLength: 20
+          pattern: '^\d{8,20}$|^NA$'
+          description: |
+            Número da conta
+          example: '24550245'
+        checkDigit:
+          type: string
+          maxLength: 1
+          pattern: \w*\W*
+          description: |
+            Dígito da conta
+          example: '4'
+        type:
+          $ref: '#/components/schemas/EnumAccountType'
+        subtype:
+          $ref: '#/components/schemas/EnumAccountSubType'
+        currency:
+          type: string
+          pattern: '^(\w{3}){1}$'
+          maxLength: 3
+          description: |
+            Moeda referente ao valor da transação, segundo modelo ISO-4217. p.ex. 'BRL' 
+            Todos os saldos informados estão representados com a moeda vigente do Brasil
+          example: BRL
+      additionalProperties: false
+    AccountOverdraftLimitsData:
+      type: object
+      description: |
+        Conjunto de informações da Conta de: depósito à vista
+      required:
+        - overdraftContractedLimit
+        - overdraftUsedLimit
+      properties:
+        overdraftContractedLimit:
+          type: number
+          format: double
+          pattern: '(-?\d{15}(.\d{4}?))$'
+          description: Valor do limite contratado do cheque especial
+          maxLength: 19
+          minLength: 0
+          example: 99.9999
+        overdraftUsedLimit:
+          type: number
+          format: double
+          pattern: '(-?\d{15}(.\d{4}?))$'
+          description: Valor utilizado total do limite do cheque especial e o adiantamento a depositante.
+          maxLength: 19
+          minLength: 0
+          example: 10000.9999
+      additionalProperties: false
+    AccountTransactionsData:
+      type: object
+      required:
+        - completedAuthorisedPaymentType
+        - creditDebitType
+        - transactionName
+        - type
+        - amount
+        - transactionDate
+        - payeeCnpjCpf
+        - payeePersonType
+        - payeeCompeCode
+        - payeeBranchCode
+        - payeeNumber
+        - payeeCheckDigit
+      properties:
+        completedAuthorisedPaymentType:
+          $ref: '#/components/schemas/EnumCompletedAuthorisedPaymentIndicator'
+        creditDebitType:
+          $ref: '#/components/schemas/EnumCreditDebitIndicator'
+        transactionName:
+          type: string
+          maxLength: 60
+          pattern: \w*\W*
+          description: Campo livre que corresponde ao identificador da transação na instituição financeira
+          example: TRANSFCWAR5TXHCX5I9IDBHML8082N8NEO30M6LNNG7ANAYIJYRM00ZBZPU8
+        type:
+          $ref: '#/components/schemas/EnumTransactionTypes'
+        amount:
+          type: number
+          format: double
+          pattern: '(-?\d{15}(.\d{4}?))$'
+          description: Valor da transação. Expressa em valor monetário com 4 casas decimais.
+          maxLength: 19
+          minLength: 0
+          example: 500.54
+        transactionDate:
+          type: string
+          maxLength: 10
+          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
+          description: |
+            Se indicador de transação:
+            TRANSACAO_EFETIVADA - corresponde a data de lançamento da transação
+            LANCAMENTO_FUTURO - corresponde a data prevista de efetivação da transação
+          example: '2021-01-07'
+        partieCnpjCpf:
+          type: string
+          maxLength: 14
+          pattern: '^\d{11}$|^\d{14}$|^NA$'
+          description: |
+            Identificação da pessoa envolvida na transação: pagador ou recebedor (Preencher com o CPF ou CNPJ, sem formatação)
+          example: '43908445778'
+        partiePersonType:
+          $ref: '#/components/schemas/EnumPartiePersonType'
+        partieCompeCode:
+          type: string
+          maxLength: 3
+          pattern: '\d{3}|^NA$'
+          description: 'Código identificador atribuído pelo Banco Central do Brasil às instituições participantes do STR (Sistema de Transferência de reservas) referente à pessoa envolvida na transação. O número-código substituiu o antigo código COMPE. Todos os participantes do STR, exceto as Infraestruturas do Mercado Financeiro (IMF) e a Secretaria do Tesouro Nacional, possuem um número-código independentemente de participarem da Centralizadora da Compensação de Cheques (Compe). O campo tem a anotação “n/a” (“não se aplica”) para os participantes do STR aos quais não é atribuído um número-código'
+          example: '001'
+        partieBranchCode:
+          type: string
+          maxLength: 4
+          pattern: '\d{4}|^NA$'
+          description: 'Código da Agência detentora da conta da pessoa envolvida na transação. (Agência é a dependência destinada ao atendimento aos clientes, ao público em geral e aos associados de cooperativas de crédito, no exercício de atividades da instituição, não podendo ser móvel ou transitória)'
+          example: '6272'
+        partieNumber:
+          type: string
+          maxLength: 20
+          pattern: '^\d{8,20}$|^NA$'
+          description: Número da conta da pessoa envolvida na transação
+          example: '67890854360'
+        partieCheckDigit:
+          type: string
+          maxLength: 1
+          pattern: \w*\W*
+          description: Dígito da conta da pessoa envolvida na transação
+          example: '4'
+      additionalProperties: false
+    EnumAccountSubType:
+      type: string
+      enum:
+        - INDIVIDUAL
+        - CONJUNTA_SOLIDARIA
+        - CONJUNTA_NAO_SOLIDARIA
+      description: |
+        Subtipo de conta (vide Enum): 
+        Conta individual - possui um único titular
+        Conta conjunta solidária - é a modalidade cujos titulares podem realizar movimentações de forma isolada, isto é, sem que seja necessária a autorização dos demais titulares
+        Conta conjunta não solidária - onde as movimentações financeiras só podem serem realizadas mediante autorização de TODOS os correntistas da conta.
+      example: INDIVIDUAL
+    EnumAccountType:
+      type: string
+      enum:
+        - CONTA_DEPOSITO_A_VISTA
+        - CONTA_POUPANCA
+        - CONTA_PAGAMENTO_PRE_PAGA
+      description: |
+        Tipos de contas. Modalidades tradicionais previstas pela Resolução 4.753, não contemplando contas vinculadas, conta de domiciliados no exterior, contas em moedas estrangeiras e conta correspondente moeda eletrônica. Vide Enum
+        Conta de depósito à vista ou Conta corrente - é o tipo mais comum. Nela, o dinheiro fica à sua disposição para ser sacado a qualquer momento. Essa conta não gera rendimentos para o depositante
+        Conta poupança - foi criada para estimular as pessoas a pouparem. O dinheiro que ficar na conta por trinta dias passa a gerar rendimentos, com isenção de imposto de renda para quem declara. Ou seja, o dinheiro “cresce” (rende) enquanto ficar guardado na conta. Cada depósito terá rendimentos de mês em mês, sempre no dia do mês em que o dinheiro tiver sido depositado
+        Conta de pagamento pré-paga: segundo CIRCULAR Nº 3.680, BCB de  2013, é a 'destinada à execução de transações de pagamento em moeda eletrônica realizadas com base em fundos denominados em reais previamente aportados'
+      example: CONTA_DEPOSITO_A_VISTA
+    EnumCompletedAuthorisedPaymentIndicator:
+      type: string
+      description: |
+        Indicador da transação: 
+        - Transação efetivada
+        - Lançamento futuro
+      maxLength: 19
+      enum:
+        - TRANSACAO_EFETIVADA
+        - LANCAMENTO_FUTURO
+      example: TRANSACAO_EFETIVADA
+    EnumCreditDebitIndicator:
+      type: string
+      description: |
+        Indicador do tipo de lançamento: 
+        - Crédito
+        - Débito
+      maxLength: 7
+      enum:
+        - CREDITO
+        - DEBITO
+      example: DEBITO
+    EnumPartiePersonType:
+      type: string
+      description: |
+        Identificação do Tipo de Pessoa da pessoa envolvida na transação.
+        Pessoa Natural - Informar CPF no campo “payerCnpjCpf”
+        Pessoa Jurídica - Informar CNPJ no campo “payerCnpjCpf”
+      enum:
+        - PESSOA_NATURAL
+        - PESSOA_JURIDICA
+      example: PESSOA_NATURAL
+    EnumTransactionTypes:
+      type: string
+      description: |
+        Tipo de Transação
+      maxLength: 31
+      enum:
+        - TED
+        - DOC
+        - PIX
+        - TRANSFERENCIA_MESMA_INSTITUICAO
+        - BOLETO
+        - CONVENIO
+        - ARRECADACAO
+        - PACOTE_TARIFA_SERVICOS
+        - TARIFA_SERVICOS_AVULSOS
+        - FOLHA_PAGAMENTO
+        - DEPOSITO
+        - SAQUE
+        - CARTAO
+        - JUROS_CHEQUE_ESPECIAL
+        - RENDIMENTO
+        - RECEBIVEIS_CARTAO_DEBITO
+        - RECEBIVEIS_CARTAO_CREDITO
+        - OUTRO
+      example: OUTRO
+    Links:
+      type: object
+      description: Referências para outros recusos da API requisitada.
+      required:
+        - self
+      properties:
+        self:
+          type: string
+          format: uri
+          maxLength: 2000
+          description: URI completo que gerou a resposta atual.
+          example: 'https://api.banco.com.br/open-banking/api/v1/resource'
+          pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
+        first:
+          type: string
+          format: uri
+          maxLength: 2000
+          description: URI da primeira página que originou essa lista de resultados. Restrição - Obrigatório quando não for a primeira página da resposta
+          example: 'https://api.banco.com.br/open-banking/api/v1/resource'
+          pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
+        prev:
+          type: string
+          format: uri
+          maxLength: 2000
+          description: "URI da página anterior dessa lista de resultados. Restrição - \tObrigatório quando não for a primeira página da resposta"
+          example: 'https://api.banco.com.br/open-banking/api/v1/resource'
+          pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
+        next:
+          type: string
+          format: uri
+          maxLength: 2000
+          description: URI da próxima página dessa lista de resultados. Restrição - Obrigatório quando não for a última página da resposta
+          example: 'https://api.banco.com.br/open-banking/api/v1/resource'
+          pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
+        last:
+          type: string
+          format: uri
+          maxLength: 2000
+          description: URI da última página dessa lista de resultados. Restrição - Obrigatório quando não for a última página da resposta
+          example: 'https://api.banco.com.br/open-banking/api/v1/resource'
+          pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
+      additionalProperties: false
+    Meta:
+      type: object
+      description: Meta informações referente a API requisitada.
+      required:
+        - totalRecords
+        - totalPages
+        - requestDateTime
+      properties:
+        totalRecords:
+          type: integer
+          format: int32
+          description: Número total de registros no resultado
+          example: 1
+        totalPages:
+          type: integer
+          format: int32
+          description: Número total de páginas no resultado
+          example: 1
+        requestDateTime:
+          description: 'Data e hora da consulta, conforme especificação RFC-3339, formato UTC.'
+          type: string
+          maxLength: 20
+          format: date-time
+          example: '2021-05-21T08:30:00Z'
+      additionalProperties: false
+    ResponseAccountList:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountData'
+          minItems: 1
+          description: 'Lista de contas depósito à vista, poupança e pagamento pré-pagas mantidas pelo cliente na instituição transmissora e para as quais ele tenha fornecido consentimento'
+        links:
+          $ref: '#/components/schemas/Links'
+        meta:
+          $ref: '#/components/schemas/Meta'
+      additionalProperties: false
+    ResponseAccountBalances:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          $ref: '#/components/schemas/AccountBalancesData'
+        links:
+          $ref: '#/components/schemas/Links'
+        meta:
+          $ref: '#/components/schemas/Meta'
+      additionalProperties: false
+    ResponseAccountIdentification:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          $ref: '#/components/schemas/AccountIdentificationData'
+        links:
+          $ref: '#/components/schemas/Links'
+        meta:
+          $ref: '#/components/schemas/Meta'
+      additionalProperties: false
+    ResponseAccountOverdraftLimits:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          $ref: '#/components/schemas/AccountOverdraftLimitsData'
+        links:
+          $ref: '#/components/schemas/Links'
+        meta:
+          $ref: '#/components/schemas/Meta'
+      additionalProperties: false
+    ResponseAccountTransactions:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountTransactionsData'
+          minItems: 1
+          description: |
+            Lista dos lançamentos referentes às transações realizadas e de lançamentos futuros para as contas de: depósito à vista, poupança e de pagamento pré-paga
+        links:
+          $ref: '#/components/schemas/Links'
+        meta:
+          $ref: '#/components/schemas/Meta'
+      additionalProperties: false
+    ResponseError:
+      type: object
+      required:
+        - errors
+      properties:
+        errors:
+          type: array
+          minItems: 1
+          maxItems: 13
+          items:
+            type: object
+            required:
+              - code
+              - title
+              - detail
+            properties:
+              code:
+                description: Código de erro específico do endpoint
+                type: string
+                pattern: \w*\W*
+                maxLength: 255
+              title:
+                description: Título legível por humanos deste erro específico
+                type: string
+                pattern: \w*\W*
+                maxLength: 255
+              detail:
+                description: Descrição legível por humanos deste erro específico
+                type: string
+                pattern: \w*\W*
+                maxLength: 2048
+            additionalProperties: false
+        meta:
+          $ref: '#/components/schemas/Meta'
+      additionalProperties: false
+  parameters:
+    accountId:
+      name: accountId
+      in: path
+      description: 'Identificador da conta de depósito à vista, de poupança ou de pagamento pré-paga.'
+      required: true
+      schema:
+        type: string
+        pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
+        maxLength: 100
+    accountsBranchCode:
+      name: branchCode
+      in: query
+      description: 'Código da Agência detentora da conta. (Agência é a dependência destinada ao atendimento aos clientes, ao público em geral e aos associados de cooperativas de crédito, no exercício de atividades da instituição, não podendo ser móvel ou transitória)'
+      schema:
+        type: string
+        maxLength: 4
+        pattern: '\d{4}|^NA$'
+      required: true
+    accountsCheckDigit:
+      name: checkDigit
+      in: query
+      description: Dígito da conta
+      schema:
+        type: string
+        maxLength: 1
+        pattern: \w*\W*
+      required: true
+    accountsCompeCode:
+      name: compeCode
+      in: query
+      description: 'Código identificador atribuído pelo Banco Central do Brasil às instituições participantes do STR (Sistema de Transferência de reservas). O número-código substituiu o antigo código COMPE. Todos os participantes do STR, exceto as Infraestruturas do Mercado Financeiro (IMF) e a Secretaria do Tesouro Nacional, possuem um número-código independentemente de participarem da Centralizadora da Compensação de Cheques (Compe). O campo tem a anotação “n/a” (“não se aplica”) para os participantes do STR aos quais não é atribuído um número-código'
+      schema:
+        type: string
+        maxLength: 3
+        pattern: '\d{3}|^NA$'
+      required: true
+    accountsNumber:
+      name: number
+      in: query
+      description: Número da conta
+      schema:
+        type: string
+        maxLength: 20
+        pattern: '\d{20}|^NA$'
+      required: true
+    accountType:
+      name: accountType
+      description: 'Tipos de contas. Modalidades tradicionais previstas pela Resolução 4.753, não contemplando contas vinculadas, conta de domiciliados no exterior, contas em moedas estrangeiras e conta correspondente moeda eletrônica. Vide Enum.'
+      required: false
+      in: query
+      schema:
+        $ref: '#/components/schemas/EnumAccountType'
+    Authorization:
+      name: Authorization
+      in: header
+      description: Cabeçalho HTTP padrão. Permite que as credenciais sejam fornecidas dependendo do tipo de recurso solicitado
+      required: true
+      schema:
+        type: string
+        pattern: \w*\W*
+        maxLength: 2048
+    creditDebitIndicator:
+      name: creditDebitIndicator
+      description: Indicador do tipo de lançamento
+      required: false
+      in: query
+      schema:
+        $ref: '#/components/schemas/EnumCreditDebitIndicator'
+    fromBookingDate:
+      name: fromBookingDate
+      description: Data inicial de filtragem.
+      required: false
+      in: query
+      schema:
+        type: string
+        maxLength: 20
+        format: date-time
+        example: '2021-05-21T08:30:00Z'
+    page:
+      name: page
+      in: query
+      description: Número da página que está sendo requisitada (o valor da primeira página é 1).
+      schema:
+        type: integer
+        default: 1
+        minimum: 1
+        format: int32
+    pageSize:
+      name: page-size
+      in: query
+      description: Quantidade total de registros por páginas.
+      schema:
+        type: integer
+        default: 25
+        minimum: 1
+        format: int32
+        maximum: 10000
+    toBookingDate:
+      name: toBookingDate
+      description: Data final de filtragem.
+      required: false
+      in: query
+      schema:
+        type: string
+        maxLength: 20
+        format: date-time
+        example: '2021-05-21T08:30:00Z'
+    xCustomerUserAgent:
+      name: x-customer-user-agent
+      in: header
+      description: Indica o user-agent que o usuário utiliza.
+      required: false
+      schema:
+        type: string
+        pattern: \w*\W*
+        minLength: 1
+        maxLength: 100
+    xFapiAuthDate:
+      name: x-fapi-auth-date
+      in: header
+      description: 'Data em que o usuário logou pela última vez com o receptor. Representada de acordo com a [RFC7231](https://tools.ietf.org/html/rfc7231).Exemplo: Sun, 10 Sep 2017 19:43:31 UTC'
+      required: false
+      schema:
+        type: string
+        pattern: '^(Mon|Tue|Wed|Thu|Fri|Sat|Sun), \d{2} (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) \d{4} \d{2}:\d{2}:\d{2} (GMT|UTC)$'
+        minLength: 29
+        maxLength: 29
+    xFapiCustomerIpAddress:
+      name: x-fapi-customer-ip-address
+      in: header
+      description: O endereço IP do usuário se estiver atualmente logado com o receptor.
+      required: false
+      schema:
+        type: string
+        pattern: \w*\W*
+        minLength: 1
+        maxLength: 100
+    xFapiInteractionId:
+      name: x-fapi-interaction-id
+      in: header
+      description: 'Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.'
+      required: false
+      schema:
+        type: string
+        pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
+        minLength: 1
+        maxLength: 100
+    xJwsSignature:
+      name: x-jws-signature
+      in: header
+      description: Cabeçalho contendo uma assinatura JWS separada do corpo do payload.
+      required: true
+      schema:
+        type: string
+        pattern: \w*\W*
+        maxLength: 2048
+  securitySchemes:
+    OpenId:
+      type: openIdConnect
+      openIdConnectUrl: 'https://authserver.example/.well-known/openid-configuration'
+  responses:
+    OKResponseAccountList:
+      description: Dados de identificação das contas obtidos com sucesso.
+      headers:
+        x-fapi-interaction-id:
+          schema:
+            type: string
+            pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
+            maxLength: 100
+            description: 'Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ResponseAccountList'
+    OKResponseAccountIdentification:
+      description: Dados de identificação da conta identificada por accountId obtidos com sucesso.
+      headers:
+        x-fapi-interaction-id:
+          schema:
+            $ref: '#/components/responses/OKResponseAccountList/headers/x-fapi-interaction-id/schema'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ResponseAccountIdentification'
+    OKResponseAccountBalances:
+      description: Dados relativos aos saldos da conta identificada por accountId obtidos com sucesso.
+      headers:
+        x-fapi-interaction-id:
+          schema:
+            $ref: '#/components/responses/OKResponseAccountList/headers/x-fapi-interaction-id/schema'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ResponseAccountBalances'
+    OKResponseAccountTransactions:
+      description: Dados da lista de transações da conta identificada por accountId obtidos com sucesso.
+      headers:
+        x-fapi-interaction-id:
+          schema:
+            $ref: '#/components/responses/OKResponseAccountList/headers/x-fapi-interaction-id/schema'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ResponseAccountTransactions'
+    OKResponseAccountOverdraftLimits:
+      description: Dados de limites da conta identificada por accountId obtidos com sucesso.
+      headers:
+        x-fapi-interaction-id:
+          schema:
+            $ref: '#/components/responses/OKResponseAccountList/headers/x-fapi-interaction-id/schema'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ResponseAccountOverdraftLimits'
+    BadRequest:
+      description: 'A requisição foi malformada, omitindo atributos obrigatórios, seja no payload ou através de atributos na URL.'
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/ResponseError'
+    Forbidden:
+      description: O token tem escopo incorreto ou uma política de segurança foi violada
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/ResponseError'
+    InternalServerError:
+      description: Ocorreu um erro no gateway da API ou no microsserviço
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/ResponseError'
+    MethodNotAllowed:
+      description: O consumidor tentou acessar o recurso com um método não suportado
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/ResponseError'
+    NotAcceptable:
+      description: A solicitação continha um cabeçalho Accept diferente dos tipos de mídia permitidos ou um conjunto de caracteres diferente de UTF-8
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/ResponseError'
+    NotFound:
+      description: O recurso solicitado não existe ou não foi implementado
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/ResponseError'
+    TooManyRequests:
+      description: 'A operação foi recusada, pois muitas solicitações foram feitas dentro de um determinado período ou o limite global de requisições concorrentes foi atingido'
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/ResponseError'
+    Unauthorized:
+      description: Cabeçalho de autenticação ausente/inválido ou token inválido
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/ResponseError'
