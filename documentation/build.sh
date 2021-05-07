@@ -37,4 +37,26 @@ widdershins source/swagger/swagger_open_banking_fase1_apis.yml -o source/include
 
 spectral lint source/swagger/*_apis.yaml
 
+# Generate dictionary
+mkdir -p source/dictionary/{generated,bundles}
+chmod + source/scripts/dictionary_generator
+BUND_PATH=source/dictionary/bundles
+DICT_PATH=source/dictionary
+
+APIS=(
+  "loans_apis"
+)
+
+for API in "${APIS[@]}"
+do
+  swagger-cli bundle \
+    -r "source/swagger/parts/_${API}_part.yml" \
+    --outfile "${BUND_PATH}/swagger_${API}.yaml" --type=yaml
+
+  ./source/scripts/dictionary_generator \
+    "${BUND_PATH}/swagger_${API}.yaml" \
+    $DICT_PATH
+done
+rm -rf source/dictionary/bundles
+
 bundle exec middleman server
