@@ -1317,7 +1317,8 @@
 
 <h3 id='principio-7-identificadores-unicos'>Princípio 7: Identificadores únicos</h3>
 
-<p>Um recurso REST deverá ter um identificador exclusivo que possa ser usado para identificar o recurso, com formato e padrão a ser definido a partir da Fase 2 do Open Banking no Brasil.</p>
+<p>Um recurso REST deverá ter um identificador exclusivo que possa ser usado para identificar o recurso alvo da API. 
+Este identificador será usado para criar URLs que permitam endereçar recursos específicos, obedecendo aos padrões definidos nesta documentação, no item Formação e estabilidade do ID.</p>
 
 <h3 id='principio-8-categorizacao-dos-requisitos-de-implementacao'>Princípio 8: Categorização dos requisitos de implementação</h3>
 
@@ -1326,6 +1327,11 @@
 <h3 id='principio-9-agnosticas'>Princípio 9: Agnósticas</h3>
 
 <p>As APIs serão agnósticas à implementação onde elas poderão ser consumidas independente das tecnologias adotadas no ecossistema, porém com aderência aos princípios contidos nesta documentação.</p>
+
+<h3 id='principio-10-idempotencia'>Princípio 10: Idempotência</h3>
+
+<p>As APIs serão definidas como idempotentes para não causar uma experiência ruim ao consumidor ou aumentar os indicadores de risco falso positivo.
+Trata-se de recurso necessário para garantir que não haja duplicidade em caso de perda de comunicação e não deve se limitar aos verbos HTTP, devendo ser aplicado ao design completo da API.</p>
 
 <h2 id='versionamento'>Versionamento</h2>
 
@@ -1490,7 +1496,7 @@ prazos definidos para lançamento e implementação de novas versões <em>major<
 </tr>
 <tr>
 <td style="text-align: left"><strong>x-v</strong></td>
-<td style="text-align: left">Cabeçalho que indica a versão implementada da API pela instituição financeira. Deve ser preenchido com um número positivo, exemplo: <code>x-v : 2</code></td>
+<td style="text-align: left">Cabeçalho que indica a versão implementada da API pela instituição financeira. Deve ser preenchido de forma completa, por exemplo: <code>x-v : 1.0.2</code></td>
 <td style="text-align: left">Sim</td>
 </tr>
 <tr>
@@ -1532,7 +1538,9 @@ prazos definidos para lançamento e implementação de novas versões <em>major<
 
 <h2 id='codigos-de-resposta-http'>Códigos de resposta HTTP</h2>
 
-<p>Os códigos de resposta HTTP devem ser utilizados conforme tabela abaixo.</p>
+<p>Os códigos de resposta HTTP devem ser utilizados conforme tabela mais abaixo.
+Observação: com a implementação do cadastro por <em>endpoint</em> no diretório de participantes e conforme orientação do regulador, as instituições participantes NÃO DEVEM cadastrar endpoints de produtos ou serviços que não ofertem.
+Neste caso específico - a consulta em um endpoint não cadastrado - o status code esperado na resposta é o <em>404 - NOT FOUND</em>.</p>
 
 <h3 id='codigos'>Códigos</h3>
 
@@ -2068,15 +2076,15 @@ Para cada um desses atributos o tamanho da página especificado na requisição 
 <li>Nos <em>payloads</em> o nome de campo &quot;id&quot; nunca deverá ser utilizado. Cada campo ID deverá ter um nome significativo, dessa forma independentemente de onde o ID for utilizado entre múltiplos <em>endpoints</em>, ele sempre irá se referir ao seu objeto principal. Por exemplo, IDs para conta deverão ser representados no JSON como &quot;accountId&quot;.</li>
 </ul>
 
-<h3 id='idempotencia-principio-adicional'>Idempotência (princípio adicional)</h3>
+<h3 id='principios-para-a-formacao-de-ids-identificadores-de-recursos-nas-apis'>Princípios para a formação de IDs (identificadores) de recursos nas APIs</h3>
 
-<p>APIs serão definidas como idempotentes para não causar uma experiência ruim ao consumidor ou aumentar os indicadores de risco falso positivo.
-Trata-se de recurso necessário para garantir que não haja duplicidade em caso deperda de comunicação e não deve se limitar aos verbos HTTP, devendo ser aplicado ao design completo da API.</p>
-
-<h3 id='identificadores-unicos-principio-ja-existente'>Identificadores únicos (princípio já existente)</h3>
-
-<p>Um recurso REST deverá ter um identificador exclusivo que possa ser usado para identificar o recurso alvoda API.
-Este identificador será usado para criar URLs que permitam endereçar recursos específicos,obedecendo aos padrões definidos nesta documentação,no item Formação e estabilidade do ID.</p>
+<ul>
+<li>O ID DEVE ser uma string com limitação de 100 caracteres - limite que poderá ser revisitado em caso de necessidade apresentada por quaisquer dos participantes do Open Banking Brasil e - aderente aos padrões apresentados na seção 2.1 da RFC 2141;</li>
+<li>Uma vez que será trafegado nas chamadas de interface, o ID NÃO DEVE conter dados classificados como PII - Personally identifiable information (Informação Pessoalmente Identificável) ou Informação de Identificação Pessoal;</li>
+<li>DEVE ser garantida a unicidade do ID dentro do contexto da API assim como a estabilidade do mesmo, sendo a estabilidade condicionada à manutenção das características de identificação natural do recurso em questão (por exemplo, as informações de banco, agência e conta na API de Contas).
+A alteração das características de identificação natural implica na geração de um novo identificador associado ao recurso;</li>
+<li>A utilização de meios técnicos razoáveis e disponíveis para a formação do ID é de livre implementação por parte da instituição transmissora dos dados, de forma que apenas a aderência aos princípios elencados nesta documentação é mandatória.</li>
+</ul>
 
 <h2 id='extensibilidade'>Extensibilidade</h2>
 
