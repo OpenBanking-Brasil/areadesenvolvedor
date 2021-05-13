@@ -2,39 +2,26 @@ type: object
 description: Conjunto de informações referentes aos pagamentos realizados de uma operação de crédito de adiantamento a depositantes
 required:
   - paidInstalments
-  - currency
-  - contractOutstandingBalance
+  - contractOutstandingBalance      
   - releases
-  - chargesOverParcel
 properties:
   paidInstalments:
     type: number
     maxLength: 3
-    description: "Quantidade total de parcelas pagas do contrato referente à Modalidade de Crédito informada"
+    nullable: true
     example: 73
-  currency:
-    type: string
-    pattern: ^(\w{3}){1}$
-    maxLength: 3
-    format: CurrencyString
-    description: "Moeda referente ao valor monetário informado, segundo modelo ISO-4217. p.ex. 'BRL'. Todos os valores monetários informados estão representados com a moeda vigente do Brasil"
-    example: "BRL"
+    description: Quantidade total de parcelas pagas do contrato referente à Modalidade de Crédito informada.
   contractOutstandingBalance:
     type: number
+    format: double
+    minLength: 0
     maxLength: 19
-    description: "Saldo devedor Remanescente, divulgado nos canais eletrônicos, do contrato referente à Modalidade de Crédito informada. Expresso em valor monetário com 2 casas decimais"
-    example: 11400.00
+    pattern: '(-?\d{15}(.\d{4}?))$'
+    example: 100000.0400
+    description: Saldo devedor Remanescente, divulgado nos canais eletrônicos, do contrato referente à Modalidade de Crédito informada. Expresso em valor monetário com 4 casas decimais.
   releases:
-    $ref: ./UnarrangedAccountOverdraftReleases.yaml
-  chargesOverParcel:
     type: array
-    description: "Lista das tarifas que foram pagas fora da parcela, só para pagamento avulso."
-    items:
-      $ref: ./UnarrangedAccountOverdraftChargeOverParcel.yaml
-    minItems: 1
-  taxesOverParcel:
-    type: array
-    description: "Lista dos encargos que foram pagos fora da parcela"
-    items:
-      $ref: ./UnarrangedAccountOverdraftTaxesOverParcel.yaml
+    Items:
+      $ref:  ./UnarrangedAccountOverdraftReleases.yaml
+    description: Lista dos pagamentos realizados no período
 additionalProperties: false
