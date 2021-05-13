@@ -21,6 +21,9 @@ mkdir -p $BUND_PATH
 
 APIS=(
   "loans_apis"
+  "financings_apis"
+  "unarranged_accounts_overdraft_apis"
+  "invoice_financings_apis"
 )
 
 for API in "${APIS[@]}"
