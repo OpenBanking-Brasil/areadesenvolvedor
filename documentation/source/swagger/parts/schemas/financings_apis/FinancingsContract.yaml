@@ -1,24 +1,32 @@
 type: object
 description: "Conjunto de informações referentes à identificação da operação de crédito de financiamentos"
 required:
+  - contractNumber
   - ipocCode
   - productName
   - productType
   - productSubType
   - contractDate
-  - disbursementDate
   - contractAmount
+  - settlementDate
   - currency
   - dueDate
   - instalmentPeriodicity
   - firstInstalmentDueDate
   - totalNumberOfInstalments
-  - paidInstalments
+  - typeNumberOfInstalments
   - CET
   - amortizationScheduled
+  - cnpjConsignee
   - interestRates
   - contractedFees
+  - contractedFinancesCharges
 properties:
+  contractNumber:
+    type: string
+    maxLength: 100
+    example: '1324926521496'
+    description: Número do contrato dado pela instituição contratante.
   ipocCode:
     type: string
     maxLength: 67
@@ -37,75 +45,99 @@ properties:
     type: string
     maxLength: 140
     pattern: \w*\W*
+    example: "Crédito Pessoal Consignado"
     description: |
-      "Denominação/Identificação do nome da Modalidade da Operação de Crédito divulgado ao cliente"
-    example: "AD"
+      Denominação/Identificação do nome da Modalidade da Operação de Crédito divulgado ao cliente
   productType:
     $ref: ../enum/EnumContractProductTypeFinancings.yaml
   productSubType:
     $ref: ../enum/EnumContractProductSubTypeFinancings.yaml
   contractDate:
-    description: "Data de contratação da operação de crédito. Especificação RFC-3339"
     type: string
-    maxLength: 20
-    format: date-time
-    example: "2021-05-21T08:30:00Z"
+    format: date
+    maxLength: 10
+    pattern: ^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$
+    example: '2018-01-05'
+    description: Data de contratação da operação de crédito. Especificação RFC-3339
   disbursementDate:
-    description: "Data do Desembolso do valor contratado. Especificação RFC-3339"
     type: string
-    maxLength: 20
-    format: date-time
-    example: "2021-05-21T08:30:00Z"
+    format: date
+    maxLength: 10
+    pattern: ^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$
+    example: '2018-01-15'
+    description: Data do Desembolso do valor contratado. Especificação RFC-3339
+  settlementDate:
+    type: string
+    format: date
+    maxLength: 10
+    pattern: ^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$|^NA$
+    example: '2018-01-15'
+    description: |
+      Data de liquidação da operação.
+      [Restrição] Deve aceitar NA caso não seja retornado pela instituição.
   contractAmount:
     description: "Valor contratado da operação. Expresso em valor monetário com 4 casas decimais"
     type: number
     format: double
-    pattern: '(-?\d{15}(.\d{4}?))$'
-    maxLength: 19
     minLength: 0
+    maxLength: 19
+    pattern: '(-?\d{15}(.\d{4}?))$'
     example: 100000.0400
   currency:
     type: string
     pattern: '^(\w{3}){1}$'
     maxLength: 3
     description: |
-      "Moeda referente ao valor da garantia, segundo modelo ISO-4217. p.ex. 'BRL'
-      Todos os valores monetários informados estão representados com a moeda vigente do Brasil"
+      Moeda referente ao valor da garantia, segundo modelo ISO-4217. p.ex. 'BRL'
+      Todos os valores monetários informados estão representados com a moeda vigente do Brasil
     example: "BRL"
   dueDate:
-    description: "Data de vencimento Final da operação. Especificação RFC-3339"
-    type: string
-    maxLength: 20
-    format: date-time
-    example: "2021-05-21T08:30:00Z"
+    format: date
+    maxLength: 10
+    pattern: ^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$
+    example: '2028-01-15'
+    description: Data de vencimento Final da operação. Especificação RFC-3339
   instalmentPeriodicity:
     $ref: ../enum/EnumContractInstalmentPeriodicity.yaml
-  firstInstalmentDueDate:
-    description: "Data de vencimento primeira parcela do principal"
+  typeNumberOfInstalments:
+    $ref: ../enum/EnumTypeNumberOfInstalments.yaml
+  instalmentPeriodicityAdditionalInfo:
     type: string
-    maxLength: 20
-    format: date-time
-    example: "2021-05-21T08:30:00Z"
+    pattern: \w*\W*
+    maxLength: 50
+    example: ''
+    description: |
+      Campo livre para complementar a informação relativa à periodicidade de parcelamento.
+      [Condicional] Obrigatório quando instalmentPeriodicity for igual 'OUTROS'.
+  firstInstalmentDueDate:
+    type: string
+    format: date
+    maxLength: 10
+    pattern: ^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$
+    example: '2018-02-15'
+    description: Data de vencimento primeira parcela do principal
   totalNumberOfInstalments:
     type: number
-    description: "Prazo Total em meses do contrato referente à Modalidade de Crédito informada"
-    maxLength: 3
-    example: 130
-  paidInstalments:
-    type: number
-    description: "Quantidade de prestações pagas. (No caso de modalidades que não possuam parcelas, o número de prestações é igual a zero)"
-    maxLength: 3
-    example: 73
+    maxLength: 6
+    example: 130632
+    description: Prazo Total segundo o tipo (dia, semana, mês, ano) referente à Modalidade de Crédito informada.
   CET:
     type: number
-    description: |
-      "CET – Custo Efetivo Total deve ser expresso na forma de taxa percentual anual e   incorpora todos os encargos e despesas incidentes nas operações de crédito (taxa de juro, mas também tarifas, tributos, seguros e outras despesas cobradas).
-      O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros
-      (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)"
     maxLength: 19
     example: 0.2900
+    description: |
+      CET – Custo Efetivo Total deve ser expresso na forma de taxa percentual anual e   incorpora todos os encargos e despesas incidentes nas operações de crédito (taxa de juro, mas também tarifas, tributos, seguros e outras despesas cobradas).
+      O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros
+      (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)
   amortizationScheduled:
     $ref: ../enum/EnumContractAmortizationScheduled.yaml
+  cnpjConsignee:
+    type: string
+    maxLength: 14
+    pattern: \d{14}|^NA$
+    example: "60500998000135"
+    description: |
+      CNPJ do consignante (CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica). Deve-se ter apenas os números do CNPJ, sem máscara. Informação adicional específica para Modalidade de Crédito: Empréstimo-Crédito Pessoal Consignado
   interestRates:
     type: array
     items:
