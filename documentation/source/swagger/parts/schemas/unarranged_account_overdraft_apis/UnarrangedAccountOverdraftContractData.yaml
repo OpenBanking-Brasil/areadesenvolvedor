@@ -20,7 +20,7 @@ required:
   - cnpjConsignee
   - interestRates
   - contractedFees
-  - contractedFinanceCharges
+  - contractedFinancesCharges
 properties:
   contractNumber:
     type: string
@@ -66,6 +66,15 @@ properties:
     pattern: ^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$
     example: '2018-01-15'
     description: Data do Desembolso do valor contratado. Especificação RFC-3339
+  settlementDate:
+    type: string
+    format: date
+    maxLength: 10
+    pattern: ^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$|^NA$
+    example: '2018-01-15'
+    description: |
+      Data de liquidação da operação.
+      [Restrição] Deve aceitar NA caso não seja retornado pela instituição.
   contractAmount:
     description: "Valor contratado da operação. Expresso em valor monetário com até 4 casas decimais"
     type: number
@@ -91,14 +100,16 @@ properties:
     description: Data de vencimento Final da operação. Especificação RFC-3339
   instalmentPeriodicity:
     $ref: ../enum/EnumContractInstalmentPeriodicity.yaml
+  typeNumberOfInstalments:
+    $ref: ../enum/EnumTypeNumberOfInstalments.yaml
   instalmentPeriodicityAdditionalInfo:
     type: string
     pattern: \w*\W*
     maxLength: 50
-    example: ''
+    example: "Informações adicionais sobre periodicidade"
     description: |
       Campo livre para complementar a informação relativa à periodicidade de parcelamento.
-      [Condicional] Obrigatório quando instalmentPeriodicity for igual 'OUTROS'.
+      [Restrição] Obrigatório quando instalmentPeriodicity for igual 'OUTROS'.
   firstInstalmentDueDate:
     type: string
     format: date
@@ -132,7 +143,6 @@ properties:
     type: array
     items:
       $ref: ./UnarrangedAccountOverdraftContractInterestRate.yaml
-    minItems: 1
   contractedFees:
     type: array
     items:
