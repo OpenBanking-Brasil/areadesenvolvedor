@@ -38,6 +38,8 @@ jobs:
       - run: npm install -g widdershins
       - run: npm install -g @apidevtools/swagger-cli
 
+      - run: swagger-cli bundle source/swagger/parts/_open_banking_fase1_apis_part.yml --outfile source/swagger/swagger_open_banking_fase1_apis.yml --type=yaml
+      
       - run: swagger-cli bundle source/swagger/parts/_consents_apis_part.yml --outfile source/swagger/swagger_consents_apis.yaml --type=yaml
       - run: swagger-cli bundle source/swagger/parts/_resources_apis_part.yml --outfile source/swagger/swagger_resources_apis.yaml --type=yaml
       - run: swagger-cli bundle source/swagger/parts/_customers_apis_part.yml --outfile source/swagger/swagger_customers_apis.yaml --type=yaml
@@ -47,12 +49,39 @@ jobs:
       - run: swagger-cli bundle source/swagger/parts/_financings_apis_part.yml --outfile source/swagger/swagger_financings_apis.yaml --type=yaml
       - run: swagger-cli bundle source/swagger/parts/_unarranged_accounts_overdraft_apis_part.yml --outfile source/swagger/swagger_unarranged_accounts_overdraft_apis.yaml --type=yaml
       - run: swagger-cli bundle source/swagger/parts/_invoice_financings_apis_part.yml --outfile source/swagger/swagger_invoice_financings_apis.yaml --type=yaml
-      - run: swagger-cli bundle source/swagger/parts/_open_banking_apis_part.yml --outfile source/swagger/swagger_open_banking_apis.yml --type=yaml
-      - run: swagger-cli bundle source/swagger/parts/_open_banking_fase1_apis_part.yml --outfile source/swagger/swagger_open_banking_fase1_apis.yml --type=yaml
       
+      - run: swagger-cli bundle source/swagger/parts/_open_banking_apis_part.yml --outfile source/swagger/swagger_open_banking_apis.yml --type=yaml
+      
+      - run: |
+          chmod + source/scripts/dictionary_generator
+          BUND_PATH=source/dictionary/bundles
+          DICT_PATH=source/dictionary
+          mkdir -p $BUND_PATH
+
+          APIS=(
+            "loans_apis"
+            "financings_apis"
+            "unarranged_accounts_overdraft_apis"
+            "invoice_financings_apis"
+          )
+
+          for API in "${APIS[@]}"
+          do
+            swagger-cli bundle \
+              -r "source/swagger/parts/_${API}_part.yml" \
+              --outfile "${BUND_PATH}/swagger_${API}.yaml" --type=yaml
+
+            ./source/scripts/dictionary_generator \
+              "${BUND_PATH}/swagger_${API}.yaml" \
+              $DICT_PATH
+          done
+          rm -rf $BUND_PATH
+
       - run: sed -i '1s/^\(\xef\xbb\xbf\)\?/\xef\xbb\xbf/' source/swagger/swagger_*
       - run: sed -i '1s/^\(\xef\xbb\xbf\)\?/\xef\xbb\xbf/' source/dictionary/*.csv
       - run: sed -i '1s/^\(\xef\xbb\xbf\)\?/\xef\xbb\xbf/' source/dictionary/example/*.csv
+
+      - run: swagger-cli validate source/swagger/swagger_open_banking_fase1_apis.yml
 
       - run: swagger-cli validate source/swagger/swagger_consents_apis.yaml
       - run: swagger-cli validate source/swagger/swagger_resources_apis.yaml
@@ -63,6 +92,8 @@ jobs:
       - run: swagger-cli validate source/swagger/swagger_financings_apis.yaml
       - run: swagger-cli validate source/swagger/swagger_unarranged_accounts_overdraft_apis.yaml
       - run: swagger-cli validate source/swagger/swagger_invoice_financings_apis.yaml
+
+      - run: swagger-cli validate source/swagger/swagger_open_banking_apis.yml
 
       - run: widdershins source/swagger/swagger_open_banking_fase1_apis.yml -o source/includes/partials_open_banking/_open_banking_fase1_apis.md.erb --user_templates source/templates/openapi3/ --language_tabs "javascript:JavaScript:request" "python:Python:request" "java:Java::request" --omitHeader --summary --httpsnippet
       - run: widdershins source/swagger/swagger_open_banking_apis.yml -o source/includes/partials_open_banking/_open_banking_apis.md.erb --user_templates source/templates/openapi3/ --language_tabs "javascript:JavaScript:request" "python:Python:request" "java:Java::request" --omitHeader --summary --httpsnippet

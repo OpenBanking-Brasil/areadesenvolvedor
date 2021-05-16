@@ -1,0 +1,3557 @@
+openapi: 3.0.0
+info:
+  title: "Participantes Open Banking Brasil"
+  version: 1.0.0
+  description: Informações sobre os participantes do Open Banking Brasil que estão registrados no Diretório.
+  license:
+    name: MIT
+servers:
+  - url: https://data.directory.openbankingbrasil.org.br
+    description: Open Banking Brasil
+paths:
+  '/participants':
+    get:
+      summary: Recupera informações técnicas sobre Participantes registrados no diretório, essas informações permitem identificar e consumir as APIs dos participantes
+      tags:
+        - Organisations - Export
+      responses:
+        '200':
+          $ref: '#/components/responses/OrganisationsExportOpenData'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          description: 'The specified key does not exist'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '502':
+          $ref: '#/components/responses/BadGateway'
+
+components:
+
+  parameters:
+    PageableRequest:
+      name: PageableRequest
+      description: The pageable object
+      in: query
+      schema:
+        $ref: '#/components/schemas/PageableRequest'
+    AuthorisationServerId:
+      name: AuthorisationServerId
+      description: The authorisation server Id
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/AuthorisationServerId'
+    OrganisationAuthorityClaimId:
+      name: OrganisationAuthorityClaimId
+      description: The Authority claims ID for an organisation
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/OrganisationAuthorityClaimId'
+    OrganisationAuthorisationId:
+      name: OrganisationAuthorisationId
+      description: The authorisation ID for an organisation's authority claims
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/OrganisationAuthorisationId'
+    CertificateOrKeyId:
+      name: CertificateOrKeyId
+      description: The certificate or key Id
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/CertificateOrKeyId'
+    ContactId:
+      name: ContactId
+      description: The contact id
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/ContactId'
+    OrganisationCertificateType:
+      name: OrganisationCertificateType
+      description: The certificate type
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/OrganisationCertificateType'
+    OrganisationId:
+      name: OrganisationId
+      description: The organisation ID
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/OrganisationId'
+    AuthorityId:
+      name: AuthorityId
+      description: The reference authority Id
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/AuthorityId'
+    SoftwareStatementCertificateOrKeyType:
+      name: SoftwareStatementCertificateOrKeyType
+      description: The certificate or key type that can be associated with a software statement
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/SoftwareStatementCertificateOrKeyType'
+    SoftwareStatementId:
+      name: SoftwareStatementId
+      description: The software statement ID
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/SoftwareStatementId'
+    SoftwareAuthorityClaimId:
+      name: SoftwareAuthorityClaimId
+      description: The software statement's authority claim ID
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/SoftwareAuthorityClaimId'
+    UserEmailId:
+      name: UserEmailId
+      description: Email address of the super user
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/UserEmailId'
+    AuthorisationDomainName:
+      name: AuthorisationDomainName
+      description: Authorisation Domain Name. Eg:PSD2
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/AuthorisationDomainName'
+    AuthorisationDomainRoleName:
+      name: AuthorisationDomainRoleName
+      description: Authorisation Domain Role Name. Eg:TPP
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/AuthorisationDomainRoleName'
+    AuthorityAuthorisationDomainId:
+      name: AuthorityAuthorisationDomainId
+      description: ID of the Authority mapped with Authorisation Domain
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/AuthorityAuthorisationDomainId'
+    OrganisationAuthorityDomainClaimId:
+      name: OrganisationAuthorityDomainClaimId
+      description: Organisation Authority Domain Claim Id
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/OrganisationAuthorityDomainClaimId'
+    AuthorisationDomainUserId:
+      name: AuthorisationDomainUserId
+      description: Unique record Id to identify Domain User
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/AuthorisationDomainUserId'
+    TnCId:
+      name: TnCId
+      description: Terms and Conditions unique identifier
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/TnCId'
+    ClientId:
+      name: ClientId
+      description: Oauth clientId
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/ClientId'
+    ApiResourceId:
+      name: ApiResourceId
+      description: The api version Id
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/ApiResourceId'
+    ApiDiscoveryEndpointId:
+      name: ApiDiscoveryEndpointId
+      description: The api discovery endpoint Id
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/ApiDiscoveryEndpointId'
+    ExternalSigningServiceEnvelopeId:
+      name: ExternalSigningServiceEnvelopeId
+      description: The envelope id
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/ExternalSigningServiceEnvelopeId'
+
+
+  requestBodies:
+    AmendCertificateRequest:
+      description: Amend a certificate, current functionality supports Revoke Reason
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AmendCertificateRequest'
+
+    AuthorisationServerRequest:
+      description: Properties to create/update authorisation server
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuthorisationServerRequest'
+
+    OrganisationAuthorityClaimRequest:
+      description: Properties to create/update authority claims
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OrganisationAuthorityClaimRequest'
+
+    UserUpdateRequest:
+      description: Properties to toggle a user between activated and deactivated status
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserUpdateRequest'
+
+
+    OrganisationAuthorityClaimAuthorisationRequest:
+      description: Properties to update/retrieve authorisation server
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OrganisationAuthorityClaimAuthorisationRequest'
+    ContactRequest:
+      description: Properties to update contacts
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ContactRequest'
+    CertificateOrCSROrJWS:
+      description: |
+        * __PEM file__ -- when the request `Content-Type` header is set to  `application/x-pem-file` the contents of the PEM file will differ depending upon `OrganisationCertificateType`. If `OrganisationCertificateType` is set to `qwac`, `qseal` then the PEM file should contain a *QWAC* or a *QSEAL* certificate respectively; if `OrganisationCertificateType` is set to `rtswac` or `rtsseal` then the PEM file should contain a Certificate Signing Request (CSR) for an RTS-issued *RTSWAC* or *RTSSEAL* certificate respectively.
+        * __Signed JWT__ -- when the request `Content-Type` header is set to `application/jwt` the body of the signed JWT will contain a CSR or a certificate.
+        ### Requesting a Certificate using a signed JWT
+        The header `kid` claim is the ID of the QSealC certificate assigned to it by the RTS JWKS store.
+        The body `csr` claim is the CSR in the DER format.
+        ```
+        {
+          "typ": "JWT",
+          "alg": "ES256",
+          "kid": "ABCD1234",
+        }
+        {
+          "csr": "string"
+        }
+        ```
+        ### Uploading a Certificate using a signed JWT
+        The header `kid` claim is the ID of the QSealC certificate assigned to it by the RTS JWKS store.
+        The body `x5c` claim is the array of certificate, issuer certificate, and root certificate in the DER format.
+        ```
+        {
+          "typ": "JWT",
+          "alg": "ES256",
+          "kid": "ABCD1234",
+        }
+        {
+          "x5c": ["qsealc", "issuer certificate", "root certificate"]
+        }
+        ```
+        EXAMPLE REQUEST PAYLOAD USING SIGNED JWT REQUESTS
+        ```
+        POST /organisations/123456789012345678/certificates/rtswac HTTP/1.1
+        Content-Type: application/jwt
+        Accept: application/json
+        Host: raidiam.tobedecided.org.uk
+        eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImtpZCI6IkFCQ0QxMjM0IiwieDVjIjpbInFzZWFsYyIsImlzc3VlciBjZXJ0aWZpY2F0ZSIsInJvb3QgY2VydGlmaWNhdGUiXX0.eyJyZWRpcmVjdF91cmlzIjpbInN0cmluZyJdLCJ0b2tlbl9lbmRwb2ludF9hdXRoX21ldGhvZCI6InN0cmluZyIsImdyYW50X3R5cGVzIjpbInN0cmluZyJdLCJyZXNwb25zZV90eXBlcyI6WyJzdHJpbmcibSwiY2xpZW50X25hbWUiOiJzdHJpbmciLCJjbGllbnRfdXJpIjoic3RyaW5nIiwibG9nb191cmkiOiJzdHJpbmciLCJzY29wZSI6InN0cmluZyIsImNvbnRhY3RzIjpbInVzZXJAZXhhbXBsZS5jb20iXSwidG9zX3VyaSI6InN0cmluZyIsInBvbGljeV91cmkiOiJzdHJpbmciLCJqd2tzX3VyaSI6InN0cmluZyIsImp3a3MiOnt9LCJzb2Z0d2FyZV9pZCI6InN0cmluZyIsInNvZnR3YXJlX3ZlcnNpb24iOiJzdHJpbmcifQ.lMsADSHkFGUw5PtgdEqXslYArzqf6tbg0lo0kCitOUA
+        ```
+      required: true
+      content:
+        application/x-pem-file:
+          schema:
+            $ref: '#/components/schemas/CertificateOrKeyOrJWT'
+        application/jwt:
+          schema:
+            $ref: '#/components/schemas/CertificateOrKeyOrJWT'
+    CSROrKey:
+      description: PEM file -- the contents of the PEM file will differ depending upon *SoftwareStatementCertificateOrKeyType*. If *SoftwareStatementCertificateOrKeyType* is set to *rtssigning* or *rtstransport* then the PEM file should contain a Certificate Signing Request (CSR) for an RTS signing or RTS transport certificate respectively; if *SoftwareStatementCertificateOrKeyType* is set to *sigkey*, *enckey* then the PEM file should contain a public signing or encryption key respectively.
+      required: true
+      content:
+        application/x-pem-file:
+          schema:
+            $ref: '#/components/schemas/CertificateOrKeyOrJWT'
+
+    Organisation:
+      description: Create a new organisation
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OrganisationRequest'
+
+    OrganisationUpdate:
+      description: Update an organisation
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OrganisationUpdateRequest'
+
+    OrganisationEnrol:
+      description: Enrol an organisation
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OrganisationEnrol'
+
+    AuthorityRequest:
+      description: Reference authority request
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuthorityRequest'
+
+    SoftwareStatementRequest:
+      description: Software Statement payload
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SoftwareStatementRequest'
+
+    SoftwareAuthorityClaimRequest:
+      description: Software Statement authority claim's payload
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SoftwareAuthorityClaimRequest'
+
+    SoftwareAuthorityClaimUpdateRequest:
+      description: Software Statement authority claim's update payload
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SoftwareAuthorityClaimUpdateRequest'
+
+    ClientCreationRequest:
+      description: Client Creation Request
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ClientCreationRequest'
+
+    AccessTokenRequest:
+      description: Client Creation Request
+      required: true
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/AccessTokenRequest'
+
+    SuperUserCreationRequest:
+      description: Super user creation request
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SuperUserCreationRequest'
+
+    AuthorisationDomainUserCreateRequest:
+      description: Admin user creation request
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuthorisationDomainUserCreateRequest'
+
+    AuthorisationDomainRequest:
+      description: Authorisation Domain creation request
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuthorisationDomainRequest'
+
+    AuthorisationDomainRoleRequest:
+      description: Authorisation Domain Role creation request
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuthorisationDomainRoleRequest'
+
+    AuthorityAuthorisationDomainRequest:
+      description: Authority Authorisation Domain mapping request
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuthorityAuthorisationDomainRequest'
+
+    OrganisationAuthorityDomainClaimRequest:
+      description: Authority Authorisation Domain mapping request
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OrganisationAuthorityDomainClaimRequest'
+
+    TermsAndConditionsCreateRequest:
+      description: TnC create request
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TermsAndConditionsCreateRequest'
+
+    TermsAndConditionsUpdateRequest:
+      description: TnC update request
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TermsAndConditionsUpdateRequest'
+
+    UserCreateRequest:
+      description: User create request
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserCreateRequest'
+
+    OrgAdminUserCreateRequest:
+      description: Org Admin user create request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OrgAdminUserCreateRequest'
+
+    ApiResourceRequest:
+      description: Api Resource request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiResourceRequest'
+
+    ApiDiscoveryEndpointRequest:
+      description: Api Resource request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiDiscoveryEndpointRequest'
+
+    EssSignRequest:
+      description: Request object to capture ESS sign attributes
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EssSignRequest'
+
+    AuthorisationDomainUserUpdateRequest:
+      description: Request object to update a domain user
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuthorisationDomainUserUpdateRequest'
+
+  responses:
+    NoContent:
+      description: No Content
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BadRequest'
+    Unauthorized:
+      description: Unauthorized
+    Forbidden:
+      description: Forbidden
+    NotFound:
+      description: Not found
+    NotAcceptable:
+      description: Not Acceptable
+    Conflict:
+      description: Conflict
+    BadGateway:
+      description: Bad Gateway
+    InternalServerError:
+      description: Internal Server Error
+    OrganisationAuthorityClaims:
+      description: All authority claims for the organisation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OrganisationAuthorityClaims'
+    OrganisationAuthorityClaim:
+      description: Authority claim for the given Id
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OrganisationAuthorityClaim'
+
+    OrganisationAuthorityClaimAuthorisations:
+      description: Authorisations response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OrganisationAuthorityClaimAuthorisations'
+
+    OrganisationAuthorityClaimAuthorisation:
+      description: Authorisations response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OrganisationAuthorityClaimAuthorisation'
+
+    AuthorisationServers:
+      description: All authorisation servers for the org
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuthorisationServers'
+
+    AuthorisationServer:
+      description: Authorisation server response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuthorisationServer'
+
+    CertificatesOrKeys:
+      description: All certificates for the org
+      content:
+        application/jwk-set+json:
+          schema:
+            $ref: '#/components/schemas/CertificatesOrKeys'
+
+    CertificatesOrKey:
+      description: A certificate object
+      content:
+        application/jwk+json:
+          schema:
+            $ref: '#/components/schemas/CertificateOrKey'
+    Contacts:
+      description: All contacts for the org
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Contacts'
+    Contact:
+      description: A contact object
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Contact'
+    Organisations:
+      description: |
+        List of the organisation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Organisations'
+    Organisation:
+      description: |
+        Full details of the organisation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Organisation'
+    OrganisationSnapshot:
+      description: Snapshot data of the organisation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OrganisationSnapshot'
+    OrganisationsSnapshot:
+      description: Snapshot data of all the organisations
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OrganisationsSnapshot'
+    OrganisationSnapshotPage:
+      description: Paged Organisations Snapshot
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OrganisationSnapshotPage'
+    OrganisationsExportOpenData:
+      description: Export the open-data for all the organisations
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OrganisationsExportOpenData'
+    OrgTermsAndConditionsDetail:
+      description: Details of the TnC and external signing service
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OrgTermsAndConditionsDetail'
+    OrganisationEnrolments:
+      description: |
+        Full details of the organisation enrolment response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OrganisationEnrolments'
+
+    Authorities:
+      description: |
+        Reference data table for all authorities with their countries
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Authorities'
+
+    Authority:
+      description: |
+        Get a reference authority by Id
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Authority'
+
+    SoftwareStatements:
+      description: All software statements for the org
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SoftwareStatements'
+    SoftwareStatement:
+      description: Get the software statements with the given id
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SoftwareStatement'
+    SoftwareStatementAssertion:
+      description: OK
+      content:
+        application/jwt:
+          schema:
+            $ref: '#/components/schemas/SoftwareStatementAssertion'
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SoftwareStatementAssertion'
+    SoftwareAuthorityClaims:
+      description: Authority claim for the given Id
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SoftwareAuthorityClaims'
+    SoftwareAuthorityClaim:
+      description: Authority claim for the given Id
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SoftwareAuthorityClaim'
+
+    ClientCreationResponse:
+      description: |
+        Creates an OAuth Client in the OpenID Server
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ClientCreationResponse'
+
+    RetrieveTokenResponse:
+      description: |
+        Access token response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AccessTokenResponse'
+
+    SuperUsers:
+      description: All Super users
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SuperUsers'
+
+    SuperUser:
+      description: Super user data
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SuperUser'
+
+    AuthorisationDomainUsers:
+      description: All users belonging to an authorisation domain
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuthorisationDomainUsers'
+
+    AuthorisationDomainUser:
+      description: User data belonging to an authorisation domain
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuthorisationDomainUser'
+
+    AuthorisationDomains:
+      description: All data of authorisation domains mapped to an authority
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuthorisationDomains'
+
+    AuthorisationDomain:
+      description: Data of an authorisation domain mapped to an authority
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuthorisationDomain'
+
+    AuthorisationDomainRoles:
+      description: All roles data
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuthorisationDomainRoles'
+
+    AuthorisationDomainRole:
+      description: Role data
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuthorisationDomainRole'
+
+    AuthorityAuthorisationDomains:
+      description: All authority to domain mappings data
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuthorityAuthorisationDomains'
+
+    AuthorityAuthorisationDomain:
+      description: Authority to domain mapping data
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuthorityAuthorisationDomain'
+
+    OrganisationAuthorityDomainClaims:
+      description: All authority to domain mappings data
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OrganisationAuthorityDomainClaims'
+
+    OrganisationAuthorityDomainClaim:
+      description: All authority to domain mappings data
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OrganisationAuthorityDomainClaim'
+
+    UserDetail:
+      description: Details of the user
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserDetail'
+
+    UserOPInfo:
+      description: User information from the OpenId Provider
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserOPInfo'
+
+    WellKnown:
+      description: endpoint discovery for well known endpoint
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/WellKnown'
+
+    TermsAndConditionsPage:
+      description: Paged data of TnC items
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TermsAndConditionsPage'
+
+    TermsAndConditionsItem:
+      description: Details of the TnC item
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TermsAndConditionsItem'
+
+    OrganisationAdminUsers:
+      description: All admin users for this org
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OrganisationAdminUsers'
+
+    OrganisationAdminUser:
+      description: Admin user details
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OrganisationAdminUser'
+
+    ApiResources:
+      description: Authorisation server Api Resources response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiResources'
+
+    ApiResource:
+      description: Authorisation server Api Resource response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiResource'
+
+    ApiDiscoveryEndpoints:
+      description: Authorisation server response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiDiscoveryEndpoints'
+
+    ApiDiscoveryEndpoint:
+      description: Authorisation server response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiDiscoveryEndpoint'
+
+    UserTermsAndConditionsPage:
+      description: User TnCs history
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserTermsAndConditionsPage'
+
+    OrgTermsAndConditionsPage:
+      description: Org TnCs history
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OrgTermsAndConditionsPage'
+
+    EssPollResponse:
+      description: External Signing Service Poll response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EssPollResponse'
+
+
+
+  schemas:
+    BadRequest:
+      type: object
+      properties:
+        errors:
+          type: array
+          description: Validation Error messages
+          items:
+            type: string
+    PageableRequest:
+      type: object
+      properties:
+        page:
+          minimum: 0
+          type: integer
+          description: Page index starts from 0
+        size:
+          maximum: 50000
+          minimum: 1
+          type: integer
+          description: This sets the page size
+        sort:
+          type: string
+          description: Used to sort based on Model Parameters
+      example:
+        page: 0
+        size: 2
+        sort: status,desc
+    UserUpdateRequest:
+      type: object
+      properties:
+        Status:
+          $ref: '#/components/schemas/StatusEnum'
+    StatusEnum:
+      type: string
+      enum:
+        - Active
+        - Inactive
+    OrganisationAuthorityClaims:
+      type: array
+      items:
+        $ref: '#/components/schemas/OrganisationAuthorityClaim'
+    OrganisationAuthorityClaim:
+      type: object
+      properties:
+        OrganisationId:
+          $ref: '#/components/schemas/OrganisationId'
+        OrganisationAuthorityClaimId:
+          $ref: '#/components/schemas/OrganisationAuthorityClaimId'
+        AuthorityId:
+          $ref: '#/components/schemas/AuthorityId'
+        Status:
+          type: string
+          description: Is this software statement Active/Inactive
+          enum:
+            - Active
+            - Inactive
+          default: Active
+        AuthorisationDomain:
+          type: string
+          description: Authorisation Domain for the authority
+          maxLength: 30
+        Role:
+          type: string
+          description: Roles for the Authority i.e. ASPSP, AISP, PISP, CBPII
+          maxLength: 30
+        Authorisations:
+          type: array
+          items:
+            type: object
+            properties:
+              Status:
+                type: string
+                description: Is this authorsation Active/Inactive
+                enum:
+                  - Active
+                  - Inactive
+                default: Active
+              MemberState:
+                type: string
+                description: Abbreviated states information i.e. GB, IE, NL etc
+                maxLength: 2
+        RegistrationId:
+          type: string
+          description: Registration ID for the organisation
+          maxLength: 40
+        UniqueTechnicalIdenifier:
+          type: array
+          items:
+            type: string
+            maxLength: 256
+
+    OrganisationAuthorityClaimRequest:
+      type: object
+      properties:
+        AuthorityId:
+          $ref: '#/components/schemas/AuthorityId'
+        Status:
+          type: string
+          description: Is this authority claim Active/Inactive, default is Active
+          enum:
+            - Active
+            - Inactive
+          default: Active
+          x-required-message: Status must be provided
+        AuthorisationDomain:
+          type: string
+          description: Authorisation domain for the authority
+          minLength: 1
+          maxLength: 30
+          x-required-message: AuthorisationDomain must be provided
+        Role:
+          type: string
+          description: Role for the authority
+          minLength: 1
+          maxLength: 30
+          x-required-message: Role must be provided
+        RegistrationId:
+          type: string
+          minLength: 1
+          description: Registration ID for the organisation
+          maxLength: 40
+          x-required-message: RegistrationId must be provided
+        UniqueTechnicalIdenifier:
+          type: array
+          items:
+            type: string
+            maxLength: 256
+      required:
+        - RegistrationId
+        - Status
+        - AuthorisationDomain
+        - AuthorityId
+        - Role
+
+    OrganisationAuthorityClaimAuthorisations:
+      type: array
+      items:
+        $ref: '#/components/schemas/OrganisationAuthorityClaimAuthorisation'
+
+    OrganisationAuthorityClaimAuthorisation:
+      type: object
+      properties:
+        OrganisationAuthorisationId:
+          $ref: '#/components/schemas/OrganisationAuthorisationId'
+        OrganisationAuthorityClaimId:
+          $ref: '#/components/schemas/OrganisationAuthorityClaimId'
+        Status:
+          type: string
+          description: Is this authority claim Active/Inactive
+          enum:
+            - Active
+            - Inactive
+          default: Active
+        MemberState:
+          type: string
+          description: Abbreviated states information i.e. GB, IE, NL etc
+          maxLength: 10
+
+    OrganisationAuthorityClaimAuthorisationRequest:
+      type: object
+      properties:
+        Status:
+          type: string
+          description: Is this Active/Inactive - default is Active
+          enum:
+            - Active
+            - Inactive
+          default: Active
+          x-required-message: Status must be provided
+        MemberState:
+          type: string
+          description: Abbreviated states information i.e. GB, IE, NL etc
+          minLength: 2
+          maxLength: 10
+          x-required-message: MemberState must be provided
+      required:
+        - Status
+        - MemberState
+
+    AuthorisationServers:
+      type: array
+      items:
+        $ref: '#/components/schemas/AuthorisationServer'
+
+    AuthorisationServer:
+      type: object
+      properties:
+        AuthorisationServerId:
+          $ref: '#/components/schemas/AuthorisationServerId'
+        OrganisationId:
+          $ref: '#/components/schemas/OrganisationId'
+        AutoRegistrationSupported:
+          type: boolean
+        ApiResources:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiResource'
+        CustomerFriendlyDescription:
+          type: string
+          maxLength: 256
+        CustomerFriendlyLogoUri:
+          description: A compliant URI
+          pattern: "^(http:\\/\\/|https:\\/\\/).*"
+          x-pattern-message: "CustomerFriendlyLogoUri must be in a URI format https://... or http://..."
+          type: string
+          format: uri
+          maxLength: 256
+        CustomerFriendlyName:
+          type: string
+          maxLength: 256
+        DeveloperPortalUri:
+          description: A compliant URI
+          pattern: "^(http:\\/\\/|https:\\/\\/).*"
+          x-pattern-message: "DeveloperPortalUri must be in a URI format https://... or http://..."
+          type: string
+          format: uri
+          maxLength: 256
+        TermsOfServiceUri:
+          description: A compliant URI
+          pattern: "^(http:\\/\\/|https:\\/\\/).*"
+          x-pattern-message: "TermsOfServiceUri must be in a URI format https://... or http://..."
+          type: string
+          format: uri
+          maxLength: 256
+        NotificationWebhook:
+          description: A compliant URI
+          pattern: "^(http:\\/\\/|https:\\/\\/).*"
+          x-pattern-message: "WebhookUri must be in a URI format https://... or http://..."
+          type: string
+          format: uri
+          maxLength: 256
+        NotificationWebhookStatus:
+          description: If the webhook has confirmed subscription
+          type: string
+        OpenIDDiscoveryDocument:
+          description: A compliant URI
+          pattern: "^(http:\\/\\/|https:\\/\\/).*"
+          x-pattern-message: "OpenIDDiscoveryDocument must be in a URI format https://... or http://..."
+          type: string
+          format: uri
+          maxLength: 256
+        PayloadSigningCertLocationUri:
+          description: A compliant URI
+          pattern: "^(http:\\/\\/|https:\\/\\/).*"
+          x-pattern-message: "PayloadSigningCertLocationUri must be in a URI format https://... or http://..."
+          type: string
+          format: uri
+          maxLength: 256
+        ParentAuthorisationServerId:
+          $ref: '#/components/schemas/AuthorisationServerId'
+
+    AuthorisationServerRequest:
+      type: object
+      properties:
+        AutoRegistrationSupported:
+          type: boolean
+          description: Default is true
+          x-required-message: AutoRegistrationSupported must be provided
+        CustomerFriendlyDescription:
+          description: A customer friendly description
+          type: string
+          maxLength: 256
+        CustomerFriendlyLogoUri:
+          description: A compliant URI
+          pattern: "^(http:\\/\\/|https:\\/\\/).*"
+          x-pattern-message: "CustomerFriendlyLogoUri must be in a URI format https://... or http://..."
+          type: string
+          maxLength: 256
+          x-required-message: CustomerFriendlyLogoUri must be provided
+        CustomerFriendlyName:
+          type: string
+          minLength: 1
+          maxLength: 256
+          x-required-message: CustomerFriendlyName must be provided
+        DeveloperPortalUri:
+          description: A compliant URI
+          pattern: "^(http:\\/\\/|https:\\/\\/).*"
+          x-pattern-message: "DeveloperPortalUri must be in a URI format https://... or http://..."
+          type: string
+          maxLength: 256
+          x-required-message: DeveloperPortalUri must be provided
+        TermsOfServiceUri:
+          description: A compliant URI
+          pattern: "^(http:\\/\\/|https:\\/\\/).*"
+          x-pattern-message: "TermsOfServiceUri must be in a URI format https://... or http://..."
+          type: string
+          maxLength: 256
+          x-required-message: TermsOfServiceUri must be provided
+        NotificationWebhook:
+          description: A compliant URI
+          pattern: "^(http:\\/\\/|https:\\/\\/).*"
+          x-pattern-message: "WebhookUri must be in a URI format https://... or http://..."
+          type: string
+          maxLength: 256
+        OpenIDDiscoveryDocument:
+          description: A compliant URI
+          pattern: "^(http:\\/\\/|https:\\/\\/).*"
+          x-pattern-message: "OpenIDDiscoveryDocument must be in a URI format https://... or http://..."
+          type: string
+          maxLength: 256
+          x-required-message: OpenIDDiscoveryDocument must be provided
+        PayloadSigningCertLocationUri:
+          description: A compliant URI
+          pattern: "^(http:\\/\\/|https:\\/\\/).*"
+          x-pattern-message: "PayloadSigningCertLocationUri must be in a URI format https://... or http://..."
+          type: string
+          maxLength: 256
+          x-required-message: PayloadSigningCertLocationUri must be provided
+        ParentAuthorisationServerId:
+          $ref: '#/components/schemas/AuthorisationServerId'
+      required:
+        - AutoRegistrationSupported
+        - CustomerFriendlyName
+        - CustomerFriendlyLogoUri
+        - DeveloperPortalUri
+        - TermsOfServiceUri
+        - OpenIDDiscoveryDocument
+        - PayloadSigningCertLocationUri
+
+    AuthorisationServerId:
+      type: string
+      maxLength: 40
+    CertificateOrKeyOrJWT:
+      type: string
+    CertificateOrKeyId:
+      type: string
+      maxLength: 256
+    CertificatesOrKeys:
+      type: array
+      items:
+        $ref: '#/components/schemas/CertificateOrKey'
+    CertificateOrKey:
+      type: object
+      properties:
+        OrganisationId:
+          $ref: '#/components/schemas/OrganisationId'
+        SoftwareStatementIds:
+          type: array
+          items:
+            $ref: '#/components/schemas/SoftwareStatementId'
+        ClientName:
+          type: string
+          maxLength: 40
+        Status:
+          type: string
+          maxLength: 40
+        ValidFromDateTime:
+          type: string
+          maxLength: 30
+        ExpiryDateTime:
+          type: string
+          maxLength: 30
+        e:
+          type: string
+          maxLength: 256
+        keyType:
+          type: string
+          maxLength: 256
+        kid:
+          type: string
+          maxLength: 256
+        kty:
+          type: string
+          maxLength: 256
+        n:
+          type: string
+          maxLength: 256
+        use:
+          type: string
+          maxLength: 256
+        x5c:
+          type: array
+          items:
+            description: A PKIX certificate [RFC5280]
+            type: string
+            maxLength: 256
+        x5t:
+          type: string
+          maxLength: 256
+        x5thashS256:
+          type: string
+          maxLength: 256
+        x5u:
+          type: string
+          maxLength: 256
+        SignedCertPath:
+          type: string
+          maxLength: 256
+          description: Used to display location of the signed certificate in PEM format
+        JwkPath:
+          type: string
+          maxLength: 256
+          description: Used to display path to JWKS containing this certificate
+        OrgJwkPath:
+          type: string
+          maxLength: 256
+          description: Used to display path to Org JWKS containing org certificates
+
+    AmendCertificateRequest:
+      type: object
+      properties:
+        RevokeReason:
+          type: string
+          description: Specify a reason for revokation of the certificate.
+          enum:
+            - "unspecified"
+            - "keycompromise"
+            - "superseded"
+            - "cessationofoperation"
+            - "privilegewithdrawn"
+          default: unspecified
+          x-required-message: RevokeReason must be provided
+      required:
+        - RevokeReason
+    ContactRequest:
+      type: object
+      properties:
+        ContactType:
+          type: string
+          enum:
+            - Business
+            - Technical
+            - Billing
+            - Incident
+            - Security
+          default: Business
+          description: The type of Contact, default contact type is Business.
+          x-required-message: ContactType must be provided
+        FirstName:
+          type: string
+          maxLength: 256
+        LastName:
+          type: string
+          maxLength: 256
+        Department:
+          type: string
+          maxLength: 256
+        EmailAddress:
+          type: string
+          pattern: "^(.{1,}@[^.]{1,}).*"
+          x-pattern-message: "EmailAddress must be a valid email"
+          maxLength: 256
+        PhoneNumber:
+          type: string
+          minLength: 8
+          maxLength: 18
+          x-required-message: PhoneNumber must be provided
+        AddressLine1:
+          type: string
+          description: Address line 1
+          maxLength: 256
+        AddressLine2:
+          type: string
+          description: Address line 2
+          maxLength: 256
+        City:
+          type: string
+          description: City
+          maxLength: 256
+        Postcode:
+          type: string
+          description: Postcode
+          maxLength: 40
+        Country:
+          type: string
+          description: Country
+          maxLength: 256
+        AdditionalInformation:
+          type: string
+          description: Any additional user information
+          maxLength: 65535
+        PgpPublicKey:
+          type: string
+          description: A PGP Public Key in text form
+          maxLength: 65535
+      required:
+        - ContactType
+        - EmailAddress
+        - PhoneNumber
+
+    Contacts:
+      type: array
+      items:
+        $ref: '#/components/schemas/Contact'
+      description: The list of contacts
+
+    Contact:
+      type: object
+      properties:
+        ContactId:
+          type: string
+          description: Unique contact ID for the row.
+        OrganisationId:
+          $ref: '#/components/schemas/OrganisationId'
+        ContactType:
+          type: string
+          enum:
+            - Business
+            - Technical
+            - Billing
+            - Incident
+            - Security
+          default: Business
+        FirstName:
+          type: string
+          maxLength: 256
+        LastName:
+          type: string
+          maxLength: 256
+        Department:
+          type: string
+          maxLength: 256
+        EmailAddress:
+          type: string
+          pattern: "^(.{1,}@[^.]{1,}).*"
+          x-pattern-message: "EmailAddress must be a valid email"
+          maxLength: 256
+        PhoneNumber:
+          type: string
+          maxLength: 18
+        AddressLine1:
+          type: string
+          description: Address line 1
+          maxLength: 256
+        AddressLine2:
+          type: string
+          description: Address line 2
+          maxLength: 256
+        City:
+          type: string
+          description: City
+          maxLength: 256
+        Postcode:
+          type: string
+          description: Postcode
+          maxLength: 40
+        Country:
+          type: string
+          description: Country
+          maxLength: 256
+        AdditionalInformation:
+          type: string
+          description: Any additional user information
+          maxLength: 65535
+        PgpPublicKey:
+          type: string
+          description: A PGP Public Key in text form
+          maxLength: 65535
+
+    ContactId:
+      type: string
+      maxLength: 256
+
+    OrganisationRequest:
+      type: object
+      properties:
+        OrganisationId:
+          $ref: '#/components/schemas/OrganisationId'
+        Status:
+          type: string
+          description: Status of the directory registration of an organisation
+          enum:
+            - Active
+            - Pending
+            - Withdrawn
+          default: Active
+        OrganisationName:
+          type: string
+          minLength: 1
+          maxLength: 256
+          x-required-message: OrganisationName must be provided
+        LegalEntityName:
+          type: string
+          description: Legal Entity name for the org. Usually the same as org name
+          minLength: 1
+          maxLength: 256
+          x-required-message: LegalEntityName must be provided
+        CountryOfRegistration:
+          type: string
+          description: Country of registration for the org
+          minLength: 2
+          maxLength: 256
+          x-required-message: CountryOfRegistration must be provided
+        CompanyRegister:
+          type: string
+          description: Legal company register for the country, i.e. Companies House
+          minLength: 1
+          maxLength: 256
+          x-required-message: CompanyRegister must be provided
+        RegistrationNumber:
+          type: string
+          description: Company registration number from company register i.e. Companies House registration number
+          minLength: 1
+          maxLength: 256
+          x-required-message: RegistrationNumber must be provided
+        RegistrationId:
+          type: string
+          description: Registered ID for the organisation i.e. Legal Entity identifier number
+          maxLength: 40
+        RegisteredName:
+          type: string
+          description: Registered legal name
+          maxLength: 256
+        AddressLine1:
+          type: string
+          description: Address line 1
+          minLength: 5
+          maxLength: 256
+          x-required-message: AddressLine1 must be provided
+        AddressLine2:
+          type: string
+          description: Address line 2
+          maxLength: 256
+        City:
+          type: string
+          description: City
+          minLength: 2
+          maxLength: 256
+          x-required-message: City must be provided
+        Postcode:
+          type: string
+          description: Postcode
+          minLength: 3
+          maxLength: 40
+          x-required-message: Postcode must be provided
+        Country:
+          type: string
+          description: Country
+          minLength: 2
+          maxLength: 256
+          x-required-message: Country must be provided
+        ParentOrganisationReference:
+          type: string
+          description: Parent Organisation Reference
+          maxLength: 65535
+      required:
+        - OrganisationId
+        - OrganisationName
+        - CountryOfRegistration
+        - CompanyRegister
+        - RegistrationNumber
+        - LegalEntityName
+        - AddressLine1
+        - City
+        - Postcode
+        - Country
+
+    OrganisationUpdateRequest:
+      type: object
+      properties:
+        Status:
+          type: string
+          description: Status of the directory registration of an organisation
+          enum:
+            - Active
+            - Pending
+            - Withdrawn
+          default: Pending
+        OrganisationName:
+          type: string
+          minLength: 1
+          maxLength: 256
+          x-required-message: OrganisationName must be provided
+        LegalEntityName:
+          type: string
+          description: Legal Entity name for the org. Usually the same as org name
+          minLength: 1
+          maxLength: 256
+          x-required-message: LegalEntityName must be provided
+        CountryOfRegistration:
+          type: string
+          description: Country of registration for the org
+          minLength: 2
+          maxLength: 256
+          x-required-message: CountryOfRegistration must be provided
+        CompanyRegister:
+          type: string
+          description: Legal company register for the country, i.e. Companies House
+          minLength: 1
+          maxLength: 256
+          x-required-message: CompanyRegister must be provided
+        RegistrationNumber:
+          type: string
+          description: Company registration number from company register i.e. Companies House registration number
+          minLength: 1
+          maxLength: 256
+          x-required-message: RegistrationNumber must be provided
+        RegistrationId:
+          type: string
+          description: Registered ID for the organisation i.e. Legal Entity identifier number
+          maxLength: 40
+        RegisteredName:
+          type: string
+          description: Registered legal name
+          maxLength: 256
+        AddressLine1:
+          type: string
+          description: Address line 1
+          minLength: 5
+          maxLength: 256
+          x-required-message: AddressLine1 must be provided
+        AddressLine2:
+          type: string
+          description: Address line 2
+          maxLength: 256
+        City:
+          type: string
+          description: City
+          minLength: 2
+          maxLength: 256
+          x-required-message: City must be provided
+        Postcode:
+          type: string
+          description: Postcode
+          minLength: 3
+          maxLength: 40
+          x-required-message: Postcode must be provided
+        Country:
+          type: string
+          description: Country
+          minLength: 2
+          maxLength: 256
+          x-required-message: Country must be provided
+        ParentOrganisationReference:
+          type: string
+          description: Parent Organisation Reference
+          maxLength: 65535
+      required:
+        - OrganisationName
+        - CountryOfRegistration
+        - CompanyRegister
+        - RegistrationNumber
+        - LegalEntityName
+        - AddressLine1
+        - City
+        - Postcode
+        - Country
+
+    OrganisationEnrol:
+      type: object
+      properties:
+        RedirectUris:
+          type: array
+          items:
+            description: A compliant URI
+            pattern: "^(http:\\/\\/|https:\\/\\/).*"
+            x-pattern-message: "RedirectUris must be in a URI format https://... or http://..."
+            type: string
+            format: uri
+            x-required-message: RedirectUris must be provided
+        TokenEndpointAuthMethod:
+          type: string
+          minLength: 1
+          maxLength: 256
+          x-required-message: TokenEndpointAuthMethod must be provided
+        GrantTypes:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 40
+          x-required-message: GrantTypes must be provided
+        ResponseTypes:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 40
+          x-required-message: ResponseTypes must be provided
+        ClientName:
+          description: ORG name as per eIDAS certificate
+          minLength: 1
+          maxLength: 256
+          x-required-message: ClientName must be provided
+        ClientUri:
+          description: A compliant URI
+          pattern: "^(http:\\/\\/|https:\\/\\/).*"
+          x-pattern-message: "ClientUri must be in a URI format https://... or http://..."
+          type: string
+          format: uri
+          maxLength: 256
+          x-required-message: ClientUri must be provided
+        LogoUri:
+          description: A compliant URI
+          pattern: "^(http:\\/\\/|https:\\/\\/).*"
+          x-pattern-message: "LogoUri must be in a URI format https://... or http://..."
+          type: string
+          format: uri
+          maxLength: 256
+          x-required-message: LogoUri must be provided
+        Scope:
+          type: string
+          minLength: 1
+          maxLength: 256
+          x-required-message: Scope must be provided
+        TosUri:
+          description: A compliant URI
+          pattern: "^(http:\\/\\/|https:\\/\\/).*"
+          x-pattern-message: "TosUri must be in a URI format https://... or http://..."
+          type: string
+          format: uri
+          maxLength: 256
+          x-required-message: TosUri must be provided
+        PolicyUri:
+          description: A compliant URI
+          pattern: "^(http:\\/\\/|https:\\/\\/).*"
+          x-pattern-message: "PolicyUri must be in a URI format https://... or http://..."
+          type: string
+          format: uri
+          maxLength: 256
+          x-required-message: PolicyUri must be provided
+      required:
+        - RedirectUris
+        - TokenEndpointAuthMethod
+        - GrantTypes
+        - ResponseTypes
+        - ClientName
+        - ClientUri
+        - LogoUri
+        - Scope
+        - TosUri
+        - PolicyUri
+
+    OrganisationEnrolments:
+      description: >-
+        A JSON object DCR response returned when client gets created.
+      type: array
+      items:
+        type: object
+        properties:
+          OrganisationId:
+            $ref: '#/components/schemas/OrganisationId'
+          ClientSecret:
+            description: Client secret generated by Directory
+            type: string
+            maxLength: 256
+          RedirectUris:
+            type: array
+            items:
+              description: A compliant URI
+              pattern: "^(http:\\/\\/|https:\\/\\/).*"
+              x-pattern-message: "RedirectUris must be in a URI format https://... or http://..."
+              type: string
+              format: uri
+              maxLength: 256
+          TokenEndpointAuthMethod:
+            type: string
+            maxLength: 256
+          GrantTypes:
+            type: array
+            items:
+              type: string
+              maxLength: 40
+          ResponseTypes:
+            type: array
+            items:
+              type: string
+              maxLength: 40
+          ClientName:
+            description: ORG name as per eIDAS certificate
+            type: string
+            maxLength: 256
+          ClientUri:
+            description: A compliant URI string of a web page providing information about the client
+            pattern: "^(http:\\/\\/|https:\\/\\/).*"
+            x-pattern-message: "ClientUri must be in a URI format https://... or http://..."
+            type: string
+            format: uri
+            maxLength: 256
+          LogoUri:
+            description: A compliant URI
+            pattern: "^(http:\\/\\/|https:\\/\\/).*"
+            x-pattern-message: "LogoUri must be in a URI format https://... or http://..."
+            type: string
+            format: uri
+            maxLength: 256
+          TosUri:
+            description: A compliant URI string that points to a human-readable terms of service document for the client
+            pattern: "^(http:\\/\\/|https:\\/\\/).*"
+            x-pattern-message: "TosUri must be in a URI format https://... or http://..."
+            type: string
+            format: uri
+            maxLength: 256
+          PolicyUri:
+            description: A compliant URI string that points to a human-readable privacy policy document
+            pattern: "^(http:\\/\\/|https:\\/\\/).*"
+            x-pattern-message: "PolicyUri must be in a URI format https://... or http://..."
+            type: string
+            format: uri
+            maxLength: 256
+          JwksUri:
+            description: A compliant URI string referencing the client's JSON Web Key (JWK) Set
+            pattern: "^(http:\\/\\/|https:\\/\\/).*"
+            x-pattern-message: "JwksUri must be in a URI format https://... or http://..."
+            type: string
+            format: uri
+            maxLength: 256
+          Jwks:
+            description: Client's JSON Web Key Set [RFC7517] document value
+            type: object
+            maxLength: 256
+
+
+    OrganisationCertificateType:
+      type: string
+      enum:
+        - qwac
+        - qseal
+        - rtswac
+        - rtsseal
+      default: rtsseal
+
+    OrganisationId:
+      type: string
+      description: Unique ID associated with the organisation
+      minLength: 1
+      maxLength: 40
+
+    OrganisationAuthorityClaimId:
+      type: string
+      description: Unique ID associated with the authority claims
+      minLength: 1
+      maxLength: 40
+
+    OrganisationAuthorisationId:
+      type: string
+      description: Unique ID associated with authorisations for organisation's authority claims
+      minLength: 1
+      maxLength: 40
+
+    SoftwareAuthorityClaimId:
+      type: string
+      description: Unique ID associated with the authority claims for a software statement
+      minLength: 1
+      maxLength: 40
+
+    AuthorityId:
+      type: string
+      description: Unique ID associated with the Authorisation reference schema
+      minLength: 1
+      maxLength: 40
+
+    Organisations:
+      type: array
+      items:
+        $ref: '#/components/schemas/Organisation'
+
+    Organisation:
+      type: object
+      properties:
+        OrganisationId:
+          $ref: '#/components/schemas/OrganisationId'
+        Status:
+          type: string
+          description: Status of the directory registration of an organisation
+          enum:
+            - Active
+            - Pending
+            - Withdrawn
+          default: Active
+        OrganisationName:
+          type: string
+          description: Name of the organisation.
+          maxLength: 256
+        CreatedOn:
+          type: string
+          description: JSONDatetime of organisation creation.
+          maxLength: 30
+        LegalEntityName:
+          type: string
+          description: Legal Entity name for the org. Usually the same as org name
+          maxLength: 256
+        CountryOfRegistration:
+          type: string
+          description: Country of registration for the org
+          maxLength: 256
+        CompanyRegister:
+          type: string
+          description: Legal company register for the country, i.e. Companies House
+          maxLength: 256
+        RegistrationNumber:
+          type: string
+          description: Company registration number from company register i.e. Companies House registration number
+          maxLength: 256
+        RegistrationId:
+          type: string
+          description: Registered ID for the organisation i.e. Legal Entity identifier number
+          maxLength: 40
+        RegisteredName:
+          type: string
+          maxLength: 256
+        AddressLine1:
+          type: string
+          description: Address line 1
+          maxLength: 256
+        AddressLine2:
+          type: string
+          description: Address line 2
+          maxLength: 256
+        City:
+          type: string
+          description: City
+          maxLength: 256
+        Postcode:
+          type: string
+          description: Postcode
+          maxLength: 40
+        Country:
+          type: string
+          description: Country
+          maxLength: 256
+        ParentOrganisationReference:
+          type: string
+          description: Parent Organisation Reference
+          maxLength: 65535
+        RequiresSigning:
+          type: boolean
+          description: true - one of the attached tncs has to be signed. false - no tnc present
+        TnCUpdated:
+          type: boolean
+          description: true - attached tnc has been update. false - no tnc present
+        TnCsToBeSigned:
+          $ref: '#/components/schemas/TnCsToBeSigned'
+
+    OrgTermsAndConditionsDetail:
+      type: object
+      description: Participant TnC details
+      properties:
+        InitiatedBy:
+          type: string
+          description: Email of the user who initiated the External signing for this participant
+        Role:
+          type: string
+          description: Role of the user who initiated the External signing for this participant
+        TermsAndConditionsDetail:
+          $ref: '#/components/schemas/TermsAndConditionsDetail'
+
+
+    TermsAndConditionsDetail:
+      type: object
+      description: TnC details Parent
+      properties:
+        TermsAndConditionsItem:
+          $ref: '#/components/schemas/TermsAndConditionsItem'
+        InititatedDate:
+          type: string
+          description: Terms and Conditions initiated date
+          maxLength: 256
+        ExternalSigningServiceEnvelopeId:
+          $ref: '#/components/schemas/ExternalSigningServiceEnvelopeId'
+        ExternalSigningServiceEnvelopeStatus:
+          $ref: '#/components/schemas/ExternalSigningServiceEnvelopeStatus'
+        ExternalSigningServiceEnvelopePasscode:
+          type: string
+          description: Access code for the specifier to fill in the signer details. This will be populated only once, when signing is initiated
+
+
+    ExternalSigningServiceEnvelopeStatus:
+      enum:
+        - Completed
+        - Created
+        - Declined
+        - Deleted
+        - Delivered
+        - Processing
+        - Sent
+        - Signed
+        - Template
+        - Voided
+
+
+    OrganisationSnapshotPage:
+      type: object
+      properties:
+        totalPages:
+          type: integer
+        totalSize:
+          type: integer
+        pageable:
+          $ref: '#/components/schemas/Pageable'
+        numberOfElements:
+          type: integer
+        size:
+          type: integer
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrganisationSnapshot'
+        offset:
+          type: integer
+        empty:
+          type: boolean
+        pageNumber:
+          type: integer
+    Pageable:
+      type: object
+      properties:
+        number:
+          type: integer
+          description: Page number
+        sort:
+          $ref: '#/components/schemas/Sort'
+        size:
+          type: integer
+          description: Size of the page
+        offset:
+          type: integer
+          description: Offset
+        sorted:
+          type: boolean
+          description: Is the page sorted
+    Sort:
+      type: object
+      properties:
+        sorted:
+          type: boolean
+        orderBy:
+          type: array
+          items:
+            type: object
+            properties:
+              property:
+                type: string
+                description: Name of the property used for sorting
+                example: createdAt
+              direction:
+                type: string
+                description: Direction of sort, i.e. ascending or descending
+                enum:
+                  - ASC
+                  - DESC
+              ignoreCase:
+                type: boolean
+                description: Was the case ignored
+              ascending:
+                type: boolean
+                description: Whether ascending
+    OrganisationsSnapshot:
+      type: object
+      additionalProperties:
+        $ref: '#/components/schemas/OrganisationSnapshot'
+    OrganisationSnapshot:
+      type: object
+      properties:
+        OrganisationDetails:
+          $ref: '#/components/schemas/Organisation'
+        Contacts:
+          $ref: '#/components/schemas/Contacts'
+        AuthorisationServers:
+          $ref: '#/components/schemas/AuthorisationServers'
+        OrgDomainClaims:
+          $ref: '#/components/schemas/OrganisationAuthorityDomainClaims'
+        OrgDomainRoleClaims:
+          $ref: '#/components/schemas/OrganisationAuthorityClaims'
+        SoftwareStatements:
+          additionalProperties:
+            type: object
+            properties:
+              SoftwareDetails:
+                $ref: '#/components/schemas/SoftwareStatement'
+              SoftwareAuthorityClaims:
+                $ref: '#/components/schemas/SoftwareAuthorityClaims'
+              SoftwareCertificates:
+                $ref: '#/components/schemas/CertificatesOrKeys'
+
+    OrganisationsExportOpenData:
+      type: array
+      items:
+        $ref: '#/components/schemas/OrganisationExportOpenData'
+
+    OrganisationExportOpenData:
+      type: object
+      properties:
+        OrganisationId:
+          $ref: '#/components/schemas/OrganisationId'
+        Status:
+          type: string
+          description: Status of the directory registration of an organisation
+          enum:
+            - Active
+            - Pending
+            - Withdrawn
+          default: Active
+        OrganisationName:
+          type: string
+          description: Name of the organisation.
+          maxLength: 256
+        CreatedOn:
+          type: string
+          description: JSONDatetime of organisation creation.
+          maxLength: 30
+        LegalEntityName:
+          type: string
+          description: Legal Entity name for the org. Usually the same as org name
+          maxLength: 256
+        CountryOfRegistration:
+          type: string
+          description: Country of registration for the org
+          maxLength: 256
+        CompanyRegister:
+          type: string
+          description: Legal company register for the country, i.e. Companies House
+          maxLength: 256
+        RegistrationNumber:
+          type: string
+          description: Company registration number from company register i.e. Companies House registration number
+          maxLength: 256
+        RegistrationId:
+          type: string
+          description: Registered ID for the organisation i.e. Legal Entity identifier number
+          maxLength: 40
+        RegisteredName:
+          type: string
+          maxLength: 256
+        AddressLine1:
+          type: string
+          description: Address line 1
+          maxLength: 256
+        AddressLine2:
+          type: string
+          description: Address line 2
+          maxLength: 256
+        City:
+          type: string
+          description: City
+          maxLength: 256
+        Postcode:
+          type: string
+          description: Postcode
+          maxLength: 40
+        Country:
+          type: string
+          description: Country
+          maxLength: 256
+        ParentOrganisationReference:
+          type: string
+          description: Parent Organisation Reference
+          maxLength: 65535
+        Contacts:
+          $ref: '#/components/schemas/Contacts'
+        AuthorisationServers:
+          $ref: '#/components/schemas/AuthorisationServers'
+        OrgDomainClaims:
+          $ref: '#/components/schemas/OrganisationAuthorityDomainClaims'
+        OrgDomainRoleClaims:
+          $ref: '#/components/schemas/OrganisationAuthorityClaims'
+
+    Authorities:
+      type: array
+      items:
+        $ref: '#/components/schemas/Authority'
+
+    Authority:
+      type: object
+      properties:
+        AuthorityId:
+          $ref: '#/components/schemas/AuthorityId'
+        AuthorityName:
+          description: Name of the Authority i.e. FCA, etc
+          type: string
+          maxLength: 256
+        AuthorityCode:
+          description: Code of the Authority i.e. FCA, etc
+          type: string
+          maxLength: 40
+          x-required-message: "AuthorityCode must be provided"
+        AuthorityUri:
+          description: URI of the authority
+          type: string
+        AuthorityCountry:
+          description: country of the Authority
+          type: string
+          maxLength: 256
+        Status:
+          type: string
+          description: Is this Authority Active/Inactive
+          enum:
+            - Active
+            - Inactive
+
+    AuthorityRequest:
+      type: object
+      properties:
+        AuthorityName:
+          description: The ID of the Authority i.e GBFCA, etc
+          type: string
+          minLength: 1
+          maxLength: 40
+          x-required-message: AuthorityName must be provided
+        AuthorityCode:
+          description: Code of the Authority i.e. GBFCA, etc
+          type: string
+          x-required-message: AuthorityID must be provided
+          minLength: 1
+          maxLength: 256
+        AuthorityUri:
+          description: URI of the authority
+          pattern: "^(http:\\/\\/|https:\\/\\/).*"
+          x-pattern-message: "AuthorityUri must be in a URI format https://... or http://..."
+          type: string
+          maxLength: 256
+          x-required-message: AuthorityUri must be provided
+        AuthorityCountry:
+          description: Country of the authority
+          type: string
+          minLength: 2
+          maxLength: 256
+          x-required-message: AuthorityCountry must be provided
+      required:
+        - AuthorityName
+        - AuthorityCode
+        - AuthorityUri
+        - AuthorityCountry
+
+    SoftwareStatementCertificateOrKeyType:
+      type: string
+      enum:
+        - rtstransport
+        - rtssigning
+        - sigkey
+        - enckey
+      default: rtssigning
+    SoftwareStatements:
+      type: array
+      items:
+        $ref: '#/components/schemas/SoftwareStatement'
+      description: The list of Software Statements
+
+    SoftwareStatement:
+      type: object
+      properties:
+        Status:
+          type: string
+          description: Is this software statement Active/Inactive
+          enum:
+            - Active
+            - Inactive
+          default: Active
+        ClientId:
+          type: string
+          description: Software Statement client Id
+          maxLength: 40
+        ClientName:
+          type: string
+          description: Software Statement client name
+          maxLength: 256
+        Description:
+          type: string
+          description: Software Statement description
+          maxLength: 256
+        Environment:
+          type: string
+          description: The additional check for software statement, this field can avoid
+          maxLength: 40
+        OrganisationId:
+          $ref: '#/components/schemas/OrganisationId'
+        SoftwareStatementId:
+          $ref: '#/components/schemas/SoftwareStatementId'
+        Mode:
+          type: string
+          enum:
+            - Live
+            - Test
+          default: Live
+          description: Software Statement mode
+          maxLength: 8
+        RtsClientCreated:
+          type: boolean
+          description: Client created flag
+        OnBehalfOf:
+          type: string
+          description: A reference to fourth party organisation resource on the RTS Directory if the registering Org is acting on behalf of another
+          maxLength: 256
+        PolicyUri:
+          type: string
+          pattern: "^(http:\\/\\/|https:\\/\\/).*"
+          x-pattern-message: "PolicyUri must be in a URI format https://... or http://..."
+          description: The Software Statement policy compliant URI
+          maxLength: 256
+        ClientUri:
+          type: string
+          pattern: "^(http:\\/\\/|https:\\/\\/).*"
+          x-pattern-message: "ClientUri must be in a URI format https://... or http://..."
+          description: The Software Statement client compliant URI
+          maxLength: 256
+        LogoUri:
+          type: string
+          pattern: "^(http:\\/\\/|https:\\/\\/).*"
+          x-pattern-message: "LogoUri must be in a URI format https://... or http://..."
+          format: uri
+          description: The Software Statement logo compliant URI
+          maxLength: 256
+        RedirectUri:
+          type: array
+          items:
+            type: string
+            pattern: "^(http:\\/\\/|https:\\/\\/).*"
+            x-pattern-message: "RedirectUri must be in a URI format https://... or http://..."
+            format: uri
+          description: The Software Statement redirect compliant URI
+          maxLength: 256
+        TermsOfServiceUri:
+          type: string
+          pattern: "^(http:\\/\\/|https:\\/\\/).*"
+          x-pattern-message: "TermsOfServiceUri must be in a URI format https://... or http://..."
+          format: uri
+          description: The Software Statement terms of service compliant URI
+          maxLength: 256
+        Version:
+          type: number
+          description: Software Statement version as provided by the organisation's PTC
+          maxLength: 40
+        Locked:
+          type: boolean
+          description: Flag shows if assertion has been generated on the software statement - will be set to true when assertion is generated
+
+    SoftwareStatementRequest:
+      type: object
+      properties:
+        ClientName:
+          type: string
+          description: Software Statement client name
+          minLength: 1
+          maxLength: 256
+          x-required-message: ClientName must be provided
+        Description:
+          type: string
+          description: Software Statement description
+          maxLength: 256
+        OnBehalfOf:
+          type: string
+          description: A reference to fourth party organisation resource on the RTS Directory if the registering Org is acting on behalf of another
+          maxLength: 256
+        PolicyUri:
+          type: string
+          pattern: "^(http:\\/\\/|https:\\/\\/).*"
+          x-pattern-message: "PolicyUri must be in a URI format https://... or http://..."
+          description: The Software Statement compliant policy URI
+          maxLength: 256
+          x-required-message: PolicyUri must be provided
+        ClientUri:
+          type: string
+          pattern: "^(http:\\/\\/|https:\\/\\/).*"
+          x-pattern-message: "ClientUri must be in a URI format https://... or http://..."
+          description: The Software Statement compliant client URI
+          maxLength: 256
+          x-required-message: ClientUri must be provided
+        LogoUri:
+          type: string
+          pattern: "^(http:\\/\\/|https:\\/\\/).*"
+          x-pattern-message: "LogoUri must be in a URI format https://... or http://..."
+          description: The Software Statement compliant logo URI
+          maxLength: 256
+          x-required-message: LogoUri must be provided
+        Environment:
+          type: string
+          description: The additional check for software statement, this field can avoid environment checks.
+          maxLength: 40
+        Mode:
+          type: string
+          enum:
+            - Live
+            - Test
+          default: Live
+          description: The additional check to see if the environment reflected above is live or test.
+        RedirectUri:
+          type: array
+          items:
+            description: A compliant URI
+            pattern: "^(http:\\/\\/|https:\\/\\/).*"
+            x-pattern-message: "RedirectUri must be in a URI format https://... or http://..."
+            type: string
+            maxLength: 256
+          description: The Software Statement redirect URIs
+          x-required-message: RedirectUri must be provided
+        TermsOfServiceUri:
+          type: string
+          pattern: "^(http:\\/\\/|https:\\/\\/).*"
+          x-pattern-message: "TermsOfServiceUri must be in a URI format https://... or http://..."
+          description: The Software Statement terms of service compliant URI
+          maxLength: 256
+          x-required-message: TermsOfServiceUri must be provided
+        Version:
+          type: number
+          description: Software Statement version as provided by the organisation's PTC
+          minimum: 1
+          maximum: 40
+          x-required-message: Version must be provided
+      required:
+        - ClientName
+        - PolicyUri
+        - ClientUri
+        - LogoUri
+        - RedirectUri
+        - TermsOfServiceUri
+        - Version
+
+    SoftwareStatementId:
+      type: string
+      description: Unique Software Statement Id
+      maxLength: 40
+    SoftwareStatementAssertion:
+      type: string
+      description: A signed JWT (JWS)
+      maxLength: 4000
+    SoftwareAuthorityClaims:
+      type: array
+      items:
+        $ref: '#/components/schemas/SoftwareAuthorityClaim'
+    SoftwareAuthorityClaim:
+      type: object
+      properties:
+        SoftwareStatementId:
+          $ref: '#/components/schemas/SoftwareStatementId'
+        SoftwareAuthorityClaimId:
+          $ref: '#/components/schemas/SoftwareAuthorityClaimId'
+        Status:
+          type: string
+          description: Is this authority claim Active/Inactive
+          enum:
+            - Active
+            - Inactive
+          default: Active
+        AuthorisationDomain:
+          type: string
+          description: Authorisation domain for the authority
+          maxLength: 30
+        Role:
+          type: string
+          description: Roles for the Authority i.e. ASPSP, AISP, PISP, CBPII
+          maxLength: 10
+    SoftwareAuthorityClaimRequest:
+      type: object
+      properties:
+        Status:
+          type: string
+          description: Is this authority claim Active/Inactive, default is active
+          enum:
+            - Active
+            - Inactive
+          default: Active
+          x-required-message: Status must be provided
+        AuthorisationDomain:
+          type: string
+          description: Authorisation domain for the authority
+          minLength: 1
+          maxLength: 30
+          x-required-message: AuthorisationDomain must be provided
+        Role:
+          type: string
+          description: Roles for the Authority i.e. ASPSP, AISP, PISP, CBPII
+          minLength: 1
+          maxLength: 30
+          x-required-message: Role must be provided
+      required:
+        - Status
+        - AuthorisationDomain
+        - Role
+
+    SoftwareAuthorityClaimUpdateRequest:
+      type: object
+      properties:
+        Status:
+          type: string
+          description: This is used to set the status - Active/Inactive
+          enum:
+            - Active
+            - Inactive
+          default: Active
+          x-required-message: Status must be provided
+      required:
+        - Status
+
+    ClientCreationRequest:
+      type: object
+      properties:
+        id_token_signed_response_alg:
+          type: string
+          description: Signing algorithim that a client expects the server to return an id_token with. Must be PS256
+          enum:
+            - PS256
+          default: PS256
+          x-required-message: id_token_signed_response_alg must be provided
+        token_endpoint_auth_method:
+          enum:
+            - private_key_jwt
+            - tls_client_auth
+            - client_secret_basic
+          default: private_key_jwt
+          type: string
+          description: Token endpoint authentication method
+          minLength: 1
+          maxLength: 60
+          x-required-message: Token endpoint auth method must be provided
+        jwks_uri:
+          type: string
+          description: Link to the application active jwks
+          pattern: "^(http:\\/\\/|https:\\/\\/).*"
+          x-required-message: Link to the application active jwks
+        tls_client_auth_subject_dn:
+          type: string
+          description: The DN of the certificate that will be used to authenticate to this client
+          maxLength: 250
+        redirect_uris:
+          type: array
+          items:
+            type: string
+            uniqueItems: true
+          description: redirect_uris uri must be provided. For client_credentials this should be an empty array.
+          x-required-message: redirect_uris uri must be provided. For client_credentials this should be an empty array.
+        response_types:
+          type: array
+          items:
+            type: string
+            uniqueItems: true
+          description: response_types uri must be provided. For client_credentials this should be an empty array
+          x-required-message: response_types uri must be provided. For client_credentials this should be an empty array
+        grant_types:
+          type: array
+          items:
+            type: string
+            uniqueItems: true
+          description: grant_types uri must be provided. For client_credentials this should be array containing ["client_credentials"]
+          x-required-message: grant_types uri must be provided. For client_credentials this should be array containing ["client_credentials"]
+        scope:
+          type: string
+          description: scopes to be tagged
+          x-required-message: scope must be provided.
+      required:
+        - id_token_signed_response_alg
+        - token_endpoint_auth_method
+        - jwks_uri
+        - redirect_uris
+        - response_types
+        - grant_types
+        - scope
+
+    ClientCreationResponse:
+      type: object
+      properties:
+        application_type:
+          type: string
+          description: OIDC application type response
+          enum:
+            - web
+          default: web
+        tls_client_auth_subject_dn:
+          type: string
+          description: the subject dn used to authenticate this client
+        grant_types:
+          type: array
+          items:
+            type: string
+          description: grant_types
+        id_token_signed_response_alg:
+          type: string
+        require_auth_time:
+          type: boolean
+        subject_type:
+          type: string
+        response_types:
+          type: array
+          items:
+            type: string
+          description: response_types
+        post_logout_redirect_uris:
+          type: array
+          items:
+            type: string
+          description: post_logout_redirect_uris
+        token_endpoint_auth_method:
+          type: string
+        introspection_endpoint_auth_method:
+          type: string
+        revocation_endpoint_auth_method:
+          type: string
+        client_id_issued_at:
+          type: number
+        client_id:
+          type: string
+        jwks_uri:
+          type: string
+        registration_client_uri:
+          type: string
+          description: management uri location to manage client post creation
+        registration_access_token:
+          type: string
+          description: token used to manage client post creation
+        redirect_uris:
+          type: array
+          items:
+            type: string
+          description: redirect_uris
+        request_uris:
+          type: array
+          items:
+            type: string
+          description: request_uris
+
+
+    AccessTokenRequest:
+      type: object
+      properties:
+        grant_type:
+          type: string
+          description: The Grant Type
+          enum:
+            - client_credentials
+          default: client_credentials
+          minLength: 1
+          x-required-message: Only client credentials supported
+        client_assertion_type:
+          type: string
+          enum:
+            - urn:ietf:params:oauth:client-assertion-type:jwt-bearer
+          description: Restrict to private_key_jwt
+          minLength: 1
+          maxLength: 160
+          x-required-message: Client assertion type must be set to urn:ietf:params:oauth:client-assertion-type:jwt-bearer
+        assertion:
+          type: string
+          description: The assertion that is used to get a token
+          minLength: 1
+          x-required-message: Assertion is a required field
+      required:
+        - grant_type
+        - client_assertion_type
+        - assertion
+
+    AccessTokenResponse:
+      type: object
+      properties:
+        access_token:
+          type: string
+          description: Access token
+        expires_in:
+          type: integer
+          description: lifetime in seconds
+        token_type:
+          type: string
+        scope:
+          type: string
+
+    UserEmailId:
+      type: string
+      description: User email address
+      maxLength: 50
+
+    SuperUserCreationRequest:
+      type: object
+      properties:
+        Email:
+          type: string
+          description: The super user email address
+          minLength: 1
+          x-required-message: The super user email address is mandatory
+      required:
+        - Email
+
+    SuperUsers:
+      type: array
+      items:
+        $ref: '#/components/schemas/SuperUser'
+
+    SuperUser:
+      type: object
+      properties:
+        Email:
+          type: string
+          description: The super user email address
+        Status:
+          type: string
+          description: Is this super user Active or Inactive
+          enum:
+            - Active
+            - Inactive
+          default: Active
+
+    AuthorisationDomainName:
+      type: string
+      description: Authorisation Domain Name
+      maxLength: 30
+
+    AuthorisationDomainRoleName:
+      type: string
+      description: Authorisation Domain Role Name
+      maxLength: 30
+
+    AuthorityAuthorisationDomainId:
+      type: string
+      description: Mapping ID between Authority and Authorisation Domain
+      maxLength: 50
+
+    AuthorisationDomainUserCreateRequest:
+      type: object
+      properties:
+        Email:
+          type: string
+          description: The user email address
+          pattern: "^(.{1,}@[^.]{1,}).*"
+          x-pattern-message: "EmailAddress must be a valid email"
+        AuthorisationDomainRole:
+          type: string
+          description: The authorisation domain role for this user
+          minLength: 1
+        ContactRole:
+          $ref: '#/components/schemas/ContactRoleEnum'
+      required:
+        - Email
+        - AuthorisationDomainRole
+        - ContactRole
+
+    AuthorisationDomainUsers:
+      type: array
+      items:
+        $ref: '#/components/schemas/AuthorisationDomainUser'
+
+    AuthorisationDomainUser:
+      type: object
+      properties:
+        AuthorisationDomainUserId:
+          type: string
+          description: Unique record ID
+        Email:
+          type: string
+          description: The user email address
+        AuthorisationDomain:
+          type: string
+          description: The authorisation domain for this user
+        AuthorisationDomainRole:
+          type: string
+          description: The authorisation domain role for this user
+        Status:
+          type: string
+          description: Is this user Active or Inactive
+          enum:
+            - Active
+            - Inactive
+          default: Active
+        ContactRole:
+          type: string
+          description: Type of role for this user
+          enum:
+            - PTC
+            - STC
+            - PBC
+            - SBC
+
+    AuthorisationDomainRequest:
+      type: object
+      properties:
+        AuthorisationDomainName:
+          type: string
+          description: The authorisation domain name
+          minLength: 1
+          maxLength: 30
+          x-required-message: The authorisation domain name is mandatory
+        AuthorisationDomainRegion:
+          type: string
+          description: The authorisation domain region
+          minLength: 2
+          x-required-message: The authorisation domain region is mandatory
+        AuthorisationDomainDescription:
+          type: string
+          description: The authorisation domain description
+      required:
+        - AuthorisationDomainName
+        - AuthorisationDomainRegion
+
+    AuthorisationDomains:
+      type: array
+      items:
+        $ref: '#/components/schemas/AuthorisationDomain'
+
+    AuthorisationDomain:
+      type: object
+      properties:
+        AuthorisationDomainName:
+          type: string
+          description: The authorisation domain name
+        AuthorisationDomainRegion:
+          type: string
+          description: The authorisation domain region
+        AuthorisationDomainDescription:
+          type: string
+          description: The authorisation domain description
+        Status:
+          type: string
+          description: Is this Domain Active or Inactive
+          enum:
+            - Active
+            - Inactive
+          default: Active
+
+    AuthorisationDomainRoleRequest:
+      type: object
+      properties:
+        AuthorisationDomainName:
+          type: string
+          description: The authorisation domain name
+          minLength: 1
+          x-required-message: The authorisation domain name is mandatory
+        AuthorisationDomainRoleName:
+          type: string
+          description: The authorisation domain role name
+          minLength: 1
+          maxLength: 30
+          x-required-message: The authorisation domain role name is mandatory
+        AuthorisationDomainRoleDescription:
+          type: string
+          description: The authorisation domain role description
+      required:
+        - AuthorisationDomainRoleName
+        - AuthorisationDomainName
+
+    AuthorisationDomainRoles:
+      type: array
+      items:
+        $ref: '#/components/schemas/AuthorisationDomainRole'
+
+    AuthorisationDomainRole:
+      type: object
+      properties:
+        AuthorisationDomainName:
+          type: string
+          description: The authorisation domain name
+        AuthorisationDomainRoleName:
+          type: string
+          description: The authorisation domain role
+        AuthorisationDomainRoleDescription:
+          type: string
+          description: The authorisation domain role description
+        Status:
+          type: string
+          description: Is this mapping Active or Inactive
+          enum:
+            - Active
+            - Inactive
+          default: Active
+
+    AuthorityAuthorisationDomainRequest:
+      type: object
+      properties:
+        AuthorisationDomainName:
+          type: string
+          description: The authorisation domain name
+          minLength: 1
+          x-required-message: The authorisation domain name is mandatory
+      required:
+        - AuthorisationDomainName
+
+    AuthorityAuthorisationDomains:
+      type: array
+      items:
+        $ref: '#/components/schemas/AuthorityAuthorisationDomain'
+
+    AuthorityAuthorisationDomain:
+      type: object
+      properties:
+        AuthorisationDomainName:
+          type: string
+          description: The authorisation domain name
+        AuthorityId:
+          type: string
+          description: The GUID of the Authority
+        AuthorityAuthorisationDomainId:
+          type: string
+          description: The GUID of the Authority-Domain mapping
+        Status:
+          type: string
+          description: Is this user Active or Inactive
+          enum:
+            - Active
+            - Inactive
+          default: Active
+
+    OrganisationAuthorityDomainClaimId:
+      type: string
+      description: Organisation Authority Domain Claim ID
+      maxLength: 50
+
+    OrganisationAuthorityDomainClaimRequest:
+      type: object
+      properties:
+        AuthorisationDomainName:
+          type: string
+          description: The authorisation domain name
+          minLength: 1
+          x-required-message: The authorisation domain name is mandatory
+        AuthorityId:
+          type: string
+          description: The Authority ID
+          minLength: 1
+          x-required-message: The Authority ID is mandatory
+        RegistrationId:
+          type: string
+          description: The registration ID
+      required:
+        - AuthorityId
+        - AuthorisationDomainName
+
+    OrganisationAuthorityDomainClaims:
+      type: array
+      items:
+        $ref: '#/components/schemas/OrganisationAuthorityDomainClaim'
+
+    OrganisationAuthorityDomainClaim:
+      type: object
+      properties:
+        OrganisationAuthorityDomainClaimId:
+          type: string
+          description: The unique org authority domain claim ID
+        AuthorisationDomainName:
+          type: string
+          description: The authorisation domain name
+        AuthorityId:
+          type: string
+          description: The GUID of the Authority
+        AuthorityName:
+          type: string
+          description: The name of the Authority
+        RegistrationId:
+          type: string
+          description: The registration ID
+        Status:
+          type: string
+          description: Is this user Active or Inactive
+          enum:
+            - Active
+            - Inactive
+          default: Active
+
+    AuthorisationDomainUserId:
+      type: string
+      description: Unique record ID to identify Domain user
+      maxLength: 50
+
+    UserDetail:
+      type: object
+      properties:
+        SuperUser:
+          type: boolean
+          description: Is the user a super user
+        SystemUser:
+          type: boolean
+          description: Is the user a system user
+        BasicInformation:
+          type: object
+          properties:
+            UserEmail:
+              type: string
+            Status:
+              type: string
+              enum:
+                - Active
+                - Inactive
+        OrgAccessDetails:
+          type: object
+          description: Map Key - Org ID, Map Value - Org Access Detail(contaning info about org admin and domain role details)
+          additionalProperties:
+            $ref: '#/components/schemas/OrgAccessDetail'
+        DirectoryTermsAndConditionsDetails:
+          $ref: '#/components/schemas/TermsAndConditionsDetails'
+
+    TermsAndConditionsDetails:
+      type: object
+      description: Details of TnC
+      properties:
+        RequiresSigning:
+          type: boolean
+          description: Does the Directory TnC require signing
+        Updated:
+          type: boolean
+          description: Has the document updated since the user signed
+        TermsAndConditionsItem:
+          $ref: '#/components/schemas/TermsAndConditionsItem'
+
+    UserCreateRequest:
+      type: object
+      properties:
+        UserEmail:
+          type: string
+          description: User's email
+          pattern: "^(.{1,}@[^.]{1,}).*"
+          x-pattern-message: "EmailAddress must be a valid email"
+        TermsAndConditionsId:
+          type: integer
+          description: Id of the TnC(type = Directory), user has agreed to
+          x-required-message: User has to agree to Directory type TnC
+      required:
+        - UserEmail
+        - FirstName
+        - LastName
+        - TermsAndConditionsId
+
+
+    UserOPInfo:
+      type: object
+      description: The information contained within is subject to the scopes passed during token generation
+      properties:
+        sub:
+          type: string
+          description: Contains the email address
+        family_name:
+          type: string
+          description: Family name
+        given_name:
+          type: string
+          description: Given name
+        name:
+          type: string
+          description: Full name
+        email:
+          type: string
+          description: Email address
+        email_verified:
+          type: boolean
+          description: Is the email verified
+        address:
+          type: string
+          description: Address
+        phone_number:
+          type: string
+          description: Phone number
+        phone_number_verified:
+          type: boolean
+          description: Is the phone number verified
+
+    WellKnown:
+      type: object
+      properties:
+        acr_values_supported:
+          type: array
+          items: {}
+        authorization_endpoint:
+          type: string
+          description: REQUIRED. URL of the OP's OAuth 2.0 Authorization Endpoint
+        claims_parameter_supported:
+          type: boolean
+          description: OPTIONAL. Boolean value specifying whether the OP supports use of
+            the claims parameter, with true indicating support. If omitted, the
+            default value is false
+        claims_supported:
+          type: array
+          items: {}
+          description: RECOMMENDED. JSON array containing a list of the Claim Names of the
+            Claims that the OpenID Provider MAY be able to supply values for
+        code_challenge_methods_supported:
+          type: array
+          items: {}
+        end_session_endpoint:
+          type: string
+        check_session_endpoint:
+          type: string
+        grant_types_supported:
+          type: array
+          items: {}
+          description: OPTIONAL. JSON array containing a list of the OAuth 2.0 Grant Type
+            values that this OP supports
+        id_token_signing_alg_values_supported:
+          type: array
+          items: {}
+          description: REQUIRED. JSON array containing a list of the JWS signing algorithms
+            (alg values) supported by the OP for the ID Token to encode the
+            Claims in a JWT
+        issuer:
+          type: string
+          description: REQUIRED. URL using the https scheme with no query or fragment
+            component that the OP asserts as its Issuer Identifier
+        jwks_uri:
+          type: string
+          description: REQUIRED. URL of the OP's JSON Web Key Set [JWK] document.
+        registration_endpoint:
+          type: string
+          description: RECOMMENDED. URL of the OP's Dynamic Client Registration Endpoint
+        request_object_signing_alg_values_supported:
+          type: string
+          description: OPTIONAL. JSON array containing a list of the JWS signing algorithms
+            (alg values) supported by the OP for Request Objects
+        request_parameter_supported:
+          type: boolean
+          description: OPTIONAL. Boolean value specifying whether the OP supports use of
+            the request parameter, with true indicating support. If omitted, the
+            default value is false
+        request_uri_parameter_supported:
+          type: boolean
+          description: OPTIONAL. Boolean value specifying whether the OP supports use of
+            the request_uri parameter, with true indicating support. If omitted,
+            the default value is true
+        require_request_uri_registration:
+          type: boolean
+          description: OPTIONAL. Boolean value specifying whether the OP requires any
+            request_uri values used to be pre-registered using the request_uris
+            registration parameter
+        pushed_authorization_request_endpoint:
+          type: array
+          items: {}
+        response_modes_supported:
+          type: array
+          items: {}
+          description: OPTIONAL. JSON array containing a list of the OAuth 2.0
+            response_mode values that this OP supports
+        response_types_supported:
+          type: array
+          items: {}
+          description: REQUIRED. JSON array containing a list of the OAuth 2.0
+            response_type values that this OP supports
+        scopes_supported:
+          type: array
+          items: {}
+          description: RECOMMENDED. JSON array containing a list of the OAuth 2.0 [RFC6749]
+            scope values that this server supports
+        subject_types_supported:
+          type: array
+          items: {}
+          description: REQUIRED. JSON array containing a list of the Subject Identifier
+            types that this OP supports
+        token_endpoint_auth_methods_supported:
+          type: array
+          items: {}
+          description: OPTIONAL. JSON array containing a list of Client Authentication
+            methods supported by this Token Endpoint
+        token_endpoint_auth_signing_alg_values_supported:
+          type: array
+          items: {}
+          description: OPTIONAL. JSON array containing a list of the JWS signing algorithms
+            (alg values) supported by the Token Endpoint for the signature on
+            the JWT
+        token_endpoint:
+          type: string
+          description: URL of the OP's OAuth 2.0 Token Endpoint
+        userinfo_endpoint:
+          type: string
+          description: RECOMMENDED. URL of the OP's UserInfo Endpoint
+        userinfo_signing_alg_values_supported:
+          type: array
+          items: {}
+          description: OPTIONAL. JSON array containing a list of the JWS signing algorithms
+            (alg values) [JWA] supported by the UserInfo Endpoint to encode the
+            Claims in a JWT
+        authorization_signing_alg_values_supported:
+          type: array
+          items: {}
+        introspection_endpoint:
+          type: string
+        introspection_endpoint_auth_methods_supported:
+          type: array
+          items: {}
+        introspection_endpoint_auth_signing_alg_values_supported:
+          type: array
+          items: {}
+        revocation_endpoint:
+          type: string
+        revocation_endpoint_auth_methods_supported:
+          type: array
+          items: {}
+        revocation_endpoint_auth_signing_alg_values_supported:
+          type: array
+          items: {}
+        frontchannel_logout_supported:
+          type: boolean
+        frontchannel_logout_session_supported:
+          type: boolean
+        tls_client_certificate_bound_access_tokens:
+          type: boolean
+        claim_types_supported:
+          type: array
+          items: {}
+          description: OPTIONAL. JSON array containing a list of the Claim Types that the
+            OpenID Provider supports
+
+    OrgAccessDetail:
+      type: object
+      properties:
+        OrgAdmin:
+          type: boolean
+          description: Is the user the org admin of the current org
+        DomainRoleDetails:
+          type: array
+          description: Array of domain, role and status of domain role mapping
+          items:
+            $ref: '#/components/schemas/DomainRoleDetail'
+
+    DomainRoleDetail:
+      type: object
+      properties:
+        AuthorisationDomainName:
+          type: string
+        AuthorisationDomainRoleName:
+          type: string
+        Status:
+          $ref: '#/components/schemas/StatusEnum'
+        ContactRole:
+          $ref: '#/components/schemas/ContactRoleEnum'
+
+    TnCId:
+      type: integer
+      description: TnC unique identifier
+
+    ClientId:
+      type: string
+      description: The ClientID 
+
+    TermsAndConditionsPage:
+      type: object
+      properties:
+        totalPages:
+          type: integer
+        totalSize:
+          type: integer
+        pageable:
+          $ref: '#/components/schemas/Pageable'
+        numberOfElements:
+          type: integer
+        size:
+          type: integer
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/TermsAndConditionsItem'
+        offset:
+          type: integer
+        empty:
+          type: boolean
+        pageNumber:
+          type: integer
+
+    TermsAndConditionsItem:
+      type: object
+      properties:
+        TnCId:
+          type: integer
+          description: Unique identifier for the Terms and Conditions Item
+        Version:
+          type: integer
+        Name:
+          type: string
+        Type:
+          type: string
+          description: Identifies Participant or Directory
+        Content:
+          type: string
+          description: Contains the MarkDown of the actual TnCs
+        Status:
+          type: string
+          description: Is the TnC Active or Inactive
+          enum:
+            - Active
+            - Inactive
+        ExternalSigningService:
+          type: object
+          properties:
+            ExternalSigningServiceName:
+              type: string
+              enum:
+                - DocuSign
+            ExternalSigningServiceSignerTemplateConfig:
+              $ref: '#/components/schemas/ExternalSigningServiceSignerTemplateConfig'
+            ExternalSigningServiceSubject:
+              type: string
+
+    TermsAndConditionsCreateRequest:
+      type: object
+      properties:
+        Type:
+          type: string
+          minLength: 1
+          description: Role for which this TnC applies
+          enum:
+            - Participant
+            - Directory
+          x-required-message: Type must be provided
+        Version:
+          type: integer
+          description: Version of the TnC document
+          x-required-message: Version must be provided
+        Name:
+          type: string
+          minLength: 1
+          description: The Name of the TnC
+          x-required-message: Name must be provided
+        Content:
+          type: string
+          minLength: 1
+          description: The MarkDown of the TnC
+          x-required-message: MarkDown must be provided
+        ExternalSigningServiceName:
+          enum:
+            - DocuSign
+          description: The Name of the External Signing Service
+          x-required-message: External signing service name must be provided
+        ExternalSigningServiceSignerTemplateConfig:
+          $ref: '#/components/schemas/ExternalSigningServiceSignerTemplateConfig'
+        ExternalSigningServiceSubject:
+          type: string
+          minLength: 1
+          description: The Subject of the External Signing Service
+          x-required-message: Subject must be provided
+      required:
+        - Type
+        - Version
+        - Content
+        - Name
+
+    ExternalSigningServiceSignerTemplateConfig:
+      type: object
+      properties:
+        TemplateIdSigner1:
+          type: string
+          minLength: 1
+          description: Template ID for 1 signer
+        TemplateIdSigner2:
+          type: string
+          minLength: 1
+          description: Template ID for 2 signers
+        TemplateIdSigner3:
+          type: string
+          minLength: 1
+          description: Template ID for 3 signers
+        TemplateIdSigner4:
+          type: string
+          minLength: 1
+          description: Template ID for 4 signers
+        TemplateIdSigner5:
+          type: string
+          minLength: 1
+          description: Template ID for 5 signers
+        TemplateIdSigner6:
+          type: string
+          minLength: 1
+          description: Template ID for 6 signers
+
+    TermsAndConditionsUpdateRequest:
+      type: object
+      properties:
+        Content:
+          type: string
+          minLength: 1
+          description: The MarkDown of the TnC
+          x-required-message: MarkDown must be provided
+        ExternalSigningServiceName:
+          enum:
+            - DocuSign
+          description: The Name of the External Signing Service
+          x-required-message: External signing service name must be provided
+        ExternalSigningServiceSignerTemplateConfig:
+          $ref: '#/components/schemas/ExternalSigningServiceSignerTemplateConfig'
+        ExternalSigningServiceSubject:
+          type: string
+          minLength: 1
+          description: The Subject of the External Signing Service
+          x-required-message: Subject must be provided
+      required:
+        - Content
+
+    OrgAdminUserCreateRequest:
+      type: object
+      properties:
+        UserEmail:
+          type: string
+          description: Admin user email address
+          pattern: "^(.{1,}@[^.]{1,}).*"
+          x-pattern-message: "EmailAddress must be a valid email"
+      required:
+        - UserEmail
+
+    OrganisationAdminUsers:
+      type: array
+      items:
+        $ref: '#/components/schemas/OrganisationAdminUser'
+
+    OrganisationAdminUser:
+      type: object
+      properties:
+        Status:
+          type: string
+          description: Is the admin user active
+          enum:
+            - Active
+            - Inactive
+        UserEmail:
+          type: string
+          description: User's email address
+        DomainRoleDetails:
+          type: array
+          items:
+            $ref: '#/components/schemas/DomainRoleDetail'
+
+    ApiResources:
+      type: object
+      properties:
+        totalPages:
+          type: integer
+        totalSize:
+          type: integer
+        pageable:
+          $ref: '#/components/schemas/Pageable'
+        numberOfElements:
+          type: integer
+        size:
+          type: integer
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiResource'
+        offset:
+          type: integer
+        empty:
+          type: boolean
+        pageNumber:
+          type: integer
+
+    ApiResource:
+      type: object
+      properties:
+        ApiResourceId:
+          $ref: '#/components/schemas/ApiResourceId'
+        ApiFamilyType:
+          $ref: '#/components/schemas/ApiFamilyType'
+        ApiVersion:
+          type: number
+          description: The version number of the API
+        ApiDiscoveryEndpoints:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiDiscoveryEndpoint'
+
+    ApiResourceRequest:
+      type: object
+      properties:
+        ApiFamilyType:
+          $ref: '#/components/schemas/ApiFamilyType'
+        ApiVersion:
+          type: number
+          description: The version number of the API
+
+    ApiFamilyType:
+      type: string
+      minLength: 1
+      maxLength: 40
+      description: The type of API this record describes
+
+    ApiResourceId:
+      type: string
+      maxLength: 40
+      description: The unique ID of an Api version resource
+
+    ApiDiscoveryEndpoints:
+      type: object
+      properties:
+        totalPages:
+          type: integer
+        totalSize:
+          type: integer
+        pageable:
+          $ref: '#/components/schemas/Pageable'
+        numberOfElements:
+          type: integer
+        size:
+          type: integer
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiDiscoveryEndpoint'
+        offset:
+          type: integer
+        empty:
+          type: boolean
+        pageNumber:
+          type: integer
+
+    ApiDiscoveryEndpoint:
+      type: object
+      properties:
+        ApiDiscoveryId:
+          type: string
+          maxLength: 40
+          description: Unique Id of this discovery endpoint record
+        ApiEndpoint:
+          description: A compliant URI
+          pattern: "^(http:\\/\\/|https:\\/\\/).*"
+          x-pattern-message: "ApiEndpoint must be in a URI format https://... or http://..."
+          type: string
+          format: uri
+          maxLength: 256
+
+    ApiDiscoveryEndpointRequest:
+      type: object
+      properties:
+        ApiEndpoint:
+          description: A compliant URI
+          pattern: "^(http:\\/\\/|https:\\/\\/).*"
+          x-pattern-message: "ApiEndpoint must be in a URI format https://... or http://..."
+          type: string
+          format: uri
+          maxLength: 256
+
+    ApiDiscoveryEndpointId:
+      type: string
+      maxLength: 40
+      description: The unique ID of an Api discovery endpoint resource
+
+    OrgTermsAndConditionsPage:
+      type: object
+      properties:
+        totalPages:
+          type: integer
+        totalSize:
+          type: integer
+        pageable:
+          $ref: '#/components/schemas/Pageable'
+        numberOfElements:
+          type: integer
+        size:
+          type: integer
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrgTermsAndConditionsDetail'
+        offset:
+          type: integer
+        empty:
+          type: boolean
+        pageNumber:
+          type: integer
+
+    UserTermsAndConditionsPage:
+      type: object
+      properties:
+        totalPages:
+          type: integer
+        totalSize:
+          type: integer
+        pageable:
+          $ref: '#/components/schemas/Pageable'
+        numberOfElements:
+          type: integer
+        size:
+          type: integer
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/TermsAndConditionsDetail'
+        offset:
+          type: integer
+        empty:
+          type: boolean
+        pageNumber:
+          type: integer
+
+    EssSignRequest:
+      type: object
+      properties:
+        TnCId:
+          $ref: '#/components/schemas/TnCId'
+        NoOfSigners:
+          type: integer
+
+    EssPollResponse:
+      type: object
+      properties:
+        ExternalSigningServiceEnvelopeStatus:
+          $ref: '#/components/schemas/ExternalSigningServiceEnvelopeStatus'
+
+    TnCsToBeSigned:
+      type: array
+      items:
+        $ref: '#/components/schemas/TermsAndConditionsItem'
+
+    ExternalSigningServiceEnvelopeId:
+      type: string
+      description: The envelope id of the ess signing request
+
+    AuthorisationDomainUserUpdateRequest:
+      type: object
+      properties:
+        Status:
+          $ref: '#/components/schemas/StatusEnum'
+        ContactRole:
+          $ref: '#/components/schemas/ContactRoleEnum'
+
+    ContactRoleEnum:
+      type: string
+      description: The role of the contact
+      enum:
+        - PTC
+        - STC
+        - PBC
+        - SBC
