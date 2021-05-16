@@ -42,10 +42,7 @@ servers:
     description: Servidor de Homologação
 tags:
   - name: Accounts
-  - name: Accounts Identification
-  - name: Accounts Balances
-  - name: Accounts Transactions
-  - name: Accounts Overdraft Limits
+    description: Operações para listagem das informações da Conta do Cliente
 paths:
   /accounts:
     get:
@@ -60,7 +57,6 @@ paths:
         - $ref: '#/components/parameters/xFapiCustomerIpAddress'
         - $ref: '#/components/parameters/xFapiInteractionId'
         - $ref: '#/components/parameters/xCustomerUserAgent'
-        - $ref: '#/components/parameters/xJwsSignature'
         - $ref: '#/components/parameters/page'
         - $ref: '#/components/parameters/pageSize'
         - $ref: '#/components/parameters/accountType'
@@ -92,7 +88,7 @@ paths:
   '/accounts/{accountId}':
     get:
       tags:
-        - Accounts Identification
+        - Accounts
       summary: Obtém os dados de identificação da conta identificada por accountId.
       description: 'Método para obter os dados de identificação da conta de depósito à vista, poupança ou pagamento pré-paga identificada por accountId mantida pelo cliente na instituição transmissora.'
       operationId: getAccountsAccountId
@@ -102,7 +98,6 @@ paths:
         - $ref: '#/components/parameters/xFapiCustomerIpAddress'
         - $ref: '#/components/parameters/xFapiInteractionId'
         - $ref: '#/components/parameters/xCustomerUserAgent'
-        - $ref: '#/components/parameters/xJwsSignature'
         - $ref: '#/components/parameters/accountId'
       responses:
         '200':
@@ -132,7 +127,7 @@ paths:
   '/accounts/{accountId}/balances':
     get:
       tags:
-        - Accounts Balances
+        - Accounts
       summary: Obtém os saldos da conta identificada por accountId.
       description: 'Método para obter os saldos da conta de depósito à vista, poupança ou pagamento pré-paga identificada por accountId mantida pelo cliente na instituição transmissora.'
       operationId: getAccountsAccountIdBalances
@@ -142,7 +137,6 @@ paths:
         - $ref: '#/components/parameters/xFapiCustomerIpAddress'
         - $ref: '#/components/parameters/xFapiInteractionId'
         - $ref: '#/components/parameters/xCustomerUserAgent'
-        - $ref: '#/components/parameters/xJwsSignature'
         - $ref: '#/components/parameters/accountId'
       responses:
         '200':
@@ -172,7 +166,7 @@ paths:
   '/accounts/{accountId}/transactions':
     get:
       tags:
-        - Accounts Transactions
+        - Accounts
       summary: Obtém a lista de transações da conta identificada por accountId.
       description: 'Método para obter a lista de transações da conta de depósito à vista, poupança ou pagamento pré-paga identificada por accountId mantida pelo cliente na instituição transmissora.'
       operationId: getAccountsAccountIdTransactions
@@ -182,7 +176,6 @@ paths:
         - $ref: '#/components/parameters/xFapiCustomerIpAddress'
         - $ref: '#/components/parameters/xFapiInteractionId'
         - $ref: '#/components/parameters/xCustomerUserAgent'
-        - $ref: '#/components/parameters/xJwsSignature'
         - $ref: '#/components/parameters/accountId'
         - $ref: '#/components/parameters/page'
         - $ref: '#/components/parameters/pageSize'
@@ -217,7 +210,7 @@ paths:
   '/accounts/{accountId}/overdraft-limits':
     get:
       tags:
-        - Accounts Overdraft Limits
+        - Accounts
       summary: Obtém os limites da conta identificada por accountId.
       description: 'Método para obter os limites da conta de depósito à vista, poupança ou pagamento pré-paga identificada por accountId mantida pelo cliente na instituição transmissora.'
       operationId: getAccountsAccountIdOverdraftLimits
@@ -227,7 +220,6 @@ paths:
         - $ref: '#/components/parameters/xFapiCustomerIpAddress'
         - $ref: '#/components/parameters/xFapiInteractionId'
         - $ref: '#/components/parameters/xCustomerUserAgent'
-        - $ref: '#/components/parameters/xJwsSignature'
         - $ref: '#/components/parameters/accountId'
       responses:
         '200':
@@ -262,38 +254,61 @@ components:
         Conjunto de informações das Contas de: depósito à vista, poupança e de pagamento pré-paga
       required:
         - avaiableAmount
+        - avaiableAmountCurrency
         - blockedAmount
+        - blockedAmountCurrency
         - automaticallyInvestedAmount
+        - automaticallyInvestedAmountCurrency
       properties:
         avaiableAmount:
           type: number
           format: double
           pattern: '(-?\d{15}(.\d{4}?))$'
-          description: 'Saldo disponível para utilização imediata. No caso de conta de depósito a vista, sem considerar cheque especial e investimentos atrelados a conta. Admite saldo negativo. Expresso em valor monetário com 4 casas decimais'
+          description: 'Saldo disponível para utilização imediata. No caso de conta de depósito a vista, sem considerar cheque especial e investimentos atrelados a conta. Admite saldo negativo. Expresso em valor monetário com 4 casas decimais.'
           maxLength: 19
           minLength: 0
+          nullable: true
           example: 100000.04
+        avaiableAmountCurrency:
+          type: string
+          pattern: '^(\w{3}){1}$'
+          maxLength: 3
+          description: 'Moeda referente ao valor do saldo disponível, segundo modelo ISO-4217. p.ex. ''BRL''. Pode ser preenchido com “NA” caso a instituição não possua a informação.'
+          example: BRL
         blockedAmount:
           type: number
           format: double
           pattern: '(-?\d{15}(.\d{4}?))$'
-          description: 'Saldo bloqueado, não disponível para utilização imediata, por motivo de bloqueio apresentado para o cliente nos canais eletrônicos Expresso em valor monetário com 4 casas decimais'
+          description: 'Saldo bloqueado, não disponível para utilização imediata, por motivo de bloqueio apresentado para o cliente nos canais eletrônicos Expresso em valor monetário com 4 casas decimais.'
           maxLength: 19
           minLength: 0
+          nullable: true
           example: 99.9999
+        blockedAmountCurrency:
+          type: string
+          pattern: '^(\w{3}){1}$'
+          maxLength: 3
+          description: 'Moeda referente ao valor do saldo bloqueado, segundo modelo ISO-4217. p.ex. ''BRL''. Pode ser preenchido com “NA” caso a instituição não possua a informação.'
+          example: BRL
         automaticallyInvestedAmount:
           type: number
           format: double
           pattern: '(-?\d{15}(.\d{4}?))$'
-          description: Saldo disponível com aplicação automática - corresponde a soma do saldo disponível acrescido do valor obtido a partir da aplicação automática Expresso em valor monetário com 4 casas decimais
+          description: Saldo disponível com aplicação automática - corresponde a soma do saldo disponível acrescido do valor obtido a partir da aplicação automática Expresso em valor monetário com 4 casas decimais.
           maxLength: 19
           minLength: 0
+          nullable: true
           example: 2566449494219
+        automaticallyInvestedAmountCurrency:
+          type: string
+          pattern: '^(\w{3}){1}$'
+          maxLength: 3
+          description: 'Moeda referente ao valor do saldo disponível com aplicação automática, segundo modelo ISO-4217. p.ex. ''BRL''. Pode ser preenchido com “NA” caso a instituição não possua a informação.'
+          example: BRL
       additionalProperties: false
     AccountData:
       type: object
       required:
-        - brandID
         - brandName
         - companyCnpj
         - type
@@ -303,12 +318,6 @@ components:
         - checkDigit
         - accountID
       properties:
-        brandID:
-          type: string
-          description: 'Identifica a Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes.'
-          maxLength: 100
-          pattern: \w*\W*
-          example: '29698749425984912674'
         brandName:
           type: string
           description: 'Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes.'
@@ -413,16 +422,27 @@ components:
         Conjunto de informações da Conta de: depósito à vista
       required:
         - overdraftContractedLimit
+        - overdraftContractedLimitCurrency
         - overdraftUsedLimit
+        - overdraftUsedLimitCurrency
+        - unarrangedOverdraftAmount
+        - unarrangedOverdraftAmountCurrency
       properties:
         overdraftContractedLimit:
           type: number
           format: double
           pattern: '(-?\d{15}(.\d{4}?))$'
-          description: Valor do limite contratado do cheque especial
+          description: Valor do limite contratado do cheque especial.
           maxLength: 19
           minLength: 0
+          nullable: true
           example: 99.9999
+        overdraftContractedLimitCurrency:
+          type: string
+          pattern: '^(\w{3}){1}$'
+          maxLength: 3
+          description: 'Moeda referente ao valor do limite contratado do cheque especial, segundo modelo ISO-4217. p.ex. ''BRL''. Pode ser preenchido com “NA” caso a instituição não possua a informação.'
+          example: BRL
         overdraftUsedLimit:
           type: number
           format: double
@@ -430,7 +450,29 @@ components:
           description: Valor utilizado total do limite do cheque especial e o adiantamento a depositante.
           maxLength: 19
           minLength: 0
+          nullable: true
           example: 10000.9999
+        overdraftUsedLimitCurrency:
+          type: string
+          pattern: '^(\w{3}){1}$'
+          maxLength: 3
+          description: 'Moeda referente ao valor utilizado total do limite do cheque especial e o adiantamento a depositante, segundo modelo ISO-4217. p.ex. ''BRL''. Pode ser preenchido com “NA” caso a instituição não possua a informação.'
+          example: BRL
+        unarrangedOverdraftAmount:
+          type: number
+          format: double
+          pattern: '(-?\d{15}(.\d{4}?))$'
+          description: Valor de operação contratada em caráter emergencial para cobertura de saldo devedor em conta de depósitos à vista e de excesso sobre o limite pactuado de cheque especial.
+          maxLength: 19
+          minLength: 0
+          example: 99.9999
+          nullable: true
+        unarrangedOverdraftAmountCurrency:
+          type: string
+          pattern: '^(\w{3}){1}$'
+          maxLength: 3
+          description: 'Moeda referente ao valor de operação contratada em caráter emergencial para cobertura de saldo devedor em conta de depósitos à vista e de excesso sobre o limite pactuado de cheque especial, segundo modelo ISO-4217. p.ex. ''BRL''. Pode ser preenchido com “NA” caso a instituição não possua a informação.'
+          example: BRL
       additionalProperties: false
     AccountTransactionsData:
       type: object
@@ -440,14 +482,21 @@ components:
         - transactionName
         - type
         - amount
+        - transactionCurrency
         - transactionDate
-        - payeeCnpjCpf
-        - payeePersonType
-        - payeeCompeCode
-        - payeeBranchCode
-        - payeeNumber
-        - payeeCheckDigit
+        - partieCnpjCpf
+        - partiePersonType
+        - partieCompeCode
+        - partieBranchCode
+        - partieNumber
+        - partieCheckDigit
       properties:
+        transactionId:
+          type: string
+          description: Código ou identificador único prestado pela instituição que mantém a conta para representar a transação individual.
+          maxLength: 100
+          pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
+          example: TXpRMU9UQTROMWhZV2xSU1FUazJSMDl
         completedAuthorisedPaymentType:
           $ref: '#/components/schemas/EnumCompletedAuthorisedPaymentIndicator'
         creditDebitType:
@@ -468,6 +517,12 @@ components:
           maxLength: 19
           minLength: 0
           example: 500.54
+        transactionCurrency:
+          type: string
+          pattern: '^(\w{3}){1}$'
+          maxLength: 3
+          description: 'Moeda referente ao valor da transação, segundo modelo ISO-4217. p.ex. ''BRL''.'
+          example: BRL
         transactionDate:
           type: string
           maxLength: 10
@@ -515,13 +570,13 @@ components:
       type: string
       enum:
         - INDIVIDUAL
+        - CONJUNTA_SIMPLES
         - CONJUNTA_SOLIDARIA
-        - CONJUNTA_NAO_SOLIDARIA
       description: |
         Subtipo de conta (vide Enum): 
         Conta individual - possui um único titular
+        Conta conjunta simples - onde as movimentações financeiras só podem serem realizadas mediante autorização de TODOS os correntistas da conta.
         Conta conjunta solidária - é a modalidade cujos titulares podem realizar movimentações de forma isolada, isto é, sem que seja necessária a autorização dos demais titulares
-        Conta conjunta não solidária - onde as movimentações financeiras só podem serem realizadas mediante autorização de TODOS os correntistas da conta.
       example: INDIVIDUAL
     EnumAccountType:
       type: string
@@ -550,8 +605,8 @@ components:
       type: string
       description: |
         Indicador do tipo de lançamento: 
-        - Crédito
-        - Débito
+        Débito (no extrato) Em um extrato bancário, os débitos, marcados com a letra “D” ao lado do valor registrado, informam as saídas de dinheiro na conta-corrente.
+        Crédito (no extrato) Em um extrato bancário, os créditos, marcados com a letra “C” ao lado do valor registrado, informam as entradas de dinheiro na conta-corrente.
       maxLength: 7
       enum:
         - CREDITO
@@ -578,20 +633,20 @@ components:
         - PIX
         - TRANSFERENCIA_MESMA_INSTITUICAO
         - BOLETO
-        - CONVENIO
-        - ARRECADACAO
+        - CONVENIO_ARRECADACAO
         - PACOTE_TARIFA_SERVICOS
         - TARIFA_SERVICOS_AVULSOS
         - FOLHA_PAGAMENTO
         - DEPOSITO
         - SAQUE
         - CARTAO
-        - JUROS_CHEQUE_ESPECIAL
-        - RENDIMENTO
-        - RECEBIVEIS_CARTAO_DEBITO
-        - RECEBIVEIS_CARTAO_CREDITO
-        - OUTRO
-      example: OUTRO
+        - ENCARGOS_JUROS_CHEQUE_ESPECIAL
+        - RENDIMENTO_APLIC_FINANCEIRA
+        - PORTABILIDADE_SALARIO
+        - RESGATE_APLIC_FINANCEIRA
+        - OPERACAO_CREDITO
+        - OUTROS
+      example: PIX
     Links:
       type: object
       description: Referências para outros recusos da API requisitada.
@@ -921,15 +976,6 @@ components:
         pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
         minLength: 1
         maxLength: 100
-    xJwsSignature:
-      name: x-jws-signature
-      in: header
-      description: Cabeçalho contendo uma assinatura JWS separada do corpo do payload.
-      required: true
-      schema:
-        type: string
-        pattern: \w*\W*
-        maxLength: 2048
   securitySchemes:
     OpenId:
       type: openIdConnect

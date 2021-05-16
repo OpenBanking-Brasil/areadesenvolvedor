@@ -52,7 +52,7 @@ paths:
         - Credit Card
       summary: Conjunto de informações das Contas de pagamento pós paga
       description: Método para obter a lista de contas de pagamento pós-paga mantidas pelo cliente na instituição transmissora e para as quais ele tenha fornecido consentimento
-      operationId: getAccounts
+      operationId: creditCardsGetAccounts
       parameters:
         - $ref: '#/components/parameters/Authorization'
         - $ref: '#/components/parameters/xFapiAuthDate'
@@ -92,7 +92,7 @@ paths:
         - Credit Card
       summary: Obtém os dados de identificação da conta identificada por creditCardAccountId.
       description: Método para obter os dados de identificação da conta de pagamento pós-paga identificada por creditCardAccountId mantida pelo cliente na instituição transmissora.
-      operationId: getAccountsCreditCardAccountId
+      operationId: creditCardsGetAccountsCreditCardAccountId
       parameters:
         - $ref: '#/components/parameters/Authorization'
         - $ref: '#/components/parameters/xFapiAuthDate'
@@ -131,7 +131,7 @@ paths:
         - Credit Card
       summary: Obtém a lista de faturas da conta identificada por creditCardAccountId.
       description: Método para obter a lista de faturas da conta de pagamento pós-paga identificada por creditCardAccountId mantida pelo cliente na instituição transmissora.
-      operationId: getAccountsCreditCardAccountIdBills
+      operationId: creditCardsGetAccountsCreditCardAccountIdBills
       parameters:
         - $ref: '#/components/parameters/Authorization'
         - $ref: '#/components/parameters/xFapiAuthDate'
@@ -174,7 +174,7 @@ paths:
         - Credit Card
       summary: Obtém a lista de transações da conta identificada por creditCardAccountId e billId.
       description: Método para obter a lista de transações da conta de pagamento pós-paga identificada por creditCardAccountId e billId mantida pelo cliente na instituição transmissora.
-      operationId: getAccountsCreditCardAccountIdBillIdTransactions
+      operationId: creditCardsGetAccountsCreditCardAccountIdBillsBillIdTransactions
       parameters:
         - $ref: '#/components/parameters/Authorization'
         - $ref: '#/components/parameters/xFapiAuthDate'
@@ -222,7 +222,7 @@ paths:
         Obtém os limites da conta identificada por creditCardAccountId.
       description: |
         Método para obter os limites da conta de pagamento pós-paga identificada por creditCardAccountId mantida pelo cliente na instituição transmissora.
-      operationId: getAccountsCreditCardAccountIdLimits
+      operationId: creditCardsGetAccountsCreditCardAccountIdLimits
       parameters:
         - $ref: '#/components/parameters/Authorization'
         - $ref: '#/components/parameters/xFapiAuthDate'
@@ -261,7 +261,7 @@ paths:
         - Credit Card
       summary: Obtém a lista de transações da conta identificada por creditCardAccountId.
       description: Método para obter a lista de transações da conta de pagamento pós-paga identificada por creditCardAccountId mantida pelo cliente na instituição transmissora.
-      operationId: getAccountsCreditCardAccountIdTransactions
+      operationId: creditCardsGetAccountsCreditCardAccountIdTransactions
       parameters:
         - $ref: '#/components/parameters/Authorization'
         - $ref: '#/components/parameters/xFapiAuthDate'
@@ -302,109 +302,186 @@ paths:
             - credit-card-accounts
 components:
   schemas:
+    CreditCardsAccountsIdentificationData:
+      type: object
+      description: Conjunto de informações referentes à identificação da conta de pagamento pós-paga.
+      required:
+        - name
+        - productType
+        - creditCardNetwork
+        - paymentMethod
+      properties:
+        name:
+          type: string
+          pattern: \w*\W*
+          description: |
+            Denominação/Identificação do nome da conta de pagamento pós-paga (cartão). Conforme CIRCULAR Nº 3.680,BCB, 2013: 'conta de pagamento pós-paga: destinada à execução de transações de pagamento que independem do aporte prévio de recursos'.
+          maxLength: 50
+          example: Cartão Universitário
+        productType:
+          $ref: '#/components/schemas/EnumCreditCardAccountsProductType'
+        productAdditionalInfo:
+          type: string
+          pattern: \w*\W*
+          description: Informações complementares se tipo de Cartão 'OUTROS'
+          maxLength: 50
+          example: OURO_INTERNACIONAL
+        creditCardNetwork:
+          $ref: '#/components/schemas/EnumCreditCardAccountNetwork'
+        networkAdditionalInfo:
+          type: string
+          pattern: \w*\W*
+          description: Texto livre para especificar categoria de bandeira marcada como 'OUTRAS'.
+          maxLength: 50
+          example: NA
+        paymentMethod:
+          $ref: '#/components/schemas/CreditCardsAccountPaymentMethod'
+      additionalProperties: false
     CreditCardAccountsBillsData:
       type: object
-      description: Conjunto das informações referentes a fatura associada à conta de pagamento pós-paga
+      description: Conjunto das informações referentes a lista de faturas associadas à conta de pagamento pós-paga
       required:
-        - currency
+        - billId
         - dueDate
+        - billTotalAmount
+        - billTotalAmountCurrency
+        - billMinimumAmount
+        - billMinimumAmountCurrency
+        - isInstalment
+        - financeCharges
         - payments
-        - billIdentification
       properties:
-        currency:
-          type: string
-          pattern: '^(\w{3}){1}$'
-          maxLength: 3
-          description: |
-            Moeda referente ao valor de todas transações relacionadas com fatura da conta de pagamento pós-paga, segundo modelo ISO-4217. p.ex. 'BRL' 
-            Todos os saldos informados estão representados com a moeda vigente do Brasil.
-          example: BRL
-        dueDate:
-          description: 'Data de vencimento da Fatura, que aparece para pagamento pelo cliente'
-          type: string
-          maxLength: 20
-          format: date-time
-          example: '2021-05-21T08:30:00Z'
-        payments:
-          type: array
-          items:
-            $ref: '#/components/schemas/CreditCardAccountsBillsPayment'
-          minItems: 1
-          maxItems: 2
-          description: Lista que traz os valores relativos aos pagamentos da Fatura da conta de pagamento pós-paga
-        billIdentification:
+        billId:
           description: Informação que identifica a fatura
           type: string
           maxLength: 100
+          pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
           example: 3459087XXZTR
-      additionalProperties: false
-    CreditCardAccountsBillsFinanceCharge:
-      type: object
-      required:
-        - type
-        - amount
-      properties:
-        type:
-          $ref: '#/components/schemas/EnumCreditCardAccountsFinanceChargeType'
-        additionalInfo:
+        dueDate:
+          description: 'Data de vencimento da Fatura, que aparece para pagamento pelo cliente'
           type: string
-          maxLength: 44
-          pattern: \w*\W*
-          description: 'Campo livre, de preenchimento obrigatório se selecionado tipo de encargo ''OUTROS'''
-        amount:
+          format: date
+          maxLength: 10
+          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
+          example: '2021-05-21'
+        billTotalAmount:
           type: number
           format: double
           pattern: '(-?\d{15}(.\d{4}?))$'
           maxLength: 19
           minLength: 0
+          description: Valor total da fatura
           example: 100000.04
-          description: Valor cobrado pelo encargo. Expresso em valor monetário com 4 casas decimais
-      additionalProperties: false
-    CreditCardAccountsBillsPayment:
-      type: object
-      required:
-        - transactionName
-        - paymentDate
-        - paymentMode
-        - valueType
-        - amount
-        - financeCharges
-      properties:
-        transactionName:
+        billTotalAmountCurrency:
           type: string
-          maxLength: 100
-          pattern: \w*\W*
-          description: Campo de livre preenchimento. Literal usada na instituição financeira para identificar a transação
-        paymentDate:
-          description: Data efetiva de quando o Pagamento da fatura foi realizado
-          type: string
-          maxLength: 20
-          format: date-time
-          example: '2021-05-21T08:30:00Z'
-        paymentMode:
-          $ref: '#/components/schemas/EnumCreditCardAccountsPaymentMode'
-        valueType:
-          $ref: '#/components/schemas/EnumCreditCardAccountsBillingValueType'
-        amount:
+          maxLength: 3
+          pattern: '^(\w{3}){1}$'
+          description: 'Moeda referente ao valor de pagamento total da fatura, segundo modelo ISO-4217. p.ex. ''BRL'' Todos os valores informados estão representados com a moeda vigente do Brasil'
+          example: BRL
+        billMinimumAmount:
           type: number
           format: double
           pattern: '(-?\d{15}(.\d{4}?))$'
           maxLength: 19
           minLength: 0
-          example: 100000.04
-          description: Valor da transação. Expresso em valor monetário com 4 casas decimais
+          description: Valor do pagamento minimo da fatura
+          example: 1000.04
+        billMinimumAmountCurrency:
+          type: string
+          maxLength: 3
+          pattern: '^(\w{3}){1}$'
+          description: 'Moeda referente ao valor de pagamento minimo da fatura, segundo modelo ISO-4217. p.ex. ''BRL'' Todos os valores informados estão representados com a moeda vigente do Brasil'
+          example: BRL
+        isInstalment:
+          type: boolean
+          description: Indica se a fatura permite parcelamento (true) ou não (false).
+          example: false
         financeCharges:
           type: array
           items:
             $ref: '#/components/schemas/CreditCardAccountsBillsFinanceCharge'
           minItems: 1
           description: Lista dos encargos cobrados na fatura
+        payments:
+          type: array
+          items:
+            $ref: '#/components/schemas/CreditCardAccountsBillsPayment'
+          minItems: 1
+          description: Lista que traz os valores relativos aos pagamentos da Fatura da conta de pagamento pós-paga
+      additionalProperties: false
+    CreditCardAccountsBillsFinanceCharge:
+      type: object
+      required:
+        - type
+        - amount
+        - currency
+      properties:
+        type:
+          $ref: '#/components/schemas/EnumCreditCardAccountsFinanceChargeType'
+        additionalInfo:
+          type: string
+          maxLength: 140
+          pattern: \w*\W*
+          example: Informações Adicionais
+          description: 'Campo livre, de preenchimento obrigatório se selecionado tipo de encargo ''OUTROS'''
+        amount:
+          type: number
+          format: double
+          minLength: 0
+          maxLength: 19
+          nullable: true
+          pattern: '(-?\d{15}(.\d{4}?))$'
+          example: 100000.04
+          description: Valor cobrado pelo encargo. Expresso em valor monetário com 4 casas decimais
+        currency:
+          type: string
+          maxLength: 3
+          pattern: '^(\w{3}){1}$'
+          example: BRL
+          description: |
+            Moeda referente ao valor cobrado pelo encargo, segundo modelo ISO-4217. p.ex. 'BRL' 
+            Todos os saldos informados estão representados com a moeda vigente do Brasil.
+      additionalProperties: false
+    CreditCardAccountsBillsPayment:
+      type: object
+      required:
+        - valueType
+        - paymentDate
+        - paymentMode
+        - amount
+        - currency
+      properties:
+        valueType:
+          $ref: '#/components/schemas/EnumCreditCardAccountsBillingValueType'
+        paymentDate:
+          description: Data efetiva de quando o Pagamento da fatura foi realizado
+          type: string
+          format: date
+          maxLength: 10
+          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
+          example: '2021-05-21'
+        paymentMode:
+          $ref: '#/components/schemas/EnumCreditCardAccountsPaymentMode'
+        amount:
+          type: number
+          format: double
+          pattern: '(-?\d{15}(.\d{4}?))$'
+          maxLength: 19
+          minLength: 0
+          example: 100000.04
+          description: Valor pagamento segundo o valueType.  Expresso em valor monetário com 4 casas decimais
+        currency:
+          type: string
+          pattern: '^(\w{3}){1}$'
+          maxLength: 3
+          description: |
+            Moeda referente ao valor de pagamento da fatura, segundo modelo ISO-4217. p.ex. 'BRL' Todos os valores informados estão representados com a moeda vigente do Brasil
+          example: BRL
       additionalProperties: false
     CreditCardAccountsData:
       type: object
       description: Conjunto de informações das Contas de pagamento pós paga
       required:
-        - brandID
         - brandName
         - companyCnpj
         - name
@@ -412,12 +489,12 @@ components:
         - creditCardNetwork
         - creditCardAccountId
       properties:
-        brandID:
+        creditCardAccountId:
           type: string
-          description: 'Identifica a Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes.'
+          description: 'Identifica de forma única a conta pagamento pós-paga do cliente, mantendo as regras de imutabilidade dentro da instituição transmissora.'
           maxLength: 100
-          pattern: \w*\W*
-          example: '29698749425984912674'
+          pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
+          example: XXZTR3459087
         brandName:
           type: string
           description: 'Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes'
@@ -451,70 +528,96 @@ components:
           pattern: \w*\W*
           maxLength: 50
           example: NA
-        creditCardAccountId:
-          type: string
-          description: Um identificador único e imutável usado para identificar o recurso da conta de pagamento pós paga. Este identificador não tem significado para o proprietário da conta
-          maxLength: 100
-          example: XXZTR3459087
       additionalProperties: false
     CreditCardAccountsLimitsData:
       type: object
-      description: Conjunto de informações referentes aos limites da conta de pagamento pós-paga
+      description: Conjunto de informações referentes aos limites da conta de pagamento pós-paga.
       required:
         - currency
         - creditLineLimitType
         - consolidationType
         - identificationNumber
         - isLimitFlexible
+        - limitAmountCurrency
         - limitAmount
+        - usedAmountCurrency
         - usedAmount
+        - availableAmountCurrency
+        - availableAmount
       properties:
-        currency:
-          type: string
-          description: |
-            Moeda referente ao saldo informado, segundo modelo ISO-4217. p.ex. 'BRL.'
-            Todos os saldos informados estão representados com a moeda vigente do Brasil
-          maxLength: 3
-          pattern: '^(\w{3}){1}$'
-          example: BRL
         creditLineLimitType:
           $ref: '#/components/schemas/EnumCreditCardAccountsLineLimitType'
         consolidationType:
           $ref: '#/components/schemas/EnumCreditCardAccountsConsolidationType'
         identificationNumber:
-          type: number
+          type: string
           description: |
-            Número de identificação do cartão:  corresponde aos 4 últimos dígitos para PF, preencher com um identificador para PJ, com as caracteristicas definidas para os ID´s no Open Banking.
-          maxLength: 4
-          example: 4453
-          minimum: 1
-          maximum: 9999
+            Número de identificação do cartão: corresponde aos 4 últimos dígitos do cartão para PF, ou então, preencher com um identificador para PJ, com as caracteristicas definidas para os IDs no Open Banking.
+          maxLength: 100
+          pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
+          example: '4453'
         lineName:
           $ref: '#/components/schemas/EnumCreditCardAccountsLineName'
         lineNameAdditionalInfo:
           type: string
           pattern: \w*\W*
-          description: Campo de preenchimento obrigatório se selecionada a opção 'OUTRAS' em lineName
+          example: Informações adicionais e complementares.
+          description: Campo de preenchimento obrigatório se selecionada a opção 'OUTRAS' em lineName.
         isLimitFlexible:
           type: boolean
-          description: 'Indicador que permite informar se a operação de crédito é: com limite ou com limite flexível. Se aplica somente se for Limite Modalidade de operação. Opção "SEM_LIMITE" se aplica somente para a Modalidade "CREDITO_A_VISTA"'
+          description: 'Indica se a operação de crédito é: com limite flexível (true) ou com limite (false).'
           example: true
+        limitAmountCurrency:
+          type: string
+          maxLength: 3
+          pattern: '^(\w{3}){1}$|^NA$'
+          example: BRL
+          description: |
+            Moeda referente ao limite informado, segundo modelo ISO-4217. p.ex. 'BRL.'
+            Todos os limite informados estão representados com a moeda vigente do do Brasil.
         limitAmount:
           type: number
           format: double
           pattern: '(-?\d{15}(.\d{4}?))$'
-          description: Valor total do limite informado Expresso em valor monetário com 4 casas decimais
+          description: Valor total do limite informado Expresso em valor monetário com 4 casas decimais.
           maxLength: 19
           minLength: 0
           example: 100000.0001
+          nullable: true
+        usedAmountCurrency:
+          type: string
+          maxLength: 3
+          pattern: '^(\w{3}){1}$|^NA$'
+          example: BRL
+          description: |
+            Moeda referente ao limite informado, segundo modelo ISO-4217. p.ex. 'BRL.'
+            Todos os saldos informados estão representados com a moeda vigente do Brasil.
         usedAmount:
           type: number
           format: double
           pattern: '(-?\d{15}(.\d{4}?))$'
-          description: Valor utilizado do limite informado Expresso em valor monetário com 4 casas decimais
+          description: Valor utilizado do limite informado Expresso em valor monetário com 4 casas decimais.
           maxLength: 19
           minLength: 0
-          example: 100000.04
+          example: 7500.05
+          nullable: true
+        availableAmountCurrency:
+          type: string
+          maxLength: 3
+          pattern: '^(\w{3}){1}$|^NA$'
+          example: BRL
+          description: |
+            Moeda referente ao limite informado, segundo modelo ISO-4217. p.ex. 'BRL.'
+            Todos os saldos informados estão representados com a moeda vigente do Brasil.
+        availableAmount:
+          type: number
+          format: double
+          pattern: '(-?\d{15}(.\d{4}?))$'
+          description: Valor disponível do limite informado Expresso em valor monetário com 4 casas decimais.
+          maxLength: 19
+          minLength: 0
+          nullable: true
+          example: 2499.95
       additionalProperties: false
     CreditCardsAccountPaymentMethod:
       type: object
@@ -524,18 +627,16 @@ components:
         - isMultipleCreditCard
       properties:
         identificationNumber:
-          type: number
+          type: string
           description: |
-            Número de identificação do cartão:  corresponde aos 4 últimos dígitos para PF, preencher com um identificador para PJ, com as caracteristicas definidas para os ID´s no Open Banking.
-          maxLength: 4
-          example: 4453
-          minimum: 1
-          maximum: 9999
+            Número de identificação do cartão: corresponde aos 4 últimos dígitos do cartão para PF, ou então, preencher com um identificador para PJ, com as caracteristicas definidas para os IDs no Open Banking.
+          maxLength: 100
+          pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
+          example: '4453'
         isMultipleCreditCard:
           type: boolean
           description: |
-            Informa se a conta de Pagamento pós paga é Múltipla. "Cartões denominados múltiplos possuem tanto a função crédito quanto a débito, devendo o proprietário do cartão, no momento de sua utilização, informar se o pagamento é na função crédito (que leva a um pagamento futuro, por meio de uma fatura do cartão de crédito) ou na função débito".
-            Fonte: Tipos de cartão - Banco Central do Brasil www.bcb.gov.br › port › folder_serie_I_tipos_de_cartao
+            Indica se o Cartão de crédito associado à conta pagamento pós-paga é múltiplo ou não. Cartões denominados múltiplos possuem tanto a função crédito quanto a função débito, devendo o proprietário do cartão, no momento de sua utilização, informar se o pagamento é na função crédito (que leva a um pagamento futuro, por meio de uma fatura do cartão de crédito) ou na função débito.
           example: true
       additionalProperties: false
     CreditCardAccountsTransaction:
@@ -544,9 +645,14 @@ components:
       required:
         - identificationNumber
         - transactionName
-        - billIdentification
         - creditDebitType
         - transactionType
+        - transactionalAdditionalInfo
+        - paymentType
+        - feeType
+        - feeTypeAdditionalInfo
+        - otherCreditsAdditionalInfo
+        - otherCreditsType
         - chargeIdentificator
         - chargeNumber
         - brazilianAmount
@@ -555,34 +661,41 @@ components:
         - transactionDate
         - billPostDate
       properties:
+        transactionId:
+          type: string
+          maxLength: 100
+          pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
+          example: TXpRMU9UQTROMWhZV2xSU1FUazJSMDl
+          description: Código ou identificador único prestado pela instituição que mantém a conta para representar a transação individual.
         identificationNumber:
-          type: number
+          type: string
+          maxLength: 100
+          pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
+          example: '4453'
           description: |
-            Número de identificação do cartão:  corresponde aos 4 últimos dígitos para PF, preencher com um identificador para PJ, com as caracteristicas definidas para os ID´s no Open Banking.
-          maxLength: 4
-          example: 4453
-          minimum: 1
-          maximum: 9999
+            Número de identificação do cartão: corresponde aos 4 últimos dígitos do cartão para PF, ou então, preencher com um identificador para PJ, com as caracteristicas definidas para os IDs no Open Banking.
         lineName:
           $ref: '#/components/schemas/EnumCreditCardAccountsLineName'
         transactionName:
           type: string
           maxLength: 100
-          description: Campo de livre preenchimento. Literal usada na instituição financeira para identificar a transação
+          pattern: \w*\W*
           example: PGTO
-        billIdentification:
+          description: Campo de livre preenchimento. Literal usada na instituição financeira para identificar a transação
+        billId:
           type: string
           maxLength: 100
+          pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
+          example: MTU0OTU1NjI2NTk4OTRmc2ZhZDRmc2Q1NmZkM
           description: Informação que identifica a fatura onde consta a transação informada.
-          example: 3459087XXZTR
         creditDebitType:
           $ref: '#/components/schemas/EnumCreditDebitIndicator'
         transactionType:
           $ref: '#/components/schemas/EnumCreditCardTransactionType'
         transactionalAdditionalInfo:
           type: string
-          description: 'Campo livre, de preenchimento obrigatório quando selecionado tipo de transação ''OUTROS'''
           maxLength: 140
+          description: 'Campo livre, de preenchimento obrigatório quando selecionado tipo de transação "OUTROS"'
         paymentType:
           $ref: '#/components/schemas/EnumCreditCardAccountsPaymentType'
         feeType:
@@ -590,72 +703,79 @@ components:
         feeTypeAdditionalInfo:
           type: string
           maxLength: 140
-          description: 'Campo livre, de preenchimento obrigatório quando selecionada tipo de tarifa ''OUTRA'''
+          description: 'Campo livre, de preenchimento obrigatório quando selecionada tipo de tarifa "OUTRA"'
         otherCreditsType:
           $ref: '#/components/schemas/EnumCreditCardAccountsOtherCreditType'
         otherCreditsAdditionalInfo:
           type: string
           maxLength: 50
-          description: 'Campo livre, de preenchimento obrigatório quando selecionado tipo de crédito ''OUTROS'''
+          description: 'Campo livre, de preenchimento obrigatório quando selecionado tipo de crédito "OUTROS"'
         chargeIdentificator:
           type: string
-          description: Identificador da parcela que está sendo informada. Campo de livre preenchimento
           maxLength: 50
           pattern: \w*\W*
           example: PARCELA_1
+          description: Identificador da parcela que está sendo informada. Campo de livre preenchimento
         chargeNumber:
           type: number
-          description: Quantidade de parcelas
+          format: integer
+          nullable: true
           maxLength: 2
           example: 3
+          description: Quantidade de parcelas
         brazilianAmount:
+          type: number
+          format: double
+          nullable: true
+          maxLength: 19
+          pattern: '(-?\d{15}(.\d{4}?))$'
+          example: 100000.04
           description: 'Valor da transação expresso em valor monetário com 4 casas decimais, em moeda corrente do Brasil'
-          type: number
-          format: double
-          pattern: '(-?\d{15}(.\d{4}?))$'
-          maxLength: 19
-          minLength: 0
-          example: 100000.04
         amount:
-          description: Valor da transação efetuada no exterior e convertida em moeda nacional com 4 casas decimais. Expresso em valor monetário com 4 casas decimais
           type: number
           format: double
-          pattern: '(-?\d{15}(.\d{4}?))$'
+          nullable: true
           maxLength: 19
-          minLength: 0
+          pattern: '(-?\d{15}(.\d{4}?))$'
           example: 100000.04
+          description: Valor da transação efetuada no exterior e convertida em moeda nacional com 4 casas decimais. Expresso em valor monetário com 4 casas decimais
         currency:
           type: string
           maxLength: 3
-          description: |
-            Moeda referente ao valor da transação, se a operação foi efeuatda em moeda  estrangeira, segundo modelo ISO-4217.
-            Todos os valores informados estão representados com a moeda vigente do Brasil
-          pattern: '^(\w{3}){1}$'
+          pattern: '^(\w{3}){1}$|^NA$'
           example: BRL
+          description: |
+            Moeda referente ao valor da transação, se a operação foi efetuada em moeda  estrangeira, segundo modelo ISO-4217.
+            Todos os valores informados estão representados com a moeda vigente do Brasil
         transactionDate:
+          type: string
+          format: date
+          maxLength: 20
+          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$|^NA$'
+          example: '2021-05-21'
           description: Data original da transação
-          type: string
-          maxLength: 20
-          format: date-time
-          example: '2021-05-21T08:30:00Z'
         billPostDate:
-          description: Data na que a transação foi inserida na fatura
           type: string
+          format: date
           maxLength: 20
-          format: date-time
-          example: '2021-05-21T08:30:00Z'
+          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$|^NA$'
+          example: '2021-05-21'
+          description: Data em que a transação foi inserida na fatura
         payeeMCC:
           type: number
+          format: integer
+          maxLength: 4
+          nullable: true
+          example: 5137
           description: |
             O MCC ou o código da categoria do estabelecimento comercial. Os MCCs são agrupados segundo suas similaridades. O MCC é usado para classificar o negócio pelo tipo fornecido de bens ou serviços. Os MCCs são atribuídos por tipo de comerciante (por exemplo, um para hotéis, um para lojas de materiais de escritório, etc.) ou por nome de comerciante (por exemplo, 3000 para a United Airlines).
-          maxLength: 4
-          example: 5137
       additionalProperties: false
     EnumCreditCardAccountFee:
       type: string
       description: |
         Traz os tipos de Tarifas: (Vide Enum)
-        Anuidade, Saque com cartão no Brasil, Saque com cartão no exterior, Avaliação emergencial de crédito, Emissão segunda via, Tarifa pagamento de contas, SMS, OUTRA
+        Anuidade, Saque com cartão no Brasil, Saque com cartão no exterior, Avaliação emergencial de crédito, Emissão segunda via, Tarifa pagamento de contas, SMS, OUTRA. 
+        [Restrição] Preenchimento obrigatório se Tipo de Transação selecionada for 'TARIFA' 
       enum:
         - ANUIDADE
         - SAQUE_CARTAO_BRASIL
@@ -669,15 +789,13 @@ components:
     EnumCreditCardAccountsBillingValueType:
       type: string
       description: |
-        Traz os tipos dos valores relativos aos pagamentos da fatura da conta de pagamento pós-paga:
-        - Valor de pagamento mínimo da fatura
-        - Valor de pagamento total da fatura 
-        - Valor de pagamento da fatura com parcelamento
-        - Outro Valor pago na fatura
+        Traz os tipos dos valores relativos aos pagamentos da fatura da conta de pagamento pós-paga: (Vide Enum)
+         - Valor de pagamento da fatura com parcelamento
+         - Valor pagamento da fatura realizado
+         - Outro Valor pago na fatura
       enum:
-        - VALOR_PAGAMENTO_MINIMO_FATURA
-        - VALOR_PAGAMENTO_TOTAL_FATURA
         - VALOR_PAGAMENTO_FATURA_PARCELADO
+        - VALOR_PAGAMENTO_FATURA_REALIZADO
         - OUTRO_VALOR_PAGO_FATURA
     EnumCreditCardAccountsConsolidationType:
       type: string
@@ -713,13 +831,13 @@ components:
       example: LIMITE_CREDITO_TOTAL
     EnumCreditCardAccountsLineName:
       type: string
-      description: Modalidade de operação - Lista de   Modalidades de Operação relacionadas às Contas de Pagamento Pós-Pagas
       enum:
         - CREDITO_A_VISTA
+        - CREDITO_PARCELADO
         - SAQUE_CREDITO_BRASIL
         - SAQUE_CREDITO_EXTERIOR
         - EMPRESTIMO_CARTAO_CONSIGNADO
-        - OUTRAS
+        - OUTROS
       example: CREDITO_A_VISTA
     EnumCreditCardAccountNetwork:
       type: string
@@ -740,7 +858,9 @@ components:
       example: VISA
     EnumCreditCardAccountsOtherCreditType:
       type: string
-      description: Traz outros tipos de crédito contratados no cartão.
+      description: |
+        Traz outros tipos de crédito contratados no cartão.
+        [Restrição] Preenchimento obrigatório se o tipo transação selecionado for 'OPERACOES_CREDITO_CONTRATADAS_CARTAO'
       enum:
         - CREDITO_ROTATIVO
         - PARCELAMENTO_FATURA
@@ -750,7 +870,7 @@ components:
     EnumCreditCardAccountsPaymentMode:
       type: string
       description: |
-        Traz as formas de efetivação do pagamento realizado: 
+        Traz as formas de efetivação do pagamento realizado: (Vide Enum)
         - Débito em conta corrente
         - Boleto bancário
         - Averbação em folha
@@ -762,10 +882,10 @@ components:
         - PIX
     EnumCreditCardAccountsPaymentType:
       type: string
-      description: Traz os tipos de pagamento
+      description: Traz os tipos de pagamento. Preenchimento obrigatório se selecionado tipo de transação PAGAMENTO.
       enum:
         - A_VISTA
-        - PARCELADO
+        - A_PRAZO
       example: A_VISTA
     EnumCreditCardAccountsProductType:
       type: string
@@ -814,8 +934,8 @@ components:
       type: string
       description: |
         Indicador do tipo de lançamento: 
-        - Crédito
-        - Débito
+        Débito (no extrato) Em um extrato bancário, os débitos, marcados com a letra “D” ao lado do valor registrado, informam as saídas de dinheiro na conta-corrente.
+        Crédito (no extrato) Em um extrato bancário, os créditos, marcados com a letra “C” ao lado do valor registrado, informam as entradas de dinheiro na conta-corrente.
       maxLength: 7
       enum:
         - CREDITO
@@ -930,42 +1050,7 @@ components:
         - meta
       properties:
         data:
-          type: object
-          description: Conjunto de informações referentes à identificação da conta de pagamento pós-paga.
-          required:
-            - name
-            - productType
-            - creditCardNetwork
-            - paymentMethod
-          properties:
-            name:
-              type: string
-              pattern: \w*\W*
-              description: |
-                Denominação/Identificação do nome da conta de pagamento pós-paga (cartão). Conforme CIRCULAR Nº 3.680,BCB, 2013: 'conta de pagamento pós-paga: destinada à execução de transações de pagamento que independem do aporte prévio de recursos'.
-              maxLength: 50
-              example: Cartão Universitário
-            productType:
-              $ref: '#/components/schemas/EnumCreditCardAccountsProductType'
-            productAdditionalInfo:
-              type: string
-              pattern: \w*\W*
-              description: Informações complementares se tipo de Cartão 'OUTROS'
-              maxLength: 50
-              example: OURO_INTERNACIONAL
-            creditCardNetwork:
-              $ref: '#/components/schemas/EnumCreditCardAccountNetwork'
-            networkAdditionalInfo:
-              type: string
-              pattern: \w*\W*
-              description: Texto livre para especificar categoria de bandeira marcada como 'OUTRAS'.
-              maxLength: 50
-              example: NA
-            paymentMethod:
-              type: array
-              items:
-                $ref: '#/components/schemas/CreditCardsAccountPaymentMethod'
-          additionalProperties: false
+          $ref: '#/components/schemas/CreditCardsAccountsIdentificationData'
         links:
           $ref: '#/components/schemas/Links'
         meta:

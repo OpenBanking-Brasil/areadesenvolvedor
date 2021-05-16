@@ -281,52 +281,29 @@ components:
       required:
         - updateDateTime
         - startDate
+        - productsServicesType
         - procurators
-        - brandID
-        - brandName
-        - companiesCnpj
       properties:
         updateDateTime:
+          type: string
+          format: date-time
+          maxLength: 20
+          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
+          example: '2020-07-21T08:30:00Z'
           description: 'Data e hora da atualização do bloco de Relacionamento, conforme especificação RFC-3339, formato UTC.'
-          type: string
-          maxLength: 20
-          format: date-time
-          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
-          example: '2020-07-21T08:30:00Z'
         startDate:
-          description: Data de início de relacionamento com a Instituição Financeira. Deve trazer o menor valor entre a informação reportada ao BACEN pelo DOC 3040 e CCS.
           type: string
-          maxLength: 20
           format: date-time
+          maxLength: 20
           pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
           example: '2020-07-21T08:30:00Z'
-        companiesCnpj:
-          type: array
-          pattern: '\d{14}|^NA$'
-          items:
-            type: string
-            example: '50685362006555'
-          description: |
-            Número completo do CNPJ da instituição responsável pelo Cadastro - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. 
-            Deve-se ter apenas os números do CNPJ, sem máscara
-          example:
-            - '50685362000135'
-            - '50685362006555'
-        brandID:
-          type: string
-          description: 'Identifica a Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes.'
-          maxLength: 100
-          pattern: \w*\W*
-          example: '29698749425984912674'
-        brandName:
-          type: string
-          pattern: \w*\W*
-          description: |
-            Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a 'marca' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes
-          maxLength: 80
-          example: Organização A
+          description: Data de início de relacionamento com a Instituição Financeira. Deve trazer o menor valor entre a informação reportada ao BACEN pelo DOC 3040 e CCS.
         productsServicesType:
-          $ref: '#/components/schemas/EnumProductServiceType'
+          type: array
+          minItems: 1
+          maxItems: 12
+          items:
+            $ref: '#/components/schemas/EnumProductServiceType'
         procurators:
           type: array
           items:
@@ -338,83 +315,78 @@ components:
       type: object
       description: Conjunto de informações relativas a Identificação ou seja a ação e o efeito de identificar de forma única a pessoa jurídica através de seus dados cadastrais
       required:
-        - updateDateTime
         - businessId
-        - brandID
+        - updateDateTime
         - brandName
         - cnpjNumber
+        - tradeName
         - companyCnpjNumber
+        - companyName
         - incorporationDate
         - parties
         - contacts
       properties:
         updateDateTime:
-          description: 'Data e hora da atualização do bloco, conforme especificação RFC-3339'
           type: string
           maxLength: 20
           format: date-time
           example: '2021-05-21T08:30:00Z'
+          description: 'Data e hora da atualização do bloco, conforme especificação RFC-3339'
         businessId:
           type: string
-          pattern: \w*\W*
-          description: Um identificador único e imutável usado para identificar o recurso cliente pessoa jurídica. Este identificador não tem significado para o cliente que deu o consentimento
           maxLength: 100
+          pattern: \w*\W*
           example: 578-psd-71md6971kjh-2d414
-        brandID:
-          type: string
-          description: 'Identifica a Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes.'
-          maxLength: 100
-          pattern: \w*\W*
-          example: '29698749425984912674'
+          description: Um identificador único e imutável usado para identificar o recurso cliente pessoa jurídica. Este identificador não tem significado para o cliente que deu o consentimento
         brandName:
           type: string
+          maxLength: 80
           pattern: \w*\W*
+          example: Organização A
           description: |
             Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a 'marca' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes
-          maxLength: 80
-          example: Organização A
+        companyName:
+          type: string
+          maxLength: 70
+          pattern: \w*\W*
+          example: Luiza e Benjamin Assessoria Jurídica Ltda
+          description: Razão social da empresa consultada é o termo registrado sob o qual uma pessoa jurídica (PJ) se individualiza e exerce suas atividades. Também pode ser chamada por denominação social ou firma empresarial
+        tradeName:
+          type: string
+          maxLength: 70
+          pattern: \w*\W*
+          example: Mundo da Eletronica
+          description: 'Nome fantasia da pessoa jurídica, se houver. (É o nome popular da empresa, utilizado para divulgação da empresa e melhor fixação com o público). De preenchimento obrigatório se houver'
+        incorporationDate:
+          type: string
+          maxLength: 20
+          format: date-time
+          example: '2021-05-21T08:30:00Z'
+          description: 'Data de constituição da empresa, conforme especificação RFC-3339.'
         cnpjNumber:
           type: string
-          description: 'Número completo do CNPJ da Empresa consultada  - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. Deve-se ter apenas os números do CNPJ, sem máscara'
           maxLength: 14
           pattern: '\d{14}|^NA$'
           example: '50685362006773'
+          description: 'Número completo do CNPJ da Empresa consultada  - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. Deve-se ter apenas os números do CNPJ, sem máscara'
         companyCnpjNumber:
           type: array
-          pattern: '\d{14}|^NA$'
           items:
             type: string
-          description: |
-            Número completo do CNPJ da instituição responsável pelo Cadastro - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. 
-            Deve-se ter apenas os números do CNPJ, sem máscara
           maxLength: 14
+          pattern: '\d{14}|^NA$'
           example:
             - '50685362000135'
             - '50685362006555'
+          description: |
+            Número completo do CNPJ da instituição responsável pelo Cadastro - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. 
+            Deve-se ter apenas os números do CNPJ, sem máscara
         otherDocuments:
           type: array
           items:
             $ref: '#/components/schemas/BusinessOtherDocument'
           minItems: 1
           description: Relação dos demais documentos
-        companyName:
-          type: string
-          maxLength: 70
-          pattern: \w*\W*
-          description: Razão social da empresa consultada é o termo registrado sob o qual uma pessoa jurídica (PJ) se individualiza e exerce suas atividades. Também pode ser chamada por denominação social ou firma empresarial
-          example: Luiza e Benjamin Assessoria Jurídica Ltda
-        tradeName:
-          type: string
-          maxLength: 70
-          pattern: \w*\W*
-          description: 'Nome fantasia da pessoa jurídica, se houver. (É o nome popular da empresa, utilizado para divulgação da empresa e melhor fixação com o público). De preenchimento obrigatório se houver'
-          example: Mundo da Eletronica
-        incorporationDate:
-          description: 'Data de constituição da empresa, conforme especificação RFC-3339.'
-          type: string
-          maxLength: 20
-          format: date-time
-          example: '2021-05-21T08:30:00Z'
         parties:
           type: array
           items:
@@ -423,7 +395,13 @@ components:
           description: |
             Lista relativa às informações das partes envolvidas, como: sócio e /ou administrador
         contacts:
-          $ref: '#/components/schemas/CustomerContacts'
+          $ref: '#/components/schemas/BusinessContacts'
+        accounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/BusinessAccount'
+          description: |
+            Lista de contas depósito à vista, poupança e pagamento pré-pagas mantidas pelo cliente na instituição transmissora e para as quais ele tenha fornecido consentimento.
     BusinessProcurator:
       type: object
       required:
@@ -436,70 +414,41 @@ components:
           $ref: '#/components/schemas/EnumProcuratorsType'
         cnpjCpfNumber:
           type: string
-          pattern: '^\d{11}$|^\d{14}$|^NA$'
-          description: Identificação do Representante Legal ou Procurador. Número do cadastro nas Receita Federal  (Preencher com CPF ou CNPJ sem formatação)
-          example: '73677831148'
           maxLength: 14
+          pattern: '^\d{11}$|^\d{14}$|^NA$'
+          example: '73677831148'
+          description: Identificação do Representante Legal ou Procurador. Número do cadastro nas Receita Federal  (Preencher com CPF ou CNPJ sem formatação)
         civilName:
           type: string
-          pattern: \w*\W*
-          description: Nome civil completo ou Razão Social
           maxLength: 70
+          pattern: \w*\W*
           example: Elza Milena Stefany Teixeira
+          description: Nome civil completo ou Razão Social
         socialName:
           type: string
-          pattern: \w*\W*
-          description: 'Nome social da pessoa natural, se houver. (aquele pelo qual travestis e transexuais se reconhecem, bem como são identificados por sua comunidade e em seu meio social, conforme Decreto Nº 51.180, de 14 de janeiro de 2010)'
           maxLength: 70
-          example: NA
+          pattern: \w*\W*
+          example: Stefany Teixeirass
+          description: |
+            Nome social da pessoa natural, se houver. Aquele pelo qual travestis e transexuais se reconhecem, 
+            bem como são identificados por sua comunidade e em seu meio social, conforme Decreto Local.
+            [Restrição] Preenchimento obrigatório quando o sócio for uma pessoa natural.
       additionalProperties: false
     BusinessQualificationData:
       type: object
       description: 'Objeto que reúne as informações relativas ao processo de qualificação. Considera-se qualificação as informações que permitam as instituições apreciar, avaliar, caracterizar e classificar o cliente com a finalidade de conhecer o seu perfil de risco e sua capacidade econômico-financeira'
       required:
         - updateDateTime
-        - businessId
-        - brandID
-        - brandName
-        - companiesCnpj
         - economicActivities
         - informedRevenue
         - informedPatrimony
       properties:
         updateDateTime:
-          description: 'Data e hora da atualização do bloco, conforme especificação RFC-3339'
           type: string
           maxLength: 20
           format: date-time
           example: '2021-05-21T08:30:00Z'
-        businessId:
-          type: string
-          pattern: \w*\W*
-          description: Um identificador único e imutável usado para identificar o recurso cliente pessoa jurídica. Este identificador não tem significado para o cliente que deu o consentimento
-          maxLength: 100
-          example: 578-psd-71md6971kjh-2d414
-        brandID:
-          type: string
-          description: 'Identifica a Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes.'
-          maxLength: 100
-          pattern: \w*\W*
-          example: '29698749425984912674'
-        brandName:
-          type: string
-          pattern: \w*\W*
-          description: |
-            Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a 'marca' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes
-          maxLength: 80
-          example: Organização A
-        companiesCnpj:
-          type: array
-          pattern: '\d{14}|^NA$'
-          items:
-            type: string
-          description: |
-            Número completo do CNPJ da instituição responsável pelo Cadastro - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. 
-            Deve-se ter apenas os números do CNPJ, sem máscara
-          maxLength: 14
+          description: 'Data e hora da atualização do bloco, conforme especificação RFC-3339'
         economicActivities:
           type: array
           items:
@@ -508,87 +457,83 @@ components:
           description: 'Lista dos demais códigos relativos às demais atividades econômicas da empresa, segundo padrão CNAE (Classificação Nacional de Atividades Econômicas). De preenchimento obrigatório, se houver'
         informedRevenue:
           type: object
+          required:
+            - frequency
+            - amount
+            - currency
           properties:
             frequency:
               $ref: '#/components/schemas/EnumInformedRevenueFrequency'
-            amount:
+            frequencyAdditionalInfo:
+              type: string
+              maxLength: 100
+              pattern: \w*\W*
+              example: Informações adicionais
               description: |
-                Valor do patrimônio informado. Expresso em valor monetário com 4 casas decimais.
-                "Patrimônio é o conjunto de bens vinculado a uma pessoa ou a uma entidade".
+                Texto livre para complementar informação relativa ao patrimonio. 
+                [Restrição] Preencher quando frequency for igual OUTROS.
+            amount:
               type: number
               format: double
-              pattern: '(-?\d{15}(.\d{4}?))$'
-              maxLength: 19
               minLength: 0
+              maxLength: 19
+              nullable: true
+              pattern: '(-?\d{15}(.\d{4}?))$'
               example: 100000.04
+              description: |
+                Valor do patrimônio informado. Expresso em valor monetário com 4 casas decimais.
+                Patrimônio é o conjunto de bens vinculado a uma pessoa ou a uma entidade.
             currency:
               type: string
-              pattern: '^(\w{3}){1}$'
+              pattern: '^(\w{3}){1}$|^NA$'
               maxLength: 3
-              description: 'Moeda referente ao valor do patrimônio, segundo modelo ISO-4217.'
               example: BRL
+              description: 'Moeda referente ao valor do patrimônio, segundo modelo ISO-4217.'
             year:
               type: number
               maxLength: 4
-              description: 'Ano de referência do Patrimônio, conforme especificação RFC-3339.'
-              example: 2010
               maximum: 9999
+              nullable: true
+              example: 2010
+              description: 'Ano de referência do Patrimônio, conforme especificação RFC-3339.'
           additionalProperties: false
         informedPatrimony:
-          type: object
-          properties:
-            amount:
-              description: |
-                Valor do patrimônio informado. Expresso em valor monetário com 4 casas decimais.
-                "Patrimônio é o conjunto de bens vinculado a uma pessoa ou a uma entidade".
-              type: number
-              format: double
-              pattern: '(-?\d{15}(.\d{4}?))$'
-              maxLength: 19
-              minLength: 0
-              example: 100000.04
-            currency:
-              type: string
-              pattern: '^(\w{3}){1}$'
-              maxLength: 3
-              description: 'Moeda referente ao valor do patrimônio, segundo modelo ISO-4217.'
-              example: BRL
-            year:
-              type: number
-              maxLength: 4
-              description: 'Ano de referência do Patrimônio, conforme especificação RFC-3339.'
-              example: 2010
-              maximum: 9999
-          additionalProperties: false
+          $ref: '#/components/schemas/BusinessInformedPatrimony'
+      additionalProperties: false
     BusinessOtherDocument:
       type: object
+      required:
+        - number
+        - country
+        - expirationDate
       properties:
         type:
           type: string
           maxLength: 20
           pattern: \w*\W*
-          description: 'Número do Tipo de documento informado. De preenchimento obrigatório, para a Pessoa jurídica com domicílio ou sede no exterior, desobrigada de inscrição no CNPJ'
           example: EIN
+          description: 'Número do Tipo de documento informado. De preenchimento obrigatório, para a Pessoa jurídica com domicílio ou sede no exterior, desobrigada de inscrição no CNPJ'
         number:
           type: string
           maxLength: 20
           pattern: \w*\W*
-          description: 'Número do outro documento. De preenchimento obrigatório, para a Pessoa jurídica com domicílio ou sede no exterior, desobrigada de inscrição no CNPJ'
           example: '128328453'
+          description: 'Número do outro documento. De preenchimento obrigatório, para a Pessoa jurídica com domicílio ou sede no exterior, desobrigada de inscrição no CNPJ'
         country:
           type: string
-          description: Pais de emissão do tipo de documento informado. Código do pais de acordo com o código “alpha3” do ISO-3166
           maxLength: 3
+          pattern: '^(\w{3}){1}$|^NA$'
           example: CAN
+          description: Pais de emissão do tipo de documento informado. Código do pais de acordo com o código “alpha3” do ISO-3166
         expirationDate:
-          description: 'Data vigência do tipo de  documento informado, conforme especificação RFC-3339'
           type: string
-          maxLength: 10
           format: date
-          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
+          maxLength: 10
+          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$|^NA$'
           example: '2021-05-21'
+          description: 'Data vigência do tipo de  documento informado, conforme especificação RFC-3339.'
       additionalProperties: false
-    CustomerContacts:
+    BusinessContacts:
       type: object
       description: Conjunto de informações referentes às formas para contatar o cliente.
       required:
@@ -599,7 +544,7 @@ components:
         postalAddresses:
           type: array
           items:
-            $ref: '#/components/schemas/CustomerPostalAddress'
+            $ref: '#/components/schemas/BusinessPostalAddress'
           minItems: 1
           description: Lista de endereços da pessoa jurídica
         phones:
@@ -614,6 +559,97 @@ components:
             $ref: '#/components/schemas/CustomerEmail'
           minItems: 1
           description: Lista e-mails de contato
+      additionalProperties: false
+    PersonalContacts:
+      type: object
+      description: Conjunto de informações referentes às formas para contatar o cliente.
+      required:
+        - postalAddresses
+        - phones
+        - emails
+      properties:
+        postalAddresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/PersonalPostalAddress'
+          minItems: 1
+          description: Lista de endereços da pessoa natural
+        phones:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerPhone'
+          minItems: 1
+          description: Lista com telefones de contato da pessoa natural
+        emails:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerEmail'
+          minItems: 1
+          description: Lista e-mails de contato
+      additionalProperties: false
+    BusinessInformedPatrimony:
+      type: object
+      required:
+        - amount
+        - currency
+        - date
+      properties:
+        amount:
+          type: number
+          format: double
+          minLength: 0
+          maxLength: 19
+          nullable: true
+          pattern: '(-?\d{15}(.\d{4}?))$'
+          example: 100000.04
+          description: |
+            Valor do patrimônio informado. Expresso em valor monetário com 4 casas decimais.
+            Patrimônio é o conjunto de bens vinculado a uma pessoa ou a uma entidade.
+        currency:
+          type: string
+          maxLength: 3
+          pattern: '^(\w{3}){1}$'
+          example: BRL
+          description: 'Moeda referente ao valor do patrimônio, segundo modelo ISO-4217.'
+        date:
+          type: string
+          format: date
+          maxLength: 20
+          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$|^NA$'
+          example: '2021-05-21'
+          description: 'Data de referência do Patrimônio, conforme especificação RFC-3339.'
+      additionalProperties: false
+    PersonalInformedPatrimony:
+      type: object
+      required:
+        - amount
+        - currency
+        - year
+      properties:
+        amount:
+          type: number
+          format: double
+          minLength: 0
+          maxLength: 19
+          nullable: true
+          pattern: '(-?\d{15}(.\d{4}?))$'
+          example: 100000.04
+          description: |
+            Valor do patrimônio informado. Expresso em valor monetário com 4 casas decimais.
+            Patrimônio é o conjunto de bens vinculado a uma pessoa ou a uma entidade.
+        currency:
+          type: string
+          maxLength: 3
+          pattern: '^(\w{3}){1}$|^NA$'
+          example: BRL
+          description: 'Moeda referente ao valor do patrimônio, segundo modelo ISO-4217.'
+        year:
+          type: number
+          maxLength: 4
+          maximum: 9999
+          nullable: true
+          example: 2010
+          description: 'Ano de referência do Patrimônio, conforme especificação RFC-3339.'
       additionalProperties: false
     CustomerEmail:
       type: object
@@ -650,10 +686,10 @@ components:
           $ref: '#/components/schemas/EnumCustomerPhoneType'
         additionalInfo:
           type: string
-          description: Informação complementar relativa ao tipo de telefone selecionado. De preenchimento obrigatório quando selecionado o tipo `OUTRO`
+          description: 'Informação complementar relativa ao tipo de telefone selecionado. [Restrição] De preenchimento obrigatório quando selecionado o tipo ''OUTRO''.'
           pattern: \w*\W*
           maxLength: 70
-          example: '432'
+          example: Informações adicionais.
         countryCallingCode:
           type: string
           maxLength: 4
@@ -675,78 +711,246 @@ components:
           description: Número do ramal. De preenchimento obrigatório se fizer parte da identificação do número do telefone informado
           example: '932'
       additionalProperties: false
-    CustomerPostalAddress:
+    BusinessPostalAddress:
       type: object
       required:
         - isMain
         - address
-        - additionalInfo
         - districtName
         - townName
         - countrySubDivision
         - postCode
         - country
-        - countryCode
       properties:
         isMain:
           type: boolean
-          description: Indica se o endereço informado é o principal
           example: true
+          description: Indica se o endereço informado é o principal
         address:
           type: string
-          description: |
-            Deverá trazer toda a informação referente ao endereço da dependência informada: Tipo de logradouro + Nome do logradouro + Número do Logradouro (se não existir usar ' s/n') + complemento (se houver), como, p.ex.: 'R Diamatina, 59, bloco 35, fundos' 'Praça da Boa Vontade s/n'
           maxLength: 150
-          pattern: \w*\W*
+          pattern: \w*\W*|^NA$
           example: 'Av Naburo Ykesaki, 1270'
+          description: Corresponde ao endereço comercial do cliente
         additionalInfo:
           type: string
-          description: Alguns logradouros ainda necessitam ser especificados por meio de complemento
           maxLength: 30
           pattern: \w*\W*
           example: Fundos
+          description: Alguns logradouros ainda necessitam ser especificados por meio de complemento
         districtName:
           type: string
-          description: |
-            Bairro é uma comunidade ou região localizada em uma cidade ou município de acordo com as suas subdivisões geográficas.
           maxLength: 50
-          pattern: \w*\W*
+          pattern: \w*\W*|^NA$
           example: Centro
+          description: Bairro é uma comunidade ou região localizada em uma cidade ou município de acordo com as suas subdivisões geográficas.
         townName:
           type: string
+          maxLength: 50
+          pattern: \w*\W*|^NA$
+          example: Marília
           description: |
             Localidade: O nome da localidade corresponde à designação da cidade ou município no qual o endereço está localizado.
-          maxLength: 50
-          pattern: \w*\W*
-          example: Marília
         ibgeTownCode:
           type: string
-          description: 'Código IBGE de Município. A Tabela de Códigos de Municípios do IBGE apresenta a lista dos municípios brasileiros associados a um código composto de 7 dígitos, sendo os dois primeiros referentes ao código da Unidade da Federação.'
           pattern: '\d{7}$'
           maxLength: 7
           example: '3550308'
+          description: 'Código IBGE de Município. A Tabela de Códigos de Municípios do IBGE apresenta a lista dos municípios brasileiros associados a um código composto de 7 dígitos, sendo os dois primeiros referentes ao código da Unidade da Federação.'
         countrySubDivision:
           $ref: '#/components/schemas/EnumCountrySubDivision'
         postCode:
           type: string
-          description: |
-            Código de Endereçamento Postal: Composto por um conjunto numérico de oito dígitos, o objetivo principal do CEP é orientar e acelerar o encaminhamento, o tratamento e a entrega de objetos postados nos Correios, por meio da sua atribuição a localidades, logradouros, unidades dos Correios, serviços, órgãos públicos, empresas e edifícios. p.ex. '01311000'
           pattern: '\d{8}|^NA$'
           maxLength: 8
           example: '17500001'
+          description: |
+            Código de Endereçamento Postal: Composto por um conjunto numérico de oito dígitos, o objetivo principal do CEP é orientar e acelerar o encaminhamento, o tratamento e a entrega de objetos postados nos Correios, por meio da sua atribuição a localidades, logradouros, unidades dos Correios, serviços, órgãos públicos, empresas e edifícios. p.ex. '01311000'
         country:
           type: string
+          maxLength: 80
+          pattern: \w*\W*|^NA$
+          example: Brasil
           description: Nome do país
+        countryCode:
+          type: string
+          maxLength: 3
+          example: BRA
+          description: Código do pais de acordo com o código “alpha3” do ISO-3166
+        geographicCoordinates:
+          $ref: '#/components/schemas/GeographicCoordinates'
+      additionalProperties: false
+    PersonalPostalAddress:
+      type: object
+      required:
+        - isMain
+        - address
+        - districtName
+        - townName
+        - countrySubDivision
+        - postCode
+        - country
+      properties:
+        isMain:
+          type: boolean
+          example: true
+          description: Indica se o endereço informado é o principal.
+        address:
+          type: string
+          maxLength: 150
+          pattern: \w*\W*
+          example: 'Av Naburo Ykesaki, 1270'
+          description: Corresponde ao endereço residencial do cliente.
+        additionalInfo:
+          type: string
+          maxLength: 30
+          pattern: \w*\W*
+          example: Fundos
+          description: Alguns logradouros ainda necessitam ser especificados por meio de complemento.
+        districtName:
+          type: string
+          maxLength: 50
+          pattern: \w*\W*|^NA$
+          example: Centro
+          description: Bairro é uma comunidade ou região localizada em uma cidade ou município de acordo com as suas subdivisões geográficas.
+        townName:
+          type: string
+          maxLength: 50
+          pattern: \w*\W*
+          example: Marília
+          description: |
+            Localidade: O nome da localidade corresponde à designação da cidade ou município no qual o endereço está localizado.
+        ibgeTownCode:
+          type: string
+          pattern: '\d{7}$'
+          maxLength: 7
+          example: '3550308'
+          description: 'Código IBGE de Município. A Tabela de Códigos de Municípios do IBGE apresenta a lista dos municípios brasileiros associados a um código composto de 7 dígitos, sendo os dois primeiros referentes ao código da Unidade da Federação.'
+        countrySubDivision:
+          $ref: '#/components/schemas/EnumCountrySubDivision'
+        postCode:
+          type: string
+          pattern: '\d{8}|^NA$'
+          maxLength: 8
+          example: '17500001'
+          description: |
+            Código de Endereçamento Postal: Composto por um conjunto numérico de oito dígitos, o objetivo principal do CEP é orientar e acelerar o encaminhamento, o tratamento e a entrega de objetos postados nos Correios, por meio da sua atribuição a localidades, logradouros, unidades dos Correios, serviços, órgãos públicos, empresas e edifícios. p.ex. '01311000'.
+        country:
+          type: string
           maxLength: 80
           pattern: \w*\W*
           example: Brasil
+          description: Nome do país
         countryCode:
           type: string
-          description: Código do pais de acordo com o código “alpha3” do ISO-3166
           maxLength: 3
           example: BRA
+          description: Código do pais de acordo com o código “alpha3” do ISO-3166.
         geographicCoordinates:
           $ref: '#/components/schemas/GeographicCoordinates'
+      additionalProperties: false
+    BusinessAccount:
+      type: object
+      required:
+        - compeCode
+        - branchCode
+        - number
+        - checkDigit
+        - type
+      properties:
+        compeCode:
+          type: string
+          maxLength: 3
+          pattern: '\d{3}|^NA$'
+          description: 'Código identificador atribuído pelo Banco Central do Brasil às instituições participantes do STR (Sistema de Transferência de reservas).O Compe (Sistema de Compensação de Cheques e Outros Papéis) é um sistema que identifica e processa as compensações bancárias. Ele é representado por um código de três dígitos que serve como identificador de bancos, sendo assim, cada instituição bancária possui um número exclusivo'
+          example: '001'
+        branchCode:
+          type: string
+          maxLength: 4
+          pattern: '\d{4}|^NA$'
+          description: |
+            Código da Agência detentora da conta. (Agência é a dependência destinada ao atendimento aos clientes, ao público em geral e aos associados de cooperativas de crédito, no exercício de atividades da instituição, não podendo ser móvel ou transitória)
+          example: '6272'
+        number:
+          type: string
+          maxLength: 20
+          pattern: '^\d{8,20}$|^NA$'
+          description: |
+            Número da conta
+          example: '24550245'
+        checkDigit:
+          type: string
+          maxLength: 1
+          pattern: \w*\W*
+          description: |
+            Dígito da conta
+          example: '4'
+        type:
+          type: string
+          enum:
+            - CONTA_DEPOSITO_A_VISTA
+            - CONTA_POUPANCA
+            - CONTA_PAGAMENTO_PRE_PAGA
+          description: |
+            Tipos de contas. Modalidades tradicionais previstas pela Resolução 4.753, não contemplando contas vinculadas, conta de domiciliados no exterior, contas em moedas estrangeiras e conta correspondente moeda eletrônica. Vide Enum
+            Conta de depósito à vista ou Conta corrente - é o tipo mais comum. Nela, o dinheiro fica à sua disposição para ser sacado a qualquer momento. Essa conta não gera rendimentos para o depositante
+            Conta poupança - foi criada para estimular as pessoas a pouparem. O dinheiro que ficar na conta por trinta dias passa a gerar rendimentos, com isenção de imposto de renda para quem declara. Ou seja, o dinheiro “cresce” (rende) enquanto ficar guardado na conta. Cada depósito terá rendimentos de mês em mês, sempre no dia do mês em que o dinheiro tiver sido depositado
+            Conta de pagamento pré-paga: segundo CIRCULAR Nº 3.680, BCB de  2013, é a 'destinada à execução de transações de pagamento em moeda eletrônica realizadas com base em fundos denominados em reais previamente aportados'
+          example: CONTA_DEPOSITO_A_VISTA
+      additionalProperties: false
+    PersonalAccount:
+      type: object
+      description: |
+        Lista de contas depósito à vista, poupança e pagamento pré-pagas mantidas pelo cliente na instituição transmissora e para as quais ele tenha fornecido consentimento
+      required:
+        - compeCode
+        - branchCode
+        - number
+        - checkDigit
+        - type
+        - subtype
+      properties:
+        compeCode:
+          type: string
+          maxLength: 3
+          pattern: '\d{3}|^NA$'
+          description: 'Código identificador atribuído pelo Banco Central do Brasil às instituições participantes do STR (Sistema de Transferência de reservas).O Compe (Sistema de Compensação de Cheques e Outros Papéis) é um sistema que identifica e processa as compensações bancárias. Ele é representado por um código de três dígitos que serve como identificador de bancos, sendo assim, cada instituição bancária possui um número exclusivo'
+          example: '001'
+        branchCode:
+          type: string
+          maxLength: 4
+          pattern: '\d{4}|^NA$'
+          description: |
+            Código da Agência detentora da conta. (Agência é a dependência destinada ao atendimento aos clientes, ao público em geral e aos associados de cooperativas de crédito, no exercício de atividades da instituição, não podendo ser móvel ou transitória)
+          example: '6272'
+        number:
+          type: string
+          maxLength: 20
+          pattern: '^\d{8,20}$|^NA$'
+          description: |
+            Número da conta
+          example: '24550245'
+        checkDigit:
+          type: string
+          maxLength: 1
+          pattern: \w*\W*
+          description: |
+            Dígito da conta
+          example: '4'
+        type:
+          $ref: '#/components/schemas/BusinessAccount/properties/type'
+        subtype:
+          type: string
+          enum:
+            - INDIVIDUAL
+            - CONJUNTA_SIMPLES
+            - CONJUNTA_SOLIDARIA
+          description: |
+            Subtipo de conta (vide Enum): 
+            Conta individual - possui um único titular
+            Conta conjunta simples - onde as movimentações financeiras só podem serem realizadas mediante autorização de TODOS os correntistas da conta.
+            Conta conjunta solidária - é a modalidade cujos titulares podem realizar movimentações de forma isolada, isto é, sem que seja necessária a autorização dos demais titulares
+          example: INDIVIDUAL
       additionalProperties: false
     EconomicActivity:
       type: object
@@ -763,7 +967,7 @@ components:
           example: 8599604
         isMain:
           type: boolean
-          description: Informa se é o principal ramo de atividade
+          description: Indica se é o ramo principal de atividade da empresa quando true e se é o ramo secundário quando false.
           example: true
     EnumAreaCode:
       type: string
@@ -883,12 +1087,12 @@ components:
       example: FIXO
     EnumFiliationType:
       type: string
-      description: |
-        Tipo de filiação.
       enum:
         - MAE
         - PAI
+        - SEM_FILIACAO
       example: PAI
+      description: Tipo de filiação.
     EnumInformedRevenueFrequency:
       type: string
       description: |
@@ -903,11 +1107,10 @@ components:
         - TRIMESTRAL
         - SEMESTRAL
         - ANUAL
+        - OUTROS
       example: DIARIA
     EnumInformedIncomeFrequency:
       type: string
-      description: |
-        Traz a frequência ou período da renda informada.
       enum:
         - DIARIA
         - SEMANAL
@@ -917,10 +1120,12 @@ components:
         - TRIMESTRAL
         - SEMESTRAL
         - ANUAL
+        - OUTROS
+      description: Traz a frequência ou período da renda informada.
     EnumMaritalStatusCode:
       type: string
       description: |
-        Estado civil do cliente. 
+        Estado marital do cliente. 
       enum:
         - SOLTEIRO
         - CASADO
@@ -928,7 +1133,7 @@ components:
         - SEPARADO_JUDICIALMENTE
         - DIVORCIADO
         - UNIAO_ESTAVEL
-        - OUTROS
+        - OUTRO
       example: SOLTEIRO
     EnumOccupationMainCodeType:
       type: string
@@ -976,12 +1181,12 @@ components:
       enum:
         - REPRESENTANTE_LEGAL
         - PROCURADOR
-        - NAO_POSSUI
+        - NAO_SE_APLICA
+      example: PROCURADOR
       description: |
         Tipo de representante.
         Representante legal - Nome Civil completo da Pessoa Natural que represente uma entidade ou uma empresa e é nomeado em seu ato constitutivo, ou seja, no contrato social ou estatuto social.
         Procurador - é qualquer pessoa que represente a Pessoa Natural em algum negócio, mediante autorização escrita do mesmo.
-      example: PROCURADOR
     EnumProductServiceType:
       type: string
       maxLength: 24
@@ -997,9 +1202,9 @@ components:
         - OPERACOES_CAMBIO
         - CONTA_SALARIO
         - CREDENCIAMENTO
-      description: |
-        Relação dos produtos e serviços com contrato vigente.
+        - OUTROS
       example: SEGURO
+      description: Lista com a relação dos produtos e serviços com contrato vigente.
     EnumSex:
       type: string
       description: |
@@ -1105,31 +1310,15 @@ components:
       properties:
         otherNationalitiesInfo:
           type: string
-          description: |
-            Campo de preenchimento obrigatório caso o cliente não possua nacionalidade brasileira. Preencher indicando todas suas demais nacionalidades utilizando o código de pais de acordo com o código “alpha3” do ISO-3166.p.ex.'CAN'
           maxLength: 40
           example: CAN
-        documents:
-          type: array
-          description: Lista que traz relação de documentos complementares de pessoas com nacionalidade diferente de brasileira
-          items:
-            $ref: '#/components/schemas/NationalityOther'
-      additionalProperties: false
-    NationalityOther:
-      type: object
-      description: Conjunto de informações específicas para cliente que possue nacionalidade diferente da brasileira
-      properties:
-        otherNationalitiesInfo:
-          type: string
           description: |
             Campo de preenchimento obrigatório caso o cliente não possua nacionalidade brasileira. Preencher indicando todas suas demais nacionalidades utilizando o código de pais de acordo com o código “alpha3” do ISO-3166.p.ex.'CAN'
-          maxLength: 40
-          example: CAN
         documents:
           type: array
-          description: Lista que traz relação de documentos complementares de pessoas com nacionalidade diferente de brasileira
           items:
             $ref: '#/components/schemas/NationalityOtherDocument'
+          description: Lista que traz relação de documentos complementares de pessoas com nacionalidade diferente de brasileira
       additionalProperties: false
     NationalityOtherDocument:
       type: object
@@ -1165,12 +1354,18 @@ components:
           format: date
           pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
           example: '2021-05-21'
+        country:
+          type: string
+          maxLength: 80
+          pattern: \w*\W*
+          example: Brasil
+          description: Nome do país
         typeAdditionalInfo:
           type: string
           maxLength: 70
           pattern: \w*\W*
           description: Campo livre de preenchimento obrigatório se selecionada a opção OUTROS tipos de documentos.
-          example: NA
+          example: Informações adicionais.
       additionalProperties: false
     PartiesParticipation:
       type: object
@@ -1178,11 +1373,16 @@ components:
         Lista relativa às informações das partes envolvidas, como: sócio e /ou administrador
       required:
         - type
+        - personType
         - civilName
         - socialName
+        - companyName
+        - startDate
         - shareholding
         - documentType
         - documentNumber
+        - documentCountry
+        - documentExpirationDate
       properties:
         personType:
           type: string
@@ -1202,152 +1402,158 @@ components:
             - ADMINISTRADOR
         civilName:
           type: string
-          description: 'Nome civil completo da pessoa natural (Direito fundamental da pessoa, o nome civil é aquele atribuído à pessoa natural desde o registro de seu nascimento, com o qual será identificada por toda a sua vida, bem como após a sua morte)'
           maxLength: 70
           pattern: \w*\W*
           example: Juan Kaique Cláudio Fernandes
+          description: 'Nome civil completo da pessoa natural (Direito fundamental da pessoa, o nome civil é aquele atribuído à pessoa natural desde o registro de seu nascimento, com o qual será identificada por toda a sua vida, bem como após a sua morte)'
         socialName:
           type: string
-          description: 'Nome social da pessoa natural, se houver. (aquele pelo qual travestis e transexuais se reconhecem, bem como são identificados por sua comunidade e em seu meio social, conforme Decreto Local)'
           maxLength: 70
           pattern: \w*\W*
           example: Karina
+          description: 'Nome social da pessoa natural, se houver. (aquele pelo qual travestis e transexuais se reconhecem, bem como são identificados por sua comunidade e em seu meio social, conforme Decreto Local)'
         companyName:
           type: string
           maxLength: 70
           pattern: \w*\W*
-          description: Razão social da empresa consultada é o termo registrado sob o qual uma pessoa jurídica (PJ) se individualiza e exerce suas atividades. Também pode ser chamada por denominação social ou firma empresarial
           example: Luiza e Benjamin Assessoria Jurídica Ltda
+          description: Razão social da empresa consultada é o termo registrado sob o qual uma pessoa jurídica (PJ) se individualiza e exerce suas atividades. Também pode ser chamada por denominação social ou firma empresarial
         tradeName:
           type: string
           maxLength: 70
           pattern: \w*\W*
-          description: 'Nome fantasia da pessoa jurídica, se houver. (É o nome popular da empresa, utilizado para divulgação da empresa e melhor fixação com o público). De preenchimento obrigatório se houver'
           example: Mundo da Eletronica
+          description: 'Nome fantasia da pessoa jurídica, se houver. (É o nome popular da empresa, utilizado para divulgação da empresa e melhor fixação com o público). De preenchimento obrigatório se houver'
         startDate:
-          description: 'Data de início da participação, conforme especificação RFC-3339.'
           type: string
           maxLength: 20
           format: date-time
           example: '2021-05-21T08:30:00Z'
+          description: 'Data de início da participação, conforme especificação RFC-3339.'
         shareholding:
           type: string
           maxLength: 4
           pattern: '^((\d{1,9}\.\d{2}){1}|NA)$'
+          example: '0.51'
           description: |
             Percentual de participação societária (informar com 2 casas decimais). Sócio só deve ser informado se sua participação societária for igual ou superior a 25%. p.ex: 0.25 (Este valor  representa 25%. O valor '1 'representa 100%)
-          example: '0.51'
         documentType:
           $ref: '#/components/schemas/EnumPartiesParticipationDocumentType'
         documentNumber:
           type: string
           maxLength: 20
           pattern: \w*\W*
-          description: Número do documento informado. Campo Texto Livre para preencher número e dígito do documento se houver
           example: '73677831148'
+          description: Número do documento informado. Campo Texto Livre para preencher número e dígito do documento se houver
         documentAdditionalInfo:
           type: string
           maxLength: 100
           pattern: \w*\W*
-          description: 'Campo livre, de preenchimento obrigatório quando o documento informado tiver informações complementares relevantes para a sua identificação'
           example: CNH
+          description: 'Campo livre, de preenchimento obrigatório quando o documento informado tiver informações complementares relevantes para a sua identificação'
         documentCountry:
           type: string
-          description: País de emissão do documento. Código do pais de acordo com o código “alpha3” do ISO-3166.
           maxLength: 3
           example: CAN
+          description: País de emissão do documento. Código do pais de acordo com o código alpha3 do ISO-3166.
         documentExpirationDate:
+          type: string
+          format: date
+          maxLength: 10
+          example: '2021-05-21'
+          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])|^NA$'
           description: 'Data de validade do documento informado, conforme especificação RFC-3339.'
-          type: string
-          maxLength: 10
-          format: date
-          example: '2021-05-21'
         documentIssueDate:
-          description: 'Data de emissão do documento, conforme especificação RFC-3339.'
           type: string
           maxLength: 10
           format: date
+          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
           example: '2021-05-21'
+          description: 'Data de emissão do documento, conforme especificação RFC-3339.'
       additionalProperties: false
     PersonalDocument:
       type: object
       description: Objeto agrupador de informações relativas a Documentos da pessoa natural
       required:
         - cpfNumber
+        - passportNumber
+        - passportCountry
+        - passportExpirationDate
       properties:
         cpfNumber:
           type: string
-          pattern: '^\d{11}$|^NA$'
-          description: 'Número completo do CPF. Atributo que corresponde às informações mínimas exigidas pela Regulamentação em vigor. O CPF é o Cadastro de Pessoa natural.  Ele é um documento feito pela Receita Federal e serve para identificar os contribuintes. O CPF é uma numeração com 11 dígitos, que só mudam por decisão judicial. O documento é emitido pela receita federal'
           maxLength: 11
+          pattern: '^\d{11}$|^NA$'
           example: '25872252137'
+          description: 'Número completo do CPF. Atributo que corresponde às informações mínimas exigidas pela Regulamentação em vigor. O CPF é o Cadastro de Pessoa natural.  Ele é um documento feito pela Receita Federal e serve para identificar os contribuintes. O CPF é uma numeração com 11 dígitos, que só mudam por decisão judicial. O documento é emitido pela receita federal'
         passportNumber:
           type: string
           maxLength: 20
-          pattern: \w*\W*
-          description: Número do Passaporte. Documento concedido aos viajantes por uma autoridade administrativa nacional a fim de certificar sua identidade perante autoridades estrangeiras. De preenchimento obrigatório. Aplicável somente à Pessoa natural residente no exterior desobrigada de inscrição no CPF.
+          pattern: \w*\W*|^NA$
           example: '75253468744594820620'
+          description: |
+            Número do Passaporte. Documento concedido aos viajantes por uma autoridade
+            administrativa nacional a fim de certificar sua identidade perante autoridades
+            estrangeiras. De preenchimento obrigatório. Aplicável somente à Pessoa natural
+            residente no exterior desobrigada de inscrição no CPF.
         passportCountry:
           type: string
-          description: Pais de emissão do passaporte. Código do pais de acordo com o código “alpha3” do ISO-3166.
           maxLength: 3
+          pattern: '^(\w{3}){1}$|^NA$'
           example: CAN
+          description: Pais de emissão do passaporte. Código do pais de acordo com o código 'alpha3' do ISO-3166.
         passportExpirationDate:
+          type: string
+          format: date
+          maxLength: 10
+          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$|^NA$'
+          example: '2021-05-21'
           description: 'Data vigência do Passaporte, conforme especificação RFC-3339.'
-          type: string
-          maxLength: 10
-          format: date
-          example: '2021-05-21'
         passportIssueDate:
-          description: 'Data de emissão do passaporte, conforme especificação RFC-3339.'
           type: string
-          maxLength: 10
           format: date
+          maxLength: 10
+          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$|^NA$'
           example: '2021-05-21'
+          description: 'Data de emissão do passaporte, conforme especificação RFC-3339.'
       additionalProperties: false
     PersonalFinancialRelationData:
       type: object
       description: 'Objeto que reúne as informações relativas ao relacionamento do cliente junto à Instituição. Considera-se relacionamento as informações que permitam conhecer desde quando a pessoa consultada é cliente da instituição, bem como um indicador dos produtos e serviços que ela consome atualmente e seus representantes'
       required:
         - updateDateTime
-        - personalId
         - startDate
-        - brandID
-        - brandName
         - procurators
+        - productsServicesType
       properties:
         updateDateTime:
+          type: string
+          format: date-time
+          maxLength: 20
+          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
+          example: '2021-05-21T08:30:00Z'
           description: 'Data e hora da atualização do bloco de Relacionamento, conforme especificação RFC-3339, formato UTC.'
-          type: string
-          maxLength: 20
-          format: date-time
-          example: '2021-05-21T08:30:00Z'
-        personalId:
-          type: string
-          pattern: \w*\W*
-          maxLength: 100
-          description: Um identificador único e imutável usado para identificar o recurso cliente pessoa natural. Este identificador não tem significado para o cliente que deu o consentimento
-          example: 578-psd-71md6971kjh-2d414
         startDate:
-          description: Data de início de relacionamento com a Instituição Financeira. Deve trazer o menor valor entre a informação reportada ao BACEN pelo DOC 3040 e CCS.
           type: string
-          maxLength: 20
           format: date-time
+          maxLength: 20
+          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
           example: '2021-05-21T08:30:00Z'
-        brandID:
+          description: Data de início de relacionamento com a Instituição Financeira. Deve trazer o menor valor entre a informação reportada ao BACEN pelo DOC 3040 e CCS.
+        productsServicesType:
+          type: array
+          items:
+            $ref: '#/components/schemas/EnumProductServiceType'
+          minItems: 1
+          maxItems: 12
+        productsServicesTypeAdditionalInfo:
           type: string
-          description: 'Identifica a Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes.'
+          pattern: \w*\W*
           maxLength: 100
-          pattern: \w*\W*
-          example: '29698749425984912674'
-        brandName:
-          type: string
-          pattern: \w*\W*
-          maxLength: 80
-          description: 'Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes'
-          example: Organização A
-        productsServices:
-          $ref: '#/components/schemas/EnumProductServiceType'
+          example: Informações adicionais do tipo de serviço.
+          description: |
+            Informações adicionais do tipo de serviço.
+            [Restrição] Campo obrigatório quando productsServicesType for 'OUTROS'.
         procurators:
           type: array
           items:
@@ -1361,22 +1567,21 @@ components:
       required:
         - updateDateTime
         - personalId
-        - brandID
         - brandName
-        - companyCnpj
-        - documents
-        - otherDocuments
-        - nationality
         - civilName
         - socialName
-        - filiation
         - birthDate
         - maritalStatusCode
         - sex
+        - companyCnpj
+        - documents
+        - otherDocuments
+        - hasBrazilianNationality
+        - nationality
+        - filiation
         - contacts
       properties:
         updateDateTime:
-          description: 'Data e hora da atualização do bloco, conforme especificação RFC-3339'
           type: string
           maxLength: 20
           format: date-time
@@ -1387,27 +1592,53 @@ components:
           maxLength: 100
           description: Um identificador único e imutável usado para identificar o recurso cliente pessoa natural. Este identificador não tem significado para o cliente que deu o consentimento
           example: 578-psd-71md6971kjh-2d414
-        brandID:
-          type: string
-          description: 'Identifica a Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes.'
-          maxLength: 100
-          pattern: \w*\W*
-          example: '29698749425984912674'
         brandName:
           type: string
-          pattern: \w*\W*
           maxLength: 80
-          description: 'Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes'
+          pattern: \w*\W*
           example: Organização A
+          description: 'Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes'
+        civilName:
+          type: string
+          maxLength: 70
+          nullable: true
+          pattern: \w*\W*
+          example: Juan Kaique Cláudio Fernandes
+          description: 'Nome civil completo da pessoa natural (Direito fundamental da pessoa, o nome civil é aquele atribuído à pessoa natural desde o registro de seu nascimento, com o qual será identificada por toda a sua vida, bem como após a sua morte)'
+        socialName:
+          type: string
+          maxLength: 70
+          pattern: \w*\W*
+          description: 'Nome social da pessoa natural, se houver. (aquele pelo qual travestis e transexuais se reconhecem, bem como são identificados por sua comunidade e em seu meio social, conforme Decreto Local)'
+        birthDate:
+          type: string
+          maxLength: 10
+          format: date
+          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
+          example: '2021-05-21'
+          description: 'Data de nascimento, conforme especificação RFC-3339'
+        maritalStatusCode:
+          $ref: '#/components/schemas/EnumMaritalStatusCode'
+        maritalStatusAdditionalInfo:
+          type: string
+          pattern: \w*\W*
+          maxLength: 50
+          example: ''
+          description: 'Campo livre para complementar a informação relativa ao estado marital, quando selecionada a opção ''OUTROS'''
+        sex:
+          $ref: '#/components/schemas/EnumSex'
         companyCnpj:
-          description: |
-            Número completo do CNPJ da instituição responsável pelo Cadastro - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. 
-            Deve-se ter apenas os números do CNPJ, sem máscara
           type: array
           items:
             type: string
             pattern: '\d{14}|^NA$'
             maxLength: 14
+          example:
+            - '01773247000103'
+            - '01773247000563'
+          description: |
+            Número completo do CNPJ da instituição responsável pelo Cadastro - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. 
+            Deve-se ter apenas os números do CNPJ, sem máscara
         documents:
           $ref: '#/components/schemas/PersonalDocument'
         otherDocuments:
@@ -1418,59 +1649,49 @@ components:
           description: Relação dos demais documentos
         hasBrazilianNationality:
           type: boolean
-          description: Informa se o Cliente tem nacionalidade brasileira.
           example: false
+          description: Informa se o Cliente tem nacionalidade brasileira.
         nationality:
           type: array
           items:
             $ref: '#/components/schemas/Nationality'
-        civilName:
-          type: string
-          description: 'Nome civil completo da pessoa natural (Direito fundamental da pessoa, o nome civil é aquele atribuído à pessoa natural desde o registro de seu nascimento, com o qual será identificada por toda a sua vida, bem como após a sua morte)'
-          maxLength: 70
-          pattern: \w*\W*
-          example: Juan Kaique Cláudio Fernandes
-        socialName:
-          type: string
-          description: 'Nome social da pessoa natural, se houver. (aquele pelo qual travestis e transexuais se reconhecem, bem como são identificados por sua comunidade e em seu meio social, conforme Decreto Local)'
-          maxLength: 70
-          pattern: \w*\W*
         filiation:
           type: array
           items:
             type: object
+            required:
+              - type
+              - civilName
             properties:
               type:
                 $ref: '#/components/schemas/EnumFiliationType'
               civilName:
                 type: string
-                description: 'Nome civil completo da pessoa relativa à filiação. (Direito fundamental da pessoa, o nome civil é aquele atribuído à pessoa natural desde o registro de seu nascimento, com o qual será identificada por toda a sua vida, bem como após a sua morte)'
                 maxLength: 70
-                pattern: \w*\W*
+                pattern: \w*\W*|^NA$
+                example: Marcelo Cláudio Fernandes
+                description: |
+                  Nome civil completo da pessoa relativa à filiação.
+                  (Direito fundamental da pessoa, o nome civil é aquele atribuído à pessoa natural desde o registro de seu nascimento, 
+                  com o qual será identificada por toda a sua vida, bem como após a sua morte)
               socialName:
                 type: string
-                description: 'Nome social da pessoa natural, se houver. (aquele pelo qual travestis e transexuais se reconhecem, bem como são identificados por sua comunidade e em seu meio social, conforme Decreto Local)'
                 maxLength: 70
-                pattern: \w*\W*
+                pattern: \w*\W*|^NA$
+                example: NA
+                description: |
+                  Nome social da pessoa natural, se houver. 
+                  (aquele pelo qual travestis e transexuais se reconhecem, 
+                  bem como são identificados por sua comunidade e em seu meio social, conforme Decreto Local)
             additionalProperties: false
-        birthDate:
-          description: 'Data de nascimento, conforme especificação RFC-3339'
-          type: string
-          maxLength: 10
-          format: date
-          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
-          example: '2021-05-21'
-        maritalStatusCode:
-          $ref: '#/components/schemas/EnumMaritalStatusCode'
-        maritalStatusAdditionalInfo:
-          type: string
-          description: 'Campo livre para complementar a informação relativa ao estado civil, quando selecionada a opção `OUTROS`'
-          pattern: \w*\W*
-          maxLength: 50
-        sex:
-          $ref: '#/components/schemas/EnumSex'
         contacts:
-          $ref: '#/components/schemas/CustomerContacts'
+          $ref: '#/components/schemas/PersonalContacts'
+        accounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/PersonalAccount'
+          description: |
+            Lista de contas depósito à vista, poupança e pagamento pré-pagas mantidas pelo cliente na instituição transmissora e para as quais ele tenha fornecido consentimento.
       additionalProperties: false
     PersonalOtherDocument:
       type: object
@@ -1479,7 +1700,6 @@ components:
         - typeAdditionalInfo
         - number
         - checkDigit
-        - additionalInfo
         - expirationDate
       properties:
         type:
@@ -1488,33 +1708,34 @@ components:
           type: string
           maxLength: 70
           pattern: \w*\W*
-          description: Campo livre de preenchimento obrigatório se selecionada a opção OUTROS tipos de documentos
           example: NA
+          description: Campo livre de preenchimento obrigatório se selecionada a opção OUTROS tipos de documentos
         number:
           type: string
           maxLength: 11
           pattern: \w*\W*
-          description: Identificação/Número do documento informado
           example: '15291908'
+          description: Identificação/Número do documento informado
         checkDigit:
           type: string
           maxLength: 2
           pattern: \w*\W*
-          description: Dígito verificador do documento informado. De preenchimento obrigatório se o documento informado tiver dígito verificador
           example: P
+          description: Dígito verificador do documento informado. De preenchimento obrigatório se o documento informado tiver dígito verificador
         additionalInfo:
           type: string
           maxLength: 50
           pattern: \w*\W*
+          example: SSP/SP
           description: |
-            Campo livre, de preenchimento obrigatório quando o documento informado tiver informações complementares. p.ex. RG, este campo deve trazer: "SSP-SP' para RGs emitidos no estado de São Paulo - SP
-          example: SSP-SP
+            Para documentos em que se aplique o uso do local de emissão o mesmo deve ser enviado mandatoriamente, com a informação de órgão e UF. Exemplo: RG, local de emissão: SSP/RS.
+            [Restrição] Obrigatório quando o Local de Emissão do Documento for relevante.
         expirationDate:
-          description: 'Data de validade do documento informado, conforme especificação RFC-3339.'
           type: string
-          maxLength: 10
           format: date
+          maxLength: 10
           example: '2021-05-21'
+          description: 'Data de validade do documento informado, conforme especificação RFC-3339.'
       additionalProperties: false
     PersonalProcurator:
       type: object
@@ -1522,36 +1743,34 @@ components:
         - type
         - cpfNumber
         - civilName
+        - socialName
       properties:
         type:
           $ref: '#/components/schemas/EnumProcuratorsTypePersonal'
         cpfNumber:
           type: string
-          pattern: '^\d{11}$|^NA$'
-          description: 'Número completo do CPF. O CPF é o Cadastro de Pessoa natural. Ele é um documento feito pela Receita Federal e serve para identificar os contribuintes. O CPF é uma numeração com 11 dígitos, que só mudam por decisão judicial. O documento é emitido pela receita federal'
-          example: '73677831148'
           maxLength: 11
+          pattern: '^\d{11}$|^NA$'
+          example: '73677831148'
+          description: 'Número completo do CPF. O CPF é o Cadastro de Pessoa natural. Ele é um documento feito pela Receita Federal e serve para identificar os contribuintes. O CPF é uma numeração com 11 dígitos, que só mudam por decisão judicial. O documento é emitido pela receita federal'
         civilName:
           type: string
-          pattern: \w*\W*
-          description: 'Nome civil completo da pessoa natural. (Direito fundamental da pessoa, o nome civil é aquele atribuído à pessoa natural desde o registro de seu nascimento, com o qual será identificada por toda a sua vida, bem como após a sua morte)'
           maxLength: 70
           example: Elza Milena Stefany Teixeira
+          pattern: \w*\W*
+          description: 'Nome civil completo da pessoa natural. (Direito fundamental da pessoa, o nome civil é aquele atribuído à pessoa natural desde o registro de seu nascimento, com o qual será identificada por toda a sua vida, bem como após a sua morte)'
         socialName:
           type: string
-          pattern: \w*\W*
-          description: 'Nome social da pessoa natural, se houver. (aquele pelo qual travestis e transexuais se reconhecem, bem como são identificados por sua comunidade e em seu meio social, conforme Decreto Nº 51.180, de 14 de janeiro de 2010)'
           maxLength: 70
-          example: NA
+          pattern: \w*\W*
+          example: Carlos
+          description: 'Nome social da pessoa natural, se houver. (aquele pelo qual travestis e transexuais se reconhecem, bem como são identificados por sua comunidade e em seu meio social, conforme Decreto Nº 51.180, de 14 de janeiro de 2010)'
       additionalProperties: false
     PersonalQualificationData:
       type: object
       description: 'Conjunto de informações relativas ao processo de qualificação. Considera-se qualificação as informações que permitam as instituições apreciar, avaliar, caracterizar e classificar o cliente com a finalidade de conhecer o seu perfil de risco e sua capacidade econômico-financeira'
       required:
         - updateDateTime
-        - personalId
-        - brandID
-        - brandName
         - companyCnpj
         - informedIncome
         - informedPatrimony
@@ -1559,100 +1778,66 @@ components:
         - occupationDescription
       properties:
         updateDateTime:
-          description: 'Data e hora da atualização do bloco, conforme especificação RFC-3339'
           type: string
           maxLength: 20
           format: date-time
           example: '2021-05-21T08:30:00Z'
-        personalId:
-          type: string
-          pattern: \w*\W*
-          maxLength: 100
-          description: Um identificador único e imutável usado para identificar o recurso cliente pessoa natural. Este identificador não tem significado para o cliente que deu o consentimento
-          example: 578-psd-71md6971kjh-2d414
-        brandID:
-          type: string
-          description: 'Identifica a Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes.'
-          maxLength: 100
-          pattern: \w*\W*
-          example: '29698749425984912674'
-        brandName:
-          type: string
-          pattern: \w*\W*
-          maxLength: 80
-          description: 'Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes'
-          example: Organização A
+          description: 'Data e hora da atualização do bloco, conforme especificação RFC-3339'
         companyCnpj:
-          description: |
-            Número completo do CNPJ da instituição responsável pelo Cadastro - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. 
-            Deve-se ter apenas os números do CNPJ, sem máscara
           type: string
           pattern: '\d{14}|^NA$'
           maxLength: 14
           example: '50685362000135'
-        informedIncome:
-          type: object
-          properties:
-            frequency:
-              $ref: '#/components/schemas/EnumInformedIncomeFrequency'
-            amount:
-              description: |
-                Valor total da renda informada. Expresso em valor monetário com 4 casas decimais. 
-                "Renda primária indica os montantes a pagar ou a receber em troca do uso temporário de recursos financeiros, trabalho ou ativos não financeiros não produzidos, a saber, remuneração de trabalhadores, renda de investimentos e demais rendas primárias. Fazem parte da primeira a remuneração do trabalho assalariado (salários e ordenados); da segunda, renda de investimento direto, renda de investimento em carteira, renda de outros investimentos e renda de ativos de reserva; e da terceira, tributos sobre a produção e importação, subsídios e aluguéis". Fonte: Banco Central do Brasil – Departamento Econômico
-              type: number
-              format: double
-              pattern: '(-?\d{15}(.\d{4}?))$'
-              maxLength: 19
-              minLength: 0
-              example: 100000.04
-            currency:
-              type: string
-              pattern: '^(\w{3}){1}$'
-              maxLength: 3
-              description: 'Moeda referente ao valor da renda, segundo modelo ISO-4217.'
-              example: BRL
-            date:
-              description: 'Data da renda, conforme especificação RFC-3339.'
-              type: string
-              maxLength: 10
-              format: date
-              pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
-              example: '2021-05-21'
-          additionalProperties: false
-        informedPatrimony:
-          type: object
-          properties:
-            amount:
-              description: |
-                Valor do patrimônio informado. Expresso em valor monetário com 4 casas decimais.
-                "Patrimônio é o conjunto de bens vinculado a uma pessoa ou a uma entidade".
-              type: number
-              format: double
-              pattern: '(-?\d{15}(.\d{4}?))$'
-              maxLength: 19
-              minLength: 0
-              example: 100000.04
-            currency:
-              type: string
-              pattern: '^(\w{3}){1}$'
-              maxLength: 3
-              description: 'Moeda referente ao valor do patrimônio, segundo modelo ISO-4217.'
-              example: BRL
-            year:
-              type: number
-              maxLength: 4
-              description: 'Ano de referência do Patrimônio, conforme especificação RFC-3339.'
-              example: 2010
-              maximum: 9999
-          additionalProperties: false
+          description: |
+            Número completo do CNPJ da instituição responsável pelo Cadastro - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. 
+            Deve-se ter apenas os números do CNPJ, sem máscara
         occupationCode:
           $ref: '#/components/schemas/EnumOccupationMainCodeType'
         occupationDescription:
           type: string
-          pattern: \w*\W*
           maxLength: 100
-          description: 'Campo livre, de preenchimento obrigatório. Traz o código da ocupação ou o descritivo da ocupação, se selecionada a opção ''OUTRO'''
+          pattern: \w*\W*
           example: '01'
+          description: 'Campo livre, de preenchimento obrigatório. Traz o código da ocupação ou o descritivo da ocupação, se selecionada a opção ''OUTRO'''
+        informedIncome:
+          type: object
+          required:
+            - frequency
+            - amount
+            - currency
+            - date
+          properties:
+            frequency:
+              $ref: '#/components/schemas/EnumInformedIncomeFrequency'
+            amount:
+              type: number
+              format: double
+              minLength: 0
+              maxLength: 19
+              nullable: true
+              pattern: '(-?\d{15}(.\d{4}?))$'
+              example: 100000.04
+              description: |
+                Valor total da renda informada. Expresso em valor monetário com 4 casas decimais. 
+                Renda primária indica os montantes a pagar ou a receber em troca do uso temporário de recursos financeiros, trabalho ou ativos não financeiros não produzidos, a saber, remuneração de trabalhadores, renda de investimentos e demais rendas primárias.
+                Fazem parte da primeira a remuneração do trabalho assalariado (salários e ordenados); da segunda, renda de investimento direto, renda de investimento em carteira, renda de outros investimentos e renda de ativos de reserva; e da terceira, tributos sobre a produção e importação, subsídios e aluguéis.
+                Fonte: Banco Central do Brasil – Departamento Econômico
+            currency:
+              type: string
+              maxLength: 3
+              pattern: '^(\w{3}){1}$|^NA$'
+              example: BRL
+              description: 'Moeda referente ao valor da renda, segundo modelo ISO-4217.'
+            date:
+              type: string
+              format: date
+              maxLength: 10
+              pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$|^NA$'
+              example: '2021-05-21'
+              description: 'Data da renda, conforme especificação RFC-3339.'
+          additionalProperties: false
+        informedPatrimony:
+          $ref: '#/components/schemas/PersonalInformedPatrimony'
       additionalProperties: false
     ResponseBusinessCustomersFinancialRelation:
       type: object
