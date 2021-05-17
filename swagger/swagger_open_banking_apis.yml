@@ -3243,14 +3243,14 @@ components:
       description: |
         Conjunto de informações das Contas de: depósito à vista, poupança e de pagamento pré-paga
       required:
-        - avaiableAmount
-        - avaiableAmountCurrency
+        - availableAmount
+        - availableAmountCurrency
         - blockedAmount
         - blockedAmountCurrency
         - automaticallyInvestedAmount
         - automaticallyInvestedAmountCurrency
       properties:
-        avaiableAmount:
+        availableAmount:
           type: number
           format: double
           pattern: '(-?\d{15}(.\d{4}?))$'
@@ -3259,7 +3259,7 @@ components:
           minLength: 0
           nullable: true
           example: 100000.04
-        avaiableAmountCurrency:
+        availableAmountCurrency:
           type: string
           pattern: '^(\w{3}){1}$'
           maxLength: 3
@@ -3983,6 +3983,7 @@ components:
           maxLength: 4
           description: 'MCC é o Merchant Category Code, ou o código da categoria do estabelecimento comercial. Os MCCs são agrupados segundo suas similaridades'
           example: 8299
+          nullable: true
         payeeAdditionalInfo:
           type: string
           pattern: \w*\W*
@@ -5760,9 +5761,10 @@ components:
         - currency
         - dueDate
         - instalmentPeriodicity
-        - firstInstalmentDueDate
-        - totalNumberOfInstalments
+        - instalmentPeriodicityAdditionalInfo
         - typeNumberOfInstalments
+        - totalNumberOfInstalments
+        - firstInstalmentDueDate
         - CET
         - amortizationScheduled
         - cnpjConsignee
@@ -5848,8 +5850,6 @@ components:
           description: Data de vencimento Final da operação. Especificação RFC-3339
         instalmentPeriodicity:
           $ref: '#/components/schemas/EnumContractInstalmentPeriodicity'
-        typeNumberOfInstalments:
-          $ref: '#/components/schemas/LoansContract/properties/typeNumberOfInstalments'
         instalmentPeriodicityAdditionalInfo:
           type: string
           pattern: \w*\W*
@@ -5857,7 +5857,14 @@ components:
           example: Informações adicionais sobre periodicidade
           description: |
             Campo livre para complementar a informação relativa à periodicidade de parcelamento.
-            [Restrição] Campo de preenchimento obrigatório quando em typeNumberOfInstalments for informada a opção OUTROS.
+            [Restrição] Campo de preenchimento obrigatório quando em typeNumberOfInstalments for informada a opção OUTROS.    
+        typeNumberOfInstalments:
+          $ref: '#/components/schemas/LoansContract/properties/typeNumberOfInstalments'
+        totalNumberOfInstalments:
+          type: number
+          maxLength: 6
+          example: 130632
+          description: 'Prazo Total segundo o tipo (dia, semana, mês, ano) referente à Modalidade de Crédito informada.'
         firstInstalmentDueDate:
           type: string
           format: date
@@ -5865,11 +5872,6 @@ components:
           pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
           example: '2018-02-15'
           description: Data de vencimento primeira parcela do principal
-        totalNumberOfInstalments:
-          type: number
-          maxLength: 6
-          example: 130632
-          description: 'Prazo Total segundo o tipo (dia, semana, mês, ano) referente à Modalidade de Crédito informada.'
         CET:
           type: number
           maxLength: 19
@@ -6457,9 +6459,10 @@ components:
         - currency
         - dueDate
         - instalmentPeriodicity
-        - firstInstalmentDueDate
-        - totalNumberOfInstalments
+        - instalmentPeriodicityAdditionalInfo
         - typeNumberOfInstalments
+        - totalNumberOfInstalments
+        - firstInstalmentDueDate
         - CET
         - amortizationScheduled
         - cnpjConsignee
@@ -6545,8 +6548,6 @@ components:
           description: Data de vencimento Final da operação. Especificação RFC-3339
         instalmentPeriodicity:
           $ref: '#/components/schemas/EnumContractInstalmentPeriodicity'
-        typeNumberOfInstalments:
-          $ref: '#/components/schemas/LoansContract/properties/typeNumberOfInstalments'
         instalmentPeriodicityAdditionalInfo:
           type: string
           pattern: \w*\W*
@@ -6554,7 +6555,14 @@ components:
           example: Informações adicionais sobre periodicidade
           description: |
             Campo livre para complementar a informação relativa à periodicidade de parcelamento.
-            [Restrição] Campo de preenchimento obrigatório quando em typeNumberOfInstalments for informada a opção OUTROS.
+            [Restrição] Campo de preenchimento obrigatório quando em typeNumberOfInstalments for informada a opção OUTROS.    
+        typeNumberOfInstalments:
+          $ref: '#/components/schemas/LoansContract/properties/typeNumberOfInstalments'
+        totalNumberOfInstalments:
+          type: number
+          maxLength: 6
+          example: 130632
+          description: 'Prazo Total segundo o tipo (dia, semana, mês, ano) referente à Modalidade de Crédito informada.'
         firstInstalmentDueDate:
           type: string
           format: date
@@ -6562,11 +6570,6 @@ components:
           pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
           example: '2018-02-15'
           description: Data de vencimento primeira parcela do principal
-        totalNumberOfInstalments:
-          type: number
-          maxLength: 6
-          example: 130632
-          description: 'Prazo Total segundo o tipo (dia, semana, mês, ano) referente à Modalidade de Crédito informada.'
         CET:
           type: number
           maxLength: 19
@@ -7330,9 +7333,10 @@ components:
         - currency
         - dueDate
         - instalmentPeriodicity
-        - firstInstalmentDueDate
-        - totalNumberOfInstalments
+        - instalmentPeriodicityAdditionalInfo
         - typeNumberOfInstalments
+        - totalNumberOfInstalments
+        - firstInstalmentDueDate
         - CET
         - amortizationScheduled
         - cnpjConsignee
@@ -7400,6 +7404,7 @@ components:
           maxLength: 19
           pattern: '(-?\d{15}(.\d{4}?))$'
           example: 100000.04
+          nullable: true
           description: Valor contratado da operação. Expresso em valor monetário com até 4 casas decimais
         currency:
           type: string
@@ -7418,6 +7423,14 @@ components:
           description: Data de vencimento Final da operação. Especificação RFC-3339
         instalmentPeriodicity:
           $ref: '#/components/schemas/EnumContractInstalmentPeriodicity'
+        instalmentPeriodicityAdditionalInfo:
+          type: string
+          pattern: \w*\W*
+          maxLength: 50
+          example: Informações adicionais sobre periodicidade
+          description: |
+            Campo obrigatorio para complementar a informação relativa à periodicidade de pagamento regular quando tiver a opção OUTROS.
+            [Restrição] obrigatório para complementar a informação relativa da periodicidade de pagamento regular, quando selecionada o tipo ou subtipo OUTRO.    
         typeNumberOfInstalments:
           type: string
           description: Tipo de prazo total do contrato referente à modalidade de crédito informada.
@@ -7428,14 +7441,11 @@ components:
             - MES
             - ANO
           example: MES
-        instalmentPeriodicityAdditionalInfo:
-          type: string
-          pattern: \w*\W*
-          maxLength: 50
-          example: Informações adicionais sobre periodicidade
-          description: |
-            Campo livre para complementar a informação relativa à periodicidade de parcelamento.
-            [Restrição] Campo de preenchimento obrigatório quando em typeNumberOfInstalments for informada a opção OUTROS.
+        totalNumberOfInstalments:
+          type: number
+          maxLength: 6
+          example: 130632
+          description: 'Prazo Total segundo o tipo (dia, semana, mês, ano) referente à Modalidade de Crédito informada.'
         firstInstalmentDueDate:
           type: string
           format: date
@@ -7443,11 +7453,6 @@ components:
           pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
           example: '2018-02-15'
           description: Data de vencimento primeira parcela do principal
-        totalNumberOfInstalments:
-          type: number
-          maxLength: 6
-          example: 130632
-          description: 'Prazo Total segundo o tipo (dia, semana, mês, ano) referente à Modalidade de Crédito informada.'
         CET:
           type: number
           maxLength: 19
@@ -7580,11 +7585,11 @@ components:
         additionalInfo:
           type: string
           maxLength: 1200
-          description: |
-            Texto com informações adicionais sobre a composição das taxas de juros pactuadas.
-            [Restrição] Caso a instituição não possua a informação para compartilhamento, informar "NA".
           pattern: \w*\W*
           example: Informações adicionais
+          description: |
+            Texto com informações adicionais sobre a composição das taxas de juros pactuadas.
+            [Restrição] Caso a instituição não possua a informação para compartilhamento, informar NA.       
       additionalProperties: false
     LoansFinanceCharge:
       type: object
@@ -7605,7 +7610,7 @@ components:
         chargeRate:
           type: number
           description: |
-            Representa o valor do encargo em percentual pactuado no contrato. Exemplo: 0.0210 (=2.1%). Deve-se preencher as 4 casas decimais obrigatoriamente.
+            Representa o valor do encargo em percentual pactuado no contrato. Exemplo: 0.0210 (=2.1%).
           maxLength: 19
           example: 0.07
       additionalProperties: false
@@ -7626,6 +7631,7 @@ components:
           maxLength: 6
           description: 'Prazo Remanescente segundo o tipo (dia, semana, mês, ano) referente à Modalidade de Crédito informada.'
           example: 14600
+          nullable: true
         typeNumberOfInstalments:
           $ref: '#/components/schemas/LoansContract/properties/typeNumberOfInstalments'
         paidInstalments:
@@ -9184,9 +9190,10 @@ components:
         - currency
         - dueDate
         - instalmentPeriodicity
-        - firstInstalmentDueDate
-        - totalNumberOfInstalments
+        - instalmentPeriodicityAdditionalInfo
         - typeNumberOfInstalments
+        - totalNumberOfInstalments
+        - firstInstalmentDueDate
         - CET
         - amortizationScheduled
         - cnpjConsignee
@@ -9272,8 +9279,6 @@ components:
           description: Data de vencimento Final da operação. Especificação RFC-3339
         instalmentPeriodicity:
           $ref: '#/components/schemas/EnumContractInstalmentPeriodicity'
-        typeNumberOfInstalments:
-          $ref: '#/components/schemas/LoansContract/properties/typeNumberOfInstalments'
         instalmentPeriodicityAdditionalInfo:
           type: string
           pattern: \w*\W*
@@ -9281,7 +9286,14 @@ components:
           example: Informações adicionais sobre periodicidade
           description: |
             Campo livre para complementar a informação relativa à periodicidade de parcelamento.
-            [Restrição] Campo de preenchimento obrigatório quando em typeNumberOfInstalments for informada a opção OUTROS.
+            [Restrição] Campo de preenchimento obrigatório quando em typeNumberOfInstalments for informada a opção OUTROS.    
+        typeNumberOfInstalments:
+          $ref: '#/components/schemas/LoansContract/properties/typeNumberOfInstalments'
+        totalNumberOfInstalments:
+          type: number
+          maxLength: 6
+          example: 130632
+          description: 'Prazo Total segundo o tipo (dia, semana, mês, ano) referente à Modalidade de Crédito informada.'
         firstInstalmentDueDate:
           type: string
           format: date
@@ -9289,11 +9301,6 @@ components:
           pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
           example: '2018-02-15'
           description: Data de vencimento primeira parcela do principal
-        totalNumberOfInstalments:
-          type: number
-          maxLength: 6
-          example: 130632
-          description: 'Prazo Total segundo o tipo (dia, semana, mês, ano) referente à Modalidade de Crédito informada.'
         CET:
           type: number
           description: |
