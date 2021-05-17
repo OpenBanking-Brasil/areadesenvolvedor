@@ -1,0 +1,373 @@
+﻿openapi: 3.0.0
+info:
+  title: API Resources - Open Banking Brasil
+  description: |
+    API que trata da consulta do status de recursos para o Open Banking Brasil.\
+    Não possui segregação entre pessoa natural e pessoa jurídica.\
+    Requer consentimento do cliente para todos os `endpoints`.
+
+    # Permissions necessárias para a API Resources
+
+    Para cada um dos paths desta API, além dos escopos (`scopes`) indicados existem `permissions` que deverão ser observadas:
+
+    ### `/resources`
+      - permissions:
+        - GET: **RESOURCES_READ**
+  version: 1.0.0
+  license:
+    name: Apache 2.0
+    url: 'https://www.apache.org/licenses/LICENSE-2.0'
+  contact:
+    name: Governança do Open Banking Brasil – Interfaces
+    email: gt-interfaces@openbankingbr.org
+    url: 'https://openbanking-brasil.github.io/areadesenvolvedor/'
+servers:
+  - url: 'https://api.banco.com.br/open-banking/resources/v1'
+    description: Servidor de Produção
+  - url: 'https://apih.banco.com.br/open-banking/resources/v1'
+    description: Servidor de Homologação
+tags:
+  - name: Resources
+paths:
+  /resources:
+    get:
+      tags:
+        - Resources
+      summary: Obtém a lista de recursos consentidos pelo cliente.
+      description: Método para obter a lista de recursos mantidos pelo cliente na instituição transmissora e para as quais ele tenha fornecido consentimento.
+      operationId: getResourcesResources
+      parameters:
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/xFapiAuthDate'
+        - $ref: '#/components/parameters/xFapiCustomerIpAddress'
+        - $ref: '#/components/parameters/xFapiInteractionId'
+        - $ref: '#/components/parameters/xCustomerUserAgent'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+      responses:
+        '200':
+          $ref: '#/components/responses/OKResponseResourceList'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/OKResponseResourceList'
+      security:
+        - OpenId:
+            - openId
+            - resources
+components:
+  schemas:
+    ResponseResourceList:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            required:
+              - type
+              - status
+            properties:
+              resourceId:
+                type: string
+                description: Identifica o recurso reportado pelo participante do Open Banking
+                maxLength: 38
+                pattern: '^[{(]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?$'
+              type:
+                type: string
+                enum:
+                  - ACCOUNT
+                  - CREDIT_CARD_ACCOUNT
+                  - LOAN
+                  - FINANCING
+                  - UNARRANGED_ACCOUNT_OVERDRAFT
+                  - INVOICE_FINANCING
+                description: |
+                  Tipo de recurso (vide Enum):
+                  Account - Conta
+                  Credit Card Account - Conta de Cartão de Crédito
+                  Loan - Empréstimo
+                  Financing - Financiamento
+                  Unarranged Account Overdraft - Cheque Especial
+                  Invoice Financing - Financiamento de Fatura
+                example: ACCOUNT
+              status:
+                type: string
+                enum:
+                  - AVAILABLE
+                  - UNAVAILABLE
+                  - TEMPORARY_UNAVAILABLE
+                  - PENDING_AUTHORISATION
+                description: |
+                  Tipo de status de recurso (vide Enum):
+                  Available - Disponível
+                  Unavailable - Indisponível
+                  Temporary Unavailable - Temporariamente Indisponível
+                  Pending Authorisation - Pendente de Autorização
+                example: AVAILABLE
+            additionalProperties: false
+          minItems: 1
+          description: Lista de recursos e seus respectivos status
+        links:
+          type: object
+          description: Referências para outros recusos da API requisitada.
+          required:
+            - self
+          properties:
+            self:
+              type: string
+              format: uri
+              maxLength: 2000
+              description: URI completo que gerou a resposta atual.
+              example: 'https://api.banco.com.br/open-banking/api/v1/resource'
+              pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
+            first:
+              type: string
+              format: uri
+              maxLength: 2000
+              description: URI da primeira página que originou essa lista de resultados. Restrição - Obrigatório quando não for a primeira página da resposta
+              example: 'https://api.banco.com.br/open-banking/api/v1/resource'
+              pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
+            prev:
+              type: string
+              format: uri
+              maxLength: 2000
+              description: "URI da página anterior dessa lista de resultados. Restrição - \tObrigatório quando não for a primeira página da resposta"
+              example: 'https://api.banco.com.br/open-banking/api/v1/resource'
+              pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
+            next:
+              type: string
+              format: uri
+              maxLength: 2000
+              description: URI da próxima página dessa lista de resultados. Restrição - Obrigatório quando não for a última página da resposta
+              example: 'https://api.banco.com.br/open-banking/api/v1/resource'
+              pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
+            last:
+              type: string
+              format: uri
+              maxLength: 2000
+              description: URI da última página dessa lista de resultados. Restrição - Obrigatório quando não for a última página da resposta
+              example: 'https://api.banco.com.br/open-banking/api/v1/resource'
+              pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
+          additionalProperties: false
+        meta:
+          type: object
+          description: Meta informações referente a API requisitada.
+          required:
+            - totalRecords
+            - totalPages
+            - requestDateTime
+          properties:
+            totalRecords:
+              type: integer
+              format: int32
+              description: Número total de registros no resultado
+              example: 1
+            totalPages:
+              type: integer
+              format: int32
+              description: Número total de páginas no resultado
+              example: 1
+            requestDateTime:
+              description: 'Data e hora da consulta, conforme especificação RFC-3339, formato UTC.'
+              type: string
+              maxLength: 20
+              format: date-time
+              example: '2021-05-21T08:30:00Z'
+          additionalProperties: false
+      additionalProperties: false
+  parameters:
+    Authorization:
+      name: Authorization
+      in: header
+      description: Cabeçalho HTTP padrão. Permite que as credenciais sejam fornecidas dependendo do tipo de recurso solicitado
+      required: true
+      schema:
+        type: string
+        pattern: \w*\W*
+        maxLength: 2048
+    page:
+      name: page
+      in: query
+      description: Número da página que está sendo requisitada (o valor da primeira página é 1).
+      schema:
+        type: integer
+        default: 1
+        minimum: 1
+        format: int32
+    pageSize:
+      name: page-size
+      in: query
+      description: Quantidade total de registros por páginas.
+      schema:
+        type: integer
+        default: 25
+        minimum: 1
+        format: int32
+        maximum: 10000
+    xCustomerUserAgent:
+      name: x-customer-user-agent
+      in: header
+      description: Indica o user-agent que o usuário utiliza.
+      required: false
+      schema:
+        type: string
+        pattern: \w*\W*
+        minLength: 1
+        maxLength: 100
+    xFapiAuthDate:
+      name: x-fapi-auth-date
+      in: header
+      description: 'Data em que o usuário logou pela última vez com o receptor. Representada de acordo com a [RFC7231](https://tools.ietf.org/html/rfc7231).Exemplo: Sun, 10 Sep 2017 19:43:31 UTC'
+      required: false
+      schema:
+        type: string
+        pattern: '^(Mon|Tue|Wed|Thu|Fri|Sat|Sun), \d{2} (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) \d{4} \d{2}:\d{2}:\d{2} (GMT|UTC)$'
+        minLength: 29
+        maxLength: 29
+    xFapiCustomerIpAddress:
+      name: x-fapi-customer-ip-address
+      in: header
+      description: O endereço IP do usuário se estiver atualmente logado com o receptor.
+      required: false
+      schema:
+        type: string
+        pattern: \w*\W*
+        minLength: 1
+        maxLength: 100
+    xFapiInteractionId:
+      name: x-fapi-interaction-id
+      in: header
+      description: 'Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.'
+      required: false
+      schema:
+        type: string
+        pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
+        minLength: 1
+        maxLength: 100
+    xJwsSignature:
+      name: x-jws-signature
+      in: header
+      description: Cabeçalho contendo uma assinatura JWS separada do corpo do payload.
+      required: true
+      schema:
+        type: string
+        pattern: \w*\W*
+        maxLength: 2048
+  securitySchemes:
+    OpenId:
+      type: openIdConnect
+      openIdConnectUrl: 'https://authserver.example/.well-known/openid-configuration'
+  responses:
+    OKResponseResourceList:
+      description: Dados de status dos recursos obtidos com sucesso.
+      headers:
+        x-fapi-interaction-id:
+          schema:
+            type: string
+            pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
+            maxLength: 100
+            description: 'Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ResponseResourceList'
+    BadRequest:
+      description: 'A requisição foi malformada, omitindo atributos obrigatórios, seja no payload ou através de atributos na URL.'
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/responses/NotFound/content/application~1json%3B%20charset%3Dutf-8/schema'
+    Forbidden:
+      description: O token tem escopo incorreto ou uma política de segurança foi violada
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/responses/NotFound/content/application~1json%3B%20charset%3Dutf-8/schema'
+    InternalServerError:
+      description: Ocorreu um erro no gateway da API ou no microsserviço
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/responses/NotFound/content/application~1json%3B%20charset%3Dutf-8/schema'
+    MethodNotAllowed:
+      description: O consumidor tentou acessar o recurso com um método não suportado
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/responses/NotFound/content/application~1json%3B%20charset%3Dutf-8/schema'
+    NotAcceptable:
+      description: A solicitação continha um cabeçalho Accept diferente dos tipos de mídia permitidos ou um conjunto de caracteres diferente de UTF-8
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/responses/NotFound/content/application~1json%3B%20charset%3Dutf-8/schema'
+    NotFound:
+      description: O recurso solicitado não existe ou não foi implementado
+      content:
+        application/json; charset=utf-8:
+          schema:
+            type: object
+            required:
+              - errors
+            properties:
+              errors:
+                type: array
+                minItems: 1
+                maxItems: 13
+                items:
+                  type: object
+                  required:
+                    - code
+                    - title
+                    - detail
+                  properties:
+                    code:
+                      description: Código de erro específico do endpoint
+                      type: string
+                      pattern: \w*\W*
+                      maxLength: 255
+                    title:
+                      description: Título legível por humanos deste erro específico
+                      type: string
+                      pattern: \w*\W*
+                      maxLength: 255
+                    detail:
+                      description: Descrição legível por humanos deste erro específico
+                      type: string
+                      pattern: \w*\W*
+                      maxLength: 2048
+                  additionalProperties: false
+              meta:
+                $ref: '#/components/schemas/ResponseResourceList/properties/meta'
+            additionalProperties: false
+    TooManyRequests:
+      description: 'A operação foi recusada, pois muitas solicitações foram feitas dentro de um determinado período ou o limite global de requisições concorrentes foi atingido'
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/responses/NotFound/content/application~1json%3B%20charset%3Dutf-8/schema'
+    Unauthorized:
+      description: Cabeçalho de autenticação ausente/inválido ou token inválido
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/responses/NotFound/content/application~1json%3B%20charset%3Dutf-8/schema'
