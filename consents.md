@@ -43,13 +43,13 @@ Authorization: Bearer eyJraWQiOiJOQnlW...
 
 {
 	"data": {
-		...
+		"..."
 		"permissions": [
 			"ACCOUNTS_READ",
             "ACCOUNTS_BALANCES_READ",
             "ACCOUNTS_TRANSACTIONS_READ"
 		],
-		...
+		"..."
 	}
 }
 ```
@@ -75,10 +75,10 @@ Content-Type:  application/json
 "..."
 
 {
-    ...
+    "..."
     "scope": "openid resources accounts",
-    "consentId": "5a35c3eb-c137-4271-8fe8-00b790453ade"
-    ...
+    "consentId": "5a35c3eb-c137-4271-8fe8-00b790453ade",
+    "..."
 }
 ```
 
