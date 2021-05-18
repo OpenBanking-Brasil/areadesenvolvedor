@@ -3664,6 +3664,7 @@ components:
         - incorporationDate
         - parties
         - contacts
+        - accounts
       properties:
         updateDateTime:
           type: string
@@ -3774,7 +3775,7 @@ components:
                   Dígito da conta
                 example: '4'
               type:
-                $ref: '#/components/schemas/EnumAccountType'
+                $ref: '#/paths/~1customers~1v1~1personal~1identifications/get/responses/200/content/application~1json/schema/properties/data/items/properties/accounts/items/properties/type'
             additionalProperties: false
           description: |
             Lista de contas depósito à vista, poupança e pagamento pré-pagas mantidas pelo cliente na instituição transmissora e para as quais ele tenha fornecido consentimento.
@@ -3825,7 +3826,7 @@ components:
           enum:
             - REPRESENTANTE_LEGAL
             - PROCURADOR
-            - NAO_POSSUI
+            - SEM_REPRESENTANTES
           description: |
             Tipo de representante.
             Representante legal - Nome Civil completo da Pessoa Natural que represente uma entidade ou uma empresa e é nomeado em seu ato constitutivo, ou seja, no contrato social ou estatuto social.
@@ -3937,7 +3938,7 @@ components:
             currency:
               type: string
               maxLength: 3
-              pattern: '^(\w{3}){1}$'
+              pattern: '^(\w{3}){1}$|^NA$'
               example: BRL
               description: 'Moeda referente ao valor do patrimônio, segundo modelo ISO-4217.'
             date:
@@ -4573,7 +4574,7 @@ components:
         number:
           type: string
           maxLength: 11
-          pattern: '^([0-9]{8,11})'
+          pattern: '^([0-9]{8,11})|^NA$'
           example: '29875132'
           description: Número de telefone do cliente
         phoneExtension:
@@ -5102,6 +5103,7 @@ components:
         - TRIMESTRAL
         - SEMESTRAL
         - ANUAL
+        - SEM_FREQUENCIA_RENDA_INFORMADA
         - OUTROS
       description: Traz a frequência ou período da renda informada.
     EnumInformedRevenueFrequency:
@@ -5118,6 +5120,7 @@ components:
         - TRIMESTRAL
         - SEMESTRAL
         - ANUAL
+        - SEM_FREQUENCIA_FATURAMENTO_INFORMADO
         - OUTROS
       example: DIARIA
     EnumMaritalStatusCode:
@@ -5833,6 +5836,7 @@ components:
           maxLength: 19
           pattern: '(-?\d{15}(.\d{4}?))$'
           example: 100000.04
+          nullable: true
         currency:
           type: string
           pattern: '^(\w{3}){1}$'
@@ -5856,8 +5860,8 @@ components:
           maxLength: 50
           example: Informações adicionais sobre periodicidade
           description: |
-            Campo livre para complementar a informação relativa à periodicidade de parcelamento.
-            [Restrição] Campo de preenchimento obrigatório quando em typeNumberOfInstalments for informada a opção OUTROS.    
+            Campo obrigatório para complementar a informação relativa à periodicidade de pagamento regular quando tiver a opção OUTROS.
+            [Restrição] Obrigatório para complementar a informação relativa da periodicidade de pagamento regular, quando selecionada o tipo ou subtipo OUTRO.     
         typeNumberOfInstalments:
           $ref: '#/components/schemas/LoansContract/properties/typeNumberOfInstalments'
         totalNumberOfInstalments:
@@ -6077,6 +6081,7 @@ components:
           type: number
           maxLength: 6
           description: 'Prazo Remanescente segundo o tipo (dia, semana, mês, ano) referente à Modalidade de Crédito informada.'
+          nullable: true
           example: 14600
         typeNumberOfInstalments:
           $ref: '#/components/schemas/LoansContract/properties/typeNumberOfInstalments'
@@ -6110,6 +6115,7 @@ components:
             - SEMANA
             - MES
             - ANO
+            - SEM_PRAZO_REMANESCENTE
           maxLength: 6
           description: |
             Tipo de prazo remanescente do contrato referente à modalidade de crédito informada.
@@ -6531,6 +6537,7 @@ components:
           pattern: '(-?\d{15}(.\d{4}?))$'
           example: 100000.04
           description: Valor contratado da operação. Expresso em valor monetário com até 4 casas decimais
+          nullable: true
         currency:
           type: string
           maxLength: 3
@@ -6554,8 +6561,8 @@ components:
           maxLength: 50
           example: Informações adicionais sobre periodicidade
           description: |
-            Campo livre para complementar a informação relativa à periodicidade de parcelamento.
-            [Restrição] Campo de preenchimento obrigatório quando em typeNumberOfInstalments for informada a opção OUTROS.    
+            Campo obrigatório para complementar a informação relativa à periodicidade de pagamento regular quando tiver a opção OUTROS.
+            [Restrição] Obrigatório para complementar a informação relativa da periodicidade de pagamento regular, quando selecionada o tipo ou subtipo OUTRO.       
         typeNumberOfInstalments:
           $ref: '#/components/schemas/LoansContract/properties/typeNumberOfInstalments'
         totalNumberOfInstalments:
@@ -6717,7 +6724,6 @@ components:
             Valor original da garantia. Valor monetário, expresso com até 4 casas decimais.
           type: number
           format: double
-          pattern: '(-?\d{15}(.\d{4}?))$'
           maxLength: 19
           minLength: 0
           example: 100000.04
@@ -6817,6 +6823,7 @@ components:
           type: number
           maxLength: 6
           description: 'Prazo Remanescente segundo o tipo (dia, semana, mês, ano) referente à Modalidade de Crédito informada.'
+          nullable: true
           example: 14600
         typeNumberOfInstalments:
           $ref: '#/components/schemas/LoansContract/properties/typeNumberOfInstalments'
@@ -6848,6 +6855,7 @@ components:
             - SEMANA
             - MES
             - ANO
+            - SEM_PRAZO_REMANESCENTE
           maxLength: 6
           description: |
             Tipo de prazo remanescente do contrato referente à modalidade de crédito informada.
@@ -6941,7 +6949,6 @@ components:
             Valor do pagamento referente ao  contrato da modalidade de crédito consultada.
             Expresso em valor monetário com até 4 casas decimais.
         overParcel:
-          nullable: true
           type: object
           description: Objeto das tarifas e encargos que foram pagos fora da parcela.
           required:
@@ -7429,8 +7436,8 @@ components:
           maxLength: 50
           example: Informações adicionais sobre periodicidade
           description: |
-            Campo obrigatorio para complementar a informação relativa à periodicidade de pagamento regular quando tiver a opção OUTROS.
-            [Restrição] obrigatório para complementar a informação relativa da periodicidade de pagamento regular, quando selecionada o tipo ou subtipo OUTRO.    
+            Campo obrigatório para complementar a informação relativa à periodicidade de pagamento regular quando tiver a opção OUTROS.
+            [Restrição] Obrigatório para complementar a informação relativa da periodicidade de pagamento regular, quando selecionada o tipo ou subtipo OUTRO.       
         typeNumberOfInstalments:
           type: string
           description: Tipo de prazo total do contrato referente à modalidade de crédito informada.
@@ -7440,6 +7447,7 @@ components:
             - SEMANA
             - MES
             - ANO
+            - SEM_PRAZO_TOTAL
           example: MES
         totalNumberOfInstalments:
           type: number
@@ -7630,8 +7638,8 @@ components:
           type: number
           maxLength: 6
           description: 'Prazo Remanescente segundo o tipo (dia, semana, mês, ano) referente à Modalidade de Crédito informada.'
-          example: 14600
           nullable: true
+          example: 14600
         typeNumberOfInstalments:
           $ref: '#/components/schemas/LoansContract/properties/typeNumberOfInstalments'
         paidInstalments:
@@ -7664,6 +7672,7 @@ components:
             - SEMANA
             - MES
             - ANO
+            - SEM_PRAZO_REMANESCENTE
           maxLength: 6
           description: |
             Tipo de prazo remanescente do contrato referente à modalidade de crédito informada.
@@ -7911,14 +7920,14 @@ components:
           type: string
           maxLength: 10
           format: date
-          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
+          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$|^NA$'
           example: '2021-05-21'
         issueDate:
           description: 'Data de emissão do documento, conforme especificação RFC-3339.'
           type: string
           maxLength: 10
           format: date
-          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
+          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$|^NA$'
           example: '2021-05-21'
         country:
           type: string
@@ -8153,6 +8162,7 @@ components:
         - nationality
         - filiation
         - contacts
+        - accounts
       properties:
         updateDateTime:
           type: string
@@ -8301,9 +8311,33 @@ components:
                   Dígito da conta
                 example: '4'
               type:
-                $ref: '#/components/schemas/EnumAccountType'
+                type: string
+                enum:
+                  - CONTA_DEPOSITO_A_VISTA
+                  - CONTA_POUPANCA
+                  - CONTA_PAGAMENTO_PRE_PAGA
+                  - SEM_TIPO_CONTA
+                description: |
+                  Tipos de contas. Modalidades tradicionais previstas pela Resolução 4.753, não contemplando contas vinculadas, conta de domiciliados no exterior, contas em moedas estrangeiras e conta correspondente moeda eletrônica. Vide Enum
+                  Conta de depósito à vista ou Conta corrente - é o tipo mais comum. Nela, o dinheiro fica à sua disposição para ser sacado a qualquer momento. Essa conta não gera rendimentos para o depositante
+                  Conta poupança - foi criada para estimular as pessoas a pouparem. O dinheiro que ficar na conta por trinta dias passa a gerar rendimentos, com isenção de imposto de renda para quem declara. Ou seja, o dinheiro “cresce” (rende) enquanto ficar guardado na conta. Cada depósito terá rendimentos de mês em mês, sempre no dia do mês em que o dinheiro tiver sido depositado
+                  Conta de pagamento pré-paga: segundo CIRCULAR Nº 3.680, BCB de  2013, é a 'destinada à execução de transações de pagamento em moeda eletrônica realizadas com base em fundos denominados em reais previamente aportados'.
+                  SEM_TIPO_CONTA - para reporte nos dados de identificação quando o cliente não possuir conta na instituição transmissora.
+                example: CONTA_DEPOSITO_A_VISTA
               subtype:
-                $ref: '#/components/schemas/EnumAccountSubType'
+                type: string
+                enum:
+                  - INDIVIDUAL
+                  - CONJUNTA_SIMPLES
+                  - CONJUNTA_SOLIDARIA
+                  - SEM_SUB_TIPO_CONTA
+                description: |
+                  Subtipo de conta (vide Enum): 
+                  Conta individual - possui um único titular
+                  Conta conjunta simples - onde as movimentações financeiras só podem serem realizadas mediante autorização de TODOS os correntistas da conta.
+                  Conta conjunta solidária - é a modalidade cujos titulares podem realizar movimentações de forma isolada, isto é, sem que seja necessária a autorização dos demais titulares.
+                  SEM_SUB_TIPO_CONTA - para reporte nos dados de identificação quando o cliente não possuir conta na instituição transmissora.
+                example: INDIVIDUAL
             additionalProperties: false
           description: |
             Lista de contas depósito à vista, poupança e pagamento pré-pagas mantidas pelo cliente na instituição transmissora e para as quais ele tenha fornecido consentimento.
@@ -8349,6 +8383,7 @@ components:
           type: string
           format: date
           maxLength: 10
+          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$|^NA$'
           example: '2021-05-21'
           description: 'Data de validade do documento informado, conforme especificação RFC-3339.'
       additionalProperties: false
@@ -9262,6 +9297,7 @@ components:
           maxLength: 19
           minLength: 0
           example: 100000.04
+          nullable: true
         currency:
           type: string
           pattern: '^(\w{3}){1}$'
@@ -9285,8 +9321,8 @@ components:
           maxLength: 50
           example: Informações adicionais sobre periodicidade
           description: |
-            Campo livre para complementar a informação relativa à periodicidade de parcelamento.
-            [Restrição] Campo de preenchimento obrigatório quando em typeNumberOfInstalments for informada a opção OUTROS.    
+            Campo obrigatório para complementar a informação relativa à periodicidade de pagamento regular quando tiver a opção OUTROS.
+            [Restrição] Obrigatório para complementar a informação relativa da periodicidade de pagamento regular, quando selecionada o tipo ou subtipo OUTRO.       
         typeNumberOfInstalments:
           $ref: '#/components/schemas/LoansContract/properties/typeNumberOfInstalments'
         totalNumberOfInstalments:
@@ -9518,6 +9554,7 @@ components:
           type: number
           maxLength: 6
           description: 'Prazo Remanescente segundo o tipo (dia, semana, mês, ano) referente à Modalidade de Crédito informada.'
+          nullable: true
           example: 14600
         typeNumberOfInstalments:
           $ref: '#/components/schemas/LoansContract/properties/typeNumberOfInstalments'
@@ -9552,6 +9589,7 @@ components:
             - SEMANA
             - MES
             - ANO
+            - SEM_PRAZO_REMANESCENTE
           maxLength: 6
           description: |
             Tipo de prazo remanescente do contrato referente à modalidade de crédito informada.
