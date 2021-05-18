@@ -93,13 +93,13 @@ Host: as.banco.exemplo
 
 ## Acesso aos dados após o consentimento
 
-Ao colher o consentimento do usuário, a aplicação da instituição receptora pode ainda não estar apta para acessar as informações contidas dentro do escopo das permissões enviadas no pedido de consentimento. Existem diversas questões que, por regra de negócio da instituição transmissora, podem fazer com que a aplicação da receptora não tenha acesso aos dados, como por exemplo uma autenticação de dupla alçada. Para isso, a aplicação receptora deve consultar a API de *Resources*.
+Ao colher o consentimento do usuário e obter o *token*, a aplicação da instituição receptora pode ainda não estar apta para acessar as informações contidas dentro do escopo das permissões enviadas no pedido de consentimento. Existem diversas questões que, por regra de negócio da instituição transmissora, podem fazer com que a aplicação da receptora não tenha acesso aos dados, como por exemplo uma autenticação de dupla alçada. Para isso, a aplicação receptora deve consultar a API de *Resources*.
 
 O fluxo a seguir demonstra como deve ser uma consulta à API de Accounts, partindo do principio de que o *App* já tenha realizado todo o fluxo de *Authorization Code*, como descrito anteriormente, e portanto, já esteja de posse de um *token* de acesso válido. Vale lembrar que a API de *Accounts* é apenas um exemplo. Qualquer outra API de *Data sharing* segue o mesmo conceito.
 
 ![Fluxo de acesso a API de Accouns](./documentation/source/images/security/Fluxo_Resources.png)
 
-1. *App*, em posse de um *token* válido, requisita a API de *Resources* a informação de quais recursos o *token* enviado tem acess;
+1. *App*, em posse de um *token* válido, requisita a API de *Resources* a informação de quais recursos o *token* enviado tem acesso;
 2.  API de *Resources* devolve essa informação, juntamente com o *status* de cada recurso (Se está disponível, esperando autorização da outra alçada, etc);
 3. Recebendo a resposta da API de *Resources* de que o recurso de *Accounts* está disponível, o *App* acessa a API de *Accounts* diretamente, utilizando o mesmo *token*;
 4. Com os recursos disponíveis, a API de *Accounts* retorna os dados requeridos corretamente.
