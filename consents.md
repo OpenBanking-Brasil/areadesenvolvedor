@@ -70,7 +70,7 @@ Location: /consents/5a35c3eb-c137-4271-8fe8-00b790453ade
 
 ``` http 
 GET /authorise?request=objectjwtpookdsfpmcieq-p0ok...
-Host: api.banco.exemplo
+Host: as.banco.exemplo
 "..."
 
 // conteudo de exemplo do JWT enviado
