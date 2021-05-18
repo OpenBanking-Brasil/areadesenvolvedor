@@ -82,14 +82,14 @@ Host: as.banco.exemplo
 }
 ```
 
-* Ao receber esta ultima requisição, a instituição transmissora envia uma URL de redirecionamento, onde o usuário irá escolher, dentro do ambiente da própria instituição transmissora, quais unidades de recurso ele irá compartilhar, dado este *"consentId"* enviado. Exemplo: Neste caso apresentado, após o fluxo de consentimento, ele escolhe dentro do ambiente da instituição transmissora quais contas ele irá compartilhar. Assim a instituição transmissora poderia ter um controle deste tipo:
+* Ao receber esta ultima requisição, a instituição transmissora envia uma URL de redirecionamento, onde o usuário irá escolher, dentro do ambiente da própria instituição transmissora, quais unidades de recurso ele irá compartilhar, dado este *"consentId"* enviado. Exemplo: Neste caso apresentado após o fluxo de consentimento, o usuário escolhe dentro do ambiente da instituição transmissora quais contas ele irá compartilhar. Assim a instituição transmissora poderia ter um controle deste tipo:
 
 | consentId | scope | resourceId (accountId) |
 |---|---|---|
 | 5a35c3eb-c137-4271-8fe8-00b790453ade | accounts | 0577979c-6db7-49da-a04f-dc4822ad9e64 |
 | 5a35c3eb-c137-4271-8fe8-00b790453ade | accounts | e5f4ac9c-87a0-403f-aef2-3e4f5977d118|
 
-* Assim que o usuário inserir quais itens ele irá compartilhar (neste exemplo, quais contas pré-pagas), o fluxo OAuth segue normalmente. 
+* Assim que o usuário inserir quais itens ele irá compartilhar (neste exemplo, quais contas pré-pagas), o fluxo *OAuth* segue normalmente (redirecionamento do *auth_code* para a URL de *callback* e novo pedido de token ao *Authorisation Server*). 
 
 ## Acesso aos dados após o consentimento
 
