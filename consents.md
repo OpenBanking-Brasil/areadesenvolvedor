@@ -33,7 +33,7 @@ scope=consents
 
 ```
 
-* O resultado dessa requisição é o *token*, que deve ser utulizado já na requisição para a API de *Consents*.
+* O resultado dessa requisição é o *token*, que deve ser utilizado já na requisição para a API de *Consents*.
 
 ``` http
 POST /consents HTTP/1.1
@@ -66,14 +66,14 @@ Location: /consents/5a35c3eb-c137-4271-8fe8-00b790453ade
 
 ```
 
-* Com o ID do consentimento, agora deve-se requisitar o *Access Token* que irá permitir com que a aplicação da instituição receptora consiga acessar os dados das APIs.
+* Com o ID do consentimento, agora deve-se requisitar o *Access Token* que irá permitir com que a aplicação da instituição receptora consiga acessar os dados das APIs, enviando a requisição para o *Authorisation Server* com um objeto JWT contendo este ID do consentimento e *scopes* de acesso
 
 ``` http 
-POST /authorise
+GET /authorise?request=objectjwtpookdsfpmcieq-p0ok...
 Host: api.banco.exemplo
-Content-Type:  application/json
 "..."
 
+// conteudo de exemplo do JWT enviado
 {
     "..."
     "scope": "openid resources accounts",
@@ -87,8 +87,7 @@ Content-Type:  application/json
 | consentId | scope | resourceId (accountId) |
 |---|---|---|
 | 5a35c3eb-c137-4271-8fe8-00b790453ade | accounts | 0577979c-6db7-49da-a04f-dc4822ad9e64 |
-| 5a35c3eb-c137-4271-8fe8-00b790453ade | accounts | e5f4ac9c-87a0-403f-aef2-3e4f5977d118
-|
+| 5a35c3eb-c137-4271-8fe8-00b790453ade | accounts | e5f4ac9c-87a0-403f-aef2-3e4f5977d118|
 
 * Assim que o usuário inserir quais itens ele irá compartilhar (neste exemplo, quais contas pré-pagas), o fluxo OAuth segue normalmente. 
 
