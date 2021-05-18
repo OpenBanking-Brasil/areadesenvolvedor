@@ -595,8 +595,6 @@ components:
         - dueDate
         - instalmentPeriodicity
         - instalmentPeriodicityAdditionalInfo
-        - typeNumberOfInstalments
-        - totalNumberOfInstalments
         - firstInstalmentDueDate
         - CET
         - amortizationScheduled
@@ -692,22 +690,6 @@ components:
           description: |
             Campo obrigatório para complementar a informação relativa à periodicidade de pagamento regular quando tiver a opção OUTROS.
             [Restrição] Obrigatório para complementar a informação relativa da periodicidade de pagamento regular, quando selecionada o tipo ou subtipo OUTRO.       
-        typeNumberOfInstalments:
-          type: string
-          description: Tipo de prazo total do contrato referente à modalidade de crédito informada.
-          maxLength: 6
-          enum:
-            - DIA
-            - SEMANA
-            - MES
-            - ANO
-            - SEM_PRAZO_TOTAL
-          example: MES
-        totalNumberOfInstalments:
-          type: number
-          maxLength: 6
-          example: 130632
-          description: 'Prazo Total segundo o tipo (dia, semana, mês, ano) referente à Modalidade de Crédito informada.'
         firstInstalmentDueDate:
           type: string
           format: date
@@ -911,39 +893,26 @@ components:
         - typeContractRemaining
         - contractRemainingNumber
         - typeNumberOfInstalments
+        - totalNumberOfInstalments
         - paidInstalments
       properties:
-        contractRemainingNumber:
+        typeNumberOfInstalments:
+          type: string
+          description: Tipo de prazo total do contrato referente à modalidade de crédito informada.
+          maxLength: 6
+          enum:
+            - DIA
+            - SEMANA
+            - MES
+            - ANO
+            - SEM_PRAZO_TOTAL
+          example: MES
+        totalNumberOfInstalments:
           type: number
           maxLength: 6
-          description: 'Prazo Remanescente segundo o tipo (dia, semana, mês, ano) referente à Modalidade de Crédito informada.'
+          example: 130632
           nullable: true
-          example: 14600
-        typeNumberOfInstalments:
-          $ref: '#/components/schemas/LoansContract/properties/typeNumberOfInstalments'
-        paidInstalments:
-          type: number
-          description: 'Quantidade de prestações pagas. (No caso de modalidades que não possuam parcelas, o número de prestações é igual a zero)'
-          maxLength: 3
-          example: 73
-        dueInstalments:
-          type: number
-          maxLength: 3
-          description: Quantidade de prestações a vencer.
-          nullable: true
-          example: 57
-        pastDueInstalments:
-          type: number
-          maxLength: 3
-          nullable: true
-          description: Quantidade de prestações vencidas.
-          example: 73
-        balloonPayments:
-          type: array
-          items:
-            $ref: '#/components/schemas/LoansBalloonPayment'
-          minItems: 0
-          nullable: true
+          description: 'Prazo Total segundo o tipo (dia, semana, mês, ano) referente à Modalidade de Crédito informada.'
         typeContractRemaining:
           type: string
           enum:
@@ -954,7 +923,38 @@ components:
             - SEM_PRAZO_REMANESCENTE
           maxLength: 6
           description: |
-            Tipo de prazo remanescente do contrato referente à modalidade de crédito informada.
+            Tipo de prazo remanescente do contrato referente à modalidade de crédito informada.   
+        contractRemainingNumber:
+          type: number
+          maxLength: 6
+          description: 'Prazo Remanescente segundo o tipo (dia, semana, mês, ano) referente à Modalidade de Crédito informada.'
+          nullable: true
+          example: 14600
+        paidInstalments:
+          type: number
+          description: 'Quantidade de prestações pagas. (No caso de modalidades que não possuam parcelas, o número de prestações é igual a zero)'
+          maxLength: 3
+          nullable: true
+          example: 73
+        dueInstalments:
+          type: number
+          maxLength: 3
+          description: 'Quantidade de prestações a vencer.(No caso de modalidades que não possuam parcelas, o número de prestações é igual a zero)'
+          nullable: true
+          example: 57
+        pastDueInstalments:
+          type: number
+          maxLength: 3
+          nullable: true
+          description: 'Quantidade de prestações vencidas. (No caso de modalidades que não possuam parcelas, o número de prestações é igual a zero)'
+          example: 73
+        balloonPayments:
+          type: array
+          items:
+            $ref: '#/components/schemas/LoansBalloonPayment'
+          minItems: 0
+          description: Lista que traz as datas de vencimento e valor das parcelas não regulares do contrato da modalidade de crédito consultada
+          nullable: true
       additionalProperties: false
     LoansListContract:
       type: object
