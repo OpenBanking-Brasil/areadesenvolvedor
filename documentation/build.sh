@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-swagger-cli bundle source/swagger/parts/_open_banking_fase1_apis_part.yml --outfile source/swagger/swagger_open_banking_fase1_apis.yml --type=yaml
+#swagger-cli bundle source/swagger/parts/_open_banking_fase1_apis_part.yml --outfile source/swagger/swagger_open_banking_fase1_apis.yml --type=yaml
 
 swagger-cli bundle source/swagger/parts/_accounts_apis_part.yml --outfile source/swagger/swagger_accounts_apis.yaml --type=yaml
 swagger-cli bundle source/swagger/parts/_consents_apis_part.yml --outfile source/swagger/swagger_consents_apis.yaml --type=yaml
