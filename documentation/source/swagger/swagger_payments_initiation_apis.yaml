@@ -68,6 +68,8 @@ paths:
           $ref: '#/components/responses/NotAcceptable'
         '415':
           $ref: '#/components/responses/UnsupportedMediaType'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
         '429':
           $ref: '#/components/responses/TooManyRequests'
         '500':
@@ -111,6 +113,8 @@ paths:
           $ref: '#/components/responses/MethodNotAllowed'
         '406':
           $ref: '#/components/responses/NotAcceptable'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
         '429':
           $ref: '#/components/responses/TooManyRequests'
         '500':
@@ -260,8 +264,37 @@ components:
             paymentId:
               type: string
               description: Identificador único da iniciação de pagamento PIX.
-              maxLength: 40
-              pattern: '^[{(]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?$'
+              maxLength: 100
+              pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
+            endToEndId:
+              type: string
+              description: Identificador único da iniciação de pagamento PIX.
+              maxLength: 32
+              pattern: '^[a-zA-Z0-9]{32}$'
+              example: XpRMU9UQTROMWhZV2xSU1FUazJSMDl4d
+            consentId:
+              type: string
+              maxLength: 32
+              pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
+              example: XpRMU9UQTROMWhZV2xSU1FUazJSMDl4d
+              description: |
+                Identificador único da iniciação de pagamento PIX.
+            amount:
+              type: number
+              format: double
+              maxLength: 18
+              pattern: '^((\d{1,16}\.\d{2}))$'
+              example: 100000.04
+              description: |
+                Valor da transação efetuada e convertida em moeda nacional com 2 casas decimais.
+            currency:
+              type: string
+              maxLength: 3
+              pattern: '^(\w{3}){1}$'
+              example: BRL
+              description: |
+                Moeda referente ao valor da transação, segundo modelo ISO-4217. p.ex. 'BRL'.
+                Todos os saldos informados estão representados com a moeda vigente do Brasil.
           additionalProperties: false
         links:
           type: object
@@ -468,6 +501,12 @@ components:
             $ref: '#/components/schemas/ResponseError'
     TooManyRequests:
       description: 'A operação foi recusada, pois muitas solicitações foram feitas dentro de um determinado período ou o limite global de requisições concorrentes foi atingido'
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/ResponseError'
+    UnprocessableEntity:
+      description: 'A solicitação foi bem formada, mas não pôde ser processada devido à lógica de negócios específica da solicitação.'
       content:
         application/json; charset=utf-8:
           schema:
