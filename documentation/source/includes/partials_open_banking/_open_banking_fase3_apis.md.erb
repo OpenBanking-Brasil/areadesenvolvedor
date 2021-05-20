@@ -1,0 +1,562 @@
+
+<h1 id="fase-3-apis-do-open-banking-brasil">Fase 3 - APIs do Open Banking Brasil v1.0.0</h1>
+
+> Scroll down for code samples, example requests and responses. Select a language for code samples from the tabs above or the mobile navigation menu.
+
+Clientes poderão solicitar e realizar operações de pagamentos. 
+
+A operação de pagamento ocorre apenas se a pessoa autorizar através da API de Consentimento, sempre para finalidades determinadas e por um prazo específico. E será possível para o cliente cancelar essa autorização a qualquer momento em qualquer uma das instituições envolvidas no compartilhamento.
+
+<h1 id="fase-3-apis-do-open-banking-brasil-api-payments-initiation">API - Payments Initiation</h1>
+
+|Versão|
+|:-----|
+|1     |
+
+#### Visão Geral
+
+A API tem como objetivo realizar a iniciação de pagamento entre bancos e instituições financeiras e acessível também à estabelecimentos comerciais participantes do Open Banking Brasil.
+
+É possível realizar a iniciação de pagamento (não possuindo restrição de uso entre pessoa física e pessoa jurídica) mediante a integração entre as instituições autorizadas.
+
+#### Especificação em OAS 3.0
+
+<a href="swagger/swagger_payments_initiation_apis.yaml">Download da Especificação (OAS 3.0)</a>
+
+## [Em Revisão] Criar iniciação de pagamento.
+
+<a id="opIdpaymentsInitiationPostPixPayments"></a>
+
+> Exemplo de código
+
+```javascript
+const data = JSON.stringify({
+  "data": {
+    "additionalInfo": "Descrição da Transação",
+    "qrCode": "00020104141234567890123426660014BR.GOV.BCB.PIX014466756C616E6F32303139406578616D706C652E636F6D27300012BR.COM.OUTRO011001234567895204000053039865406123.455802BR5915NOMEDORECEBEDOR6008BRASILIA61087007490062530515RP12345678-201950300017BR.GOV.BCB.BRCODE01051.0.080450014BR.GOV.BCB.PIX0123PADRAO.URL.PIX/0123ABCD81390012BR.COM.OUTRO01190123.ABCD.3456.WXYZ6304EB76",
+    "pixKey": "12345678901",
+    "payment": {
+      "amount": 100000.12,
+      "currency": "BRL"
+    },
+    "accountPayee": {
+      "ispb": 12345678,
+      "branchCode": "1234",
+      "number": "1234567890",
+      "checkDigit": "1234",
+      "accountType": "CONTA_DEPOSITO_A_VISTA"
+    }
+  }
+});
+
+const xhr = new XMLHttpRequest();
+xhr.withCredentials = true;
+
+xhr.addEventListener("readystatechange", function () {
+  if (this.readyState === this.DONE) {
+    console.log(this.responseText);
+  }
+});
+
+xhr.open("POST", "https://example.com/payments-initiation/v1/pix/payments");
+xhr.setRequestHeader("Content-Type", "application/json");
+xhr.setRequestHeader("Accept", "application/json");
+xhr.setRequestHeader("Authorization", "string");
+xhr.setRequestHeader("x-fapi-auth-date", "stringstringstringstringstrin");
+xhr.setRequestHeader("x-fapi-customer-ip-address", "string");
+xhr.setRequestHeader("x-fapi-interaction-id", "string");
+xhr.setRequestHeader("x-customer-user-agent", "string");
+
+xhr.send(data);
+```
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("example.com")
+
+payload = "{\"data\":{\"additionalInfo\":\"Descrição da Transação\",\"qrCode\":\"00020104141234567890123426660014BR.GOV.BCB.PIX014466756C616E6F32303139406578616D706C652E636F6D27300012BR.COM.OUTRO011001234567895204000053039865406123.455802BR5915NOMEDORECEBEDOR6008BRASILIA61087007490062530515RP12345678-201950300017BR.GOV.BCB.BRCODE01051.0.080450014BR.GOV.BCB.PIX0123PADRAO.URL.PIX/0123ABCD81390012BR.COM.OUTRO01190123.ABCD.3456.WXYZ6304EB76\",\"pixKey\":\"12345678901\",\"payment\":{\"amount\":100000.12,\"currency\":\"BRL\"},\"accountPayee\":{\"ispb\":12345678,\"branchCode\":\"1234\",\"number\":\"1234567890\",\"checkDigit\":\"1234\",\"accountType\":\"CONTA_DEPOSITO_A_VISTA\"}}}"
+
+headers = {
+    'Content-Type': "application/json",
+    'Accept': "application/json",
+    'Authorization': "string",
+    'x-fapi-auth-date': "stringstringstringstringstrin",
+    'x-fapi-customer-ip-address': "string",
+    'x-fapi-interaction-id': "string",
+    'x-customer-user-agent': "string"
+    }
+
+conn.request("POST", "/payments-initiation/v1/pix/payments", payload, headers)
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
+```
+
+```java
+HttpResponse<String> response = Unirest.post("https://example.com/payments-initiation/v1/pix/payments")
+  .header("Content-Type", "application/json")
+  .header("Accept", "application/json")
+  .header("Authorization", "string")
+  .header("x-fapi-auth-date", "stringstringstringstringstrin")
+  .header("x-fapi-customer-ip-address", "string")
+  .header("x-fapi-interaction-id", "string")
+  .header("x-customer-user-agent", "string")
+  .body("{\"data\":{\"additionalInfo\":\"Descrição da Transação\",\"qrCode\":\"00020104141234567890123426660014BR.GOV.BCB.PIX014466756C616E6F32303139406578616D706C652E636F6D27300012BR.COM.OUTRO011001234567895204000053039865406123.455802BR5915NOMEDORECEBEDOR6008BRASILIA61087007490062530515RP12345678-201950300017BR.GOV.BCB.BRCODE01051.0.080450014BR.GOV.BCB.PIX0123PADRAO.URL.PIX/0123ABCD81390012BR.COM.OUTRO01190123.ABCD.3456.WXYZ6304EB76\",\"pixKey\":\"12345678901\",\"payment\":{\"amount\":100000.12,\"currency\":\"BRL\"},\"accountPayee\":{\"ispb\":12345678,\"branchCode\":\"1234\",\"number\":\"1234567890\",\"checkDigit\":\"1234\",\"accountType\":\"CONTA_DEPOSITO_A_VISTA\"}}}")
+  .asString();
+```
+
+`POST /payments-initiation/v1/pix/payments`
+
+Método para a criação de uma iniciação de pagamento.
+
+### Dicionário de dados
+
+<a href='dictionary/paymentsInitiationPostPixPayments_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
+
+### Especificação em OAS 3.0
+
+<a href="swagger/swagger_payments_initiation_apis.yaml">Download da Especificação (OAS 3.0)</a>
+
+> Body parameter
+
+```json
+{
+  "data": {
+    "additionalInfo": "Descrição da Transação",
+    "qrCode": "00020104141234567890123426660014BR.GOV.BCB.PIX014466756C616E6F32303139406578616D706C652E636F6D27300012BR.COM.OUTRO011001234567895204000053039865406123.455802BR5915NOMEDORECEBEDOR6008BRASILIA61087007490062530515RP12345678-201950300017BR.GOV.BCB.BRCODE01051.0.080450014BR.GOV.BCB.PIX0123PADRAO.URL.PIX/0123ABCD81390012BR.COM.OUTRO01190123.ABCD.3456.WXYZ6304EB76",
+    "pixKey": "12345678901",
+    "payment": {
+      "amount": 100000.12,
+      "currency": "BRL"
+    },
+    "accountPayee": {
+      "ispb": 12345678,
+      "branchCode": "1234",
+      "number": "1234567890",
+      "checkDigit": "1234",
+      "accountType": "CONTA_DEPOSITO_A_VISTA"
+    }
+  }
+}
+```
+
+<h3 id="[em-revisão]-criar-iniciação-de-pagamento.-parameters">Parâmetros</h3>
+
+|Nome|Origem|Tipo|Obrigatório|Descrição|
+|---|---|---|---|---|
+|Authorization|header|string|true|Cabeçalho HTTP padrão. Permite que as credenciais sejam fornecidas dependendo do tipo de recurso solicitado|
+|x-fapi-auth-date|header|string|false|Data em que o usuário logou pela última vez com o receptor. Representada de acordo com a [RFC7231](https://tools.ietf.org/html/rfc7231).Exemplo: Sun, 10 Sep 2017 19:43:31 UTC|
+|x-fapi-customer-ip-address|header|string|false|O endereço IP do usuário se estiver atualmente logado com o receptor.|
+|x-fapi-interaction-id|header|string|false|Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.|
+|x-customer-user-agent|header|string|false|Indica o user-agent que o usuário utiliza.|
+|body|body|[CreatePixPayment](#schemacreatepixpayment)|true|Payload para criação da iniciação do pagamento PIX.|
+
+> O comando acima retorna uma estrutura json como essa:
+
+> 201 Response
+
+```json
+{
+  "data": {
+    "paymentId": "8f800dc8-bc8a-4c0e-b5e6-3c6801cfe135",
+    "endToEndId": "a9ae654d-e531-4a8b-a926-952d664de203",
+    "consentId": "3a782761-9573-4e1f-b4d1-4c798955c0b8",
+    "creationDateTime": "2020-07-21T08:30:00Z",
+    "updatedDateTime": "2020-07-21T08:30:00Z",
+    "pixKey": "12345678901",
+    "status": "FINALIZADO",
+    "rejectionReason": "FUNDOS_INSUFICIENTES",
+    "payment": {
+      "amount": 100000.12,
+      "currency": "BRL"
+    },
+    "accountPayee": {
+      "ispb": 12345678,
+      "branchCode": "1234",
+      "number": "1234567890",
+      "checkDigit": "1234",
+      "accountType": "CONTA_DEPOSITO_A_VISTA"
+    }
+  },
+  "links": {
+    "self": "https://api.banco.com.br/open-banking/api/v1/resource",
+    "first": "https://api.banco.com.br/open-banking/api/v1/resource",
+    "prev": "https://api.banco.com.br/open-banking/api/v1/resource",
+    "next": "https://api.banco.com.br/open-banking/api/v1/resource",
+    "last": "https://api.banco.com.br/open-banking/api/v1/resource"
+  },
+  "meta": {
+    "totalRecords": 1,
+    "totalPages": 1,
+    "requestDateTime": "2021-05-21T08:30:00Z"
+  }
+}
+```
+
+<h3 id="[em-revisão]-criar-iniciação-de-pagamento.-responses">Resposta</h3>
+
+|Status|Significado|Descrição|Schema|
+|---|---|---|---|
+|201|[Created](https://tools.ietf.org/html/rfc7231#section-6.3.2)|Iniciação de pagamento PIX criada com sucesso.|[ResponsePixPayment](#schemaresponsepixpayment)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|A requisição foi malformada, omitindo atributos obrigatórios, seja no payload ou através de atributos na URL.|[ResponseError](#schemaresponseerror)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Cabeçalho de autenticação ausente/inválido ou token inválido|[ResponseError](#schemaresponseerror)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|O token tem escopo incorreto ou uma política de segurança foi violada|[ResponseError](#schemaresponseerror)|
+|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|O recurso solicitado não existe ou não foi implementado|[ResponseError](#schemaresponseerror)|
+|405|[Method Not Allowed](https://tools.ietf.org/html/rfc7231#section-6.5.5)|O consumidor tentou acessar o recurso com um método não suportado|[ResponseError](#schemaresponseerror)|
+|406|[Not Acceptable](https://tools.ietf.org/html/rfc7231#section-6.5.6)|A solicitação continha um cabeçalho Accept diferente dos tipos de mídia permitidos ou um conjunto de caracteres diferente de UTF-8|[ResponseError](#schemaresponseerror)|
+|415|[Unsupported Media Type](https://tools.ietf.org/html/rfc7231#section-6.5.13)|O formato do payload não é um formato suportado.|[ResponseError](#schemaresponseerror)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|A operação foi recusada, pois muitas solicitações foram feitas dentro de um determinado período ou o limite global de requisições concorrentes foi atingido|[ResponseError](#schemaresponseerror)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Ocorreu um erro no gateway da API ou no microsserviço|[ResponseError](#schemaresponseerror)|
+|default|Default|Erro inesperado.|[ResponseError](#schemaresponseerror)|
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|201|x-fapi-interaction-id|string||none|
+
+<aside class="warning">
+Para realizar esta operação, você deve ser autenticado por meio de um dos seguintes métodos:
+None ( Scopes: openId payments-initiation )
+</aside>
+
+## [Em Revisão] Consultar iniciação de pagamento.
+
+<a id="opIdpaymentsInitiationGetPixPayments"></a>
+
+> Exemplo de código
+
+```javascript
+const data = null;
+
+const xhr = new XMLHttpRequest();
+xhr.withCredentials = true;
+
+xhr.addEventListener("readystatechange", function () {
+  if (this.readyState === this.DONE) {
+    console.log(this.responseText);
+  }
+});
+
+xhr.open("GET", "https://example.com/payments-initiation/v1/pix/payments/string");
+xhr.setRequestHeader("Accept", "application/json");
+xhr.setRequestHeader("Authorization", "string");
+xhr.setRequestHeader("x-fapi-auth-date", "stringstringstringstringstrin");
+xhr.setRequestHeader("x-fapi-customer-ip-address", "string");
+xhr.setRequestHeader("x-fapi-interaction-id", "string");
+xhr.setRequestHeader("x-customer-user-agent", "string");
+
+xhr.send(data);
+```
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("example.com")
+
+headers = {
+    'Accept': "application/json",
+    'Authorization': "string",
+    'x-fapi-auth-date': "stringstringstringstringstrin",
+    'x-fapi-customer-ip-address': "string",
+    'x-fapi-interaction-id': "string",
+    'x-customer-user-agent': "string"
+    }
+
+conn.request("GET", "/payments-initiation/v1/pix/payments/string", headers=headers)
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
+```
+
+```java
+HttpResponse<String> response = Unirest.get("https://example.com/payments-initiation/v1/pix/payments/string")
+  .header("Accept", "application/json")
+  .header("Authorization", "string")
+  .header("x-fapi-auth-date", "stringstringstringstringstrin")
+  .header("x-fapi-customer-ip-address", "string")
+  .header("x-fapi-interaction-id", "string")
+  .header("x-customer-user-agent", "string")
+  .asString();
+```
+
+`GET /payments-initiation/v1/pix/payments/{paymentId}`
+
+Método para consultar uma iniciação de pagamento.
+
+### Dicionário de dados
+
+<a href='dictionary/paymentsInitiationGetPixPayments_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
+
+### Especificação em OAS 3.0
+
+<a href="swagger/swagger_payments_initiation_apis.yaml">Download da Especificação (OAS 3.0)</a>
+
+<h3 id="[em-revisão]-consultar-iniciação-de-pagamento.-parameters">Parâmetros</h3>
+
+|Nome|Origem|Tipo|Obrigatório|Descrição|
+|---|---|---|---|---|
+|paymentId|path|string|true|Identificador da operação de pagamento.|
+|Authorization|header|string|true|Cabeçalho HTTP padrão. Permite que as credenciais sejam fornecidas dependendo do tipo de recurso solicitado|
+|x-fapi-auth-date|header|string|false|Data em que o usuário logou pela última vez com o receptor. Representada de acordo com a [RFC7231](https://tools.ietf.org/html/rfc7231).Exemplo: Sun, 10 Sep 2017 19:43:31 UTC|
+|x-fapi-customer-ip-address|header|string|false|O endereço IP do usuário se estiver atualmente logado com o receptor.|
+|x-fapi-interaction-id|header|string|false|Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.|
+|x-customer-user-agent|header|string|false|Indica o user-agent que o usuário utiliza.|
+
+> O comando acima retorna uma estrutura json como essa:
+
+> 200 Response
+
+```json
+{
+  "data": {
+    "paymentId": "8f800dc8-bc8a-4c0e-b5e6-3c6801cfe135",
+    "endToEndId": "a9ae654d-e531-4a8b-a926-952d664de203",
+    "consentId": "3a782761-9573-4e1f-b4d1-4c798955c0b8",
+    "creationDateTime": "2020-07-21T08:30:00Z",
+    "updatedDateTime": "2020-07-21T08:30:00Z",
+    "pixKey": "12345678901",
+    "status": "FINALIZADO",
+    "rejectionReason": "FUNDOS_INSUFICIENTES",
+    "payment": {
+      "amount": 100000.12,
+      "currency": "BRL"
+    },
+    "accountPayee": {
+      "ispb": 12345678,
+      "branchCode": "1234",
+      "number": "1234567890",
+      "checkDigit": "1234",
+      "accountType": "CONTA_DEPOSITO_A_VISTA"
+    }
+  },
+  "links": {
+    "self": "https://api.banco.com.br/open-banking/api/v1/resource",
+    "first": "https://api.banco.com.br/open-banking/api/v1/resource",
+    "prev": "https://api.banco.com.br/open-banking/api/v1/resource",
+    "next": "https://api.banco.com.br/open-banking/api/v1/resource",
+    "last": "https://api.banco.com.br/open-banking/api/v1/resource"
+  },
+  "meta": {
+    "totalRecords": 1,
+    "totalPages": 1,
+    "requestDateTime": "2021-05-21T08:30:00Z"
+  }
+}
+```
+
+<h3 id="[em-revisão]-consultar-iniciação-de-pagamento.-responses">Resposta</h3>
+
+|Status|Significado|Descrição|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|Dados de iniciação de pagamento PIX obtidos com sucesso.|[ResponsePixPayment](#schemaresponsepixpayment)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|A requisição foi malformada, omitindo atributos obrigatórios, seja no payload ou através de atributos na URL.|[ResponseError](#schemaresponseerror)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Cabeçalho de autenticação ausente/inválido ou token inválido|[ResponseError](#schemaresponseerror)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|O token tem escopo incorreto ou uma política de segurança foi violada|[ResponseError](#schemaresponseerror)|
+|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|O recurso solicitado não existe ou não foi implementado|[ResponseError](#schemaresponseerror)|
+|405|[Method Not Allowed](https://tools.ietf.org/html/rfc7231#section-6.5.5)|O consumidor tentou acessar o recurso com um método não suportado|[ResponseError](#schemaresponseerror)|
+|406|[Not Acceptable](https://tools.ietf.org/html/rfc7231#section-6.5.6)|A solicitação continha um cabeçalho Accept diferente dos tipos de mídia permitidos ou um conjunto de caracteres diferente de UTF-8|[ResponseError](#schemaresponseerror)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|A operação foi recusada, pois muitas solicitações foram feitas dentro de um determinado período ou o limite global de requisições concorrentes foi atingido|[ResponseError](#schemaresponseerror)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Ocorreu um erro no gateway da API ou no microsserviço|[ResponseError](#schemaresponseerror)|
+|default|Default|Erro inesperado.|[ResponseError](#schemaresponseerror)|
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|200|x-fapi-interaction-id|string||none|
+
+<aside class="warning">
+Para realizar esta operação, você deve ser autenticado por meio de um dos seguintes métodos:
+None ( Scopes: openId payments-initiation )
+</aside>
+
+# Schemas
+
+<h2 id="tocS_CreatePixPayment">CreatePixPayment</h2>
+
+<a id="schemacreatepixpayment"></a>
+<a id="schema_CreatePixPayment"></a>
+<a id="tocScreatepixpayment"></a>
+<a id="tocscreatepixpayment"></a>
+
+```json
+{
+  "data": {
+    "additionalInfo": "Descrição da Transação",
+    "qrCode": "00020104141234567890123426660014BR.GOV.BCB.PIX014466756C616E6F32303139406578616D706C652E636F6D27300012BR.COM.OUTRO011001234567895204000053039865406123.455802BR5915NOMEDORECEBEDOR6008BRASILIA61087007490062530515RP12345678-201950300017BR.GOV.BCB.BRCODE01051.0.080450014BR.GOV.BCB.PIX0123PADRAO.URL.PIX/0123ABCD81390012BR.COM.OUTRO01190123.ABCD.3456.WXYZ6304EB76",
+    "pixKey": "12345678901",
+    "payment": {
+      "amount": 100000.12,
+      "currency": "BRL"
+    },
+    "accountPayee": {
+      "ispb": 12345678,
+      "branchCode": "1234",
+      "number": "1234567890",
+      "checkDigit": "1234",
+      "accountType": "CONTA_DEPOSITO_A_VISTA"
+    }
+  }
+}
+
+```
+
+### Propriedades
+
+|Nome|Tipo|Obrigatório|Descrição|
+|---|---|---|---|---|
+|data|object|true||
+|» additionalInfo|string|false|Determina um texto a ser apresentado ao pagador para que ele possa digitar uma informação correlata, <br>em formato livre, a ser enviada ao recebedor|
+|» qrCode|string|false|QR Code no momento da leitura do QR Code em questão. Essa funcionalidade é possível tanto para o<br>QR Code Estático quanto para o QR Code Dinâmico. Texto do QR Code copia e cola.|
+|» pixKey|string|false|Chave DICT do recebedor. Os tipos de chave podem ser: telefone, e-mail, cpf/cnpj ou EVP. <br>O telefone celular usará o padrão E.1641. O E-mail deve ter o formato xxxxxxxx@xxxxxxx.xxx(.xx) e nomáximo 77 caracteres. <br>O CPF será utilizado com 11 números e deverá ser informado sem pontos ou traços. <br>O CNPJ será utilizado com 14 números e deverá ser informado sem pontos ou traços. <br>A chave aleatória deve ser UUID gerado pelo DICT, conforme formato especificado na RFC41223.<br>[Restrição] Obrigatório para pagamentos via Chave|
+|» payment|object|true||
+|»» amount|number(double)|true|Valor da transação efetuada e convertida em moeda nacional com 4 casas decimais.|
+|»» currency|string|true|Moeda referente ao valor monetário informado, segundo modelo ISO-4217. p.ex. 'BRL' <br>Todos os valores monetários informados estão representados com a moeda vigente do Brasil|
+|» accountPayee|object|true||
+|»» ispb|number|true|Identificador do Sistema de Pagamentos Brasileiros.<br>Código que define instituições participantes do Sistema de Transferência de Reservas (STR).|
+|»» branchCode|string|false|Código da Agência detentora da conta.<br>Agência é a dependência destinada ao atendimento aos clientes, ao público em geral e aos associados de cooperativas de crédito, <br>no exercício de atividades da instituição, não podendo ser móvel ou transitória.|
+|»» number|string|true|Número da conta.|
+|»» checkDigit|string|true|Dígito da conta.|
+|»» accountType|string|true|Tipos de contas.Vide ENUM.<br>CACC - Current (CONTA_DEPOSITO_A_VISTA)<br>SLRY - Salary (CONTA_SALARIO)<br>SVGS - Savings (CONTA_POUPANCA)<br>TRAN - TransactingAccount (CONTA_PAGAMENTO_PRE_PAGA)|
+
+#### Enumerated Values
+
+|Nome|Código|
+|---|---|
+|accountType|CONTA_DEPOSITO_A_VISTA|
+|accountType|CONTA_POUPANCA|
+|accountType|CONTA_PAGAMENTO_PRE_PAGA|
+|accountType|CONTA_SALARIO|
+
+<h2 id="tocS_ResponsePixPayment">ResponsePixPayment</h2>
+
+<a id="schemaresponsepixpayment"></a>
+<a id="schema_ResponsePixPayment"></a>
+<a id="tocSresponsepixpayment"></a>
+<a id="tocsresponsepixpayment"></a>
+
+```json
+{
+  "data": {
+    "paymentId": "8f800dc8-bc8a-4c0e-b5e6-3c6801cfe135",
+    "endToEndId": "a9ae654d-e531-4a8b-a926-952d664de203",
+    "consentId": "3a782761-9573-4e1f-b4d1-4c798955c0b8",
+    "creationDateTime": "2020-07-21T08:30:00Z",
+    "updatedDateTime": "2020-07-21T08:30:00Z",
+    "pixKey": "12345678901",
+    "status": "FINALIZADO",
+    "rejectionReason": "FUNDOS_INSUFICIENTES",
+    "payment": {
+      "amount": 100000.12,
+      "currency": "BRL"
+    },
+    "accountPayee": {
+      "ispb": 12345678,
+      "branchCode": "1234",
+      "number": "1234567890",
+      "checkDigit": "1234",
+      "accountType": "CONTA_DEPOSITO_A_VISTA"
+    }
+  },
+  "links": {
+    "self": "https://api.banco.com.br/open-banking/api/v1/resource",
+    "first": "https://api.banco.com.br/open-banking/api/v1/resource",
+    "prev": "https://api.banco.com.br/open-banking/api/v1/resource",
+    "next": "https://api.banco.com.br/open-banking/api/v1/resource",
+    "last": "https://api.banco.com.br/open-banking/api/v1/resource"
+  },
+  "meta": {
+    "totalRecords": 1,
+    "totalPages": 1,
+    "requestDateTime": "2021-05-21T08:30:00Z"
+  }
+}
+
+```
+
+### Propriedades
+
+|Nome|Tipo|Obrigatório|Descrição|
+|---|---|---|---|---|
+|data|object|true||
+|» paymentId|string|true|Código ou identificador único informado pela instituição que mantém a conta para representar o pagamento individual.|
+|» endToEndId|string|false|Id fim a fim da transação.O termo "E2E" que identifica a transação no arranjo.<br>[Restrição] É obrigatório o retorno após o status "ACEITA_EM_PROCESSAMENTO".|
+|» consentId|string|true|Identificador único do consentimento.|
+|» creationDateTime|string(date-time)|true|Data e hora em que o recurso foi criado. <br>Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).|
+|» updatedDateTime|string(date-time)|true|Data e hora da ultima atualização da iniciação de pagamento. <br>Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).|
+|» pixKey|string|false|Chave DICT do recebedor. Os tipos de chave podem ser: telefone, e-mail, cpf/cnpj ou EVP. <br>O telefone celular usará o padrão E.1641. O E-mail deve ter o formato xxxxxxxx@xxxxxxx.xxx(.xx) e nomáximo 77 caracteres. <br>O CPF será utilizado com 11 números e deverá ser informado sem pontos ou traços. <br>O CNPJ será utilizado com 14 números e deverá ser informado sem pontos ou traços. <br>A chave aleatória deve ser UUID gerado pelo DICT, conforme formato especificado na RFC41223.<br>[Restrição] Obrigatório para pagamentos via Chave|
+|» status|string|true|Estado atual da iniciação de pagamento criada.|
+|» rejectionReason|string|false|Motivo da rejeição do pagamento.<br>[Restrição] Deve ser enviado quando o status é "REJEITADO".|
+|» payment|[#/paths/~1payments-initiation~1v1~1pix~1payments/post/requestBody/content/application~1json/schema/properties/data/properties/payment](#schema#/paths/~1payments-initiation~1v1~1pix~1payments/post/requestbody/content/application~1json/schema/properties/data/properties/payment)|true||
+|» accountPayee|[#/paths/~1payments-initiation~1v1~1pix~1payments/post/requestBody/content/application~1json/schema/properties/data/properties/accountPayee](#schema#/paths/~1payments-initiation~1v1~1pix~1payments/post/requestbody/content/application~1json/schema/properties/data/properties/accountpayee)|true||
+|links|object|true|Referências para outros recusos da API requisitada.|
+|» self|string(uri)|true|URI completo que gerou a resposta atual.|
+|» first|string(uri)|false|URI da primeira página que originou essa lista de resultados. Restrição - Obrigatório quando não for a primeira página da resposta|
+|» prev|string(uri)|false|URI da página anterior dessa lista de resultados. Restrição - 	Obrigatório quando não for a primeira página da resposta|
+|» next|string(uri)|false|URI da próxima página dessa lista de resultados. Restrição - Obrigatório quando não for a última página da resposta|
+|» last|string(uri)|false|URI da última página dessa lista de resultados. Restrição - Obrigatório quando não for a última página da resposta|
+|meta|[ResponseError/properties/meta](#schemaresponseerror/properties/meta)|true|Meta informações referente a API requisitada.|
+
+#### Enumerated Values
+
+|Nome|Código|
+|---|---|
+|status|PENDENTE|
+|status|AGUARDANDO_AUTORIZACAO_MULTIPLA_ALCADA|
+|status|REJEITADO|
+|status|ACEITA_EM_PROCESSAMENTO|
+|status|FINALIZADO|
+|rejectionReason|FUNDOS_INSUFICIENTES|
+|rejectionReason|BENEFICARIO_DIFERENTE_DO_CONSENTIMENTO|
+|rejectionReason|VALOR_DIFERENTE_DO_CONSENTIMENTO|
+|rejectionReason|VALOR_ACIMA_DO_LIMITE|
+|rejectionReason|VALOR_INVALIDO|
+|rejectionReason|CONTA_INVALIDA|
+|rejectionReason|CONSENTIMENTO_INVALIDO|
+|rejectionReason|JANELA_DE_OPERACAO|
+|rejectionReason|DESCONHECIDO|
+
+<h2 id="tocS_ResponseError">ResponseError</h2>
+
+<a id="schemaresponseerror"></a>
+<a id="schema_ResponseError"></a>
+<a id="tocSresponseerror"></a>
+<a id="tocsresponseerror"></a>
+
+```json
+{
+  "errors": [
+    {
+      "code": "string",
+      "title": "string",
+      "detail": "string"
+    }
+  ],
+  "meta": {
+    "totalRecords": 1,
+    "totalPages": 1,
+    "requestDateTime": "2021-05-21T08:30:00Z"
+  }
+}
+
+```
+
+### Propriedades
+
+|Nome|Tipo|Obrigatório|Descrição|
+|---|---|---|---|---|
+|errors|[object]|true||
+|» code|string|true|Código de erro específico do endpoint|
+|» title|string|true|Título legível por humanos deste erro específico|
+|» detail|string|true|Descrição legível por humanos deste erro específico|
+|meta|object|false|Meta informações referente a API requisitada.|
+|» totalRecords|integer(int32)|true|Número total de registros no resultado|
+|» totalPages|integer(int32)|true|Número total de páginas no resultado|
+|» requestDateTime|string(date-time)|true|Data e hora da consulta, conforme especificação RFC-3339, formato UTC.|
+

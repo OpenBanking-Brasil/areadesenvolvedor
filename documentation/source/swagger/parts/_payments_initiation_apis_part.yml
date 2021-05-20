@@ -1,0 +1,199 @@
+﻿openapi: "3.0.0"
+info:
+  title: API Payments Initiation - Open Banking Brasil
+  description: |
+    API que trata da iniciação das operações de pagamentos para o Open Banking Brasil.
+    Requer consentimento do cliente para todos os `endpoints`.
+
+    # Permissions necessárias para a API Payments Initiation
+
+    Para cada um dos paths desta API, além dos escopos (`scopes`) indicados existem `permissions` que deverão ser observadas:
+
+    ### /pix/payments
+      - permissions:
+        - POST: **PAYMENTS_INITIATION_PIX_CREATE**
+    ### /pix/payments/{paymentId}
+      - permissions:
+        - GET: **PAYMENTS_INITIATION_PIX_READ**
+  version: 1.0.0
+  license:
+    name: Apache 2.0
+    url: 'https://www.apache.org/licenses/LICENSE-2.0'
+  contact:
+    name: Governança do Open Banking Brasil – Interfaces
+    email: gt-interfaces@openbankingbr.org
+    url: 'https://openbanking-brasil.github.io/areadesenvolvedor/'
+servers:
+  - url: 'https://api.banco.com.br/open-banking/payments-initiation/v1'
+    description: Servidor de Produção
+  - url: 'https://apih.banco.com.br/open-banking/payments-initiation/v1'
+    description: Servidor de Homologação
+tags:
+  - name: Payments Initiation
+paths:
+  /pix/payments:
+    post:
+      tags:
+        - Payments Initiation
+      summary: Criar iniciação de pagamento.
+      operationId: paymentsInitiationPostPixPayments
+      description: Método para criar uma iniciação de pagamento.
+      parameters:
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/xFapiAuthDate'
+        - $ref: '#/components/parameters/xFapiCustomerIpAddress'
+        - $ref: '#/components/parameters/xFapiInteractionId'
+        - $ref: '#/components/parameters/xCustomerUserAgent'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePixPayment"
+        description: Payload para criação da iniciação do pagamento PIX.
+        required: true
+      responses:
+        '201':
+          $ref: '#/components/responses/201PaymentsInitiationPixPaymentCreated'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          description: Erro inesperado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+      security:
+        - OpenId:
+            - openId
+            - payments-initiation
+  /pix/payments/{paymentId}:
+    get:
+      tags:
+        - Payments Initiation
+      summary: Consultar iniciação de pagamento.
+      operationId: paymentsInitiationGetPixPayments
+      description: Método para consultar uma iniciação de pagamento.
+      parameters:
+        - $ref: '#/components/parameters/paymentId'
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/xFapiAuthDate'
+        - $ref: '#/components/parameters/xFapiCustomerIpAddress'
+        - $ref: '#/components/parameters/xFapiInteractionId'
+        - $ref: '#/components/parameters/xCustomerUserAgent'
+      responses:
+        '200':
+          $ref: '#/components/responses/200PaymentsInitiationPixPaymentIdRead'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          description: Erro inesperado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+      security:
+        - OpenId:
+            - openId
+            - payments-initiation
+components:
+  schemas:
+    CreatePixPayment:
+      $ref: ./schemas/payments_initiation_apis/CreatePixPayment.yaml
+    ResponsePixPayment:
+      $ref: ./schemas/payments_initiation_apis/ResponsePixPayment.yaml
+    ResponseError:
+      $ref: ./schemas/ResponseError.yaml
+    Account:
+      $ref: ./schemas/payments_initiation_apis/Account.yaml
+  parameters:
+    paymentId:
+      $ref: ./parameters/PaymentId.yaml
+    Authorization:
+      $ref: ./parameters/Authorization.yaml
+    xCustomerUserAgent:
+      $ref: ./parameters/XCustomerUserAgent.yaml
+    xFapiAuthDate:
+      $ref: ./parameters/XFapiAuthDate.yaml
+    xFapiCustomerIpAddress:
+      $ref: ./parameters/XFapiCustomerIpAddress.yaml
+    xFapiInteractionId:
+      $ref: ./parameters/XFapiInteractionId.yaml
+  securitySchemes:
+    OpenId:
+      type: openIdConnect
+      openIdConnectUrl: 'https://authserver.example/.well-known/openid-configuration'
+  responses:
+    BadRequest:
+      $ref: ./responses/BadRequest.yaml
+    Forbidden:
+      $ref: ./responses/Forbidden.yaml
+    InternalServerError:
+      $ref: ./responses/InternalServerError.yaml
+    MethodNotAllowed:
+      $ref: ./responses/MethodNotAllowed.yaml
+    NotAcceptable:
+      $ref: ./responses/NotAcceptable.yaml
+    NotFound:
+      $ref: ./responses/NotFound.yaml
+    TooManyRequests:
+      $ref: ./responses/TooManyRequests.yaml
+    UnprocessableEntity:
+      $ref: ./responses/UnprocessableEntity.yaml
+    Unauthorized:
+      $ref: ./responses/Unauthorized.yaml
+    UnsupportedMediaType:
+      $ref: ./responses/UnsupportedMediaType.yaml
+    201PaymentsInitiationPixPaymentCreated:
+      description: Iniciação de pagamento PIX criada com sucesso.
+      headers:
+        x-fapi-interaction-id:
+          schema:
+            $ref: ./headers/XFapiInteractionId.yaml           
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ResponsePixPayment'
+    200PaymentsInitiationPixPaymentIdRead:
+      description: Dados de iniciação de pagamento PIX obtidos com sucesso.
+      headers:
+        x-fapi-interaction-id:
+          schema:
+            $ref: ./headers/XFapiInteractionId.yaml
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ResponsePixPayment'
