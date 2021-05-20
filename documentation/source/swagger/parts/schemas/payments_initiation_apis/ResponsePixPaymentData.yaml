@@ -1,39 +1,67 @@
 type: object
 required:
   - paymentId
+  - consentId
+  - creationDateTime
+  - updatedDateTime
+  - status
+  - payment
+  - accountPayee
 properties:
   paymentId:
     type: string
-    description: Identificador único da iniciação de pagamento PIX.
-    maxLength: 100
-    pattern: ^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$ 
+    maxLength: 36
+    pattern: ^[{]?[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}[}]?$
+    example: "8f800dc8-bc8a-4c0e-b5e6-3c6801cfe135"
+    description: Código ou identificador único informado pela instituição que mantém a conta para representar o pagamento individual.
   endToEndId:
     type: string
-    description: Identificador único da iniciação de pagamento PIX.
-    maxLength: 32
-    pattern: ^[a-zA-Z0-9]{32}$  
-    example: "XpRMU9UQTROMWhZV2xSU1FUazJSMDl4d"
+    maxLength: 36
+    pattern: ^[{]?[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}[}]?$
+    example: "a9ae654d-e531-4a8b-a926-952d664de203"
+    description: |
+      Id fim a fim da transação.O termo "E2E" que identifica a transação no arranjo.
+      [Restrição] É obrigatório o retorno após o status "ACEITA_EM_PROCESSAMENTO".
   consentId:
     type: string
-    maxLength: 32
-    pattern: ^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$ 
-    example: "XpRMU9UQTROMWhZV2xSU1FUazJSMDl4d"
-    description: |
-      Identificador único da iniciação de pagamento PIX.
-  amount:
-    type: number
-    format: double
-    maxLength: 18
-    pattern: ^((\d{1,16}\.\d{2}))$
-    example: 100000.04
-    description: |
-      Valor da transação efetuada e convertida em moeda nacional com 2 casas decimais.
-  currency:
+    maxLength: 36
+    pattern: ^[{]?[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}[}]?$
+    example: "3a782761-9573-4e1f-b4d1-4c798955c0b8"
+    description: Identificador único do consentimento.
+  creationDateTime:
     type: string
-    maxLength: 3
-    pattern: '^(\w{3}){1}$'
-    example: BRL
-    description: | 
-      Moeda referente ao valor da transação, segundo modelo ISO-4217. p.ex. 'BRL'.
-      Todos os saldos informados estão representados com a moeda vigente do Brasil.
+    format: date-time
+    pattern: ^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$|^NA$
+    example: '2020-07-21T08:30:00Z'
+    description: |
+      Data e hora em que o recurso foi criado. 
+      Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).
+  updatedDateTime:
+    type: string
+    format: date-time
+    pattern: ^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$|^NA$
+    example: '2020-07-21T08:30:00Z'
+    description: |
+      Data e hora da ultima atualização da iniciação de pagamento. 
+      Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).
+  pixKey:
+    type: string
+    maxLength: 77
+    pattern: \w*\W*
+    example: '12345678901'
+    description: |
+      Chave DICT do recebedor. Os tipos de chave podem ser: telefone, e-mail, cpf/cnpj ou EVP. 
+      O telefone celular usará o padrão E.1641. O E-mail deve ter o formato xxxxxxxx@xxxxxxx.xxx(.xx) e nomáximo 77 caracteres. 
+      O CPF será utilizado com 11 números e deverá ser informado sem pontos ou traços. 
+      O CNPJ será utilizado com 14 números e deverá ser informado sem pontos ou traços. 
+      A chave aleatória deve ser UUID gerado pelo DICT, conforme formato especificado na RFC41223.
+      [Restrição] Obrigatório para pagamentos via Chave
+  status:
+    $ref: ../enum/EnumPaymentStatusType.yaml
+  rejectionReason:
+    $ref: ../enum/EnumRejectionReasonType.yaml
+  payment:
+    $ref: ./Payment.yaml
+  accountPayee:
+    $ref: ./Account.yaml
 additionalProperties: false

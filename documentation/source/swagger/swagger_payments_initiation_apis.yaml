@@ -139,65 +139,49 @@ components:
         data:
           type: object
           required:
-            - beneficiary
             - payment
-            - account
+            - accountPayee
           properties:
-            beneficiary:
-              type: object
-              required:
-                - type
-                - identificationNumber
-                - name
-              properties:
-                type:
-                  type: string
-                  description: Indica se a pessoa da parte envolvida é uma pessoa natural ou juridica
-                  enum:
-                    - PESSOA_NATURAL
-                    - PESSOA_JURIDICA
-                identificationNumber:
-                  type: string
-                  maxLength: 14
-                  pattern: '^\d{14}$'
-                  example: '12345678901234'
-                  description: 'Identificação da pessoa envolvida na transação recebedor (Preencher com o CPF ou CNPJ, sem formatação)'
-                name:
-                  type: string
-                  maxLength: 80
-                  pattern: \w*\W*
-                  example: Marco Antonio de Brito
-                  description: 'Nome relacionado à identificação, pode ser Pessoa Natural ou Pessoa jurídica.'
-              additionalProperties: false
+            additionalInfo:
+              type: string
+              maxLength: 140
+              pattern: \w*\W*
+              example: Descrição da Transação
+              description: |
+                Determina um texto a ser apresentado ao pagador para que ele possa digitar uma informação correlata, 
+                em formato livre, a ser enviada ao recebedor
+            qrCode:
+              type: string
+              maxLength: 500
+              pattern: \w*\W*
+              example: 00020104141234567890123426660014BR.GOV.BCB.PIX014466756C616E6F32303139406578616D706C652E636F6D27300012BR.COM.OUTRO011001234567895204000053039865406123.455802BR5915NOMEDORECEBEDOR6008BRASILIA61087007490062530515RP12345678-201950300017BR.GOV.BCB.BRCODE01051.0.080450014BR.GOV.BCB.PIX0123PADRAO.URL.PIX/0123ABCD81390012BR.COM.OUTRO01190123.ABCD.3456.WXYZ6304EB76
+              description: |
+                QR Code no momento da leitura do QR Code em questão. Essa funcionalidade é possível tanto para o
+                QR Code Estático quanto para o QR Code Dinâmico. Texto do QR Code copia e cola.
+            pixKey:
+              type: string
+              maxLength: 77
+              pattern: \w*\W*
+              example: '12345678901'
+              description: |
+                Chave DICT do recebedor. Os tipos de chave podem ser: telefone, e-mail, cpf/cnpj ou EVP. 
+                O telefone celular usará o padrão E.1641. O E-mail deve ter o formato xxxxxxxx@xxxxxxx.xxx(.xx) e nomáximo 77 caracteres. 
+                O CPF será utilizado com 11 números e deverá ser informado sem pontos ou traços. 
+                O CNPJ será utilizado com 14 números e deverá ser informado sem pontos ou traços. 
+                A chave aleatória deve ser UUID gerado pelo DICT, conforme formato especificado na RFC41223.
+                [Restrição] Obrigatório para pagamentos via Chave
             payment:
               type: object
               required:
-                - type
-                - date
                 - amount
                 - currency
               properties:
-                type:
-                  type: string
-                  description: |
-                    Conjunto de tipos de pagamentos.
-                  enum:
-                    - PIX
-                    - TED
-                    - BOLETO
-                  example: PIX
-                date:
-                  type: string
-                  format: date-time
-                  pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
-                  example: '2020-07-21T08:30:00Z'
-                  description: Data e hora da transação.
                 amount:
                   type: number
                   format: double
                   maxLength: 19
-                  pattern: '(-?\d{15}(.\d{4}?))$'
-                  example: 100000.1234
+                  pattern: '^((\d{1,16}\.\d{2}))$'
+                  example: 100000.12
                   description: Valor da transação efetuada e convertida em moeda nacional com 4 casas decimais.
                 currency:
                   type: string
@@ -208,45 +192,8 @@ components:
                     Moeda referente ao valor monetário informado, segundo modelo ISO-4217. p.ex. 'BRL' 
                     Todos os valores monetários informados estão representados com a moeda vigente do Brasil
               additionalProperties: false
-            account:
-              type: object
-              properties:
-                ispb:
-                  type: number
-                  maxLength: 10
-                  pattern: '(-?\d{10})$'
-                  example: 1234567890
-                  description: |
-                    Identificador do Sistema de Pagamentos Brasileiros.
-                    Código que define instituições participantes do Sistema de Transferência de Reservas (STR).
-                branchCode:
-                  type: string
-                  maxLength: 4
-                  pattern: '^(\w{4}){1}$'
-                  example: '1234'
-                  description: |
-                    Código da Agência detentora da conta.
-                    Agência é a dependência destinada ao atendimento aos clientes, ao público em geral e aos associados de cooperativas de crédito, 
-                    no exercício de atividades da instituição, não podendo ser móvel ou transitória.
-                number:
-                  type: string
-                  maxLength: 20
-                  pattern: '^\d{8,20}$'
-                  example: '1234567890'
-                  description: Número da conta.
-                accountType:
-                  type: string
-                  enum:
-                    - CONTA_DEPOSITO_A_VISTA
-                    - CONTA_POUPANCA
-                    - CONTA_PAGAMENTO_PRE_PAGA
-                  description: |
-                    Tipos de contas. Modalidades tradicionais previstas pela Resolução 4.753, não contemplando contas vinculadas, conta de domiciliados no exterior, contas em moedas estrangeiras e conta correspondente moeda eletrônica. Vide Enum
-                    Conta de depósito à vista ou Conta corrente - é o tipo mais comum. Nela, o dinheiro fica à sua disposição para ser sacado a qualquer momento. Essa conta não gera rendimentos para o depositante
-                    Conta poupança - foi criada para estimular as pessoas a pouparem. O dinheiro que ficar na conta por trinta dias passa a gerar rendimentos, com isenção de imposto de renda para quem declara. Ou seja, o dinheiro “cresce” (rende) enquanto ficar guardado na conta. Cada depósito terá rendimentos de mês em mês, sempre no dia do mês em que o dinheiro tiver sido depositado
-                    Conta de pagamento pré-paga: segundo CIRCULAR Nº 3.680, BCB de  2013, é a 'destinada à execução de transações de pagamento em moeda eletrônica realizadas com base em fundos denominados em reais previamente aportados'
-                  example: CONTA_DEPOSITO_A_VISTA
-              additionalProperties: false
+            accountPayee:
+              $ref: '#/components/schemas/Account'
           additionalProperties: false
       additionalProperties: false
     ResponsePixPayment:
@@ -260,41 +207,94 @@ components:
           type: object
           required:
             - paymentId
+            - consentId
+            - creationDateTime
+            - updatedDateTime
+            - status
+            - payment
+            - accountPayee
           properties:
             paymentId:
               type: string
-              description: Identificador único da iniciação de pagamento PIX.
-              maxLength: 100
-              pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
+              maxLength: 36
+              pattern: '^[{]?[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}[}]?$'
+              example: 8f800dc8-bc8a-4c0e-b5e6-3c6801cfe135
+              description: Código ou identificador único informado pela instituição que mantém a conta para representar o pagamento individual.
             endToEndId:
               type: string
-              description: Identificador único da iniciação de pagamento PIX.
-              maxLength: 32
-              pattern: '^[a-zA-Z0-9]{32}$'
-              example: XpRMU9UQTROMWhZV2xSU1FUazJSMDl4d
+              maxLength: 36
+              pattern: '^[{]?[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}[}]?$'
+              example: a9ae654d-e531-4a8b-a926-952d664de203
+              description: |
+                Id fim a fim da transação.O termo "E2E" que identifica a transação no arranjo.
+                [Restrição] É obrigatório o retorno após o status "ACEITA_EM_PROCESSAMENTO".
             consentId:
               type: string
-              maxLength: 32
-              pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
-              example: XpRMU9UQTROMWhZV2xSU1FUazJSMDl4d
-              description: |
-                Identificador único da iniciação de pagamento PIX.
-            amount:
-              type: number
-              format: double
-              maxLength: 18
-              pattern: '^((\d{1,16}\.\d{2}))$'
-              example: 100000.04
-              description: |
-                Valor da transação efetuada e convertida em moeda nacional com 2 casas decimais.
-            currency:
+              maxLength: 36
+              pattern: '^[{]?[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}[}]?$'
+              example: 3a782761-9573-4e1f-b4d1-4c798955c0b8
+              description: Identificador único do consentimento.
+            creationDateTime:
               type: string
-              maxLength: 3
-              pattern: '^(\w{3}){1}$'
-              example: BRL
+              format: date-time
+              pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$|^NA$'
+              example: '2020-07-21T08:30:00Z'
               description: |
-                Moeda referente ao valor da transação, segundo modelo ISO-4217. p.ex. 'BRL'.
-                Todos os saldos informados estão representados com a moeda vigente do Brasil.
+                Data e hora em que o recurso foi criado. 
+                Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).
+            updatedDateTime:
+              type: string
+              format: date-time
+              pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$|^NA$'
+              example: '2020-07-21T08:30:00Z'
+              description: |
+                Data e hora da ultima atualização da iniciação de pagamento. 
+                Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).
+            pixKey:
+              type: string
+              maxLength: 77
+              pattern: \w*\W*
+              example: '12345678901'
+              description: |
+                Chave DICT do recebedor. Os tipos de chave podem ser: telefone, e-mail, cpf/cnpj ou EVP. 
+                O telefone celular usará o padrão E.1641. O E-mail deve ter o formato xxxxxxxx@xxxxxxx.xxx(.xx) e nomáximo 77 caracteres. 
+                O CPF será utilizado com 11 números e deverá ser informado sem pontos ou traços. 
+                O CNPJ será utilizado com 14 números e deverá ser informado sem pontos ou traços. 
+                A chave aleatória deve ser UUID gerado pelo DICT, conforme formato especificado na RFC41223.
+                [Restrição] Obrigatório para pagamentos via Chave
+            status:
+              type: string
+              maxLength: 38
+              description: |
+                Estado atual da iniciação de pagamento criada.
+              enum:
+                - PENDENTE
+                - AGUARDANDO_AUTORIZACAO_MULTIPLA_ALCADA
+                - REJEITADO
+                - ACEITA_EM_PROCESSAMENTO
+                - FINALIZADO
+              example: FINALIZADO
+            rejectionReason:
+              type: string
+              maxLength: 38
+              description: |
+                Motivo da rejeição do pagamento.
+                [Restrição] Deve ser enviado quando o status é "REJEITADO".
+              enum:
+                - FUNDOS_INSUFICIENTES
+                - BENEFICARIO_DIFERENTE_DO_CONSENTIMENTO
+                - VALOR_DIFERENTE_DO_CONSENTIMENTO
+                - VALOR_ACIMA_DO_LIMITE
+                - VALOR_INVALIDO
+                - CONTA_INVALIDA
+                - CONSENTIMENTO_INVALIDO
+                - JANELA_DE_OPERACAO
+                - DESCONHECIDO
+              example: FUNDOS_INSUFICIENTES
+            payment:
+              $ref: '#/paths/~1pix~1payments/post/requestBody/content/application~1json/schema/properties/data/properties/payment'
+            accountPayee:
+              $ref: '#/components/schemas/Account'
           additionalProperties: false
         links:
           type: object
@@ -398,6 +398,59 @@ components:
               format: date-time
               example: '2021-05-21T08:30:00Z'
           additionalProperties: false
+      additionalProperties: false
+    Account:
+      type: object
+      required:
+        - ispb
+        - number
+        - checkDigit
+        - accountType
+      properties:
+        ispb:
+          type: number
+          maxLength: 8
+          pattern: '^[0-9]{1,8}$'
+          example: 12345678
+          description: |
+            Identificador do Sistema de Pagamentos Brasileiros.
+            Código que define instituições participantes do Sistema de Transferência de Reservas (STR).
+        branchCode:
+          type: string
+          maxLength: 4
+          pattern: '^(\w{4}){1}$'
+          example: '1234'
+          description: |
+            Código da Agência detentora da conta.
+            Agência é a dependência destinada ao atendimento aos clientes, ao público em geral e aos associados de cooperativas de crédito, 
+            no exercício de atividades da instituição, não podendo ser móvel ou transitória.
+        number:
+          type: string
+          maxLength: 20
+          pattern: '^\d{8,20}$'
+          example: '1234567890'
+          description: Número da conta.
+        checkDigit:
+          type: string
+          maxLength: 4
+          pattern: '^(\w{4}){1}$'
+          example: '1234'
+          description: Dígito da conta.
+        accountType:
+          type: string
+          maxLength: 24
+          enum:
+            - CONTA_DEPOSITO_A_VISTA
+            - CONTA_POUPANCA
+            - CONTA_PAGAMENTO_PRE_PAGA
+            - CONTA_SALARIO
+          description: |
+            Tipos de contas.Vide ENUM.
+            CACC - Current (CONTA_DEPOSITO_A_VISTA)
+            SLRY - Salary (CONTA_SALARIO)
+            SVGS - Savings (CONTA_POUPANCA)
+            TRAN - TransactingAccount (CONTA_PAGAMENTO_PRE_PAGA)
+          example: CONTA_DEPOSITO_A_VISTA
       additionalProperties: false
   parameters:
     paymentId:
