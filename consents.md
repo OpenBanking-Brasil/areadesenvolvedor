@@ -36,7 +36,7 @@ scope=consents
 * O resultado dessa requisição é o *token*, que deve ser utilizado já na requisição para a API de *Consents*.
 
 ``` http
-POST /consents HTTP/1.1
+POST /consents/v1/consents HTTP/1.1
 Host: api.banco.exemplo
 Content-Type:  application/json
 Authorization: Bearer eyJraWQiOiJOQnlW...
@@ -58,15 +58,17 @@ Authorization: Bearer eyJraWQiOiJOQnlW...
 ``` http
 201 Created
 Content-Type: application/json
-Location: /consents/5a35c3eb-c137-4271-8fe8-00b790453ade
+Location: /consents/v1/consents/urn-bancoex-C1DD33123
 
 {
- "consentId": "5a35c3eb-c137-4271-8fe8-00b790453ade"
+ "...",
+ "consentId": "urn-bancoex-C1DD33123",
+ "..."
 }
 
 ```
 
-* Com o ID do consentimento, agora deve-se requisitar o *Access Token* que irá permitir com que a aplicação da instituição receptora consiga acessar os dados das APIs, enviando a requisição para o *Authorisation Server* com um objeto JWT contendo este ID do consentimento e *scopes* de acesso
+* Com o ID do consentimento, agora deve-se requisitar o *Access Token* que irá permitir com que a aplicação da instituição receptora consiga acessar os dados das APIs, enviando a requisição para o *Authorisation Server* com um objeto JWT contendo este ID como um escopo dinâmico.
 
 ``` http 
 GET /authorise?request=objectjwtpookdsfpmcieq-p0ok...
@@ -76,18 +78,18 @@ Host: as.banco.exemplo
 // conteudo de exemplo do JWT enviado
 {
     "..."
-    "scope": "openid resources accounts",
-    "consentId": "5a35c3eb-c137-4271-8fe8-00b790453ade",
+    "scope": "openid resources accounts consent:urn-bancoex-C1DD33123",
     "..."
 }
 ```
 
-* Ao receber esta ultima requisição, a instituição transmissora envia uma URL de redirecionamento, onde o usuário irá escolher, dentro do ambiente da própria instituição transmissora, quais unidades de recurso ele irá compartilhar, dado este *"consentId"* enviado. Exemplo: Neste caso apresentado após o fluxo de consentimento, o usuário escolhe dentro do ambiente da instituição transmissora quais contas ele irá compartilhar. Assim a instituição transmissora poderia ter um controle deste tipo:
+* Ao receber esta ultima requisição, a instituição transmissora envia uma URL de redirecionamento, onde o usuário irá escolher, dentro do ambiente da própria instituição, quais unidades de recurso ele irá compartilhar, dado este *Access token* gerado pelo pedido de consentimento. Exemplo: Neste caso apresentado após o fluxo de consentimento, o usuário escolhe dentro do ambiente da instituição transmissora quais contas ele irá compartilhar. Assim a instituição transmissora poderia ter um controle deste tipo:
 
-| consentId | scope | resourceId (accountId) |
+| Access Token | scope | resourceId (accountId) |
 |---|---|---|
-| 5a35c3eb-c137-4271-8fe8-00b790453ade | accounts | 0577979c-6db7-49da-a04f-dc4822ad9e64 |
-| 5a35c3eb-c137-4271-8fe8-00b790453ade | accounts | e5f4ac9c-87a0-403f-aef2-3e4f5977d118|
+| eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9... | accounts | 0577979c-6db7-49da-a04f-dc4822ad9e64 |
+| eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9... | accounts | e5f4ac9c-87a0-403f-aef2-3e4f5977d118|
+
 
 * Assim que o usuário inserir quais itens ele irá compartilhar (neste exemplo, quais contas pré-pagas), o fluxo *OAuth* segue normalmente (redirecionamento do *auth_code* para a URL de *callback* e novo pedido de token ao *Authorisation Server*). 
 
@@ -97,7 +99,7 @@ Ao colher o consentimento do usuário e obter o *token*, a aplicação da instit
 
 O fluxo a seguir demonstra como deve ser uma consulta à API de Accounts, partindo do principio de que o *App* já tenha realizado todo o fluxo de *Authorization Code*, como descrito anteriormente, e portanto, já esteja de posse de um *token* de acesso válido. Vale lembrar que a API de *Accounts* é apenas um exemplo. Qualquer outra API de *Data sharing* segue o mesmo conceito.
 
-![Fluxo de acesso a API de Accouns](./documentation/source/images/security/Fluxo_Resources.png)
+![Fluxo de acesso a API de Accounts](./documentation/source/images/security/Fluxo_Resources.png)
 
 1. *App*, em posse de um *token* válido, requisita a API de *Resources* a informação de quais recursos o *token* enviado tem acesso;
 2.  API de *Resources* devolve essa informação, juntamente com o *status* de cada recurso (Se está disponível, esperando autorização da outra alçada, etc);
