@@ -24,7 +24,7 @@ Do lado da iniciadora do pagamento: É necessário que seja enviado o POST com u
 
 Do lado da detentora da conta: É necessário validar o GUID de Idempotência recebido. Caso tenha recebido o mesmo GUID de Idempotência, a nova mensagem de POST deverá ser descartada.
 
-Importante reforçar que cada nova mensagem de POST deverá ter um novo GUID de Idempotência.
+Importante reforçar que cada nova transação com POST deverá ter um novo GUID de Idempotência.
 
 <h1 id="fase-3-apis-do-open-banking-brasil-api-payments-initiation">API - Payments Initiation</h1>
 
@@ -276,7 +276,6 @@ xhr.setRequestHeader("x-fapi-auth-date", "stringstringstringstringstrin");
 xhr.setRequestHeader("x-fapi-customer-ip-address", "string");
 xhr.setRequestHeader("x-fapi-interaction-id", "string");
 xhr.setRequestHeader("x-customer-user-agent", "string");
-xhr.setRequestHeader("x-idempotency-key", "string");
 xhr.setRequestHeader("x-jws-signature", "string");
 
 xhr.send(data);
@@ -294,7 +293,6 @@ headers = {
     'x-fapi-customer-ip-address': "string",
     'x-fapi-interaction-id': "string",
     'x-customer-user-agent': "string",
-    'x-idempotency-key': "string",
     'x-jws-signature': "string"
     }
 
@@ -314,7 +312,6 @@ HttpResponse<String> response = Unirest.get("https://example.com/payments-initia
   .header("x-fapi-customer-ip-address", "string")
   .header("x-fapi-interaction-id", "string")
   .header("x-customer-user-agent", "string")
-  .header("x-idempotency-key", "string")
   .header("x-jws-signature", "string")
   .asString();
 ```
@@ -341,7 +338,6 @@ Método para consultar uma iniciação de pagamento.
 |x-fapi-customer-ip-address|header|string|false|O endereço IP do usuário se estiver atualmente logado com o receptor.|
 |x-fapi-interaction-id|header|string|false|Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.|
 |x-customer-user-agent|header|string|false|Indica o user-agent que o usuário utiliza.|
-|x-idempotency-key|header|string|true|Cabeçalho HTTP personalizado. Identificador de solicitação exclusivo para suportar a idempotência.|
 |x-jws-signature|header|string|true|Cabeçalho contendo uma assinatura JWS separada do corpo do payload.|
 
 > O comando acima retorna uma estrutura json como essa:
@@ -461,7 +457,7 @@ None ( Scopes: openId payments-initiation )
 |»» accountType|string|true|Tipos de contas.Vide ENUM.<br>CACC - Current (CONTA_DEPOSITO_A_VISTA)<br>SLRY - Salary (CONTA_SALARIO)<br>SVGS - Savings (CONTA_POUPANCA)<br>TRAN - TransactingAccount (CONTA_PAGAMENTO_PRE_PAGA)|
 |» additionalInfo|string|false|Determina um texto a ser apresentado ao pagador para que ele possa digitar uma informação correlata, <br>em formato livre, a ser enviada ao recebedor|
 |» qrCode|string|false|QR Code no momento da leitura do QR Code em questão. Essa funcionalidade é possível tanto para o<br>QR Code Estático quanto para o QR Code Dinâmico. Texto do QR Code copia e cola.|
-|» pixKey|string|false|Chave DICT do recebedor. Os tipos de chave podem ser: telefone, e-mail, cpf/cnpj ou EVP. <br>O telefone celular usará o padrão E.1641. O E-mail deve ter o formato xxxxxxxx@xxxxxxx.xxx(.xx) e nomáximo 77 caracteres. <br>O CPF será utilizado com 11 números e deverá ser informado sem pontos ou traços. <br>O CNPJ será utilizado com 14 números e deverá ser informado sem pontos ou traços. <br>A chave aleatória deve ser UUID gerado pelo DICT, conforme formato especificado na RFC41223.<br>[Restrição] Obrigatório para pagamentos via Chave.|
+|» pixKey|string|false|Chave DICT do recebedor. Os tipos de chave podem ser: telefone, e-mail, cpf/cnpj ou Chave Aleatória. <br>O telefone celular usará o padrão E.1641. O E-mail deve ter o formato xxxxxxxx@xxxxxxx.xxx(.xx) e nomáximo 77 caracteres. <br>O CPF será utilizado com 11 números e deverá ser informado sem pontos ou traços. <br>O CNPJ será utilizado com 14 números e deverá ser informado sem pontos ou traços. <br>A chave aleatória deve ser UUID gerado pelo DICT, conforme formato especificado na RFC41223.<br>[Restrição] Obrigatório para pagamentos via Chave.|
 
 #### Enumerated Values
 
@@ -528,7 +524,7 @@ None ( Scopes: openId payments-initiation )
 |» consentId|string|true|Identificador único do consentimento.|
 |» creationDateTime|string(date-time)|true|Data e hora em que o recurso foi criado. <br>Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).|
 |» updatedDateTime|string(date-time)|true|Data e hora da ultima atualização da iniciação de pagamento. <br>Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).|
-|» pixKey|string|false|Chave DICT do recebedor. Os tipos de chave podem ser: telefone, e-mail, cpf/cnpj ou EVP. <br>O telefone celular usará o padrão E.1641. O E-mail deve ter o formato xxxxxxxx@xxxxxxx.xxx(.xx) e nomáximo 77 caracteres. <br>O CPF será utilizado com 11 números e deverá ser informado sem pontos ou traços. <br>O CNPJ será utilizado com 14 números e deverá ser informado sem pontos ou traços. <br>A chave aleatória deve ser UUID gerado pelo DICT, conforme formato especificado na RFC41223.<br>[Restrição] Obrigatório para pagamentos via Chave|
+|» pixKey|string|false|Chave DICT do recebedor. Os tipos de chave podem ser: telefone, e-mail, cpf/cnpj ou Chave Aleatória. <br>O telefone celular usará o padrão E.1641. O E-mail deve ter o formato xxxxxxxx@xxxxxxx.xxx(.xx) e nomáximo 77 caracteres. <br>O CPF será utilizado com 11 números e deverá ser informado sem pontos ou traços. <br>O CNPJ será utilizado com 14 números e deverá ser informado sem pontos ou traços. <br>A chave aleatória deve ser UUID gerado pelo DICT, conforme formato especificado na RFC41223.<br>[Restrição] Obrigatório para pagamentos via Chave|
 |» status|string|true|Estado atual da iniciação de pagamento criada.|
 |» rejectionReason|string|false|Motivo da rejeição do pagamento.<br>[Restrição] Deve ser enviado quando o status é "REJEITADO".|
 |» payment|[#/paths/~1payments-initiation~1v1~1pix~1payments/post/requestBody/content/application~1json/schema/properties/data/properties/payment](#schema#/paths/~1payments-initiation~1v1~1pix~1payments/post/requestbody/content/application~1json/schema/properties/data/properties/payment)|true||
