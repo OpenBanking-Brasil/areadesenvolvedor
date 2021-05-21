@@ -7,12 +7,24 @@ info:
     A operação de pagamento ocorre apenas se a pessoa autorizar através da API de Consentimento, sempre para finalidades determinadas e por um prazo específico. E será possível para o cliente cancelar essa autorização a qualquer momento em qualquer uma das instituições envolvidas no compartilhamento.
 
     ###Idempotência
-    A idempotência é a propriedade que algumas operações têm de poderem ser aplicadas várias vezes sem que o valor do resultado se altere após a aplicação inicial.
-    A iniciadora/TPP não deve alterar o corpo da solicitação ao usar a mesma chave de idempotência. Se a iniciadora alterar o corpo da solicitação, a detentora/ASPSP não deve modificar o recurso final. A detentora pode tratar este caso como uma ação fraudulenta.
-    A detentora não deve criar um novo recurso para uma solicitação POST se estiver determinada como uma solicitação idempotente.
-    Na criação a detentora deve responder à solicitação com o status atual do recurso (ou um status que seja pelo menos tão atual quanto o que estiver disponível nos canais eletrônicos existentes) e um código de status HTTP 201 (CREATED).
-    A iniciadora não deve usar comportamento idempotente para pesquisar o status dos recursos.
-    A detentora pode usar a assinatura da mensagem, junto com a chave de idempotência, para garantir que o corpo da solicitação não seja alterado.
+    Segundo a W3C, "um método HTTP idempotente é um método HTTP que pode ser chamado muitas vezes sem resultados diferentes ou efeitos colaterais. Não importa se o método é chamado apenas uma vez ou dez vezes. O resultado deve ser o mesmo. Essencialmente, significa que o resultado de uma solicitação executada com sucesso é independente do número de vezes que ela é executada. Por exemplo, na aritmética, adicionar zero a um número é uma operação idempotente."
+
+    Os conhecidos métodos GET, PUT e DELETE são naturalmente idempotentes, assim como HEAD, OPTIONS e TRACE também são.
+
+    Porém, o método POST requer um tratamento especial para que se torne idempotente e, por estarmos tratando aqui de meios de pagamentos, fazer esse tratamento é algo desejável para que não ocorram acidentes.
+
+    ####Por que é necessário tratarmos a Idempotência do POST?
+
+    Imagine que seja realizado um POST de pagamento e, depois de alguns segundos, é retornada uma mensagem de Timeout. Nesse caso, não é possível saber se o POST foi efetivo e enviar o POST novamente, sem tratar a idempotência, poderá ocasional em uma duplicidade de pagamento.
+
+    ####Como mitigarmos esse risco?
+
+    Do lado da iniciadora do pagamento: É necessário que seja enviado o POST com um GUID de Idempotência. Caso o mesmo POST seja reenviado por acidente ou precise ser reenviado, por qualquer motivo que seja, basta reenviar o POST com o mesmo GUID de Idempotência.
+
+    Do lado da detentora da conta: É necessário validar o GUID de Idempotência recebido. Caso tenha recebido o mesmo GUID de Idempotência, a nova mensagem de POST deverá ser descartada.
+
+    Importante reforçar que cada nova transação com POST deverá ter um novo GUID de Idempotência.
+    
   version: 1.0.0-rc1.0
 tags:
   - name: API - Payments Initiation
@@ -55,6 +67,8 @@ paths:
         - $ref: '#/components/parameters/xFapiCustomerIpAddress'
         - $ref: '#/components/parameters/xFapiInteractionId'
         - $ref: '#/components/parameters/xCustomerUserAgent'
+        - $ref: '#/components/parameters/XIdempotencyKey'
+        - $ref: '#/components/parameters/XJwsSignature'
       requestBody:
         content:
           application/json:
@@ -119,6 +133,7 @@ paths:
         - $ref: '#/components/parameters/xFapiCustomerIpAddress'
         - $ref: '#/components/parameters/xFapiInteractionId'
         - $ref: '#/components/parameters/xCustomerUserAgent'
+        - $ref: '#/components/parameters/XJwsSignature'
       responses:
         '200':
           $ref: "#/components/responses/200PaymentsInitiationPixPaymentIdRead"
@@ -173,6 +188,10 @@ components:
       $ref: ./parameters/XFapiCustomerIpAddress.yaml
     xFapiInteractionId:
       $ref: ./parameters/XFapiInteractionId.yaml
+    XIdempotencyKey:
+      $ref: ./parameters/XIdempotencyKey.yaml
+    XJwsSignature:
+      $ref: ./parameters/XJwsSignature.yaml
   responses:
     BadRequest:
       $ref: ./responses/BadRequest.yaml
