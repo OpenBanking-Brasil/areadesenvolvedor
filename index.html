@@ -3090,26 +3090,152 @@ A autenticação e a autorização representam funções fundamentalmente difere
 
 <p>[EM REVISÃO/ALTERAÇÃO - ABRIL DE 2021]</p>
 
-<p>Pedidos de revogação de consentimentos feitos pelo usuário final por meio de API´s da instituição receptora devem obrigatoriamente implicar na revogação dos tokens de acesso e de consentimento relacionados por meio de chamadas executadas no servidor de autorização da instituição transmissora responsável pelo consentimento e/ou em API de consentimento mantida pelo transmissor.
-A instituição transmissora deve disponibilizar, por meio de API específica para o controle de consentimentos, interface que permita à instituição receptora detentora de consentimentos a verificação do seu estado.
-O acesso à API de consentimento deve ser precedido de autenticação e a consulta deve ser restrita ao consentimento a que a instituição receptora teve autorização prévia para acesso, com vistas a garantir que apenas a instituição receptora que registrou o pedido de consentimento possa realizar a consulta sobre o seu estado.
-A instituição receptora de dados detentora de consentimentos e de tokens de autorização deve revogá-los, por meio de chamadas específicas às API´s das instituições transmissoras publicadas para esse fim, quando perceber violações à confidencialidade dos tokens ou no fim da prestação dos serviços ao usuário final.</p>
+<p>O fluxo de consentimento consiste no processo em que o usuário permite que a aplicação da instituição receptora tenha acesso aos dados por ele definidos. Esse consentimento deve ser requisitado ao usuário, juntamente a instituição transmissora de dados, a fim de compartilhar apenas as informações requeridas pelo usuário. Para isso, foi definido que o Open Banking Brasil utilizaria-se do padrão de Lodging Intent. Após o fluxo de consentimento completo, a aplicação da instituição receptora pode ainda não ter acesso aos dados, por regras de negócio das instituições transmissoras. As próximas seções se dedicam a explicar este fluxo por completo.</p>
 
 <h3 id='padrao-lodging-intent'>Padrão Lodging Intent</h3>
 
-<p>Essa seção descreve o padrão <em>Lodging Intent</em>, utilizado para parametrizar solicitações de autorização OAuth complexas de maneira confiável e segura.
-O OAuth por si, suporta apenas autorizar ações simples de leitura, o parâmetro <em>scope</em> é definido por uma lista delimitada por espaços contendo strings simples, quando se trata de autorizações mais complexas, como o início de um pagamento, o suporte integrado do OAuth não é suficiente.
-O padrão <em>Lodging Intent</em> pode ser utilizado para passar informações de forma confiável para o processo de autorização, independente das restrições de comprimento de URL, enquanto as informações também são protegidas contra modificação sem a necessidade de assiná-las digitalmente, reduzindo os custos de implementação.
-Executar um processo de autorização utilizando o padrão <em>Lodging Intent</em> e o <em>Code Flow</em>, funciona da seguinte maneira:</p>
+<p>Essa seção descreve o padrão Lodging Intent, utilizado para parametrizar solicitações de autorização OAuth complexas de maneira confiável e segura. O OAuth por si, suporta apenas autorizar ações simples de leitura, o parâmetro scope é definido por uma lista delimitada por espaços contendo strings simples, quando se trata de autorizações mais complexas, como o início de um pagamento, o suporte integrado do OAuth não é suficiente. O padrão Lodging Intent pode ser utilizado para passar informações de forma confiável para o processo de autorização, independente das restrições de comprimento de URL, enquanto as informações também são protegidas contra modificação sem a necessidade de assiná-las digitalmente, reduzindo os custos de implementação. Executar um processo de autorização utilizando o padrão Lodging Intent e o Code Flow, funciona da seguinte maneira:</p>
 
 <ul>
-<li>O <em>client</em> cria um recurso contendo todos os dados necessários para informar o processo de autorização no <em>Authorization Server</em>, a criação do <em>Lodging Intent</em> pode exigir uma autorização própria, nesse caso, o <em>client</em> precisa obter antecipadamente um <em>Access Token</em> com o escopo adequado, normalmente usando a concessão do <em>Client</em> <em>Credentials</em> com o* Authorization Server*.</li>
-<li>O serviço de <em>Lodging Intent</em> responde ao <em>client</em> com um id e/ou link para o recurso criado.</li>
-<li>O <em>client</em> então envia a referência do recurso com o pedido de autorização para o <em>Authorization Server</em>. O <em>Authorization Server</em> obtém os dados da transação do recurso de hospedagem e depois de autenticar o usuário, utiliza-os para apresentar uma interface de consentimento. Por exemplo, no caso de um pagamento, o <em>Authorization Server</em> mostra ao devedor, o valor e informações adicionais sobre a transação de pagamento ao usuário e pede o seu consentimento.</li>
-<li>Se o usuário consentir com a autorização solicitada, o <em>Authorization Server</em> associa os dados de autorização à concessão criada (ou atualizada) e os respectivos <em>Access Tokens</em> emitidos com base nessa concessão. Por último, o <em>Authorization Server</em> precisa fornecer os dados de autorização ao respectivo <em>Resource Server</em>, para que seja incorporado no <em>Access Token</em> ou na resposta de <em>Introspection</em> do Token.</li>
+<li>O client cria um recurso contendo todos os dados necessários para informar o processo de autorização no Authorization Server, a criação do Lodging Intent pode exigir uma autorização própria, nesse caso, o client precisa obter antecipadamente um Access Token com o escopo adequado, normalmente usando a concessão do Client Credentials com o* Authorization Server*.</li>
+<li>O serviço de Lodging Intent responde ao client com um id e/ou link para o recurso criado.</li>
+<li>O client então envia a referência do recurso com o pedido de autorização para o Authorization Server. O Authorization Server obtém os dados da transação do recurso de hospedagem e depois de autenticar o usuário, utiliza-os para apresentar uma interface de consentimento. Por exemplo, no caso de um pagamento, o Authorization Server mostra ao devedor, o valor e informações adicionais sobre a transação de pagamento ao usuário e pede o seu consentimento.</li>
+<li>Se o usuário consentir com a autorização solicitada, o Authorization Server associa os dados de autorização à concessão criada (ou atualizada) e os respectivos Access Tokens emitidos com base nessa concessão. Por último, o Authorization Server precisa fornecer os dados de autorização ao respectivo Resource Server, para que seja incorporado no Access Token ou na resposta de Introspection do Token.</li>
 </ul>
 
-<p>Mais detalhes sobre o funcionamento do padrão <em>Lodging Intent</em> pode ser consultado em <a href='https://bitbucket.org/openid/fapi/src/master/Financial_API_Lodging_Intent.md'target="_blank">https://bitbucket.org/openid/fapi/src/master/Financial_API_Lodging_Intent.md </a>.</p>
+<p>Mais detalhes sobre o funcionamento do padrão Lodging Intent pode ser consultado em https://bitbucket.org/openid/fapi/src/master/Financial_API_Lodging_Intent.md .</p>
+
+<h3 id='exemplo-de-fluxo-de-consentimento'>Exemplo de fluxo de consentimento</h3>
+
+<p>O consentimento dado pelo usuário define quais informações a aplicação da instituição receptora terá acesso, mas não possui a granularidade de quais unidades de produto estão disponíveis para acesso. Essa informação cabe exclusivamente a instituição transmissora de dados. O seguinte exemplo demonstra o escopo de informações que o consentimento garante:</p>
+
+<ul>
+<li>O usuário deseja compartilhar as informações de suas contas pré-pagas. Após o fluxo do <em>front-end</em>, a aplicação do receptor deve pedir um <em>token</em> ao <em>Authorisation Server</em> com o <em>scope</em> &quot;<em>consents</em>&quot;.</li>
+</ul>
+
+<div class="highlight"><pre class="highlight http tab-http"><code><span class="nf">POST</span> <span class="nn">/token</span> <span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="p">:</span> <span class="s">as.banco.exemplo</span>
+<span class="na">Content-Type</span><span class="p">:</span> <span class="s">application/x-www-form-urlencoded</span>
+
+"..."
+client_id=3630BF72-E979-477A-A8FF-8A338F07C852&amp;
+grant_type=client_credentials&amp;
+scope=consents
+"..."
+
+</code></pre></div>
+
+<ul>
+<li>O resultado dessa requisição é o <em>token</em>, que deve ser utilizado já na requisição para a API de <em>Consents</em>.</li>
+</ul>
+
+<div class="highlight"><pre class="highlight http tab-http"><code><span class="nf">POST</span> <span class="nn">/consents/v1/consents</span> <span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="p">:</span> <span class="s">api.banco.exemplo</span>
+<span class="na">Content-Type</span><span class="p">:</span>  <span class="s">application/json</span>
+<span class="na">Authorization</span><span class="p">:</span> <span class="s">Bearer eyJraWQiOiJOQnlW...</span>
+
+<span class="p">{</span><span class="w">
+    </span><span class="nl">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"..."</span><span class="w">
+        </span><span class="nl">"permissions"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="s2">"ACCOUNTS_READ"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"ACCOUNTS_BALANCES_READ"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"ACCOUNTS_TRANSACTIONS_READ"</span><span class="w">
+        </span><span class="p">],</span><span class="w">
+        </span><span class="s2">"..."</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+
+<ul>
+<li>Ao receber esta requisição, a API deve retornar o identificador do pedido de consentimento.</li>
+</ul>
+
+<div class="highlight"><pre class="highlight http tab-http"><code><span class="err">201 Created
+Content-Type: application/json
+Location: /consents/v1/consents/urn:bancoex:C1DD33123
+
+{
+    "data": {
+        "..."
+        "consentId": "urn:bancoex:C1DD33123",
+        "..."
+}
+
+</span></code></pre></div>
+
+<ul>
+<li>Com o ID do consentimento, agora deve-se requisitar o <em>Access Token</em> que irá permitir com que a aplicação da instituição receptora consiga acessar os dados das APIs, enviando a requisição para o <em>Authorisation Server</em> com um objeto JWT contendo este ID como um escopo dinâmico.</li>
+</ul>
+
+<div class="highlight"><pre class="highlight http tab-http"><code><span class="err">GET /authorise?request=objectjwtpookdsfpmcieq-p0ok...
+Host: as.banco.exemplo
+"..."
+
+// conteudo de exemplo do JWT enviado
+{
+    "..."
+    "scope": "openid resources accounts consent:urn:bancoex:C1DD33123",
+    "..."
+}
+</span></code></pre></div>
+
+<ul>
+<li>Ao receber esta ultima requisição, a instituição transmissora envia uma URL de redirecionamento, onde o usuário irá escolher, dentro do ambiente da própria instituição, quais unidades de recurso ele irá compartilhar, dado este <em>Access token</em> gerado pelo pedido de consentimento. Exemplo: Neste caso apresentado após o fluxo de consentimento, o usuário escolhe dentro do ambiente da instituição transmissora quais contas ele irá compartilhar. Assim a instituição transmissora poderia ter um controle deste tipo:</li>
+</ul>
+
+<table><thead>
+<tr>
+<th>Access Token</th>
+<th>scope</th>
+<th>resourceId (accountId)</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...</td>
+<td>accounts</td>
+<td>0577979c-6db7-49da-a04f-dc4822ad9e64</td>
+</tr>
+<tr>
+<td>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...</td>
+<td>accounts</td>
+<td>e5f4ac9c-87a0-403f-aef2-3e4f5977d118</td>
+</tr>
+</tbody></table>
+
+<ul>
+<li>Assim que o usuário inserir quais itens ele irá compartilhar (neste exemplo, quais contas pré-pagas), o fluxo <em>OAuth</em> segue normalmente (redirecionamento do <em>auth_code</em> para a URL de <em>callback</em> e novo pedido de token ao <em>Authorisation Server</em>). </li>
+</ul>
+
+<h3 id='acesso-aos-dados-apos-o-consentimento'>Acesso aos dados após o consentimento</h3>
+
+<p>Ao colher o consentimento do usuário e obter o <em>token</em>, a aplicação da instituição receptora pode ainda não estar apta para acessar as informações contidas dentro do escopo das permissões enviadas no pedido de consentimento. Existem diversas questões que, por regra de negócio da instituição transmissora, podem fazer com que a aplicação da receptora não tenha acesso aos dados, como por exemplo uma autenticação de dupla alçada. Para isso, a aplicação receptora deve consultar a API de <em>Resources</em>.</p>
+
+<p>O fluxo a seguir demonstra como deve ser uma consulta à API de Accounts, partindo do principio de que o <em>App</em> já tenha realizado todo o fluxo de <em>Authorization Code</em>, como descrito anteriormente, e portanto, já esteja de posse de um <em>token</em> de acesso válido. Vale lembrar que a API de <em>Accounts</em> é apenas um exemplo. Qualquer outra API de <em>Data sharing</em> segue o mesmo conceito.</p>
+
+<p><img src="images/documentation/source/images/security/Fluxo_Resources.png" alt="Fluxo de acesso a API de Accounts" /></p>
+
+<ol>
+<li><em>App</em>, em posse de um <em>token</em> válido, requisita a API de <em>Resources</em> a informação de quais recursos o <em>token</em> enviado tem acesso;</li>
+<li> API de <em>Resources</em> devolve essa informação, juntamente com o <em>status</em> de cada recurso (Se está disponível, esperando autorização da outra alçada, etc);</li>
+<li>Recebendo a resposta da API de <em>Resources</em> de que o recurso de <em>Accounts</em> está disponível, o <em>App</em> acessa a API de <em>Accounts</em> diretamente, utilizando o mesmo <em>token</em>;</li>
+<li>Com os recursos disponíveis, a API de <em>Accounts</em> retorna os dados requeridos corretamente.</li>
+</ol>
+
+<p>Alguns pontos devem ser destacados:
+* Caso a API de <em>Resources</em> mostre recursos indisponíveis por qualquer motivo, as APIs de <em>Data sharing</em> não vão retornar nenhum item em suas consultas;
+* O <em>App</em> da instituição receptora pode acessar diretamente as APIs de <em>Data sharing</em>, sem qualquer quebra do fluxo de acesso ao dado. Porém, recomenda-se o acesso à API de <em>Resources</em> para que se garanta uma conexão mais efetiva e assertiva;
+* Caso a API de <em>Resources</em> traga status de bloqueio temporário de recurso, o <em>App</em> da instituição receptora pode acabar realizando um <em>pooling</em> para verificar quando o recurso estará disponível, respeitando sempre os limites de tráfego dispostos na seção específica deste portal.</p>
+
+<h3 id='revogacao-do-consentimento'>Revogação do Consentimento</h3>
+
+<p>Pedidos de revogação de consentimentos feitos pelo usuário final por meio de API´s da instituição receptora devem obrigatoriamente implicar na revogação dos tokens de acesso e de consentimento relacionados por meio de chamadas executadas no servidor de autorização da instituição transmissora responsável pelo consentimento e/ou em API de consentimento mantida pelo transmissor. A instituição transmissora deve disponibilizar, por meio de API específica para o controle de consentimentos, interface que permita à instituição receptora detentora de consentimentos a verificação do seu estado. O acesso à API de consentimento deve ser precedido de autenticação e a consulta deve ser restrita ao consentimento a que a instituição receptora teve autorização prévia para acesso, com vistas a garantir que apenas a instituição receptora que registrou o pedido de consentimento possa realizar a consulta sobre o seu estado. A instituição receptora de dados detentora de consentimentos e de tokens de autorização deve revogá-los, por meio de chamadas específicas às API´s das instituições transmissoras publicadas para esse fim, quando perceber violações à confidencialidade dos tokens ou no fim da prestação dos serviços ao usuário final.</p>
+
+<p>De acordo com a Resolução Conjunta Nº 1, tanto a instituição receptora quanto a transmissora devem possuir interfaces onde um consentimento pode ser imediatamente revogado pelo usuário (Art. 15). A partir do momento em que o consentimento for revogado, seu token perde validade. Assim, ao tentar acessar qualquer recurso, a API consultada deve retornar o <em>HTTP Status 401</em>. </p>
+
+<h3 id='atualizacao-do-consentimento'>Atualização do Consentimento</h3>
+
+<p>Deve-se levar em conta, como definido no Manual do Usuário, que ao se atualizar um consentimento, se realiza a deleção do consentimento anterior, e cria-se um novo consentimento, que contemple as alterações feitas pelo usuário.</p>
 
 <h2 id='em-revisao-assinatura-de-mensagens'>[Em Revisão] Assinatura de Mensagens</h2>
 
