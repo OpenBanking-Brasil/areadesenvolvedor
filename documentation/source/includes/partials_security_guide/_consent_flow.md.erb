@@ -17,9 +17,7 @@ Mais detalhes sobre o funcionamento do padrão Lodging Intent pode ser consultad
 
 ### Exemplo de fluxo de consentimento
 
-O consentimento dado pelo usuário define quais informações a aplicação da instituição receptora terá acesso, mas não possui a granularidade de quais unidades de produto estão disponíveis para acesso. Essa informação cabe exclusivamente a instituição transmissora de dados. O seguinte exemplo demonstra o escopo de informações que o consentimento garante:
-
-* O usuário deseja compartilhar as informações de suas contas pré-pagas. Após o fluxo do *front-end*, a aplicação do receptor deve pedir um *token* ao *Authorisation Server* com o *scope* "*consents*".
+> 1: Pedido de Token para o Consentimento
 
 ``` http
 POST /token HTTP/1.1
@@ -32,9 +30,11 @@ grant_type=client_credentials&
 scope=consents
 "..."
 
+eyJraWQiOiJOQnlW...
+
 ```
 
-* O resultado dessa requisição é o *token*, que deve ser utilizado já na requisição para a API de *Consents*.
+> 2: Requisição para criar um consentimento
 
 ``` http
 POST /consents/v1/consents HTTP/1.1
@@ -54,28 +54,29 @@ Authorization: Bearer eyJraWQiOiJOQnlW...
 	}
 }
 ```
-* Ao receber esta requisição, a API deve retornar o identificador do pedido de consentimento.
+
+> 3: Retorno da criação do consentimento
 
 ``` http
-201 Created
+HTTP/1.1 201 Created
+Location: /consents/v1/consents/urn:bancoex:C1DD33123 HTTP/1.1
 Content-Type: application/json
-Location: /consents/v1/consents/urn:bancoex:C1DD33123
 
 {
-	"data": {
-		"..."
-		"consentId": "urn:bancoex:C1DD33123",
-		"..."
+    "data": {
+        "..."
+        "consentId": "urn:bancoex:C1DD33123",
+        "..."
 }
 
 ```
 
-* Com o ID do consentimento, agora deve-se requisitar o *Access Token* que irá permitir com que a aplicação da instituição receptora consiga acessar os dados das APIs, enviando a requisição para o *Authorisation Server* com um objeto JWT contendo este ID como um escopo dinâmico.
+> 4: Requisição com token JTW para o *Acess Token*
 
 ``` http 
-GET /authorise?request=objectjwtpookdsfpmcieq-p0ok...
+GET /authorise?request=objectjwtpookdsfpmcieq-p0ok... HTTP/1.1
 Host: as.banco.exemplo
-"..."
+...
 
 // conteudo de exemplo do JWT enviado
 {
@@ -85,7 +86,17 @@ Host: as.banco.exemplo
 }
 ```
 
-* Ao receber esta ultima requisição, a instituição transmissora envia uma URL de redirecionamento, onde o usuário irá escolher, dentro do ambiente da própria instituição, quais unidades de recurso ele irá compartilhar, dado este *Access token* gerado pelo pedido de consentimento. Exemplo: Neste caso apresentado após o fluxo de consentimento, o usuário escolhe dentro do ambiente da instituição transmissora quais contas ele irá compartilhar. Assim a instituição transmissora poderia ter um controle deste tipo:
+O consentimento dado pelo usuário define quais informações a aplicação da instituição receptora terá acesso, mas não possui a granularidade de quais unidades de produto estão disponíveis para acesso. Essa informação cabe exclusivamente a instituição transmissora de dados. O seguinte exemplo demonstra o escopo de informações que o consentimento garante (Exemplos de codigo ao lado):
+
+1. O usuário deseja compartilhar as informações de suas contas pré-pagas. Após o fluxo do *front-end*, a aplicação do receptor deve pedir um *token* ao *Authorisation Server* com o *scope* "*consents*".
+
+2. Com o *token*, deve-se fazer uma requisição para a API de *Consents*, utilizando este *token* no *header*.
+
+3. Ao receber esta requisição, a API deve retornar o identificador do pedido de consentimento.
+
+4. Com o ID do consentimento, agora deve-se requisitar o *Access Token* que irá permitir com que a aplicação da instituição receptora consiga acessar os dados das APIs, enviando a requisição para o *Authorisation Server* com um objeto JWT contendo este ID como um escopo dinâmico.
+
+5. Ao receber esta ultima requisição, a instituição transmissora envia uma URL de redirecionamento, onde o usuário irá escolher, dentro do ambiente da própria instituição, quais unidades de recurso ele irá compartilhar, dado este *Access token* gerado pelo pedido de consentimento. Exemplo: Neste caso apresentado após o fluxo de consentimento, o usuário escolhe dentro do ambiente da instituição transmissora quais contas ele irá compartilhar. Assim a instituição transmissora poderia ter um controle deste tipo:
 
 | Access Token | scope | resourceId (accountId) |
 |---|---|---|
@@ -93,7 +104,7 @@ Host: as.banco.exemplo
 | eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9... | accounts | e5f4ac9c-87a0-403f-aef2-3e4f5977d118|
 
 
-* Assim que o usuário inserir quais itens ele irá compartilhar (neste exemplo, quais contas pré-pagas), o fluxo *OAuth* segue normalmente (redirecionamento do *auth_code* para a URL de *callback* e novo pedido de token ao *Authorisation Server*). 
+Assim que o usuário inserir quais itens ele irá compartilhar (neste exemplo, quais contas pré-pagas), o fluxo *OAuth* segue normalmente (redirecionamento do *auth_code* para a URL de *callback* e novo pedido de token ao *Authorisation Server*). 
 
 ### Acesso aos dados após o consentimento
 
@@ -101,7 +112,7 @@ Ao colher o consentimento do usuário e obter o *token*, a aplicação da instit
 
 O fluxo a seguir demonstra como deve ser uma consulta à API de Accounts, partindo do principio de que o *App* já tenha realizado todo o fluxo de *Authorization Code*, como descrito anteriormente, e portanto, já esteja de posse de um *token* de acesso válido. Vale lembrar que a API de *Accounts* é apenas um exemplo. Qualquer outra API de *Data sharing* segue o mesmo conceito.
 
-![Fluxo de acesso a API de Accounts](./documentation/source/images/security/Fluxo_Resources.png)
+![Fluxo de acesso a API de Accounts](./images/security/Fluxo_Resources.png)
 
 1. *App*, em posse de um *token* válido, requisita a API de *Resources* a informação de quais recursos o *token* enviado tem acesso;
 2.  API de *Resources* devolve essa informação, juntamente com o *status* de cada recurso (Se está disponível, esperando autorização da outra alçada, etc);
