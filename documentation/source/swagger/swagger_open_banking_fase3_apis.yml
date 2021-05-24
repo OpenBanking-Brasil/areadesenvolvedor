@@ -1,4 +1,4 @@
-openapi: 3.0.0
+﻿openapi: 3.0.0
 info:
   title: Fase 3 - APIs do Open Banking Brasil
   description: |
@@ -26,7 +26,7 @@ info:
     Importante reforçar que cada nova transação com POST deverá ter um novo GUID de Idempotência.
   version: 1.0.0-rc1.0
 tags:
-  - name: API - Payments Initiation
+  - name: API - Iniciação de Pagamentos
     description: |
       |Versão|
       |:-----|
@@ -42,10 +42,10 @@ tags:
 
       <a href="swagger/swagger_payments_initiation_apis.yaml">Download da Especificação (OAS 3.0)</a>
 paths:
-  /payments-initiation/v1/pix/payments:
+  /payments/v1/pix/payments:
     post:
       tags:
-        - API - Payments Initiation
+        - API - Iniciação de Pagamentos
       summary: '[Em Revisão] Criar iniciação de pagamento.'
       operationId: paymentsInitiationPostPixPayments
       description: |
@@ -106,10 +106,10 @@ paths:
         - OpenId:
             - openId
             - payments-initiation
-  '/payments-initiation/v1/pix/payments/{paymentId}':
+  '/payments/v1/pix/payments/{paymentId}':
     get:
       tags:
-        - API - Payments Initiation
+        - API - Iniciação de Pagamentos
       summary: '[Em Revisão] Consultar iniciação de pagamento.'
       operationId: paymentsInitiationGetPixPayments
       description: |
@@ -174,7 +174,7 @@ components:
           type: object
           required:
             - payment
-            - accountPayee
+            - debtor
           properties:
             payment:
               type: object
@@ -198,7 +198,7 @@ components:
                     Moeda referente ao valor monetário informado, segundo modelo ISO-4217. p.ex. 'BRL' 
                     Todos os valores monetários informados estão representados com a moeda vigente do Brasil
               additionalProperties: false
-            accountPayee:
+            debtor:
               type: object
               required:
                 - ispb
@@ -237,19 +237,20 @@ components:
                   description: Dígito da conta.
                 accountType:
                   type: string
-                  maxLength: 24
+                  maxLength: 19
                   enum:
-                    - CONTA_DEPOSITO_A_VISTA
-                    - CONTA_POUPANCA
-                    - CONTA_PAGAMENTO_PRE_PAGA
-                    - CONTA_SALARIO
+                    - CURRENT
+                    - SALARY
+                    - SAVINGS
+                    - TRANSACTING_ACCOUNT
                   description: |
-                    Tipos de contas.Vide ENUM.
+                    Tipos de contas usadas para pagamento via PIX. Modalidades tradicionais previstas pela Resolução 4.753, não contemplando contas vinculadas, conta de domiciliados no exterior, contas em moedas estrangeiras e conta correspondente moeda eletrônica.
+                    Segue descrição de cada valor do ENUM para o escopo do Open Banking Brasil.
                     CACC - Current (CONTA_DEPOSITO_A_VISTA)
                     SLRY - Salary (CONTA_SALARIO)
                     SVGS - Savings (CONTA_POUPANCA)
                     TRAN - TransactingAccount (CONTA_PAGAMENTO_PRE_PAGA)
-                  example: CONTA_DEPOSITO_A_VISTA
+                  example: CURRENT
               additionalProperties: false
             additionalInfo:
               type: string
@@ -265,8 +266,10 @@ components:
               pattern: \w*\W*
               example: 00020104141234567890123426660014BR.GOV.BCB.PIX014466756C616E6F32303139406578616D706C652E636F6D27300012BR.COM.OUTRO011001234567895204000053039865406123.455802BR5915NOMEDORECEBEDOR6008BRASILIA61087007490062530515RP12345678-201950300017BR.GOV.BCB.BRCODE01051.0.080450014BR.GOV.BCB.PIX0123PADRAO.URL.PIX/0123ABCD81390012BR.COM.OUTRO01190123.ABCD.3456.WXYZ6304EB76
               description: |
-                QR Code no momento da leitura do QR Code em questão. Essa funcionalidade é possível tanto para o
-                QR Code Estático quanto para o QR Code Dinâmico. Texto do QR Code copia e cola.
+                QR Code contendo os dados de pagamento no momento da leitura. O usuário recebedor deve poder oferecer ao pagador
+                uma maneira de copiar a sequência de caracteres que representa o BR Code. É a sequência de caracteres que seria 
+                lida pelo leitor de QR Code. 
+                Essa funcionalidade é possível tanto para o QR Code Estático quanto para o QR Code Dinâmico. 
             pixKey:
               type: string
               maxLength: 77
@@ -297,28 +300,31 @@ components:
             - updatedDateTime
             - status
             - payment
-            - accountPayee
+            - debtor
           properties:
             paymentId:
               type: string
               maxLength: 36
               pattern: '^[{]?[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}[}]?$'
               example: 8f800dc8-bc8a-4c0e-b5e6-3c6801cfe135
-              description: Código ou identificador único informado pela instituição que mantém a conta para representar o pagamento individual.
+              description: |
+                Código ou identificador único informado pela instituição que mantém a conta para representar o pagamento individual.
             endToEndId:
               type: string
               maxLength: 36
               pattern: '^[{]?[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}[}]?$'
               example: a9ae654d-e531-4a8b-a926-952d664de203
               description: |
-                Id fim a fim da transação.O termo "E2E" que identifica a transação no arranjo.
-                [Restrição] É obrigatório o retorno após o status "ACEITA_EM_PROCESSAMENTO".
+                Id fim a fim da transação. O termo "E2E" que identifica a transação no arranjo.
+                Esse Id deve ser único, não podendo ser repetido em qualquer outra operação enviada ao SPI.
+                [Restrição] É obrigatório o retorno após o status "ACCEPTED_SETTLEMENT_IN_PROCESS".
             consentId:
               type: string
               maxLength: 36
               pattern: '^[{]?[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}[}]?$'
               example: 3a782761-9573-4e1f-b4d1-4c798955c0b8
-              description: Identificador único do consentimento.
+              description: |
+                Identificador único do consentimento.
             creationDateTime:
               type: string
               format: date-time
@@ -377,9 +383,9 @@ components:
                 - DESCONHECIDO
               example: FUNDOS_INSUFICIENTES
             payment:
-              $ref: '#/paths/~1payments-initiation~1v1~1pix~1payments/post/requestBody/content/application~1json/schema/properties/data/properties/payment'
-            accountPayee:
-              $ref: '#/paths/~1payments-initiation~1v1~1pix~1payments/post/requestBody/content/application~1json/schema/properties/data/properties/accountPayee'
+              $ref: '#/paths/~1payments~1v1~1pix~1payments/post/requestBody/content/application~1json/schema/properties/data/properties/payment'
+            debtor:
+              $ref: '#/paths/~1payments~1v1~1pix~1payments/post/requestBody/content/application~1json/schema/properties/data/properties/debtor'
           additionalProperties: false
         links:
           type: object

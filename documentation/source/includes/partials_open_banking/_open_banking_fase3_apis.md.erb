@@ -26,7 +26,7 @@ Do lado da detentora da conta: É necessário validar o GUID de Idempotência re
 
 Importante reforçar que cada nova transação com POST deverá ter um novo GUID de Idempotência.
 
-<h1 id="fase-3-apis-do-open-banking-brasil-api-payments-initiation">API - Payments Initiation</h1>
+<h1 id="fase-3-apis-do-open-banking-brasil-api-inicia-o-de-pagamentos">API - Iniciação de Pagamentos</h1>
 
 |Versão|
 |:-----|
@@ -55,12 +55,12 @@ const data = JSON.stringify({
       "amount": 100000.12,
       "currency": "BRL"
     },
-    "accountPayee": {
+    "debtor": {
       "ispb": 12345678,
       "branchCode": "1234",
       "number": "1234567890",
       "checkDigit": "1234",
-      "accountType": "CONTA_DEPOSITO_A_VISTA"
+      "accountType": "CURRENT"
     },
     "additionalInfo": "Descrição da Transação",
     "qrCode": "00020104141234567890123426660014BR.GOV.BCB.PIX014466756C616E6F32303139406578616D706C652E636F6D27300012BR.COM.OUTRO011001234567895204000053039865406123.455802BR5915NOMEDORECEBEDOR6008BRASILIA61087007490062530515RP12345678-201950300017BR.GOV.BCB.BRCODE01051.0.080450014BR.GOV.BCB.PIX0123PADRAO.URL.PIX/0123ABCD81390012BR.COM.OUTRO01190123.ABCD.3456.WXYZ6304EB76",
@@ -77,7 +77,7 @@ xhr.addEventListener("readystatechange", function () {
   }
 });
 
-xhr.open("POST", "https://example.com/payments-initiation/v1/pix/payments");
+xhr.open("POST", "https://example.com/payments/v1/pix/payments");
 xhr.setRequestHeader("Content-Type", "application/json");
 xhr.setRequestHeader("Accept", "application/json");
 xhr.setRequestHeader("Authorization", "string");
@@ -96,7 +96,7 @@ import http.client
 
 conn = http.client.HTTPSConnection("example.com")
 
-payload = "{\"data\":{\"payment\":{\"amount\":100000.12,\"currency\":\"BRL\"},\"accountPayee\":{\"ispb\":12345678,\"branchCode\":\"1234\",\"number\":\"1234567890\",\"checkDigit\":\"1234\",\"accountType\":\"CONTA_DEPOSITO_A_VISTA\"},\"additionalInfo\":\"Descrição da Transação\",\"qrCode\":\"00020104141234567890123426660014BR.GOV.BCB.PIX014466756C616E6F32303139406578616D706C652E636F6D27300012BR.COM.OUTRO011001234567895204000053039865406123.455802BR5915NOMEDORECEBEDOR6008BRASILIA61087007490062530515RP12345678-201950300017BR.GOV.BCB.BRCODE01051.0.080450014BR.GOV.BCB.PIX0123PADRAO.URL.PIX/0123ABCD81390012BR.COM.OUTRO01190123.ABCD.3456.WXYZ6304EB76\",\"pixKey\":\"12345678901\"}}"
+payload = "{\"data\":{\"payment\":{\"amount\":100000.12,\"currency\":\"BRL\"},\"debtor\":{\"ispb\":12345678,\"branchCode\":\"1234\",\"number\":\"1234567890\",\"checkDigit\":\"1234\",\"accountType\":\"CURRENT\"},\"additionalInfo\":\"Descrição da Transação\",\"qrCode\":\"00020104141234567890123426660014BR.GOV.BCB.PIX014466756C616E6F32303139406578616D706C652E636F6D27300012BR.COM.OUTRO011001234567895204000053039865406123.455802BR5915NOMEDORECEBEDOR6008BRASILIA61087007490062530515RP12345678-201950300017BR.GOV.BCB.BRCODE01051.0.080450014BR.GOV.BCB.PIX0123PADRAO.URL.PIX/0123ABCD81390012BR.COM.OUTRO01190123.ABCD.3456.WXYZ6304EB76\",\"pixKey\":\"12345678901\"}}"
 
 headers = {
     'Content-Type': "application/json",
@@ -110,7 +110,7 @@ headers = {
     'x-jws-signature': "string"
     }
 
-conn.request("POST", "/payments-initiation/v1/pix/payments", payload, headers)
+conn.request("POST", "/payments/v1/pix/payments", payload, headers)
 
 res = conn.getresponse()
 data = res.read()
@@ -119,7 +119,7 @@ print(data.decode("utf-8"))
 ```
 
 ```java
-HttpResponse<String> response = Unirest.post("https://example.com/payments-initiation/v1/pix/payments")
+HttpResponse<String> response = Unirest.post("https://example.com/payments/v1/pix/payments")
   .header("Content-Type", "application/json")
   .header("Accept", "application/json")
   .header("Authorization", "string")
@@ -129,11 +129,11 @@ HttpResponse<String> response = Unirest.post("https://example.com/payments-initi
   .header("x-customer-user-agent", "string")
   .header("x-idempotency-key", "string")
   .header("x-jws-signature", "string")
-  .body("{\"data\":{\"payment\":{\"amount\":100000.12,\"currency\":\"BRL\"},\"accountPayee\":{\"ispb\":12345678,\"branchCode\":\"1234\",\"number\":\"1234567890\",\"checkDigit\":\"1234\",\"accountType\":\"CONTA_DEPOSITO_A_VISTA\"},\"additionalInfo\":\"Descrição da Transação\",\"qrCode\":\"00020104141234567890123426660014BR.GOV.BCB.PIX014466756C616E6F32303139406578616D706C652E636F6D27300012BR.COM.OUTRO011001234567895204000053039865406123.455802BR5915NOMEDORECEBEDOR6008BRASILIA61087007490062530515RP12345678-201950300017BR.GOV.BCB.BRCODE01051.0.080450014BR.GOV.BCB.PIX0123PADRAO.URL.PIX/0123ABCD81390012BR.COM.OUTRO01190123.ABCD.3456.WXYZ6304EB76\",\"pixKey\":\"12345678901\"}}")
+  .body("{\"data\":{\"payment\":{\"amount\":100000.12,\"currency\":\"BRL\"},\"debtor\":{\"ispb\":12345678,\"branchCode\":\"1234\",\"number\":\"1234567890\",\"checkDigit\":\"1234\",\"accountType\":\"CURRENT\"},\"additionalInfo\":\"Descrição da Transação\",\"qrCode\":\"00020104141234567890123426660014BR.GOV.BCB.PIX014466756C616E6F32303139406578616D706C652E636F6D27300012BR.COM.OUTRO011001234567895204000053039865406123.455802BR5915NOMEDORECEBEDOR6008BRASILIA61087007490062530515RP12345678-201950300017BR.GOV.BCB.BRCODE01051.0.080450014BR.GOV.BCB.PIX0123PADRAO.URL.PIX/0123ABCD81390012BR.COM.OUTRO01190123.ABCD.3456.WXYZ6304EB76\",\"pixKey\":\"12345678901\"}}")
   .asString();
 ```
 
-`POST /payments-initiation/v1/pix/payments`
+`POST /payments/v1/pix/payments`
 
 Método para a criação de uma iniciação de pagamento.
 
@@ -154,12 +154,12 @@ Método para a criação de uma iniciação de pagamento.
       "amount": 100000.12,
       "currency": "BRL"
     },
-    "accountPayee": {
+    "debtor": {
       "ispb": 12345678,
       "branchCode": "1234",
       "number": "1234567890",
       "checkDigit": "1234",
-      "accountType": "CONTA_DEPOSITO_A_VISTA"
+      "accountType": "CURRENT"
     },
     "additionalInfo": "Descrição da Transação",
     "qrCode": "00020104141234567890123426660014BR.GOV.BCB.PIX014466756C616E6F32303139406578616D706C652E636F6D27300012BR.COM.OUTRO011001234567895204000053039865406123.455802BR5915NOMEDORECEBEDOR6008BRASILIA61087007490062530515RP12345678-201950300017BR.GOV.BCB.BRCODE01051.0.080450014BR.GOV.BCB.PIX0123PADRAO.URL.PIX/0123ABCD81390012BR.COM.OUTRO01190123.ABCD.3456.WXYZ6304EB76",
@@ -200,12 +200,12 @@ Método para a criação de uma iniciação de pagamento.
       "amount": 100000.12,
       "currency": "BRL"
     },
-    "accountPayee": {
+    "debtor": {
       "ispb": 12345678,
       "branchCode": "1234",
       "number": "1234567890",
       "checkDigit": "1234",
-      "accountType": "CONTA_DEPOSITO_A_VISTA"
+      "accountType": "CURRENT"
     }
   },
   "links": {
@@ -269,7 +269,7 @@ xhr.addEventListener("readystatechange", function () {
   }
 });
 
-xhr.open("GET", "https://example.com/payments-initiation/v1/pix/payments/string");
+xhr.open("GET", "https://example.com/payments/v1/pix/payments/string");
 xhr.setRequestHeader("Accept", "application/json");
 xhr.setRequestHeader("Authorization", "string");
 xhr.setRequestHeader("x-fapi-auth-date", "stringstringstringstringstrin");
@@ -296,7 +296,7 @@ headers = {
     'x-jws-signature': "string"
     }
 
-conn.request("GET", "/payments-initiation/v1/pix/payments/string", headers=headers)
+conn.request("GET", "/payments/v1/pix/payments/string", headers=headers)
 
 res = conn.getresponse()
 data = res.read()
@@ -305,7 +305,7 @@ print(data.decode("utf-8"))
 ```
 
 ```java
-HttpResponse<String> response = Unirest.get("https://example.com/payments-initiation/v1/pix/payments/string")
+HttpResponse<String> response = Unirest.get("https://example.com/payments/v1/pix/payments/string")
   .header("Accept", "application/json")
   .header("Authorization", "string")
   .header("x-fapi-auth-date", "stringstringstringstringstrin")
@@ -316,7 +316,7 @@ HttpResponse<String> response = Unirest.get("https://example.com/payments-initia
   .asString();
 ```
 
-`GET /payments-initiation/v1/pix/payments/{paymentId}`
+`GET /payments/v1/pix/payments/{paymentId}`
 
 Método para consultar uma iniciação de pagamento.
 
@@ -359,12 +359,12 @@ Método para consultar uma iniciação de pagamento.
       "amount": 100000.12,
       "currency": "BRL"
     },
-    "accountPayee": {
+    "debtor": {
       "ispb": 12345678,
       "branchCode": "1234",
       "number": "1234567890",
       "checkDigit": "1234",
-      "accountType": "CONTA_DEPOSITO_A_VISTA"
+      "accountType": "CURRENT"
     }
   },
   "links": {
@@ -426,12 +426,12 @@ None ( Scopes: openId payments-initiation )
       "amount": 100000.12,
       "currency": "BRL"
     },
-    "accountPayee": {
+    "debtor": {
       "ispb": 12345678,
       "branchCode": "1234",
       "number": "1234567890",
       "checkDigit": "1234",
-      "accountType": "CONTA_DEPOSITO_A_VISTA"
+      "accountType": "CURRENT"
     },
     "additionalInfo": "Descrição da Transação",
     "qrCode": "00020104141234567890123426660014BR.GOV.BCB.PIX014466756C616E6F32303139406578616D706C652E636F6D27300012BR.COM.OUTRO011001234567895204000053039865406123.455802BR5915NOMEDORECEBEDOR6008BRASILIA61087007490062530515RP12345678-201950300017BR.GOV.BCB.BRCODE01051.0.080450014BR.GOV.BCB.PIX0123PADRAO.URL.PIX/0123ABCD81390012BR.COM.OUTRO01190123.ABCD.3456.WXYZ6304EB76",
@@ -449,24 +449,24 @@ None ( Scopes: openId payments-initiation )
 |» payment|object|true||
 |»» amount|number(double)|true|Valor da transação efetuada e convertida em moeda nacional com 4 casas decimais.|
 |»» currency|string|true|Moeda referente ao valor monetário informado, segundo modelo ISO-4217. p.ex. 'BRL' <br>Todos os valores monetários informados estão representados com a moeda vigente do Brasil|
-|» accountPayee|object|true||
+|» debtor|object|true||
 |»» ispb|number|true|Identificador do Sistema de Pagamentos Brasileiros.<br>Código que define instituições participantes do Sistema de Transferência de Reservas (STR).|
 |»» branchCode|string|false|Código da Agência detentora da conta.<br>Agência é a dependência destinada ao atendimento aos clientes, ao público em geral e aos associados de cooperativas de crédito, <br>no exercício de atividades da instituição, não podendo ser móvel ou transitória.|
 |»» number|string|true|Número da conta.|
 |»» checkDigit|string|true|Dígito da conta.|
-|»» accountType|string|true|Tipos de contas.Vide ENUM.<br>CACC - Current (CONTA_DEPOSITO_A_VISTA)<br>SLRY - Salary (CONTA_SALARIO)<br>SVGS - Savings (CONTA_POUPANCA)<br>TRAN - TransactingAccount (CONTA_PAGAMENTO_PRE_PAGA)|
+|»» accountType|string|true|Tipos de contas usadas para pagamento via PIX. Modalidades tradicionais previstas pela Resolução 4.753, não contemplando contas vinculadas, conta de domiciliados no exterior, contas em moedas estrangeiras e conta correspondente moeda eletrônica.<br>Segue descrição de cada valor do ENUM para o escopo do Open Banking Brasil.<br>CACC - Current (CONTA_DEPOSITO_A_VISTA)<br>SLRY - Salary (CONTA_SALARIO)<br>SVGS - Savings (CONTA_POUPANCA)<br>TRAN - TransactingAccount (CONTA_PAGAMENTO_PRE_PAGA)|
 |» additionalInfo|string|false|Determina um texto a ser apresentado ao pagador para que ele possa digitar uma informação correlata, <br>em formato livre, a ser enviada ao recebedor|
-|» qrCode|string|false|QR Code no momento da leitura do QR Code em questão. Essa funcionalidade é possível tanto para o<br>QR Code Estático quanto para o QR Code Dinâmico. Texto do QR Code copia e cola.|
+|» qrCode|string|false|QR Code contendo os dados de pagamento no momento da leitura. O usuário recebedor deve poder oferecer ao pagador<br>uma maneira de copiar a sequência de caracteres que representa o BR Code. É a sequência de caracteres que seria <br>lida pelo leitor de QR Code. <br>Essa funcionalidade é possível tanto para o QR Code Estático quanto para o QR Code Dinâmico.|
 |» pixKey|string|false|Chave DICT do recebedor. Os tipos de chave podem ser: telefone, e-mail, cpf/cnpj ou Chave Aleatória. <br>O telefone celular usará o padrão E.1641. O E-mail deve ter o formato xxxxxxxx@xxxxxxx.xxx(.xx) e nomáximo 77 caracteres. <br>O CPF será utilizado com 11 números e deverá ser informado sem pontos ou traços. <br>O CNPJ será utilizado com 14 números e deverá ser informado sem pontos ou traços. <br>A chave aleatória deve ser UUID gerado pelo DICT, conforme formato especificado na RFC41223.<br>[Restrição] Obrigatório para pagamentos via Chave.|
 
 #### Enumerated Values
 
 |Nome|Código|
 |---|---|
-|accountType|CONTA_DEPOSITO_A_VISTA|
-|accountType|CONTA_POUPANCA|
-|accountType|CONTA_PAGAMENTO_PRE_PAGA|
-|accountType|CONTA_SALARIO|
+|accountType|CURRENT|
+|accountType|SALARY|
+|accountType|SAVINGS|
+|accountType|TRANSACTING_ACCOUNT|
 
 <h2 id="tocS_ResponsePixPayment">ResponsePixPayment</h2>
 
@@ -490,12 +490,12 @@ None ( Scopes: openId payments-initiation )
       "amount": 100000.12,
       "currency": "BRL"
     },
-    "accountPayee": {
+    "debtor": {
       "ispb": 12345678,
       "branchCode": "1234",
       "number": "1234567890",
       "checkDigit": "1234",
-      "accountType": "CONTA_DEPOSITO_A_VISTA"
+      "accountType": "CURRENT"
     }
   },
   "links": {
@@ -520,15 +520,15 @@ None ( Scopes: openId payments-initiation )
 |---|---|---|---|---|
 |data|object|true||
 |» paymentId|string|true|Código ou identificador único informado pela instituição que mantém a conta para representar o pagamento individual.|
-|» endToEndId|string|false|Id fim a fim da transação.O termo "E2E" que identifica a transação no arranjo.<br>[Restrição] É obrigatório o retorno após o status "ACEITA_EM_PROCESSAMENTO".|
+|» endToEndId|string|false|Id fim a fim da transação. O termo "E2E" que identifica a transação no arranjo.<br>Esse Id deve ser único, não podendo ser repetido em qualquer outra operação enviada ao SPI.<br>[Restrição] É obrigatório o retorno após o status "ACCEPTED_SETTLEMENT_IN_PROCESS".|
 |» consentId|string|true|Identificador único do consentimento.|
 |» creationDateTime|string(date-time)|true|Data e hora em que o recurso foi criado. <br>Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).|
 |» updatedDateTime|string(date-time)|true|Data e hora da ultima atualização da iniciação de pagamento. <br>Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).|
 |» pixKey|string|false|Chave DICT do recebedor. Os tipos de chave podem ser: telefone, e-mail, cpf/cnpj ou Chave Aleatória. <br>O telefone celular usará o padrão E.1641. O E-mail deve ter o formato xxxxxxxx@xxxxxxx.xxx(.xx) e nomáximo 77 caracteres. <br>O CPF será utilizado com 11 números e deverá ser informado sem pontos ou traços. <br>O CNPJ será utilizado com 14 números e deverá ser informado sem pontos ou traços. <br>A chave aleatória deve ser UUID gerado pelo DICT, conforme formato especificado na RFC41223.<br>[Restrição] Obrigatório para pagamentos via Chave|
 |» status|string|true|Estado atual da iniciação de pagamento criada.|
 |» rejectionReason|string|false|Motivo da rejeição do pagamento.<br>[Restrição] Deve ser enviado quando o status é "REJEITADO".|
-|» payment|[#/paths/~1payments-initiation~1v1~1pix~1payments/post/requestBody/content/application~1json/schema/properties/data/properties/payment](#schema#/paths/~1payments-initiation~1v1~1pix~1payments/post/requestbody/content/application~1json/schema/properties/data/properties/payment)|true||
-|» accountPayee|[#/paths/~1payments-initiation~1v1~1pix~1payments/post/requestBody/content/application~1json/schema/properties/data/properties/accountPayee](#schema#/paths/~1payments-initiation~1v1~1pix~1payments/post/requestbody/content/application~1json/schema/properties/data/properties/accountpayee)|true||
+|» payment|[#/paths/~1payments~1v1~1pix~1payments/post/requestBody/content/application~1json/schema/properties/data/properties/payment](#schema#/paths/~1payments~1v1~1pix~1payments/post/requestbody/content/application~1json/schema/properties/data/properties/payment)|true||
+|» debtor|[#/paths/~1payments~1v1~1pix~1payments/post/requestBody/content/application~1json/schema/properties/data/properties/debtor](#schema#/paths/~1payments~1v1~1pix~1payments/post/requestbody/content/application~1json/schema/properties/data/properties/debtor)|true||
 |links|object|true|Referências para outros recusos da API requisitada.|
 |» self|string(uri)|true|URI completo que gerou a resposta atual.|
 |» first|string(uri)|false|URI da primeira página que originou essa lista de resultados. Restrição - Obrigatório quando não for a primeira página da resposta|
@@ -593,3 +593,4 @@ None ( Scopes: openId payments-initiation )
 |» totalRecords|integer(int32)|true|Número total de registros no resultado|
 |» totalPages|integer(int32)|true|Número total de páginas no resultado|
 |» requestDateTime|string(date-time)|true|Data e hora da consulta, conforme especificação RFC-3339, formato UTC.|
+
