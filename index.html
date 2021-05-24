@@ -3107,11 +3107,9 @@ A autenticação e a autorização representam funções fundamentalmente difere
 
 <h3 id='exemplo-de-fluxo-de-consentimento'>Exemplo de fluxo de consentimento</h3>
 
-<p>O consentimento dado pelo usuário define quais informações a aplicação da instituição receptora terá acesso, mas não possui a granularidade de quais unidades de produto estão disponíveis para acesso. Essa informação cabe exclusivamente a instituição transmissora de dados. O seguinte exemplo demonstra o escopo de informações que o consentimento garante:</p>
-
-<ul>
-<li>O usuário deseja compartilhar as informações de suas contas pré-pagas. Após o fluxo do <em>front-end</em>, a aplicação do receptor deve pedir um <em>token</em> ao <em>Authorisation Server</em> com o <em>scope</em> &quot;<em>consents</em>&quot;.</li>
-</ul>
+<blockquote>
+<p>1: Pedido de Token para o Consentimento</p>
+</blockquote>
 
 <div class="highlight"><pre class="highlight http tab-http"><code><span class="nf">POST</span> <span class="nn">/token</span> <span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="p">:</span> <span class="s">as.banco.exemplo</span>
@@ -3123,11 +3121,13 @@ grant_type=client_credentials&amp;
 scope=consents
 "..."
 
+eyJraWQiOiJOQnlW...
+
 </code></pre></div>
 
-<ul>
-<li>O resultado dessa requisição é o <em>token</em>, que deve ser utilizado já na requisição para a API de <em>Consents</em>.</li>
-</ul>
+<blockquote>
+<p>2: Requisição para criar um consentimento</p>
+</blockquote>
 
 <div class="highlight"><pre class="highlight http tab-http"><code><span class="nf">POST</span> <span class="nn">/consents/v1/consents</span> <span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="p">:</span> <span class="s">api.banco.exemplo</span>
@@ -3147,30 +3147,30 @@ scope=consents
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 
-<ul>
-<li>Ao receber esta requisição, a API deve retornar o identificador do pedido de consentimento.</li>
-</ul>
+<blockquote>
+<p>3: Retorno da criação do consentimento</p>
+</blockquote>
 
-<div class="highlight"><pre class="highlight http tab-http"><code><span class="err">201 Created
-Content-Type: application/json
-Location: /consents/v1/consents/urn:bancoex:C1DD33123
+<div class="highlight"><pre class="highlight http tab-http"><code><span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">201</span> <span class="ne">Created</span>
+<span class="na">Location</span><span class="p">:</span> <span class="s">/consents/v1/consents/urn:bancoex:C1DD33123 HTTP/1.1</span>
+<span class="na">Content-Type</span><span class="p">:</span> <span class="s">application/json</span>
 
-{
-    "data": {
-        "..."
-        "consentId": "urn:bancoex:C1DD33123",
-        "..."
-}
+<span class="p">{</span><span class="w">
+    </span><span class="nl">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"..."</span><span class="w">
+        </span><span class="nl">"consentId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"urn:bancoex:C1DD33123"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"..."</span><span class="w">
+</span><span class="p">}</span><span class="w">
 
 </span></code></pre></div>
 
-<ul>
-<li>Com o ID do consentimento, agora deve-se requisitar o <em>Access Token</em> que irá permitir com que a aplicação da instituição receptora consiga acessar os dados das APIs, enviando a requisição para o <em>Authorisation Server</em> com um objeto JWT contendo este ID como um escopo dinâmico.</li>
-</ul>
+<blockquote>
+<p>4: Requisição com token JTW para o <em>Acess Token</em></p>
+</blockquote>
 
-<div class="highlight"><pre class="highlight http tab-http"><code><span class="err">GET /authorise?request=objectjwtpookdsfpmcieq-p0ok...
-Host: as.banco.exemplo
-"..."
+<div class="highlight"><pre class="highlight http tab-http"><code><span class="nf">GET</span> <span class="nn">/authorise?request=objectjwtpookdsfpmcieq-p0ok...</span> <span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="p">:</span> <span class="s">as.banco.exemplo</span>
+<span class="s">...</span>
 
 // conteudo de exemplo do JWT enviado
 {
@@ -3178,11 +3178,17 @@ Host: as.banco.exemplo
     "scope": "openid resources accounts consent:urn:bancoex:C1DD33123",
     "..."
 }
-</span></code></pre></div>
+</code></pre></div>
 
-<ul>
-<li>Ao receber esta ultima requisição, a instituição transmissora envia uma URL de redirecionamento, onde o usuário irá escolher, dentro do ambiente da própria instituição, quais unidades de recurso ele irá compartilhar, dado este <em>Access token</em> gerado pelo pedido de consentimento. Exemplo: Neste caso apresentado após o fluxo de consentimento, o usuário escolhe dentro do ambiente da instituição transmissora quais contas ele irá compartilhar. Assim a instituição transmissora poderia ter um controle deste tipo:</li>
-</ul>
+<p>O consentimento dado pelo usuário define quais informações a aplicação da instituição receptora terá acesso, mas não possui a granularidade de quais unidades de produto estão disponíveis para acesso. Essa informação cabe exclusivamente a instituição transmissora de dados. O seguinte exemplo demonstra o escopo de informações que o consentimento garante (Exemplos de codigo ao lado):</p>
+
+<ol>
+<li><p>O usuário deseja compartilhar as informações de suas contas pré-pagas. Após o fluxo do <em>front-end</em>, a aplicação do receptor deve pedir um <em>token</em> ao <em>Authorisation Server</em> com o <em>scope</em> &quot;<em>consents</em>&quot;.</p></li>
+<li><p>Com o <em>token</em>, deve-se fazer uma requisição para a API de <em>Consents</em>, utilizando este <em>token</em> no <em>header</em>.</p></li>
+<li><p>Ao receber esta requisição, a API deve retornar o identificador do pedido de consentimento.</p></li>
+<li><p>Com o ID do consentimento, agora deve-se requisitar o <em>Access Token</em> que irá permitir com que a aplicação da instituição receptora consiga acessar os dados das APIs, enviando a requisição para o <em>Authorisation Server</em> com um objeto JWT contendo este ID como um escopo dinâmico.</p></li>
+<li><p>Ao receber esta ultima requisição, a instituição transmissora envia uma URL de redirecionamento, onde o usuário irá escolher, dentro do ambiente da própria instituição, quais unidades de recurso ele irá compartilhar, dado este <em>Access token</em> gerado pelo pedido de consentimento. Exemplo: Neste caso apresentado após o fluxo de consentimento, o usuário escolhe dentro do ambiente da instituição transmissora quais contas ele irá compartilhar. Assim a instituição transmissora poderia ter um controle deste tipo:</p></li>
+</ol>
 
 <table><thead>
 <tr>
@@ -3203,9 +3209,7 @@ Host: as.banco.exemplo
 </tr>
 </tbody></table>
 
-<ul>
-<li>Assim que o usuário inserir quais itens ele irá compartilhar (neste exemplo, quais contas pré-pagas), o fluxo <em>OAuth</em> segue normalmente (redirecionamento do <em>auth_code</em> para a URL de <em>callback</em> e novo pedido de token ao <em>Authorisation Server</em>). </li>
-</ul>
+<p>Assim que o usuário inserir quais itens ele irá compartilhar (neste exemplo, quais contas pré-pagas), o fluxo <em>OAuth</em> segue normalmente (redirecionamento do <em>auth_code</em> para a URL de <em>callback</em> e novo pedido de token ao <em>Authorisation Server</em>). </p>
 
 <h3 id='acesso-aos-dados-apos-o-consentimento'>Acesso aos dados após o consentimento</h3>
 
@@ -3213,7 +3217,7 @@ Host: as.banco.exemplo
 
 <p>O fluxo a seguir demonstra como deve ser uma consulta à API de Accounts, partindo do principio de que o <em>App</em> já tenha realizado todo o fluxo de <em>Authorization Code</em>, como descrito anteriormente, e portanto, já esteja de posse de um <em>token</em> de acesso válido. Vale lembrar que a API de <em>Accounts</em> é apenas um exemplo. Qualquer outra API de <em>Data sharing</em> segue o mesmo conceito.</p>
 
-<p><img src="images/documentation/source/images/security/Fluxo_Resources.png" alt="Fluxo de acesso a API de Accounts" /></p>
+<p><img src="images/security/Fluxo_Resources-946a9324.png" alt="Fluxo de acesso a API de Accounts" /></p>
 
 <ol>
 <li><em>App</em>, em posse de um <em>token</em> válido, requisita a API de <em>Resources</em> a informação de quais recursos o <em>token</em> enviado tem acesso;</li>
