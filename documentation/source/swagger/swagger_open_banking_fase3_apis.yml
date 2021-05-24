@@ -1,0 +1,647 @@
+openapi: 3.0.0
+info:
+  title: Fase 3 - APIs do Open Banking Brasil
+  description: |
+    Clientes poderão solicitar e realizar operações de pagamentos. 
+
+    A operação de pagamento ocorre apenas se a pessoa autorizar através da API de Consentimento, sempre para finalidades determinadas e por um prazo específico. E será possível para o cliente cancelar essa autorização a qualquer momento em qualquer uma das instituições envolvidas no compartilhamento.
+
+    ###Idempotência
+    Segundo a W3C, "um método HTTP idempotente é um método HTTP que pode ser chamado muitas vezes sem resultados diferentes ou efeitos colaterais. Não importa se o método é chamado apenas uma vez ou dez vezes. O resultado deve ser o mesmo. Essencialmente, significa que o resultado de uma solicitação executada com sucesso é independente do número de vezes que ela é executada. Por exemplo, na aritmética, adicionar zero a um número é uma operação idempotente."
+
+    Os conhecidos métodos GET, PUT e DELETE são naturalmente idempotentes, assim como HEAD, OPTIONS e TRACE também são.
+
+    Porém, o método POST requer um tratamento especial para que se torne idempotente e, por estarmos tratando aqui de meios de pagamentos, fazer esse tratamento é algo desejável para que não ocorram acidentes.
+
+    ####Por que é necessário tratarmos a Idempotência do POST?
+
+    Imagine que seja realizado um POST de pagamento e, depois de alguns segundos, é retornada uma mensagem de Timeout. Nesse caso, não é possível saber se o POST foi efetivo e enviar o POST novamente, sem tratar a idempotência, poderá ocasional em uma duplicidade de pagamento.
+
+    ####Como mitigarmos esse risco?
+
+    Do lado da iniciadora do pagamento: É necessário que seja enviado o POST com um GUID de Idempotência. Caso o mesmo POST seja reenviado por acidente ou precise ser reenviado, por qualquer motivo que seja, basta reenviar o POST com o mesmo GUID de Idempotência.
+
+    Do lado da detentora da conta: É necessário validar o GUID de Idempotência recebido. Caso tenha recebido o mesmo GUID de Idempotência, a nova mensagem de POST deverá ser descartada.
+
+    Importante reforçar que cada nova transação com POST deverá ter um novo GUID de Idempotência.
+  version: 1.0.0-rc1.0
+tags:
+  - name: API - Payments Initiation
+    description: |
+      |Versão|
+      |:-----|
+      |1     |
+
+      #### Visão Geral
+
+      A API tem como objetivo realizar a iniciação de pagamento entre bancos e instituições financeiras e acessível também à estabelecimentos comerciais participantes do Open Banking Brasil.
+
+      É possível realizar a iniciação de pagamento (não possuindo restrição de uso entre pessoa física e pessoa jurídica) mediante a integração entre as instituições autorizadas.
+
+      #### Especificação em OAS 3.0
+
+      <a href="swagger/swagger_payments_initiation_apis.yaml">Download da Especificação (OAS 3.0)</a>
+paths:
+  /payments-initiation/v1/pix/payments:
+    post:
+      tags:
+        - API - Payments Initiation
+      summary: '[Em Revisão] Criar iniciação de pagamento.'
+      operationId: paymentsInitiationPostPixPayments
+      description: |
+        Método para a criação de uma iniciação de pagamento.
+
+        ### Dicionário de dados
+
+        <a href='dictionary/paymentsInitiationPostPixPayments_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
+
+        ### Especificação em OAS 3.0
+
+        <a href="swagger/swagger_payments_initiation_apis.yaml">Download da Especificação (OAS 3.0)</a>
+      parameters:
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/xFapiAuthDate'
+        - $ref: '#/components/parameters/xFapiCustomerIpAddress'
+        - $ref: '#/components/parameters/xFapiInteractionId'
+        - $ref: '#/components/parameters/xCustomerUserAgent'
+        - $ref: '#/components/parameters/XIdempotencyKey'
+        - $ref: '#/components/parameters/XJwsSignature'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePixPayment'
+        description: Payload para criação da iniciação do pagamento PIX.
+        required: true
+      responses:
+        '201':
+          $ref: '#/components/responses/201PaymentsInitiationPixPaymentCreated'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          description: Erro inesperado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+      security:
+        - OpenId:
+            - openId
+            - payments-initiation
+  '/payments-initiation/v1/pix/payments/{paymentId}':
+    get:
+      tags:
+        - API - Payments Initiation
+      summary: '[Em Revisão] Consultar iniciação de pagamento.'
+      operationId: paymentsInitiationGetPixPayments
+      description: |
+        Método para consultar uma iniciação de pagamento.
+
+        ### Dicionário de dados
+
+        <a href='dictionary/paymentsInitiationGetPixPayments_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
+
+        ### Especificação em OAS 3.0
+
+        <a href="swagger/swagger_payments_initiation_apis.yaml">Download da Especificação (OAS 3.0)</a>
+      parameters:
+        - $ref: '#/components/parameters/paymentId'
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/xFapiAuthDate'
+        - $ref: '#/components/parameters/xFapiCustomerIpAddress'
+        - $ref: '#/components/parameters/xFapiInteractionId'
+        - $ref: '#/components/parameters/xCustomerUserAgent'
+        - $ref: '#/components/parameters/XJwsSignature'
+      responses:
+        '200':
+          $ref: '#/components/responses/200PaymentsInitiationPixPaymentIdRead'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          description: Erro inesperado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+      security:
+        - OpenId:
+            - openId
+            - payments-initiation
+components:
+  schemas:
+    CreatePixPayment:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: object
+          required:
+            - payment
+            - accountPayee
+          properties:
+            payment:
+              type: object
+              required:
+                - amount
+                - currency
+              properties:
+                amount:
+                  type: number
+                  format: double
+                  maxLength: 19
+                  pattern: '^((\d{1,16}\.\d{2}))$'
+                  example: 100000.12
+                  description: Valor da transação efetuada e convertida em moeda nacional com 4 casas decimais.
+                currency:
+                  type: string
+                  maxLength: 3
+                  pattern: '^(\w{3}){1}$'
+                  example: BRL
+                  description: |
+                    Moeda referente ao valor monetário informado, segundo modelo ISO-4217. p.ex. 'BRL' 
+                    Todos os valores monetários informados estão representados com a moeda vigente do Brasil
+              additionalProperties: false
+            accountPayee:
+              type: object
+              required:
+                - ispb
+                - number
+                - checkDigit
+                - accountType
+              properties:
+                ispb:
+                  type: number
+                  maxLength: 8
+                  pattern: '^[0-9]{1,8}$'
+                  example: 12345678
+                  description: |
+                    Identificador do Sistema de Pagamentos Brasileiros.
+                    Código que define instituições participantes do Sistema de Transferência de Reservas (STR).
+                branchCode:
+                  type: string
+                  maxLength: 4
+                  pattern: '^(\w{4}){1}$'
+                  example: '1234'
+                  description: |
+                    Código da Agência detentora da conta.
+                    Agência é a dependência destinada ao atendimento aos clientes, ao público em geral e aos associados de cooperativas de crédito, 
+                    no exercício de atividades da instituição, não podendo ser móvel ou transitória.
+                number:
+                  type: string
+                  maxLength: 20
+                  pattern: '^\d{8,20}$'
+                  example: '1234567890'
+                  description: Número da conta.
+                checkDigit:
+                  type: string
+                  maxLength: 4
+                  pattern: '^(\w{4}){1}$'
+                  example: '1234'
+                  description: Dígito da conta.
+                accountType:
+                  type: string
+                  maxLength: 24
+                  enum:
+                    - CONTA_DEPOSITO_A_VISTA
+                    - CONTA_POUPANCA
+                    - CONTA_PAGAMENTO_PRE_PAGA
+                    - CONTA_SALARIO
+                  description: |
+                    Tipos de contas.Vide ENUM.
+                    CACC - Current (CONTA_DEPOSITO_A_VISTA)
+                    SLRY - Salary (CONTA_SALARIO)
+                    SVGS - Savings (CONTA_POUPANCA)
+                    TRAN - TransactingAccount (CONTA_PAGAMENTO_PRE_PAGA)
+                  example: CONTA_DEPOSITO_A_VISTA
+              additionalProperties: false
+            additionalInfo:
+              type: string
+              maxLength: 140
+              pattern: \w*\W*
+              example: Descrição da Transação
+              description: |
+                Determina um texto a ser apresentado ao pagador para que ele possa digitar uma informação correlata, 
+                em formato livre, a ser enviada ao recebedor
+            qrCode:
+              type: string
+              maxLength: 500
+              pattern: \w*\W*
+              example: 00020104141234567890123426660014BR.GOV.BCB.PIX014466756C616E6F32303139406578616D706C652E636F6D27300012BR.COM.OUTRO011001234567895204000053039865406123.455802BR5915NOMEDORECEBEDOR6008BRASILIA61087007490062530515RP12345678-201950300017BR.GOV.BCB.BRCODE01051.0.080450014BR.GOV.BCB.PIX0123PADRAO.URL.PIX/0123ABCD81390012BR.COM.OUTRO01190123.ABCD.3456.WXYZ6304EB76
+              description: |
+                QR Code no momento da leitura do QR Code em questão. Essa funcionalidade é possível tanto para o
+                QR Code Estático quanto para o QR Code Dinâmico. Texto do QR Code copia e cola.
+            pixKey:
+              type: string
+              maxLength: 77
+              pattern: \w*\W*
+              example: '12345678901'
+              description: |
+                Chave DICT do recebedor. Os tipos de chave podem ser: telefone, e-mail, cpf/cnpj ou Chave Aleatória. 
+                O telefone celular usará o padrão E.1641. O E-mail deve ter o formato xxxxxxxx@xxxxxxx.xxx(.xx) e nomáximo 77 caracteres. 
+                O CPF será utilizado com 11 números e deverá ser informado sem pontos ou traços. 
+                O CNPJ será utilizado com 14 números e deverá ser informado sem pontos ou traços. 
+                A chave aleatória deve ser UUID gerado pelo DICT, conforme formato especificado na RFC41223.
+                [Restrição] Obrigatório para pagamentos via Chave.
+          additionalProperties: false
+      additionalProperties: false
+    ResponsePixPayment:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          type: object
+          required:
+            - paymentId
+            - consentId
+            - creationDateTime
+            - updatedDateTime
+            - status
+            - payment
+            - accountPayee
+          properties:
+            paymentId:
+              type: string
+              maxLength: 36
+              pattern: '^[{]?[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}[}]?$'
+              example: 8f800dc8-bc8a-4c0e-b5e6-3c6801cfe135
+              description: Código ou identificador único informado pela instituição que mantém a conta para representar o pagamento individual.
+            endToEndId:
+              type: string
+              maxLength: 36
+              pattern: '^[{]?[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}[}]?$'
+              example: a9ae654d-e531-4a8b-a926-952d664de203
+              description: |
+                Id fim a fim da transação.O termo "E2E" que identifica a transação no arranjo.
+                [Restrição] É obrigatório o retorno após o status "ACEITA_EM_PROCESSAMENTO".
+            consentId:
+              type: string
+              maxLength: 36
+              pattern: '^[{]?[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}[}]?$'
+              example: 3a782761-9573-4e1f-b4d1-4c798955c0b8
+              description: Identificador único do consentimento.
+            creationDateTime:
+              type: string
+              format: date-time
+              pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$|^NA$'
+              example: '2020-07-21T08:30:00Z'
+              description: |
+                Data e hora em que o recurso foi criado. 
+                Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).
+            updatedDateTime:
+              type: string
+              format: date-time
+              pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$|^NA$'
+              example: '2020-07-21T08:30:00Z'
+              description: |
+                Data e hora da ultima atualização da iniciação de pagamento. 
+                Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).
+            pixKey:
+              type: string
+              maxLength: 77
+              pattern: \w*\W*
+              example: '12345678901'
+              description: |
+                Chave DICT do recebedor. Os tipos de chave podem ser: telefone, e-mail, cpf/cnpj ou Chave Aleatória. 
+                O telefone celular usará o padrão E.1641. O E-mail deve ter o formato xxxxxxxx@xxxxxxx.xxx(.xx) e nomáximo 77 caracteres. 
+                O CPF será utilizado com 11 números e deverá ser informado sem pontos ou traços. 
+                O CNPJ será utilizado com 14 números e deverá ser informado sem pontos ou traços. 
+                A chave aleatória deve ser UUID gerado pelo DICT, conforme formato especificado na RFC41223.
+                [Restrição] Obrigatório para pagamentos via Chave
+            status:
+              type: string
+              maxLength: 38
+              description: |
+                Estado atual da iniciação de pagamento criada.
+              enum:
+                - PENDENTE
+                - AGUARDANDO_AUTORIZACAO_MULTIPLA_ALCADA
+                - REJEITADO
+                - ACEITA_EM_PROCESSAMENTO
+                - FINALIZADO
+              example: FINALIZADO
+            rejectionReason:
+              type: string
+              maxLength: 38
+              description: |
+                Motivo da rejeição do pagamento.
+                [Restrição] Deve ser enviado quando o status é "REJEITADO".
+              enum:
+                - FUNDOS_INSUFICIENTES
+                - BENEFICARIO_DIFERENTE_DO_CONSENTIMENTO
+                - VALOR_DIFERENTE_DO_CONSENTIMENTO
+                - VALOR_ACIMA_DO_LIMITE
+                - VALOR_INVALIDO
+                - CONTA_INVALIDA
+                - CONSENTIMENTO_INVALIDO
+                - JANELA_DE_OPERACAO
+                - DESCONHECIDO
+              example: FUNDOS_INSUFICIENTES
+            payment:
+              $ref: '#/paths/~1payments-initiation~1v1~1pix~1payments/post/requestBody/content/application~1json/schema/properties/data/properties/payment'
+            accountPayee:
+              $ref: '#/paths/~1payments-initiation~1v1~1pix~1payments/post/requestBody/content/application~1json/schema/properties/data/properties/accountPayee'
+          additionalProperties: false
+        links:
+          type: object
+          description: Referências para outros recusos da API requisitada.
+          required:
+            - self
+          properties:
+            self:
+              type: string
+              format: uri
+              maxLength: 2000
+              description: URI completo que gerou a resposta atual.
+              example: 'https://api.banco.com.br/open-banking/api/v1/resource'
+              pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
+            first:
+              type: string
+              format: uri
+              maxLength: 2000
+              description: URI da primeira página que originou essa lista de resultados. Restrição - Obrigatório quando não for a primeira página da resposta
+              example: 'https://api.banco.com.br/open-banking/api/v1/resource'
+              pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
+            prev:
+              type: string
+              format: uri
+              maxLength: 2000
+              description: "URI da página anterior dessa lista de resultados. Restrição - \tObrigatório quando não for a primeira página da resposta"
+              example: 'https://api.banco.com.br/open-banking/api/v1/resource'
+              pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
+            next:
+              type: string
+              format: uri
+              maxLength: 2000
+              description: URI da próxima página dessa lista de resultados. Restrição - Obrigatório quando não for a última página da resposta
+              example: 'https://api.banco.com.br/open-banking/api/v1/resource'
+              pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
+            last:
+              type: string
+              format: uri
+              maxLength: 2000
+              description: URI da última página dessa lista de resultados. Restrição - Obrigatório quando não for a última página da resposta
+              example: 'https://api.banco.com.br/open-banking/api/v1/resource'
+              pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
+          additionalProperties: false
+        meta:
+          $ref: '#/components/schemas/ResponseError/properties/meta'
+      additionalProperties: false
+    ResponseError:
+      type: object
+      required:
+        - errors
+      properties:
+        errors:
+          type: array
+          minItems: 1
+          maxItems: 13
+          items:
+            type: object
+            required:
+              - code
+              - title
+              - detail
+            properties:
+              code:
+                description: Código de erro específico do endpoint
+                type: string
+                pattern: \w*\W*
+                maxLength: 255
+              title:
+                description: Título legível por humanos deste erro específico
+                type: string
+                pattern: \w*\W*
+                maxLength: 255
+              detail:
+                description: Descrição legível por humanos deste erro específico
+                type: string
+                pattern: \w*\W*
+                maxLength: 2048
+            additionalProperties: false
+        meta:
+          type: object
+          description: Meta informações referente a API requisitada.
+          required:
+            - totalRecords
+            - totalPages
+            - requestDateTime
+          properties:
+            totalRecords:
+              type: integer
+              format: int32
+              description: Número total de registros no resultado
+              example: 1
+            totalPages:
+              type: integer
+              format: int32
+              description: Número total de páginas no resultado
+              example: 1
+            requestDateTime:
+              description: 'Data e hora da consulta, conforme especificação RFC-3339, formato UTC.'
+              type: string
+              maxLength: 20
+              format: date-time
+              example: '2021-05-21T08:30:00Z'
+          additionalProperties: false
+      additionalProperties: false
+  parameters:
+    paymentId:
+      name: paymentId
+      in: path
+      description: Identificador da operação de pagamento.
+      required: true
+      schema:
+        type: string
+        pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
+        maxLength: 100
+    Authorization:
+      name: Authorization
+      in: header
+      description: Cabeçalho HTTP padrão. Permite que as credenciais sejam fornecidas dependendo do tipo de recurso solicitado
+      required: true
+      schema:
+        type: string
+        pattern: \w*\W*
+        maxLength: 2048
+    xCustomerUserAgent:
+      name: x-customer-user-agent
+      in: header
+      description: Indica o user-agent que o usuário utiliza.
+      required: false
+      schema:
+        type: string
+        pattern: \w*\W*
+        minLength: 1
+        maxLength: 100
+    xFapiAuthDate:
+      name: x-fapi-auth-date
+      in: header
+      description: 'Data em que o usuário logou pela última vez com o receptor. Representada de acordo com a [RFC7231](https://tools.ietf.org/html/rfc7231).Exemplo: Sun, 10 Sep 2017 19:43:31 UTC'
+      required: false
+      schema:
+        type: string
+        pattern: '^(Mon|Tue|Wed|Thu|Fri|Sat|Sun), \d{2} (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) \d{4} \d{2}:\d{2}:\d{2} (GMT|UTC)$'
+        minLength: 29
+        maxLength: 29
+    xFapiCustomerIpAddress:
+      name: x-fapi-customer-ip-address
+      in: header
+      description: O endereço IP do usuário se estiver atualmente logado com o receptor.
+      required: false
+      schema:
+        type: string
+        pattern: \w*\W*
+        minLength: 1
+        maxLength: 100
+    xFapiInteractionId:
+      name: x-fapi-interaction-id
+      in: header
+      description: 'Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.'
+      required: false
+      schema:
+        type: string
+        pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
+        minLength: 1
+        maxLength: 100
+    XIdempotencyKey:
+      name: x-idempotency-key
+      in: header
+      description: Cabeçalho HTTP personalizado. Identificador de solicitação exclusivo para suportar a idempotência.
+      required: true
+      schema:
+        type: string
+        maxLength: 40
+        pattern: ^(?!\s)(.*)(\S)$
+    XJwsSignature:
+      name: x-jws-signature
+      in: header
+      description: Cabeçalho contendo uma assinatura JWS separada do corpo do payload.
+      required: true
+      schema:
+        type: string
+        pattern: \w*\W*
+        maxLength: 2048
+  responses:
+    BadRequest:
+      description: 'A requisição foi malformada, omitindo atributos obrigatórios, seja no payload ou através de atributos na URL.'
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/ResponseError'
+    Forbidden:
+      description: O token tem escopo incorreto ou uma política de segurança foi violada
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/ResponseError'
+    InternalServerError:
+      description: Ocorreu um erro no gateway da API ou no microsserviço
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/ResponseError'
+    MethodNotAllowed:
+      description: O consumidor tentou acessar o recurso com um método não suportado
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/ResponseError'
+    NotAcceptable:
+      description: A solicitação continha um cabeçalho Accept diferente dos tipos de mídia permitidos ou um conjunto de caracteres diferente de UTF-8
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/ResponseError'
+    NotFound:
+      description: O recurso solicitado não existe ou não foi implementado
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/ResponseError'
+    TooManyRequests:
+      description: 'A operação foi recusada, pois muitas solicitações foram feitas dentro de um determinado período ou o limite global de requisições concorrentes foi atingido'
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/ResponseError'
+    UnprocessableEntity:
+      description: 'A solicitação foi bem formada, mas não pôde ser processada devido à lógica de negócios específica da solicitação.'
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/ResponseError'
+    Unauthorized:
+      description: Cabeçalho de autenticação ausente/inválido ou token inválido
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/ResponseError'
+    UnsupportedMediaType:
+      description: O formato do payload não é um formato suportado.
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/ResponseError'
+    201PaymentsInitiationPixPaymentCreated:
+      description: Iniciação de pagamento PIX criada com sucesso.
+      headers:
+        x-fapi-interaction-id:
+          schema:
+            $ref: '#/components/responses/200PaymentsInitiationPixPaymentIdRead/headers/x-fapi-interaction-id/schema'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ResponsePixPayment'
+    200PaymentsInitiationPixPaymentIdRead:
+      description: Dados de iniciação de pagamento PIX obtidos com sucesso.
+      headers:
+        x-fapi-interaction-id:
+          schema:
+            type: string
+            pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
+            maxLength: 100
+            description: 'Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ResponsePixPayment'

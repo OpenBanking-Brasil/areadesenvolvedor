@@ -1,0 +1,235 @@
+openapi: 3.0.0
+info:
+  title: Fase 3 - APIs do Open Banking Brasil
+  description: |
+    Clientes poderão solicitar e realizar operações de pagamentos. 
+    
+    A operação de pagamento ocorre apenas se a pessoa autorizar através da API de Consentimento, sempre para finalidades determinadas e por um prazo específico. E será possível para o cliente cancelar essa autorização a qualquer momento em qualquer uma das instituições envolvidas no compartilhamento.
+
+    ###Idempotência
+    Segundo a W3C, "um método HTTP idempotente é um método HTTP que pode ser chamado muitas vezes sem resultados diferentes ou efeitos colaterais. Não importa se o método é chamado apenas uma vez ou dez vezes. O resultado deve ser o mesmo. Essencialmente, significa que o resultado de uma solicitação executada com sucesso é independente do número de vezes que ela é executada. Por exemplo, na aritmética, adicionar zero a um número é uma operação idempotente."
+
+    Os conhecidos métodos GET, PUT e DELETE são naturalmente idempotentes, assim como HEAD, OPTIONS e TRACE também são.
+
+    Porém, o método POST requer um tratamento especial para que se torne idempotente e, por estarmos tratando aqui de meios de pagamentos, fazer esse tratamento é algo desejável para que não ocorram acidentes.
+
+    ####Por que é necessário tratarmos a Idempotência do POST?
+
+    Imagine que seja realizado um POST de pagamento e, depois de alguns segundos, é retornada uma mensagem de Timeout. Nesse caso, não é possível saber se o POST foi efetivo e enviar o POST novamente, sem tratar a idempotência, poderá ocasional em uma duplicidade de pagamento.
+
+    ####Como mitigarmos esse risco?
+
+    Do lado da iniciadora do pagamento: É necessário que seja enviado o POST com um GUID de Idempotência. Caso o mesmo POST seja reenviado por acidente ou precise ser reenviado, por qualquer motivo que seja, basta reenviar o POST com o mesmo GUID de Idempotência.
+
+    Do lado da detentora da conta: É necessário validar o GUID de Idempotência recebido. Caso tenha recebido o mesmo GUID de Idempotência, a nova mensagem de POST deverá ser descartada.
+
+    Importante reforçar que cada nova transação com POST deverá ter um novo GUID de Idempotência.
+    
+  version: 1.0.0-rc1.0
+tags:
+  - name: API - Payments Initiation
+    description: |
+      |Versão|
+      |:-----|
+      |1     |
+
+      #### Visão Geral
+      
+      A API tem como objetivo realizar a iniciação de pagamento entre bancos e instituições financeiras e acessível também à estabelecimentos comerciais participantes do Open Banking Brasil.
+      
+      É possível realizar a iniciação de pagamento (não possuindo restrição de uso entre pessoa física e pessoa jurídica) mediante a integração entre as instituições autorizadas.
+      
+      #### Especificação em OAS 3.0
+
+      <a href="swagger/swagger_payments_initiation_apis.yaml">Download da Especificação (OAS 3.0)</a>
+      
+paths:
+  /payments-initiation/v1/pix/payments:
+    post:
+      tags:
+        - API - Payments Initiation
+      summary: "[Em Revisão] Criar iniciação de pagamento."
+      operationId: paymentsInitiationPostPixPayments
+      description: |
+        Método para a criação de uma iniciação de pagamento.
+
+        ### Dicionário de dados
+
+        <a href='dictionary/paymentsInitiationPostPixPayments_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
+      
+        ### Especificação em OAS 3.0
+
+        <a href="swagger/swagger_payments_initiation_apis.yaml">Download da Especificação (OAS 3.0)</a>
+
+      parameters:
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/xFapiAuthDate'
+        - $ref: '#/components/parameters/xFapiCustomerIpAddress'
+        - $ref: '#/components/parameters/xFapiInteractionId'
+        - $ref: '#/components/parameters/xCustomerUserAgent'
+        - $ref: '#/components/parameters/XIdempotencyKey'
+        - $ref: '#/components/parameters/XJwsSignature'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePixPayment"
+        description: Payload para criação da iniciação do pagamento PIX.
+        required: true
+      responses:
+        '201':
+          $ref: "#/components/responses/201PaymentsInitiationPixPaymentCreated"
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          description: Erro inesperado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+      security:
+        - OpenId:
+            - openId
+            - payments-initiation
+  /payments-initiation/v1/pix/payments/{paymentId}:
+    get:
+      tags:
+        - API - Payments Initiation
+      summary: "[Em Revisão] Consultar iniciação de pagamento."
+      operationId: paymentsInitiationGetPixPayments
+      description: |
+        Método para consultar uma iniciação de pagamento.
+
+        ### Dicionário de dados
+
+        <a href='dictionary/paymentsInitiationGetPixPayments_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
+      
+        ### Especificação em OAS 3.0
+
+        <a href="swagger/swagger_payments_initiation_apis.yaml">Download da Especificação (OAS 3.0)</a>
+
+      parameters:
+        - $ref: "#/components/parameters/paymentId"
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/xFapiAuthDate'
+        - $ref: '#/components/parameters/xFapiCustomerIpAddress'
+        - $ref: '#/components/parameters/xFapiInteractionId'
+        - $ref: '#/components/parameters/xCustomerUserAgent'
+        - $ref: '#/components/parameters/XJwsSignature'
+      responses:
+        '200':
+          $ref: "#/components/responses/200PaymentsInitiationPixPaymentIdRead"
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          description: Erro inesperado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+      security:
+        - OpenId:
+            - openId
+            - payments-initiation
+components:
+  schemas:
+    CreatePixPayment:
+      $ref: ./schemas/payments_initiation_apis/CreatePixPayment.yaml
+    ResponsePixPayment:
+      $ref: ./schemas/payments_initiation_apis/ResponsePixPayment.yaml
+    ResponseError:
+      $ref: ./schemas/ResponseError.yaml
+  parameters:
+    paymentId:
+      $ref: ./parameters/PaymentId.yaml
+    Authorization:
+      $ref: ./parameters/Authorization.yaml
+    xCustomerUserAgent:
+      $ref: ./parameters/XCustomerUserAgent.yaml
+    xFapiAuthDate:
+      $ref: ./parameters/XFapiAuthDate.yaml
+    xFapiCustomerIpAddress:
+      $ref: ./parameters/XFapiCustomerIpAddress.yaml
+    xFapiInteractionId:
+      $ref: ./parameters/XFapiInteractionId.yaml
+    XIdempotencyKey:
+      $ref: ./parameters/XIdempotencyKey.yaml
+    XJwsSignature:
+      $ref: ./parameters/XJwsSignature.yaml
+  responses:
+    BadRequest:
+      $ref: ./responses/BadRequest.yaml
+    Forbidden:
+      $ref: ./responses/Forbidden.yaml
+    InternalServerError:
+      $ref: ./responses/InternalServerError.yaml
+    MethodNotAllowed:
+      $ref: ./responses/MethodNotAllowed.yaml
+    NotAcceptable:
+      $ref: ./responses/NotAcceptable.yaml
+    NotFound:
+      $ref: ./responses/NotFound.yaml
+    TooManyRequests:
+      $ref: ./responses/TooManyRequests.yaml
+    UnprocessableEntity:
+      $ref: ./responses/UnprocessableEntity.yaml
+    Unauthorized:
+      $ref: ./responses/Unauthorized.yaml
+    UnsupportedMediaType:
+      $ref: ./responses/UnsupportedMediaType.yaml
+    201PaymentsInitiationPixPaymentCreated:
+      description: Iniciação de pagamento PIX criada com sucesso.
+      headers:
+        x-fapi-interaction-id:
+          schema:
+            $ref: ./headers/XFapiInteractionId.yaml           
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ResponsePixPayment'
+    200PaymentsInitiationPixPaymentIdRead:
+      description: Dados de iniciação de pagamento PIX obtidos com sucesso.
+      headers:
+        x-fapi-interaction-id:
+          schema:
+            $ref: ./headers/XFapiInteractionId.yaml
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ResponsePixPayment'
