@@ -58,8 +58,12 @@ def extract_fields(schema, path = '', fields = [], ignore = ['links', 'meta'])
 
     if schema['type'] == 'array' and !['array', 'object'].include? schema['items']['type']
       items = schema['items']
+      items['isRequired'] = schema['isRequired']
+      items['maxItems'] = schema['maxItems']
+      items['minItems'] = schema['minItems']
       items['description'] = schema['description']
       items['name'] = schema['name']
+      items['type'] = schema['type'] + "-" + items['type'];
 
       fields.concat extract_fields(items, path)
       return fields
@@ -127,6 +131,16 @@ oas['paths'].each_with_index do |(path, methods)|
       extract_fields(response['content']['application/json']['schema'], '', []).each do |field|
         min_items = field['minItems']
         max_items = field['maxItems']
+        data_type = field['type']
+
+        if ['date', 'date-time'].include? field['format']
+          data_type = field['format']
+        end
+
+        if field['type'].match(/array/)
+          data_type = 'array'
+          field['type'] = 'array'
+        end
 
         if field['minItems'] == nil
           min_items = field['isRequired'] ? 1 : 0
@@ -137,10 +151,6 @@ oas['paths'].each_with_index do |(path, methods)|
           max_items = 'N'
         end
 
-        data_type = field['type']
-        if ['date', 'date-time'].include? field['format']
-          data_type = field['format']
-        end
 
         row = {
           headers['COLUMN_1']   => field['path'],
