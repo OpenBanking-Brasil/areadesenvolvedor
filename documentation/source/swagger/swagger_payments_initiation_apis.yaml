@@ -200,10 +200,10 @@ components:
         - accountType
       properties:
         ispb:
-          type: number
+          type: string
           maxLength: 8
           pattern: '^[0-9]{1,8}$'
-          example: 12345678
+          example: '68900810'
           description: |
             Identificador do Sistema de Pagamentos Brasileiros.
             Código que define instituições participantes do Sistema de Transferência de Reservas (STR).
@@ -254,7 +254,7 @@ components:
         - updatedDateTime
         - status
         - payment
-        - debtor
+        - creditor
       properties:
         paymentId:
           type: string
@@ -309,47 +309,77 @@ components:
             [Restrição] Obrigatório para pagamentos via Chave
         status:
           type: string
-          maxLength: 38
+          maxLength: 45
           description: |
-            Estado atual da iniciação de pagamento criada.
+            Estado atual da iniciação de pagamento criada. 
+            Elemento que fornece informações sobre o status, caso o status não seja positivo.
+            ACCEPTED_SETTLEMENT_COMPLETED - Notificação do SPI da conclusão da transação ao participante do usuário recebedor.
+            ACCEPTED_SETTLEMENT_COMPLETED_DEBITOR_ACCOUNT - Notificação do SPI da conclusão da transação ao participante do usuário pagador. 
+            ACCEPTED_SETTLEMENT_IN_PROCESS - Prosseguimento de instrução de pagamento após as validação realizadas pelo participante do usuário recebedor.
+            REJECTED - Instrução de pagamento rejeitada pelo SPI / participante do usuário recebedor por erro de negócio.
           enum:
-            - PENDENTE
-            - AGUARDANDO_AUTORIZACAO_MULTIPLA_ALCADA
-            - REJEITADO
-            - ACEITA_EM_PROCESSAMENTO
-            - FINALIZADO
-          example: FINALIZADO
+            - ACCEPTED_SETTLEMENT_COMPLETED
+            - ACCEPTED_SETTLEMENT_COMPLETED_DEBITOR_ACCOUNT
+            - ACCEPTED_SETTLEMENT_IN_PROCESS
+            - REJECTED
+          example: ACCEPTED_SETTLEMENT_COMPLETED_DEBITOR_ACCOUNT
         rejectionReason:
           type: string
-          maxLength: 38
+          maxLength: 50
           description: |
-            Motivo da rejeição do pagamento.
+            Motivo da rejeição do pagamento. Informações complementares sobre o motivo do status.
             [Restrição] Deve ser enviado quando o status é "REJEITADO".
           enum:
-            - FUNDOS_INSUFICIENTES
-            - BENEFICARIO_DIFERENTE_DO_CONSENTIMENTO
-            - VALOR_DIFERENTE_DO_CONSENTIMENTO
-            - VALOR_ACIMA_DO_LIMITE
-            - VALOR_INVALIDO
-            - CONTA_INVALIDA
-            - CONSENTIMENTO_INVALIDO
-            - JANELA_DE_OPERACAO
-            - DESCONHECIDO
-          example: FUNDOS_INSUFICIENTES
+            - ABORTED_SETTLEMENT_TIMEOUT
+            - ERROR_CREDITOR_AGENT
+            - TIMEOUT_DEBTOR_AGENT
+            - INVALID_CREDITOR_ACCOUNT_NUMBER
+            - BLOCKED_ACCOUNT
+            - CLOSED_CREDITOR_ACCOUNT_NUMBER
+            - INVALID_CREDITOR_ACCOUNTTYPE
+            - TRANSACTION_NOT_SUPPORTED
+            - NOT_ALLOWED_BOOK_TRANSFER
+            - FORBIDDEN_RETURN_PAYMENT
+            - INCORRECT_AGENT
+            - ZERO_AMOUNT
+            - NOT_ALLOWED_AMOUNT
+            - INSUFFICIENT_FUNDS
+            - WRONG_AMOUNT
+            - INVALID_AMOUNT
+            - INVALID_NUMBER_OF_TRANSACTIONS
+            - INCONSISTENT_WITH_END_CUSTOMER
+            - INVALID_IDENTIFICATION_CODE
+            - INVALID_CREDITOR_IDENTIFICATION_CODE
+            - CREDITOR_IDENTIFIER_INCORRECT
+            - ELEMENT_CONTENT_FORMALLY_INCORRECT
+            - ORDER_REJECTED
+            - NOT_ALLOWED_PAYMENT
+            - NOT_ALLOWED_ACCOUNT
+            - USER_NOT_YET_ACTIVATED
+            - INVALID_CREATION_DATE
+            - INVALID_CUT_OFF_DATE
+            - SETTLEMENT_FAILED
+            - INVALID_PURPOSE
+            - INVALID_END_TO_END_ID
+            - INVALID_DEBTOR_CLEARING_SYSTEM_MEMBER_IDENTIFIER
+            - INVALID_CREDITOR_CLEARING_SYSTEM_MEMBER_IDENTIFIER
+            - REGULATORY_REASON
+            - SPECIFIC_SERVICE_OFFERED_BY_CREDITOR_AGENT
+          example: WRONG_AMOUNT
         payment:
           $ref: '#/components/schemas/Payment'
-        debtor:
+        creditor:
           $ref: '#/components/schemas/Account'
       additionalProperties: false
     CreatePixPaymentData:
       type: object
       required:
         - payment
-        - debtor
+        - creditor
       properties:
         payment:
           $ref: '#/components/schemas/Payment'
-        debtor:
+        creditor:
           $ref: '#/components/schemas/Account'
         additionalInfo:
           type: string
@@ -361,7 +391,7 @@ components:
             em formato livre, a ser enviada ao recebedor
         qrCode:
           type: string
-          maxLength: 500
+          maxLength: 512
           pattern: \w*\W*
           example: 00020104141234567890123426660014BR.GOV.BCB.PIX014466756C616E6F32303139406578616D706C652E636F6D27300012BR.COM.OUTRO011001234567895204000053039865406123.455802BR5915NOMEDORECEBEDOR6008BRASILIA61087007490062530515RP12345678-201950300017BR.GOV.BCB.BRCODE01051.0.080450014BR.GOV.BCB.PIX0123PADRAO.URL.PIX/0123ABCD81390012BR.COM.OUTRO01190123.ABCD.3456.WXYZ6304EB76
           description: |
@@ -394,7 +424,7 @@ components:
           maxLength: 19
           pattern: '^((\d{1,16}\.\d{2}))$'
           example: 100000.12
-          description: Valor da transação efetuada e convertida em moeda nacional com 4 casas decimais.
+          description: Valor da transação efetuada e convertida em moeda nacional com 2 casas decimais.
         currency:
           type: string
           maxLength: 3
