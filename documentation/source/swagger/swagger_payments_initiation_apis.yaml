@@ -24,18 +24,18 @@ info:
     email: gt-interfaces@openbankingbr.org
     url: 'https://openbanking-brasil.github.io/areadesenvolvedor/'
 servers:
-  - url: 'https://api.banco.com.br/open-banking/payments-initiation/v1'
+  - url: 'https://api.banco.com.br/open-banking/payments/v1'
     description: Servidor de Produção
-  - url: 'https://apih.banco.com.br/open-banking/payments-initiation/v1'
+  - url: 'https://apih.banco.com.br/open-banking/payments/v1'
     description: Servidor de Homologação
 tags:
-  - name: Payments Initiation
+  - name: Iniciação de Pagamentos
 paths:
   /pix/payments:
     post:
       tags:
-        - Payments Initiation
-      summary: Criar iniciação de pagamento.
+        - Iniciação de Pagamentos
+      summary: Criar iniciação de transação de pagamento.
       operationId: paymentsInitiationPostPixPayments
       description: Método para criar uma iniciação de pagamento.
       parameters:
@@ -89,7 +89,7 @@ paths:
   '/pix/payments/{paymentId}':
     get:
       tags:
-        - Payments Initiation
+        - Iniciação de Pagamentos
       summary: Consultar iniciação de pagamento.
       operationId: paymentsInitiationGetPixPayments
       description: Método para consultar uma iniciação de pagamento.
@@ -217,10 +217,10 @@ components:
         - accountType
       properties:
         ispb:
-          type: number
+          type: string
           maxLength: 8
           pattern: '^[0-9]{1,8}$'
-          example: 12345678
+          example: '68900810'
           description: |
             Identificador do Sistema de Pagamentos Brasileiros.
             Código que define instituições participantes do Sistema de Transferência de Reservas (STR).
@@ -247,19 +247,20 @@ components:
           description: Dígito da conta.
         accountType:
           type: string
-          maxLength: 24
+          maxLength: 19
           enum:
-            - CONTA_DEPOSITO_A_VISTA
-            - CONTA_POUPANCA
-            - CONTA_PAGAMENTO_PRE_PAGA
-            - CONTA_SALARIO
+            - CURRENT
+            - SALARY
+            - SAVINGS
+            - TRANSACTING_ACCOUNT
           description: |
-            Tipos de contas.Vide ENUM.
+            Tipos de contas usadas para pagamento via PIX. Modalidades tradicionais previstas pela Resolução 4.753, não contemplando contas vinculadas, conta de domiciliados no exterior, contas em moedas estrangeiras e conta correspondente moeda eletrônica.
+            Segue descrição de cada valor do ENUM para o escopo do Open Banking Brasil.
             CACC - Current (CONTA_DEPOSITO_A_VISTA)
             SLRY - Salary (CONTA_SALARIO)
             SVGS - Savings (CONTA_POUPANCA)
             TRAN - TransactingAccount (CONTA_PAGAMENTO_PRE_PAGA)
-          example: CONTA_DEPOSITO_A_VISTA
+          example: CURRENT
       additionalProperties: false
     ResponsePixPaymentData:
       type: object
@@ -270,28 +271,31 @@ components:
         - updatedDateTime
         - status
         - payment
-        - accountPayee
+        - creditor
       properties:
         paymentId:
           type: string
           maxLength: 36
           pattern: '^[{]?[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}[}]?$'
           example: 8f800dc8-bc8a-4c0e-b5e6-3c6801cfe135
-          description: Código ou identificador único informado pela instituição que mantém a conta para representar o pagamento individual.
+          description: |
+            Código ou identificador único informado pela instituição que mantém a conta para representar o pagamento individual.
         endToEndId:
           type: string
           maxLength: 36
           pattern: '^[{]?[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}[}]?$'
           example: a9ae654d-e531-4a8b-a926-952d664de203
           description: |
-            Id fim a fim da transação.O termo "E2E" que identifica a transação no arranjo.
-            [Restrição] É obrigatório o retorno após o status "ACEITA_EM_PROCESSAMENTO".
+            Id fim a fim da transação. O termo "E2E" que identifica a transação no arranjo.
+            Esse Id deve ser único, não podendo ser repetido em qualquer outra operação enviada ao SPI.
+            [Restrição] É obrigatório o retorno após o status "ACCEPTED_SETTLEMENT_IN_PROCESS".
         consentId:
           type: string
           maxLength: 36
           pattern: '^[{]?[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}[}]?$'
           example: 3a782761-9573-4e1f-b4d1-4c798955c0b8
-          description: Identificador único do consentimento.
+          description: |
+            Identificador único do consentimento.
         creationDateTime:
           type: string
           format: date-time
@@ -322,47 +326,77 @@ components:
             [Restrição] Obrigatório para pagamentos via Chave
         status:
           type: string
-          maxLength: 38
+          maxLength: 45
           description: |
-            Estado atual da iniciação de pagamento criada.
+            Estado atual da iniciação de pagamento criada. 
+            Elemento que fornece informações sobre o status, caso o status não seja positivo.
+            ACCEPTED_SETTLEMENT_COMPLETED - Notificação do SPI da conclusão da transação ao participante do usuário recebedor.
+            ACCEPTED_SETTLEMENT_COMPLETED_DEBITOR_ACCOUNT - Notificação do SPI da conclusão da transação ao participante do usuário pagador. 
+            ACCEPTED_SETTLEMENT_IN_PROCESS - Prosseguimento de instrução de pagamento após as validação realizadas pelo participante do usuário recebedor.
+            REJECTED - Instrução de pagamento rejeitada pelo SPI / participante do usuário recebedor por erro de negócio.
           enum:
-            - PENDENTE
-            - AGUARDANDO_AUTORIZACAO_MULTIPLA_ALCADA
-            - REJEITADO
-            - ACEITA_EM_PROCESSAMENTO
-            - FINALIZADO
-          example: FINALIZADO
+            - ACCEPTED_SETTLEMENT_COMPLETED
+            - ACCEPTED_SETTLEMENT_COMPLETED_DEBITOR_ACCOUNT
+            - ACCEPTED_SETTLEMENT_IN_PROCESS
+            - REJECTED
+          example: ACCEPTED_SETTLEMENT_COMPLETED_DEBITOR_ACCOUNT
         rejectionReason:
           type: string
-          maxLength: 38
+          maxLength: 50
           description: |
-            Motivo da rejeição do pagamento.
+            Motivo da rejeição do pagamento. Informações complementares sobre o motivo do status.
             [Restrição] Deve ser enviado quando o status é "REJEITADO".
           enum:
-            - FUNDOS_INSUFICIENTES
-            - BENEFICARIO_DIFERENTE_DO_CONSENTIMENTO
-            - VALOR_DIFERENTE_DO_CONSENTIMENTO
-            - VALOR_ACIMA_DO_LIMITE
-            - VALOR_INVALIDO
-            - CONTA_INVALIDA
-            - CONSENTIMENTO_INVALIDO
-            - JANELA_DE_OPERACAO
-            - DESCONHECIDO
-          example: FUNDOS_INSUFICIENTES
+            - ABORTED_SETTLEMENT_TIMEOUT
+            - ERROR_CREDITOR_AGENT
+            - TIMEOUT_DEBTOR_AGENT
+            - INVALID_CREDITOR_ACCOUNT_NUMBER
+            - BLOCKED_ACCOUNT
+            - CLOSED_CREDITOR_ACCOUNT_NUMBER
+            - INVALID_CREDITOR_ACCOUNTTYPE
+            - TRANSACTION_NOT_SUPPORTED
+            - NOT_ALLOWED_BOOK_TRANSFER
+            - FORBIDDEN_RETURN_PAYMENT
+            - INCORRECT_AGENT
+            - ZERO_AMOUNT
+            - NOT_ALLOWED_AMOUNT
+            - INSUFFICIENT_FUNDS
+            - WRONG_AMOUNT
+            - INVALID_AMOUNT
+            - INVALID_NUMBER_OF_TRANSACTIONS
+            - INCONSISTENT_WITH_END_CUSTOMER
+            - INVALID_IDENTIFICATION_CODE
+            - INVALID_CREDITOR_IDENTIFICATION_CODE
+            - CREDITOR_IDENTIFIER_INCORRECT
+            - ELEMENT_CONTENT_FORMALLY_INCORRECT
+            - ORDER_REJECTED
+            - NOT_ALLOWED_PAYMENT
+            - NOT_ALLOWED_ACCOUNT
+            - USER_NOT_YET_ACTIVATED
+            - INVALID_CREATION_DATE
+            - INVALID_CUT_OFF_DATE
+            - SETTLEMENT_FAILED
+            - INVALID_PURPOSE
+            - INVALID_END_TO_END_ID
+            - INVALID_DEBTOR_CLEARING_SYSTEM_MEMBER_IDENTIFIER
+            - INVALID_CREDITOR_CLEARING_SYSTEM_MEMBER_IDENTIFIER
+            - REGULATORY_REASON
+            - SPECIFIC_SERVICE_OFFERED_BY_CREDITOR_AGENT
+          example: WRONG_AMOUNT
         payment:
           $ref: '#/components/schemas/Payment'
-        accountPayee:
+        creditor:
           $ref: '#/components/schemas/Account'
       additionalProperties: false
     CreatePixPaymentData:
       type: object
       required:
         - payment
-        - accountPayee
+        - creditor
       properties:
         payment:
           $ref: '#/components/schemas/Payment'
-        accountPayee:
+        creditor:
           $ref: '#/components/schemas/Account'
         additionalInfo:
           type: string
@@ -374,13 +408,13 @@ components:
             em formato livre, a ser enviada ao recebedor
         qrCode:
           type: string
-          maxLength: 500
+          maxLength: 512
           pattern: \w*\W*
           example: 00020104141234567890123426660014BR.GOV.BCB.PIX014466756C616E6F32303139406578616D706C652E636F6D27300012BR.COM.OUTRO011001234567895204000053039865406123.455802BR5915NOMEDORECEBEDOR6008BRASILIA61087007490062530515RP12345678-201950300017BR.GOV.BCB.BRCODE01051.0.080450014BR.GOV.BCB.PIX0123PADRAO.URL.PIX/0123ABCD81390012BR.COM.OUTRO01190123.ABCD.3456.WXYZ6304EB76
           description: |
             QR Code contendo os dados de pagamento no momento da leitura. O usuário recebedor deve poder oferecer ao pagador
             uma maneira de copiar a sequência de caracteres que representa o BR Code. É a sequência de caracteres que seria 
-            lida pelo leitor de QR Code.
+            lida pelo leitor de QR Code. 
             Essa funcionalidade é possível tanto para o QR Code Estático quanto para o QR Code Dinâmico. 
         pixKey:
           type: string
@@ -407,7 +441,7 @@ components:
           maxLength: 19
           pattern: '^((\d{1,16}\.\d{2}))$'
           example: 100000.12
-          description: Valor da transação efetuada e convertida em moeda nacional com 4 casas decimais.
+          description: Valor da transação efetuada e convertida em moeda nacional com 2 casas decimais.
         currency:
           type: string
           maxLength: 3

@@ -2,9 +2,8 @@ openapi: 3.0.0
 info:
   title: Fase 3 - APIs do Open Banking Brasil
   description: |
-    Clientes poderão solicitar e realizar operações de pagamentos. 
-    
-    A operação de pagamento ocorre apenas se a pessoa autorizar através da API de Consentimento, sempre para finalidades determinadas e por um prazo específico. E será possível para o cliente cancelar essa autorização a qualquer momento em qualquer uma das instituições envolvidas no compartilhamento.
+    Clientes poderão solicitar e realizar operações de pagamento PIX em instituições participantes, ou contratantes, da Fase 3 do Open Banking Brasil. 
+    A operação de pagamento ocorre apenas se o cliente consentir través da API de Consentimento Fase 3 e na sequência autorizar o pagamento no ambiente do banco detentor da conta, por meio de autenticação com login e senha. Diferentemente da Fase 2, o consentimento é dado para cada transação e não perdura por um prazo, além de ser consumido no momento e sem a possibilidade de revogamento. Uma vez dada a autorização, esta não será possível de cancelamento pelo cliente. 
 
     ###Idempotência
     Segundo a W3C, "um método HTTP idempotente é um método HTTP que pode ser chamado muitas vezes sem resultados diferentes ou efeitos colaterais. Não importa se o método é chamado apenas uma vez ou dez vezes. O resultado deve ser o mesmo. Essencialmente, significa que o resultado de uma solicitação executada com sucesso é independente do número de vezes que ela é executada. Por exemplo, na aritmética, adicionar zero a um número é uma operação idempotente."
@@ -27,7 +26,7 @@ info:
     
   version: 1.0.0-rc1.0
 tags:
-  - name: API - Payments Consents
+  - name: API - Consentimento de Pagamentos
     description: |
       |Versão|
       |:-----|
@@ -42,7 +41,8 @@ tags:
       #### Especificação em OAS 3.0
 
       <a href="swagger/swagger_payments_consents_apis.yaml">Download da Especificação (OAS 3.0)</a>
-  - name: API - Payments Initiation
+  
+  - name: API - Iniciação de Pagamentos
     description: |
       |Versão|
       |:-----|
@@ -57,6 +57,7 @@ tags:
       #### Especificação em OAS 3.0
 
       <a href="swagger/swagger_payments_initiation_apis.yaml">Download da Especificação (OAS 3.0)</a>
+
 paths:
   /payments-consents/v1/consents:
     post:
@@ -184,8 +185,8 @@ paths:
   /payments-initiation/v1/pix/payments:
     post:
       tags:
-        - API - Payments Initiation
-      summary: "[Em Revisão] Criar iniciação de pagamento."
+        - API - Iniciação de Pagamentos
+      summary: "[Em Revisão] PIX - Criar iniciação de pagamento."
       operationId: paymentsInitiationPostPixPayments
       description: |
         Método para a criação de uma iniciação de pagamento.
@@ -246,11 +247,11 @@ paths:
         - OpenId:
             - openId
             - payments-initiation
-  /payments-initiation/v1/pix/payments/{paymentId}:
+  /payments/v1/pix/payments/{paymentId}:
     get:
       tags:
-        - API - Payments Initiation
-      summary: "[Em Revisão] Consultar iniciação de pagamento."
+        - API - Iniciação de Pagamentos
+      summary: "[Em Revisão] PIX - Consultar iniciação de pagamento."
       operationId: paymentsInitiationGetPixPayments
       description: |
         Método para consultar uma iniciação de pagamento.
@@ -314,6 +315,18 @@ components:
       $ref: ./schemas/payments_initiation_apis/CreatePixPayment.yaml
     ResponsePixPayment:
       $ref: ./schemas/payments_initiation_apis/ResponsePixPayment.yaml
+    Account:
+      $ref: ./schemas/payments_initiation_apis/Account.yaml
+    ResponsePixPaymentData:
+      $ref: ./schemas/payments_initiation_apis/ResponsePixPaymentData.yaml
+    CreatePixPaymentData:
+      $ref: ./schemas/payments_initiation_apis/CreatePixPaymentData.yaml
+    Payment:
+      $ref: ./schemas/payments_initiation_apis/Payment.yaml
+    Links:
+      $ref: ./schemas/Links.yaml
+    Meta:
+      $ref: ./schemas/Meta.yaml
     ResponseError:
       $ref: ./schemas/ResponseError.yaml
   parameters:
