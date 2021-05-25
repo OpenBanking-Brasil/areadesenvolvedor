@@ -1,0 +1,56 @@
+type: object
+description: 'Objeto que reúne as informações relativas ao relacionamento do cliente junto à Instituição. Considera-se relacionamento as informações que permitam conhecer desde quando a pessoa consultada é cliente da instituição, bem como um indicador dos produtos e serviços que ela consome atualmente e seus representantes'
+required:
+  - updateDateTime
+  - startDate
+  - procurators
+  - brandID
+  - brandName
+  - companiesCnpj
+properties:
+  updateDateTime:
+    description: 'Data e hora da atualização do bloco de Relacionamento, conforme especificação RFC-3339, formato UTC.'
+    type: "string"
+    maxLength: 20
+    format: "date-time"
+    pattern: ^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$
+    example: "2020-07-21T08:30:00Z"
+  startDate:
+    description: Data de início de relacionamento com a Instituição Financeira. Deve trazer o menor valor entre a informação reportada ao BACEN pelo DOC 3040 e CCS.
+    type: "string"
+    maxLength: 20
+    format: "date-time"
+    pattern: ^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$
+    example: "2020-07-21T08:30:00Z"
+  companiesCnpj:
+    type: array
+    pattern: '\d{14}|^NA$'
+    items:
+      type: string
+      example: "50685362006555"
+    description: |
+      Número completo do CNPJ da instituição responsável pelo Cadastro - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. 
+      Deve-se ter apenas os números do CNPJ, sem máscara
+    example: ["50685362000135", "50685362006555"]
+  brandID:
+    type: string
+    description: 'Identifica a Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes.'
+    maxLength: 100
+    pattern: \w*\W*
+    example: '29698749425984912674'
+  brandName:
+    type: string
+    pattern: \w*\W*
+    description: |
+      Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a 'marca' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes
+    maxLength: 80
+    example: 'Organização A'
+  productsServicesType:
+      $ref: ../enum/EnumProductServiceType.yaml
+  procurators:
+    type: array
+    items:
+      $ref: ./BusinessProcurator.yaml
+    minItems: 1
+    description: Lista dos representantes. De preenchimento obrigatório se houver representante.
+additionalProperties: false
