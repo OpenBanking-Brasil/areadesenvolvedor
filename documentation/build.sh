@@ -25,6 +25,8 @@ APIS=(
   "financings_apis"
   "unarranged_accounts_overdraft_apis"
   "invoice_financings_apis"
+  "resources_apis"
+  "consents_apis"
 )
 
 for API in "${APIS[@]}"
