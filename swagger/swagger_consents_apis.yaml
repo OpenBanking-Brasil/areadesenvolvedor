@@ -2,8 +2,18 @@
 info:
   title: API Consents - Open Banking Brasil
   description: |
-    API que trata da criação, consulta e revogação de consentimentos para o Open Banking Brasil.  
-    Não possui segregação entre pessoa natural e pessoa jurídica.     
+    API que trata da criação, consulta e revogação de consentimentos para o Open Banking Brasil Fase 2 - customer-data.  
+    Não possui segregação entre pessoa natural e pessoa jurídica.    
+
+    # Orientações importantes
+    A API Consents trata dos consentimentos exclusivamente para a fase 2 do Open Banking Brasil.
+    - As informações da instituição receptora não trafegam na API Consents – a autenticação da receptora se dá através do [DCR](https://openbanking-brasil.github.io/specs-seguranca/open-banking-brasil-dynamic-client-registration-1_ID1.html).
+    Na chamada para a criação do consentimento deve-se utilizar um token gerado via `client_credentials`.
+    - Após o `POST` de criação do consentimento, o `STATUS` devolvido na resposta deverá ser `AWAITING_AUTHORISATION`. 
+    O `STATUS` será alterado para `AUTHORISED` após autenticação e confirmação por parte do usuário na instituição transmissora dos dados.
+    - Todas as datas trafegadas nesta API seguem o padrão da [RFC3339](https://tools.ietf.org/html/rfc3339) e formato "zulu".
+    - A descrição do fluxo de Consentimento encontra-se disponível no [Portal do desenvolvedor](https://openbanking-brasil.github.io/areadesenvolvedor/#em-revisao-fluxo-de-consentimento). 
+    - O mapeamento completo entre `Roles`, `scopes` e `permissions` encontra-se disponível no [Portal do desenvolvedor](https://openbanking-brasil.github.io/areadesenvolvedor/#em-revisao-fluxo-de-consentimento).
   version: 1.0.0
   license:
     name: Apache 2.0
@@ -34,7 +44,6 @@ paths:
         - $ref: '#/components/parameters/xFapiCustomerIpAddress'
         - $ref: '#/components/parameters/xFapiInteractionId'
         - $ref: '#/components/parameters/xCustomerUserAgent'
-        - $ref: '#/components/parameters/xJwsSignature'
       requestBody:
         content:
           application/json:
@@ -86,7 +95,6 @@ paths:
         - $ref: '#/components/parameters/xFapiCustomerIpAddress'
         - $ref: '#/components/parameters/xFapiInteractionId'
         - $ref: '#/components/parameters/xCustomerUserAgent'
-        - $ref: '#/components/parameters/xJwsSignature'
       responses:
         '200':
           $ref: '#/components/responses/200ConsentsConsentIdRead'
@@ -128,7 +136,6 @@ paths:
         - $ref: '#/components/parameters/xFapiCustomerIpAddress'
         - $ref: '#/components/parameters/xFapiInteractionId'
         - $ref: '#/components/parameters/xCustomerUserAgent'
-        - $ref: '#/components/parameters/xJwsSignature'
       responses:
         '204':
           $ref: '#/components/responses/204ConsentsConsentIdDeleted'
