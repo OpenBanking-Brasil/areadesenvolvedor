@@ -50,11 +50,11 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/CreatePaymentConsent"
-        description: Payload para criação do consentimento de pagamento.
+        description: Payload para criação do consentimento para iniciação do pagamento.
         required: true
       responses:
         '201':
-          $ref: '#/components/responses/201PaymentsConsentsPaymentCreated'
+          $ref: '#/components/responses/201PaymentsConsentsConsentCreated'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -84,16 +84,16 @@ paths:
       security:
         - OpenId:
             - openId
-            - payments-initiation
-  /{consentId}:
+            - payments-consents
+  /consents/{consentId}:
     get:
       tags:
-        - Payments Initiation
-      summary: Consultar iniciação de pagamento.
-      operationId: paymentsInitiationGetPixPayments
-      description: Método para consultar uma iniciação de pagamento.
+        - Payments Consents
+      summary: Consultar consentimento de pagamento.
+      operationId: paymentsConsentsGetConsentsConsentId
+      description: Método para consultar um consentimento de pagamento.
       parameters:
-        - $ref: '#/components/parameters/paymentId'
+        - $ref: '#/components/parameters/consentId'
         - $ref: '#/components/parameters/Authorization'
         - $ref: '#/components/parameters/xFapiAuthDate'
         - $ref: '#/components/parameters/xFapiCustomerIpAddress'
@@ -102,7 +102,7 @@ paths:
         - $ref: '#/components/parameters/XJwsSignature'
       responses:
         '200':
-          $ref: '#/components/responses/200PaymentsInitiationPixPaymentIdRead'
+          $ref: '#/components/responses/200PaymentsConsentsConsentIdRead'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -130,30 +130,28 @@ paths:
       security:
         - OpenId:
             - openId
-            - payments-initiation
+            - payments-consents
 components:
   schemas:
     CreatePaymentConsent:
-      $ref: ./schemas/payments_initiation_apis/CreatePixPayment.yaml
-    ResponsePixPayment:
-      $ref: ./schemas/payments_initiation_apis/ResponsePixPayment.yaml
+      $ref: ./schemas/payments_consents_apis/CreatePaymentConsent.yaml
+    CreatePaymentConsentData:
+      $ref: ./schemas/payments_consents_apis/CreatePaymentConsentData.yaml
+    ResponsePaymentConsent:
+      $ref: ./schemas/payments_consents_apis/ResponsePaymentConsent.yaml
+    ResponsePaymentConsentData:
+      $ref: ./schemas/payments_consents_apis/ResponsePaymentConsentData.yaml
+    Payment:
+      $ref: ./schemas/payments_consents_apis/Payment.yaml
+    Creditor:
+      $ref: ./schemas/payments_consents_apis/Creditor.yaml
+    Debtor:
+      $ref: ./schemas/payments_consents_apis/Debtor.yaml
     ResponseError:
       $ref: ./schemas/ResponseError.yaml
-    Account:
-      $ref: ./schemas/payments_initiation_apis/Account.yaml
-    ResponsePixPaymentData:
-      $ref: ./schemas/payments_initiation_apis/ResponsePixPaymentData.yaml
-    CreatePixPaymentData:
-      $ref: ./schemas/payments_initiation_apis/CreatePixPaymentData.yaml
-    Payment:
-      $ref: ./schemas/payments_initiation_apis/Payment.yaml
-    Links:
-      $ref: ./schemas/Links.yaml
-    Meta:
-      $ref: ./schemas/Meta.yaml
   parameters:
-    paymentId:
-      $ref: ./parameters/PaymentId.yaml
+    consentId:
+      $ref: ./parameters/ConsentId.yaml
     Authorization:
       $ref: ./parameters/Authorization.yaml
     xCustomerUserAgent:
@@ -193,8 +191,8 @@ components:
       $ref: ./responses/Unauthorized.yaml
     UnsupportedMediaType:
       $ref: ./responses/UnsupportedMediaType.yaml
-    201PaymentsInitiationPixPaymentCreated:
-      description: Iniciação de pagamento PIX criada com sucesso.
+    201PaymentsConsentsConsentCreated:
+      description: Consentimento de pagamento criado com sucesso.
       headers:
         x-fapi-interaction-id:
           schema:
@@ -202,9 +200,9 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ResponsePixPayment'
-    200PaymentsInitiationPixPaymentIdRead:
-      description: Dados de iniciação de pagamento PIX obtidos com sucesso.
+            $ref: '#/components/schemas/ResponsePaymentConsent'
+    200PaymentsConsentsConsentIdRead:
+      description: Dados do consentimento de pagamento obtidos com sucesso.
       headers:
         x-fapi-interaction-id:
           schema:
@@ -212,4 +210,4 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ResponsePixPayment'
+            $ref: '#/components/schemas/ResponsePaymentConsent'
