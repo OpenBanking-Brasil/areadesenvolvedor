@@ -26,6 +26,22 @@ info:
     
   version: 1.0.0-rc1.0
 tags:
+  - name: API - Consentimento de Pagamentos
+    description: |
+      |Versão|
+      |:-----|
+      |1     |
+
+      #### Visão Geral
+      
+      A API tem como objetivo coletar o consentimento para iniciação de pagamento entre bancos e instituições financeiras e acessível também à estabelecimentos comerciais participantes do Open Banking Brasil.
+      
+      É possível realizar a coleta do consentimento para iniciação de pagamento (não possuindo restrição de uso entre pessoa física e pessoa jurídica) mediante a integração entre as instituições autorizadas.
+      
+      #### Especificação em OAS 3.0
+
+      <a href="swagger/swagger_payments_consents_apis.yaml">Download da Especificação (OAS 3.0)</a>
+  
   - name: API - Iniciação de Pagamentos
     description: |
       |Versão|
@@ -41,9 +57,132 @@ tags:
       #### Especificação em OAS 3.0
 
       <a href="swagger/swagger_payments_initiation_apis.yaml">Download da Especificação (OAS 3.0)</a>
-      
+
 paths:
-  /payments/v1/pix/payments:
+  /payments-consents/v1/consents:
+    post:
+      tags:
+        - API - Payments Consents
+      summary: "[Em Revisão] Criar consentimento para iniciação de pagamento."
+      operationId: paymentsConsentsPostConsents
+      description: |
+        Método para a criação do consentimento para iniciação de pagamento.
+
+        ### Dicionário de dados
+
+        <a href='dictionary/paymentsConsentsPostConsents_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
+      
+        ### Especificação em OAS 3.0
+
+        <a href="swagger/swagger_payments_consents_apis.yaml">Download da Especificação (OAS 3.0)</a>
+
+      parameters:
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/xFapiAuthDate'
+        - $ref: '#/components/parameters/xFapiCustomerIpAddress'
+        - $ref: '#/components/parameters/xFapiInteractionId'
+        - $ref: '#/components/parameters/xCustomerUserAgent'
+        - $ref: '#/components/parameters/XIdempotencyKey'
+        - $ref: '#/components/parameters/XJwsSignature'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePaymentConsent"
+        description: Payload para criação do consentimento para iniciação do pagamento PIX.
+        required: true
+      responses:
+        '201':
+          $ref: '#/components/responses/201PaymentsConsentsConsentCreated'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          description: Erro inesperado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+      security:
+        - OpenId:
+            - openId
+            - payments-consents
+  /payments-consents/v1/consents/{consentId}:
+    get:
+      tags:
+        - API - Payments Consents
+      summary: "[Em Revisão] Consultar consentimento para iniciação de pagamento."
+      operationId: paymentsConsentsGetConsentsConsentId
+      description: |
+        Método para consultar o consentimento para iniciação de pagamento.
+
+        ### Dicionário de dados
+
+        <a href='dictionary/paymentsConsentsGetConsentsConsentId_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
+      
+        ### Especificação em OAS 3.0
+
+        <a href="swagger/swagger_payments_consents_apis.yaml">Download da Especificação (OAS 3.0)</a>
+
+      parameters:
+        - $ref: "#/components/parameters/consentId"
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/xFapiAuthDate'
+        - $ref: '#/components/parameters/xFapiCustomerIpAddress'
+        - $ref: '#/components/parameters/xFapiInteractionId'
+        - $ref: '#/components/parameters/xCustomerUserAgent'
+        - $ref: '#/components/parameters/XJwsSignature'
+      responses:
+        '200':
+          $ref: '#/components/responses/200PaymentsConsentsConsentIdRead'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          description: Erro inesperado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+      security:
+        - OpenId:
+            - openId
+            - payments-consents
+  /payments-initiation/v1/pix/payments:
     post:
       tags:
         - API - Iniciação de Pagamentos
@@ -168,6 +307,10 @@ paths:
             - payments-initiation
 components:
   schemas:
+    CreatePaymentConsent:
+      $ref: ./schemas/payments_consents_apis/CreatePaymentConsent.yaml
+    ResponsePaymentConsent:
+      $ref: ./schemas/payments_consents_apis/ResponsePaymentConsent.yaml
     CreatePixPayment:
       $ref: ./schemas/payments_initiation_apis/CreatePixPayment.yaml
     ResponsePixPayment:
@@ -187,6 +330,8 @@ components:
     ResponseError:
       $ref: ./schemas/ResponseError.yaml
   parameters:
+    consentId:
+      $ref: ./parameters/ConsentId.yaml
     paymentId:
       $ref: ./parameters/PaymentId.yaml
     Authorization:
@@ -224,6 +369,26 @@ components:
       $ref: ./responses/Unauthorized.yaml
     UnsupportedMediaType:
       $ref: ./responses/UnsupportedMediaType.yaml
+    201PaymentsConsentsConsentCreated:
+      description: Consentimento de pagamento criado com sucesso.
+      headers:
+        x-fapi-interaction-id:
+          schema:
+            $ref: ./headers/XFapiInteractionId.yaml           
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ResponsePaymentConsent'
+    200PaymentsConsentsConsentIdRead:
+      description: Dados do consentimento de pagamento obtidos com sucesso.
+      headers:
+        x-fapi-interaction-id:
+          schema:
+            $ref: ./headers/XFapiInteractionId.yaml
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ResponsePaymentConsent'
     201PaymentsInitiationPixPaymentCreated:
       description: Iniciação de pagamento PIX criada com sucesso.
       headers:
