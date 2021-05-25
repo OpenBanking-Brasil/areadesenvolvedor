@@ -2,9 +2,8 @@ openapi: 3.0.0
 info:
   title: Fase 3 - APIs do Open Banking Brasil
   description: |
-    Clientes poderão solicitar e realizar operações de pagamentos. 
-    
-    A operação de pagamento ocorre apenas se a pessoa autorizar através da API de Consentimento, sempre para finalidades determinadas e por um prazo específico. E será possível para o cliente cancelar essa autorização a qualquer momento em qualquer uma das instituições envolvidas no compartilhamento.
+    Clientes poderão solicitar e realizar operações de pagamento PIX em instituições participantes, ou contratantes, da Fase 3 do Open Banking Brasil. 
+    A operação de pagamento ocorre apenas se o cliente consentir través da API de Consentimento Fase 3 e na sequência autorizar o pagamento no ambiente do banco detentor da conta, por meio de autenticação com login e senha. Diferentemente da Fase 2, o consentimento é dado para cada transação e não perdura por um prazo, além de ser consumido no momento e sem a possibilidade de revogamento. Uma vez dada a autorização, esta não será possível de cancelamento pelo cliente. 
 
     ###Idempotência
     Segundo a W3C, "um método HTTP idempotente é um método HTTP que pode ser chamado muitas vezes sem resultados diferentes ou efeitos colaterais. Não importa se o método é chamado apenas uma vez ou dez vezes. O resultado deve ser o mesmo. Essencialmente, significa que o resultado de uma solicitação executada com sucesso é independente do número de vezes que ela é executada. Por exemplo, na aritmética, adicionar zero a um número é uma operação idempotente."
@@ -27,7 +26,23 @@ info:
     
   version: 1.0.0-rc1.0
 tags:
-  - name: API - Payments Initiation
+  - name: API - Consentimento de Pagamentos
+    description: |
+      |Versão|
+      |:-----|
+      |1     |
+
+      #### Visão Geral
+      
+      A API tem como objetivo coletar o consentimento para iniciação de pagamento entre bancos e instituições financeiras e acessível também à estabelecimentos comerciais participantes do Open Banking Brasil.
+      
+      É possível realizar a coleta do consentimento para iniciação de pagamento (não possuindo restrição de uso entre pessoa física e pessoa jurídica) mediante a integração entre as instituições autorizadas.
+      
+      #### Especificação em OAS 3.0
+
+      <a href="swagger/swagger_payments_consents_apis.yaml">Download da Especificação (OAS 3.0)</a>
+  
+  - name: API - Iniciação de Pagamentos
     description: |
       |Versão|
       |:-----|
@@ -42,13 +57,136 @@ tags:
       #### Especificação em OAS 3.0
 
       <a href="swagger/swagger_payments_initiation_apis.yaml">Download da Especificação (OAS 3.0)</a>
-      
+
 paths:
+  /payments-consents/v1/consents:
+    post:
+      tags:
+        - API - Payments Consents
+      summary: "[Em Revisão] Criar consentimento para iniciação de pagamento."
+      operationId: paymentsConsentsPostConsents
+      description: |
+        Método para a criação do consentimento para iniciação de pagamento.
+
+        ### Dicionário de dados
+
+        <a href='dictionary/paymentsConsentsPostConsents_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
+      
+        ### Especificação em OAS 3.0
+
+        <a href="swagger/swagger_payments_consents_apis.yaml">Download da Especificação (OAS 3.0)</a>
+
+      parameters:
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/xFapiAuthDate'
+        - $ref: '#/components/parameters/xFapiCustomerIpAddress'
+        - $ref: '#/components/parameters/xFapiInteractionId'
+        - $ref: '#/components/parameters/xCustomerUserAgent'
+        - $ref: '#/components/parameters/XIdempotencyKey'
+        - $ref: '#/components/parameters/XJwsSignature'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePaymentConsent"
+        description: Payload para criação do consentimento para iniciação do pagamento PIX.
+        required: true
+      responses:
+        '201':
+          $ref: '#/components/responses/201PaymentsConsentsConsentCreated'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          description: Erro inesperado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+      security:
+        - OpenId:
+            - openId
+            - payments-consents
+  /payments-consents/v1/consents/{consentId}:
+    get:
+      tags:
+        - API - Payments Consents
+      summary: "[Em Revisão] Consultar consentimento para iniciação de pagamento."
+      operationId: paymentsConsentsGetConsentsConsentId
+      description: |
+        Método para consultar o consentimento para iniciação de pagamento.
+
+        ### Dicionário de dados
+
+        <a href='dictionary/paymentsConsentsGetConsentsConsentId_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
+      
+        ### Especificação em OAS 3.0
+
+        <a href="swagger/swagger_payments_consents_apis.yaml">Download da Especificação (OAS 3.0)</a>
+
+      parameters:
+        - $ref: "#/components/parameters/consentId"
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/xFapiAuthDate'
+        - $ref: '#/components/parameters/xFapiCustomerIpAddress'
+        - $ref: '#/components/parameters/xFapiInteractionId'
+        - $ref: '#/components/parameters/xCustomerUserAgent'
+        - $ref: '#/components/parameters/XJwsSignature'
+      responses:
+        '200':
+          $ref: '#/components/responses/200PaymentsConsentsConsentIdRead'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          description: Erro inesperado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+      security:
+        - OpenId:
+            - openId
+            - payments-consents
   /payments-initiation/v1/pix/payments:
     post:
       tags:
-        - API - Payments Initiation
-      summary: "[Em Revisão] Criar iniciação de pagamento."
+        - API - Iniciação de Pagamentos
+      summary: "[Em Revisão] PIX - Criar iniciação de pagamento."
       operationId: paymentsInitiationPostPixPayments
       description: |
         Método para a criação de uma iniciação de pagamento.
@@ -109,11 +247,11 @@ paths:
         - OpenId:
             - openId
             - payments-initiation
-  /payments-initiation/v1/pix/payments/{paymentId}:
+  /payments/v1/pix/payments/{paymentId}:
     get:
       tags:
-        - API - Payments Initiation
-      summary: "[Em Revisão] Consultar iniciação de pagamento."
+        - API - Iniciação de Pagamentos
+      summary: "[Em Revisão] PIX - Consultar iniciação de pagamento."
       operationId: paymentsInitiationGetPixPayments
       description: |
         Método para consultar uma iniciação de pagamento.
@@ -169,13 +307,31 @@ paths:
             - payments-initiation
 components:
   schemas:
+    CreatePaymentConsent:
+      $ref: ./schemas/payments_consents_apis/CreatePaymentConsent.yaml
+    ResponsePaymentConsent:
+      $ref: ./schemas/payments_consents_apis/ResponsePaymentConsent.yaml
     CreatePixPayment:
       $ref: ./schemas/payments_initiation_apis/CreatePixPayment.yaml
     ResponsePixPayment:
       $ref: ./schemas/payments_initiation_apis/ResponsePixPayment.yaml
+    Account:
+      $ref: ./schemas/payments_initiation_apis/Account.yaml
+    ResponsePixPaymentData:
+      $ref: ./schemas/payments_initiation_apis/ResponsePixPaymentData.yaml
+    CreatePixPaymentData:
+      $ref: ./schemas/payments_initiation_apis/CreatePixPaymentData.yaml
+    Payment:
+      $ref: ./schemas/payments_initiation_apis/Payment.yaml
+    Links:
+      $ref: ./schemas/Links.yaml
+    Meta:
+      $ref: ./schemas/Meta.yaml
     ResponseError:
       $ref: ./schemas/ResponseError.yaml
   parameters:
+    consentId:
+      $ref: ./parameters/ConsentId.yaml
     paymentId:
       $ref: ./parameters/PaymentId.yaml
     Authorization:
@@ -213,6 +369,26 @@ components:
       $ref: ./responses/Unauthorized.yaml
     UnsupportedMediaType:
       $ref: ./responses/UnsupportedMediaType.yaml
+    201PaymentsConsentsConsentCreated:
+      description: Consentimento de pagamento criado com sucesso.
+      headers:
+        x-fapi-interaction-id:
+          schema:
+            $ref: ./headers/XFapiInteractionId.yaml           
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ResponsePaymentConsent'
+    200PaymentsConsentsConsentIdRead:
+      description: Dados do consentimento de pagamento obtidos com sucesso.
+      headers:
+        x-fapi-interaction-id:
+          schema:
+            $ref: ./headers/XFapiInteractionId.yaml
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ResponsePaymentConsent'
     201PaymentsInitiationPixPaymentCreated:
       description: Iniciação de pagamento PIX criada com sucesso.
       headers:

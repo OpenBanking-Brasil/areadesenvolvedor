@@ -19,6 +19,7 @@ swagger-cli bundle source/swagger/parts/_unarranged_accounts_overdraft_apis_part
 swagger-cli bundle source/swagger/parts/_open_banking_fase2_apis_part.yml --outfile source/swagger/swagger_open_banking_fase2_apis.yml --type=yaml
 
 # Open Banking Fase 3
+swagger-cli bundle source/swagger/parts/_payments_consents_apis_part.yml --outfile source/swagger/swagger_payments_consents_apis.yaml --type=yaml
 swagger-cli bundle source/swagger/parts/_payments_initiation_apis_part.yml --outfile source/swagger/swagger_payments_initiation_apis.yaml --type=yaml
 swagger-cli bundle source/swagger/parts/_open_banking_fase3_apis_part.yml --outfile source/swagger/swagger_open_banking_fase3_apis.yml --type=yaml
 
@@ -35,6 +36,7 @@ APIS=(
   "invoice_financings_apis"
   "payments_initiation_apis"
   "resources_apis"
+  "payments_consents_apis"
 )
 
 for API in "${APIS[@]}"
@@ -69,6 +71,7 @@ swagger-cli validate source/swagger/swagger_unarranged_accounts_overdraft_apis.y
 swagger-cli validate source/swagger/swagger_open_banking_fase2_apis.yml
 
 # Open Banking Fase 3
+swagger-cli validate source/swagger/swagger_payments_consents_apis.yaml
 swagger-cli validate source/swagger/swagger_payments_initiation_apis.yaml
 swagger-cli validate source/swagger/swagger_open_banking_fase3_apis.yml
 

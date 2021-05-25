@@ -1,20 +1,19 @@
 ﻿openapi: "3.0.0"
 info:
-  title: API Payments Initiation - Open Banking Brasil
+  title: API Payments Consents - Open Banking Brasil
   description: |
-    API que trata da iniciação das operações de pagamentos para o Open Banking Brasil.
-    Requer consentimento do cliente para todos os `endpoints`.
+    API que trata do consentimento das operações de pagamentos para o Open Banking Brasil.
 
-    # Permissions necessárias para a API Payments Initiation
+    # Permissions necessárias para a API Payments Consents
 
     Para cada um dos paths desta API, além dos escopos (`scopes`) indicados existem `permissions` que deverão ser observadas:
 
-    ### /pix/payments
+    ### /payments/consents
       - permissions:
-        - POST: **PAYMENTS_INITIATION_PIX_CREATE**
-    ### /pix/payments/{paymentId}
+        - POST: **PAYMENTS_CONSENTS_CREATE**
+    ### /payments/consents/{consentId}
       - permissions:
-        - GET: **PAYMENTS_INITIATION_PIX_READ**
+        - GET: **PAYMENTS_CONSENTS_READ**
   version: 1.0.0
   license:
     name: Apache 2.0
@@ -24,20 +23,20 @@ info:
     email: gt-interfaces@openbankingbr.org
     url: 'https://openbanking-brasil.github.io/areadesenvolvedor/'
 servers:
-  - url: 'https://api.banco.com.br/open-banking/payments/v1'
+  - url: 'https://api.banco.com.br/open-banking/payments-consents/v1'
     description: Servidor de Produção
-  - url: 'https://apih.banco.com.br/open-banking/payments/v1'
+  - url: 'https://apih.banco.com.br/open-banking/payments-consents/v1'
     description: Servidor de Homologação
 tags:
-  - name: Iniciação de Pagamentos
+  - name: Payments Consents
 paths:
-  /pix/payments:
+  /consents:
     post:
       tags:
-        - Iniciação de Pagamentos
-      summary: Criar iniciação de transação de pagamento.
-      operationId: paymentsInitiationPostPixPayments
-      description: Método para criar uma iniciação de pagamento.
+        - Payments Consents
+      summary: Criar consentimento de pagamento.
+      operationId: paymentsConsentsPostConsents
+      description: Método para criar um consentimento de pagamento.
       parameters:
         - $ref: '#/components/parameters/Authorization'
         - $ref: '#/components/parameters/xFapiAuthDate'
@@ -50,12 +49,12 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreatePixPayment"
-        description: Payload para criação da iniciação do pagamento PIX.
+              $ref: "#/components/schemas/CreatePaymentConsent"
+        description: Payload para criação do consentimento para iniciação do pagamento.
         required: true
       responses:
         '201':
-          $ref: '#/components/responses/201PaymentsInitiationPixPaymentCreated'
+          $ref: '#/components/responses/201PaymentsConsentsConsentCreated'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -85,16 +84,16 @@ paths:
       security:
         - OpenId:
             - openId
-            - payments-initiation
-  /pix/payments/{paymentId}:
+            - payments-consents
+  /consents/{consentId}:
     get:
       tags:
-        - Iniciação de Pagamentos
-      summary: Consultar iniciação de pagamento.
-      operationId: paymentsInitiationGetPixPayments
-      description: Método para consultar uma iniciação de pagamento.
+        - Payments Consents
+      summary: Consultar consentimento de pagamento.
+      operationId: paymentsConsentsGetConsentsConsentId
+      description: Método para consultar um consentimento de pagamento.
       parameters:
-        - $ref: '#/components/parameters/paymentId'
+        - $ref: '#/components/parameters/consentId'
         - $ref: '#/components/parameters/Authorization'
         - $ref: '#/components/parameters/xFapiAuthDate'
         - $ref: '#/components/parameters/xFapiCustomerIpAddress'
@@ -103,7 +102,7 @@ paths:
         - $ref: '#/components/parameters/XJwsSignature'
       responses:
         '200':
-          $ref: '#/components/responses/200PaymentsInitiationPixPaymentIdRead'
+          $ref: '#/components/responses/200PaymentsConsentsConsentIdRead'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -131,26 +130,28 @@ paths:
       security:
         - OpenId:
             - openId
-            - payments-initiation
+            - payments-consents
 components:
   schemas:
-    CreatePixPayment:
-      $ref: ./schemas/payments_initiation_apis/CreatePixPayment.yaml
-    ResponsePixPayment:
-      $ref: ./schemas/payments_initiation_apis/ResponsePixPayment.yaml
+    CreatePaymentConsent:
+      $ref: ./schemas/payments_consents_apis/CreatePaymentConsent.yaml
+    CreatePaymentConsentData:
+      $ref: ./schemas/payments_consents_apis/CreatePaymentConsentData.yaml
+    ResponsePaymentConsent:
+      $ref: ./schemas/payments_consents_apis/ResponsePaymentConsent.yaml
+    ResponsePaymentConsentData:
+      $ref: ./schemas/payments_consents_apis/ResponsePaymentConsentData.yaml
+    Payment:
+      $ref: ./schemas/payments_consents_apis/Payment.yaml
+    Creditor:
+      $ref: ./schemas/payments_consents_apis/Creditor.yaml
+    Debtor:
+      $ref: ./schemas/payments_consents_apis/Debtor.yaml
     ResponseError:
       $ref: ./schemas/ResponseError.yaml
-    Account:
-      $ref: ./schemas/payments_initiation_apis/Account.yaml
-    ResponsePixPaymentData:
-      $ref: ./schemas/payments_initiation_apis/ResponsePixPaymentData.yaml
-    CreatePixPaymentData:
-      $ref: ./schemas/payments_initiation_apis/CreatePixPaymentData.yaml
-    Payment:
-      $ref: ./schemas/payments_initiation_apis/Payment.yaml
   parameters:
-    paymentId:
-      $ref: ./parameters/PaymentId.yaml
+    consentId:
+      $ref: ./parameters/ConsentId.yaml
     Authorization:
       $ref: ./parameters/Authorization.yaml
     xCustomerUserAgent:
@@ -190,8 +191,8 @@ components:
       $ref: ./responses/Unauthorized.yaml
     UnsupportedMediaType:
       $ref: ./responses/UnsupportedMediaType.yaml
-    201PaymentsInitiationPixPaymentCreated:
-      description: Iniciação de pagamento PIX criada com sucesso.
+    201PaymentsConsentsConsentCreated:
+      description: Consentimento de pagamento criado com sucesso.
       headers:
         x-fapi-interaction-id:
           schema:
@@ -199,9 +200,9 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ResponsePixPayment'
-    200PaymentsInitiationPixPaymentIdRead:
-      description: Dados de iniciação de pagamento PIX obtidos com sucesso.
+            $ref: '#/components/schemas/ResponsePaymentConsent'
+    200PaymentsConsentsConsentIdRead:
+      description: Dados do consentimento de pagamento obtidos com sucesso.
       headers:
         x-fapi-interaction-id:
           schema:
@@ -209,4 +210,4 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ResponsePixPayment'
+            $ref: '#/components/schemas/ResponsePaymentConsent'
