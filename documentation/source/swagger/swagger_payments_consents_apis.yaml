@@ -14,7 +14,7 @@ info:
     ### /payments/consents/{consentId}
       - permissions:
         - GET: **PAYMENTS_CONSENTS_READ**
-  version: 1.0.0
+  version: 1.0.0-rc1.0
   license:
     name: Apache 2.0
     url: 'https://www.apache.org/licenses/LICENSE-2.0'
@@ -143,6 +143,7 @@ components:
       additionalProperties: false
     CreatePaymentConsentData:
       type: object
+      description: Objeto contendo as informações de consentimento para a iniciação de pagamento individual.
       required:
         - creditor
         - payment
@@ -151,9 +152,9 @@ components:
         creditor:
           $ref: '#/components/schemas/Creditor'
         payment:
-          $ref: '#/components/schemas/Payment'
+          $ref: '#/components/schemas/PaymentConsent'
         debtor:
-          $ref: '#/components/schemas/Debtor'
+          $ref: '#/components/schemas/Account'
       additionalProperties: false
     ResponsePaymentConsent:
       type: object
@@ -165,33 +166,41 @@ components:
       additionalProperties: false
     ResponsePaymentConsentData:
       type: object
+      description: Objeto contendo as informações de resposta do consentimento para a iniciação de pagamento individual.
       required:
+        - consentId
+        - status
         - creditor
         - payment
         - debtor
       properties:
         consentId:
           type: string
-          maxLength: 100
+          maxLength: 36
           pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
           example: 8d886d81-3a1f-48d2-bc15-a19f1f777867
-          description: Identificador do consentimento.
+          description: |
+            Identificador único do consentimento.
         status:
           type: string
+          maxLength: 22
           enum:
-            - APROVADO
-            - PENDENTE_APROVACAO
-          example: APROVADO
-          description: Status do Consentimento de Pagamento
+            - AUTHORISED
+            - AWAITING_AUTHORISATION
+            - REJECTED
+            - REVOKED
+          example: AUTHORISED
+          description: Status do Consentimento para iniciação de pagamento.
         creditor:
           $ref: '#/components/schemas/Creditor'
         payment:
-          $ref: '#/components/schemas/Payment'
+          $ref: '#/components/schemas/PaymentConsent'
         debtor:
-          $ref: '#/components/schemas/Debtor'
+          $ref: '#/components/schemas/Account'
       additionalProperties: false
-    Payment:
+    PaymentConsent:
       type: object
+      description: Objeto contendo os dados de pagamento para consentimento.
       required:
         - type
         - dateTime
@@ -200,12 +209,11 @@ components:
       properties:
         type:
           type: string
+          maxLength: 3
           description: |
-            Conjunto de tipos de pagamentos.
+            Tipos de pagamentos permitidos pelo Open Banking Brasil.
           enum:
             - PIX
-            - TED
-            - BOLETO
           example: PIX
         dateTime:
           type: string
@@ -223,100 +231,88 @@ components:
           example: BRL
           description: |
             Moeda referente ao valor monetário informado, segundo modelo ISO-4217. p.ex. 'BRL' 
-            Todos os valores monetários informados estão representados com a moeda vigente do Brasil
+            Todos os valores monetários informados estão representados com a moeda vigente do Brasil.
         amount:
           type: number
           format: double
           maxLength: 19
           pattern: '^((\d{1,16}\.\d{2}))$'
           example: 100000.12
-          description: Valor da transação efetuada e convertida em moeda nacional com 4 casas decimais.
+          description: |
+            Valor da transação efetuada e convertida em moeda nacional com 2 casas decimais.
+      additionalProperties: false
+    Account:
+      type: object
+      required:
+        - ispb
+        - number
+        - checkDigit
+        - accountType
+      properties:
+        ispb:
+          type: number
+          maxLength: 8
+          pattern: '^[0-9]{1,8}$'
+          example: 12345678
+          description: |
+            Identificador do Sistema de Pagamentos Brasileiros.
+            Código que define instituições participantes do Sistema de Transferência de Reservas (STR).
+        branchCode:
+          type: string
+          maxLength: 4
+          pattern: '^(\w{4}){1}$'
+          example: '1774'
+          description: |
+            Código da Agência detentora da conta.
+            Agência é a dependência destinada ao atendimento aos clientes, ao público em geral e aos associados de cooperativas de crédito, 
+            no exercício de atividades da instituição, não podendo ser móvel ou transitória.
+            [Restrição] Obrigatório quando tipo de conta for CACC (CONTA_DEPOSITO_A_VISTA) ou SVGS (CONTA_POUPANCA).
+        number:
+          type: string
+          maxLength: 20
+          pattern: '^\d{8,20}$'
+          example: '1234567890'
+          description: Número da conta.
+        checkDigit:
+          type: string
+          maxLength: 4
+          pattern: '^(\w{4}){1}$'
+          example: '1234'
+          description: Dígito da conta.
+        accountType:
+          $ref: '#/components/schemas/EnumAccountPaymentsType'
       additionalProperties: false
     Creditor:
       type: object
+      description: Objeto contendo os dados do recebedor (creditor).
       required:
-        - type
+        - personType
         - cpfCnpj
         - name
       properties:
-        type:
+        personType:
           type: string
-          description: Indica se a pessoa da parte envolvida é uma pessoa natural ou juridica
+          description: |
+            Titular, pessoa natural ou juridica a quem se referem os dados de recebedor (creditor).
           enum:
             - PESSOA_NATURAL
             - PESSOA_JURIDICA
         cpfCnpj:
           type: string
           maxLength: 14
-          pattern: '^\d{14}$'
-          example: '12345678901234'
-          description: 'Identificação da pessoa envolvida na transação recebedor (Preencher com o CPF ou CNPJ, sem formatação)'
+          pattern: '^\d{11,14}$'
+          example: '58764789000137'
+          description: |
+            Identificação da pessoa envolvida na transação. 
+            Preencher com o CPF ou CNPJ, de acordo com o valor escolhido no campo type.
+            O CPF será utilizado com 11 números e deverá ser informado sem pontos ou traços. 
+            O CNPJ será utilizado com 14 números e deverá ser informado sem pontos ou traços.
         name:
           type: string
           maxLength: 80
           pattern: \w*\W*
           example: Marco Antonio de Brito
-          description: 'Nome relacionado à identificação, pode ser Pessoa Natural ou Pessoa jurídica.'
-      additionalProperties: false
-    Debtor:
-      type: object
-      required:
-        - account
-      properties:
-        account:
-          type: object
-          required:
-            - ispb
-            - number
-            - checkDigit
-            - accountType
-          properties:
-            ispb:
-              type: number
-              maxLength: 8
-              pattern: '^[0-9]{1,8}$'
-              example: 12345678
-              description: |
-                Identificador do Sistema de Pagamentos Brasileiros.
-                Código que define instituições participantes do Sistema de Transferência de Reservas (STR).
-            branchCode:
-              type: string
-              maxLength: 4
-              pattern: '^(\w{4}){1}$'
-              example: '1234'
-              description: |
-                Código da Agência detentora da conta.
-                Agência é a dependência destinada ao atendimento aos clientes, ao público em geral e aos associados de cooperativas de crédito, 
-                no exercício de atividades da instituição, não podendo ser móvel ou transitória.
-            number:
-              type: string
-              maxLength: 20
-              pattern: '^\d{8,20}$'
-              example: '1234567890'
-              description: Número da conta.
-            checkDigit:
-              type: string
-              maxLength: 4
-              pattern: '^(\w{4}){1}$'
-              example: '1234'
-              description: Dígito da conta.
-            accountType:
-              type: string
-              maxLength: 19
-              enum:
-                - CURRENT
-                - SALARY
-                - SAVINGS
-                - TRANSACTING_ACCOUNT
-              description: |
-                Tipos de contas usadas para pagamento via PIX. Modalidades tradicionais previstas pela Resolução 4.753, não contemplando contas vinculadas, conta de domiciliados no exterior, contas em moedas estrangeiras e conta correspondente moeda eletrônica.
-                Segue descrição de cada valor do ENUM para o escopo do Open Banking Brasil.
-                CACC - Current (CONTA_DEPOSITO_A_VISTA)
-                SLRY - Salary (CONTA_SALARIO)
-                SVGS - Savings (CONTA_POUPANCA)
-                TRAN - TransactingAccount (CONTA_PAGAMENTO_PRE_PAGA)
-              example: CURRENT
-          additionalProperties: false
+          description: Nome relacionado à Pessoa Natural ou Pessoa jurídica.
       additionalProperties: false
     ResponseError:
       type: object
@@ -376,6 +372,22 @@ components:
               example: '2021-05-21T08:30:00Z'
           additionalProperties: false
       additionalProperties: false
+    EnumAccountPaymentsType:
+      type: string
+      maxLength: 4
+      enum:
+        - CACC
+        - SLRY
+        - SVGS
+        - TRAN
+      description: |
+        Tipos de contas usadas para pagamento via PIX. Modalidades tradicionais previstas pela Resolução 4.753, não contemplando contas vinculadas, conta de domiciliados no exterior, contas em moedas estrangeiras e conta correspondente moeda eletrônica.
+        Segue descrição de cada valor do ENUM para o escopo do Open Banking Brasil.
+        CACC - Current (CONTA_DEPOSITO_A_VISTA)
+        SLRY - Salary (CONTA_SALARIO)
+        SVGS - Savings (CONTA_POUPANCA)
+        TRAN - TransactingAccount (CONTA_PAGAMENTO_PRE_PAGA)
+      example: CACC
   parameters:
     consentId:
       name: consentId
