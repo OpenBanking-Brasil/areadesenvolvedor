@@ -2,14 +2,27 @@
 info:
   title: API Resources - Open Banking Brasil
   description: |
-    API que trata da consulta do status de recursos para o Open Banking Brasil.\
-    Não possui segregação entre pessoa natural e pessoa jurídica.\
-    Requer consentimento do cliente para todos os `endpoints`.
+    API que trata da consulta do status de recursos para o Open Banking Brasil - Fase 2.\
+    Não possui segregação entre pessoa natural e pessoa jurídica.
+    # [EM REVISÃO]
+    # Orientações importantes
+    - A API resources lista os recursos vinculados ao consentimento específico, identificado por `consentId` e vinculado ao token enviado no header `Authorization`.
+    - Os `STATUS` dos recursos listados DEVEM considerar não apenas o consentimento vinculado mas também a disponibilidade do recurso na instituição transmissora dos dados.
+    - Na lista de recursos devolvida na API resources somente constará informação no atributo `resourceId` para recursos com o `STATUS` `AVAILABLE`.
+    - Para os demais `STATUS` não é devolvido o identificador do recurso - `resourceId`.
+    - A `permission` específica desta API  - `RESOURCES_READ` - DEVE ser solicitada pela instituição receptora na ocasião do pedido de criação do consentimento.
+    - A consulta à API Resources não é obrigatória por parte das instituições receptoras - esta API foi criada para dar visibilidade da existência de ocorrências que possam impedir o compartilhamento de determinados recursos por parte da instituição transmissora dos dados.
+    - O identificador do recurso devolvido na API Resources - `resourceId` - quando apresentado corresponde ao mesmo identificador designado para o recurso em sua API específica, o seja: o `resourceId` corresponde ao `accountId` da API accounts, ao `creditCardAccountId` da API de conta
+    pós-paga e assim sucessivamente.
 
-    # Permissions necessárias para a API Resources
+    ## Status previstos para os recursos listados na API Resources
+    - AVAILABLE: indica que o recurso encontra-se disponível e o(s) consentimento(s) associado(s) possui(em) status `AUTHORISED`.
+    - UNAVAILABLE: indica que o recurso não está mais disponível, por exemplo, em caso de uma conta encerrada.
+    - TEMPORARILY_UNAVAILABLE: indica que o recurso encontra-se temporariamente indisponível, embora o(s) consentimento(s) associado(s) possua(m) status `AUTHORISED`.  
+    Caso de exemplo: conta temporariamente bloqueada por suspeita de fraude.
+    - PENDING_AUTHORISATION: indica a existência de pendências para o compartilhamento do recurso, por exemplo, em caso de alçada dupla, quando é necessário o consentimento de mais de um titular.
 
-    Para cada um dos paths desta API, além dos escopos (`scopes`) indicados existem `permissions` que deverão ser observadas:
-
+    ## Permissions necessárias para a API Resources
     ### `/resources`
       - permissions:
         - GET: **RESOURCES_READ**
@@ -88,9 +101,11 @@ components:
             properties:
               resourceId:
                 type: string
-                description: Identifica o recurso reportado pelo participante do Open Banking
-                maxLength: 38
-                pattern: '^[{(]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?$'
+                description: Identifica o recurso reportado pelo participante do Open Banking.
+                minLength: 1
+                maxLength: 100
+                pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-\:]{0,99}$'
+                example: 25cac914-d8ae-6789-b215-650a6215820d
               type:
                 type: string
                 enum:
@@ -102,8 +117,8 @@ components:
                   - INVOICE_FINANCING
                 description: |
                   Tipo de recurso (vide Enum):
-                  Account - Conta
-                  Credit Card Account - Conta de Cartão de Crédito
+                  Account - Conta de depósito à vista, poupança ou pagamento pré-paga
+                  Credit Card Account - Conta de pagamento pós-paga (Cartão de Crédito)
                   Loan - Empréstimo
                   Financing - Financiamento
                   Unarranged Account Overdraft - Cheque Especial
@@ -114,18 +129,18 @@ components:
                 enum:
                   - AVAILABLE
                   - UNAVAILABLE
-                  - TEMPORARY_UNAVAILABLE
+                  - TEMPORARILY_UNAVAILABLE
                   - PENDING_AUTHORISATION
                 description: |
                   Tipo de status de recurso (vide Enum):
                   Available - Disponível
                   Unavailable - Indisponível
-                  Temporary Unavailable - Temporariamente Indisponível
+                  Temporarily Unavailable - Temporariamente Indisponível
                   Pending Authorisation - Pendente de Autorização
                 example: AVAILABLE
             additionalProperties: false
           minItems: 1
-          description: Lista de recursos e seus respectivos status
+          description: Lista de recursos e seus respectivos status.
         links:
           type: object
           description: Referências para outros recusos da API requisitada.
@@ -263,15 +278,6 @@ components:
         pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
         minLength: 1
         maxLength: 100
-    xJwsSignature:
-      name: x-jws-signature
-      in: header
-      description: Cabeçalho contendo uma assinatura JWS separada do corpo do payload.
-      required: true
-      schema:
-        type: string
-        pattern: \w*\W*
-        maxLength: 2048
   securitySchemes:
     OpenId:
       type: openIdConnect
