@@ -27,6 +27,15 @@ Importante reforçar que cada nova transação com POST deverá ter um novo GUID
 
 A iniciadora não deve usar comportamento idempotente do POST para pesquisar o status dos recursos.
 
+###Diagrama de Sequência
+<a href="images/sequence-diagrams/Iniciacao_de_pagamento.png" target="_blank">Download do Diagrama de Sequência</a>
+
+###[A deliberar CD] Recomendação uso de pooling
+Para verificar o processamento da transação, o recurso GET pode ser usado a qualquer momento desde que se respeite os requisitos não funcionais abaixo:
+300 TPS global
+50 TPS por instituição
+8 TPS por endereço IP
+
 <h1 id="fase-3-apis-do-open-banking-brasil-api-consentimento-de-inicia-o-de-pagamentos">API - Consentimento de Iniciação de Pagamentos</h1>
 
 |Versão|
@@ -43,14 +52,6 @@ A API tem como objetivo coletar o consentimento para iniciação de pagamento en
 
 <a href="swagger/swagger_payments_consents_apis.yaml" target="_blank">Download da Especificação (OAS 3.0)</a>
 
-<<<<<<< HEAD
-=======
-<a href="swagger/swagger_payments_consents_apis.yaml">Download da Especificação (OAS 3.0)</a>
-
-#### Diagrama de Sequência
-<a href="images/sequence-diagrams/Iniciacao_de_pagamento.png">Download do Diagrama de Sequência</a>
-
->>>>>>> OPB_Homologacao
 ## [Em Revisão] Criar consentimento para iniciação de pagamento.
 
 <a id="opIdpaymentsConsentsPostConsents"></a>
@@ -779,7 +780,7 @@ Objeto que contém os dados da conta utilizada para a iniciação de pagamento.
 
 |Nome|Tipo|Obrigatório|Descrição|
 |---|---|---|---|---|
-|ispb|number|true|Identificador do Sistema de Pagamentos Brasileiros.<br>Código que define instituições participantes do Sistema de Transferência de Reservas (STR).|
+|ispb|number|true|Elementos usado para identificar o participante do usuário recebedor- participante no qual o usuário recebedor detém a conta transacional. <br>Deve ser preenchido com o ISPB (Identificador do Sistema de Pagamentos Brasileiros) do participante do SPI, no qual o usuário recebedor detém a conta transacional.|
 |branchCode|string|false|Código da Agência detentora da conta sem digito.<br>Agência é a dependência destinada ao atendimento aos clientes, ao público em geral e aos associados de cooperativas de crédito, <br>no exercício de atividades da instituição, não podendo ser móvel ou transitória.<br>[Restrição] Obrigatório quando tipo de conta for CACC (CONTA_DEPOSITO_A_VISTA) ou SVGS (CONTA_POUPANCA).|
 |number|string|true|Número da conta.|
 |checkDigit|string|true|Dígito da conta.|
@@ -959,7 +960,7 @@ Objeto contendo os dados do recebedor (creditor).
 |---|---|---|---|---|
 |personType|string|true|Titular, pessoa natural ou juridica a quem se referem os dados de recebedor (creditor).|
 |cpfCnpj|string|true|Identificação da pessoa envolvida na transação. <br>Preencher com o CPF ou CNPJ, de acordo com o valor escolhido no campo type.<br>O CPF será utilizado com 11 números e deverá ser informado sem pontos ou traços. <br>O CNPJ será utilizado com 14 números e deverá ser informado sem pontos ou traços.|
-|name|string|true|Nome relacionado à Pessoa Natural ou Pessoa jurídica.|
+|name|string|true|Em caso de pessoa Natural, nome completo do titular da conta do recebedor.<br>Em caso de pessoa Jurídica, razão social da conta do recebedor.|
 
 #### Enumerated Values
 
@@ -993,7 +994,7 @@ Objeto contendo dados de pagamento para consentimento.
 |---|---|---|---|---|
 |type|string|true|Tipos de pagamentos permitidos pelo Open Banking Brasil.|
 |dateTime|string(date-time)|true|Data e hora do consentimento. <br>Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).|
-|currency|string|true|Moeda referente ao valor monetário informado, segundo modelo ISO-4217. p.ex. 'BRL' <br>Todos os valores monetários informados estão representados com a moeda vigente do Brasil.|
+|currency|string|true|Código da moeda nacional segundo modelo ISO-4217, ou seja, 'BRL'. <br>Todos os valores monetários informados estão representados com a moeda vigente do Brasil.|
 |amount|number(double)|true|Valor da transação efetuada e convertida em moeda nacional com 2 casas decimais.|
 
 #### Enumerated Values
@@ -1101,7 +1102,7 @@ Objeto contendo dados do pagameto como moeda e valor.
 |Nome|Tipo|Obrigatório|Descrição|
 |---|---|---|---|---|
 |data|object|true|Objeto contendo as informações de resposta do consentimento para a iniciação de pagamento individual.|
-|» consentId|string|true|Identificador único do consentimento.|
+|» consentId|string|true|Identificador único do consentimento criado para a iniciação de pagamento solicitada.|
 |» status|string|true|Retorna o stado do consentimento que no momento de sua criação será AWAITING_AUTHORISATION. <br>Este estado será alterado depois da autorização do consentimento na detentora da conta do pagador (Debtor) e pode assumir os seguintes estados:<br>1. AWAITING_AUTHORISATION - Aguardando autorização<br>2. AUTHORISED - Autorizado<br>3. REJECTED - Rejeitado<br>4. REVOKED - Revogado|
 |» creditor|[Identification](#schemaidentification)|true|Objeto contendo os dados do recebedor (creditor).|
 |» payment|[PaymentConsent](#schemapaymentconsent)|true|Objeto contendo dados de pagamento para consentimento.|
