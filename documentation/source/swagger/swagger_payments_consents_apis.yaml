@@ -147,13 +147,12 @@ components:
       required:
         - creditor
         - payment
-        - debtor
       properties:
         creditor:
-          $ref: '#/components/schemas/Creditor'
+          $ref: '#/components/schemas/Identification'
         payment:
           $ref: '#/components/schemas/PaymentConsent'
-        debtor:
+        debtorAccount:
           $ref: '#/components/schemas/Account'
       additionalProperties: false
     ResponsePaymentConsent:
@@ -190,12 +189,18 @@ components:
             - REJECTED
             - REVOKED
           example: AUTHORISED
-          description: Status do Consentimento para iniciação de pagamento.
+          description: |
+            Retorna o stado do consentimento que no momento de sua criação será AWAITING_AUTHORISATION. 
+            Este estado será alterado depois da autorização do consentimento na detentora da conta do pagador (Debtor) e pode assumir os seguintes estados:
+            1. AWAITING_AUTHORISATION - Aguardando autorização
+            2. AUTHORISED - Autorizado
+            3. REJECTED - Rejeitado
+            4. REVOKED - Revogado
         creditor:
-          $ref: '#/components/schemas/Creditor'
+          $ref: '#/components/schemas/Identification'
         payment:
           $ref: '#/components/schemas/PaymentConsent'
-        debtor:
+        debtorAccount:
           $ref: '#/components/schemas/Account'
       additionalProperties: false
     PaymentConsent:
@@ -283,7 +288,7 @@ components:
         accountType:
           $ref: '#/components/schemas/EnumAccountPaymentsType'
       additionalProperties: false
-    Creditor:
+    Identification:
       type: object
       description: Objeto contendo os dados do recebedor (creditor).
       required:
@@ -382,7 +387,7 @@ components:
         - SVGS
         - TRAN
       description: |
-        Tipos de contas usadas para pagamento via PIX.
+        Tipos de contas usadas para pagamento via Pix.
         Segue descrição de cada valor do ENUM para o escopo do Open Banking Brasil.
         CACC - Current - Conta Corrente.
         SLRY - Salary - Conta-Salário.
