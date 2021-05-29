@@ -3,7 +3,7 @@
 
 > Scroll down for code samples, example requests and responses. Select a language for code samples from the tabs above or the mobile navigation menu.
 
-Clientes poderão solicitar e realizar operações de pagamento PIX em instituições participantes, ou contratantes, da Fase 3 do Open Banking Brasil. 
+Clientes poderão solicitar e realizar operações de pagamento Pix em instituições participantes, ou contratantes, da Fase 3 do Open Banking Brasil. 
 A operação de pagamento ocorre apenas se o cliente consentir través da API de Consentimento Fase 3 e na sequência autorizar o pagamento no ambiente do banco detentor da conta, por meio de autenticação com login e senha. Diferentemente da Fase 2, o consentimento é dado para cada transação e não perdura por um prazo, além de ser consumido no momento e sem a possibilidade de revogamento. Uma vez dada a autorização, esta não será possível de cancelamento pelo cliente. 
 
 ###Idempotência
@@ -28,13 +28,13 @@ Importante reforçar que cada nova transação com POST deverá ter um novo GUID
 A iniciadora não deve usar comportamento idempotente do POST para pesquisar o status dos recursos.
 
 ###Diagrama de Sequência
+![Iniciacao_de_pagamento](images/sequence-diagrams/Iniciacao_de_pagamento.png)
 <a href="images/sequence-diagrams/Iniciacao_de_pagamento.png" target="_blank">Download do Diagrama de Sequência</a>
 
 ###[A deliberar CD] Recomendação uso de pooling
-Para verificar o processamento da transação, o recurso GET pode ser usado a qualquer momento desde que se respeite os requisitos não funcionais abaixo:
-300 TPS global
-50 TPS por instituição
-8 TPS por endereço IP
+A consulta via GET, para verificar o processamento da transação, pode ser dado a qualquer momento desde que se respeite o rate limit, de:
+- 300 TPS global, 50 TPS por instituição e 8 TPS por endereço IP (Internet Protocol)
+Como sugestão, é indicado que a instituição iniciadora do pagamento implemente um retry exponencial.
 
 <h1 id="fase-3-apis-do-open-banking-brasil-api-consentimento-de-inicia-o-de-pagamentos">API - Consentimento de Iniciação de Pagamentos</h1>
 
@@ -73,7 +73,7 @@ const data = JSON.stringify({
       "amount": 100000.12
     },
     "debtorAccount": {
-      "ispb": 12345678,
+      "ispb": "12345678",
       "branchCode": "1774",
       "number": "1234567890",
       "checkDigit": "1234",
@@ -110,7 +110,7 @@ import http.client
 
 conn = http.client.HTTPSConnection("example.com")
 
-payload = "{\"data\":{\"creditor\":{\"personType\":\"PESSOA_NATURAL\",\"cpfCnpj\":\"58764789000137\",\"name\":\"Marco Antonio de Brito\"},\"payment\":{\"type\":\"PIX\",\"dateTime\":\"2021-01-01T00:00:00Z\",\"currency\":\"BRL\",\"amount\":100000.12},\"debtorAccount\":{\"ispb\":12345678,\"branchCode\":\"1774\",\"number\":\"1234567890\",\"checkDigit\":\"1234\",\"accountType\":\"CACC\"}}}"
+payload = "{\"data\":{\"creditor\":{\"personType\":\"PESSOA_NATURAL\",\"cpfCnpj\":\"58764789000137\",\"name\":\"Marco Antonio de Brito\"},\"payment\":{\"type\":\"PIX\",\"dateTime\":\"2021-01-01T00:00:00Z\",\"currency\":\"BRL\",\"amount\":100000.12},\"debtorAccount\":{\"ispb\":\"12345678\",\"branchCode\":\"1774\",\"number\":\"1234567890\",\"checkDigit\":\"1234\",\"accountType\":\"CACC\"}}}"
 
 headers = {
     'Content-Type': "application/json",
@@ -143,7 +143,7 @@ HttpResponse<String> response = Unirest.post("https://example.com/payments-conse
   .header("x-customer-user-agent", "string")
   .header("x-idempotency-key", "string")
   .header("x-jws-signature", "string")
-  .body("{\"data\":{\"creditor\":{\"personType\":\"PESSOA_NATURAL\",\"cpfCnpj\":\"58764789000137\",\"name\":\"Marco Antonio de Brito\"},\"payment\":{\"type\":\"PIX\",\"dateTime\":\"2021-01-01T00:00:00Z\",\"currency\":\"BRL\",\"amount\":100000.12},\"debtorAccount\":{\"ispb\":12345678,\"branchCode\":\"1774\",\"number\":\"1234567890\",\"checkDigit\":\"1234\",\"accountType\":\"CACC\"}}}")
+  .body("{\"data\":{\"creditor\":{\"personType\":\"PESSOA_NATURAL\",\"cpfCnpj\":\"58764789000137\",\"name\":\"Marco Antonio de Brito\"},\"payment\":{\"type\":\"PIX\",\"dateTime\":\"2021-01-01T00:00:00Z\",\"currency\":\"BRL\",\"amount\":100000.12},\"debtorAccount\":{\"ispb\":\"12345678\",\"branchCode\":\"1774\",\"number\":\"1234567890\",\"checkDigit\":\"1234\",\"accountType\":\"CACC\"}}}")
   .asString();
 ```
 
@@ -172,7 +172,7 @@ Método para a criação do consentimento para iniciação de pagamento.
       "amount": 100000.12
     },
     "debtorAccount": {
-      "ispb": 12345678,
+      "ispb": "12345678",
       "branchCode": "1774",
       "number": "1234567890",
       "checkDigit": "1234",
@@ -193,7 +193,7 @@ Método para a criação do consentimento para iniciação de pagamento.
 |x-customer-user-agent|header|string|false|Indica o user-agent que o usuário utiliza.|
 |x-idempotency-key|header|string|true|Cabeçalho HTTP personalizado. Identificador de solicitação exclusivo para suportar a idempotência.|
 |x-jws-signature|header|string|true|Cabeçalho contendo uma assinatura JWS separada do corpo do payload.|
-|body|body|[CreatePaymentConsent](#schemacreatepaymentconsent)|true|Payload para criação do consentimento para iniciação do pagamento PIX.|
+|body|body|[CreatePaymentConsent](#schemacreatepaymentconsent)|true|Payload para criação do consentimento para iniciação do pagamento Pix.|
 
 > O comando acima retorna uma estrutura json como essa:
 
@@ -216,7 +216,7 @@ Método para a criação do consentimento para iniciação de pagamento.
       "amount": 100000.12
     },
     "debtorAccount": {
-      "ispb": 12345678,
+      "ispb": "12345678",
       "branchCode": "1774",
       "number": "1234567890",
       "checkDigit": "1234",
@@ -360,7 +360,7 @@ Método para consultar o consentimento para iniciação de pagamento.
       "amount": 100000.12
     },
     "debtorAccount": {
-      "ispb": 12345678,
+      "ispb": "12345678",
       "branchCode": "1774",
       "number": "1234567890",
       "checkDigit": "1234",
@@ -414,7 +414,7 @@ A API tem como objetivo realizar a iniciação de pagamento entre bancos e insti
 
 <a href="swagger/swagger_payments_initiation_apis.yaml" target="_blank">Download da Especificação (OAS 3.0)</a>
 
-## [Em Revisão] PIX - Criar iniciação de pagamento.
+## [Em Revisão] Pix - Criar iniciação de pagamento.
 
 <a id="opIdpaymentsInitiationPostPixPayments"></a>
 
@@ -428,7 +428,7 @@ const data = JSON.stringify({
       "currency": "BRL"
     },
     "creditorAccount": {
-      "ispb": 12345678,
+      "ispb": "12345678",
       "branchCode": "1774",
       "number": "1234567890",
       "checkDigit": "1234",
@@ -468,7 +468,7 @@ import http.client
 
 conn = http.client.HTTPSConnection("example.com")
 
-payload = "{\"data\":{\"payment\":{\"amount\":100000.12,\"currency\":\"BRL\"},\"creditorAccount\":{\"ispb\":12345678,\"branchCode\":\"1774\",\"number\":\"1234567890\",\"checkDigit\":\"1234\",\"accountType\":\"CACC\"},\"additionalInfo\":\"Descrição da Transação\",\"qrCode\":\"00020104141234567890123426660014BR.GOV.BCB.PIX014466756C616E6F32303139406578616D706C652E636F6D27300012BR.COM.OUTRO011001234567895204000053039865406123.455802BR5915NOMEDORECEBEDOR6008BRASILIA61087007490062530515RP12345678-201950300017BR.GOV.BCB.BRCODE01051.0.080450014BR.GOV.BCB.PIX0123PADRAO.URL.PIX/0123ABCD81390012BR.COM.OUTRO01190123.ABCD.3456.WXYZ6304EB76\",\"pixKey\":\"12345678901\"}}"
+payload = "{\"data\":{\"payment\":{\"amount\":100000.12,\"currency\":\"BRL\"},\"creditorAccount\":{\"ispb\":\"12345678\",\"branchCode\":\"1774\",\"number\":\"1234567890\",\"checkDigit\":\"1234\",\"accountType\":\"CACC\"},\"additionalInfo\":\"Descrição da Transação\",\"qrCode\":\"00020104141234567890123426660014BR.GOV.BCB.PIX014466756C616E6F32303139406578616D706C652E636F6D27300012BR.COM.OUTRO011001234567895204000053039865406123.455802BR5915NOMEDORECEBEDOR6008BRASILIA61087007490062530515RP12345678-201950300017BR.GOV.BCB.BRCODE01051.0.080450014BR.GOV.BCB.PIX0123PADRAO.URL.PIX/0123ABCD81390012BR.COM.OUTRO01190123.ABCD.3456.WXYZ6304EB76\",\"pixKey\":\"12345678901\"}}"
 
 headers = {
     'Content-Type': "application/json",
@@ -501,7 +501,7 @@ HttpResponse<String> response = Unirest.post("https://example.com/payments/v1/pi
   .header("x-customer-user-agent", "string")
   .header("x-idempotency-key", "string")
   .header("x-jws-signature", "string")
-  .body("{\"data\":{\"payment\":{\"amount\":100000.12,\"currency\":\"BRL\"},\"creditorAccount\":{\"ispb\":12345678,\"branchCode\":\"1774\",\"number\":\"1234567890\",\"checkDigit\":\"1234\",\"accountType\":\"CACC\"},\"additionalInfo\":\"Descrição da Transação\",\"qrCode\":\"00020104141234567890123426660014BR.GOV.BCB.PIX014466756C616E6F32303139406578616D706C652E636F6D27300012BR.COM.OUTRO011001234567895204000053039865406123.455802BR5915NOMEDORECEBEDOR6008BRASILIA61087007490062530515RP12345678-201950300017BR.GOV.BCB.BRCODE01051.0.080450014BR.GOV.BCB.PIX0123PADRAO.URL.PIX/0123ABCD81390012BR.COM.OUTRO01190123.ABCD.3456.WXYZ6304EB76\",\"pixKey\":\"12345678901\"}}")
+  .body("{\"data\":{\"payment\":{\"amount\":100000.12,\"currency\":\"BRL\"},\"creditorAccount\":{\"ispb\":\"12345678\",\"branchCode\":\"1774\",\"number\":\"1234567890\",\"checkDigit\":\"1234\",\"accountType\":\"CACC\"},\"additionalInfo\":\"Descrição da Transação\",\"qrCode\":\"00020104141234567890123426660014BR.GOV.BCB.PIX014466756C616E6F32303139406578616D706C652E636F6D27300012BR.COM.OUTRO011001234567895204000053039865406123.455802BR5915NOMEDORECEBEDOR6008BRASILIA61087007490062530515RP12345678-201950300017BR.GOV.BCB.BRCODE01051.0.080450014BR.GOV.BCB.PIX0123PADRAO.URL.PIX/0123ABCD81390012BR.COM.OUTRO01190123.ABCD.3456.WXYZ6304EB76\",\"pixKey\":\"12345678901\"}}")
   .asString();
 ```
 
@@ -523,7 +523,7 @@ Método para a criação de uma iniciação de pagamento.
       "currency": "BRL"
     },
     "creditorAccount": {
-      "ispb": 12345678,
+      "ispb": "12345678",
       "branchCode": "1774",
       "number": "1234567890",
       "checkDigit": "1234",
@@ -547,7 +547,7 @@ Método para a criação de uma iniciação de pagamento.
 |x-customer-user-agent|header|string|false|Indica o user-agent que o usuário utiliza.|
 |x-idempotency-key|header|string|true|Cabeçalho HTTP personalizado. Identificador de solicitação exclusivo para suportar a idempotência.|
 |x-jws-signature|header|string|true|Cabeçalho contendo uma assinatura JWS separada do corpo do payload.|
-|body|body|[CreatePixPayment](#schemacreatepixpayment)|true|Payload para criação da iniciação do pagamento PIX.|
+|body|body|[CreatePixPayment](#schemacreatepixpayment)|true|Payload para criação da iniciação do pagamento Pix.|
 
 > O comando acima retorna uma estrutura json como essa:
 
@@ -571,7 +571,7 @@ Método para a criação de uma iniciação de pagamento.
     },
     "additionalInfo": "Descrição da Transação",
     "creditorAccount": {
-      "ispb": 12345678,
+      "ispb": "12345678",
       "branchCode": "1774",
       "number": "1234567890",
       "checkDigit": "1234",
@@ -585,7 +585,7 @@ Método para a criação de uma iniciação de pagamento.
 
 |Status|Significado|Descrição|Schema|
 |---|---|---|---|
-|201|[Created](https://tools.ietf.org/html/rfc7231#section-6.3.2)|Iniciação de pagamento PIX criada com sucesso.|[ResponsePixPayment](#schemaresponsepixpayment)|
+|201|[Created](https://tools.ietf.org/html/rfc7231#section-6.3.2)|Iniciação de pagamento Pix criada com sucesso.|[ResponsePixPayment](#schemaresponsepixpayment)|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|A requisição foi malformada, omitindo atributos obrigatórios, seja no payload ou através de atributos na URL.|[ResponseError](#schemaresponseerror)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Cabeçalho de autenticação ausente/inválido ou token inválido|[ResponseError](#schemaresponseerror)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|O token tem escopo incorreto ou uma política de segurança foi violada|[ResponseError](#schemaresponseerror)|
@@ -609,7 +609,7 @@ Para realizar esta operação, você deve ser autenticado por meio de um dos seg
 None ( Scopes: openId payments-initiation )
 </aside>
 
-## [Em Revisão] PIX - Consultar iniciação de pagamento.
+## [Em Revisão] Pix - Consultar iniciação de pagamento.
 
 <a id="opIdpaymentsInitiationGetPixPayments"></a>
 
@@ -716,7 +716,7 @@ Método para consultar uma iniciação de pagamento.
     },
     "additionalInfo": "Descrição da Transação",
     "creditorAccount": {
-      "ispb": 12345678,
+      "ispb": "12345678",
       "branchCode": "1774",
       "number": "1234567890",
       "checkDigit": "1234",
@@ -730,7 +730,7 @@ Método para consultar uma iniciação de pagamento.
 
 |Status|Significado|Descrição|Schema|
 |---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|Dados de iniciação de pagamento PIX obtidos com sucesso.|[ResponsePixPayment](#schemaresponsepixpayment)|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|Dados de iniciação de pagamento Pix obtidos com sucesso.|[ResponsePixPayment](#schemaresponsepixpayment)|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|A requisição foi malformada, omitindo atributos obrigatórios, seja no payload ou através de atributos na URL.|[ResponseError](#schemaresponseerror)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Cabeçalho de autenticação ausente/inválido ou token inválido|[ResponseError](#schemaresponseerror)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|O token tem escopo incorreto ou uma política de segurança foi violada|[ResponseError](#schemaresponseerror)|
@@ -765,7 +765,7 @@ None ( Scopes: openId payments-initiation )
 
 ```json
 {
-  "ispb": 12345678,
+  "ispb": "12345678",
   "branchCode": "1774",
   "number": "1234567890",
   "checkDigit": "1234",
@@ -780,11 +780,11 @@ Objeto que contém os dados da conta utilizada para a iniciação de pagamento.
 
 |Nome|Tipo|Obrigatório|Descrição|
 |---|---|---|---|---|
-|ispb|number|true|Elementos usado para identificar o participante do usuário recebedor- participante no qual o usuário recebedor detém a conta transacional. <br>Deve ser preenchido com o ISPB (Identificador do Sistema de Pagamentos Brasileiros) do participante do SPI, no qual o usuário recebedor detém a conta transacional.|
+|ispb|string|true|Deve ser preenchido com o ISPB (Identificador do Sistema de Pagamentos Brasileiros) do participante do SPI,  <br>no qual o usuário pagador/ recebedor detém a conta transacional.|
 |branchCode|string|false|Código da Agência detentora da conta sem digito.<br>Agência é a dependência destinada ao atendimento aos clientes, ao público em geral e aos associados de cooperativas de crédito, <br>no exercício de atividades da instituição, não podendo ser móvel ou transitória.<br>[Restrição] Obrigatório quando tipo de conta for CACC (CONTA_DEPOSITO_A_VISTA) ou SVGS (CONTA_POUPANCA).|
 |number|string|true|Número da conta.|
 |checkDigit|string|true|Dígito da conta.|
-|accountType|[EnumAccountPaymentsType](#schemaenumaccountpaymentstype)|true|Tipos de contas usadas para pagamento via Pix.<br>Segue descrição de cada valor do ENUM para o escopo do Open Banking Brasil.<br>CACC - Current - Conta Corrente.<br>SLRY - Salary - Conta-Salário.<br>SVGS - Savings - Conta de Poupança.<br>TRAN - TransactingAccount - Conta de Pagamento|
+|accountType|[EnumAccountPaymentsType](#schemaenumaccountpaymentstype)|true|Tipos de contas usadas para pagamento via Pix.<br>Modalidades tradicionais previstas pela Resolução 4.753, não contemplando contas vinculadas,  <br>conta de domiciliados no exterior, contas em moedas estrangeiras e conta correspondente moeda eletrônica.  <br>Segue descrição de cada valor do ENUM para o escopo do Pix.<br>CACC - Current - Conta Corrente.<br>SLRY - Salary - Conta-Salário.<br>SVGS - Savings - Conta de Poupança.<br>TRAN - TransactingAccount - Conta de Pagamento|
 
 <h2 id="tocS_CreatePaymentConsent">CreatePaymentConsent</h2>
 
@@ -808,7 +808,7 @@ Objeto que contém os dados da conta utilizada para a iniciação de pagamento.
       "amount": 100000.12
     },
     "debtorAccount": {
-      "ispb": 12345678,
+      "ispb": "12345678",
       "branchCode": "1774",
       "number": "1234567890",
       "checkDigit": "1234",
@@ -843,7 +843,7 @@ Objeto que contém os dados da conta utilizada para a iniciação de pagamento.
       "currency": "BRL"
     },
     "creditorAccount": {
-      "ispb": 12345678,
+      "ispb": "12345678",
       "branchCode": "1774",
       "number": "1234567890",
       "checkDigit": "1234",
@@ -877,7 +877,7 @@ Objeto que contém os dados da conta utilizada para a iniciação de pagamento.
     "currency": "BRL"
   },
   "creditorAccount": {
-    "ispb": 12345678,
+    "ispb": "12345678",
     "branchCode": "1774",
     "number": "1234567890",
     "checkDigit": "1234",
@@ -915,7 +915,9 @@ Objeto contendo dados do pagamento e do recebedor (creditor).
 ```
 
 Tipos de contas usadas para pagamento via Pix.
-Segue descrição de cada valor do ENUM para o escopo do Open Banking Brasil.
+Modalidades tradicionais previstas pela Resolução 4.753, não contemplando contas vinculadas,  
+conta de domiciliados no exterior, contas em moedas estrangeiras e conta correspondente moeda eletrônica.  
+Segue descrição de cada valor do ENUM para o escopo do Pix.
 CACC - Current - Conta Corrente.
 SLRY - Salary - Conta-Salário.
 SVGS - Savings - Conta de Poupança.
@@ -925,7 +927,7 @@ TRAN - TransactingAccount - Conta de Pagamento
 
 |Nome|Tipo|Obrigatório|Descrição|
 |---|---|---|---|---|
-|**|string|false|Tipos de contas usadas para pagamento via Pix.<br>Segue descrição de cada valor do ENUM para o escopo do Open Banking Brasil.<br>CACC - Current - Conta Corrente.<br>SLRY - Salary - Conta-Salário.<br>SVGS - Savings - Conta de Poupança.<br>TRAN - TransactingAccount - Conta de Pagamento|
+|**|string|false|Tipos de contas usadas para pagamento via Pix.<br>Modalidades tradicionais previstas pela Resolução 4.753, não contemplando contas vinculadas,  <br>conta de domiciliados no exterior, contas em moedas estrangeiras e conta correspondente moeda eletrônica.  <br>Segue descrição de cada valor do ENUM para o escopo do Pix.<br>CACC - Current - Conta Corrente.<br>SLRY - Salary - Conta-Salário.<br>SVGS - Savings - Conta de Poupança.<br>TRAN - TransactingAccount - Conta de Pagamento|
 
 #### Enumerated Values
 
@@ -959,8 +961,8 @@ Objeto contendo os dados do recebedor (creditor).
 |Nome|Tipo|Obrigatório|Descrição|
 |---|---|---|---|---|
 |personType|string|true|Titular, pessoa natural ou juridica a quem se referem os dados de recebedor (creditor).|
-|cpfCnpj|string|true|Identificação da pessoa envolvida na transação. <br>Preencher com o CPF ou CNPJ, de acordo com o valor escolhido no campo type.<br>O CPF será utilizado com 11 números e deverá ser informado sem pontos ou traços. <br>O CNPJ será utilizado com 14 números e deverá ser informado sem pontos ou traços.|
-|name|string|true|Em caso de pessoa Natural, nome completo do titular da conta do recebedor.<br>Em caso de pessoa Jurídica, razão social da conta do recebedor.|
+|cpfCnpj|string|true|Identificação da pessoa envolvida na transação.  <br>Preencher com o CPF ou CNPJ, de acordo com o valor escolhido no campo type.  <br>O CPF será utilizado com 11 números e deverá ser informado sem pontos ou traços.  <br>O CNPJ será utilizado com 14 números e deverá ser informado sem pontos ou traços.|
+|name|string|true|Em caso de pessoa física, nome completo do titular da conta do recebedor.  <br>Em caso de pessoa jurídica, razão social da conta do recebedor.|
 
 #### Enumerated Values
 
@@ -1086,7 +1088,7 @@ Objeto contendo dados do pagameto como moeda e valor.
       "amount": 100000.12
     },
     "debtorAccount": {
-      "ispb": 12345678,
+      "ispb": "12345678",
       "branchCode": "1774",
       "number": "1234567890",
       "checkDigit": "1234",
@@ -1103,7 +1105,7 @@ Objeto contendo dados do pagameto como moeda e valor.
 |---|---|---|---|---|
 |data|object|true|Objeto contendo as informações de resposta do consentimento para a iniciação de pagamento individual.|
 |» consentId|string|true|Identificador único do consentimento criado para a iniciação de pagamento solicitada.|
-|» status|string|true|Retorna o stado do consentimento que no momento de sua criação será AWAITING_AUTHORISATION. <br>Este estado será alterado depois da autorização do consentimento na detentora da conta do pagador (Debtor) e pode assumir os seguintes estados:<br>1. AWAITING_AUTHORISATION - Aguardando autorização<br>2. AUTHORISED - Autorizado<br>3. REJECTED - Rejeitado<br>4. REVOKED - Revogado|
+|» status|string|true|Retorna o estado do consentimento que no momento de sua criação será AWAITING_AUTHORISATION. <br>Este estado será alterado depois da autorização do consentimento na detentora da conta  <br>do pagador (Debtor) e pode assumir os seguintes estados:<br>1. AWAITING_AUTHORISATION - Aguardando autorização<br>2. AUTHORISED - Autorizado<br>3. REJECTED - Rejeitado<br>4. REVOKED - Revogado|
 |» creditor|[Identification](#schemaidentification)|true|Objeto contendo os dados do recebedor (creditor).|
 |» payment|[PaymentConsent](#schemapaymentconsent)|true|Objeto contendo dados de pagamento para consentimento.|
 |» debtorAccount|[Account](#schemaaccount)|false|Objeto que contém os dados da conta utilizada para a iniciação de pagamento.|
@@ -1142,7 +1144,7 @@ Objeto contendo dados do pagameto como moeda e valor.
     },
     "additionalInfo": "Descrição da Transação",
     "creditorAccount": {
-      "ispb": 12345678,
+      "ispb": "12345678",
       "branchCode": "1774",
       "number": "1234567890",
       "checkDigit": "1234",
@@ -1183,7 +1185,7 @@ Objeto contendo dados do pagameto como moeda e valor.
   },
   "additionalInfo": "Descrição da Transação",
   "creditorAccount": {
-    "ispb": 12345678,
+    "ispb": "12345678",
     "branchCode": "1774",
     "number": "1234567890",
     "checkDigit": "1234",
