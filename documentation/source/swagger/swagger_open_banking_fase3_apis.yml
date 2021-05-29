@@ -27,12 +27,12 @@ info:
     A iniciadora não deve usar comportamento idempotente do POST para pesquisar o status dos recursos.
 
     ###Diagrama de Sequência
-    ![Iniciacao_de_pagamento](images/sequence-diagrams/Iniciacao_de_pagamento.png)
-    <a href="images/sequence-diagrams/Iniciacao_de_pagamento.png" target="_blank">Download do Diagrama de Sequência</a>
+    ![Iniciacao_de_Pagamento](images/sequence-diagrams/iniciacao_de_pagamento.png)
+    <a href="images/sequence-diagrams/iniciacao_de_pagamento.png" target="_blank">Download do Diagrama de Sequência</a>
 
     ###[A deliberar CD] Recomendação uso de pooling
-    A consulta via GET, para verificar o processamento da transação, pode ser dado a qualquer momento desde que se respeite o rate limit, de:
-    - 300 TPS global, 50 TPS por instituição e 8 TPS por endereço IP (Internet Protocol)
+    A consulta via GET, para verificar o processamento da transação, pode ser dado a qualquer momento desde que se respeite o rate limit, de:  
+    - 300 TPS global, 50 TPS por instituição e 8 TPS por endereço IP (Internet Protocol)  
     Como sugestão, é indicado que a instituição iniciadora do pagamento implemente um retry exponencial.
   version: 1.0.0-rc1.0
 tags:
@@ -426,6 +426,21 @@ components:
         SVGS - Savings - Conta de Poupança.
         TRAN - TransactingAccount - Conta de Pagamento
       example: CACC
+    EnumPersonType:
+      type: string
+      enum:
+        - PESSOA_NATURAL
+        - PESSOA_JURIDICA
+      description: |
+        Titular, pessoa natural ou juridica a quem se referem os dados de recebedor (creditor).
+    EnumPaymentType:
+      type: string
+      maxLength: 3
+      enum:
+        - PIX
+      example: PIX
+      description: |
+        Tipos de pagamentos permitidos pelo Open Banking Brasil.
     Identification:
       type: object
       description: Objeto contendo os dados do recebedor (creditor).
@@ -435,12 +450,7 @@ components:
         - name
       properties:
         personType:
-          type: string
-          enum:
-            - PESSOA_NATURAL
-            - PESSOA_JURIDICA
-          description: |
-            Titular, pessoa natural ou juridica a quem se referem os dados de recebedor (creditor).
+          $ref: '#/components/schemas/EnumPersonType'
         cpfCnpj:
           type: string
           maxLength: 14
@@ -470,13 +480,7 @@ components:
         - amount
       properties:
         type:
-          type: string
-          maxLength: 3
-          description: |
-            Tipos de pagamentos permitidos pelo Open Banking Brasil.
-          enum:
-            - PIX
-          example: PIX
+          $ref: '#/components/schemas/EnumPaymentType'
         dateTime:
           type: string
           format: date-time

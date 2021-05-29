@@ -28,12 +28,12 @@ Importante reforçar que cada nova transação com POST deverá ter um novo GUID
 A iniciadora não deve usar comportamento idempotente do POST para pesquisar o status dos recursos.
 
 ###Diagrama de Sequência
-![Iniciacao_de_pagamento](images/sequence-diagrams/Iniciacao_de_pagamento.png)
-<a href="images/sequence-diagrams/Iniciacao_de_pagamento.png" target="_blank">Download do Diagrama de Sequência</a>
+![Iniciacao_de_Pagamento](images/sequence-diagrams/iniciacao_de_pagamento.png)
+<a href="images/sequence-diagrams/iniciacao_de_pagamento.png" target="_blank">Download do Diagrama de Sequência</a>
 
 ###[A deliberar CD] Recomendação uso de pooling
-A consulta via GET, para verificar o processamento da transação, pode ser dado a qualquer momento desde que se respeite o rate limit, de:
-- 300 TPS global, 50 TPS por instituição e 8 TPS por endereço IP (Internet Protocol)
+A consulta via GET, para verificar o processamento da transação, pode ser dado a qualquer momento desde que se respeite o rate limit, de:  
+- 300 TPS global, 50 TPS por instituição e 8 TPS por endereço IP (Internet Protocol)  
 Como sugestão, é indicado que a instituição iniciadora do pagamento implemente um retry exponencial.
 
 <h1 id="fase-3-apis-do-open-banking-brasil-api-consentimento-de-inicia-o-de-pagamentos">API - Consentimento de Iniciação de Pagamentos</h1>
@@ -938,6 +938,59 @@ TRAN - TransactingAccount - Conta de Pagamento
 |**|SVGS|
 |**|TRAN|
 
+<h2 id="tocS_EnumPersonType">EnumPersonType</h2>
+
+<a id="schemaenumpersontype"></a>
+<a id="schema_EnumPersonType"></a>
+<a id="tocSenumpersontype"></a>
+<a id="tocsenumpersontype"></a>
+
+```json
+"PESSOA_NATURAL"
+
+```
+
+Titular, pessoa natural ou juridica a quem se referem os dados de recebedor (creditor).
+
+### Propriedades
+
+|Nome|Tipo|Obrigatório|Descrição|
+|---|---|---|---|---|
+|**|string|false|Titular, pessoa natural ou juridica a quem se referem os dados de recebedor (creditor).|
+
+#### Enumerated Values
+
+|Nome|Código|
+|---|---|
+|**|PESSOA_NATURAL|
+|**|PESSOA_JURIDICA|
+
+<h2 id="tocS_EnumPaymentType">EnumPaymentType</h2>
+
+<a id="schemaenumpaymenttype"></a>
+<a id="schema_EnumPaymentType"></a>
+<a id="tocSenumpaymenttype"></a>
+<a id="tocsenumpaymenttype"></a>
+
+```json
+"PIX"
+
+```
+
+Tipos de pagamentos permitidos pelo Open Banking Brasil.
+
+### Propriedades
+
+|Nome|Tipo|Obrigatório|Descrição|
+|---|---|---|---|---|
+|**|string|false|Tipos de pagamentos permitidos pelo Open Banking Brasil.|
+
+#### Enumerated Values
+
+|Nome|Código|
+|---|---|
+|**|PIX|
+
 <h2 id="tocS_Identification">Identification</h2>
 
 <a id="schemaidentification"></a>
@@ -960,16 +1013,9 @@ Objeto contendo os dados do recebedor (creditor).
 
 |Nome|Tipo|Obrigatório|Descrição|
 |---|---|---|---|---|
-|personType|string|true|Titular, pessoa natural ou juridica a quem se referem os dados de recebedor (creditor).|
+|personType|[EnumPersonType](#schemaenumpersontype)|true|Titular, pessoa natural ou juridica a quem se referem os dados de recebedor (creditor).|
 |cpfCnpj|string|true|Identificação da pessoa envolvida na transação.  <br>Preencher com o CPF ou CNPJ, de acordo com o valor escolhido no campo type.  <br>O CPF será utilizado com 11 números e deverá ser informado sem pontos ou traços.  <br>O CNPJ será utilizado com 14 números e deverá ser informado sem pontos ou traços.|
 |name|string|true|Em caso de pessoa física, nome completo do titular da conta do recebedor.  <br>Em caso de pessoa jurídica, razão social da conta do recebedor.|
-
-#### Enumerated Values
-
-|Nome|Código|
-|---|---|
-|personType|PESSOA_NATURAL|
-|personType|PESSOA_JURIDICA|
 
 <h2 id="tocS_PaymentConsent">PaymentConsent</h2>
 
@@ -994,16 +1040,10 @@ Objeto contendo dados de pagamento para consentimento.
 
 |Nome|Tipo|Obrigatório|Descrição|
 |---|---|---|---|---|
-|type|string|true|Tipos de pagamentos permitidos pelo Open Banking Brasil.|
+|type|[EnumPaymentType](#schemaenumpaymenttype)|true|Tipos de pagamentos permitidos pelo Open Banking Brasil.|
 |dateTime|string(date-time)|true|Data e hora do consentimento. <br>Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).|
 |currency|string|true|Código da moeda nacional segundo modelo ISO-4217, ou seja, 'BRL'. <br>Todos os valores monetários informados estão representados com a moeda vigente do Brasil.|
 |amount|number(double)|true|Valor da transação efetuada e convertida em moeda nacional com 2 casas decimais.|
-
-#### Enumerated Values
-
-|Nome|Código|
-|---|---|
-|type|PIX|
 
 <h2 id="tocS_PaymentPix">PaymentPix</h2>
 
