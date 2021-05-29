@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Fase 3 - APIs do Open Banking Brasil
   description: |
-    Clientes poderão solicitar e realizar operações de pagamento PIX em instituições participantes, ou contratantes, da Fase 3 do Open Banking Brasil. 
+    Clientes poderão solicitar e realizar operações de pagamento Pix em instituições participantes, ou contratantes, da Fase 3 do Open Banking Brasil. 
     A operação de pagamento ocorre apenas se o cliente consentir través da API de Consentimento Fase 3 e na sequência autorizar o pagamento no ambiente do banco detentor da conta, por meio de autenticação com login e senha. Diferentemente da Fase 2, o consentimento é dado para cada transação e não perdura por um prazo, além de ser consumido no momento e sem a possibilidade de revogamento. Uma vez dada a autorização, esta não será possível de cancelamento pelo cliente. 
 
     ###Idempotência
@@ -27,8 +27,14 @@ info:
     A iniciadora não deve usar comportamento idempotente do POST para pesquisar o status dos recursos.
 
     ###Diagrama de Sequência
-    <a href="images/sequence-diagrams/Iniciacao_de_pagamento.png">Download do Diagrama de Sequência</a>
+    ![Iniciacao_de_Pagamento](images/sequence-diagrams/iniciacao_de_pagamento.png)
+    <a href="images/sequence-diagrams/iniciacao_de_pagamento.png" target="_blank">Download do Diagrama de Sequência</a>
     
+    ###[A deliberar CD] Recomendação uso de pooling
+    A consulta via GET, para verificar o processamento da transação, pode ser dado a qualquer momento desde que se respeite o rate limit, de:  
+    - 300 TPS global, 50 TPS por instituição e 8 TPS por endereço IP (Internet Protocol)  
+    Como sugestão, é indicado que a instituição iniciadora do pagamento implemente um retry exponencial.
+
   version: 1.0.0-rc1.0
 tags:
   - name: API - Consentimento de Iniciação de Pagamentos
@@ -90,7 +96,7 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/CreatePaymentConsent"
-        description: Payload para criação do consentimento para iniciação do pagamento PIX.
+        description: Payload para criação do consentimento para iniciação do pagamento Pix.
         required: true
       responses:
         '201':
@@ -181,7 +187,7 @@ paths:
     post:
       tags:
         - API - Iniciação de Pagamentos
-      summary: "[Em Revisão] PIX - Criar iniciação de pagamento."
+      summary: "[Em Revisão] Pix - Criar iniciação de pagamento."
       operationId: paymentsInitiationPostPixPayments
       description: |
         Método para a criação de uma iniciação de pagamento.
@@ -216,7 +222,7 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/CreatePixPayment"
-        description: Payload para criação da iniciação do pagamento PIX.
+        description: Payload para criação da iniciação do pagamento Pix.
         required: true
       responses:
         '201':
@@ -255,7 +261,7 @@ paths:
     get:
       tags:
         - API - Iniciação de Pagamentos
-      summary: "[Em Revisão] PIX - Consultar iniciação de pagamento."
+      summary: "[Em Revisão] Pix - Consultar iniciação de pagamento."
       operationId: paymentsInitiationGetPixPayments
       description: |
         Método para consultar uma iniciação de pagamento.
@@ -394,7 +400,7 @@ components:
           schema:
             $ref: '#/components/schemas/ResponsePaymentConsent'
     201PaymentsInitiationPixPaymentCreated:
-      description: Iniciação de pagamento PIX criada com sucesso.
+      description: Iniciação de pagamento Pix criada com sucesso.
       headers:
         x-fapi-interaction-id:
           schema:
@@ -404,7 +410,7 @@ components:
           schema:
             $ref: '#/components/schemas/ResponsePixPayment'
     200PaymentsInitiationPixPaymentIdRead:
-      description: Dados de iniciação de pagamento PIX obtidos com sucesso.
+      description: Dados de iniciação de pagamento Pix obtidos com sucesso.
       headers:
         x-fapi-interaction-id:
           schema:

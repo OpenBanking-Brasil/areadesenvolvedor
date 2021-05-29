@@ -2,7 +2,7 @@
 info:
   title: Fase 3 - APIs do Open Banking Brasil
   description: |
-    Clientes poderão solicitar e realizar operações de pagamento PIX em instituições participantes, ou contratantes, da Fase 3 do Open Banking Brasil. 
+    Clientes poderão solicitar e realizar operações de pagamento Pix em instituições participantes, ou contratantes, da Fase 3 do Open Banking Brasil. 
     A operação de pagamento ocorre apenas se o cliente consentir través da API de Consentimento Fase 3 e na sequência autorizar o pagamento no ambiente do banco detentor da conta, por meio de autenticação com login e senha. Diferentemente da Fase 2, o consentimento é dado para cada transação e não perdura por um prazo, além de ser consumido no momento e sem a possibilidade de revogamento. Uma vez dada a autorização, esta não será possível de cancelamento pelo cliente. 
 
     ###Idempotência
@@ -27,7 +27,13 @@ info:
     A iniciadora não deve usar comportamento idempotente do POST para pesquisar o status dos recursos.
 
     ###Diagrama de Sequência
-    <a href="images/sequence-diagrams/Iniciacao_de_pagamento.png">Download do Diagrama de Sequência</a>
+    ![Iniciacao_de_pagamento](images/sequence-diagrams/Iniciacao_de_pagamento.png)
+    <a href="images/sequence-diagrams/Iniciacao_de_pagamento.png" target="_blank">Download do Diagrama de Sequência</a>
+
+    ###[A deliberar CD] Recomendação uso de pooling
+    A consulta via GET, para verificar o processamento da transação, pode ser dado a qualquer momento desde que se respeite o rate limit, de:
+    - 300 TPS global, 50 TPS por instituição e 8 TPS por endereço IP (Internet Protocol)
+    Como sugestão, é indicado que a instituição iniciadora do pagamento implemente um retry exponencial.
   version: 1.0.0-rc1.0
 tags:
   - name: API - Consentimento de Iniciação de Pagamentos
@@ -86,7 +92,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/CreatePaymentConsent'
-        description: Payload para criação do consentimento para iniciação do pagamento PIX.
+        description: Payload para criação do consentimento para iniciação do pagamento Pix.
         required: true
       responses:
         '201':
@@ -178,7 +184,7 @@ paths:
     post:
       tags:
         - API - Iniciação de Pagamentos
-      summary: '[Em Revisão] PIX - Criar iniciação de pagamento.'
+      summary: '[Em Revisão] Pix - Criar iniciação de pagamento.'
       operationId: paymentsInitiationPostPixPayments
       description: |
         Método para a criação de uma iniciação de pagamento.
@@ -212,7 +218,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/CreatePixPayment'
-        description: Payload para criação da iniciação do pagamento PIX.
+        description: Payload para criação da iniciação do pagamento Pix.
         required: true
       responses:
         '201':
@@ -251,7 +257,7 @@ paths:
     get:
       tags:
         - API - Iniciação de Pagamentos
-      summary: '[Em Revisão] PIX - Consultar iniciação de pagamento.'
+      summary: '[Em Revisão] Pix - Consultar iniciação de pagamento.'
       operationId: paymentsInitiationGetPixPayments
       description: |
         Método para consultar uma iniciação de pagamento.
@@ -310,13 +316,13 @@ components:
         - accountType
       properties:
         ispb:
-          type: number
+          type: string
           maxLength: 8
           pattern: '^[0-9]{1,8}$'
-          example: 12345678
+          example: '12345678'
           description: |
-            Identificador do Sistema de Pagamentos Brasileiros.
-            Código que define instituições participantes do Sistema de Transferência de Reservas (STR).
+            Deve ser preenchido com o ISPB (Identificador do Sistema de Pagamentos Brasileiros) do participante do SPI,  
+            no qual o usuário pagador/ recebedor detém a conta transacional.
         branchCode:
           type: string
           maxLength: 4
@@ -423,7 +429,9 @@ components:
         - TRAN
       description: |
         Tipos de contas usadas para pagamento via Pix.
-        Segue descrição de cada valor do ENUM para o escopo do Open Banking Brasil.
+        Modalidades tradicionais previstas pela Resolução 4.753, não contemplando contas vinculadas,  
+        conta de domiciliados no exterior, contas em moedas estrangeiras e conta correspondente moeda eletrônica.  
+        Segue descrição de cada valor do ENUM para o escopo do Pix.
         CACC - Current - Conta Corrente.
         SLRY - Salary - Conta-Salário.
         SVGS - Savings - Conta de Poupança.
@@ -439,27 +447,29 @@ components:
       properties:
         personType:
           type: string
-          description: |
-            Titular, pessoa natural ou juridica a quem se referem os dados de recebedor (creditor).
           enum:
             - PESSOA_NATURAL
             - PESSOA_JURIDICA
+          description: |
+            Titular, pessoa natural ou juridica a quem se referem os dados de recebedor (creditor).
         cpfCnpj:
           type: string
           maxLength: 14
           pattern: '^\d{11,14}$'
           example: '58764789000137'
           description: |
-            Identificação da pessoa envolvida na transação. 
-            Preencher com o CPF ou CNPJ, de acordo com o valor escolhido no campo type.
-            O CPF será utilizado com 11 números e deverá ser informado sem pontos ou traços. 
+            Identificação da pessoa envolvida na transação.  
+            Preencher com o CPF ou CNPJ, de acordo com o valor escolhido no campo type.  
+            O CPF será utilizado com 11 números e deverá ser informado sem pontos ou traços.  
             O CNPJ será utilizado com 14 números e deverá ser informado sem pontos ou traços.
         name:
           type: string
           maxLength: 80
           pattern: \w*\W*
           example: Marco Antonio de Brito
-          description: Nome relacionado à Pessoa Natural ou Pessoa jurídica.
+          description: |
+            Em caso de pessoa física, nome completo do titular da conta do recebedor.  
+            Em caso de pessoa jurídica, razão social da conta do recebedor.
       additionalProperties: false
     PaymentConsent:
       type: object
@@ -493,7 +503,7 @@ components:
           pattern: '^(\w{3}){1}$'
           example: BRL
           description: |
-            Moeda referente ao valor monetário informado, segundo modelo ISO-4217. p.ex. 'BRL' 
+            Código da moeda nacional segundo modelo ISO-4217, ou seja, 'BRL'. 
             Todos os valores monetários informados estão representados com a moeda vigente do Brasil.
         amount:
           type: number
@@ -583,7 +593,7 @@ components:
               pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
               example: 8d886d81-3a1f-48d2-bc15-a19f1f777867
               description: |
-                Identificador único do consentimento.
+                Identificador único do consentimento criado para a iniciação de pagamento solicitada.
             status:
               type: string
               maxLength: 22
@@ -594,8 +604,9 @@ components:
                 - REVOKED
               example: AUTHORISED
               description: |
-                Retorna o stado do consentimento que no momento de sua criação será AWAITING_AUTHORISATION. 
-                Este estado será alterado depois da autorização do consentimento na detentora da conta do pagador (Debtor) e pode assumir os seguintes estados:
+                Retorna o estado do consentimento que no momento de sua criação será AWAITING_AUTHORISATION. 
+                Este estado será alterado depois da autorização do consentimento na detentora da conta  
+                do pagador (Debtor) e pode assumir os seguintes estados:
                 1. AWAITING_AUTHORISATION - Aguardando autorização
                 2. AUTHORISED - Autorizado
                 3. REJECTED - Rejeitado
@@ -1100,7 +1111,7 @@ components:
           schema:
             $ref: '#/components/schemas/ResponsePaymentConsent'
     201PaymentsInitiationPixPaymentCreated:
-      description: Iniciação de pagamento PIX criada com sucesso.
+      description: Iniciação de pagamento Pix criada com sucesso.
       headers:
         x-fapi-interaction-id:
           schema:
@@ -1110,7 +1121,7 @@ components:
           schema:
             $ref: '#/components/schemas/ResponsePixPayment'
     200PaymentsInitiationPixPaymentIdRead:
-      description: Dados de iniciação de pagamento PIX obtidos com sucesso.
+      description: Dados de iniciação de pagamento Pix obtidos com sucesso.
       headers:
         x-fapi-interaction-id:
           schema:
