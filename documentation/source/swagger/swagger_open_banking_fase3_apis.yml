@@ -53,8 +53,6 @@ tags:
       #### Especificação em OAS 3.0
 
       <a href="swagger/swagger_payments_consents_apis.yaml" target="_blank">Download da Especificação (OAS 3.0)</a>  
-
-      <a href="https://editor.swagger.io/?url=swagger/swagger_payments_consents_apis.yaml" target="_blank">Abrir Especificação no Swagger Editor</a>
   - name: API - Iniciação de Pagamentos
     description: |
       |Versão|
@@ -64,13 +62,12 @@ tags:
       #### Visão Geral
 
       A API tem como objetivo permitir a relação entre a iniciadora de transação de pagamento e a instituição detentora de conta para a solicitação de um pagamento pelo Open Banking Brasil.        
+
       O recurso está disponível para pagadores que possuem vínculo com uma instituição detentora de conta participante do Open Banking, independentemente de serem pessoa física ou jurídica.
 
       #### Especificação em OAS 3.0
 
       <a href="swagger/swagger_payments_initiation_apis.yaml" target="_blank">Download da Especificação (OAS 3.0)</a>  
-
-      <a href="https://editor.swagger.io/?url=swagger/swagger_payments_initiation_apis.yaml" target="_blank">Abrir Especificação no Swagger Editor</a>
 paths:
   /payments-consents/v1/consents:
     post:
@@ -311,7 +308,7 @@ components:
   schemas:
     Account:
       type: object
-      description: Objeto que contém os dados da conta utilizada para a iniciação de pagamento.
+      description: Objeto que contém a identificação de uma conta.
       required:
         - ispb
         - number
@@ -324,30 +321,29 @@ components:
           pattern: '^[0-9]{1,8}$'
           example: '12345678'
           description: |
-            Deve ser preenchido com o ISPB (Identificador do Sistema de Pagamentos Brasileiros) do participante do SPI,  
-            no qual o usuário pagador/ recebedor detém a conta transacional.
+            Deve ser preenchido com o ISPB (Identificador do Sistema de Pagamentos Brasileiros) do participante do SPI somente com números.
         branchCode:
           type: string
           maxLength: 4
-          pattern: '^(\w{4}){1}$'
+          pattern: '^\d{4}$'
           example: '1774'
           description: |
             Código da Agência detentora da conta sem digito.  
-            Agência é a dependência destinada ao atendimento aos clientes, ao público em geral e aos associados de cooperativas de crédito,  
-            no exercício de atividades da instituição, não podendo ser móvel ou transitória.  
+            (Agência é a dependência destinada ao atendimento aos clientes, ao público em geral e aos associados de cooperativas de crédito,  
+            no exercício de atividades da instituição, não podendo ser móvel ou transitória).  
             [Restrição] Obrigatório quando tipo de conta for CACC (CONTA_DEPOSITO_A_VISTA) ou SVGS (CONTA_POUPANCA).
         number:
           type: string
           maxLength: 20
           pattern: '^\d{8,20}$'
           example: '1234567890'
-          description: 'Número da conta do recebedor da iniciação de pagamento, sem o dígito.'
+          description: 'Número da conta da iniciação de pagamento, sem o dígito.'
         checkDigit:
           type: string
-          maxLength: 4
-          pattern: '^(\w{4}){1}$'
-          example: '1234'
-          description: Dígito da conta do recebedor da iniciação de pagamento.
+          pattern: \w*\W*
+          maxLength: 1
+          example: '4'
+          description: Dígito da conta da iniciação de pagamento.
         accountType:
           $ref: '#/components/schemas/EnumAccountPaymentsType'
       additionalProperties: false
@@ -445,6 +441,22 @@ components:
         SLRY - Salary - Conta-Salário.  
         SVGS - Savings - Conta de Poupança.  
         TRAN - TransactingAccount - Conta de Pagamento
+    EnumPersonType:
+      type: string
+      maxLength: 15
+      enum:
+        - PESSOA_NATURAL
+        - PESSOA_JURIDICA
+      description: |
+        Titular, pessoa natural ou juridica a quem se referem os dados de recebedor (creditor).
+    EnumPaymentType:
+      type: string
+      maxLength: 3
+      enum:
+        - PIX
+      example: PIX
+      description: |
+        Este campo define o tipo de pagamento que será iniciado após a autorização do consentimento.
     Identification:
       type: object
       description: Objeto contendo os dados do recebedor (creditor).
@@ -467,7 +479,7 @@ components:
             O CNPJ será utilizado com 14 números e deverá ser informado sem pontos ou traços.
         name:
           type: string
-          maxLength: 80
+          maxLength: 140
           pattern: \w*\W*
           example: Marco Antonio de Brito
           description: |
@@ -492,7 +504,7 @@ components:
           pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
           example: '2021-01-01T00:00:00Z'
           description: |
-            Data e hora do consentimento. 
+            Data e hora do pagamento. 
             Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).
         currency:
           type: string
@@ -509,7 +521,7 @@ components:
           pattern: '^((\d{1,16}\.\d{2}))$'
           example: 100000.12
           description: |
-            Valor da transação efetuada e convertida em moeda nacional com 2 casas decimais.
+            Valor da transação a ser efetuada com 2 casas decimais.
       additionalProperties: false
     PaymentPix:
       type: object
@@ -580,6 +592,8 @@ components:
           description: Objeto contendo as informações de resposta do consentimento para a iniciação de pagamento individual.
           required:
             - consentId
+            - statusUpdateDateTime
+            - creationDateTime
             - status
             - creditor
             - payment
@@ -587,28 +601,44 @@ components:
           properties:
             consentId:
               type: string
-              maxLength: 36
               pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
-              example: 8d886d81-3a1f-48d2-bc15-a19f1f777867
+              minLength: 1
+              maxLength: 100
+              example: C1DD33123
               description: |
                 Identificador único do consentimento criado para a iniciação de pagamento solicitada.
+            creationDateTime:
+              description: 'Data e hora em que o consentimento foi criado. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).'
+              type: string
+              format: date-time
+              example: '2021-05-21T08:30:00Z'
+              pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
+              maxLength: 20
+            statusUpdateDateTime:
+              type: string
+              format: date-time
+              example: '2021-05-21T08:30:00Z'
+              pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
+              maxLength: 20
+              description: |
+                Data e hora em que o recurso foi atualizado. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).
             status:
               type: string
               maxLength: 22
               enum:
-                - AUTHORISED
                 - AWAITING_AUTHORISATION
+                - AUTHORISED
                 - REJECTED
-                - REVOKED
+                - CONSUMED
               example: AUTHORISED
               description: |
-                Retorna o estado do consentimento que no momento de sua criação será AWAITING_AUTHORISATION. 
-                Este estado será alterado depois da autorização do consentimento na detentora da conta  
-                do pagador (Debtor) e pode assumir os seguintes estados:
-                1. AWAITING_AUTHORISATION - Aguardando autorização
-                2. AUTHORISED - Autorizado
+                Retorna o estado do consentimento que no momento de sua criação será AWAITING_AUTHORISATION.
+                Este estado será alterado depois da autorização do consentimento na detentora da conta do pagador (Debtor) para AUTHORISED ou REJECTED. 
+                O consentimento fica no estado CONSUMED após ocorrer a iniciação do pagamento referente ao consentimento.
+                1. AUTHORISED - Autorizado 
+                2. AWAITING_AUTHORISATION - Aguardando autorização
                 3. REJECTED - Rejeitado
-                4. REVOKED - Revogado
+                4. CONSUMED - Consumido
             creditor:
               $ref: '#/components/schemas/Identification'
             payment:
