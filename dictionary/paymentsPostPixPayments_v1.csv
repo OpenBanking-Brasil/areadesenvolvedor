@@ -1,35 +1,27 @@
 ﻿Xpath;Nome;Definição;Tipo de Dado;Tamanho;Mandatoriedade;Formato;Domínio;Mínimo de Ocorrências;Máximo de Ocorrências;Restrições;Nulidade;Tipo de Dado Json;Exemplo
 /data;data;Objeto contendo dados do pagamento e da conta do recebedor (creditor).;Objeto;;Obrigatório;;;1;1;"";Não permitido;object;
-/data/paymentId;paymentId;"Código ou identificador único informado pela instituição que mantém a conta para representar  
-a iniciação de pagamento individual.  
-Esse identificador deve ser usado para consultar o status da iniciação de pagamento.";Texto;100;Obrigatório;^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$;;1;1;"";Não permitido;string;TXpRMU9UQTROMWhZV2xSU1FUazJSMDl
-/data/endToEndId;endToEndId;"Identificador fim a fim da transação. O termo E2E que identifica a transação de forma única dentro do arranjo.  
-Esse identificador deve ser único, não podendo ser repetido em qualquer outra operação enviada ao SPI.";Texto;32;Opcional;^([E])([0-9]{8})([0-9]{4})(0[1-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])(2[0-3]|[01][0-9])([0-5][0-9])([a-zA-Z0-9]{11})$;;0;1;" É obrigatório o retorno após o status ""ACCEPTED_SETTLEMENT_IN_PROCESS"".
+/data/paymentId;paymentId;"Código ou identificador único informado pela instituição detentora da conta para representar  
+a iniciação de pagamento individual. O `paymentId` deve ser diferente do `endToEndId` retornado pela detentora.
+Este é o identificador que deverá ser utilizado na consulta ao status da iniciação de pagamento efetuada.";Texto;100;Obrigatório;^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$;;1;1;"";Não permitido;string;TXpRMU9UQTROMWhZV2xSU1FUazJSMDl
+/data/endToEndId;endToEndId;"Código de identificação único da transação no arranjo do Pix. É usado em toda a cadeia de mensagens de uma instrução de pagamento no SPI. É um código gerado pela instituição detentora da conta que está iniciando o pagamento. 
+Deve ser preenchido no formato padrão ExxxxxxxxyyyyMMddHHmmkkkkkkkkkkk (32 caracteres), sendo: 
+• “E” – fixo (1 caractere); 
+• xxxxxxxx – identificação do agente que gerou o <EndToEndId>, podendo ser: o ISPB do participante direto ou o ISPB do participante indireto (8 caracteres numéricos";Texto;32;Opcional;^([E])([0-9]{8})([0-9]{4})(0[1-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])(2[0-3]|[01][0-9])([0-5][0-9])([a-zA-Z0-9]{11})$;;0;1;" É obrigatório o retorno após o status ""ACCEPTED_SETTLEMENT_IN_PROCESS"""".
 ";Não permitido;string;E9040088820210128000800123873170
 /data/consentId;consentId;Identificador único do consentimento.;Texto;100;Obrigatório;^[a-zA-Z0-9][a-zA-Z0-9\-\:]{0,99}$;;1;1;"";Não permitido;string;urn:bancoex:C1DD33123
 /data/creationDateTime;creationDateTime;"Data e hora em que o recurso foi criado.  
 Uma string com data e hora conforme especificação RFC-3339,  
-sempre com a utilização de timezone UTC(UTC time format).";Date Hora;;Obrigatório;^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$|^NA$;;1;1;"";Não permitido;string;2020-07-21T08:30:00Z
-/data/statusUpdateDateTime;statusUpdateDateTime;"Data e hora da ultima atualização da iniciação de pagamento.  
+sempre com a utilização de timezone UTC(UTC time format).";Date Hora;;Obrigatório;^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$;;1;1;"";Não permitido;string;2020-07-21T08:30:00Z
+/data/statusUpdateDateTime;statusUpdateDateTime;"Data e hora da última atualização da iniciação de pagamento.  
 Uma string com data e hora conforme especificação RFC-3339,  
-sempre com a utilização de timezone UTC(UTC time format).";Date Hora;;Opcional;^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$|^NA$;;0;1;"";Não permitido;string;2020-07-21T08:30:00Z
-/data/pixKey;pixKey;"Chave DICT do recebedor. Os tipos de chaves podem ser: telefone, e-mail, cpf/cnpj ou chave aleatória.  
-O telefone celular usará o padrão E.1641.  
-O E-mail deve ter o formato xxxxxxxx@xxxxxxx.xxx(.xx) e no máximo 77 caracteres.  
-O CPF será utilizado com 11 números e deverá ser informado sem pontos ou traços.  
-O CNPJ será utilizado com 14 números e deverá ser informado sem pontos ou traços.  
-A chave aleatória deve ser UUID gerado pelo DICT, conforme formato especificado na RFC41223.";Texto;77;Opcional;\w*\W*;;0;1;" Obrigatório para pagamentos via Chave.
+sempre com a utilização de timezone UTC(UTC time format).";Date Hora;;Obrigatório;^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$;;1;1;"";Não permitido;string;2020-07-21T08:30:00Z
+/data/pixKey;pixKey;"Chave cadastrada no DICT pertencente ao recebedor. Os tipos de chaves podem ser: telefone, e-mail, cpf/cnpj ou chave aleatória.  
+No caso de telefone celular deve ser informado no padrão E.1641.  
+Para e-mail deve ter o formato xxxxxxxx@xxxxxxx.xxx(.xx) e no máximo 77 caracteres.  
+No caso de CPF deverá ser informado com 11 números, sem pontos ou traços.  
+Para o caso de CNPJ deverá ser informado com 14 números, sem pontos ou traços.  
+No caso de chave aleatória deve ser informado o UUID gerado pelo DICT, conforme formato especificado na RFC41223.";Texto;77;Opcional;\w*\W*;;0;1;" Preenchimento obrigatório para pagamentos via Chave.
 ";Não permitido;string;12345678901
-/data/qrCode;qrCode;"Sequência de caracteres que corresponde ao QR Code disponibilizado para o pagador.  
-É a sequência de caracteres que seria lida pelo leitor de QR Code, e deve propiciar o retorno dos dados do pagador após consulta na DICT.  
-Essa funcionalidade é possível tanto para QR Code estático quanto para QR Code dinâmico.  
-No arranjo do Pix esta é a mesma sequência gerada e/ou lida pela funcionalidade Pix Copia e Cola.  
-Este campo deverá ser no formato UTF-8.";Texto;512;Opcional;\w*\W*;;0;1;" Obrigatório se for um pagamento por QR Code.
-";Não permitido;string;"00020104141234567890123426660014BR.GOV.BCB.PIX014466756C616E6F32303139406578616D706C652E636F6D27300012  
-BR.COM.OUTRO011001234567895204000053039865406123.455802BR5915NOMEDORECEBEDOR6008BRASILIA61087007490062  
-530515RP12345678-201950300017BR.GOV.BCB.BRCODE01051.0.080450014BR.GOV.BCB.PIX0123PADRAO.URL.PIX/0123AB  
-CD81390012BR.COM.OUTRO01190123.ABCD.3456.WXYZ6304EB76
-"
 /data/status;status;"Estado atual da iniciação de pagamento. O estado evolui na seguinte ordem:  
 1. PDNG (PENDING) - Iniciação de pagamento ou transação de pagamento está pendente. Checagens adicionais em realização.  
 2. PART (PARTIALLY ACCEPTED) - Aguardando autorização múltipla alçada.  
@@ -117,14 +109,15 @@ SL02";0;1;" Esse motivo deverá ser enviado quando o campo /data/status for igua
 /data/payment/amount;amount;Valor da transação com 2 casas decimais.;Número;19;Obrigatório;^((\d{1,16}\.\d{2}))$;;1;1;"";Não permitido;number;100000.12
 /data/payment/currency;currency;"Código da moeda nacional segundo modelo ISO-4217, ou seja, 'BRL'.  
 Todos os valores monetários informados estão representados com a moeda vigente do Brasil.";Texto;3;Obrigatório;^(\w{3}){1}$;;1;1;"";Não permitido;string;BRL
-/data/payment/debtorAccount;debtorAccount;Objeto que contém a identificação de uma conta.;Objeto;;Opcional;;;0;1;"";Não permitido;object;
-/data/payment/debtorAccount/ispb;ispb;Deve ser preenchido com o ISPB (Identificador do Sistema de Pagamentos Brasileiros) do participante do SPI somente com números.;Texto;8;Obrigatório;^[0-9]{1,8}$;;1;1;"";Não permitido;string;12345678
-/data/payment/debtorAccount/branchCode;branchCode;"Código da Agência detentora da conta sem digito.  
+/data/payment/debtorAccount;debtorAccount;"Objeto que contém a identificação da conta de origem do pagador.  
+As informações quanto à conta de origem do pagador poderão ser trazidas no consentimento para a detentora, caso a iniciadora tenha coletado essas informações do cliente. Do contrário, será coletada na detentora e trazida para a iniciadora como resposta à criação do pagamento.";Objeto;;Opcional;;;0;1;"";Não permitido;object;
+/data/payment/debtorAccount/ispb;ispb;Deve ser preenchido com o ISPB (Identificador do Sistema de Pagamentos Brasileiros) do participante do SPI (Sistema de pagamentos instantâneos) somente com números.;Texto;8;Obrigatório;^[0-9]{1,8}$;;1;1;"";Não permitido;string;12345678
+/data/payment/debtorAccount/branchCode;branchCode;"Código da Agência detentora da conta sem dígito.  
 (Agência é a dependência destinada ao atendimento aos clientes, ao público em geral e aos associados de cooperativas de crédito,  
-no exercício de atividades da instituição, não podendo ser móvel ou transitória).";Texto;4;Opcional;^\d{4}$;;0;1;" Obrigatório quando tipo de conta for CACC (CONTA_DEPOSITO_A_VISTA) ou SVGS (CONTA_POUPANCA).
+no exercício de atividades da instituição, não podendo ser móvel ou transitória).";Texto;4;Opcional;^\d{4}$;;0;1;" Preenchimento obrigatório para os seguintes tipos de conta: CACC (CONTA_DEPOSITO_A_VISTA), SVGS (CONTA_POUPANCA) e SLRY (CONTA_SALARIO).
 ";Não permitido;string;1774
-/data/payment/debtorAccount/number;number;Número da conta da iniciação de pagamento, sem o dígito.;Texto;20;Obrigatório;^\d{8,20}$;;1;1;"";Não permitido;string;1234567890
-/data/payment/debtorAccount/checkDigit;checkDigit;Dígito da conta da iniciação de pagamento.;Texto;1;Obrigatório;\w*\W*;;1;1;"";Não permitido;string;4
+/data/payment/debtorAccount/number;number;Número da conta sem o dígito.;Texto;20;Obrigatório;^\d{8,20}$;;1;1;"";Não permitido;string;1234567890
+/data/payment/debtorAccount/checkDigit;checkDigit;Dígito da conta.;Texto;1;Obrigatório;\w*\W*;;1;1;"";Não permitido;string;4
 /data/payment/debtorAccount/accountType;accountType;"Tipos de contas usadas para pagamento via Pix.  
 Modalidades tradicionais previstas pela Resolução 4.753, não contemplando contas vinculadas,  
 conta de domiciliados no exterior, contas em moedas estrangeiras e conta correspondente moeda eletrônica.  
@@ -132,7 +125,7 @@ Segue descrição de cada valor do ENUM para o escopo do Pix.
 CACC - Current - Conta Corrente.  
 SLRY - Salary - Conta-Salário.  
 SVGS - Savings - Conta de Poupança.  
-TRAN - TransactingAccount - Conta de Pagamento";Texto;4;Obrigatório;;"CACC 
+TRAN - TransactingAccount - Conta de Pagamento pré-paga.";Texto;4;Obrigatório;;"CACC 
 SLRY 
 SVGS 
 TRAN";1;1;"";Não permitido;string;CACC
@@ -143,17 +136,17 @@ PESSOA_JURIDICA";1;1;"";Não permitido;string;
 Preencher com o CPF ou CNPJ, de acordo com o valor escolhido no campo type.  
 O CPF será utilizado com 11 números e deverá ser informado sem pontos ou traços.  
 O CNPJ será utilizado com 14 números e deverá ser informado sem pontos ou traços.";Texto;14;Obrigatório;^\d{11,14}$;;1;1;"";Não permitido;string;58764789000137
-/data/payment/creditor/name;name;"Em caso de pessoa física, nome completo do titular da conta do recebedor.  
-Em caso de pessoa jurídica, razão social da conta do recebedor.";Texto;140;Obrigatório;\w*\W*;;1;1;"";Não permitido;string;Marco Antonio de Brito
-/data/additionalInfo;additionalInfo;Descrição do pagamento, em formato livre, feito pelo pagador.;Texto;140;Opcional;\w*\W*;;0;1;"";Não permitido;string;Descrição da Transação
-/data/creditorAccount;creditorAccount;Objeto que contém a identificação de uma conta.;Objeto;;Opcional;;;0;1;"";Não permitido;object;
-/data/creditorAccount/ispb;ispb;Deve ser preenchido com o ISPB (Identificador do Sistema de Pagamentos Brasileiros) do participante do SPI somente com números.;Texto;8;Obrigatório;^[0-9]{1,8}$;;1;1;"";Não permitido;string;12345678
-/data/creditorAccount/branchCode;branchCode;"Código da Agência detentora da conta sem digito.  
+/data/payment/creditor/name;name;"Em caso de pessoa natural deve ser informado o nome completo do titular da conta do recebedor.  
+Em caso de pessoa jurídica deve ser informada a razão social ou o nome fantasia da conta do recebedor.";Texto;140;Obrigatório;\w*\W*;;1;1;"";Não permitido;string;Marco Antonio de Brito
+/data/remittanceInformation;remittanceInformation;Deve ser preenchido sempre que o usuário pagador inserir alguma informação adicional em um pagamento, a ser enviada ao recebedor.;Texto;140;Opcional;\w*\W*;;0;1;"";Não permitido;string;Pagamento da nota RSTO035-002.
+/data/creditorAccount;creditorAccount;Objeto que contém a identificação da conta de destino do beneficiário/recebedor.;Objeto;;Opcional;;;0;1;"";Não permitido;object;
+/data/creditorAccount/ispb;ispb;Deve ser preenchido com o ISPB (Identificador do Sistema de Pagamentos Brasileiros) do participante do SPI (Sistema de pagamentos instantâneos) somente com números.;Texto;8;Obrigatório;^[0-9]{1,8}$;;1;1;"";Não permitido;string;12345678
+/data/creditorAccount/branchCode;branchCode;"Código da Agência detentora da conta sem dígito.  
 (Agência é a dependência destinada ao atendimento aos clientes, ao público em geral e aos associados de cooperativas de crédito,  
-no exercício de atividades da instituição, não podendo ser móvel ou transitória).";Texto;4;Opcional;^\d{4}$;;0;1;" Obrigatório quando tipo de conta for CACC (CONTA_DEPOSITO_A_VISTA) ou SVGS (CONTA_POUPANCA).
+no exercício de atividades da instituição, não podendo ser móvel ou transitória).";Texto;4;Opcional;^\d{4}$;;0;1;" Preenchimento obrigatório para os seguintes tipos de conta: CACC (CONTA_DEPOSITO_A_VISTA), SVGS (CONTA_POUPANCA) e SLRY (CONTA_SALARIO).
 ";Não permitido;string;1774
-/data/creditorAccount/number;number;Número da conta da iniciação de pagamento, sem o dígito.;Texto;20;Obrigatório;^\d{8,20}$;;1;1;"";Não permitido;string;1234567890
-/data/creditorAccount/checkDigit;checkDigit;Dígito da conta da iniciação de pagamento.;Texto;1;Obrigatório;\w*\W*;;1;1;"";Não permitido;string;4
+/data/creditorAccount/number;number;Número da conta sem o dígito.;Texto;20;Obrigatório;^\d{8,20}$;;1;1;"";Não permitido;string;1234567890
+/data/creditorAccount/checkDigit;checkDigit;Dígito da conta.;Texto;1;Obrigatório;\w*\W*;;1;1;"";Não permitido;string;4
 /data/creditorAccount/accountType;accountType;"Tipos de contas usadas para pagamento via Pix.  
 Modalidades tradicionais previstas pela Resolução 4.753, não contemplando contas vinculadas,  
 conta de domiciliados no exterior, contas em moedas estrangeiras e conta correspondente moeda eletrônica.  
@@ -161,7 +154,7 @@ Segue descrição de cada valor do ENUM para o escopo do Pix.
 CACC - Current - Conta Corrente.  
 SLRY - Salary - Conta-Salário.  
 SVGS - Savings - Conta de Poupança.  
-TRAN - TransactingAccount - Conta de Pagamento";Texto;4;Obrigatório;;"CACC 
+TRAN - TransactingAccount - Conta de Pagamento pré-paga.";Texto;4;Obrigatório;;"CACC 
 SLRY 
 SVGS 
 TRAN";1;1;"";Não permitido;string;CACC
