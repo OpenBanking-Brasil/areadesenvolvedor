@@ -4,8 +4,11 @@
 > Scroll down for code samples, example requests and responses. Select a language for code samples from the tabs above or the mobile navigation menu.
 
 Na fase 3 do Open Banking Brasil, a iniciação de pagamento permitirá que o cliente solicite um pagamento Pix fora dos canais da detentora de conta através de uma iniciadora de transação de pagamento.  
+
 A solicitação de pagamento será processada apenas se o cliente consentir na iniciadora, através da API de consentimento fase 3, e autorizar na detentora de conta, por meio de autenticação com credenciais de acesso e confirmação dos dados do pagamento.  
+
 Diferente da fase 2, o consentimento é dado para cada transação e não pode ser revogado, pois é consumido no momento que a transação é confirmada e processada.  
+
 O processamento da transação é feito de forma instantânea, não sendo possível agendamentos.
 
 ###Idempotência
@@ -17,7 +20,7 @@ Porém, o método POST requer um tratamento especial para que se torne idempoten
 
 ####Por que é necessário tratarmos a Idempotência do POST?
 
-Imagine que seja realizado um POST de pagamento e, depois de alguns segundos, é retornada uma mensagem de Timeout. Nesse caso, não é possível saber se o POST foi efetivo e enviar o POST novamente, sem tratar a idempotência, poderá ocasionar em uma duplicidade de pagamento.
+Imagine que seja realizado um POST de pagamento e, depois de alguns segundos, é retornada uma mensagem de Timeout. Nesse caso, não é possível saber se o POST foi efetivo e enviar o POST novamente, sem tratar a idempotência, poderá ocasionar em duplicidade de pagamento.
 
 ####Como mitigarmos esse risco?
 
@@ -29,14 +32,21 @@ Importante reforçar que cada nova transação com POST deverá ter um novo GUID
 
 A iniciadora não deve usar comportamento idempotente do POST para pesquisar o status dos recursos.
 
+####Conjunto inicial de regras propostas na aplicação da idempotencia:
+- A iniciadora/TPP não deve alterar o corpo da solicitação ao usar a mesma chave de idempotência. Se a iniciadora alterar o corpo da solicitação, a detentora/ASPSP não deve modificar o recurso final. A detentora pode tratar este caso como uma ação fraudulenta.  
+- A detentora não deve criar um novo recurso para uma solicitação POST se estiver determinada como uma solicitação idempotente.  
+- Na criação a detentora deve responder à solicitação com o status atual do recurso (ou um status que seja pelo menos tão atual quanto o que estiver disponível nos canais eletrônicos existentes) e um código de status HTTP 201 (CREATED).  
+- A iniciadora não deve usar comportamento idempotente para pesquisar o status dos recursos.  
+- A detentora pode usar a assinatura da mensagem, junto com a chave de idempotência, para garantir que o corpo da solicitação não seja alterado.  
+
 ###Diagrama de Sequência
 ![Iniciacao_de_Pagamento](images/sequence-diagrams/iniciacao_de_pagamento.png)
 <a href="images/sequence-diagrams/iniciacao_de_pagamento.png" target="_blank">Download do Diagrama de Sequência</a>
 
 ###[A deliberar CD] Recomendação uso de pooling
-A consulta via GET, para verificar o processamento da transação, pode ser dado a qualquer momento desde que se respeite o rate limit, de:  
-- 300 TPS global, 50 TPS por instituição e 8 TPS por endereço IP (Internet Protocol)  
-Como sugestão, é indicado que a instituição iniciadora do pagamento implemente um retry exponencial.
+####A consulta via GET, para verificar o processamento da transação, pode ser dado a qualquer momento desde que se respeite o rate limit de:  
+- 300 TPS global, 50 TPS por instituição e 8 TPS por endereço IP (Internet Protocol).  
+- Como sugestão, é indicado que a instituição iniciadora do pagamento implemente um retry exponencial.  
 
 <h1 id="fase-3-apis-do-open-banking-brasil-api-consentimento-de-inicia-o-de-pagamentos">API - Consentimento de Iniciação de Pagamentos</h1>
 
@@ -226,161 +236,6 @@ Método para a criação do consentimento para iniciação de pagamento.
       "checkDigit": "4",
       "accountType": "CACC"
     }
-  }
-}
-```
-
-> A solicitação foi bem formada, mas não pôde ser processada devido à lógica de negócios específica da solicitação.
-
-```json
-{
-  "errors": [
-    {
-      "code": "1",
-      "title": "Saldo insuficiente",
-      "detail": "Esta conta não possui saldo suficiente para realizar o pagamento."
-    }
-  ],
-  "meta": {
-    "totalRecords": 1,
-    "totalPages": 1,
-    "requestDateTime": "2021-05-21T08:30:00Z"
-  }
-}
-```
-
-```json
-{
-  "errors": [
-    {
-      "code": "2",
-      "title": "Beneficiário incompatível",
-      "detail": "O beneficiário informado no consentimento não é o mesmo do esperado pelo DICT."
-    }
-  ],
-  "meta": {
-    "totalRecords": 1,
-    "totalPages": 1,
-    "requestDateTime": "2021-05-21T08:30:00Z"
-  }
-}
-```
-
-```json
-{
-  "errors": [
-    {
-      "code": "3",
-      "title": "Valor da transação incompatível",
-      "detail": "O valor informado no consentimento não é o mesmo valor do informado no payload de pagamento."
-    }
-  ],
-  "meta": {
-    "totalRecords": 1,
-    "totalPages": 1,
-    "requestDateTime": "2021-05-21T08:30:00Z"
-  }
-}
-```
-
-```json
-{
-  "errors": [
-    {
-      "code": "4",
-      "title": "Limite acima do limite estabelecido",
-      "detail": "O valor (ou quantidade de transações) ultrapassa a faixa de limite parametrizada na detentora para permitir a realização de transações pelo cliente."
-    }
-  ],
-  "meta": {
-    "totalRecords": 1,
-    "totalPages": 1,
-    "requestDateTime": "2021-05-21T08:30:00Z"
-  }
-}
-```
-
-```json
-{
-  "errors": [
-    {
-      "code": "5",
-      "title": "Valor inválido",
-      "detail": "O valor enviado não é válido para o QR Code (ou boleto) informado."
-    }
-  ],
-  "meta": {
-    "totalRecords": 1,
-    "totalPages": 1,
-    "requestDateTime": "2021-05-21T08:30:00Z"
-  }
-}
-```
-
-```json
-{
-  "errors": [
-    {
-      "code": "6",
-      "title": "Cobrança inválida",
-      "detail": "Validação de expiração, validação de vencimento, Status Válido."
-    }
-  ],
-  "meta": {
-    "totalRecords": 1,
-    "totalPages": 1,
-    "requestDateTime": "2021-05-21T08:30:00Z"
-  }
-}
-```
-
-```json
-{
-  "errors": [
-    {
-      "code": "7",
-      "title": "Consentimento inválido",
-      "detail": "Consentimento inválido status não é Authorised ou está expirado."
-    }
-  ],
-  "meta": {
-    "totalRecords": 1,
-    "totalPages": 1,
-    "requestDateTime": "2021-05-21T08:30:00Z"
-  }
-}
-```
-
-```json
-{
-  "errors": [
-    {
-      "code": "8",
-      "title": "Janela de operação inválida",
-      "detail": "Requisição está fora da janela de funcionamento."
-    }
-  ],
-  "meta": {
-    "totalRecords": 1,
-    "totalPages": 1,
-    "requestDateTime": "2021-05-21T08:30:00Z"
-  }
-}
-```
-
-```json
-{
-  "errors": [
-    {
-      "code": "99",
-      "title": "Desconhecido",
-      "detail": "Não informada pela detentora de conta."
-    }
-  ],
-  "meta": {
-    "totalRecords": 1,
-    "totalPages": 1,
-    "requestDateTime": "2021-05-21T08:30:00Z"
   }
 }
 ```
@@ -596,7 +451,7 @@ const data = JSON.stringify({
     },
     "additionalInfo": "Descrição da Transação",
     "qrCode": "00020104141234567890123426660014BR.GOV.BCB.PIX014466756C616E6F32303139406578616D706C652E636F6D27300012  \nBR.COM.OUTRO011001234567895204000053039865406123.455802BR5915NOMEDORECEBEDOR6008BRASILIA61087007490062  \n530515RP12345678-201950300017BR.GOV.BCB.BRCODE01051.0.080450014BR.GOV.BCB.PIX0123PADRAO.URL.PIX/0123AB  \nCD81390012BR.COM.OUTRO01190123.ABCD.3456.WXYZ6304EB76\n",
-    "pixKey": "12345678901"
+    "pixKey": ""
   }
 });
 
@@ -674,17 +529,17 @@ Método para a criação de uma iniciação de pagamento.
 <a href='dictionary/paymentsInitiationPostPixPayments_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
 
 ### Status 422 - UnprocessableEntity Messages Pix
-| Code | Title                               | Detail                                                                                                                                               |
-|:----:|:------------------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------|
-|  1   | Saldo insuficiente                  | Esta conta não possui saldo suficiente para realizar o pagamento.                                                                                    |
-|  2   | Beneficiário incompatível           | O beneficiário informado no consentimento não é o mesmo do esperado pelo DICT.                                                                       |
-|  3   | Valor da transação incompatível     | O valor informado no consentimento não é o mesmo valor do informado no payload de pagamento.                                                         |
-|  4   | Limite acima do limite estabelecido | O valor (ou quantidade de transações) ultrapassa a faixa de limite parametrizada na detentora para permitir a realização de transações pelo cliente. |
-|  5   | Valor inválido                      | O valor enviado não é válido para o QR Code (ou boleto) informado.                                                                                   |
-|  6   | Cobrança inválida                   | Validação de expiração, validação de vencimento, Status Válido.                                                                                      |
-|  7   | Consentimento inválido              | Consentimento inválido status não é Authorised ou está expirado.                                                                                     |
-|  8   | Janela de operação inválida         | Requisição está fora da janela de funcionamento.                                                                                                     |
-| 99   | Desconhecido                        | Não informada pela detentora de conta.                                                                                                               |
+| Code | Title                           | Detail                                                                                                                                               |
+|:----:|:--------------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------|
+|  1   | Saldo insuficiente              | Esta conta não possui saldo suficiente para realizar o pagamento.                                                                                    |
+|  2   | Beneficiário incompatível       | O beneficiário informado no consentimento não é o mesmo do esperado pelo DICT.                                                                       |
+|  3   | Valor da transação incompatível | O valor informado no consentimento não é o mesmo valor do informado no payload de pagamento.                                                         |
+|  4   | Acima do limite estabelecido    | O valor (ou quantidade de transações) ultrapassa a faixa de limite parametrizada na detentora para permitir a realização de transações pelo cliente. |
+|  5   | Valor inválido                  | O valor enviado não é válido para o QR Code (ou boleto) informado.                                                                                   |
+|  6   | Cobrança inválida               | Validação de expiração, validação de vencimento, Status Válido.                                                                                      |
+|  7   | Consentimento inválido          | Consentimento inválido status não é Authorised ou está expirado.                                                                                     |
+|  8   | Janela de operação inválida     | Requisição está fora da janela de funcionamento.                                                                                                     |
+| 99   | Desconhecido                    | Não informada pela detentora de conta.                                                                                                               |
 
 > Body parameter
 
@@ -704,7 +559,7 @@ Método para a criação de uma iniciação de pagamento.
     },
     "additionalInfo": "Descrição da Transação",
     "qrCode": "00020104141234567890123426660014BR.GOV.BCB.PIX014466756C616E6F32303139406578616D706C652E636F6D27300012  \nBR.COM.OUTRO011001234567895204000053039865406123.455802BR5915NOMEDORECEBEDOR6008BRASILIA61087007490062  \n530515RP12345678-201950300017BR.GOV.BCB.BRCODE01051.0.080450014BR.GOV.BCB.PIX0123PADRAO.URL.PIX/0123AB  \nCD81390012BR.COM.OUTRO01190123.ABCD.3456.WXYZ6304EB76\n",
-    "pixKey": "12345678901"
+    "pixKey": ""
   }
 }
 ```
@@ -1178,7 +1033,7 @@ Objeto que contém a identificação de uma conta.
     },
     "additionalInfo": "Descrição da Transação",
     "qrCode": "00020104141234567890123426660014BR.GOV.BCB.PIX014466756C616E6F32303139406578616D706C652E636F6D27300012  \nBR.COM.OUTRO011001234567895204000053039865406123.455802BR5915NOMEDORECEBEDOR6008BRASILIA61087007490062  \n530515RP12345678-201950300017BR.GOV.BCB.BRCODE01051.0.080450014BR.GOV.BCB.PIX0123PADRAO.URL.PIX/0123AB  \nCD81390012BR.COM.OUTRO01190123.ABCD.3456.WXYZ6304EB76\n",
-    "pixKey": "12345678901"
+    "pixKey": ""
   }
 }
 
@@ -1212,7 +1067,7 @@ Objeto que contém a identificação de uma conta.
   },
   "additionalInfo": "Descrição da Transação",
   "qrCode": "00020104141234567890123426660014BR.GOV.BCB.PIX014466756C616E6F32303139406578616D706C652E636F6D27300012  \nBR.COM.OUTRO011001234567895204000053039865406123.455802BR5915NOMEDORECEBEDOR6008BRASILIA61087007490062  \n530515RP12345678-201950300017BR.GOV.BCB.BRCODE01051.0.080450014BR.GOV.BCB.PIX0123PADRAO.URL.PIX/0123AB  \nCD81390012BR.COM.OUTRO01190123.ABCD.3456.WXYZ6304EB76\n",
-  "pixKey": "12345678901"
+  "pixKey": ""
 }
 
 ```
