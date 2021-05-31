@@ -46,27 +46,27 @@ A iniciadora não deve usar comportamento idempotente do POST para pesquisar o s
 ###[A deliberar CD] Recomendação uso de pooling
 ####A consulta via GET, para verificar o processamento da transação, pode ser dado a qualquer momento desde que se respeite o rate limit de:  
 - 300 TPS global, 50 TPS por instituição e 8 TPS por endereço IP (Internet Protocol).  
-- Como sugestão, é indicado que a instituição iniciadora do pagamento implemente um retry exponencial.  
+Como sugestão, é indicado que a instituição iniciadora do pagamento implemente um retry exponencial.  
 
-<h1 id="fase-3-apis-do-open-banking-brasil-api-consentimento-de-inicia-o-de-pagamentos">API - Consentimento de Iniciação de Pagamentos</h1>
+<h1 id="fase-3-apis-do-open-banking-brasil-api-pagamentos">API - Pagamentos</h1>
 
 |Versão|
 |:-----|
-|1     |
+|1.0.0-rc1.0|
 
 #### Visão Geral
 
-A API tem como objetivo coletar o consentimento para iniciação de pagamento entre bancos e instituições financeiras e acessível também à estabelecimentos comerciais participantes do Open Banking Brasil.
+A API tem como objetivo coletar o consentimento e ralizar a iniciação de pagamento entre bancos e instituições financeiras e acessível também à estabelecimentos comerciais participantes do Open Banking Brasil.
 
-É possível realizar a coleta do consentimento para iniciação de pagamento (não possuindo restrição de uso entre pessoa física e pessoa jurídica) mediante a integração entre as instituições autorizadas.
+Os recursos estão disponíveis para pagadores que possuem vínculo com uma instituição detentora de conta participante do Open Banking, independentemente de serem pessoa física ou jurídica.
 
 #### Especificação em OAS 3.0
 
-<a href="swagger/swagger_payments_consents_apis.yaml" target="_blank">Download da Especificação (OAS 3.0)</a>  
+<a href="swagger/swagger_payments_apis.yaml" target="_blank">Download da Especificação (OAS 3.0)</a>  
 
 ## [Em Revisão] Criar consentimento para iniciação de pagamento.
 
-<a id="opIdpaymentsConsentsPostConsents"></a>
+<a id="opIdpaymentsPostConsents"></a>
 
 > Exemplo de código
 
@@ -103,7 +103,7 @@ xhr.addEventListener("readystatechange", function () {
   }
 });
 
-xhr.open("POST", "https://example.com/payments-consents/v1/consents");
+xhr.open("POST", "https://example.com/payments/v1/consents");
 xhr.setRequestHeader("Content-Type", "application/json");
 xhr.setRequestHeader("Accept", "application/json");
 xhr.setRequestHeader("Authorization", "string");
@@ -136,7 +136,7 @@ headers = {
     'x-jws-signature': "string"
     }
 
-conn.request("POST", "/payments-consents/v1/consents", payload, headers)
+conn.request("POST", "/payments/v1/consents", payload, headers)
 
 res = conn.getresponse()
 data = res.read()
@@ -145,7 +145,7 @@ print(data.decode("utf-8"))
 ```
 
 ```java
-HttpResponse<String> response = Unirest.post("https://example.com/payments-consents/v1/consents")
+HttpResponse<String> response = Unirest.post("https://example.com/payments/v1/consents")
   .header("Content-Type", "application/json")
   .header("Accept", "application/json")
   .header("Authorization", "string")
@@ -159,13 +159,13 @@ HttpResponse<String> response = Unirest.post("https://example.com/payments-conse
   .asString();
 ```
 
-`POST /payments-consents/v1/consents`
+`POST /payments/v1/consents`
 
 Método para a criação do consentimento para iniciação de pagamento.
 
 ### Dicionário de dados
 
-<a href='dictionary/paymentsConsentsPostConsents_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
+<a href='dictionary/paymentsPostConsents_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
 
 > Body parameter
 
@@ -214,7 +214,7 @@ Método para a criação do consentimento para iniciação de pagamento.
 ```json
 {
   "data": {
-    "consentId": "C1DD33123",
+    "consentId": "urn:bancoex:C1DD33123",
     "creationDateTime": "2021-05-21T08:30:00Z",
     "statusUpdateDateTime": "2021-05-21T08:30:00Z",
     "status": "AUTHORISED",
@@ -265,12 +265,12 @@ Método para a criação do consentimento para iniciação de pagamento.
 
 <aside class="warning">
 Para realizar esta operação, você deve ser autenticado por meio de um dos seguintes métodos:
-None ( Scopes: openId payments-consents )
+None ( Scopes: openId payments )
 </aside>
 
 ## [Em Revisão] Consultar consentimento para iniciação de pagamento.
 
-<a id="opIdpaymentsConsentsGetConsentsConsentId"></a>
+<a id="opIdpaymentsGetConsentsConsentId"></a>
 
 > Exemplo de código
 
@@ -286,7 +286,7 @@ xhr.addEventListener("readystatechange", function () {
   }
 });
 
-xhr.open("GET", "https://example.com/payments-consents/v1/consents/string");
+xhr.open("GET", "https://example.com/payments/v1/consents/string");
 xhr.setRequestHeader("Accept", "application/json");
 xhr.setRequestHeader("Authorization", "string");
 xhr.setRequestHeader("x-fapi-auth-date", "stringstringstringstringstrin");
@@ -313,7 +313,7 @@ headers = {
     'x-jws-signature': "string"
     }
 
-conn.request("GET", "/payments-consents/v1/consents/string", headers=headers)
+conn.request("GET", "/payments/v1/consents/string", headers=headers)
 
 res = conn.getresponse()
 data = res.read()
@@ -322,7 +322,7 @@ print(data.decode("utf-8"))
 ```
 
 ```java
-HttpResponse<String> response = Unirest.get("https://example.com/payments-consents/v1/consents/string")
+HttpResponse<String> response = Unirest.get("https://example.com/payments/v1/consents/string")
   .header("Accept", "application/json")
   .header("Authorization", "string")
   .header("x-fapi-auth-date", "stringstringstringstringstrin")
@@ -333,13 +333,13 @@ HttpResponse<String> response = Unirest.get("https://example.com/payments-consen
   .asString();
 ```
 
-`GET /payments-consents/v1/consents/{consentId}`
+`GET /payments/v1/consents/{consentId}`
 
 Método para consultar o consentimento para iniciação de pagamento.
 
 ### Dicionário de dados
 
-<a href='dictionary/paymentsConsentsGetConsentsConsentId_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
+<a href='dictionary/paymentsGetConsentsConsentId_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
 
 <h3 id="[em-revisão]-consultar-consentimento-para-iniciação-de-pagamento.-parameters">Parâmetros</h3>
 
@@ -360,7 +360,7 @@ Método para consultar o consentimento para iniciação de pagamento.
 ```json
 {
   "data": {
-    "consentId": "C1DD33123",
+    "consentId": "urn:bancoex:C1DD33123",
     "creationDateTime": "2021-05-21T08:30:00Z",
     "statusUpdateDateTime": "2021-05-21T08:30:00Z",
     "status": "AUTHORISED",
@@ -410,28 +410,12 @@ Método para consultar o consentimento para iniciação de pagamento.
 
 <aside class="warning">
 Para realizar esta operação, você deve ser autenticado por meio de um dos seguintes métodos:
-None ( Scopes: openId payments-consents )
+None ( Scopes: openId payments )
 </aside>
-
-<h1 id="fase-3-apis-do-open-banking-brasil-api-inicia-o-de-pagamentos">API - Iniciação de Pagamentos</h1>
-
-|Versão|
-|:-----|
-|1     |
-
-#### Visão Geral
-
-A API tem como objetivo permitir a relação entre a iniciadora de transação de pagamento e a instituição detentora de conta para a solicitação de um pagamento pelo Open Banking Brasil.        
-
-O recurso está disponível para pagadores que possuem vínculo com uma instituição detentora de conta participante do Open Banking, independentemente de serem pessoa física ou jurídica.
-
-#### Especificação em OAS 3.0
-
-<a href="swagger/swagger_payments_initiation_apis.yaml" target="_blank">Download da Especificação (OAS 3.0)</a>  
 
 ## [Em Revisão] Pix - Criar iniciação de pagamento.
 
-<a id="opIdpaymentsInitiationPostPixPayments"></a>
+<a id="opIdpaymentsPostPixPayments"></a>
 
 > Exemplo de código
 
@@ -538,7 +522,7 @@ Método para a criação de uma iniciação de pagamento.
 
 ### Dicionário de dados
 
-<a href='dictionary/paymentsInitiationPostPixPayments_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
+<a href='dictionary/paymentsPostPixPayments_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
 
 ### Status 422 - UnprocessableEntity Messages Pix
 | Code | Title                           | Detail                                                                                                                                               |
@@ -825,12 +809,12 @@ Método para a criação de uma iniciação de pagamento.
 
 <aside class="warning">
 Para realizar esta operação, você deve ser autenticado por meio de um dos seguintes métodos:
-None ( Scopes: openId payments-initiation )
+None ( Scopes: openId payments )
 </aside>
 
 ## [Em Revisão] Pix - Consultar iniciação de pagamento.
 
-<a id="opIdpaymentsInitiationGetPixPayments"></a>
+<a id="opIdpaymentsGetPixPaymentsPaymentId"></a>
 
 > Exemplo de código
 
@@ -899,7 +883,7 @@ Método para consultar uma iniciação de pagamento.
 
 ### Dicionário de dados
 
-<a href='dictionary/paymentsInitiationGetPixPayments_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
+<a href='dictionary/paymentsGetPixPaymentsPaymentId_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
 
 <h3 id="[em-revisão]-pix---consultar-iniciação-de-pagamento.-parameters">Parâmetros</h3>
 
@@ -981,7 +965,7 @@ Método para consultar uma iniciação de pagamento.
 
 <aside class="warning">
 Para realizar esta operação, você deve ser autenticado por meio de um dos seguintes métodos:
-None ( Scopes: openId payments-initiation )
+None ( Scopes: openId payments )
 </aside>
 
 # Schemas
@@ -1382,7 +1366,7 @@ Objeto contendo dados do pagameto como moeda e valor.
 ```json
 {
   "data": {
-    "consentId": "C1DD33123",
+    "consentId": "urn:bancoex:C1DD33123",
     "creationDateTime": "2021-05-21T08:30:00Z",
     "statusUpdateDateTime": "2021-05-21T08:30:00Z",
     "status": "AUTHORISED",
@@ -1417,7 +1401,7 @@ Objeto contendo dados do pagameto como moeda e valor.
 |» consentId|string|true|Identificador único do consentimento criado para a iniciação de pagamento solicitada.|
 |» creationDateTime|string(date-time)|true|Data e hora em que o consentimento foi criado. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).|
 |» statusUpdateDateTime|string(date-time)|true|Data e hora em que o recurso foi atualizado. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).|
-|» status|string|true|Retorna o estado do consentimento que no momento de sua criação será AWAITING_AUTHORISATION.<br>Este estado será alterado depois da autorização do consentimento na detentora da conta do pagador (Debtor) para AUTHORISED ou REJECTED. <br>O consentimento fica no estado CONSUMED após ocorrer a iniciação do pagamento referente ao consentimento.<br>AUTHORISED - Autorizado <br>AWAITING_AUTHORISATION - Aguardando autorização<br>REJECTED - Rejeitado<br>CONSUMED - Consumido|
+|» status|string|true|Retorna o estado do consentimento que no momento de sua criação será AWAITING_AUTHORISATION.<br>Este estado será alterado depois da autorização do consentimento na detentora da conta do pagador (Debtor) para AUTHORISED ou REJECTED. <br>O consentimento fica no estado CONSUMED após ocorrer a iniciação do pagamento referente ao consentimento.  <br>Estados possíveis:  <br>AWAITING_AUTHORISATION - Aguardando autorização<br>AUTHORISED - Autorizado   <br>REJECTED - Rejeitado  <br>CONSUMED - Consumido|
 |» creditor|[Identification](#schemaidentification)|true|Objeto contendo os dados do recebedor (creditor).|
 |» payment|[PaymentConsent](#schemapaymentconsent)|true|Objeto contendo dados de pagamento para consentimento.|
 |» debtorAccount|[Account](#schemaaccount)|false|Objeto que contém a identificação de uma conta.|

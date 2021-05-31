@@ -10,12 +10,14 @@ APIS=(
   "financings_apis"
   "unarranged_accounts_overdraft_apis"
   "invoice_financings_apis"
-  "payments_initiation_apis"
   "resources_apis"
-  "payments_consents_apis"
+  "payments_apis"
+  "consents_apis"
 )
 
-APIS_CONDITIONAL=()
+APIS_CONDITIONAL=(
+
+)
 
 function generate() {
   LIST=$1

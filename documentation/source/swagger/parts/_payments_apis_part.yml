@@ -1,19 +1,10 @@
 ﻿openapi: "3.0.0"
 info:
-  title: API Payments Consents - Open Banking Brasil
+  title: API de Pagamentos - Open Banking Brasil
   description: |
-    API que trata do consentimento das operações de pagamentos para o Open Banking Brasil.
-
-    # Permissions necessárias para a API Payments Consents
-
-    Para cada um dos paths desta API, além dos escopos (`scopes`) indicados existem `permissions` que deverão ser observadas:
-
-    ### /payments-consents/v1/consents
-      - permissions:
-        - POST: **PAYMENTS_CONSENTS_CREATE**
-    ### /payments-consents/v1/consents{consentId}
-      - permissions:
-        - GET: **PAYMENTS_CONSENTS_READ**
+    API que trata das operações de pagamentos para o Open Banking Brasil.
+    Requer consentimento do cliente para todos os `endpoints`.
+  
   version: 1.0.0-rc1.0
   license:
     name: Apache 2.0
@@ -23,19 +14,19 @@ info:
     email: gt-interfaces@openbankingbr.org
     url: 'https://openbanking-brasil.github.io/areadesenvolvedor/'
 servers:
-  - url: 'https://api.banco.com.br/open-banking/payments-consents/v1'
+  - url: 'https://api.banco.com.br/open-banking/payments/v1'
     description: Servidor de Produção
-  - url: 'https://apih.banco.com.br/open-banking/payments-consents/v1'
+  - url: 'https://apih.banco.com.br/open-banking/payments/v1'
     description: Servidor de Homologação
 tags:
-  - name: Payments Consents
+  - name: Pagamentos
 paths:
   /consents:
     post:
       tags:
-        - Payments Consents
+        - Pagamentos
       summary: Criar consentimento para a iniciação de pagamento.
-      operationId: paymentsConsentsPostConsents
+      operationId: paymentsPostConsents
       description: Método de criação do consentimento para a iniciação de pagamento.
       parameters:
         - $ref: '#/components/parameters/Authorization'
@@ -88,9 +79,9 @@ paths:
   /consents/{consentId}:
     get:
       tags:
-        - Payments Consents
-      summary: Consultar consentimento de pagamento para iniciação de pagamento.
-      operationId: paymentsConsentsGetConsentsConsentId
+        - Pagamentos
+      summary: Consultar consentimento para iniciação de pagamento.
+      operationId: paymentsGetConsentsConsentId
       description: Método para consulta do consentimento para a iniciação de pagamento.
       parameters:
         - $ref: '#/components/parameters/consentId'
@@ -131,29 +122,140 @@ paths:
         - OpenId:
             - openId
             - payments-consents
+  /pix/payments:
+    post:
+      tags:
+        - Pagamentos
+      summary: Criar iniciação de pagamento.
+      operationId: paymentsPostPixPayments
+      description: Método para criar uma iniciação de pagamento.
+      parameters:
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/xFapiAuthDate'
+        - $ref: '#/components/parameters/xFapiCustomerIpAddress'
+        - $ref: '#/components/parameters/xFapiInteractionId'
+        - $ref: '#/components/parameters/xCustomerUserAgent'
+        - $ref: '#/components/parameters/XIdempotencyKey'
+        - $ref: '#/components/parameters/XJwsSignature'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePixPayment"
+        description: Payload para criação da iniciação do pagamento Pix.
+        required: true
+      responses:
+        '201':
+          $ref: '#/components/responses/201PaymentsInitiationPixPaymentCreated'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          description: Erro inesperado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+      security:
+        - OpenId:
+            - openId
+            - payments-initiation
+  /pix/payments/{paymentId}:
+    get:
+      tags:
+        - Pagamentos
+      summary: Consultar iniciação de pagamento.
+      operationId: paymentsGetPixPaymentsPaymentId
+      description: Método para consultar uma iniciação de pagamento.
+      parameters:
+        - $ref: '#/components/parameters/paymentId'
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/xFapiAuthDate'
+        - $ref: '#/components/parameters/xFapiCustomerIpAddress'
+        - $ref: '#/components/parameters/xFapiInteractionId'
+        - $ref: '#/components/parameters/xCustomerUserAgent'
+        - $ref: '#/components/parameters/XJwsSignature'
+      responses:
+        '200':
+          $ref: '#/components/responses/200PaymentsInitiationPixPaymentIdRead'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          description: Erro inesperado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+      security:
+        - OpenId:
+            - openId
+            - payments-initiation
 components:
   schemas:
-    CreatePaymentConsent:
-      $ref: ./schemas/payments_consents_apis/CreatePaymentConsent.yaml
-    CreatePaymentConsentData:
-      $ref: ./schemas/payments_consents_apis/CreatePaymentConsentData.yaml
-    ResponsePaymentConsent:
-      $ref: ./schemas/payments_consents_apis/ResponsePaymentConsent.yaml
-    ResponsePaymentConsentData:
-      $ref: ./schemas/payments_consents_apis/ResponsePaymentConsentData.yaml
-    PaymentConsent:
-      $ref: ./schemas/payments_consents_apis/PaymentConsent.yaml
     Account:
       $ref: ./schemas/business_commons/Account.yaml
-    Identification:
-      $ref: ./schemas/business_commons/Identification.yaml
+    CreatePixPayment:
+      $ref: ./schemas/payments_apis/CreatePixPayment.yaml
+    CreatePaymentConsent:
+      $ref: ./schemas/payments_apis/CreatePaymentConsent.yaml
+    CreatePaymentConsentData:
+      $ref: ./schemas/payments_apis/CreatePaymentConsentData.yaml
+    CreatePixPaymentData:
+      $ref: ./schemas/payments_apis/CreatePixPaymentData.yaml
+    PaymentConsent:
+      $ref: ./schemas/payments_apis/PaymentConsent.yaml
+    ResponsePaymentConsent:
+      $ref: ./schemas/payments_apis/ResponsePaymentConsent.yaml
+    ResponsePaymentConsentData:
+      $ref: ./schemas/payments_apis/ResponsePaymentConsentData.yaml
+    ResponsePixPayment:
+      $ref: ./schemas/payments_apis/ResponsePixPayment.yaml
     ResponseError:
       $ref: ./schemas/ResponseError.yaml
+    ResponsePixPaymentData:
+      $ref: ./schemas/payments_apis/ResponsePixPaymentData.yaml
+    PaymentPix:
+      $ref: ./schemas/payments_apis/PaymentPix.yaml
     EnumAccountPaymentsType:
       $ref: ./schemas/enum/EnumAccountPaymentsType.yaml
+    Identification:
+      $ref: ./schemas/business_commons/Identification.yaml
   parameters:
     consentId:
       $ref: ./parameters/ConsentId.yaml
+    paymentId:
+      $ref: ./parameters/PaymentId.yaml
     Authorization:
       $ref: ./parameters/Authorization.yaml
     xCustomerUserAgent:
@@ -188,7 +290,7 @@ components:
     TooManyRequests:
       $ref: ./responses/TooManyRequests.yaml
     UnprocessableEntity:
-      $ref: ./responses/UnprocessableEntity.yaml
+      $ref: ./responses/UnprocessableEntityPixPayments.yaml
     Unauthorized:
       $ref: ./responses/Unauthorized.yaml
     UnsupportedMediaType:
@@ -213,3 +315,24 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ResponsePaymentConsent'
+    201PaymentsInitiationPixPaymentCreated:
+      description: Iniciação de pagamento Pix criada com sucesso.
+      headers:
+        x-fapi-interaction-id:
+          schema:
+            $ref: ./headers/XFapiInteractionId.yaml           
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ResponsePixPayment'
+    200PaymentsInitiationPixPaymentIdRead:
+      description: Dados de iniciação de pagamento Pix obtidos com sucesso.
+      headers:
+        x-fapi-interaction-id:
+          schema:
+            $ref: ./headers/XFapiInteractionId.yaml
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ResponsePixPayment'
+      
