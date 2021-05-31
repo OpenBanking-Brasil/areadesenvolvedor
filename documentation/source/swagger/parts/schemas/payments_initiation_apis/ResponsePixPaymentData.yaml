@@ -11,29 +11,29 @@ required:
 properties:
   paymentId:
     type: string
-    maxLength: 36
-    pattern: ^[{]?[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}[}]?$
-    example: "8f800dc8-bc8a-4c0e-b5e6-3c6801cfe135"
+    maxLength: 100
+    pattern: ^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$
+    example: TXpRMU9UQTROMWhZV2xSU1FUazJSMDl
     description: | 
       Código ou identificador único informado pela instituição que mantém a conta para representar  
       a iniciação de pagamento individual.  
       Esse identificador deve ser usado para consultar o status da iniciação de pagamento.
   endToEndId:
     type: string
-    maxLength: 36
-    pattern: ^[{]?[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}[}]?$
-    example: "a9ae654d-e531-4a8b-a926-952d664de203"
+    maxLength: 32
+    pattern: ^([E])([0-9]{8})([0-9]{4})(0[1-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])(2[0-3]|[01][0-9])([0-5][0-9])([a-zA-Z0-9]{11})$
+    example: E9040088820210128000800123873170
     description: |
       Identificador fim a fim da transação. O termo "E2E" que identifica a transação de forma única dentro do arranjo.  
       Esse identificador deve ser único, não podendo ser repetido em qualquer outra operação enviada ao SPI.  
       [Restrição] É obrigatório o retorno após o status "ACCEPTED_SETTLEMENT_IN_PROCESS".
   consentId:
     type: string
-    maxLength: 36
-    pattern: ^[{]?[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}[}]?$
-    example: "3a782761-9573-4e1f-b4d1-4c798955c0b8"
+    maxLength: 100
+    pattern: ^[a-zA-Z0-9][a-zA-Z0-9\-\:]{0,99}$
+    example: urn:bancoex:C1DD33123
     description: | 
-      Identificador único do consentimento criado para a iniciação de pagamento solicitada.
+      Identificador único do consentimento.
   creationDateTime:
     type: string
     format: date-time
@@ -43,7 +43,7 @@ properties:
       Data e hora em que o recurso foi criado.  
       Uma string com data e hora conforme especificação RFC-3339,  
       sempre com a utilização de timezone UTC(UTC time format).
-  updatedDateTime:
+  statusUpdateDateTime:
     type: string
     format: date-time
     pattern: ^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$|^NA$
@@ -79,7 +79,8 @@ properties:
       É a sequência de caracteres que seria lida pelo leitor de QR Code, e deve propiciar o retorno dos dados do pagador após consulta na DICT.  
       Essa funcionalidade é possível tanto para QR Code estático quanto para QR Code dinâmico.  
       No arranjo do Pix esta é a mesma sequência gerada e/ou lida pela funcionalidade Pix Copia e Cola.  
-      Este campo deverá ser no formato UTF-8
+      Este campo deverá ser no formato UTF-8.  
+      [Restrição] Obrigatório se for um pagamento por QR Code.
   status:
     $ref: ../enum/EnumPaymentStatusType.yaml
   rejectionReason:
