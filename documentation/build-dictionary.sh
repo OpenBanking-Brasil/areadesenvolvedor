@@ -12,6 +12,7 @@ APIS=(
   "invoice_financings_apis"
   "resources_apis"
   "payments_apis"
+  "consents_apis"
 )
 
 APIS_CONDITIONAL=(
