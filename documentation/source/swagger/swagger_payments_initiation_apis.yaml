@@ -1,9 +1,20 @@
 ﻿openapi: 3.0.0
 info:
-  title: API Payments Initiation - Open Banking Brasil
+  title: API Iniciação de Pagamentos - Open Banking Brasil
   description: |
     API que trata da iniciação das operações de pagamentos para o Open Banking Brasil.
     Requer consentimento do cliente para todos os `endpoints`.
+
+    # Permissions necessárias para a API Iniciação de Pagamentos
+
+    Para cada um dos paths desta API, além dos escopos (`scopes`) indicados existem `permissions` que deverão ser observadas:
+
+    ### /payments/v1/consents
+      - permissions:
+        - POST: **PAYMENTS_CONSENTS_CREATE**
+    ### /payments/v1/consents/{consentId}
+      - permissions:
+        - GET: **PAYMENTS_CONSENTS_READ**
   version: 1.0.0-rc1.0
   license:
     name: Apache 2.0
@@ -18,13 +29,114 @@ servers:
   - url: 'https://apih.banco.com.br/open-banking/payments/v1'
     description: Servidor de Homologação
 tags:
-  - name: Iniciação de Pagamentos
+  - name: Payment Initiation
 paths:
+  /consents:
+    post:
+      tags:
+        - Consentimento
+      summary: Criar consentimento para a iniciação de pagamento.
+      operationId: paymentsConsentsPostConsents
+      description: Método de criação do consentimento para a iniciação de pagamento.
+      parameters:
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/xFapiAuthDate'
+        - $ref: '#/components/parameters/xFapiCustomerIpAddress'
+        - $ref: '#/components/parameters/xFapiInteractionId'
+        - $ref: '#/components/parameters/xCustomerUserAgent'
+        - $ref: '#/components/parameters/XIdempotencyKey'
+        - $ref: '#/components/parameters/XJwsSignature'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePaymentConsent'
+        description: Payload para criação do consentimento para iniciação do pagamento.
+        required: true
+      responses:
+        '201':
+          $ref: '#/components/responses/201PaymentsConsentsConsentCreated'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          description: Erro inesperado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+      security:
+        - OpenId:
+            - openId
+            - payments-consents
+  '/consents/{consentId}':
+    get:
+      tags:
+        - Consentimento
+      summary: Consultar consentimento para iniciação de pagamento.
+      operationId: paymentsConsentsGetConsentsConsentId
+      description: Método para consulta do consentimento para a iniciação de pagamento.
+      parameters:
+        - $ref: '#/components/parameters/consentId'
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/xFapiAuthDate'
+        - $ref: '#/components/parameters/xFapiCustomerIpAddress'
+        - $ref: '#/components/parameters/xFapiInteractionId'
+        - $ref: '#/components/parameters/xCustomerUserAgent'
+        - $ref: '#/components/parameters/XJwsSignature'
+      responses:
+        '200':
+          $ref: '#/components/responses/200PaymentsConsentsConsentIdRead'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          description: Erro inesperado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+      security:
+        - OpenId:
+            - openId
+            - payments-consents
   /pix/payments:
     post:
       tags:
         - Iniciação de Pagamentos
-      summary: Criar iniciação de transação de pagamento.
+      summary: Criar iniciação de pagamento.
       operationId: paymentsInitiationPostPixPayments
       description: Método para criar uma iniciação de pagamento.
       parameters:
@@ -121,6 +233,47 @@ paths:
             - payments-initiation
 components:
   schemas:
+    Account:
+      type: object
+      description: Objeto que contém a identificação de uma conta.
+      required:
+        - ispb
+        - number
+        - checkDigit
+        - accountType
+      properties:
+        ispb:
+          type: string
+          maxLength: 8
+          pattern: '^[0-9]{1,8}$'
+          example: '12345678'
+          description: |
+            Deve ser preenchido com o ISPB (Identificador do Sistema de Pagamentos Brasileiros) do participante do SPI somente com números.
+        branchCode:
+          type: string
+          maxLength: 4
+          pattern: '^\d{4}$'
+          example: '1774'
+          description: |
+            Código da Agência detentora da conta sem digito.  
+            (Agência é a dependência destinada ao atendimento aos clientes, ao público em geral e aos associados de cooperativas de crédito,  
+            no exercício de atividades da instituição, não podendo ser móvel ou transitória).  
+            [Restrição] Obrigatório quando tipo de conta for CACC (CONTA_DEPOSITO_A_VISTA) ou SVGS (CONTA_POUPANCA).
+        number:
+          type: string
+          maxLength: 20
+          pattern: '^\d{8,20}$'
+          example: '1234567890'
+          description: 'Número da conta da iniciação de pagamento, sem o dígito.'
+        checkDigit:
+          type: string
+          pattern: \w*\W*
+          maxLength: 1
+          example: '4'
+          description: Dígito da conta da iniciação de pagamento.
+        accountType:
+          $ref: '#/components/schemas/EnumAccountPaymentsType'
+      additionalProperties: false
     CreatePixPayment:
       type: object
       required:
@@ -128,6 +281,188 @@ components:
       properties:
         data:
           $ref: '#/components/schemas/CreatePixPaymentData'
+      additionalProperties: false
+    CreatePaymentConsent:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          $ref: '#/components/schemas/CreatePaymentConsentData'
+      additionalProperties: false
+    CreatePaymentConsentData:
+      type: object
+      description: Objeto contendo as informações de consentimento para a iniciação de pagamento individual.
+      required:
+        - creditor
+        - payment
+      properties:
+        creditor:
+          $ref: '#/components/schemas/Identification'
+        payment:
+          $ref: '#/components/schemas/PaymentConsent'
+        debtorAccount:
+          $ref: '#/components/schemas/Account'
+      additionalProperties: false
+    CreatePixPaymentData:
+      type: object
+      description: Objeto contendo dados do pagamento e do recebedor (creditor).
+      required:
+        - payment
+        - creditorAccount
+      properties:
+        payment:
+          $ref: '#/components/schemas/PaymentPix'
+        creditorAccount:
+          $ref: '#/components/schemas/Account'
+        additionalInfo:
+          type: string
+          maxLength: 140
+          pattern: \w*\W*
+          example: Descrição da Transação
+          description: |
+            Determina um texto a ser apresentado ao pagador para que ele possa digitar uma informação correlata,  
+            em formato livre, a ser enviada ao recebedor.
+        qrCode:
+          type: string
+          maxLength: 512
+          pattern: \w*\W*
+          example: |
+            00020104141234567890123426660014BR.GOV.BCB.PIX014466756C616E6F32303139406578616D706C652E636F6D27300012  
+            BR.COM.OUTRO011001234567895204000053039865406123.455802BR5915NOMEDORECEBEDOR6008BRASILIA61087007490062  
+            530515RP12345678-201950300017BR.GOV.BCB.BRCODE01051.0.080450014BR.GOV.BCB.PIX0123PADRAO.URL.PIX/0123AB  
+            CD81390012BR.COM.OUTRO01190123.ABCD.3456.WXYZ6304EB76
+          description: |
+            Sequência de caracteres que corresponde ao QR Code disponibilizado para o pagador.  
+            É a sequência de caracteres que seria lida pelo leitor de QR Code, e deve propiciar o retorno dos dados do pagador após consulta na DICT.  
+            Essa funcionalidade é possível tanto para QR Code estático quanto para QR Code dinâmico.  
+            No arranjo do Pix esta é a mesma sequência gerada e/ou lida pela funcionalidade Pix Copia e Cola.  
+            Este campo deverá ser no formato UTF-8.  
+            [Restrição] Obrigatório se for um pagamento por QR Code.
+        pixKey:
+          type: string
+          maxLength: 77
+          pattern: \w*\W*
+          example: ''
+          description: |
+            Chave DICT do recebedor. Os tipos de chaves podem ser: telefone, e-mail, cpf/cnpj ou chave aleatória.  
+            O telefone celular é no padrão E.1641.  
+            O E-mail deve ter o formato xxxxxxxx@xxxxxxx.xxx(.xx) e no máximo 77 caracteres.  
+            O CPF será utilizado com 11 números e deverá ser informado sem pontos ou traços.  
+            O CNPJ será utilizado com 14 números e deverá ser informado sem pontos ou traços.  
+            A chave aleatória deve ser UUID gerado pelo DICT, conforme formato especificado na RFC41223.  
+            [Restrição] Obrigatório para pagamentos via Chave.
+      additionalProperties: false
+    PaymentConsent:
+      type: object
+      description: Objeto contendo dados de pagamento para consentimento.
+      required:
+        - type
+        - dateTime
+        - currency
+        - amount
+      properties:
+        type:
+          type: string
+          maxLength: 3
+          enum:
+            - PIX
+          example: PIX
+          description: |
+            Este campo define o tipo de pagamento que será iniciado após a autorização do consentimento.
+        dateTime:
+          type: string
+          format: date-time
+          maxLength: 20
+          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
+          example: '2021-01-01T00:00:00Z'
+          description: |
+            Data e hora do pagamento. 
+            Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).
+        currency:
+          type: string
+          maxLength: 3
+          pattern: '^(\w{3}){1}$'
+          example: BRL
+          description: |
+            Código da moeda nacional segundo modelo ISO-4217, ou seja, 'BRL'. 
+            Todos os valores monetários informados estão representados com a moeda vigente do Brasil.
+        amount:
+          type: number
+          format: double
+          maxLength: 19
+          pattern: '^((\d{1,16}\.\d{2}))$'
+          example: 100000.12
+          description: |
+            Valor da transação a ser efetuada com 2 casas decimais.
+      additionalProperties: false
+    ResponsePaymentConsent:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          $ref: '#/components/schemas/ResponsePaymentConsentData'
+      additionalProperties: false
+    ResponsePaymentConsentData:
+      type: object
+      description: Objeto contendo as informações de resposta do consentimento para a iniciação de pagamento individual.
+      required:
+        - consentId
+        - statusUpdateDateTime
+        - creationDateTime
+        - status
+        - creditor
+        - payment
+        - debtor
+      properties:
+        consentId:
+          type: string
+          pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-\:]{0,99}$'
+          minLength: 1
+          maxLength: 100
+          example: 'urn:bancoex:C1DD33123'
+          description: |
+            Identificador único do consentimento criado para a iniciação de pagamento solicitada.
+        creationDateTime:
+          description: 'Data e hora em que o consentimento foi criado. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).'
+          type: string
+          format: date-time
+          example: '2021-05-21T08:30:00Z'
+          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
+          maxLength: 20
+        statusUpdateDateTime:
+          type: string
+          format: date-time
+          example: '2021-05-21T08:30:00Z'
+          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
+          maxLength: 20
+          description: |
+            Data e hora em que o recurso foi atualizado. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).
+        status:
+          type: string
+          maxLength: 22
+          enum:
+            - AWAITING_AUTHORISATION
+            - AUTHORISED
+            - REJECTED
+            - CONSUMED
+          example: AUTHORISED
+          description: |
+            Retorna o estado do consentimento que no momento de sua criação será AWAITING_AUTHORISATION.
+            Este estado será alterado depois da autorização do consentimento na detentora da conta do pagador (Debtor) para AUTHORISED ou REJECTED. 
+            O consentimento fica no estado CONSUMED após ocorrer a iniciação do pagamento referente ao consentimento.  
+            Estados possíveis:  
+            AWAITING_AUTHORISATION - Aguardando autorização
+            AUTHORISED - Autorizado   
+            REJECTED - Rejeitado  
+            CONSUMED - Consumido  
+        creditor:
+          $ref: '#/components/schemas/Identification'
+        payment:
+          $ref: '#/components/schemas/PaymentConsent'
+        debtorAccount:
+          $ref: '#/components/schemas/Account'
       additionalProperties: false
     ResponsePixPayment:
       type: object
@@ -194,47 +529,6 @@ components:
               format: date-time
               example: '2021-05-21T08:30:00Z'
           additionalProperties: false
-      additionalProperties: false
-    Account:
-      type: object
-      description: Objeto que contém a identificação de uma conta.
-      required:
-        - ispb
-        - number
-        - checkDigit
-        - accountType
-      properties:
-        ispb:
-          type: string
-          maxLength: 8
-          pattern: '^[0-9]{1,8}$'
-          example: '12345678'
-          description: |
-            Deve ser preenchido com o ISPB (Identificador do Sistema de Pagamentos Brasileiros) do participante do SPI somente com números.
-        branchCode:
-          type: string
-          maxLength: 4
-          pattern: '^\d{4}$'
-          example: '1774'
-          description: |
-            Código da Agência detentora da conta sem digito.  
-            (Agência é a dependência destinada ao atendimento aos clientes, ao público em geral e aos associados de cooperativas de crédito,  
-            no exercício de atividades da instituição, não podendo ser móvel ou transitória).  
-            [Restrição] Obrigatório quando tipo de conta for CACC (CONTA_DEPOSITO_A_VISTA) ou SVGS (CONTA_POUPANCA).
-        number:
-          type: string
-          maxLength: 20
-          pattern: '^\d{8,20}$'
-          example: '1234567890'
-          description: 'Número da conta da iniciação de pagamento, sem o dígito.'
-        checkDigit:
-          type: string
-          pattern: \w*\W*
-          maxLength: 1
-          example: '4'
-          description: Dígito da conta da iniciação de pagamento.
-        accountType:
-          $ref: '#/components/schemas/EnumAccountPaymentsType'
       additionalProperties: false
     ResponsePixPaymentData:
       type: object
@@ -394,55 +688,6 @@ components:
         creditorAccount:
           $ref: '#/components/schemas/Account'
       additionalProperties: false
-    CreatePixPaymentData:
-      type: object
-      description: Objeto contendo dados do pagamento e do recebedor (creditor).
-      required:
-        - payment
-        - creditorAccount
-      properties:
-        payment:
-          $ref: '#/components/schemas/PaymentPix'
-        creditorAccount:
-          $ref: '#/components/schemas/Account'
-        additionalInfo:
-          type: string
-          maxLength: 140
-          pattern: \w*\W*
-          example: Descrição da Transação
-          description: |
-            Determina um texto a ser apresentado ao pagador para que ele possa digitar uma informação correlata,  
-            em formato livre, a ser enviada ao recebedor.
-        qrCode:
-          type: string
-          maxLength: 512
-          pattern: \w*\W*
-          example: |
-            00020104141234567890123426660014BR.GOV.BCB.PIX014466756C616E6F32303139406578616D706C652E636F6D27300012  
-            BR.COM.OUTRO011001234567895204000053039865406123.455802BR5915NOMEDORECEBEDOR6008BRASILIA61087007490062  
-            530515RP12345678-201950300017BR.GOV.BCB.BRCODE01051.0.080450014BR.GOV.BCB.PIX0123PADRAO.URL.PIX/0123AB  
-            CD81390012BR.COM.OUTRO01190123.ABCD.3456.WXYZ6304EB76
-          description: |
-            Sequência de caracteres que corresponde ao QR Code disponibilizado para o pagador.  
-            É a sequência de caracteres que seria lida pelo leitor de QR Code, e deve propiciar o retorno dos dados do pagador após consulta na DICT.  
-            Essa funcionalidade é possível tanto para QR Code estático quanto para QR Code dinâmico.  
-            No arranjo do Pix esta é a mesma sequência gerada e/ou lida pela funcionalidade Pix Copia e Cola.  
-            Este campo deverá ser no formato UTF-8.  
-            [Restrição] Obrigatório se for um pagamento por QR Code.
-        pixKey:
-          type: string
-          maxLength: 77
-          pattern: \w*\W*
-          example: ''
-          description: |
-            Chave DICT do recebedor. Os tipos de chaves podem ser: telefone, e-mail, cpf/cnpj ou chave aleatória.  
-            O telefone celular é no padrão E.1641.  
-            O E-mail deve ter o formato xxxxxxxx@xxxxxxx.xxx(.xx) e no máximo 77 caracteres.  
-            O CPF será utilizado com 11 números e deverá ser informado sem pontos ou traços.  
-            O CNPJ será utilizado com 14 números e deverá ser informado sem pontos ou traços.  
-            A chave aleatória deve ser UUID gerado pelo DICT, conforme formato especificado na RFC41223.  
-            [Restrição] Obrigatório para pagamentos via Chave.
-      additionalProperties: false
     PaymentPix:
       type: object
       description: Objeto contendo dados do pagameto como moeda e valor.
@@ -470,40 +715,7 @@ components:
         debtorAccount:
           $ref: '#/components/schemas/Account'
         creditor:
-          type: object
-          description: Objeto contendo os dados do recebedor (creditor).
-          required:
-            - personType
-            - cpfCnpj
-            - name
-          properties:
-            personType:
-              type: string
-              maxLength: 15
-              enum:
-                - PESSOA_NATURAL
-                - PESSOA_JURIDICA
-              description: |
-                Titular, pessoa natural ou juridica a quem se referem os dados de recebedor (creditor).
-            cpfCnpj:
-              type: string
-              maxLength: 14
-              pattern: '^\d{11,14}$'
-              example: '58764789000137'
-              description: |
-                Identificação da pessoa envolvida na transação.  
-                Preencher com o CPF ou CNPJ, de acordo com o valor escolhido no campo type.  
-                O CPF será utilizado com 11 números e deverá ser informado sem pontos ou traços.  
-                O CNPJ será utilizado com 14 números e deverá ser informado sem pontos ou traços.
-            name:
-              type: string
-              maxLength: 140
-              pattern: \w*\W*
-              example: Marco Antonio de Brito
-              description: |
-                Em caso de pessoa física, nome completo do titular da conta do recebedor.  
-                Em caso de pessoa jurídica, razão social da conta do recebedor.
-          additionalProperties: false
+          $ref: '#/components/schemas/Identification'
       additionalProperties: false
     EnumAccountPaymentsType:
       type: string
@@ -523,7 +735,52 @@ components:
         SLRY - Salary - Conta-Salário.  
         SVGS - Savings - Conta de Poupança.  
         TRAN - TransactingAccount - Conta de Pagamento
+    Identification:
+      type: object
+      description: Objeto contendo os dados do recebedor (creditor).
+      required:
+        - personType
+        - cpfCnpj
+        - name
+      properties:
+        personType:
+          type: string
+          maxLength: 15
+          enum:
+            - PESSOA_NATURAL
+            - PESSOA_JURIDICA
+          description: |
+            Titular, pessoa natural ou juridica a quem se referem os dados de recebedor (creditor).
+        cpfCnpj:
+          type: string
+          maxLength: 14
+          pattern: '^\d{11,14}$'
+          example: '58764789000137'
+          description: |
+            Identificação da pessoa envolvida na transação.  
+            Preencher com o CPF ou CNPJ, de acordo com o valor escolhido no campo type.  
+            O CPF será utilizado com 11 números e deverá ser informado sem pontos ou traços.  
+            O CNPJ será utilizado com 14 números e deverá ser informado sem pontos ou traços.
+        name:
+          type: string
+          maxLength: 140
+          pattern: \w*\W*
+          example: Marco Antonio de Brito
+          description: |
+            Em caso de pessoa física, nome completo do titular da conta do recebedor.  
+            Em caso de pessoa jurídica, razão social da conta do recebedor.
+      additionalProperties: false
   parameters:
+    consentId:
+      name: consentId
+      in: path
+      description: Identificador do consentimento.
+      required: true
+      schema:
+        type: string
+        pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
+        minLength: 1
+        maxLength: 100
     paymentId:
       name: paymentId
       in: path
@@ -765,12 +1022,35 @@ components:
         application/json; charset=utf-8:
           schema:
             $ref: '#/components/schemas/ResponseError'
+    201PaymentsConsentsConsentCreated:
+      description: Consentimento de pagamento criado com sucesso.
+      headers:
+        x-fapi-interaction-id:
+          schema:
+            $ref: '#/components/responses/200PaymentsConsentsConsentIdRead/headers/x-fapi-interaction-id/schema'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ResponsePaymentConsent'
+    200PaymentsConsentsConsentIdRead:
+      description: Dados do consentimento de pagamento obtidos com sucesso.
+      headers:
+        x-fapi-interaction-id:
+          schema:
+            type: string
+            pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
+            maxLength: 100
+            description: 'Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ResponsePaymentConsent'
     201PaymentsInitiationPixPaymentCreated:
       description: Iniciação de pagamento Pix criada com sucesso.
       headers:
         x-fapi-interaction-id:
           schema:
-            $ref: '#/components/responses/200PaymentsInitiationPixPaymentIdRead/headers/x-fapi-interaction-id/schema'
+            $ref: '#/components/responses/200PaymentsConsentsConsentIdRead/headers/x-fapi-interaction-id/schema'
       content:
         application/json:
           schema:
@@ -780,10 +1060,7 @@ components:
       headers:
         x-fapi-interaction-id:
           schema:
-            type: string
-            pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
-            maxLength: 100
-            description: 'Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.'
+            $ref: '#/components/responses/200PaymentsConsentsConsentIdRead/headers/x-fapi-interaction-id/schema'
       content:
         application/json:
           schema:
