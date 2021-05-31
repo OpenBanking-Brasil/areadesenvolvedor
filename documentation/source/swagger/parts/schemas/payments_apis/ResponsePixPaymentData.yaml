@@ -4,7 +4,7 @@ required:
   - paymentId
   - consentId
   - creationDateTime
-  - updatedDateTime
+  - statusUpdateDateTime
   - status
   - payment
   - creditor
@@ -15,18 +15,24 @@ properties:
     pattern: ^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$
     example: TXpRMU9UQTROMWhZV2xSU1FUazJSMDl
     description: | 
-      Código ou identificador único informado pela instituição que mantém a conta para representar  
-      a iniciação de pagamento individual.  
-      Esse identificador deve ser usado para consultar o status da iniciação de pagamento.
+      Código ou identificador único informado pela instituição detentora da conta para representar  
+      a iniciação de pagamento individual. O `paymentId` deve ser diferente do `endToEndId` retornado pela detentora.
+      Este é o identificador que deverá ser utilizado na consulta ao status da iniciação de pagamento efetuada.
   endToEndId:
     type: string
     maxLength: 32
     pattern: ^([E])([0-9]{8})([0-9]{4})(0[1-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])(2[0-3]|[01][0-9])([0-5][0-9])([a-zA-Z0-9]{11})$
     example: E9040088820210128000800123873170
     description: |
-      Identificador fim a fim da transação. O termo "E2E" que identifica a transação de forma única dentro do arranjo.  
-      Esse identificador deve ser único, não podendo ser repetido em qualquer outra operação enviada ao SPI.  
-      [Restrição] É obrigatório o retorno após o status "ACCEPTED_SETTLEMENT_IN_PROCESS".
+      Código de identificação único da transação no arranjo do Pix. É usado em toda a cadeia de mensagens de uma instrução de pagamento no SPI. É um código gerado pela instituição detentora da conta que está iniciando o pagamento. 
+      Deve ser preenchido no formato padrão ExxxxxxxxyyyyMMddHHmmkkkkkkkkkkk (32 caracteres), sendo: 
+      • “E” – fixo (1 caractere); 
+      • xxxxxxxx – identificação do agente que gerou o <EndToEndId>, podendo ser: o ISPB do participante direto ou o ISPB do participante indireto (8 caracteres numéricos [0-9]); 
+      • yyyyMMddHHmm – data, hora e minuto (12 caracteres), seguindo o horário UTC, da submissão da ordem de pagamento, caso a liquidação seja prioritária, ou prevista para o envio da ordem ao sistema de liquidação, caso seja realizado um agendamento. No caso de ordens prioritárias, aceita-se o preenchimento, pelo agente que gerou o <EndToEndId>, com uma tolerância máxima de 1 hora e 30 minutos, para o futuro e para o passado, em relação ao horário efetivo de processamento da ordem pelo SPI. Para ordens não prioritárias, a tolerância máxima é de 12 horas, para o futuro e para o passado; 
+      • kkkkkkkkkkk – sequencial criado pelo agente que gerou o <EndToEndId> (11 caracteres alfanuméricos [a-z|A-Z|0-9]). Deve ser único dentro de cada “yyyyMMddHHmm”. 
+      Exemplo: E000000002020080120300000000001B 
+      O <EndToEndId> é gerado pela detentora. Ele deve ser único, não podendo ser repetido em qualquer outra operação enviada ao SPI. 
+      [Restrição] É obrigatório o retorno após o status "ACCEPTED_SETTLEMENT_IN_PROCESS"".
   consentId:
     type: string
     maxLength: 100
@@ -37,7 +43,7 @@ properties:
   creationDateTime:
     type: string
     format: date-time
-    pattern: ^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$|^NA$
+    pattern: ^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$
     example: '2020-07-21T08:30:00Z'
     description: |
       Data e hora em que o recurso foi criado.  
@@ -46,10 +52,10 @@ properties:
   statusUpdateDateTime:
     type: string
     format: date-time
-    pattern: ^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$|^NA$
+    pattern: ^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$
     example: '2020-07-21T08:30:00Z'
     description: |
-      Data e hora da ultima atualização da iniciação de pagamento.  
+      Data e hora da última atualização da iniciação de pagamento.  
       Uma string com data e hora conforme especificação RFC-3339,  
       sempre com a utilização de timezone UTC(UTC time format).
   pixKey:
@@ -58,42 +64,26 @@ properties:
     pattern: \w*\W*
     example: '12345678901'
     description: |
-      Chave DICT do recebedor. Os tipos de chaves podem ser: telefone, e-mail, cpf/cnpj ou chave aleatória.  
-      O telefone celular usará o padrão E.1641.  
-      O E-mail deve ter o formato xxxxxxxx@xxxxxxx.xxx(.xx) e no máximo 77 caracteres.  
-      O CPF será utilizado com 11 números e deverá ser informado sem pontos ou traços.  
-      O CNPJ será utilizado com 14 números e deverá ser informado sem pontos ou traços.  
-      A chave aleatória deve ser UUID gerado pelo DICT, conforme formato especificado na RFC41223.  
-      [Restrição] Obrigatório para pagamentos via Chave.
-  qrCode:
-    type: string
-    maxLength: 512
-    pattern: \w*\W*
-    example: |
-      00020104141234567890123426660014BR.GOV.BCB.PIX014466756C616E6F32303139406578616D706C652E636F6D27300012  
-      BR.COM.OUTRO011001234567895204000053039865406123.455802BR5915NOMEDORECEBEDOR6008BRASILIA61087007490062  
-      530515RP12345678-201950300017BR.GOV.BCB.BRCODE01051.0.080450014BR.GOV.BCB.PIX0123PADRAO.URL.PIX/0123AB  
-      CD81390012BR.COM.OUTRO01190123.ABCD.3456.WXYZ6304EB76
-    description: |
-      Sequência de caracteres que corresponde ao QR Code disponibilizado para o pagador.  
-      É a sequência de caracteres que seria lida pelo leitor de QR Code, e deve propiciar o retorno dos dados do pagador após consulta na DICT.  
-      Essa funcionalidade é possível tanto para QR Code estático quanto para QR Code dinâmico.  
-      No arranjo do Pix esta é a mesma sequência gerada e/ou lida pela funcionalidade Pix Copia e Cola.  
-      Este campo deverá ser no formato UTF-8.  
-      [Restrição] Obrigatório se for um pagamento por QR Code.
+      Chave cadastrada no DICT pertencente ao recebedor. Os tipos de chaves podem ser: telefone, e-mail, cpf/cnpj ou chave aleatória.  
+      No caso de telefone celular deve ser informado no padrão E.1641.  
+      Para e-mail deve ter o formato xxxxxxxx@xxxxxxx.xxx(.xx) e no máximo 77 caracteres.  
+      No caso de CPF deverá ser informado com 11 números, sem pontos ou traços.  
+      Para o caso de CNPJ deverá ser informado com 14 números, sem pontos ou traços.  
+      No caso de chave aleatória deve ser informado o UUID gerado pelo DICT, conforme formato especificado na RFC41223.  
+      [Restrição] Preenchimento obrigatório para pagamentos via Chave.
   status:
     $ref: ../enum/EnumPaymentStatusType.yaml
   rejectionReason:
     $ref: ../enum/EnumRejectionReasonType.yaml
   payment:
     $ref: ./PaymentPix.yaml
-  additionalInfo:
+  remittanceInformation:
     type: string
     maxLength: 140
     pattern: \w*\W*
-    example: Descrição da Transação
+    example: Pagamento da nota RSTO035-002.
     description: |
-      Descrição do pagamento, em formato livre, feito pelo pagador.
+      Deve ser preenchido sempre que o usuário pagador inserir alguma informação adicional em um pagamento, a ser enviada ao recebedor.
   creditorAccount:
-    $ref: ../business_commons/Account.yaml
+    $ref: ../business_commons/CreditorAccount.yaml
 additionalProperties: false
