@@ -3,8 +3,11 @@ info:
   title: Fase 3 - APIs do Open Banking Brasil
   description: |
     Na fase 3 do Open Banking Brasil, a iniciação de pagamento permitirá que o cliente solicite um pagamento Pix fora dos canais da detentora de conta através de uma iniciadora de transação de pagamento.  
+
     A solicitação de pagamento será processada apenas se o cliente consentir na iniciadora, através da API de consentimento fase 3, e autorizar na detentora de conta, por meio de autenticação com credenciais de acesso e confirmação dos dados do pagamento.  
+
     Diferente da fase 2, o consentimento é dado para cada transação e não pode ser revogado, pois é consumido no momento que a transação é confirmada e processada.  
+
     O processamento da transação é feito de forma instantânea, não sendo possível agendamentos.
 
     ###Idempotência
@@ -16,7 +19,7 @@ info:
 
     ####Por que é necessário tratarmos a Idempotência do POST?
 
-    Imagine que seja realizado um POST de pagamento e, depois de alguns segundos, é retornada uma mensagem de Timeout. Nesse caso, não é possível saber se o POST foi efetivo e enviar o POST novamente, sem tratar a idempotência, poderá ocasionar em uma duplicidade de pagamento.
+    Imagine que seja realizado um POST de pagamento e, depois de alguns segundos, é retornada uma mensagem de Timeout. Nesse caso, não é possível saber se o POST foi efetivo e enviar o POST novamente, sem tratar a idempotência, poderá ocasionar em duplicidade de pagamento.
 
     ####Como mitigarmos esse risco?
 
@@ -28,14 +31,21 @@ info:
 
     A iniciadora não deve usar comportamento idempotente do POST para pesquisar o status dos recursos.
 
+    ####Conjunto inicial de regras propostas na aplicação da idempotencia:
+    - A iniciadora/TPP não deve alterar o corpo da solicitação ao usar a mesma chave de idempotência. Se a iniciadora alterar o corpo da solicitação, a detentora/ASPSP não deve modificar o recurso final. A detentora pode tratar este caso como uma ação fraudulenta.  
+    - A detentora não deve criar um novo recurso para uma solicitação POST se estiver determinada como uma solicitação idempotente.  
+    - Na criação a detentora deve responder à solicitação com o status atual do recurso (ou um status que seja pelo menos tão atual quanto o que estiver disponível nos canais eletrônicos existentes) e um código de status HTTP 201 (CREATED).  
+    - A iniciadora não deve usar comportamento idempotente para pesquisar o status dos recursos.  
+    - A detentora pode usar a assinatura da mensagem, junto com a chave de idempotência, para garantir que o corpo da solicitação não seja alterado.  
+
     ###Diagrama de Sequência
     ![Iniciacao_de_Pagamento](images/sequence-diagrams/iniciacao_de_pagamento.png)
     <a href="images/sequence-diagrams/iniciacao_de_pagamento.png" target="_blank">Download do Diagrama de Sequência</a>
 
     ###[A deliberar CD] Recomendação uso de pooling
-    A consulta via GET, para verificar o processamento da transação, pode ser dado a qualquer momento desde que se respeite o rate limit, de:  
-    - 300 TPS global, 50 TPS por instituição e 8 TPS por endereço IP (Internet Protocol)  
-    Como sugestão, é indicado que a instituição iniciadora do pagamento implemente um retry exponencial.
+    ####A consulta via GET, para verificar o processamento da transação, pode ser dado a qualquer momento desde que se respeite o rate limit de:  
+    - 300 TPS global, 50 TPS por instituição e 8 TPS por endereço IP (Internet Protocol).  
+    - Como sugestão, é indicado que a instituição iniciadora do pagamento implemente um retry exponencial.  
   version: 1.0.0-rc1.0
 tags:
   - name: API - Consentimento de Iniciação de Pagamentos
@@ -53,8 +63,6 @@ tags:
       #### Especificação em OAS 3.0
 
       <a href="swagger/swagger_payments_consents_apis.yaml" target="_blank">Download da Especificação (OAS 3.0)</a>  
-
-      <a href="https://editor.swagger.io/?url=swagger/swagger_payments_consents_apis.yaml" target="_blank">Abrir Especificação no Swagger Editor</a>
   - name: API - Iniciação de Pagamentos
     description: |
       |Versão|
@@ -64,13 +72,12 @@ tags:
       #### Visão Geral
 
       A API tem como objetivo permitir a relação entre a iniciadora de transação de pagamento e a instituição detentora de conta para a solicitação de um pagamento pelo Open Banking Brasil.        
+
       O recurso está disponível para pagadores que possuem vínculo com uma instituição detentora de conta participante do Open Banking, independentemente de serem pessoa física ou jurídica.
 
       #### Especificação em OAS 3.0
 
       <a href="swagger/swagger_payments_initiation_apis.yaml" target="_blank">Download da Especificação (OAS 3.0)</a>  
-
-      <a href="https://editor.swagger.io/?url=swagger/swagger_payments_initiation_apis.yaml" target="_blank">Abrir Especificação no Swagger Editor</a>
 paths:
   /payments-consents/v1/consents:
     post:
@@ -197,17 +204,17 @@ paths:
         <a href='dictionary/paymentsInitiationPostPixPayments_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
 
         ### Status 422 - UnprocessableEntity Messages Pix
-        | Code | Title                               | Detail                                                                                                                                               |
-        |:----:|:------------------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------|
-        |  1   | Saldo insuficiente                  | Esta conta não possui saldo suficiente para realizar o pagamento.                                                                                    |
-        |  2   | Beneficiário incompatível           | O beneficiário informado no consentimento não é o mesmo do esperado pelo DICT.                                                                       |
-        |  3   | Valor da transação incompatível     | O valor informado no consentimento não é o mesmo valor do informado no payload de pagamento.                                                         |
-        |  4   | Limite acima do limite estabelecido | O valor (ou quantidade de transações) ultrapassa a faixa de limite parametrizada na detentora para permitir a realização de transações pelo cliente. |
-        |  5   | Valor inválido                      | O valor enviado não é válido para o QR Code (ou boleto) informado.                                                                                   |
-        |  6   | Cobrança inválida                   | Validação de expiração, validação de vencimento, Status Válido.                                                                                      |
-        |  7   | Consentimento inválido              | Consentimento inválido status não é Authorised ou está expirado.                                                                                     |
-        |  8   | Janela de operação inválida         | Requisição está fora da janela de funcionamento.                                                                                                     |
-        | 99   | Desconhecido                        | Não informada pela detentora de conta.                                                                                                               |
+        | Code | Title                           | Detail                                                                                                                                               |
+        |:----:|:--------------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------|
+        |  1   | Saldo insuficiente              | Esta conta não possui saldo suficiente para realizar o pagamento.                                                                                    |
+        |  2   | Beneficiário incompatível       | O beneficiário informado no consentimento não é o mesmo do esperado pelo DICT.                                                                       |
+        |  3   | Valor da transação incompatível | O valor informado no consentimento não é o mesmo valor do informado no payload de pagamento.                                                         |
+        |  4   | Acima do limite estabelecido    | O valor (ou quantidade de transações) ultrapassa a faixa de limite parametrizada na detentora para permitir a realização de transações pelo cliente. |
+        |  5   | Valor inválido                  | O valor enviado não é válido para o QR Code (ou boleto) informado.                                                                                   |
+        |  6   | Cobrança inválida               | Validação de expiração, validação de vencimento, Status Válido.                                                                                      |
+        |  7   | Consentimento inválido          | Consentimento inválido status não é Authorised ou está expirado.                                                                                     |
+        |  8   | Janela de operação inválida     | Requisição está fora da janela de funcionamento.                                                                                                     |
+        | 99   | Desconhecido                    | Não informada pela detentora de conta.                                                                                                               |
       parameters:
         - $ref: '#/components/parameters/Authorization'
         - $ref: '#/components/parameters/xFapiAuthDate'
@@ -241,7 +248,7 @@ paths:
         '415':
           $ref: '#/components/responses/UnsupportedMediaType'
         '422':
-          $ref: '#/components/responses/UnprocessableEntity'
+          $ref: '#/components/responses/UnprocessableEntityPixPayments'
         '429':
           $ref: '#/components/responses/TooManyRequests'
         '500':
@@ -324,30 +331,29 @@ components:
           pattern: '^[0-9]{1,8}$'
           example: '12345678'
           description: |
-            Deve ser preenchido com o ISPB (Identificador do Sistema de Pagamentos Brasileiros) do participante do SPI,  
-            no qual o usuário pagador/ recebedor detém a conta transacional.
+            Deve ser preenchido com o ISPB (Identificador do Sistema de Pagamentos Brasileiros) do participante do SPI somente com números.
         branchCode:
           type: string
           maxLength: 4
-          pattern: '^(\w{4}){1}$'
+          pattern: '^\d{4}$'
           example: '1774'
           description: |
             Código da Agência detentora da conta sem digito.  
-            Agência é a dependência destinada ao atendimento aos clientes, ao público em geral e aos associados de cooperativas de crédito,  
-            no exercício de atividades da instituição, não podendo ser móvel ou transitória.  
+            (Agência é a dependência destinada ao atendimento aos clientes, ao público em geral e aos associados de cooperativas de crédito,  
+            no exercício de atividades da instituição, não podendo ser móvel ou transitória).  
             [Restrição] Obrigatório quando tipo de conta for CACC (CONTA_DEPOSITO_A_VISTA) ou SVGS (CONTA_POUPANCA).
         number:
           type: string
           maxLength: 20
           pattern: '^\d{8,20}$'
           example: '1234567890'
-          description: 'Número da conta do recebedor da iniciação de pagamento, sem o dígito.'
+          description: 'Número da conta da iniciação de pagamento, sem o dígito.'
         checkDigit:
           type: string
-          maxLength: 4
-          pattern: '^(\w{4}){1}$'
-          example: '1234'
-          description: Dígito da conta do recebedor da iniciação de pagamento.
+          pattern: \w*\W*
+          maxLength: 1
+          example: '4'
+          description: Dígito da conta da iniciação de pagamento.
         accountType:
           $ref: '#/components/schemas/EnumAccountPaymentsType'
       additionalProperties: false
@@ -417,7 +423,7 @@ components:
           type: string
           maxLength: 77
           pattern: \w*\W*
-          example: '12345678901'
+          example: ''
           description: |
             Chave DICT do recebedor. Os tipos de chaves podem ser: telefone, e-mail, cpf/cnpj ou chave aleatória.  
             O telefone celular é no padrão E.1641.  
@@ -445,6 +451,22 @@ components:
         SLRY - Salary - Conta-Salário.  
         SVGS - Savings - Conta de Poupança.  
         TRAN - TransactingAccount - Conta de Pagamento
+    EnumPersonType:
+      type: string
+      maxLength: 15
+      enum:
+        - PESSOA_NATURAL
+        - PESSOA_JURIDICA
+      description: |
+        Titular, pessoa natural ou juridica a quem se referem os dados de recebedor (creditor).
+    EnumPaymentType:
+      type: string
+      maxLength: 3
+      enum:
+        - PIX
+      example: PIX
+      description: |
+        Este campo define o tipo de pagamento que será iniciado após a autorização do consentimento.
     Identification:
       type: object
       description: Objeto contendo os dados do recebedor (creditor).
@@ -467,7 +489,7 @@ components:
             O CNPJ será utilizado com 14 números e deverá ser informado sem pontos ou traços.
         name:
           type: string
-          maxLength: 80
+          maxLength: 140
           pattern: \w*\W*
           example: Marco Antonio de Brito
           description: |
@@ -492,7 +514,7 @@ components:
           pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
           example: '2021-01-01T00:00:00Z'
           description: |
-            Data e hora do consentimento. 
+            Data e hora do pagamento. 
             Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).
         currency:
           type: string
@@ -509,7 +531,7 @@ components:
           pattern: '^((\d{1,16}\.\d{2}))$'
           example: 100000.12
           description: |
-            Valor da transação efetuada e convertida em moeda nacional com 2 casas decimais.
+            Ajustar para: Valor da transação a ser efetuada com 2 casas decimais.
       additionalProperties: false
     PaymentPix:
       type: object
@@ -580,6 +602,8 @@ components:
           description: Objeto contendo as informações de resposta do consentimento para a iniciação de pagamento individual.
           required:
             - consentId
+            - statusUpdateDateTime
+            - creationDateTime
             - status
             - creditor
             - payment
@@ -587,11 +611,27 @@ components:
           properties:
             consentId:
               type: string
-              maxLength: 36
               pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
+              minLength: 1
+              maxLength: 100
               example: 8d886d81-3a1f-48d2-bc15-a19f1f777867
               description: |
                 Identificador único do consentimento criado para a iniciação de pagamento solicitada.
+            creationDateTime:
+              description: 'Data e hora em que o consentimento foi criado. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).'
+              type: string
+              format: date-time
+              example: '2021-05-21T08:30:00Z'
+              pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
+              maxLength: 20
+            statusUpdateDateTime:
+              type: string
+              format: date-time
+              example: '2021-05-21T08:30:00Z'
+              pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
+              maxLength: 20
+              description: |
+                Data e hora em que o recurso foi atualizado. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).
             status:
               type: string
               maxLength: 22
@@ -599,16 +639,16 @@ components:
                 - AUTHORISED
                 - AWAITING_AUTHORISATION
                 - REJECTED
-                - REVOKED
+                - CONSUMED
               example: AUTHORISED
               description: |
-                Retorna o estado do consentimento que no momento de sua criação será AWAITING_AUTHORISATION. 
-                Este estado será alterado depois da autorização do consentimento na detentora da conta  
-                do pagador (Debtor) e pode assumir os seguintes estados:
+                Retorna o estado do consentimento que no momento de sua criação será AWAITING_AUTHORISATION.
+                Este estado será alterado depois da autorização do consentimento na detentora da conta do pagador (Debtor) para AUTHORISED ou REJECTED. 
+                O consentimento fica no estado CONSUMED após ocorrer a iniciação do pagamento referente ao consentimento.
                 1. AWAITING_AUTHORISATION - Aguardando autorização
                 2. AUTHORISED - Autorizado
                 3. REJECTED - Rejeitado
-                4. REVOKED - Revogado
+                4. CONSUMED - Consumido
             creditor:
               $ref: '#/components/schemas/Identification'
             payment:
@@ -980,6 +1020,12 @@ components:
           schema:
             $ref: '#/components/schemas/ResponseError'
     UnprocessableEntity:
+      description: 'A solicitação foi bem formada, mas não pôde ser processada devido à lógica de negócios específica da solicitação.'
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/ResponseError'
+    UnprocessableEntityPixPayments:
       description: 'A solicitação foi bem formada, mas não pôde ser processada devido à lógica de negócios específica da solicitação.'
       content:
         application/json; charset=utf-8:

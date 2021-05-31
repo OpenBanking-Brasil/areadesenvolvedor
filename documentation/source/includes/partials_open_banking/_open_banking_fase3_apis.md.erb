@@ -4,8 +4,11 @@
 > Scroll down for code samples, example requests and responses. Select a language for code samples from the tabs above or the mobile navigation menu.
 
 Na fase 3 do Open Banking Brasil, a iniciação de pagamento permitirá que o cliente solicite um pagamento Pix fora dos canais da detentora de conta através de uma iniciadora de transação de pagamento.  
+
 A solicitação de pagamento será processada apenas se o cliente consentir na iniciadora, através da API de consentimento fase 3, e autorizar na detentora de conta, por meio de autenticação com credenciais de acesso e confirmação dos dados do pagamento.  
+
 Diferente da fase 2, o consentimento é dado para cada transação e não pode ser revogado, pois é consumido no momento que a transação é confirmada e processada.  
+
 O processamento da transação é feito de forma instantânea, não sendo possível agendamentos.
 
 ###Idempotência
@@ -17,7 +20,7 @@ Porém, o método POST requer um tratamento especial para que se torne idempoten
 
 ####Por que é necessário tratarmos a Idempotência do POST?
 
-Imagine que seja realizado um POST de pagamento e, depois de alguns segundos, é retornada uma mensagem de Timeout. Nesse caso, não é possível saber se o POST foi efetivo e enviar o POST novamente, sem tratar a idempotência, poderá ocasionar em uma duplicidade de pagamento.
+Imagine que seja realizado um POST de pagamento e, depois de alguns segundos, é retornada uma mensagem de Timeout. Nesse caso, não é possível saber se o POST foi efetivo e enviar o POST novamente, sem tratar a idempotência, poderá ocasionar em duplicidade de pagamento.
 
 ####Como mitigarmos esse risco?
 
@@ -29,14 +32,21 @@ Importante reforçar que cada nova transação com POST deverá ter um novo GUID
 
 A iniciadora não deve usar comportamento idempotente do POST para pesquisar o status dos recursos.
 
+####Conjunto inicial de regras propostas na aplicação da idempotencia:
+- A iniciadora/TPP não deve alterar o corpo da solicitação ao usar a mesma chave de idempotência. Se a iniciadora alterar o corpo da solicitação, a detentora/ASPSP não deve modificar o recurso final. A detentora pode tratar este caso como uma ação fraudulenta.  
+- A detentora não deve criar um novo recurso para uma solicitação POST se estiver determinada como uma solicitação idempotente.  
+- Na criação a detentora deve responder à solicitação com o status atual do recurso (ou um status que seja pelo menos tão atual quanto o que estiver disponível nos canais eletrônicos existentes) e um código de status HTTP 201 (CREATED).  
+- A iniciadora não deve usar comportamento idempotente para pesquisar o status dos recursos.  
+- A detentora pode usar a assinatura da mensagem, junto com a chave de idempotência, para garantir que o corpo da solicitação não seja alterado.  
+
 ###Diagrama de Sequência
 ![Iniciacao_de_Pagamento](images/sequence-diagrams/iniciacao_de_pagamento.png)
 <a href="images/sequence-diagrams/iniciacao_de_pagamento.png" target="_blank">Download do Diagrama de Sequência</a>
 
 ###[A deliberar CD] Recomendação uso de pooling
-A consulta via GET, para verificar o processamento da transação, pode ser dado a qualquer momento desde que se respeite o rate limit, de:  
-- 300 TPS global, 50 TPS por instituição e 8 TPS por endereço IP (Internet Protocol)  
-Como sugestão, é indicado que a instituição iniciadora do pagamento implemente um retry exponencial.
+####A consulta via GET, para verificar o processamento da transação, pode ser dado a qualquer momento desde que se respeite o rate limit de:  
+- 300 TPS global, 50 TPS por instituição e 8 TPS por endereço IP (Internet Protocol).  
+- Como sugestão, é indicado que a instituição iniciadora do pagamento implemente um retry exponencial.  
 
 <h1 id="fase-3-apis-do-open-banking-brasil-api-consentimento-de-inicia-o-de-pagamentos">API - Consentimento de Iniciação de Pagamentos</h1>
 
@@ -53,8 +63,6 @@ A API tem como objetivo coletar o consentimento para iniciação de pagamento en
 #### Especificação em OAS 3.0
 
 <a href="swagger/swagger_payments_consents_apis.yaml" target="_blank">Download da Especificação (OAS 3.0)</a>  
-
-<a href="https://editor.swagger.io/?url=swagger/swagger_payments_consents_apis.yaml" target="_blank">Abrir Especificação no Swagger Editor</a>
 
 ## [Em Revisão] Criar consentimento para iniciação de pagamento.
 
@@ -80,7 +88,7 @@ const data = JSON.stringify({
       "ispb": "12345678",
       "branchCode": "1774",
       "number": "1234567890",
-      "checkDigit": "1234",
+      "checkDigit": "4",
       "accountType": "CACC"
     }
   }
@@ -114,7 +122,7 @@ import http.client
 
 conn = http.client.HTTPSConnection("example.com")
 
-payload = "{\"data\":{\"creditor\":{\"personType\":\"PESSOA_NATURAL\",\"cpfCnpj\":\"58764789000137\",\"name\":\"Marco Antonio de Brito\"},\"payment\":{\"type\":\"PIX\",\"dateTime\":\"2021-01-01T00:00:00Z\",\"currency\":\"BRL\",\"amount\":100000.12},\"debtorAccount\":{\"ispb\":\"12345678\",\"branchCode\":\"1774\",\"number\":\"1234567890\",\"checkDigit\":\"1234\",\"accountType\":\"CACC\"}}}"
+payload = "{\"data\":{\"creditor\":{\"personType\":\"PESSOA_NATURAL\",\"cpfCnpj\":\"58764789000137\",\"name\":\"Marco Antonio de Brito\"},\"payment\":{\"type\":\"PIX\",\"dateTime\":\"2021-01-01T00:00:00Z\",\"currency\":\"BRL\",\"amount\":100000.12},\"debtorAccount\":{\"ispb\":\"12345678\",\"branchCode\":\"1774\",\"number\":\"1234567890\",\"checkDigit\":\"4\",\"accountType\":\"CACC\"}}}"
 
 headers = {
     'Content-Type': "application/json",
@@ -147,7 +155,7 @@ HttpResponse<String> response = Unirest.post("https://example.com/payments-conse
   .header("x-customer-user-agent", "string")
   .header("x-idempotency-key", "string")
   .header("x-jws-signature", "string")
-  .body("{\"data\":{\"creditor\":{\"personType\":\"PESSOA_NATURAL\",\"cpfCnpj\":\"58764789000137\",\"name\":\"Marco Antonio de Brito\"},\"payment\":{\"type\":\"PIX\",\"dateTime\":\"2021-01-01T00:00:00Z\",\"currency\":\"BRL\",\"amount\":100000.12},\"debtorAccount\":{\"ispb\":\"12345678\",\"branchCode\":\"1774\",\"number\":\"1234567890\",\"checkDigit\":\"1234\",\"accountType\":\"CACC\"}}}")
+  .body("{\"data\":{\"creditor\":{\"personType\":\"PESSOA_NATURAL\",\"cpfCnpj\":\"58764789000137\",\"name\":\"Marco Antonio de Brito\"},\"payment\":{\"type\":\"PIX\",\"dateTime\":\"2021-01-01T00:00:00Z\",\"currency\":\"BRL\",\"amount\":100000.12},\"debtorAccount\":{\"ispb\":\"12345678\",\"branchCode\":\"1774\",\"number\":\"1234567890\",\"checkDigit\":\"4\",\"accountType\":\"CACC\"}}}")
   .asString();
 ```
 
@@ -179,7 +187,7 @@ Método para a criação do consentimento para iniciação de pagamento.
       "ispb": "12345678",
       "branchCode": "1774",
       "number": "1234567890",
-      "checkDigit": "1234",
+      "checkDigit": "4",
       "accountType": "CACC"
     }
   }
@@ -207,6 +215,8 @@ Método para a criação do consentimento para iniciação de pagamento.
 {
   "data": {
     "consentId": "8d886d81-3a1f-48d2-bc15-a19f1f777867",
+    "creationDateTime": "2021-05-21T08:30:00Z",
+    "statusUpdateDateTime": "2021-05-21T08:30:00Z",
     "status": "AUTHORISED",
     "creditor": {
       "personType": "PESSOA_NATURAL",
@@ -223,164 +233,9 @@ Método para a criação do consentimento para iniciação de pagamento.
       "ispb": "12345678",
       "branchCode": "1774",
       "number": "1234567890",
-      "checkDigit": "1234",
+      "checkDigit": "4",
       "accountType": "CACC"
     }
-  }
-}
-```
-
-> A solicitação foi bem formada, mas não pôde ser processada devido à lógica de negócios específica da solicitação.
-
-```json
-{
-  "errors": [
-    {
-      "code": "1",
-      "title": "Saldo insuficiente",
-      "detail": "Esta conta não possui saldo suficiente para realizar o pagamento."
-    }
-  ],
-  "meta": {
-    "totalRecords": 1,
-    "totalPages": 1,
-    "requestDateTime": "2021-05-21T08:30:00Z"
-  }
-}
-```
-
-```json
-{
-  "errors": [
-    {
-      "code": "2",
-      "title": "Beneficiário incompatível",
-      "detail": "O beneficiário informado no consentimento não é o mesmo do esperado pelo DICT."
-    }
-  ],
-  "meta": {
-    "totalRecords": 1,
-    "totalPages": 1,
-    "requestDateTime": "2021-05-21T08:30:00Z"
-  }
-}
-```
-
-```json
-{
-  "errors": [
-    {
-      "code": "3",
-      "title": "Valor da transação incompatível",
-      "detail": "O valor informado no consentimento não é o mesmo valor do informado no payload de pagamento."
-    }
-  ],
-  "meta": {
-    "totalRecords": 1,
-    "totalPages": 1,
-    "requestDateTime": "2021-05-21T08:30:00Z"
-  }
-}
-```
-
-```json
-{
-  "errors": [
-    {
-      "code": "4",
-      "title": "Limite acima do limite estabelecido",
-      "detail": "O valor (ou quantidade de transações) ultrapassa a faixa de limite parametrizada na detentora para permitir a realização de transações pelo cliente."
-    }
-  ],
-  "meta": {
-    "totalRecords": 1,
-    "totalPages": 1,
-    "requestDateTime": "2021-05-21T08:30:00Z"
-  }
-}
-```
-
-```json
-{
-  "errors": [
-    {
-      "code": "5",
-      "title": "Valor inválido",
-      "detail": "O valor enviado não é válido para o QR Code (ou boleto) informado."
-    }
-  ],
-  "meta": {
-    "totalRecords": 1,
-    "totalPages": 1,
-    "requestDateTime": "2021-05-21T08:30:00Z"
-  }
-}
-```
-
-```json
-{
-  "errors": [
-    {
-      "code": "6",
-      "title": "Cobrança inválida",
-      "detail": "Validação de expiração, validação de vencimento, Status Válido."
-    }
-  ],
-  "meta": {
-    "totalRecords": 1,
-    "totalPages": 1,
-    "requestDateTime": "2021-05-21T08:30:00Z"
-  }
-}
-```
-
-```json
-{
-  "errors": [
-    {
-      "code": "7",
-      "title": "Consentimento inválido",
-      "detail": "Consentimento inválido status não é Authorised ou está expirado."
-    }
-  ],
-  "meta": {
-    "totalRecords": 1,
-    "totalPages": 1,
-    "requestDateTime": "2021-05-21T08:30:00Z"
-  }
-}
-```
-
-```json
-{
-  "errors": [
-    {
-      "code": "8",
-      "title": "Janela de operação inválida",
-      "detail": "Requisição está fora da janela de funcionamento."
-    }
-  ],
-  "meta": {
-    "totalRecords": 1,
-    "totalPages": 1,
-    "requestDateTime": "2021-05-21T08:30:00Z"
-  }
-}
-```
-
-```json
-{
-  "errors": [
-    {
-      "code": "99",
-      "title": "Desconhecido",
-      "detail": "Não informada pela detentora de conta."
-    }
-  ],
-  "meta": {
-    "totalRecords": 1,
-    "totalPages": 1,
-    "requestDateTime": "2021-05-21T08:30:00Z"
   }
 }
 ```
@@ -506,6 +361,8 @@ Método para consultar o consentimento para iniciação de pagamento.
 {
   "data": {
     "consentId": "8d886d81-3a1f-48d2-bc15-a19f1f777867",
+    "creationDateTime": "2021-05-21T08:30:00Z",
+    "statusUpdateDateTime": "2021-05-21T08:30:00Z",
     "status": "AUTHORISED",
     "creditor": {
       "personType": "PESSOA_NATURAL",
@@ -522,7 +379,7 @@ Método para consultar o consentimento para iniciação de pagamento.
       "ispb": "12345678",
       "branchCode": "1774",
       "number": "1234567890",
-      "checkDigit": "1234",
+      "checkDigit": "4",
       "accountType": "CACC"
     }
   }
@@ -565,13 +422,12 @@ None ( Scopes: openId payments-consents )
 #### Visão Geral
 
 A API tem como objetivo permitir a relação entre a iniciadora de transação de pagamento e a instituição detentora de conta para a solicitação de um pagamento pelo Open Banking Brasil.        
+
 O recurso está disponível para pagadores que possuem vínculo com uma instituição detentora de conta participante do Open Banking, independentemente de serem pessoa física ou jurídica.
 
 #### Especificação em OAS 3.0
 
 <a href="swagger/swagger_payments_initiation_apis.yaml" target="_blank">Download da Especificação (OAS 3.0)</a>  
-
-<a href="https://editor.swagger.io/?url=swagger/swagger_payments_initiation_apis.yaml" target="_blank">Abrir Especificação no Swagger Editor</a>
 
 ## [Em Revisão] Pix - Criar iniciação de pagamento.
 
@@ -590,12 +446,12 @@ const data = JSON.stringify({
       "ispb": "12345678",
       "branchCode": "1774",
       "number": "1234567890",
-      "checkDigit": "1234",
+      "checkDigit": "4",
       "accountType": "CACC"
     },
     "additionalInfo": "Descrição da Transação",
     "qrCode": "00020104141234567890123426660014BR.GOV.BCB.PIX014466756C616E6F32303139406578616D706C652E636F6D27300012  \nBR.COM.OUTRO011001234567895204000053039865406123.455802BR5915NOMEDORECEBEDOR6008BRASILIA61087007490062  \n530515RP12345678-201950300017BR.GOV.BCB.BRCODE01051.0.080450014BR.GOV.BCB.PIX0123PADRAO.URL.PIX/0123AB  \nCD81390012BR.COM.OUTRO01190123.ABCD.3456.WXYZ6304EB76\n",
-    "pixKey": "12345678901"
+    "pixKey": ""
   }
 });
 
@@ -627,7 +483,7 @@ import http.client
 
 conn = http.client.HTTPSConnection("example.com")
 
-payload = "{\"data\":{\"payment\":{\"amount\":100000.12,\"currency\":\"BRL\"},\"creditorAccount\":{\"ispb\":\"12345678\",\"branchCode\":\"1774\",\"number\":\"1234567890\",\"checkDigit\":\"1234\",\"accountType\":\"CACC\"},\"additionalInfo\":\"Descrição da Transação\",\"qrCode\":\"00020104141234567890123426660014BR.GOV.BCB.PIX014466756C616E6F32303139406578616D706C652E636F6D27300012  \\nBR.COM.OUTRO011001234567895204000053039865406123.455802BR5915NOMEDORECEBEDOR6008BRASILIA61087007490062  \\n530515RP12345678-201950300017BR.GOV.BCB.BRCODE01051.0.080450014BR.GOV.BCB.PIX0123PADRAO.URL.PIX/0123AB  \\nCD81390012BR.COM.OUTRO01190123.ABCD.3456.WXYZ6304EB76\\n\",\"pixKey\":\"12345678901\"}}"
+payload = "{\"data\":{\"payment\":{\"amount\":100000.12,\"currency\":\"BRL\"},\"creditorAccount\":{\"ispb\":\"12345678\",\"branchCode\":\"1774\",\"number\":\"1234567890\",\"checkDigit\":\"4\",\"accountType\":\"CACC\"},\"additionalInfo\":\"Descrição da Transação\",\"qrCode\":\"00020104141234567890123426660014BR.GOV.BCB.PIX014466756C616E6F32303139406578616D706C652E636F6D27300012  \\nBR.COM.OUTRO011001234567895204000053039865406123.455802BR5915NOMEDORECEBEDOR6008BRASILIA61087007490062  \\n530515RP12345678-201950300017BR.GOV.BCB.BRCODE01051.0.080450014BR.GOV.BCB.PIX0123PADRAO.URL.PIX/0123AB  \\nCD81390012BR.COM.OUTRO01190123.ABCD.3456.WXYZ6304EB76\\n\",\"pixKey\":\"\"}}"
 
 headers = {
     'Content-Type': "application/json",
@@ -660,7 +516,7 @@ HttpResponse<String> response = Unirest.post("https://example.com/payments/v1/pi
   .header("x-customer-user-agent", "string")
   .header("x-idempotency-key", "string")
   .header("x-jws-signature", "string")
-  .body("{\"data\":{\"payment\":{\"amount\":100000.12,\"currency\":\"BRL\"},\"creditorAccount\":{\"ispb\":\"12345678\",\"branchCode\":\"1774\",\"number\":\"1234567890\",\"checkDigit\":\"1234\",\"accountType\":\"CACC\"},\"additionalInfo\":\"Descrição da Transação\",\"qrCode\":\"00020104141234567890123426660014BR.GOV.BCB.PIX014466756C616E6F32303139406578616D706C652E636F6D27300012  \\nBR.COM.OUTRO011001234567895204000053039865406123.455802BR5915NOMEDORECEBEDOR6008BRASILIA61087007490062  \\n530515RP12345678-201950300017BR.GOV.BCB.BRCODE01051.0.080450014BR.GOV.BCB.PIX0123PADRAO.URL.PIX/0123AB  \\nCD81390012BR.COM.OUTRO01190123.ABCD.3456.WXYZ6304EB76\\n\",\"pixKey\":\"12345678901\"}}")
+  .body("{\"data\":{\"payment\":{\"amount\":100000.12,\"currency\":\"BRL\"},\"creditorAccount\":{\"ispb\":\"12345678\",\"branchCode\":\"1774\",\"number\":\"1234567890\",\"checkDigit\":\"4\",\"accountType\":\"CACC\"},\"additionalInfo\":\"Descrição da Transação\",\"qrCode\":\"00020104141234567890123426660014BR.GOV.BCB.PIX014466756C616E6F32303139406578616D706C652E636F6D27300012  \\nBR.COM.OUTRO011001234567895204000053039865406123.455802BR5915NOMEDORECEBEDOR6008BRASILIA61087007490062  \\n530515RP12345678-201950300017BR.GOV.BCB.BRCODE01051.0.080450014BR.GOV.BCB.PIX0123PADRAO.URL.PIX/0123AB  \\nCD81390012BR.COM.OUTRO01190123.ABCD.3456.WXYZ6304EB76\\n\",\"pixKey\":\"\"}}")
   .asString();
 ```
 
@@ -673,17 +529,17 @@ Método para a criação de uma iniciação de pagamento.
 <a href='dictionary/paymentsInitiationPostPixPayments_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
 
 ### Status 422 - UnprocessableEntity Messages Pix
-| Code | Title                               | Detail                                                                                                                                               |
-|:----:|:------------------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------|
-|  1   | Saldo insuficiente                  | Esta conta não possui saldo suficiente para realizar o pagamento.                                                                                    |
-|  2   | Beneficiário incompatível           | O beneficiário informado no consentimento não é o mesmo do esperado pelo DICT.                                                                       |
-|  3   | Valor da transação incompatível     | O valor informado no consentimento não é o mesmo valor do informado no payload de pagamento.                                                         |
-|  4   | Limite acima do limite estabelecido | O valor (ou quantidade de transações) ultrapassa a faixa de limite parametrizada na detentora para permitir a realização de transações pelo cliente. |
-|  5   | Valor inválido                      | O valor enviado não é válido para o QR Code (ou boleto) informado.                                                                                   |
-|  6   | Cobrança inválida                   | Validação de expiração, validação de vencimento, Status Válido.                                                                                      |
-|  7   | Consentimento inválido              | Consentimento inválido status não é Authorised ou está expirado.                                                                                     |
-|  8   | Janela de operação inválida         | Requisição está fora da janela de funcionamento.                                                                                                     |
-| 99   | Desconhecido                        | Não informada pela detentora de conta.                                                                                                               |
+| Code | Title                           | Detail                                                                                                                                               |
+|:----:|:--------------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------|
+|  1   | Saldo insuficiente              | Esta conta não possui saldo suficiente para realizar o pagamento.                                                                                    |
+|  2   | Beneficiário incompatível       | O beneficiário informado no consentimento não é o mesmo do esperado pelo DICT.                                                                       |
+|  3   | Valor da transação incompatível | O valor informado no consentimento não é o mesmo valor do informado no payload de pagamento.                                                         |
+|  4   | Acima do limite estabelecido    | O valor (ou quantidade de transações) ultrapassa a faixa de limite parametrizada na detentora para permitir a realização de transações pelo cliente. |
+|  5   | Valor inválido                  | O valor enviado não é válido para o QR Code (ou boleto) informado.                                                                                   |
+|  6   | Cobrança inválida               | Validação de expiração, validação de vencimento, Status Válido.                                                                                      |
+|  7   | Consentimento inválido          | Consentimento inválido status não é Authorised ou está expirado.                                                                                     |
+|  8   | Janela de operação inválida     | Requisição está fora da janela de funcionamento.                                                                                                     |
+| 99   | Desconhecido                    | Não informada pela detentora de conta.                                                                                                               |
 
 > Body parameter
 
@@ -698,12 +554,12 @@ Método para a criação de uma iniciação de pagamento.
       "ispb": "12345678",
       "branchCode": "1774",
       "number": "1234567890",
-      "checkDigit": "1234",
+      "checkDigit": "4",
       "accountType": "CACC"
     },
     "additionalInfo": "Descrição da Transação",
     "qrCode": "00020104141234567890123426660014BR.GOV.BCB.PIX014466756C616E6F32303139406578616D706C652E636F6D27300012  \nBR.COM.OUTRO011001234567895204000053039865406123.455802BR5915NOMEDORECEBEDOR6008BRASILIA61087007490062  \n530515RP12345678-201950300017BR.GOV.BCB.BRCODE01051.0.080450014BR.GOV.BCB.PIX0123PADRAO.URL.PIX/0123AB  \nCD81390012BR.COM.OUTRO01190123.ABCD.3456.WXYZ6304EB76\n",
-    "pixKey": "12345678901"
+    "pixKey": ""
   }
 }
 ```
@@ -746,7 +602,7 @@ Método para a criação de uma iniciação de pagamento.
       "ispb": "12345678",
       "branchCode": "1774",
       "number": "1234567890",
-      "checkDigit": "1234",
+      "checkDigit": "4",
       "accountType": "CACC"
     }
   }
@@ -1046,7 +902,7 @@ Método para consultar uma iniciação de pagamento.
       "ispb": "12345678",
       "branchCode": "1774",
       "number": "1234567890",
-      "checkDigit": "1234",
+      "checkDigit": "4",
       "accountType": "CACC"
     }
   }
@@ -1094,7 +950,7 @@ None ( Scopes: openId payments-initiation )
   "ispb": "12345678",
   "branchCode": "1774",
   "number": "1234567890",
-  "checkDigit": "1234",
+  "checkDigit": "4",
   "accountType": "CACC"
 }
 
@@ -1106,10 +962,10 @@ Objeto que contém os dados da conta utilizada para a iniciação de pagamento.
 
 |Nome|Tipo|Obrigatório|Descrição|
 |---|---|---|---|---|
-|ispb|string|true|Deve ser preenchido com o ISPB (Identificador do Sistema de Pagamentos Brasileiros) do participante do SPI,  <br>no qual o usuário pagador/ recebedor detém a conta transacional.|
-|branchCode|string|false|Código da Agência detentora da conta sem digito.  <br>Agência é a dependência destinada ao atendimento aos clientes, ao público em geral e aos associados de cooperativas de crédito,  <br>no exercício de atividades da instituição, não podendo ser móvel ou transitória.  <br>[Restrição] Obrigatório quando tipo de conta for CACC (CONTA_DEPOSITO_A_VISTA) ou SVGS (CONTA_POUPANCA).|
-|number|string|true|Número da conta do recebedor da iniciação de pagamento, sem o dígito.|
-|checkDigit|string|true|Dígito da conta do recebedor da iniciação de pagamento.|
+|ispb|string|true|Deve ser preenchido com o ISPB (Identificador do Sistema de Pagamentos Brasileiros) do participante do SPI somente com números.|
+|branchCode|string|false|Código da Agência detentora da conta sem digito.  <br>(Agência é a dependência destinada ao atendimento aos clientes, ao público em geral e aos associados de cooperativas de crédito,  <br>no exercício de atividades da instituição, não podendo ser móvel ou transitória).  <br>[Restrição] Obrigatório quando tipo de conta for CACC (CONTA_DEPOSITO_A_VISTA) ou SVGS (CONTA_POUPANCA).|
+|number|string|true|Número da conta da iniciação de pagamento, sem o dígito.|
+|checkDigit|string|true|Dígito da conta da iniciação de pagamento.|
 |accountType|[EnumAccountPaymentsType](#schemaenumaccountpaymentstype)|true|Tipos de contas usadas para pagamento via Pix.  <br>Modalidades tradicionais previstas pela Resolução 4.753, não contemplando contas vinculadas,  <br>conta de domiciliados no exterior, contas em moedas estrangeiras e conta correspondente moeda eletrônica.  <br>Segue descrição de cada valor do ENUM para o escopo do Pix.  <br>CACC - Current - Conta Corrente.  <br>SLRY - Salary - Conta-Salário.  <br>SVGS - Savings - Conta de Poupança.  <br>TRAN - TransactingAccount - Conta de Pagamento|
 
 <h2 id="tocS_CreatePaymentConsent">CreatePaymentConsent</h2>
@@ -1137,7 +993,7 @@ Objeto que contém os dados da conta utilizada para a iniciação de pagamento.
       "ispb": "12345678",
       "branchCode": "1774",
       "number": "1234567890",
-      "checkDigit": "1234",
+      "checkDigit": "4",
       "accountType": "CACC"
     }
   }
@@ -1172,12 +1028,12 @@ Objeto que contém os dados da conta utilizada para a iniciação de pagamento.
       "ispb": "12345678",
       "branchCode": "1774",
       "number": "1234567890",
-      "checkDigit": "1234",
+      "checkDigit": "4",
       "accountType": "CACC"
     },
     "additionalInfo": "Descrição da Transação",
     "qrCode": "00020104141234567890123426660014BR.GOV.BCB.PIX014466756C616E6F32303139406578616D706C652E636F6D27300012  \nBR.COM.OUTRO011001234567895204000053039865406123.455802BR5915NOMEDORECEBEDOR6008BRASILIA61087007490062  \n530515RP12345678-201950300017BR.GOV.BCB.BRCODE01051.0.080450014BR.GOV.BCB.PIX0123PADRAO.URL.PIX/0123AB  \nCD81390012BR.COM.OUTRO01190123.ABCD.3456.WXYZ6304EB76\n",
-    "pixKey": "12345678901"
+    "pixKey": ""
   }
 }
 
@@ -1206,12 +1062,12 @@ Objeto que contém os dados da conta utilizada para a iniciação de pagamento.
     "ispb": "12345678",
     "branchCode": "1774",
     "number": "1234567890",
-    "checkDigit": "1234",
+    "checkDigit": "4",
     "accountType": "CACC"
   },
   "additionalInfo": "Descrição da Transação",
   "qrCode": "00020104141234567890123426660014BR.GOV.BCB.PIX014466756C616E6F32303139406578616D706C652E636F6D27300012  \nBR.COM.OUTRO011001234567895204000053039865406123.455802BR5915NOMEDORECEBEDOR6008BRASILIA61087007490062  \n530515RP12345678-201950300017BR.GOV.BCB.BRCODE01051.0.080450014BR.GOV.BCB.PIX0123PADRAO.URL.PIX/0123AB  \nCD81390012BR.COM.OUTRO01190123.ABCD.3456.WXYZ6304EB76\n",
-  "pixKey": "12345678901"
+  "pixKey": ""
 }
 
 ```
@@ -1303,13 +1159,13 @@ Titular, pessoa natural ou juridica a quem se referem os dados de recebedor (cre
 
 ```
 
-Tipos de pagamentos permitidos pelo Open Banking Brasil.
+Este campo define o tipo de pagamento que será iniciado após a autorização do consentimento.
 
 ### Propriedades
 
 |Nome|Tipo|Obrigatório|Descrição|
 |---|---|---|---|---|
-|**|string|false|Tipos de pagamentos permitidos pelo Open Banking Brasil.|
+|**|string|false|Este campo define o tipo de pagamento que será iniciado após a autorização do consentimento.|
 
 #### Enumerated Values
 
@@ -1366,10 +1222,10 @@ Objeto contendo dados de pagamento para consentimento.
 
 |Nome|Tipo|Obrigatório|Descrição|
 |---|---|---|---|---|
-|type|[EnumPaymentType](#schemaenumpaymenttype)|true|Tipos de pagamentos permitidos pelo Open Banking Brasil.|
-|dateTime|string(date-time)|true|Data e hora do consentimento. <br>Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).|
+|type|[EnumPaymentType](#schemaenumpaymenttype)|true|Este campo define o tipo de pagamento que será iniciado após a autorização do consentimento.|
+|dateTime|string(date-time)|true|Data e hora do pagamento. <br>Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).|
 |currency|string|true|Código da moeda nacional segundo modelo ISO-4217, ou seja, 'BRL'. <br>Todos os valores monetários informados estão representados com a moeda vigente do Brasil.|
-|amount|number(double)|true|Valor da transação efetuada e convertida em moeda nacional com 2 casas decimais.|
+|amount|number(double)|true|Ajustar para: Valor da transação a ser efetuada com 2 casas decimais.|
 
 <h2 id="tocS_PaymentPix">PaymentPix</h2>
 
@@ -1441,6 +1297,8 @@ Objeto contendo dados do pagameto como moeda e valor.
 {
   "data": {
     "consentId": "8d886d81-3a1f-48d2-bc15-a19f1f777867",
+    "creationDateTime": "2021-05-21T08:30:00Z",
+    "statusUpdateDateTime": "2021-05-21T08:30:00Z",
     "status": "AUTHORISED",
     "creditor": {
       "personType": "PESSOA_NATURAL",
@@ -1457,7 +1315,7 @@ Objeto contendo dados do pagameto como moeda e valor.
       "ispb": "12345678",
       "branchCode": "1774",
       "number": "1234567890",
-      "checkDigit": "1234",
+      "checkDigit": "4",
       "accountType": "CACC"
     }
   }
@@ -1471,7 +1329,9 @@ Objeto contendo dados do pagameto como moeda e valor.
 |---|---|---|---|---|
 |data|object|true|Objeto contendo as informações de resposta do consentimento para a iniciação de pagamento individual.|
 |» consentId|string|true|Identificador único do consentimento criado para a iniciação de pagamento solicitada.|
-|» status|string|true|Retorna o estado do consentimento que no momento de sua criação será AWAITING_AUTHORISATION. <br>Este estado será alterado depois da autorização do consentimento na detentora da conta  <br>do pagador (Debtor) e pode assumir os seguintes estados:<br>1. AWAITING_AUTHORISATION - Aguardando autorização<br>2. AUTHORISED - Autorizado<br>3. REJECTED - Rejeitado<br>4. REVOKED - Revogado|
+|» creationDateTime|string(date-time)|true|Data e hora em que o consentimento foi criado. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).|
+|» statusUpdateDateTime|string(date-time)|true|Data e hora em que o recurso foi atualizado. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).|
+|» status|string|true|Retorna o estado do consentimento que no momento de sua criação será AWAITING_AUTHORISATION.<br>Este estado será alterado depois da autorização do consentimento na detentora da conta do pagador (Debtor) para AUTHORISED ou REJECTED. <br>O consentimento fica no estado CONSUMED após ocorrer a iniciação do pagamento referente ao consentimento.<br>1. AWAITING_AUTHORISATION - Aguardando autorização<br>2. AUTHORISED - Autorizado<br>3. REJECTED - Rejeitado<br>4. CONSUMED - Consumido|
 |» creditor|[Identification](#schemaidentification)|true|Objeto contendo os dados do recebedor (creditor).|
 |» payment|[PaymentConsent](#schemapaymentconsent)|true|Objeto contendo dados de pagamento para consentimento.|
 |» debtorAccount|[Account](#schemaaccount)|false|Objeto que contém os dados da conta utilizada para a iniciação de pagamento.|
@@ -1483,7 +1343,7 @@ Objeto contendo dados do pagameto como moeda e valor.
 |status|AUTHORISED|
 |status|AWAITING_AUTHORISATION|
 |status|REJECTED|
-|status|REVOKED|
+|status|CONSUMED|
 
 <h2 id="tocS_ResponsePixPayment">ResponsePixPayment</h2>
 
@@ -1513,7 +1373,7 @@ Objeto contendo dados do pagameto como moeda e valor.
       "ispb": "12345678",
       "branchCode": "1774",
       "number": "1234567890",
-      "checkDigit": "1234",
+      "checkDigit": "4",
       "accountType": "CACC"
     }
   }
@@ -1554,7 +1414,7 @@ Objeto contendo dados do pagameto como moeda e valor.
     "ispb": "12345678",
     "branchCode": "1774",
     "number": "1234567890",
-    "checkDigit": "1234",
+    "checkDigit": "4",
     "accountType": "CACC"
   }
 }
