@@ -4,18 +4,19 @@ require 'pp'
 require 'csv'
 require 'pathname'
 require 'uri'
+require 'optparse'
 
-if ARGV.length < 2
-  puts "Yaml file and output path is required!"
-  puts "Example:"
-  puts "  dictionary_generator swagger_file.yaml generated/"
-  exit 1
+options = {}
+cli = OptionParser.new do |parser|
+  parser.banner = 'Usage: dictionary_generator [-c] -f swagger_file.yaml -o generated/'
+  parser.on('-c', '--conditional', 'Enable conditional value on mandatory column')
+  parser.on('-f', '--filename FILENAME', 'Yaml Swagger filename') do |f| Pathname.new f end
+  parser.on('-o', '--output OUTPUT', 'Output directory') do |o| Pathname.new o end
 end
+cli.parse!(into: options)
 
-filename = Pathname.new ARGV[0];
-oas = YAML.load_file(filename);
-output = Pathname.new ARGV[1]
-output_path = output.realpath.to_s + "/"
+oas = YAML.load_file(options[:filename])
+output_path = options[:output].realpath.to_s + '/'
 
 headers = {
   'COLUMN_1'  => 'Xpath',
@@ -114,7 +115,7 @@ def format_definition(text)
 end
 
 # Analyse
-puts "> Starting analyse on " + filename.to_s
+puts "> Starting analyse on " + options[:filename].to_s
 oas['paths'].each_with_index do |(path, methods)|
   methods.each_with_index do |(op, spec)|
     rows = []
@@ -132,6 +133,8 @@ oas['paths'].each_with_index do |(path, methods)|
         min_items = field['minItems']
         max_items = field['maxItems']
         data_type = field['type']
+        restriction = format_restriction(field['description'])
+        mandatory = field['isRequired'] ? "Obrigatório" : "Opcional"
 
         if ['date', 'date-time'].include? field['format']
           data_type = field['format']
@@ -151,6 +154,9 @@ oas['paths'].each_with_index do |(path, methods)|
           max_items = 'N'
         end
 
+        if restriction != '' && options[:conditional]
+          mandatory = 'Condicional'
+        end
 
         row = {
           headers['COLUMN_1']   => field['path'],
@@ -158,12 +164,12 @@ oas['paths'].each_with_index do |(path, methods)|
           headers['COLUMN_3']   => format_definition(field['description']),
           headers['COLUMN_4']   => format_type(data_type),
           headers['COLUMN_5']   => field['maxLength'],
-          headers['COLUMN_6']   => field['isRequired'] ? "Obrigatório" : "Opcional",
+          headers['COLUMN_6']   => mandatory,
           headers['COLUMN_7']   => field['pattern'],
           headers['COLUMN_8']   => format_enum(field['enum']),
           headers['COLUMN_9']   => min_items,
           headers['COLUMN_10']  => max_items,
-          headers['COLUMN_11']  => format_restriction(field['description']),
+          headers['COLUMN_11']  => restriction,
           headers['COLUMN_12']  => field['nullable'] ? "Permitido" : "Não permitido",
           headers['COLUMN_13']  => field['type'],
           headers['COLUMN_14']  => field['example']
