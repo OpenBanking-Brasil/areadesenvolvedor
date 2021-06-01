@@ -67,7 +67,7 @@ paths:
         '415':
           $ref: '#/components/responses/UnsupportedMediaType'
         '422':
-          $ref: '#/components/responses/UnprocessableEntity'
+          $ref: '#/components/responses/UnprocessableEntityConsents'
         '429':
           $ref: '#/components/responses/TooManyRequests'
         '500':
@@ -111,8 +111,6 @@ paths:
           $ref: '#/components/responses/MethodNotAllowed'
         '406':
           $ref: '#/components/responses/NotAcceptable'
-        '422':
-          $ref: '#/components/responses/UnprocessableEntity'
         '429':
           $ref: '#/components/responses/TooManyRequests'
         '500':
@@ -167,7 +165,7 @@ paths:
         '415':
           $ref: '#/components/responses/UnsupportedMediaType'
         '422':
-          $ref: '#/components/responses/UnprocessableEntity'
+          $ref: '#/components/responses/UnprocessableEntityPixPayments'
         '429':
           $ref: '#/components/responses/TooManyRequests'
         '500':
@@ -227,51 +225,6 @@ paths:
             - payments-initiation
 components:
   schemas:
-    Account:
-      type: object
-      description: |
-        Objeto que contém a identificação de uma conta. 
-      required:
-        - ispb
-        - number
-        - checkDigit
-        - accountType
-      properties:
-        ispb:
-          type: string
-          minLength: 8
-          maxLength: 8
-          pattern: '^[0-9]{8}$'
-          example: '12345678'
-          description: |
-            Deve ser preenchido com o ISPB (Identificador do Sistema de Pagamentos Brasileiros) do participante do SPI (Sistema de pagamentos instantâneos) somente com números.
-        branchCode:
-          type: string
-          maxLength: 4
-          pattern: '^\d{4}$'
-          example: '1774'
-          description: |
-            Código da Agência detentora da conta sem dígito.  
-            (Agência é a dependência destinada ao atendimento aos clientes, ao público em geral e aos associados de cooperativas de crédito,  
-            no exercício de atividades da instituição, não podendo ser móvel ou transitória).  
-            [Restrição] Preenchimento obrigatório para os seguintes tipos de conta: CACC (CONTA_DEPOSITO_A_VISTA), SVGS (CONTA_POUPANCA) e SLRY (CONTA_SALARIO).
-        number:
-          type: string
-          minLength: 1
-          maxLength: 20
-          pattern: '^\d{8,20}$'
-          example: '1234567890'
-          description: Número da conta sem o dígito.
-        checkDigit:
-          type: string
-          pattern: \w*\W*
-          minLength: 1
-          maxLength: 1
-          example: '4'
-          description: Dígito da conta.
-        accountType:
-          $ref: '#/components/schemas/EnumAccountPaymentsType'
-      additionalProperties: false
     CreditorAccount:
       type: object
       description: |
@@ -1015,20 +968,185 @@ components:
         application/json; charset=utf-8:
           schema:
             $ref: '#/components/schemas/ResponseError'
-    UnprocessableEntity:
+    UnprocessableEntityConsents:
       description: 'A solicitação foi bem formada, mas não pôde ser processada devido à lógica de negócios específica da solicitação.'
       content:
         application/json; charset=utf-8:
           schema:
-            $ref: '#/components/schemas/ResponseError'
+            type: object
+            required:
+              - errors
+            properties:
+              errors:
+                type: array
+                minItems: 1
+                maxItems: 3
+                items:
+                  type: object
+                  required:
+                    - code
+                    - title
+                    - detail
+                  properties:
+                    code:
+                      type: string
+                      enum:
+                        - '01'
+                        - '02'
+                        - '99'
+                      description: |
+                        Códigos de erros previstos na criação de consentimento para a iniciação de pagamentos.  
+                        • 01 – Forma de pagamento inválida;  
+                        • 02 – Data de pagamento inválida;  
+                        • 99 – Desconhecido.  
+                      example: '01'
+                    title:
+                      type: string
+                      maxLength: 255
+                      pattern: \w*\W*
+                      example: Forma de pagamento inválida.
+                      description: |
+                        Título específico do erro reportado, de acordo com o código enviado:  
+                        • OB01: Forma de pagamento inválida;  
+                        • OB02: Data de pagamento inválida;  
+                        • OB99: Desconhecido.       
+                    detail:
+                      type: string
+                      maxLength: 2048
+                      pattern: \w*\W*
+                      example: Meio de pagamento inválido.
+                      description: |
+                        Descrição específica do erro de acordo com o código reportado.
+                        • OB01: Meio de pagamento inválido;  
+                        • OB02: Data de pagamento inválida no contexto, por exemplo, data no passado.  
+                        Para pagamentos únicos deve ser informada a data atual, do dia corrente.    
+                        • OB99: Não informada pela instituição detentora da conta. 
+                  additionalProperties: false
+              meta:
+                $ref: '#/components/schemas/ResponseError/properties/meta'
+            additionalProperties: false
+          examples:
+            Forma de pagamento inválida:
+              summary: Forma de pagamento inválida
+              value:
+                errors:
+                  - code: '01'
+                    title: Forma de pagamento inválida
+                    detail: Meio de pagamento inválido.
+                meta:
+                  totalRecords: 1
+                  totalPages: 1
+                  requestDateTime: '2021-05-21T08:30:00Z'
+            Data de pagamento inválida:
+              summary: Data de pagamento inválida
+              value:
+                errors:
+                  - code: '02'
+                    title: Data de pagamento inválida
+                    detail: 'Data de pagamento inválida no contexto, por exemplo, data no passado.'
+                meta:
+                  totalRecords: 1
+                  totalPages: 1
+                  requestDateTime: '2021-05-21T08:30:00Z'
+            Desconhecido:
+              summary: Desconhecido
+              value:
+                errors:
+                  - code: '99'
+                    title: Desconhecido
+                    detail: Não informada pela instituição detentora da conta.
+                meta:
+                  totalRecords: 1
+                  totalPages: 1
+                  requestDateTime: '2021-05-21T08:30:00Z'
+    UnprocessableEntityPixPayments:
+      description: 'A solicitação foi bem formada, mas não pôde ser processada devido à lógica de negócios específica da solicitação.'
+      content:
+        application/json; charset=utf-8:
+          schema:
+            type: object
+            required:
+              - errors
+            properties:
+              errors:
+                type: array
+                minItems: 1
+                maxItems: 9
+                items:
+                  type: object
+                  required:
+                    - code
+                    - title
+                    - detail
+                  properties:
+                    code:
+                      type: string
+                      enum:
+                        - '01'
+                        - '02'
+                        - '03'
+                        - '04'
+                        - '05'
+                        - '06'
+                        - '07'
+                        - '10'
+                        - '99'
+                      description: |
+                        Códigos de erros previstos na criação da iniciação de pagamento.  
+                        • 01 – Saldo insuficiente;  
+                        • 02 – Beneficiário incompatível;  
+                        • 03 – Valor da transação incompatível;  
+                        • 04 – Acima do limite estabelecido;  
+                        • 05 – Valor inválido;  
+                        • 06 – Cobrança inválida;  
+                        • 07 – Consentimento inválido;  
+                        • 10 – Janela de operação inválida;     
+                        • 99 – Desconhecido.  
+                      example: '01'
+                    title:
+                      type: string
+                      maxLength: 255
+                      pattern: \w*\W*
+                      example: Forma de pagamento inválida.
+                      description: |
+                        Título específico do erro reportado, de acordo com o código enviado:  
+                        • 01: Saldo insuficiente;  
+                        • 02: Beneficiário incompatível;  
+                        • 03: Valor da transação incompatível;  
+                        • 04: Acima do limite estabelecido;  
+                        • 05: Valor inválido;  
+                        • 06: Cobrança inválida;  
+                        • 07: Consentimento inválido;  
+                        • 10: Janela de operação inválida;     
+                        • 99: Desconhecido.  
+                    detail:
+                      type: string
+                      maxLength: 2048
+                      pattern: \w*\W*
+                      example: Meio de pagamento inválido.
+                      description: |
+                        Descrição específica do erro de acordo com o código reportado.  
+                        • 01: A conta selecionada não possui saldo suficiente para realizar o pagamento.  
+                        • 02: O beneficiário informado no consentimento não é o mesmo do esperado pelo DICT.  
+                        • 03: O valor informado no consentimento não é o mesmo valor do informado no payload de pagamento.    
+                        • 04: O valor (ou quantidade de transações) ultrapassa a faixa de limite parametrizada na detentora para permitir a realização de transações pelo cliente.  
+                        • 05: O valor enviado não é válido para o QR Code informado.  
+                        • 06: Validação de expiração, validação de vencimento ou Status Válido.  
+                        • 07: Consentimento inválido (status diferente de "AUTHORISED" ou está expirado).  
+                        • 10: Requisição está fora da janela de funcionamento.        
+                        • 99: Não informada pela instituição detentora da conta. 
+                  additionalProperties: false
+              meta:
+                $ref: '#/components/schemas/ResponseError/properties/meta'
+            additionalProperties: false
           examples:
             Saldo insuficiente:
               summary: Saldo insuficiente
               value:
                 errors:
-                  - code: '1'
+                  - code: '01'
                     title: Saldo insuficiente
-                    detail: Esta conta não possui saldo suficiente para realizar o pagamento.
+                    detail: A conta selecionada não possui saldo suficiente para realizar o pagamento.
                 meta:
                   totalRecords: 1
                   totalPages: 1
@@ -1037,7 +1155,7 @@ components:
               summary: Beneficiário incompatível
               value:
                 errors:
-                  - code: '2'
+                  - code: '02'
                     title: Beneficiário incompatível
                     detail: O beneficiário informado no consentimento não é o mesmo do esperado pelo DICT.
                 meta:
@@ -1045,10 +1163,10 @@ components:
                   totalPages: 1
                   requestDateTime: '2021-05-21T08:30:00Z'
             Valor da transação incompatível:
-              summary: Valor incompatível
+              summary: Valor da transação incompatível
               value:
                 errors:
-                  - code: '3'
+                  - code: '03'
                     title: Valor da transação incompatível
                     detail: O valor informado no consentimento não é o mesmo valor do informado no payload de pagamento.
                 meta:
@@ -1056,11 +1174,11 @@ components:
                   totalPages: 1
                   requestDateTime: '2021-05-21T08:30:00Z'
             Acima do limite estabelecido:
-              summary: Acima limite estabelecido
+              summary: Acima do limite estabelecido
               value:
                 errors:
-                  - code: '4'
-                    title: Limite acima do limite estabelecido
+                  - code: '04'
+                    title: Acima do limite estabelecido
                     detail: O valor (ou quantidade de transações) ultrapassa a faixa de limite parametrizada na detentora para permitir a realização de transações pelo cliente.
                 meta:
                   totalRecords: 1
@@ -1070,9 +1188,9 @@ components:
               summary: Valor inválido
               value:
                 errors:
-                  - code: '5'
+                  - code: '05'
                     title: Valor inválido
-                    detail: O valor enviado não é válido para o QR Code (ou boleto) informado.
+                    detail: O valor enviado não é válido para o QR Code informado.
                 meta:
                   totalRecords: 1
                   totalPages: 1
@@ -1081,9 +1199,9 @@ components:
               summary: Cobrança inválida
               value:
                 errors:
-                  - code: '6'
+                  - code: '06'
                     title: Cobrança inválida
-                    detail: 'Validação de expiração, validação de vencimento, Status Válido.'
+                    detail: 'Validação de expiração, validação de vencimento ou Status Válido.'
                 meta:
                   totalRecords: 1
                   totalPages: 1
@@ -1092,18 +1210,18 @@ components:
               summary: Consentimento inválido
               value:
                 errors:
-                  - code: '7'
+                  - code: '07'
                     title: Consentimento inválido
-                    detail: Consentimento inválido status não é Authorised ou está expirado.
+                    detail: Consentimento inválido (status diferente de 'AUTHORISED' ou está expirado).
                 meta:
                   totalRecords: 1
                   totalPages: 1
                   requestDateTime: '2021-05-21T08:30:00Z'
             Janela de operação inválida:
-              summary: Janela inválida
+              summary: Janela de operação inválida
               value:
                 errors:
-                  - code: '8'
+                  - code: '10'
                     title: Janela de operação inválida
                     detail: Requisição está fora da janela de funcionamento.
                 meta:
@@ -1116,7 +1234,7 @@ components:
                 errors:
                   - code: '99'
                     title: Desconhecido
-                    detail: Não informada pela detentora de conta.
+                    detail: Não informada pela instituição detentora da conta.
                 meta:
                   totalRecords: 1
                   totalPages: 1
