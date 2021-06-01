@@ -187,19 +187,6 @@ paths:
         ### Dicionário de dados
 
         <a href='dictionary/paymentsPostPixPayments_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
-
-        ### Status 422 - UnprocessableEntity Messages Pix
-        | Code | Title                           | Detail                                                                                                                                               |
-        |:----:|:--------------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------|
-        |  1   | Saldo insuficiente              | Esta conta não possui saldo suficiente para realizar o pagamento.                                                                                    |
-        |  2   | Beneficiário incompatível       | O beneficiário informado no consentimento não é o mesmo do esperado pelo DICT.                                                                       |
-        |  3   | Valor da transação incompatível | O valor informado no consentimento não é o mesmo valor do informado no payload de pagamento.                                                         |
-        |  4   | Acima do limite estabelecido    | O valor (ou quantidade de transações) ultrapassa a faixa de limite parametrizada na detentora para permitir a realização de transações pelo cliente. |
-        |  5   | Valor inválido                  | O valor enviado não é válido para o QR Code (ou boleto) informado.                                                                                   |
-        |  6   | Cobrança inválida               | Validação de expiração, validação de vencimento, Status Válido.                                                                                      |
-        |  7   | Consentimento inválido          | Consentimento inválido status não é Authorised ou está expirado.                                                                                     |
-        |  8   | Janela de operação inválida     | Requisição está fora da janela de funcionamento.                                                                                                     |
-        | 99   | Desconhecido                    | Não informada pela detentora de conta.                                                                                                               |
       parameters:
         - $ref: '#/components/parameters/Authorization'
         - $ref: '#/components/parameters/xFapiAuthDate'
@@ -314,7 +301,7 @@ components:
         ispb:
           type: string
           maxLength: 8
-          pattern: '^[0-9]{1,8}$'
+          pattern: '^[0-9]{8}$'
           example: '12345678'
           description: |
             Deve ser preenchido com o ISPB (Identificador do Sistema de Pagamentos Brasileiros) do participante do SPI (Sistema de pagamentos instantâneos) somente com números.
@@ -360,7 +347,48 @@ components:
             payment:
               $ref: '#/components/schemas/PaymentConsent'
             debtorAccount:
-              $ref: '#/components/schemas/Account'
+              type: object
+              description: |
+                Objeto que contém a identificação da conta de origem do pagador.  
+                As informações quanto à conta de origem do pagador poderão ser trazidas no consentimento para a detentora, caso a iniciadora tenha coletado essas informações do cliente. Do contrário, será coletada na detentora e trazida para a iniciadora como resposta à criação do pagamento.
+              required:
+                - ispb
+                - number
+                - checkDigit
+                - accountType
+              properties:
+                ispb:
+                  type: string
+                  maxLength: 8
+                  pattern: '^[0-9]{8}$'
+                  example: '12345678'
+                  description: |
+                    Deve ser preenchido com o ISPB (Identificador do Sistema de Pagamentos Brasileiros) do participante do SPI (Sistema de pagamentos instantâneos) somente com números.
+                branchCode:
+                  type: string
+                  maxLength: 4
+                  pattern: '^\d{4}$'
+                  example: '1774'
+                  description: |
+                    Código da Agência detentora da conta sem dígito.  
+                    (Agência é a dependência destinada ao atendimento aos clientes, ao público em geral e aos associados de cooperativas de crédito,  
+                    no exercício de atividades da instituição, não podendo ser móvel ou transitória).  
+                    [Restrição] Preenchimento obrigatório para os seguintes tipos de conta: CACC (CONTA_DEPOSITO_A_VISTA), SVGS (CONTA_POUPANCA) e SLRY (CONTA_SALARIO).
+                number:
+                  type: string
+                  maxLength: 20
+                  pattern: '^\d{8,20}$'
+                  example: '1234567890'
+                  description: Número da conta sem o dígito.
+                checkDigit:
+                  type: string
+                  pattern: \w*\W*
+                  maxLength: 1
+                  example: '4'
+                  description: Dígito da conta.
+                accountType:
+                  $ref: '#/components/schemas/EnumAccountPaymentsType'
+              additionalProperties: false
           additionalProperties: false
       additionalProperties: false
     CreatePixPayment:
@@ -393,7 +421,7 @@ components:
             ispb:
               type: string
               maxLength: 8
-              pattern: '^[0-9]{1,8}$'
+              pattern: '^[0-9]{8}$'
               example: '12345678'
               description: |
                 Deve ser preenchido com o ISPB (Identificador do Sistema de Pagamentos Brasileiros) do participante do SPI (Sistema de pagamentos instantâneos) somente com números.
@@ -504,8 +532,9 @@ components:
           $ref: '#/components/schemas/EnumPersonType'
         cpfCnpj:
           type: string
+          minLength: 11
           maxLength: 14
-          pattern: '^\d{11,14}$'
+          pattern: '^\d{11}$|^\d{14}$'
           example: '58764789000137'
           description: |
             Identificação da pessoa envolvida na transação.  
@@ -564,7 +593,6 @@ components:
       required:
         - amount
         - currency
-        - creditor
       properties:
         amount:
           type: number
@@ -582,51 +610,6 @@ components:
           description: |
             Código da moeda nacional segundo modelo ISO-4217, ou seja, 'BRL'.  
             Todos os valores monetários informados estão representados com a moeda vigente do Brasil.
-        debtorAccount:
-          type: object
-          description: |
-            Objeto que contém a identificação da conta de origem do pagador.  
-            As informações quanto à conta de origem do pagador poderão ser trazidas no consentimento para a detentora, caso a iniciadora tenha coletado essas informações do cliente. Do contrário, será coletada na detentora e trazida para a iniciadora como resposta à criação do pagamento.
-          required:
-            - ispb
-            - number
-            - checkDigit
-            - accountType
-          properties:
-            ispb:
-              type: string
-              maxLength: 8
-              pattern: '^[0-9]{1,8}$'
-              example: '12345678'
-              description: |
-                Deve ser preenchido com o ISPB (Identificador do Sistema de Pagamentos Brasileiros) do participante do SPI (Sistema de pagamentos instantâneos) somente com números.
-            branchCode:
-              type: string
-              maxLength: 4
-              pattern: '^\d{4}$'
-              example: '1774'
-              description: |
-                Código da Agência detentora da conta sem dígito.  
-                (Agência é a dependência destinada ao atendimento aos clientes, ao público em geral e aos associados de cooperativas de crédito,  
-                no exercício de atividades da instituição, não podendo ser móvel ou transitória).  
-                [Restrição] Preenchimento obrigatório para os seguintes tipos de conta: CACC (CONTA_DEPOSITO_A_VISTA), SVGS (CONTA_POUPANCA) e SLRY (CONTA_SALARIO).
-            number:
-              type: string
-              maxLength: 20
-              pattern: '^\d{8,20}$'
-              example: '1234567890'
-              description: Número da conta sem o dígito.
-            checkDigit:
-              type: string
-              pattern: \w*\W*
-              maxLength: 1
-              example: '4'
-              description: Dígito da conta.
-            accountType:
-              $ref: '#/components/schemas/EnumAccountPaymentsType'
-          additionalProperties: false
-        creditor:
-          $ref: '#/components/schemas/Identification'
       additionalProperties: false
     ResponseError:
       type: object
@@ -713,11 +696,12 @@ components:
                 - CONSUMED
               example: AWAITING_AUTHORISATION
               description: |
-                Retorna o estado do consentimento que no momento de sua criação será AWAITING_AUTHORISATION.
+                Retorna o estado do consentimento, o qual no momento de sua criação será AWAITING_AUTHORISATION.
                 Este estado será alterado depois da autorização do consentimento na detentora da conta do pagador (Debtor) para AUTHORISED ou REJECTED. 
                 O consentimento fica no estado CONSUMED após ocorrer a iniciação do pagamento referente ao consentimento.  
+                Em caso de consentimento expirado a detentora deverá retornar o status REJECTED.  
                 Estados possíveis:  
-                AWAITING_AUTHORISATION - Aguardando autorização
+                AWAITING_AUTHORISATION - Aguardando autorização  
                 AUTHORISED - Autorizado   
                 REJECTED - Rejeitado  
                 CONSUMED - Consumido 
@@ -726,7 +710,7 @@ components:
             payment:
               $ref: '#/components/schemas/PaymentConsent'
             debtorAccount:
-              $ref: '#/components/schemas/Account'
+              $ref: '#/paths/~1payments~1v1~1consents/post/requestBody/content/application~1json/schema/properties/data/properties/debtorAccount'
           additionalProperties: false
       additionalProperties: false
     ResponsePixPayment:
@@ -756,7 +740,7 @@ components:
           example: TXpRMU9UQTROMWhZV2xSU1FUazJSMDl
           description: |
             Código ou identificador único informado pela instituição detentora da conta para representar  
-            a iniciação de pagamento individual. O `paymentId` deve ser diferente do `endToEndId` retornado pela detentora.
+            a iniciação de pagamento individual. O `paymentId` deve ser diferente do `endToEndId` retornado pela detentora.  
             Este é o identificador que deverá ser utilizado na consulta ao status da iniciação de pagamento efetuada.
         endToEndId:
           type: string
@@ -764,15 +748,15 @@ components:
           pattern: '^([E])([0-9]{8})([0-9]{4})(0[1-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])(2[0-3]|[01][0-9])([0-5][0-9])([a-zA-Z0-9]{11})$'
           example: E9040088820210128000800123873170
           description: |
-            Código de identificação único da transação no arranjo do Pix. É usado em toda a cadeia de mensagens de uma instrução de pagamento no SPI. É um código gerado pela instituição detentora da conta que está iniciando o pagamento. 
-            Deve ser preenchido no formato padrão ExxxxxxxxyyyyMMddHHmmkkkkkkkkkkk (32 caracteres), sendo: 
-            • “E” – fixo (1 caractere); 
-            • xxxxxxxx – identificação do agente que gerou o <EndToEndId>, podendo ser: o ISPB do participante direto ou o ISPB do participante indireto (8 caracteres numéricos [0-9]); 
-            • yyyyMMddHHmm – data, hora e minuto (12 caracteres), seguindo o horário UTC, da submissão da ordem de pagamento, caso a liquidação seja prioritária, ou prevista para o envio da ordem ao sistema de liquidação, caso seja realizado um agendamento. No caso de ordens prioritárias, aceita-se o preenchimento, pelo agente que gerou o <EndToEndId>, com uma tolerância máxima de 1 hora e 30 minutos, para o futuro e para o passado, em relação ao horário efetivo de processamento da ordem pelo SPI. Para ordens não prioritárias, a tolerância máxima é de 12 horas, para o futuro e para o passado; 
-            • kkkkkkkkkkk – sequencial criado pelo agente que gerou o <EndToEndId> (11 caracteres alfanuméricos [a-z|A-Z|0-9]). Deve ser único dentro de cada “yyyyMMddHHmm”. 
-            Exemplo: E000000002020080120300000000001B 
-            O <EndToEndId> é gerado pela detentora. Ele deve ser único, não podendo ser repetido em qualquer outra operação enviada ao SPI. 
-            [Restrição] É obrigatório o retorno após o status "ACCEPTED_SETTLEMENT_IN_PROCESS"".
+            Código de identificação único da transação no arranjo do Pix. É usado em toda a cadeia de mensagens de uma instrução de pagamento no SPI. É um código gerado pela instituição detentora da conta que está iniciando o pagamento.  
+            Deve ser preenchido no formato padrão ExxxxxxxxyyyyMMddHHmmkkkkkkkkkkk (32 caracteres), sendo:  
+            • “E” – fixo (1 caractere);  
+            • xxxxxxxx – identificação do agente que gerou o <EndToEndId>, podendo ser: o ISPB do participante direto ou o ISPB do participante indireto (8 caracteres numéricos [0-9]);  
+            • yyyyMMddHHmm – data, hora e minuto (12 caracteres), seguindo o horário UTC, da submissão da ordem de pagamento, caso a liquidação seja prioritária, ou prevista para o envio da ordem ao sistema de liquidação, caso seja realizado um agendamento. No caso de ordens prioritárias, aceita-se o preenchimento, pelo agente que gerou o <EndToEndId>, com uma tolerância máxima de 1 hora e 30 minutos, para o futuro e para o passado, em relação ao horário efetivo de processamento da ordem pelo SPI. Para ordens não prioritárias, a tolerância máxima é de 12 horas, para o futuro e para o passado;  
+            • kkkkkkkkkkk – sequencial criado pelo agente que gerou o <EndToEndId> (11 caracteres alfanuméricos [a-z|A-Z|0-9]). Deve ser único dentro de cada “yyyyMMddHHmm”.  
+            Exemplo: E000000002020080120300000000001B  
+            O <EndToEndId> é gerado pela detentora. Ele deve ser único, não podendo ser repetido em qualquer outra operação enviada ao SPI.  
+            [Restrição] É obrigatório o retorno após o status "ACCEPTED_SETTLEMENT_IN_PROCESS".
         consentId:
           type: string
           maxLength: 100

@@ -1,12 +1,12 @@
 ﻿Xpath;Nome;Definição;Tipo de Dado;Tamanho;Mandatoriedade;Formato;Domínio;Mínimo de Ocorrências;Máximo de Ocorrências;Restrições;Nulidade;Tipo de Dado Json;Exemplo
 /data;data;Objeto contendo dados do pagamento e da conta do recebedor (creditor).;Objeto;;Obrigatório;;;1;1;"";Não permitido;object;
 /data/paymentId;paymentId;"Código ou identificador único informado pela instituição detentora da conta para representar  
-a iniciação de pagamento individual. O `paymentId` deve ser diferente do `endToEndId` retornado pela detentora.
+a iniciação de pagamento individual. O `paymentId` deve ser diferente do `endToEndId` retornado pela detentora.  
 Este é o identificador que deverá ser utilizado na consulta ao status da iniciação de pagamento efetuada.";Texto;100;Obrigatório;^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$;;1;1;"";Não permitido;string;TXpRMU9UQTROMWhZV2xSU1FUazJSMDl
-/data/endToEndId;endToEndId;"Código de identificação único da transação no arranjo do Pix. É usado em toda a cadeia de mensagens de uma instrução de pagamento no SPI. É um código gerado pela instituição detentora da conta que está iniciando o pagamento. 
-Deve ser preenchido no formato padrão ExxxxxxxxyyyyMMddHHmmkkkkkkkkkkk (32 caracteres), sendo: 
-• “E” – fixo (1 caractere); 
-• xxxxxxxx – identificação do agente que gerou o <EndToEndId>, podendo ser: o ISPB do participante direto ou o ISPB do participante indireto (8 caracteres numéricos";Texto;32;Opcional;^([E])([0-9]{8})([0-9]{4})(0[1-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])(2[0-3]|[01][0-9])([0-5][0-9])([a-zA-Z0-9]{11})$;;0;1;" É obrigatório o retorno após o status ""ACCEPTED_SETTLEMENT_IN_PROCESS"""".
+/data/endToEndId;endToEndId;"Código de identificação único da transação no arranjo do Pix. É usado em toda a cadeia de mensagens de uma instrução de pagamento no SPI. É um código gerado pela instituição detentora da conta que está iniciando o pagamento.  
+Deve ser preenchido no formato padrão ExxxxxxxxyyyyMMddHHmmkkkkkkkkkkk (32 caracteres), sendo:  
+• “E” – fixo (1 caractere);  
+• xxxxxxxx – identificação do agente que gerou o <EndToEndId>, podendo ser: o ISPB do participante direto ou o ISPB do participante indireto (8 caracteres numéricos";Texto;32;Opcional;^([E])([0-9]{8})([0-9]{4})(0[1-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])(2[0-3]|[01][0-9])([0-5][0-9])([a-zA-Z0-9]{11})$;;0;1;" É obrigatório o retorno após o status ""ACCEPTED_SETTLEMENT_IN_PROCESS"".
 ";Não permitido;string;E9040088820210128000800123873170
 /data/consentId;consentId;Identificador único do consentimento.;Texto;100;Obrigatório;^[a-zA-Z0-9][a-zA-Z0-9\-\:]{0,99}$;;1;1;"";Não permitido;string;urn:bancoex:C1DD33123
 /data/creationDateTime;creationDateTime;"Data e hora em que o recurso foi criado.  
@@ -109,38 +109,9 @@ SL02";0;1;" Esse motivo deverá ser enviado quando o campo /data/status for igua
 /data/payment/amount;amount;Valor da transação com 2 casas decimais.;Número;19;Obrigatório;^((\d{1,16}\.\d{2}))$;;1;1;"";Não permitido;number;100000.12
 /data/payment/currency;currency;"Código da moeda nacional segundo modelo ISO-4217, ou seja, 'BRL'.  
 Todos os valores monetários informados estão representados com a moeda vigente do Brasil.";Texto;3;Obrigatório;^(\w{3}){1}$;;1;1;"";Não permitido;string;BRL
-/data/payment/debtorAccount;debtorAccount;"Objeto que contém a identificação da conta de origem do pagador.  
-As informações quanto à conta de origem do pagador poderão ser trazidas no consentimento para a detentora, caso a iniciadora tenha coletado essas informações do cliente. Do contrário, será coletada na detentora e trazida para a iniciadora como resposta à criação do pagamento.";Objeto;;Opcional;;;0;1;"";Não permitido;object;
-/data/payment/debtorAccount/ispb;ispb;Deve ser preenchido com o ISPB (Identificador do Sistema de Pagamentos Brasileiros) do participante do SPI (Sistema de pagamentos instantâneos) somente com números.;Texto;8;Obrigatório;^[0-9]{1,8}$;;1;1;"";Não permitido;string;12345678
-/data/payment/debtorAccount/branchCode;branchCode;"Código da Agência detentora da conta sem dígito.  
-(Agência é a dependência destinada ao atendimento aos clientes, ao público em geral e aos associados de cooperativas de crédito,  
-no exercício de atividades da instituição, não podendo ser móvel ou transitória).";Texto;4;Opcional;^\d{4}$;;0;1;" Preenchimento obrigatório para os seguintes tipos de conta: CACC (CONTA_DEPOSITO_A_VISTA), SVGS (CONTA_POUPANCA) e SLRY (CONTA_SALARIO).
-";Não permitido;string;1774
-/data/payment/debtorAccount/number;number;Número da conta sem o dígito.;Texto;20;Obrigatório;^\d{8,20}$;;1;1;"";Não permitido;string;1234567890
-/data/payment/debtorAccount/checkDigit;checkDigit;Dígito da conta.;Texto;1;Obrigatório;\w*\W*;;1;1;"";Não permitido;string;4
-/data/payment/debtorAccount/accountType;accountType;"Tipos de contas usadas para pagamento via Pix.  
-Modalidades tradicionais previstas pela Resolução 4.753, não contemplando contas vinculadas,  
-conta de domiciliados no exterior, contas em moedas estrangeiras e conta correspondente moeda eletrônica.  
-Segue descrição de cada valor do ENUM para o escopo do Pix.  
-CACC - Current - Conta Corrente.  
-SLRY - Salary - Conta-Salário.  
-SVGS - Savings - Conta de Poupança.  
-TRAN - TransactingAccount - Conta de Pagamento pré-paga.";Texto;4;Obrigatório;;"CACC 
-SLRY 
-SVGS 
-TRAN";1;1;"";Não permitido;string;CACC
-/data/payment/creditor;creditor;Objeto contendo os dados do recebedor (creditor).;Objeto;;Obrigatório;;;1;1;"";Não permitido;object;
-/data/payment/creditor/personType;personType;Titular, pessoa natural ou juridica a quem se referem os dados de recebedor (creditor).;Texto;15;Obrigatório;;"PESSOA_NATURAL 
-PESSOA_JURIDICA";1;1;"";Não permitido;string;
-/data/payment/creditor/cpfCnpj;cpfCnpj;"Identificação da pessoa envolvida na transação.  
-Preencher com o CPF ou CNPJ, de acordo com o valor escolhido no campo type.  
-O CPF será utilizado com 11 números e deverá ser informado sem pontos ou traços.  
-O CNPJ será utilizado com 14 números e deverá ser informado sem pontos ou traços.";Texto;14;Obrigatório;^\d{11,14}$;;1;1;"";Não permitido;string;58764789000137
-/data/payment/creditor/name;name;"Em caso de pessoa natural deve ser informado o nome completo do titular da conta do recebedor.  
-Em caso de pessoa jurídica deve ser informada a razão social ou o nome fantasia da conta do recebedor.";Texto;140;Obrigatório;\w*\W*;;1;1;"";Não permitido;string;Marco Antonio de Brito
 /data/remittanceInformation;remittanceInformation;Deve ser preenchido sempre que o usuário pagador inserir alguma informação adicional em um pagamento, a ser enviada ao recebedor.;Texto;140;Opcional;\w*\W*;;0;1;"";Não permitido;string;Pagamento da nota RSTO035-002.
 /data/creditorAccount;creditorAccount;Objeto que contém a identificação da conta de destino do beneficiário/recebedor.;Objeto;;Opcional;;;0;1;"";Não permitido;object;
-/data/creditorAccount/ispb;ispb;Deve ser preenchido com o ISPB (Identificador do Sistema de Pagamentos Brasileiros) do participante do SPI (Sistema de pagamentos instantâneos) somente com números.;Texto;8;Obrigatório;^[0-9]{1,8}$;;1;1;"";Não permitido;string;12345678
+/data/creditorAccount/ispb;ispb;Deve ser preenchido com o ISPB (Identificador do Sistema de Pagamentos Brasileiros) do participante do SPI (Sistema de pagamentos instantâneos) somente com números.;Texto;8;Obrigatório;^[0-9]{8}$;;1;1;"";Não permitido;string;12345678
 /data/creditorAccount/branchCode;branchCode;"Código da Agência detentora da conta sem dígito.  
 (Agência é a dependência destinada ao atendimento aos clientes, ao público em geral e aos associados de cooperativas de crédito,  
 no exercício de atividades da instituição, não podendo ser móvel ou transitória).";Texto;4;Opcional;^\d{4}$;;0;1;" Preenchimento obrigatório para os seguintes tipos de conta: CACC (CONTA_DEPOSITO_A_VISTA), SVGS (CONTA_POUPANCA) e SLRY (CONTA_SALARIO).
