@@ -1,16 +1,23 @@
-﻿openapi: "3.0.0"
+openapi: "3.0.0"
 info:
-  title: API de Pagamentos - Open Banking Brasil
+  title: API Payment Initiation - Open Banking Brasil
   description: |
-    API que trata das operações de pagamentos para o Open Banking Brasil.
-    Requer consentimento do cliente para todos os `endpoints`.
+    API de Iniciação de Pagamentos, reponsável por viabilizar as operações de iniciação de pagamentos para o Open Banking Brasil.  
+    Para cada uma das formas de pagamento previstas é necessário obter prévio consentimento do cliente através dos `endpoints` dedicados ao consentimento nesta API.
+
+    # Orientações
+    No diretório de participantes duas `Roles` estão relacionadas à presente API: 
+    - `CONTA`, referente às instituições detentoras de conta participantes do Open Banking Brasil;
+    - `PAGTO`, referente às instituições iniciadoras de transação de pagamento de conta participantes do Open Banking Brasil.   
+    Os tokens utilizados para consumo dos `endpoints` desta API devem possuir os `scopes` `openId` e `payments`.  
+    Esta API não requer a implementação de `permissions` para sua utilização.
   
   version: 1.0.0-rc1.0
   license:
     name: Apache 2.0
     url: 'https://www.apache.org/licenses/LICENSE-2.0'
   contact:
-    name: Governança do Open Banking Brasil – Interfaces
+    name: Governança do Open Banking Brasil – Especificações
     email: gt-interfaces@openbankingbr.org
     url: 'https://openbanking-brasil.github.io/areadesenvolvedor/'
 servers:
@@ -90,7 +97,6 @@ paths:
         - $ref: '#/components/parameters/xFapiCustomerIpAddress'
         - $ref: '#/components/parameters/xFapiInteractionId'
         - $ref: '#/components/parameters/xCustomerUserAgent'
-        - $ref: '#/components/parameters/XJwsSignature'
       responses:
         '200':
           $ref: '#/components/responses/200PaymentsConsentsConsentIdRead'
@@ -191,7 +197,6 @@ paths:
         - $ref: '#/components/parameters/xFapiCustomerIpAddress'
         - $ref: '#/components/parameters/xFapiInteractionId'
         - $ref: '#/components/parameters/xCustomerUserAgent'
-        - $ref: '#/components/parameters/XJwsSignature'
       responses:
         '200':
           $ref: '#/components/responses/200PaymentsInitiationPixPaymentIdRead'
@@ -225,6 +230,8 @@ components:
   schemas:
     Account:
       $ref: ./schemas/business_commons/Account.yaml
+    CreditorAccount:
+      $ref: ./schemas/business_commons/CreditorAccount.yaml      
     CreatePixPayment:
       $ref: ./schemas/payments_apis/CreatePixPayment.yaml
     CreatePaymentConsent:
@@ -233,6 +240,8 @@ components:
       $ref: ./schemas/payments_apis/CreatePaymentConsentData.yaml
     CreatePixPaymentData:
       $ref: ./schemas/payments_apis/CreatePixPaymentData.yaml
+    DebtorAccount:
+      $ref: ./schemas/business_commons/DebtorAccount.yaml         
     PaymentConsent:
       $ref: ./schemas/payments_apis/PaymentConsent.yaml
     ResponsePaymentConsent:
@@ -250,7 +259,7 @@ components:
     EnumAccountPaymentsType:
       $ref: ./schemas/enum/EnumAccountPaymentsType.yaml
     Identification:
-      $ref: ./schemas/business_commons/Identification.yaml
+      $ref: ./schemas/payments_apis/PaymentIdentification.yaml
   parameters:
     consentId:
       $ref: ./parameters/ConsentId.yaml

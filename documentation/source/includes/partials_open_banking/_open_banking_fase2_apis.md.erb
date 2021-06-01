@@ -34,7 +34,6 @@ A API tem como objetivo garantir que o usuário esteja ciente e concordando com 
 ```javascript
 const data = JSON.stringify({
   "data": {
-    "brandID": "29698749425984912674",
     "loggedUser": {
       "document": {
         "identification": "11111111111",
@@ -48,7 +47,9 @@ const data = JSON.stringify({
       }
     },
     "permissions": [
-      "ACCOUNTS_READ"
+      "ACCOUNTS_READ",
+      "ACCOUNTS_OVERDRAFT_LIMITS_READ",
+      "RESOURCES_READ"
     ],
     "expirationDateTime": "2021-05-21T08:30:00Z",
     "transactionFromDateTime": "2021-01-01T00:00:00Z",
@@ -82,7 +83,7 @@ import http.client
 
 conn = http.client.HTTPSConnection("example.com")
 
-payload = "{\"data\":{\"brandID\":\"29698749425984912674\",\"loggedUser\":{\"document\":{\"identification\":\"11111111111\",\"rel\":\"CPF\"}},\"businessEntity\":{\"document\":{\"identification\":\"11111111111111\",\"rel\":\"CNPJ\"}},\"permissions\":[\"ACCOUNTS_READ\"],\"expirationDateTime\":\"2021-05-21T08:30:00Z\",\"transactionFromDateTime\":\"2021-01-01T00:00:00Z\",\"transactionToDateTime\":\"2021-02-01T23:59:59Z\"}}"
+payload = "{\"data\":{\"loggedUser\":{\"document\":{\"identification\":\"11111111111\",\"rel\":\"CPF\"}},\"businessEntity\":{\"document\":{\"identification\":\"11111111111111\",\"rel\":\"CNPJ\"}},\"permissions\":[\"ACCOUNTS_READ\",\"ACCOUNTS_OVERDRAFT_LIMITS_READ\",\"RESOURCES_READ\"],\"expirationDateTime\":\"2021-05-21T08:30:00Z\",\"transactionFromDateTime\":\"2021-01-01T00:00:00Z\",\"transactionToDateTime\":\"2021-02-01T23:59:59Z\"}}"
 
 headers = {
     'Content-Type': "application/json",
@@ -111,7 +112,7 @@ HttpResponse<String> response = Unirest.post("https://example.com/consents/v1/co
   .header("x-fapi-customer-ip-address", "string")
   .header("x-fapi-interaction-id", "string")
   .header("x-customer-user-agent", "string")
-  .body("{\"data\":{\"brandID\":\"29698749425984912674\",\"loggedUser\":{\"document\":{\"identification\":\"11111111111\",\"rel\":\"CPF\"}},\"businessEntity\":{\"document\":{\"identification\":\"11111111111111\",\"rel\":\"CNPJ\"}},\"permissions\":[\"ACCOUNTS_READ\"],\"expirationDateTime\":\"2021-05-21T08:30:00Z\",\"transactionFromDateTime\":\"2021-01-01T00:00:00Z\",\"transactionToDateTime\":\"2021-02-01T23:59:59Z\"}}")
+  .body("{\"data\":{\"loggedUser\":{\"document\":{\"identification\":\"11111111111\",\"rel\":\"CPF\"}},\"businessEntity\":{\"document\":{\"identification\":\"11111111111111\",\"rel\":\"CNPJ\"}},\"permissions\":[\"ACCOUNTS_READ\",\"ACCOUNTS_OVERDRAFT_LIMITS_READ\",\"RESOURCES_READ\"],\"expirationDateTime\":\"2021-05-21T08:30:00Z\",\"transactionFromDateTime\":\"2021-01-01T00:00:00Z\",\"transactionToDateTime\":\"2021-02-01T23:59:59Z\"}}")
   .asString();
 ```
 
@@ -138,7 +139,6 @@ Método para a criação de um novo consentimento.
 ```json
 {
   "data": {
-    "brandID": "29698749425984912674",
     "loggedUser": {
       "document": {
         "identification": "11111111111",
@@ -152,7 +152,9 @@ Método para a criação de um novo consentimento.
       }
     },
     "permissions": [
-      "ACCOUNTS_READ"
+      "ACCOUNTS_READ",
+      "ACCOUNTS_OVERDRAFT_LIMITS_READ",
+      "RESOURCES_READ"
     ],
     "expirationDateTime": "2021-05-21T08:30:00Z",
     "transactionFromDateTime": "2021-01-01T00:00:00Z",
@@ -179,14 +181,14 @@ Método para a criação de um novo consentimento.
 ```json
 {
   "data": {
-    "brandID": "29698749425984912674",
-    "brandName": "Organização A",
-    "consentId": "string",
+    "consentId": "urn:bancoex:C1DD33123",
     "creationDateTime": "2021-05-21T08:30:00Z",
-    "status": "AUTHORISED",
+    "status": "AWAITING_AUTHORISATION",
     "statusUpdateDateTime": "2021-05-21T08:30:00Z",
     "permissions": [
-      "ACCOUNTS_READ"
+      "ACCOUNTS_READ",
+      "ACCOUNTS_OVERDRAFT_LIMITS_READ",
+      "RESOURCES_READ"
     ],
     "expirationDateTime": "2021-05-21T08:30:00Z",
     "transactionFromDateTime": "2021-01-01T00:00:00Z",
@@ -332,14 +334,14 @@ Método para obter detalhes do consentimento identificado por consentId.
 ```json
 {
   "data": {
-    "brandID": "29698749425984912674",
-    "brandName": "Organização A",
-    "consentId": "string",
+    "consentId": "urn:bancoex:C1DD33123",
     "creationDateTime": "2021-05-21T08:30:00Z",
-    "status": "AUTHORISED",
+    "status": "AWAITING_AUTHORISATION",
     "statusUpdateDateTime": "2021-05-21T08:30:00Z",
     "permissions": [
-      "ACCOUNTS_READ"
+      "ACCOUNTS_READ",
+      "ACCOUNTS_OVERDRAFT_LIMITS_READ",
+      "RESOURCES_READ"
     ],
     "expirationDateTime": "2021-05-21T08:30:00Z",
     "transactionFromDateTime": "2021-01-01T00:00:00Z",
@@ -615,7 +617,7 @@ Método para obter a lista de recursos mantidos pelo cliente na instituição tr
 {
   "data": [
     {
-      "resourceId": "string",
+      "resourceId": "25cac914-d8ae-6789-b215-650a6215820d",
       "type": "ACCOUNT",
       "status": "AVAILABLE"
     }
@@ -877,17 +879,7 @@ Tags: [CBO (Cbo Code)](#glossarioCBO), [CNPJ (CNPJ Number)](#glossarioCNPJ), [CP
             "email": "karinafernandes-81@br.inter.net"
           }
         ]
-      },
-      "accounts": [
-        {
-          "compeCode": "001",
-          "branchCode": "6272",
-          "number": "24550245",
-          "checkDigit": "4",
-          "type": "CONTA_DEPOSITO_A_VISTA",
-          "subtype": "INDIVIDUAL"
-        }
-      ]
+      }
     }
   ],
   "links": {
@@ -1120,16 +1112,7 @@ Tags: [CNPJ (CNPJ Number)](#glossarioCNPJ), [CPF - Cadastro de Pessoa Física (C
             "email": "karinafernandes-81@br.inter.net"
           }
         ]
-      },
-      "accounts": [
-        {
-          "compeCode": "001",
-          "branchCode": "6272",
-          "number": "24550245",
-          "checkDigit": "4",
-          "type": "CONTA_DEPOSITO_A_VISTA"
-        }
-      ]
+      }
     }
   ],
   "links": {
@@ -1649,6 +1632,16 @@ Tags: [CNPJ (CNPJ Number)](#glossarioCNPJ), [CPF - Cadastro de Pessoa Física (C
         "civilName": "Elza Milena Stefany Teixeira",
         "socialName": "Carlos"
       }
+    ],
+    "accounts": [
+      {
+        "compeCode": "001",
+        "branchCode": "6272",
+        "number": "24550245",
+        "checkDigit": "4",
+        "type": "CONTA_DEPOSITO_A_VISTA",
+        "subtype": "INDIVIDUAL"
+      }
     ]
   },
   "links": {
@@ -1818,6 +1811,15 @@ Tags: [CNPJ (CNPJ Number)](#glossarioCNPJ), [CPF - Cadastro de Pessoa Física (C
         "cnpjCpfNumber": "73677831148",
         "civilName": "Elza Milena Stefany Teixeira",
         "socialName": "Stefany Teixeirass"
+      }
+    ],
+    "accounts": [
+      {
+        "compeCode": "001",
+        "branchCode": "6272",
+        "number": "24550245",
+        "checkDigit": "4",
+        "type": "CONTA_DEPOSITO_A_VISTA"
       }
     ]
   },
@@ -3388,8 +3390,8 @@ Tags: [Agência (Branch)](#glossarioAgencia), [Saldo (Account Balance)](#glossar
 ```json
 {
   "data": {
-    "avaiableAmount": 100000.04,
-    "avaiableAmountCurrency": "BRL",
+    "availableAmount": 100000.04,
+    "availableAmountCurrency": "BRL",
     "blockedAmount": 99.9999,
     "blockedAmountCurrency": "BRL",
     "automaticallyInvestedAmount": 2566449494219,
@@ -4077,12 +4079,11 @@ Tags: [CNPJ (CNPJ Number)](#glossarioCNPJ), [Custo Efetivo Total (CET)](#glossar
     "currency": "BRL",
     "dueDate": "2028-01-15",
     "instalmentPeriodicity": "SEMANAL",
-    "typeNumberOfInstalments": "MES",
     "instalmentPeriodicityAdditionalInfo": "Informações adicionais sobre periodicidade",
     "firstInstalmentDueDate": "2018-02-15",
-    "totalNumberOfInstalments": 130632,
     "CET": 0.29,
     "amortizationScheduled": "SAC",
+    "amortizationScheduledAdditionalInfo": "NA",
     "cnpjConsignee": "60500998000135",
     "interestRates": [
       {
@@ -4617,8 +4618,10 @@ Tags: [Empréstimo (Loan)](#glossarioEmprestimo) e [Prestação Regular (Instalm
 ```json
 {
   "data": {
-    "contractRemainingNumber": 14600,
     "typeNumberOfInstalments": "MES",
+    "totalNumberOfInstalments": 130632,
+    "typeContractRemaining": "DIA",
+    "contractRemainingNumber": 14600,
     "paidInstalments": 73,
     "dueInstalments": 57,
     "pastDueInstalments": 73,
@@ -4628,8 +4631,7 @@ Tags: [Empréstimo (Loan)](#glossarioEmprestimo) e [Prestação Regular (Instalm
         "currency": "BRL",
         "amount": 100000.04
       }
-    ],
-    "typeContractRemaining": "DIA"
+    ]
   },
   "links": {
     "self": "https://api.banco.com.br/open-banking/api/v1/resource",
@@ -4959,13 +4961,11 @@ Tags: [CNPJ (CNPJ Number)](#glossarioCNPJ), [CPF - Cadastro de Pessoa Física (C
     "currency": "BRL",
     "dueDate": "2028-01-15",
     "instalmentPeriodicity": "SEMANAL",
-    "typeNumberOfInstalments": "MES",
     "instalmentPeriodicityAdditionalInfo": "Informações adicionais sobre periodicidade",
     "firstInstalmentDueDate": "2018-02-15",
-    "totalNumberOfInstalments": 130632,
     "CET": 0.29,
     "amortizationScheduled": "SAC",
-    "cnpjConsignee": "60500998000135",
+    "amortizationScheduledAdditionalInfo": "NA",
     "interestRates": [
       {
         "taxType": "EFETIVA",
@@ -4990,7 +4990,7 @@ Tags: [CNPJ (CNPJ Number)](#glossarioCNPJ), [CPF - Cadastro de Pessoa Física (C
         "feeRate": 0.2
       }
     ],
-    "contractedFinancesCharges": [
+    "contractedFinanceCharges": [
       {
         "chargeType": "JUROS_REMUNERATORIOS_POR_ATRASO",
         "chargeAdditionalInfo": "Informações adicionais sobre encargos.",
@@ -5499,8 +5499,10 @@ Tags: [Financiamento (Financing)](#glossarioFinanciamento) e [Prestação Regula
 ```json
 {
   "data": {
-    "contractRemainingNumber": 14600,
     "typeNumberOfInstalments": "MES",
+    "totalNumberOfInstalments": 130632,
+    "typeContractRemaining": "DIA",
+    "contractRemainingNumber": 14600,
     "paidInstalments": 73,
     "dueInstalments": 57,
     "pastDueInstalments": 73,
@@ -5510,8 +5512,7 @@ Tags: [Financiamento (Financing)](#glossarioFinanciamento) e [Prestação Regula
         "currency": "BRL",
         "amount": 100000.04
       }
-    ],
-    "typeContractRemaining": "DIA"
+    ]
   },
   "links": {
     "self": "https://api.banco.com.br/open-banking/api/v1/resource",
@@ -5841,13 +5842,11 @@ Tags: [Adiantamento a Depositante (Unarranged Account Overdraft)](#glossarioAdia
     "currency": "BRL",
     "dueDate": "2028-01-15",
     "instalmentPeriodicity": "SEMANAL",
-    "typeNumberOfInstalments": "MES",
     "instalmentPeriodicityAdditionalInfo": "Informações adicionais sobre periodicidade",
     "firstInstalmentDueDate": "2018-02-15",
-    "totalNumberOfInstalments": 130632,
     "CET": 0.29,
     "amortizationScheduled": "SAC",
-    "cnpjConsignee": "60500998000135",
+    "amortizationScheduledAdditionalInfo": "NA",
     "interestRates": [
       {
         "taxType": "EFETIVA",
@@ -5872,7 +5871,7 @@ Tags: [Adiantamento a Depositante (Unarranged Account Overdraft)](#glossarioAdia
         "feeRate": 50
       }
     ],
-    "contractedFinancesCharges": [
+    "contractedFinanceCharges": [
       {
         "chargeType": "JUROS_REMUNERATORIOS_POR_ATRASO",
         "chargeAdditionalInfo": "Informações adicionais sobre encargos.",
@@ -6381,10 +6380,12 @@ Tags: [Adiantamento a Depositante (Unarranged Account Overdraft)](#glossarioAdia
 ```json
 {
   "data": {
-    "contractRemainingNumber": 14600,
     "typeNumberOfInstalments": "MES",
-    "dueInstalments": 57,
+    "totalNumberOfInstalments": 130632,
+    "typeContractRemaining": "DIA",
+    "contractRemainingNumber": 14600,
     "paidInstalments": 73,
+    "dueInstalments": 57,
     "pastDueInstalments": 73,
     "balloonPayments": [
       {
@@ -6392,8 +6393,7 @@ Tags: [Adiantamento a Depositante (Unarranged Account Overdraft)](#glossarioAdia
         "currency": "BRL",
         "amount": 100000.04
       }
-    ],
-    "typeContractRemaining": "DIA"
+    ]
   },
   "links": {
     "self": "https://api.banco.com.br/open-banking/api/v1/resource",
@@ -6723,13 +6723,11 @@ Tags: [Custo Efetivo Total (CET)](#glossarioCET), [Direito Creditório Descontad
     "currency": "BRL",
     "dueDate": "2028-01-15",
     "instalmentPeriodicity": "SEMANAL",
-    "typeNumberOfInstalments": "MES",
     "instalmentPeriodicityAdditionalInfo": "Informações adicionais sobre periodicidade",
     "firstInstalmentDueDate": "2018-02-15",
-    "totalNumberOfInstalments": 130632,
     "CET": 0.29,
     "amortizationScheduled": "SAC",
-    "cnpjConsignee": "60500998000135",
+    "amortizationScheduledAdditionalInfo": "NA",
     "interestRates": [
       {
         "taxType": "EFETIVA",
@@ -7263,8 +7261,10 @@ Tags: [Direito Creditório Descontado (Invoice Financing)](#glossarioDireitoCred
 ```json
 {
   "data": {
-    "contractRemainingNumber": 14600,
     "typeNumberOfInstalments": "MES",
+    "totalNumberOfInstalments": 130632,
+    "typeContractRemaining": "DIA",
+    "contractRemainingNumber": 14600,
     "paidInstalments": 73,
     "dueInstalments": 57,
     "pastDueInstalments": 73,
@@ -7274,8 +7274,7 @@ Tags: [Direito Creditório Descontado (Invoice Financing)](#glossarioDireitoCred
         "currency": "BRL",
         "amount": 100000.04
       }
-    ],
-    "typeContractRemaining": "DIA"
+    ]
   },
   "links": {
     "self": "https://api.banco.com.br/open-banking/api/v1/resource",
@@ -7322,7 +7321,6 @@ This operation does not require authentication
 ```json
 {
   "data": {
-    "brandID": "29698749425984912674",
     "loggedUser": {
       "document": {
         "identification": "11111111111",
@@ -7336,7 +7334,9 @@ This operation does not require authentication
       }
     },
     "permissions": [
-      "ACCOUNTS_READ"
+      "ACCOUNTS_READ",
+      "ACCOUNTS_OVERDRAFT_LIMITS_READ",
+      "RESOURCES_READ"
     ],
     "expirationDateTime": "2021-05-21T08:30:00Z",
     "transactionFromDateTime": "2021-01-01T00:00:00Z",
@@ -7351,9 +7351,8 @@ This operation does not require authentication
 |Nome|Tipo|Obrigatório|Descrição|
 |---|---|---|---|---|
 |data|object|true||
-|» brandID|string|false|Identifica a Marca reportada pelo participante do Open Banking. O conceito a que se refere a 'marca' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes.|
-|» loggedUser|[LoggedUser](#schemaloggeduser)|true|Titular, pessoa natural a quem se referem os dados que são objeto de compartilhamento|
-|» businessEntity|[BusinessEntity](#schemabusinessentity)|false|Titular, pessoa jurídica a quem se referem os dados que são objeto de compartilhamento|
+|» loggedUser|[LoggedUser](#schemaloggeduser)|true|Usuário (pessoa natural) que encontra-se logado na instituição receptora e que iniciará o processo de consentimento para compartilhamento de dados.|
+|» businessEntity|[BusinessEntity](#schemabusinessentity)|false|Titular, pessoa jurídica a quem se referem os dados que são objeto de compartilhamento.|
 |» permissions|[string]|true||
 |» expirationDateTime|string(date-time)|false|Data e hora de expiração da permissão. Se não for preenchido, a permissão terá a data aberta. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).|
 |» transactionFromDateTime|string(date-time)|false|Data e hora da transação inicial. Se não for preenchido, a transação terá a data aberta e a data será retornada com a primeira transação disponível. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).|
@@ -7369,14 +7368,14 @@ This operation does not require authentication
 ```json
 {
   "data": {
-    "brandID": "29698749425984912674",
-    "brandName": "Organização A",
-    "consentId": "string",
+    "consentId": "urn:bancoex:C1DD33123",
     "creationDateTime": "2021-05-21T08:30:00Z",
-    "status": "AUTHORISED",
+    "status": "AWAITING_AUTHORISATION",
     "statusUpdateDateTime": "2021-05-21T08:30:00Z",
     "permissions": [
-      "ACCOUNTS_READ"
+      "ACCOUNTS_READ",
+      "ACCOUNTS_OVERDRAFT_LIMITS_READ",
+      "RESOURCES_READ"
     ],
     "expirationDateTime": "2021-05-21T08:30:00Z",
     "transactionFromDateTime": "2021-01-01T00:00:00Z",
@@ -7403,8 +7402,6 @@ This operation does not require authentication
 |Nome|Tipo|Obrigatório|Descrição|
 |---|---|---|---|---|
 |data|object|true||
-|» brandID|string|false|Identifica a Marca reportada pelo participante do Open Banking. O conceito a que se refere a 'marca' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes.|
-|» brandName|string|false|Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a 'marca' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes|
 |» consentId|string|true|Identificador único do consentimento.|
 |» creationDateTime|string(date-time)|true|Data e hora em que o recurso foi criado. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).|
 |» status|string|true|Estado atual do consentimento cadastrado.|
@@ -7423,7 +7420,6 @@ This operation does not require authentication
 |status|AUTHORISED|
 |status|AWAITING_AUTHORISATION|
 |status|REJECTED|
-|status|REVOKED|
 
 <h2 id="tocS_LoggedUser">LoggedUser</h2>
 
@@ -7442,15 +7438,15 @@ This operation does not require authentication
 
 ```
 
-Titular, pessoa natural a quem se referem os dados que são objeto de compartilhamento
+Usuário (pessoa natural) que encontra-se logado na instituição receptora e que iniciará o processo de consentimento para compartilhamento de dados.
 
 ### Propriedades
 
 |Nome|Tipo|Obrigatório|Descrição|
 |---|---|---|---|---|
 |document|object|true||
-|» identification|string|true|Número do documento de identificação oficial do titular.|
-|» rel|string|true|Tipo do documento de identificação oficial do titular.|
+|» identification|string|true|Número do documento de identificação oficial do usuário.|
+|» rel|string|true|Tipo do documento de identificação oficial do usuário.|
 
 <h2 id="tocS_BusinessEntity">BusinessEntity</h2>
 
@@ -7469,7 +7465,7 @@ Titular, pessoa natural a quem se referem os dados que são objeto de compartilh
 
 ```
 
-Titular, pessoa jurídica a quem se referem os dados que são objeto de compartilhamento
+Titular, pessoa jurídica a quem se referem os dados que são objeto de compartilhamento.
 
 ### Propriedades
 
@@ -7490,7 +7486,7 @@ Titular, pessoa jurídica a quem se referem os dados que são objeto de comparti
 {
   "data": [
     {
-      "resourceId": "string",
+      "resourceId": "25cac914-d8ae-6789-b215-650a6215820d",
       "type": "ACCOUNT",
       "status": "AVAILABLE"
     }
@@ -7515,10 +7511,10 @@ Titular, pessoa jurídica a quem se referem os dados que são objeto de comparti
 
 |Nome|Tipo|Obrigatório|Descrição|
 |---|---|---|---|---|
-|data|[object]|true|Lista de recursos e seus respectivos status|
-|» resourceId|string|false|Identifica o recurso reportado pelo participante do Open Banking|
-|» type|string|true|Tipo de recurso (vide Enum):<br>Account - Conta<br>Credit Card Account - Conta de Cartão de Crédito<br>Loan - Empréstimo<br>Financing - Financiamento<br>Unarranged Account Overdraft - Cheque Especial<br>Invoice Financing - Financiamento de Fatura|
-|» status|string|true|Tipo de status de recurso (vide Enum):<br>Available - Disponível<br>Unavailable - Indisponível<br>Temporary Unavailable - Temporariamente Indisponível<br>Pending Authorisation - Pendente de Autorização|
+|data|[object]|true|Lista de recursos e seus respectivos status.|
+|» resourceId|string|false|Identifica o recurso reportado pelo participante do Open Banking, no caso de:<br>Contas de depósito à vista, de poupança ou de pagamento pré-paga : corresponde ao accountId;<br>Conta de pagamento pós-paga: corresponde ao creditCardAccountId;<br>Empréstimos, Financiamentos, Direitos creditórios descontados e Adiantamento a depositantes: corresponde ao contractId.|
+|» type|string|true|Tipo de recurso (vide Enum):<br>Account - Conta de depósito à vista, poupança ou pagamento pré-paga<br>Credit Card Account - Conta de pagamento pós-paga (Cartão de Crédito)<br>Loan - Empréstimo<br>Financing - Financiamento<br>Unarranged Account Overdraft - Cheque Especial<br>Invoice Financing - Financiamento de Fatura|
+|» status|string|true|Tipo de status de recurso (vide Enum):<br>Available - Disponível<br>Unavailable - Indisponível<br>Temporarily Unavailable - Temporariamente Indisponível<br>Pending Authorisation - Pendente de Autorização|
 |links|[Links](#schemalinks)|true|Referências para outros recusos da API requisitada.|
 |meta|[Meta](#schemameta)|true|Meta informações referente a API requisitada.|
 
@@ -7534,7 +7530,7 @@ Titular, pessoa jurídica a quem se referem os dados que são objeto de comparti
 |type|INVOICE_FINANCING|
 |status|AVAILABLE|
 |status|UNAVAILABLE|
-|status|TEMPORARY_UNAVAILABLE|
+|status|TEMPORARILY_UNAVAILABLE|
 |status|PENDING_AUTHORISATION|
 
 <h2 id="tocS_AccountBalancesData">AccountBalancesData</h2>
@@ -7546,8 +7542,8 @@ Titular, pessoa jurídica a quem se referem os dados que são objeto de comparti
 
 ```json
 {
-  "avaiableAmount": 100000.04,
-  "avaiableAmountCurrency": "BRL",
+  "availableAmount": 100000.04,
+  "availableAmountCurrency": "BRL",
   "blockedAmount": 99.9999,
   "blockedAmountCurrency": "BRL",
   "automaticallyInvestedAmount": 2566449494219,
@@ -7562,8 +7558,8 @@ Conjunto de informações das Contas de: depósito à vista, poupança e de paga
 
 |Nome|Tipo|Obrigatório|Descrição|
 |---|---|---|---|---|
-|avaiableAmount|number(double)¦null|true|Saldo disponível para utilização imediata. No caso de conta de depósito a vista, sem considerar cheque especial e investimentos atrelados a conta. Admite saldo negativo. Expresso em valor monetário com 4 casas decimais.|
-|avaiableAmountCurrency|string|true|Moeda referente ao valor do saldo disponível, segundo modelo ISO-4217. p.ex. 'BRL'. Pode ser preenchido com “NA” caso a instituição não possua a informação.|
+|availableAmount|number(double)¦null|true|Saldo disponível para utilização imediata. No caso de conta de depósito a vista, sem considerar cheque especial e investimentos atrelados a conta. Admite saldo negativo. Expresso em valor monetário com 4 casas decimais.|
+|availableAmountCurrency|string|true|Moeda referente ao valor do saldo disponível, segundo modelo ISO-4217. p.ex. 'BRL'. Pode ser preenchido com “NA” caso a instituição não possua a informação.|
 |blockedAmount|number(double)¦null|true|Saldo bloqueado, não disponível para utilização imediata, por motivo de bloqueio apresentado para o cliente nos canais eletrônicos Expresso em valor monetário com 4 casas decimais.|
 |blockedAmountCurrency|string|true|Moeda referente ao valor do saldo bloqueado, segundo modelo ISO-4217. p.ex. 'BRL'. Pode ser preenchido com “NA” caso a instituição não possua a informação.|
 |automaticallyInvestedAmount|number(double)¦null|true|Saldo disponível com aplicação automática - corresponde a soma do saldo disponível acrescido do valor obtido a partir da aplicação automática Expresso em valor monetário com 4 casas decimais.|
@@ -7778,6 +7774,15 @@ Conjunto de informações da Conta de: depósito à vista
       "civilName": "Elza Milena Stefany Teixeira",
       "socialName": "Stefany Teixeirass"
     }
+  ],
+  "accounts": [
+    {
+      "compeCode": "001",
+      "branchCode": "6272",
+      "number": "24550245",
+      "checkDigit": "4",
+      "type": "CONTA_DEPOSITO_A_VISTA"
+    }
   ]
 }
 
@@ -7793,6 +7798,12 @@ Objeto que reúne as informações relativas ao relacionamento do cliente junto 
 |startDate|string(date-time)|true|Data de início de relacionamento com a Instituição Financeira. Deve trazer o menor valor entre a informação reportada ao BACEN pelo DOC 3040 e CCS.|
 |productsServicesType|[[EnumProductServiceType](#schemaenumproductservicetype)]|true|[Lista com a relação dos produtos e serviços com contrato vigente.]|
 |procurators|[[BusinessProcurator](#schemabusinessprocurator)]|true|Lista dos representantes. De preenchimento obrigatório se houver representante.|
+|accounts|[object]|true|Lista de contas depósito à vista, poupança e pagamento pré-pagas mantidas pelo cliente na instituição transmissora e para as quais ele tenha fornecido consentimento.|
+|» compeCode|string|true|Código identificador atribuído pelo Banco Central do Brasil às instituições participantes do STR (Sistema de Transferência de reservas).O Compe (Sistema de Compensação de Cheques e Outros Papéis) é um sistema que identifica e processa as compensações bancárias. Ele é representado por um código de três dígitos que serve como identificador de bancos, sendo assim, cada instituição bancária possui um número exclusivo|
+|» branchCode|string|true|Código da Agência detentora da conta. (Agência é a dependência destinada ao atendimento aos clientes, ao público em geral e aos associados de cooperativas de crédito, no exercício de atividades da instituição, não podendo ser móvel ou transitória)|
+|» number|string|true|Número da conta|
+|» checkDigit|string|true|Dígito da conta|
+|» type|[#/paths/~1customers~1v1~1personal~1financial-relations/get/responses/200/content/application~1json/schema/properties/data/properties/accounts/items/properties/type](#schema#/paths/~1customers~1v1~1personal~1financial-relations/get/responses/200/content/application~1json/schema/properties/data/properties/accounts/items/properties/type)|true|Tipos de contas. Modalidades tradicionais previstas pela Resolução 4.753, não contemplando contas vinculadas, conta de domiciliados no exterior, contas em moedas estrangeiras e conta correspondente moeda eletrônica. Vide Enum<br>Conta de depósito à vista ou Conta corrente - é o tipo mais comum. Nela, o dinheiro fica à sua disposição para ser sacado a qualquer momento. Essa conta não gera rendimentos para o depositante<br>Conta poupança - foi criada para estimular as pessoas a pouparem. O dinheiro que ficar na conta por trinta dias passa a gerar rendimentos, com isenção de imposto de renda para quem declara. Ou seja, o dinheiro “cresce” (rende) enquanto ficar guardado na conta. Cada depósito terá rendimentos de mês em mês, sempre no dia do mês em que o dinheiro tiver sido depositado<br>Conta de pagamento pré-paga: segundo CIRCULAR Nº 3.680, BCB de  2013, é a 'destinada à execução de transações de pagamento em moeda eletrônica realizadas com base em fundos denominados em reais previamente aportados'.<br>SEM_TIPO_CONTA - para reporte nos dados de identificação quando o cliente não possuir conta na instituição transmissora.|
 
 <h2 id="tocS_BusinessIdentificationData">BusinessIdentificationData</h2>
 
@@ -7876,16 +7887,7 @@ Objeto que reúne as informações relativas ao relacionamento do cliente junto 
         "email": "karinafernandes-81@br.inter.net"
       }
     ]
-  },
-  "accounts": [
-    {
-      "compeCode": "001",
-      "branchCode": "6272",
-      "number": "24550245",
-      "checkDigit": "4",
-      "type": "CONTA_DEPOSITO_A_VISTA"
-    }
-  ]
+  }
 }
 
 ```
@@ -7907,12 +7909,6 @@ Conjunto de informações relativas a Identificação ou seja a ação e o efeit
 |otherDocuments|[[BusinessOtherDocument](#schemabusinessotherdocument)]|false|Relação dos demais documentos|
 |parties|[[PartiesParticipation](#schemapartiesparticipation)]|true|Lista relativa às informações das partes envolvidas, como: sócio e /ou administrador|
 |contacts|[BusinessContacts](#schemabusinesscontacts)|true|Conjunto de informações referentes às formas para contatar o cliente.|
-|accounts|[object]|false|Lista de contas depósito à vista, poupança e pagamento pré-pagas mantidas pelo cliente na instituição transmissora e para as quais ele tenha fornecido consentimento.|
-|» compeCode|string|true|Código identificador atribuído pelo Banco Central do Brasil às instituições participantes do STR (Sistema de Transferência de reservas).O Compe (Sistema de Compensação de Cheques e Outros Papéis) é um sistema que identifica e processa as compensações bancárias. Ele é representado por um código de três dígitos que serve como identificador de bancos, sendo assim, cada instituição bancária possui um número exclusivo|
-|» branchCode|string|true|Código da Agência detentora da conta. (Agência é a dependência destinada ao atendimento aos clientes, ao público em geral e aos associados de cooperativas de crédito, no exercício de atividades da instituição, não podendo ser móvel ou transitória)|
-|» number|string|true|Número da conta|
-|» checkDigit|string|true|Dígito da conta|
-|» type|[EnumAccountType](#schemaenumaccounttype)|true|Tipos de contas. Modalidades tradicionais previstas pela Resolução 4.753, não contemplando contas vinculadas, conta de domiciliados no exterior, contas em moedas estrangeiras e conta correspondente moeda eletrônica. Vide Enum<br>Conta de depósito à vista ou Conta corrente - é o tipo mais comum. Nela, o dinheiro fica à sua disposição para ser sacado a qualquer momento. Essa conta não gera rendimentos para o depositante<br>Conta poupança - foi criada para estimular as pessoas a pouparem. O dinheiro que ficar na conta por trinta dias passa a gerar rendimentos, com isenção de imposto de renda para quem declara. Ou seja, o dinheiro “cresce” (rende) enquanto ficar guardado na conta. Cada depósito terá rendimentos de mês em mês, sempre no dia do mês em que o dinheiro tiver sido depositado<br>Conta de pagamento pré-paga: segundo CIRCULAR Nº 3.680, BCB de  2013, é a 'destinada à execução de transações de pagamento em moeda eletrônica realizadas com base em fundos denominados em reais previamente aportados'|
 
 <h2 id="tocS_BusinessOtherDocument">BusinessOtherDocument</h2>
 
@@ -7961,18 +7957,10 @@ Conjunto de informações relativas a Identificação ou seja a ação e o efeit
 
 |Nome|Tipo|Obrigatório|Descrição|
 |---|---|---|---|---|
-|type|string|true|Tipo de representante.<br>Representante legal - Nome Civil completo da Pessoa Natural que represente uma entidade ou uma empresa e é nomeado em seu ato constitutivo, ou seja, no contrato social ou estatuto social.<br>Procurador - é qualquer pessoa que represente a Pessoa Natural em algum negócio, mediante autorização escrita do mesmo.|
+|type|[EnumProcuratorsTypeBusiness](#schemaenumprocuratorstypebusiness)|true|Tipo de representante.<br>Representante legal - Nome Civil completo da Pessoa Natural que represente uma entidade ou uma empresa e é nomeado em seu ato constitutivo, ou seja, no contrato social ou estatuto social.<br>Procurador - é qualquer pessoa que represente a Pessoa Natural em algum negócio, mediante autorização escrita do mesmo.|
 |cnpjCpfNumber|string|true|Identificação do Representante Legal ou Procurador. Número do cadastro nas Receita Federal  (Preencher com CPF ou CNPJ sem formatação)|
 |civilName|string|true|Nome civil completo ou Razão Social|
 |socialName|string|true|Nome social da pessoa natural, se houver. Aquele pelo qual travestis e transexuais se reconhecem, <br>bem como são identificados por sua comunidade e em seu meio social, conforme Decreto Local.<br>[Restrição] Preenchimento obrigatório quando o sócio for uma pessoa natural.|
-
-#### Enumerated Values
-
-|Nome|Código|
-|---|---|
-|type|REPRESENTANTE_LEGAL|
-|type|PROCURADOR|
-|type|NAO_POSSUI|
 
 <h2 id="tocS_BusinessQualificationData">BusinessQualificationData</h2>
 
@@ -8052,7 +8040,7 @@ Objeto que reúne as informações relativas ao processo de qualificação. Cons
 |amount|number|true|Valor da transação. Expresso em valor monetário com 2 casas decimais|
 |transactionDate|string|true|Data lançamento da transação|
 |postBillDate|string|true|Data de postagem na fatura|
-|payeeMCC|number|true|MCC é o Merchant Category Code, ou o código da categoria do estabelecimento comercial. Os MCCs são agrupados segundo suas similaridades|
+|payeeMCC|number¦null|true|MCC é o Merchant Category Code, ou o código da categoria do estabelecimento comercial. Os MCCs são agrupados segundo suas similaridades|
 |payeeAdditionalInfo|string|true|Identificação do Recebedor da transação|
 
 <h2 id="tocS_CreditCardAccountsBillsData">CreditCardAccountsBillsData</h2>
@@ -8872,6 +8860,7 @@ Sistema de amortização (Vide Enum):
 |**|PRICE|
 |**|SAM|
 |**|SEM_SISTEMA_AMORTIZACAO|
+|**|OUTROS|
 
 <h2 id="tocS_EnumContractCalculation">EnumContractCalculation</h2>
 
@@ -9424,6 +9413,7 @@ Traz a frequência ou período da renda informada.
 |**|TRIMESTRAL|
 |**|SEMESTRAL|
 |**|ANUAL|
+|**|SEM_FREQUENCIA_RENDA_INFORMADA|
 |**|OUTROS|
 
 <h2 id="tocS_EnumInformedRevenueFrequency">EnumInformedRevenueFrequency</h2>
@@ -9459,6 +9449,7 @@ Traz a frequência ou período do faturamento informado.
 |**|TRIMESTRAL|
 |**|SEMESTRAL|
 |**|ANUAL|
+|**|SEM_FREQUENCIA_FATURAMENTO_INFORMADO|
 |**|OUTROS|
 
 <h2 id="tocS_EnumMaritalStatusCode">EnumMaritalStatusCode</h2>
@@ -10646,6 +10637,7 @@ Procurador - é qualquer pessoa que represente a Pessoa Natural em algum negóci
 |---|---|
 |**|REPRESENTANTE_LEGAL|
 |**|PROCURADOR|
+|**|NAO_POSSUI|
 
 <h2 id="tocS_EnumProcuratorsTypePersonal">EnumProcuratorsTypePersonal</h2>
 
@@ -10857,9 +10849,9 @@ Lista que traz as datas de vencimento e valor das parcelas não regulares  do co
 
 |Nome|Tipo|Obrigatório|Descrição|
 |---|---|---|---|---|
-|dueDate|string|true|Data de vencimento da parcela não regular  a vencer do contrato da modalidade de crédito consultada, conforme especificação RFC-3339. p.ex. 2014-03-19|
+|dueDate|string(date)|true|Data de vencimento da parcela não regular  a vencer do contrato da modalidade de crédito consultada, conforme especificação RFC-3339. p.ex. 2014-03-19|
 |currency|string|true|Moeda referente ao valor monetário informado, segundo modelo ISO-4217. p.ex. 'BRL' <br>Todos os valores monetários informados estão representados com a moeda vigente do Brasil|
-|amount|number(double)¦null|true|Valor monetário da parcela não regular a vencer.  Expresso em valor monetário com 4 casas decimais|
+|amount|number(double)¦null|true|Valor monetário da parcela não regular a vencer. Expresso em valor monetário com 4 casas decimais.|
 
 <h2 id="tocS_FinancingsChargeOverParcel">FinancingsChargeOverParcel</h2>
 
@@ -10928,13 +10920,11 @@ Lista que traz as datas de vencimento e valor das parcelas não regulares  do co
   "currency": "BRL",
   "dueDate": "2028-01-15",
   "instalmentPeriodicity": "SEMANAL",
-  "typeNumberOfInstalments": "MES",
   "instalmentPeriodicityAdditionalInfo": "Informações adicionais sobre periodicidade",
   "firstInstalmentDueDate": "2018-02-15",
-  "totalNumberOfInstalments": 130632,
   "CET": 0.29,
   "amortizationScheduled": "SAC",
-  "cnpjConsignee": "60500998000135",
+  "amortizationScheduledAdditionalInfo": "NA",
   "interestRates": [
     {
       "taxType": "EFETIVA",
@@ -10959,7 +10949,7 @@ Lista que traz as datas de vencimento e valor das parcelas não regulares  do co
       "feeRate": 0.2
     }
   ],
-  "contractedFinancesCharges": [
+  "contractedFinanceCharges": [
     {
       "chargeType": "JUROS_REMUNERATORIOS_POR_ATRASO",
       "chargeAdditionalInfo": "Informações adicionais sobre encargos.",
@@ -10984,20 +10974,18 @@ Conjunto de informações referentes à identificação da operação de crédit
 |contractDate|string(date)|true|Data de contratação da operação de crédito. Especificação RFC-3339|
 |disbursementDate|string(date)|false|Data do Desembolso do valor contratado. Especificação RFC-3339|
 |settlementDate|string(date)|true|Data de liquidação da operação.<br>[Restrição] Deve aceitar NA caso não seja retornado pela instituição.|
-|contractAmount|number(double)|true|Valor contratado da operação. Expresso em valor monetário com 4 casas decimais|
+|contractAmount|number(double)¦null|true|Valor contratado da operação. Expresso em valor monetário com até 4 casas decimais|
 |currency|string|true|Moeda referente ao valor da garantia, segundo modelo ISO-4217. p.ex. 'BRL'<br>Todos os valores monetários informados estão representados com a moeda vigente do Brasil|
 |dueDate|string(date)|true|Data de vencimento Final da operação. Especificação RFC-3339|
 |instalmentPeriodicity|[EnumContractInstalmentPeriodicity](#schemaenumcontractinstalmentperiodicity)|true|"Informação relativa à periodicidade regular das parcelas. (Vide Enum)<br>sem periodicidade regular, semanal, quinzenal, mensal, bimestral, trimestral, semestral, anual"|
-|typeNumberOfInstalments|[LoansContract/properties/typeNumberOfInstalments](#schemaloanscontract/properties/typenumberofinstalments)|true|Tipo de prazo total do contrato referente à modalidade de crédito informada.|
-|instalmentPeriodicityAdditionalInfo|string|false|Campo livre para complementar a informação relativa à periodicidade de parcelamento.<br>[Restrição] Campo de preenchimento obrigatório quando em typeNumberOfInstalments for informada a opção OUTROS.|
+|instalmentPeriodicityAdditionalInfo|string|true|Campo obrigatório para complementar a informação relativa à periodicidade de pagamento regular quando tiver a opção OUTROS.<br>[Restrição] Obrigatório para complementar a informação relativa da periodicidade de pagamento regular, quando selecionada o tipo ou subtipo OUTRO.|
 |firstInstalmentDueDate|string(date)|true|Data de vencimento primeira parcela do principal|
-|totalNumberOfInstalments|number|true|Prazo Total segundo o tipo (dia, semana, mês, ano) referente à Modalidade de Crédito informada.|
 |CET|number|true|CET – Custo Efetivo Total deve ser expresso na forma de taxa percentual anual e   incorpora todos os encargos e despesas incidentes nas operações de crédito (taxa de juro, mas também tarifas, tributos, seguros e outras despesas cobradas).<br>O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros<br>(representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)|
 |amortizationScheduled|[EnumContractAmortizationScheduled](#schemaenumcontractamortizationscheduled)|true|Sistema de amortização (Vide Enum):<br>- SAC (Sistema de Amortização Constante) - É aquele em que o valor da amortização permanece igual até o final. Os juros cobrados sobre o parcelamento não entram nesta conta.<br>- PRICE (Sistema Francês de Amortização) - As parcelas são fixas do início ao fim do contrato. Ou seja, todas as parcelas terão o mesmo valor, desde a primeira até a última. Nos primeiros pagamentos, a maior parte do valor da prestação corresponde aos juros. Ao longo do tempo, a taxa de juros vai decrescendo. Como o valor da prestação é fixo, com o passar das parcelas, o valor de amortização vai aumentando.<br>- SAM (Sistema de Amortização Misto) - Cada prestação (pagamento) é a média aritmética das prestações respectivas no Sistemas Price e no Sistema de Amortização Constante (SAC).<br>- SEM SISTEMA DE AMORTIZAÇÃO|
-|cnpjConsignee|string|true|CNPJ do consignante (CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica). Deve-se ter apenas os números do CNPJ, sem máscara. Informação adicional específica para Modalidade de Crédito: Empréstimo-Crédito Pessoal Consignado|
+|amortizationScheduledAdditionalInfo|string|true|Campo obrigatório para complementar a informação relativa à amortização quando selecionada a opção OUTROS.<br>[Restrição] Obrigatório para complementar a informação relativa à amortização quando selecionada a opção OUTROS, para os demais casos informar "NA".|
 |interestRates|[[FinancingsContractInterestRate](#schemafinancingscontractinterestrate)]|true|[Objeto que traz o conjunto de informações necessárias para demonstrar a composição das taxas de juros remuneratórios da Modalidade de crédito]|
 |contractedFees|[[FinancingsContractedFee](#schemafinancingscontractedfee)]|true|[Objeto que traz o conjunto de informações necessárias para demonstrar a composição das taxas de juros remuneratórios da Modalidade de crédito]|
-|contractedFinancesCharges|[[FinancingsFinanceCharge](#schemafinancingsfinancecharge)]|true|Lista que traz os encargos pactuados no contrato|
+|contractedFinanceCharges|[[FinancingsFinanceCharge](#schemafinancingsfinancecharge)]|true|Lista que traz os encargos pactuados no contrato|
 
 <h2 id="tocS_FinancingsContractedFee">FinancingsContractedFee</h2>
 
@@ -11097,7 +11085,7 @@ Objeto que traz o conjunto de informações necessárias para demonstrar a compo
 |referentialRateIndexerAdditionalInfo|string|false|Campo livre para complementar a informação relativa ao Tipo de taxa referencial ou indexador.<br>[Restrição] Obrigatório para complementar a informação relativa ao Tipo de taxa referencial ou indexador, quando selecionada o tipo ou subtipo OUTRO.|
 |preFixedRate|number|true|Taxa pré fixada aplicada sob o contrato da modalidade crédito.<br>p.ex. 0.0045. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros<br>(representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)|
 |postFixedRate|number¦null|true|Taxa pós fixada aplicada sob o contrato da modalidade crédito.<br>p.ex. 0.0045 .O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros<br>(representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)|
-|additionalInfo|string|true|Texto com informações adicionais sobre a composição das taxas de juros pactuadas|
+|additionalInfo|string|true|Texto com informações adicionais sobre a composição das taxas de juros pactuadas.<br>[Restrição] Caso a instituição não possua a informação para compartilhamento, informar "NA".|
 
 <h2 id="tocS_FinancingsFinanceCharge">FinancingsFinanceCharge</h2>
 
@@ -11123,7 +11111,7 @@ Conjunto de informações referentes à identificação da operação de crédit
 |---|---|---|---|---|
 |chargeType|[EnumContractFinanceChargeType](#schemaenumcontractfinancechargetype)|true|Tipo de encargo pactuado no contrato.|
 |chargeAdditionalInfo|string|true|Campo de preenchimento obrigatório se selecionada a opção 'OUTROS' em Tipo de encargo pactuado no contrato.<br>[Restrição] Obrigatório se selecionada a opção 'OUTROS' em Tipo de encargo pactuado no contrato.|
-|chargeRate|number|false|Representa o valor do encargo em percentual pactuado no contrato. Exemplo: 0.0210 (=2.1%). Deve-se preencher as 4 casas decimais obrigatoriamente.|
+|chargeRate|number|false|Representa o valor do encargo em percentual pactuado no contrato. Exemplo: 0.0210 (=2.1%).|
 
 <h2 id="tocS_FinancingsInstalments">FinancingsInstalments</h2>
 
@@ -11134,8 +11122,10 @@ Conjunto de informações referentes à identificação da operação de crédit
 
 ```json
 {
-  "contractRemainingNumber": 14600,
   "typeNumberOfInstalments": "MES",
+  "totalNumberOfInstalments": 130632,
+  "typeContractRemaining": "DIA",
+  "contractRemainingNumber": 14600,
   "paidInstalments": 73,
   "dueInstalments": 57,
   "pastDueInstalments": 73,
@@ -11145,8 +11135,7 @@ Conjunto de informações referentes à identificação da operação de crédit
       "currency": "BRL",
       "amount": 100000.04
     }
-  ],
-  "typeContractRemaining": "DIA"
+  ]
 }
 
 ```
@@ -11157,13 +11146,14 @@ Conjunto de informações referentes às parcelas / prestações da operação d
 
 |Nome|Tipo|Obrigatório|Descrição|
 |---|---|---|---|---|
-|contractRemainingNumber|number|true|Prazo Remanescente segundo o tipo (dia, semana, mês, ano) referente à Modalidade de Crédito informada.|
-|typeNumberOfInstalments|[LoansContract/properties/typeNumberOfInstalments](#schemaloanscontract/properties/typenumberofinstalments)|true|Tipo de prazo total do contrato referente à modalidade de crédito informada.|
-|paidInstalments|number|true|Quantidade de prestações pagas. (No caso de modalidades que não possuam parcelas, o número de prestações é igual a zero)|
-|dueInstalments|number¦null|true|Quantidade de prestações a vencer.|
-|pastDueInstalments|number¦null|true|Quantidade de prestações vencidas.|
-|balloonPayments|[[FinancingsBalloonPayment](#schemafinancingsballoonpayment)]¦null|true|[Lista que traz as datas de vencimento e valor das parcelas não regulares  do contrato da modalidade de crédito consultada.]|
+|typeNumberOfInstalments|[LoansInstalments/properties/typeNumberOfInstalments](#schemaloansinstalments/properties/typenumberofinstalments)|true|Tipo de prazo total do contrato referente à modalidade de crédito informada.|
+|totalNumberOfInstalments|number¦null|true|Prazo Total segundo o tipo (dia, semana, mês, ano) referente à Modalidade de Crédito informada.|
 |typeContractRemaining|string|true|Tipo de prazo remanescente do contrato referente à modalidade de crédito informada.|
+|contractRemainingNumber|number¦null|true|Prazo Remanescente segundo o tipo (dia, semana, mês, ano) referente à Modalidade de Crédito informada.|
+|paidInstalments|number¦null|true|Quantidade de prestações pagas. (No caso de modalidades que não possuam parcelas, o número de prestações é igual a zero)|
+|dueInstalments|number¦null|true|Quantidade de prestações a vencer.(No caso de modalidades que não possuam parcelas, o número de prestações é igual a zero)|
+|pastDueInstalments|number¦null|true|Quantidade de prestações vencidas. (No caso de modalidades que não possuam parcelas, o número de prestações é igual a zero)|
+|balloonPayments|[[FinancingsBalloonPayment](#schemafinancingsballoonpayment)]¦null|true|Lista que traz as datas de vencimento e valor das parcelas não regulares do contrato da modalidade de crédito consultada|
 
 #### Enumerated Values
 
@@ -11173,6 +11163,7 @@ Conjunto de informações referentes às parcelas / prestações da operação d
 |typeContractRemaining|SEMANA|
 |typeContractRemaining|MES|
 |typeContractRemaining|ANO|
+|typeContractRemaining|SEM_PRAZO_REMANESCENTE|
 
 <h2 id="tocS_FinancingsListContract">FinancingsListContract</h2>
 
@@ -11492,13 +11483,11 @@ Conjunto de informações relativas às parcelas não regulares do contrato da m
   "currency": "BRL",
   "dueDate": "2028-01-15",
   "instalmentPeriodicity": "SEMANAL",
-  "typeNumberOfInstalments": "MES",
   "instalmentPeriodicityAdditionalInfo": "Informações adicionais sobre periodicidade",
   "firstInstalmentDueDate": "2018-02-15",
-  "totalNumberOfInstalments": 130632,
   "CET": 0.29,
   "amortizationScheduled": "SAC",
-  "cnpjConsignee": "60500998000135",
+  "amortizationScheduledAdditionalInfo": "NA",
   "interestRates": [
     {
       "taxType": "EFETIVA",
@@ -11546,17 +11535,15 @@ Conjunto de informações relativas às parcelas não regulares do contrato da m
 |contractDate|string(date)|true|Data de contratação da operação de crédito. Especificação RFC-3339|
 |disbursementDate|string(date)|false|Data do Desembolso do valor contratado. Especificação RFC-3339|
 |settlementDate|string(date)|true|Data de liquidação da operação.<br>[Restrição] Deve aceitar NA caso não seja retornado pela instituição.|
-|contractAmount|number(double)|true|Valor contratado da operação. Expresso em valor monetário com até 4 casas decimais|
+|contractAmount|number(double)¦null|true|Valor contratado da operação. Expresso em valor monetário com até 4 casas decimais|
 |currency|string|true|Moeda referente ao valor da garantia, segundo modelo ISO-4217. p.ex. 'BRL'<br>Todos os valores monetários informados estão representados com a moeda vigente do Brasil|
 |dueDate|string(date)|true|Data de vencimento Final da operação. Especificação RFC-3339|
 |instalmentPeriodicity|[EnumContractInstalmentPeriodicity](#schemaenumcontractinstalmentperiodicity)|true|"Informação relativa à periodicidade regular das parcelas. (Vide Enum)<br>sem periodicidade regular, semanal, quinzenal, mensal, bimestral, trimestral, semestral, anual"|
-|typeNumberOfInstalments|[LoansContract/properties/typeNumberOfInstalments](#schemaloanscontract/properties/typenumberofinstalments)|true|Tipo de prazo total do contrato referente à modalidade de crédito informada.|
-|instalmentPeriodicityAdditionalInfo|string|false|Campo livre para complementar a informação relativa à periodicidade de parcelamento.<br>[Restrição] Campo de preenchimento obrigatório quando em typeNumberOfInstalments for informada a opção OUTROS.|
+|instalmentPeriodicityAdditionalInfo|string|true|Campo obrigatório para complementar a informação relativa à periodicidade de pagamento regular quando tiver a opção OUTROS.<br>[Restrição] Obrigatório para complementar a informação relativa da periodicidade de pagamento regular, quando selecionada o tipo ou subtipo OUTRO.|
 |firstInstalmentDueDate|string(date)|true|Data de vencimento primeira parcela do principal|
-|totalNumberOfInstalments|number|true|Prazo Total segundo o tipo (dia, semana, mês, ano) referente à Modalidade de Crédito informada.|
 |CET|number|true|CET – Custo Efetivo Total deve ser expresso na forma de taxa percentual anual e   incorpora todos os encargos e despesas incidentes nas operações de crédito (taxa de juro, mas também tarifas, tributos, seguros e outras despesas cobradas).<br>O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros<br>(representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)|
 |amortizationScheduled|[EnumContractAmortizationScheduled](#schemaenumcontractamortizationscheduled)|true|Sistema de amortização (Vide Enum):<br>- SAC (Sistema de Amortização Constante) - É aquele em que o valor da amortização permanece igual até o final. Os juros cobrados sobre o parcelamento não entram nesta conta.<br>- PRICE (Sistema Francês de Amortização) - As parcelas são fixas do início ao fim do contrato. Ou seja, todas as parcelas terão o mesmo valor, desde a primeira até a última. Nos primeiros pagamentos, a maior parte do valor da prestação corresponde aos juros. Ao longo do tempo, a taxa de juros vai decrescendo. Como o valor da prestação é fixo, com o passar das parcelas, o valor de amortização vai aumentando.<br>- SAM (Sistema de Amortização Misto) - Cada prestação (pagamento) é a média aritmética das prestações respectivas no Sistemas Price e no Sistema de Amortização Constante (SAC).<br>- SEM SISTEMA DE AMORTIZAÇÃO|
-|cnpjConsignee|string|true|CNPJ do consignante (CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica). Deve-se ter apenas os números do CNPJ, sem máscara. Informação adicional específica para Modalidade de Crédito: Empréstimo-Crédito Pessoal Consignado|
+|amortizationScheduledAdditionalInfo|string|true|Campo obrigatório para complementar a informação relativa à amortização quando selecionada a opção OUTROS.<br>[Restrição] Obrigatório para complementar a informação relativa à amortização quando selecionada a opção OUTROS, para os demais casos informar "NA".|
 |interestRates|[[InvoiceFinancingsContractInterestRate](#schemainvoicefinancingscontractinterestrate)]|true|[Objeto que traz o conjunto de informações necessárias para demonstrar a composição das taxas de juros remuneratórios da Modalidade de crédito]|
 |contractedFees|[[InvoiceFinancingsContractedFee](#schemainvoicefinancingscontractedfee)]|true|[Objeto que traz o conjunto de informações necessárias para demonstrar a composição das taxas de juros remuneratórios da Modalidade de crédito]|
 |contractedFinanceCharges|[[InvoiceFinancingsFinanceCharge](#schemainvoicefinancingsfinancecharge)]|true|Lista que traz os encargos pactuados no contrato|
@@ -11717,7 +11704,7 @@ Conjunto de informações referentes à identificação da operação de crédit
 |---|---|---|---|---|
 |chargeType|[EnumContractFinanceChargeType](#schemaenumcontractfinancechargetype)|true|Tipo de encargo pactuado no contrato.|
 |chargeAdditionalInfo|string|true|Campos para informações adicionais.<br>[Restrição] Obrigatório se selecionada a opção 'OUTROS' em Tipo de encargo pactuado no contrato.|
-|chargeRate|number|false|Representa o valor do encargo em percentual pactuado no contrato. Exemplo: 0.0210 (=2.1%). Deve-se preencher as 4 casas decimais obrigatoriamente.|
+|chargeRate|number|false|Representa o valor do encargo em percentual pactuado no contrato. Exemplo: 0.0210 (=2.1%).|
 
 <h2 id="tocS_InvoiceFinancingsInstalments">InvoiceFinancingsInstalments</h2>
 
@@ -11728,8 +11715,10 @@ Conjunto de informações referentes à identificação da operação de crédit
 
 ```json
 {
-  "contractRemainingNumber": 14600,
   "typeNumberOfInstalments": "MES",
+  "totalNumberOfInstalments": 130632,
+  "typeContractRemaining": "DIA",
+  "contractRemainingNumber": 14600,
   "paidInstalments": 73,
   "dueInstalments": 57,
   "pastDueInstalments": 73,
@@ -11739,8 +11728,7 @@ Conjunto de informações referentes à identificação da operação de crédit
       "currency": "BRL",
       "amount": 100000.04
     }
-  ],
-  "typeContractRemaining": "DIA"
+  ]
 }
 
 ```
@@ -11751,13 +11739,14 @@ Conjunto de informações referentes às parcelas / prestações da operação d
 
 |Nome|Tipo|Obrigatório|Descrição|
 |---|---|---|---|---|
-|contractRemainingNumber|number|true|Prazo Remanescente segundo o tipo (dia, semana, mês, ano) referente à Modalidade de Crédito informada.|
-|typeNumberOfInstalments|[LoansContract/properties/typeNumberOfInstalments](#schemaloanscontract/properties/typenumberofinstalments)|true|Tipo de prazo total do contrato referente à modalidade de crédito informada.|
-|paidInstalments|number|true|Quantidade de prestações pagas. (No caso de modalidades que não possuam parcelas, o número de prestações é igual a zero)|
-|dueInstalments|number¦null|true|Quantidade de prestações a vencer. (No caso de modalidades que não possuam parcelas, o número de prestações é igual a zero)|
-|pastDueInstalments|number¦null|true|Quantidade de prestações vencidas. (No caso de modalidades que não possuam parcelas, o número de prestações é igual a zero)|
-|balloonPayments|[[InvoiceFinancingsBalloonPayment](#schemainvoicefinancingsballoonpayment)]|true|[Conjunto de informações relativas às parcelas não regulares do contrato da modalidade de crédito consultada]|
+|typeNumberOfInstalments|[LoansInstalments/properties/typeNumberOfInstalments](#schemaloansinstalments/properties/typenumberofinstalments)|true|Tipo de prazo total do contrato referente à modalidade de crédito informada.|
+|totalNumberOfInstalments|number¦null|true|Prazo Total segundo o tipo (dia, semana, mês, ano) referente à Modalidade de Crédito informada.|
 |typeContractRemaining|string|true|Tipo de prazo remanescente do contrato referente à modalidade de crédito informada.|
+|contractRemainingNumber|number¦null|true|Prazo Remanescente segundo o tipo (dia, semana, mês, ano) referente à Modalidade de Crédito informada.|
+|paidInstalments|number¦null|true|Quantidade de prestações pagas. (No caso de modalidades que não possuam parcelas, o número de prestações é igual a zero)|
+|dueInstalments|number¦null|true|Quantidade de prestações a vencer.(No caso de modalidades que não possuam parcelas, o número de prestações é igual a zero)|
+|pastDueInstalments|number¦null|true|Quantidade de prestações vencidas. (No caso de modalidades que não possuam parcelas, o número de prestações é igual a zero)|
+|balloonPayments|[[InvoiceFinancingsBalloonPayment](#schemainvoicefinancingsballoonpayment)]¦null|true|Lista que traz as datas de vencimento e valor das parcelas não regulares do contrato da modalidade de crédito consultada|
 
 #### Enumerated Values
 
@@ -11767,6 +11756,7 @@ Conjunto de informações referentes às parcelas / prestações da operação d
 |typeContractRemaining|SEMANA|
 |typeContractRemaining|MES|
 |typeContractRemaining|ANO|
+|typeContractRemaining|SEM_PRAZO_REMANESCENTE|
 
 <h2 id="tocS_InvoiceFinancingsPaymentBank">InvoiceFinancingsPaymentBank</h2>
 
@@ -11917,7 +11907,7 @@ Lista dos pagamentos realizados no período
 |paidDate|string(date)|true|Data efetiva do pagamento referente ao contrato da modalidade de crédito consultada, conforme especificação RFC-3339. p.ex. 2014-03-19|
 |currency|string|true|Moeda referente ao valor monetário informado, segundo modelo ISO-4217. p.ex. ''BRL'''.<br>Todos os valores monetários informados estão representados com a moeda vigente do Brasil.|
 |paidAmount|number(double)|true|Valor do pagamento referente ao  contrato da modalidade de crédito consultada.<br>Expresso em valor monetário com até 4 casas decimais.|
-|overParcel|object¦null|true|Objeto das tarifas e encargos que foram pagos fora da parcela.|
+|overParcel|object|true|Objeto das tarifas e encargos que foram pagos fora da parcela.|
 |» fees|[object]|true|Lista das tarifas que foram pagas fora da parcela, só para pagamento avulso.|
 |»» feeName|string|true|Denominação da Tarifa pactuada|
 |»» feeCode|string|true|Sigla identificadora da tarifa pactuada|
@@ -12202,12 +12192,11 @@ Conjunto de informações de operações de crédito contratadas
   "currency": "BRL",
   "dueDate": "2028-01-15",
   "instalmentPeriodicity": "SEMANAL",
-  "typeNumberOfInstalments": "MES",
   "instalmentPeriodicityAdditionalInfo": "Informações adicionais sobre periodicidade",
   "firstInstalmentDueDate": "2018-02-15",
-  "totalNumberOfInstalments": 130632,
   "CET": 0.29,
   "amortizationScheduled": "SAC",
+  "amortizationScheduledAdditionalInfo": "NA",
   "cnpjConsignee": "60500998000135",
   "interestRates": [
     {
@@ -12258,29 +12247,19 @@ Conjunto de informações referentes à identificação da operação de crédit
 |contractDate|string(date)|true|Data de contratação da operação de crédito. Especificação RFC-3339|
 |disbursementDate|string(date)|false|Data do Desembolso do valor contratado. Especificação RFC-3339|
 |settlementDate|string(date)|true|Data de liquidação da operação.<br>[Restrição] Deve aceitar NA caso não seja retornado pela instituição.|
-|contractAmount|number(double)|true|Valor contratado da operação. Expresso em valor monetário com até 4 casas decimais|
+|contractAmount|number(double)¦null|true|Valor contratado da operação. Expresso em valor monetário com até 4 casas decimais|
 |currency|string|true|Moeda referente ao valor da garantia, segundo modelo ISO-4217. p.ex. 'BRL'<br>Todos os valores monetários informados estão representados com a moeda vigente do Brasil|
 |dueDate|string(date)|true|Data de vencimento Final da operação. Especificação RFC-3339|
 |instalmentPeriodicity|[EnumContractInstalmentPeriodicity](#schemaenumcontractinstalmentperiodicity)|true|"Informação relativa à periodicidade regular das parcelas. (Vide Enum)<br>sem periodicidade regular, semanal, quinzenal, mensal, bimestral, trimestral, semestral, anual"|
-|typeNumberOfInstalments|string|true|Tipo de prazo total do contrato referente à modalidade de crédito informada.|
-|instalmentPeriodicityAdditionalInfo|string|false|Campo livre para complementar a informação relativa à periodicidade de parcelamento.<br>[Restrição] Campo de preenchimento obrigatório quando em typeNumberOfInstalments for informada a opção OUTROS.|
+|instalmentPeriodicityAdditionalInfo|string|true|Campo obrigatório para complementar a informação relativa à periodicidade de pagamento regular quando tiver a opção OUTROS.<br>[Restrição] Obrigatório para complementar a informação relativa da periodicidade de pagamento regular, quando selecionada o tipo ou subtipo OUTRO.|
 |firstInstalmentDueDate|string(date)|true|Data de vencimento primeira parcela do principal|
-|totalNumberOfInstalments|number|true|Prazo Total segundo o tipo (dia, semana, mês, ano) referente à Modalidade de Crédito informada.|
 |CET|number|true|CET – Custo Efetivo Total deve ser expresso na forma de taxa percentual anual e   incorpora todos os encargos e despesas incidentes nas operações de crédito (taxa de juro, mas também tarifas, tributos, seguros e outras despesas cobradas).<br>O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros<br>(representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)|
 |amortizationScheduled|[EnumContractAmortizationScheduled](#schemaenumcontractamortizationscheduled)|true|Sistema de amortização (Vide Enum):<br>- SAC (Sistema de Amortização Constante) - É aquele em que o valor da amortização permanece igual até o final. Os juros cobrados sobre o parcelamento não entram nesta conta.<br>- PRICE (Sistema Francês de Amortização) - As parcelas são fixas do início ao fim do contrato. Ou seja, todas as parcelas terão o mesmo valor, desde a primeira até a última. Nos primeiros pagamentos, a maior parte do valor da prestação corresponde aos juros. Ao longo do tempo, a taxa de juros vai decrescendo. Como o valor da prestação é fixo, com o passar das parcelas, o valor de amortização vai aumentando.<br>- SAM (Sistema de Amortização Misto) - Cada prestação (pagamento) é a média aritmética das prestações respectivas no Sistemas Price e no Sistema de Amortização Constante (SAC).<br>- SEM SISTEMA DE AMORTIZAÇÃO|
+|amortizationScheduledAdditionalInfo|string|true|Campo obrigatório para complementar a informação relativa à amortização quando selecionada a opção OUTROS.<br>[Restrição] Obrigatório para complementar a informação relativa à amortização quando selecionada a opção OUTROS, para os demais casos informar "NA".|
 |cnpjConsignee|string|true|CNPJ do consignante (CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica). Deve-se ter apenas os números do CNPJ, sem máscara. Informação adicional específica para Modalidade de Crédito: Empréstimo-Crédito Pessoal Consignado|
 |interestRates|[[LoansContractInterestRate](#schemaloanscontractinterestrate)]|true|[Objeto que traz o conjunto de informações necessárias para demonstrar a composição das taxas de juros remuneratórios da Modalidade de crédito]|
 |contractedFees|[[LoansContractedFee](#schemaloanscontractedfee)]|true|[Objeto que traz o conjunto de informações necessárias para demonstrar a composição das taxas de juros remuneratórios da Modalidade de crédito]|
 |contractedFinanceCharges|[[LoansFinanceCharge](#schemaloansfinancecharge)]|true|Lista que traz os encargos pactuados no contrato|
-
-#### Enumerated Values
-
-|Nome|Código|
-|---|---|
-|typeNumberOfInstalments|DIA|
-|typeNumberOfInstalments|SEMANA|
-|typeNumberOfInstalments|MES|
-|typeNumberOfInstalments|ANO|
 
 <h2 id="tocS_LoansContractedFee">LoansContractedFee</h2>
 
@@ -12373,7 +12352,7 @@ Objeto que traz o conjunto de informações necessárias para demonstrar a compo
 |referentialRateIndexerAdditionalInfo|string|false|Campo livre para complementar a informação relativa ao Tipo de taxa referencial ou indexador.<br>[Restrição] Obrigatório para complementar a informação relativa ao Tipo de taxa referencial ou indexador, quando selecionada o tipo ou subtipo OUTRO.|
 |preFixedRate|number|true|Taxa pré fixada aplicada sob o contrato da modalidade crédito.<br>p.ex. 0.0045. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros<br>(representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)|
 |postFixedRate|number¦null|true|Taxa pós fixada aplicada sob o contrato da modalidade crédito.<br>p.ex. 0.0045 .O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros<br>(representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)|
-|additionalInfo|string|true|Texto com informações adicionais sobre a composição das taxas de juros pactuadas|
+|additionalInfo|string|true|Texto com informações adicionais sobre a composição das taxas de juros pactuadas.<br>[Restrição] Caso a instituição não possua a informação para compartilhamento, informar NA.|
 
 <h2 id="tocS_LoansFinanceCharge">LoansFinanceCharge</h2>
 
@@ -12398,8 +12377,8 @@ Conjunto de informações referentes à identificação da operação de crédit
 |Nome|Tipo|Obrigatório|Descrição|
 |---|---|---|---|---|
 |chargeType|[EnumContractFinanceChargeType](#schemaenumcontractfinancechargetype)|true|Tipo de encargo pactuado no contrato.|
-|chargeAdditionalInfo|string|true|Campos para informações adicionais.<br>[Restrição] Obrigatório se selecionada a opção 'OUTROS' em Tipo de encargo pactuado no contrato.|
-|chargeRate|number|false|Representa o valor do encargo em percentual pactuado no contrato. Exemplo: 0.0210 (=2.1%). Deve-se preencher as 4 casas decimais obrigatoriamente.|
+|chargeAdditionalInfo|string|true|Campo de preenchimento obrigatório se selecionada a opção 'OUTROS' em Tipo de encargo pactuado no contrato.<br>[Restrição] Obrigatório se selecionada a opção 'OUTROS' em Tipo de encargo pactuado no contrato.|
+|chargeRate|number|false|Representa o valor do encargo em percentual pactuado no contrato. Exemplo: 0.0210 (=2.1%).|
 
 <h2 id="tocS_LoansInstalments">LoansInstalments</h2>
 
@@ -12410,8 +12389,10 @@ Conjunto de informações referentes à identificação da operação de crédit
 
 ```json
 {
-  "contractRemainingNumber": 14600,
   "typeNumberOfInstalments": "MES",
+  "totalNumberOfInstalments": 130632,
+  "typeContractRemaining": "DIA",
+  "contractRemainingNumber": 14600,
   "paidInstalments": 73,
   "dueInstalments": 57,
   "pastDueInstalments": 73,
@@ -12421,8 +12402,7 @@ Conjunto de informações referentes à identificação da operação de crédit
       "currency": "BRL",
       "amount": 100000.04
     }
-  ],
-  "typeContractRemaining": "DIA"
+  ]
 }
 
 ```
@@ -12433,22 +12413,29 @@ Conjunto de informações referentes ao prazo remanescente e às parcelas de uma
 
 |Nome|Tipo|Obrigatório|Descrição|
 |---|---|---|---|---|
-|contractRemainingNumber|number|true|Prazo Remanescente segundo o tipo (dia, semana, mês, ano) referente à Modalidade de Crédito informada.|
-|typeNumberOfInstalments|[LoansContract/properties/typeNumberOfInstalments](#schemaloanscontract/properties/typenumberofinstalments)|true|Tipo de prazo total do contrato referente à modalidade de crédito informada.|
-|paidInstalments|number|true|Quantidade de prestações pagas. (No caso de modalidades que não possuam parcelas, o número de prestações é igual a zero)|
-|dueInstalments|number¦null|true|Quantidade de prestações a vencer.|
-|pastDueInstalments|number¦null|true|Quantidade de prestações vencidas.|
-|balloonPayments|[[LoansBalloonPayment](#schemaloansballoonpayment)]¦null|true|[Lista que traz as datas de vencimento e valor das parcelas não regulares  do contrato da modalidade de crédito consultada.]|
+|typeNumberOfInstalments|string|true|Tipo de prazo total do contrato referente à modalidade de crédito informada.|
+|totalNumberOfInstalments|number¦null|true|Prazo Total segundo o tipo (dia, semana, mês, ano) referente à Modalidade de Crédito informada.|
 |typeContractRemaining|string|true|Tipo de prazo remanescente do contrato referente à modalidade de crédito informada.|
+|contractRemainingNumber|number¦null|true|Prazo Remanescente segundo o tipo (dia, semana, mês, ano) referente à Modalidade de Crédito informada.|
+|paidInstalments|number¦null|true|Quantidade de prestações pagas. (No caso de modalidades que não possuam parcelas, o número de prestações é igual a zero)|
+|dueInstalments|number¦null|true|Quantidade de prestações a vencer.(No caso de modalidades que não possuam parcelas, o número de prestações é igual a zero)|
+|pastDueInstalments|number¦null|true|Quantidade de prestações vencidas. (No caso de modalidades que não possuam parcelas, o número de prestações é igual a zero)|
+|balloonPayments|[[LoansBalloonPayment](#schemaloansballoonpayment)]¦null|true|Lista que traz as datas de vencimento e valor das parcelas não regulares do contrato da modalidade de crédito consultada|
 
 #### Enumerated Values
 
 |Nome|Código|
 |---|---|
+|typeNumberOfInstalments|DIA|
+|typeNumberOfInstalments|SEMANA|
+|typeNumberOfInstalments|MES|
+|typeNumberOfInstalments|ANO|
+|typeNumberOfInstalments|SEM_PRAZO_TOTAL|
 |typeContractRemaining|DIA|
 |typeContractRemaining|SEMANA|
 |typeContractRemaining|MES|
 |typeContractRemaining|ANO|
+|typeContractRemaining|SEM_PRAZO_REMANESCENTE|
 
 <h2 id="tocS_LoansPayments">LoansPayments</h2>
 
@@ -12498,7 +12485,7 @@ Conjunto de informações referentes aos pagamentos realizados de uma operação
 |Nome|Tipo|Obrigatório|Descrição|
 |---|---|---|---|---|
 |paidInstalments|number¦null|true|Quantidade total de parcelas pagas do contrato referente à Modalidade de Crédito informada.|
-|contractOutstandingBalance|number(double)|true|Valor necessario para o cliente liquidar a dívida.|
+|contractOutstandingBalance|number(double)|true|Valor necessário para o cliente liquidar a dívida.|
 |releases|[[LoansReleases](#schemaloansreleases)]|true|Lista dos pagamentos realizados no período|
 
 <h2 id="tocS_LoansReleases">LoansReleases</h2>
@@ -12548,7 +12535,7 @@ Lista dos pagamentos realizados no período
 |paidDate|string(date)|true|Data efetiva do pagamento referente ao contrato da modalidade de crédito consultada, conforme especificação RFC-3339. p.ex. 2014-03-19|
 |currency|string|true|Moeda referente ao valor monetário informado, segundo modelo ISO-4217. p.ex. 'BRL'.<br>Todos os valores monetários informados estão representados com a moeda vigente do Brasil.|
 |paidAmount|number(double)|true|Valor do pagamento referente ao  contrato da modalidade de crédito consultada.<br>Expresso em valor monetário com até 4 casas decimais.|
-|overParcel|object¦null|true|Objeto das tarifas e encargos que foram pagos fora da parcela.|
+|overParcel|object|true|Objeto das tarifas e encargos que foram pagos fora da parcela.|
 |» fees|[[LoansFeeOverParcel](#schemaloansfeeoverparcel)]|true|Lista das tarifas que foram pagas fora da parcela, só para pagamento avulso.|
 |» charges|[[LoansChargeOverParcel](#schemaloanschargeoverparcel)]|true|Lista dos encargos que foram pagos fora da parcela.|
 
@@ -12759,7 +12746,7 @@ Lista relativa às informações das partes envolvidas, como: sócio e /ou admin
 
 |Nome|Tipo|Obrigatório|Descrição|
 |---|---|---|---|---|
-|personType|string|true|Titular, pessoa natural ou juridica a quem se referem os dados de recebedor (creditor).|
+|personType|string|true|Indica se a pessoa da parte envolvida é uma pessoa natural ou juridica|
 |type|[EnumPartiesParticipationType](#schemaenumpartiesparticipationtype)|true|Indica o perfil de atuação na empresa. Vide Enum<br>O administrador é o responsável por desempenhar todas as funções administrativas da empresa. É ele quem conduz o dia a dia do negócio, assinando documentos, respondendo legalmente pela sociedade, realizando empréstimos e outras ações gerenciais. Apesar de estar na linha de frente da empresa, ele é denominado sócio por também possuir sua parcela de participação no Capital Social.<br>Sócio não tem qualquer envolvimento nas atividades administrativas da sociedade.|
 |civilName|string|true|Nome civil completo da pessoa natural (Direito fundamental da pessoa, o nome civil é aquele atribuído à pessoa natural desde o registro de seu nascimento, com o qual será identificada por toda a sua vida, bem como após a sua morte)|
 |socialName|string|true|Nome social da pessoa natural, se houver. (aquele pelo qual travestis e transexuais se reconhecem, bem como são identificados por sua comunidade e em seu meio social, conforme Decreto Local)|
@@ -12855,6 +12842,16 @@ Objeto agrupador de informações relativas a Documentos da pessoa natural
       "civilName": "Elza Milena Stefany Teixeira",
       "socialName": "Carlos"
     }
+  ],
+  "accounts": [
+    {
+      "compeCode": "001",
+      "branchCode": "6272",
+      "number": "24550245",
+      "checkDigit": "4",
+      "type": "CONTA_DEPOSITO_A_VISTA",
+      "subtype": "INDIVIDUAL"
+    }
   ]
 }
 
@@ -12871,6 +12868,26 @@ Objeto que reúne as informações relativas ao relacionamento do cliente junto 
 |productsServicesType|[[EnumProductServiceType](#schemaenumproductservicetype)]|true|[Lista com a relação dos produtos e serviços com contrato vigente.]|
 |productsServicesTypeAdditionalInfo|string|false|Informações adicionais do tipo de serviço.<br>[Restrição] Campo obrigatório quando productsServicesType for 'OUTROS'.|
 |procurators|[[PersonalProcurator](#schemapersonalprocurator)]|true|Lista dos representantes. De preenchimento obrigatório se houver representante.|
+|accounts|[object]|true|Lista de contas depósito à vista, poupança e pagamento pré-pagas mantidas pelo cliente na instituição transmissora e para as quais ele tenha fornecido consentimento.|
+|» compeCode|string|true|Código identificador atribuído pelo Banco Central do Brasil às instituições participantes do STR (Sistema de Transferência de reservas).O Compe (Sistema de Compensação de Cheques e Outros Papéis) é um sistema que identifica e processa as compensações bancárias. Ele é representado por um código de três dígitos que serve como identificador de bancos, sendo assim, cada instituição bancária possui um número exclusivo|
+|» branchCode|string|true|Código da Agência detentora da conta. (Agência é a dependência destinada ao atendimento aos clientes, ao público em geral e aos associados de cooperativas de crédito, no exercício de atividades da instituição, não podendo ser móvel ou transitória)|
+|» number|string|true|Número da conta|
+|» checkDigit|string|true|Dígito da conta|
+|» type|string|true|Tipos de contas. Modalidades tradicionais previstas pela Resolução 4.753, não contemplando contas vinculadas, conta de domiciliados no exterior, contas em moedas estrangeiras e conta correspondente moeda eletrônica. Vide Enum<br>Conta de depósito à vista ou Conta corrente - é o tipo mais comum. Nela, o dinheiro fica à sua disposição para ser sacado a qualquer momento. Essa conta não gera rendimentos para o depositante<br>Conta poupança - foi criada para estimular as pessoas a pouparem. O dinheiro que ficar na conta por trinta dias passa a gerar rendimentos, com isenção de imposto de renda para quem declara. Ou seja, o dinheiro “cresce” (rende) enquanto ficar guardado na conta. Cada depósito terá rendimentos de mês em mês, sempre no dia do mês em que o dinheiro tiver sido depositado<br>Conta de pagamento pré-paga: segundo CIRCULAR Nº 3.680, BCB de  2013, é a 'destinada à execução de transações de pagamento em moeda eletrônica realizadas com base em fundos denominados em reais previamente aportados'.<br>SEM_TIPO_CONTA - para reporte nos dados de identificação quando o cliente não possuir conta na instituição transmissora.|
+|» subtype|string|true|Subtipo de conta (vide Enum): <br>Conta individual - possui um único titular<br>Conta conjunta simples - onde as movimentações financeiras só podem serem realizadas mediante autorização de TODOS os correntistas da conta.<br>Conta conjunta solidária - é a modalidade cujos titulares podem realizar movimentações de forma isolada, isto é, sem que seja necessária a autorização dos demais titulares.<br>SEM_SUB_TIPO_CONTA - para reporte nos dados de identificação quando o cliente não possuir conta na instituição transmissora.|
+
+#### Enumerated Values
+
+|Nome|Código|
+|---|---|
+|type|CONTA_DEPOSITO_A_VISTA|
+|type|CONTA_POUPANCA|
+|type|CONTA_PAGAMENTO_PRE_PAGA|
+|type|SEM_TIPO_CONTA|
+|subtype|INDIVIDUAL|
+|subtype|CONJUNTA_SIMPLES|
+|subtype|CONJUNTA_SOLIDARIA|
+|subtype|SEM_SUB_TIPO_CONTA|
 
 <h2 id="tocS_PersonalIdentificationData">PersonalIdentificationData</h2>
 
@@ -12970,17 +12987,7 @@ Objeto que reúne as informações relativas ao relacionamento do cliente junto 
         "email": "karinafernandes-81@br.inter.net"
       }
     ]
-  },
-  "accounts": [
-    {
-      "compeCode": "001",
-      "branchCode": "6272",
-      "number": "24550245",
-      "checkDigit": "4",
-      "type": "CONTA_DEPOSITO_A_VISTA",
-      "subtype": "INDIVIDUAL"
-    }
-  ]
+  }
 }
 
 ```
@@ -13010,13 +13017,6 @@ Conjunto de informações relativas a Identificação ou seja a ação e o efeit
 |» civilName|string|true|Nome civil completo da pessoa relativa à filiação.<br>(Direito fundamental da pessoa, o nome civil é aquele atribuído à pessoa natural desde o registro de seu nascimento, <br>com o qual será identificada por toda a sua vida, bem como após a sua morte)|
 |» socialName|string|false|Nome social da pessoa natural, se houver. <br>(aquele pelo qual travestis e transexuais se reconhecem, <br>bem como são identificados por sua comunidade e em seu meio social, conforme Decreto Local)|
 |contacts|[PersonalContacts](#schemapersonalcontacts)|true|Conjunto de informações referentes às formas para contatar o cliente.|
-|accounts|[object]|false|Lista de contas depósito à vista, poupança e pagamento pré-pagas mantidas pelo cliente na instituição transmissora e para as quais ele tenha fornecido consentimento.|
-|» compeCode|string|true|Código identificador atribuído pelo Banco Central do Brasil às instituições participantes do STR (Sistema de Transferência de reservas).O Compe (Sistema de Compensação de Cheques e Outros Papéis) é um sistema que identifica e processa as compensações bancárias. Ele é representado por um código de três dígitos que serve como identificador de bancos, sendo assim, cada instituição bancária possui um número exclusivo|
-|» branchCode|string|true|Código da Agência detentora da conta. (Agência é a dependência destinada ao atendimento aos clientes, ao público em geral e aos associados de cooperativas de crédito, no exercício de atividades da instituição, não podendo ser móvel ou transitória)|
-|» number|string|true|Número da conta|
-|» checkDigit|string|true|Dígito da conta|
-|» type|[EnumAccountType](#schemaenumaccounttype)|true|Tipos de contas. Modalidades tradicionais previstas pela Resolução 4.753, não contemplando contas vinculadas, conta de domiciliados no exterior, contas em moedas estrangeiras e conta correspondente moeda eletrônica. Vide Enum<br>Conta de depósito à vista ou Conta corrente - é o tipo mais comum. Nela, o dinheiro fica à sua disposição para ser sacado a qualquer momento. Essa conta não gera rendimentos para o depositante<br>Conta poupança - foi criada para estimular as pessoas a pouparem. O dinheiro que ficar na conta por trinta dias passa a gerar rendimentos, com isenção de imposto de renda para quem declara. Ou seja, o dinheiro “cresce” (rende) enquanto ficar guardado na conta. Cada depósito terá rendimentos de mês em mês, sempre no dia do mês em que o dinheiro tiver sido depositado<br>Conta de pagamento pré-paga: segundo CIRCULAR Nº 3.680, BCB de  2013, é a 'destinada à execução de transações de pagamento em moeda eletrônica realizadas com base em fundos denominados em reais previamente aportados'|
-|» subtype|[EnumAccountSubType](#schemaenumaccountsubtype)|true|Subtipo de conta (vide Enum): <br>Conta individual - possui um único titular<br>Conta conjunta simples - onde as movimentações financeiras só podem serem realizadas mediante autorização de TODOS os correntistas da conta.<br>Conta conjunta solidária - é a modalidade cujos titulares podem realizar movimentações de forma isolada, isto é, sem que seja necessária a autorização dos demais titulares|
 
 <h2 id="tocS_PersonalOtherDocument">PersonalOtherDocument</h2>
 
@@ -13177,8 +13177,8 @@ Conjunto de informações relativas ao processo de qualificação. Considera-se 
 ```json
 {
   "data": {
-    "avaiableAmount": 100000.04,
-    "avaiableAmountCurrency": "BRL",
+    "availableAmount": 100000.04,
+    "availableAmountCurrency": "BRL",
     "blockedAmount": 99.9999,
     "blockedAmountCurrency": "BRL",
     "automaticallyInvestedAmount": 2566449494219,
@@ -13364,6 +13364,15 @@ Conjunto de informações relativas ao processo de qualificação. Considera-se 
         "civilName": "Elza Milena Stefany Teixeira",
         "socialName": "Stefany Teixeirass"
       }
+    ],
+    "accounts": [
+      {
+        "compeCode": "001",
+        "branchCode": "6272",
+        "number": "24550245",
+        "checkDigit": "4",
+        "type": "CONTA_DEPOSITO_A_VISTA"
+      }
     ]
   },
   "links": {
@@ -13474,16 +13483,7 @@ Conjunto de informações relativas ao processo de qualificação. Considera-se 
             "email": "karinafernandes-81@br.inter.net"
           }
         ]
-      },
-      "accounts": [
-        {
-          "compeCode": "001",
-          "branchCode": "6272",
-          "number": "24550245",
-          "checkDigit": "4",
-          "type": "CONTA_DEPOSITO_A_VISTA"
-        }
-      ]
+      }
     }
   ],
   "links": {
@@ -13879,6 +13879,16 @@ Conjunto de informações relativas ao processo de qualificação. Considera-se 
         "civilName": "Elza Milena Stefany Teixeira",
         "socialName": "Carlos"
       }
+    ],
+    "accounts": [
+      {
+        "compeCode": "001",
+        "branchCode": "6272",
+        "number": "24550245",
+        "checkDigit": "4",
+        "type": "CONTA_DEPOSITO_A_VISTA",
+        "subtype": "INDIVIDUAL"
+      }
     ]
   },
   "links": {
@@ -14005,17 +14015,7 @@ Conjunto de informações relativas ao processo de qualificação. Considera-se 
             "email": "karinafernandes-81@br.inter.net"
           }
         ]
-      },
-      "accounts": [
-        {
-          "compeCode": "001",
-          "branchCode": "6272",
-          "number": "24550245",
-          "checkDigit": "4",
-          "type": "CONTA_DEPOSITO_A_VISTA",
-          "subtype": "INDIVIDUAL"
-        }
-      ]
+      }
     }
   ],
   "links": {
@@ -14114,13 +14114,11 @@ Conjunto de informações relativas ao processo de qualificação. Considera-se 
     "currency": "BRL",
     "dueDate": "2028-01-15",
     "instalmentPeriodicity": "SEMANAL",
-    "typeNumberOfInstalments": "MES",
     "instalmentPeriodicityAdditionalInfo": "Informações adicionais sobre periodicidade",
     "firstInstalmentDueDate": "2018-02-15",
-    "totalNumberOfInstalments": 130632,
     "CET": 0.29,
     "amortizationScheduled": "SAC",
-    "cnpjConsignee": "60500998000135",
+    "amortizationScheduledAdditionalInfo": "NA",
     "interestRates": [
       {
         "taxType": "EFETIVA",
@@ -14145,7 +14143,7 @@ Conjunto de informações relativas ao processo de qualificação. Considera-se 
         "feeRate": 0.2
       }
     ],
-    "contractedFinancesCharges": [
+    "contractedFinanceCharges": [
       {
         "chargeType": "JUROS_REMUNERATORIOS_POR_ATRASO",
         "chargeAdditionalInfo": "Informações adicionais sobre encargos.",
@@ -14187,8 +14185,10 @@ Conjunto de informações relativas ao processo de qualificação. Considera-se 
 ```json
 {
   "data": {
-    "contractRemainingNumber": 14600,
     "typeNumberOfInstalments": "MES",
+    "totalNumberOfInstalments": 130632,
+    "typeContractRemaining": "DIA",
+    "contractRemainingNumber": 14600,
     "paidInstalments": 73,
     "dueInstalments": 57,
     "pastDueInstalments": 73,
@@ -14198,8 +14198,7 @@ Conjunto de informações relativas ao processo de qualificação. Considera-se 
         "currency": "BRL",
         "amount": 100000.04
       }
-    ],
-    "typeContractRemaining": "DIA"
+    ]
   },
   "links": {
     "self": "https://api.banco.com.br/open-banking/api/v1/resource",
@@ -14437,12 +14436,11 @@ Conjunto de informações relativas ao processo de qualificação. Considera-se 
     "currency": "BRL",
     "dueDate": "2028-01-15",
     "instalmentPeriodicity": "SEMANAL",
-    "typeNumberOfInstalments": "MES",
     "instalmentPeriodicityAdditionalInfo": "Informações adicionais sobre periodicidade",
     "firstInstalmentDueDate": "2018-02-15",
-    "totalNumberOfInstalments": 130632,
     "CET": 0.29,
     "amortizationScheduled": "SAC",
+    "amortizationScheduledAdditionalInfo": "NA",
     "cnpjConsignee": "60500998000135",
     "interestRates": [
       {
@@ -14510,8 +14508,10 @@ Conjunto de informações relativas ao processo de qualificação. Considera-se 
 ```json
 {
   "data": {
-    "contractRemainingNumber": 14600,
     "typeNumberOfInstalments": "MES",
+    "totalNumberOfInstalments": 130632,
+    "typeContractRemaining": "DIA",
+    "contractRemainingNumber": 14600,
     "paidInstalments": 73,
     "dueInstalments": 57,
     "pastDueInstalments": 73,
@@ -14521,8 +14521,7 @@ Conjunto de informações relativas ao processo de qualificação. Considera-se 
         "currency": "BRL",
         "amount": 100000.04
       }
-    ],
-    "typeContractRemaining": "DIA"
+    ]
   },
   "links": {
     "self": "https://api.banco.com.br/open-banking/api/v1/resource",
@@ -14674,13 +14673,11 @@ Conjunto de informações relativas ao processo de qualificação. Considera-se 
     "currency": "BRL",
     "dueDate": "2028-01-15",
     "instalmentPeriodicity": "SEMANAL",
-    "typeNumberOfInstalments": "MES",
     "instalmentPeriodicityAdditionalInfo": "Informações adicionais sobre periodicidade",
     "firstInstalmentDueDate": "2018-02-15",
-    "totalNumberOfInstalments": 130632,
     "CET": 0.29,
     "amortizationScheduled": "SAC",
-    "cnpjConsignee": "60500998000135",
+    "amortizationScheduledAdditionalInfo": "NA",
     "interestRates": [
       {
         "taxType": "EFETIVA",
@@ -14790,8 +14787,10 @@ Conjunto de informações relativas ao processo de qualificação. Considera-se 
 ```json
 {
   "data": {
-    "contractRemainingNumber": 14600,
     "typeNumberOfInstalments": "MES",
+    "totalNumberOfInstalments": 130632,
+    "typeContractRemaining": "DIA",
+    "contractRemainingNumber": 14600,
     "paidInstalments": 73,
     "dueInstalments": 57,
     "pastDueInstalments": 73,
@@ -14801,8 +14800,7 @@ Conjunto de informações relativas ao processo de qualificação. Considera-se 
         "currency": "BRL",
         "amount": 100000.04
       }
-    ],
-    "typeContractRemaining": "DIA"
+    ]
   },
   "links": {
     "self": "https://api.banco.com.br/open-banking/api/v1/resource",
@@ -14954,13 +14952,11 @@ Conjunto de informações relativas ao processo de qualificação. Considera-se 
     "currency": "BRL",
     "dueDate": "2028-01-15",
     "instalmentPeriodicity": "SEMANAL",
-    "typeNumberOfInstalments": "MES",
     "instalmentPeriodicityAdditionalInfo": "Informações adicionais sobre periodicidade",
     "firstInstalmentDueDate": "2018-02-15",
-    "totalNumberOfInstalments": 130632,
     "CET": 0.29,
     "amortizationScheduled": "SAC",
-    "cnpjConsignee": "60500998000135",
+    "amortizationScheduledAdditionalInfo": "NA",
     "interestRates": [
       {
         "taxType": "EFETIVA",
@@ -14985,7 +14981,7 @@ Conjunto de informações relativas ao processo de qualificação. Considera-se 
         "feeRate": 50
       }
     ],
-    "contractedFinancesCharges": [
+    "contractedFinanceCharges": [
       {
         "chargeType": "JUROS_REMUNERATORIOS_POR_ATRASO",
         "chargeAdditionalInfo": "Informações adicionais sobre encargos.",
@@ -15070,10 +15066,12 @@ Conjunto de informações relativas ao processo de qualificação. Considera-se 
 ```json
 {
   "data": {
-    "contractRemainingNumber": 14600,
     "typeNumberOfInstalments": "MES",
-    "dueInstalments": 57,
+    "totalNumberOfInstalments": 130632,
+    "typeContractRemaining": "DIA",
+    "contractRemainingNumber": 14600,
     "paidInstalments": 73,
+    "dueInstalments": 57,
     "pastDueInstalments": 73,
     "balloonPayments": [
       {
@@ -15081,8 +15079,7 @@ Conjunto de informações relativas ao processo de qualificação. Considera-se 
         "currency": "BRL",
         "amount": 100000.04
       }
-    ],
-    "typeContractRemaining": "DIA"
+    ]
   },
   "links": {
     "self": "https://api.banco.com.br/open-banking/api/v1/resource",
@@ -15311,13 +15308,11 @@ Lista dos encargos que foram pagos fora da parcela.
   "currency": "BRL",
   "dueDate": "2028-01-15",
   "instalmentPeriodicity": "SEMANAL",
-  "typeNumberOfInstalments": "MES",
   "instalmentPeriodicityAdditionalInfo": "Informações adicionais sobre periodicidade",
   "firstInstalmentDueDate": "2018-02-15",
-  "totalNumberOfInstalments": 130632,
   "CET": 0.29,
   "amortizationScheduled": "SAC",
-  "cnpjConsignee": "60500998000135",
+  "amortizationScheduledAdditionalInfo": "NA",
   "interestRates": [
     {
       "taxType": "EFETIVA",
@@ -15342,7 +15337,7 @@ Lista dos encargos que foram pagos fora da parcela.
       "feeRate": 50
     }
   ],
-  "contractedFinancesCharges": [
+  "contractedFinanceCharges": [
     {
       "chargeType": "JUROS_REMUNERATORIOS_POR_ATRASO",
       "chargeAdditionalInfo": "Informações adicionais sobre encargos.",
@@ -15367,20 +15362,18 @@ Conjunto de informações referentes à identificação da operação de crédit
 |contractDate|string(date)|true|Data de contratação da operação de crédito. Especificação RFC-3339|
 |disbursementDate|string(date)|false|Data do Desembolso do valor contratado. Especificação RFC-3339|
 |settlementDate|string(date)|true|Data de liquidação da operação.<br>[Restrição] Deve aceitar NA caso não seja retornado pela instituição.|
-|contractAmount|number(double)|true|Valor contratado da operação. Expresso em valor monetário com até 4 casas decimais|
+|contractAmount|number(double)¦null|true|Valor contratado da operação. Expresso em valor monetário com até 4 casas decimais|
 |currency|string|true|"Moeda referente ao valor da garantia, segundo modelo ISO-4217. p.ex. 'BRL'<br>Todos os valores monetários informados estão representados com a moeda vigente do Brasil"|
 |dueDate|string(date)|true|Data de vencimento Final da operação. Especificação RFC-3339|
 |instalmentPeriodicity|[EnumContractInstalmentPeriodicity](#schemaenumcontractinstalmentperiodicity)|true|"Informação relativa à periodicidade regular das parcelas. (Vide Enum)<br>sem periodicidade regular, semanal, quinzenal, mensal, bimestral, trimestral, semestral, anual"|
-|typeNumberOfInstalments|[LoansContract/properties/typeNumberOfInstalments](#schemaloanscontract/properties/typenumberofinstalments)|true|Tipo de prazo total do contrato referente à modalidade de crédito informada.|
-|instalmentPeriodicityAdditionalInfo|string|false|Campo livre para complementar a informação relativa à periodicidade de parcelamento.<br>[Restrição] Campo de preenchimento obrigatório quando em typeNumberOfInstalments for informada a opção OUTROS.|
+|instalmentPeriodicityAdditionalInfo|string|true|Campo obrigatório para complementar a informação relativa à periodicidade de pagamento regular quando tiver a opção OUTROS.<br>[Restrição] Obrigatório para complementar a informação relativa da periodicidade de pagamento regular, quando selecionada o tipo ou subtipo OUTRO.|
 |firstInstalmentDueDate|string(date)|true|Data de vencimento primeira parcela do principal|
-|totalNumberOfInstalments|number|true|Prazo Total segundo o tipo (dia, semana, mês, ano) referente à Modalidade de Crédito informada.|
 |CET|number|true|"CET – Custo Efetivo Total deve ser expresso na forma de taxa percentual anual e   incorpora todos os encargos e despesas incidentes nas operações de crédito (taxa de juro, mas também tarifas, tributos, seguros e outras despesas cobradas).<br>O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros<br>(representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)"|
 |amortizationScheduled|[EnumContractAmortizationScheduled](#schemaenumcontractamortizationscheduled)|true|Sistema de amortização (Vide Enum):<br>- SAC (Sistema de Amortização Constante) - É aquele em que o valor da amortização permanece igual até o final. Os juros cobrados sobre o parcelamento não entram nesta conta.<br>- PRICE (Sistema Francês de Amortização) - As parcelas são fixas do início ao fim do contrato. Ou seja, todas as parcelas terão o mesmo valor, desde a primeira até a última. Nos primeiros pagamentos, a maior parte do valor da prestação corresponde aos juros. Ao longo do tempo, a taxa de juros vai decrescendo. Como o valor da prestação é fixo, com o passar das parcelas, o valor de amortização vai aumentando.<br>- SAM (Sistema de Amortização Misto) - Cada prestação (pagamento) é a média aritmética das prestações respectivas no Sistemas Price e no Sistema de Amortização Constante (SAC).<br>- SEM SISTEMA DE AMORTIZAÇÃO|
-|cnpjConsignee|string|true|CNPJ do consignante (CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica). Deve-se ter apenas os números do CNPJ, sem máscara. Informação adicional específica para Modalidade de Crédito: Empréstimo-Crédito Pessoal Consignado|
+|amortizationScheduledAdditionalInfo|string|true|Campo obrigatório para complementar a informação relativa à amortização quando selecionada a opção OUTROS.<br>[Restrição] Obrigatório para complementar a informação relativa à amortização quando selecionada a opção OUTROS, para os demais casos informar "NA".|
 |interestRates|[[UnarrangedAccountOverdraftContractInterestRate](#schemaunarrangedaccountoverdraftcontractinterestrate)]|true|[Objeto que traz o conjunto de informações necessárias para demonstrar a composição das taxas de juros remuneratórios da Modalidade de crédito]|
 |contractedFees|[[UnarrangedAccountOverdraftContractedFee](#schemaunarrangedaccountoverdraftcontractedfee)]|true|Lista que traz a relação de tarifas pactuadas no contrato|
-|contractedFinancesCharges|[[UnarrangedAccountOverdraftFinanceCharge](#schemaunarrangedaccountoverdraftfinancecharge)]|true|Lista que traz os encargos pactuados no contrato|
+|contractedFinanceCharges|[[UnarrangedAccountOverdraftFinanceCharge](#schemaunarrangedaccountoverdraftfinancecharge)]|true|Lista que traz os encargos pactuados no contrato|
 
 <h2 id="tocS_UnarrangedAccountOverdraftContractedFee">UnarrangedAccountOverdraftContractedFee</h2>
 
@@ -15506,7 +15499,7 @@ Conjunto de informações de contratos de adiantamento a depositantes mantidos p
 |---|---|---|---|---|
 |chargeType|[EnumContractFinanceChargeType](#schemaenumcontractfinancechargetype)|true|Tipo de encargo pactuado no contrato.|
 |chargeAdditionalInfo|string|true|Campo para informações adicionais.<br>[Restrição] Obrigatório se selecionada a opção 'OUTROS' em Tipo de encargo pactuado no contrato.|
-|chargeRate|number|false|Representa o valor do encargo em percentual pactuado no contrato. Exemplo: 0.0210 (=2.1%). Deve-se preencher as 4 casas decimais obrigatoriamente.|
+|chargeRate|number|false|Representa o valor do encargo em percentual pactuado no contrato. Exemplo: 0.0210 (=2.1%).|
 
 <h2 id="tocS_UnarrangedAccountOverdraftInstalmentsData">UnarrangedAccountOverdraftInstalmentsData</h2>
 
@@ -15517,10 +15510,12 @@ Conjunto de informações de contratos de adiantamento a depositantes mantidos p
 
 ```json
 {
-  "contractRemainingNumber": 14600,
   "typeNumberOfInstalments": "MES",
-  "dueInstalments": 57,
+  "totalNumberOfInstalments": 130632,
+  "typeContractRemaining": "DIA",
+  "contractRemainingNumber": 14600,
   "paidInstalments": 73,
+  "dueInstalments": 57,
   "pastDueInstalments": 73,
   "balloonPayments": [
     {
@@ -15528,8 +15523,7 @@ Conjunto de informações de contratos de adiantamento a depositantes mantidos p
       "currency": "BRL",
       "amount": 100000.04
     }
-  ],
-  "typeContractRemaining": "DIA"
+  ]
 }
 
 ```
@@ -15540,13 +15534,14 @@ Conjunto de informações referentes ao prazo remanescente e às parcelas de uma
 
 |Nome|Tipo|Obrigatório|Descrição|
 |---|---|---|---|---|
-|contractRemainingNumber|number|true|Prazo Remanescente segundo o tipo (dia, semana, mês, ano) referente à Modalidade de Crédito informada.|
-|typeNumberOfInstalments|[LoansContract/properties/typeNumberOfInstalments](#schemaloanscontract/properties/typenumberofinstalments)|true|Tipo de prazo total do contrato referente à modalidade de crédito informada.|
-|dueInstalments|number¦null|true|Quantidade de prestações a vencer.|
-|paidInstalments|number|true|Quantidade de prestações pagas. (No caso de modalidades que não possuam parcelas, o número de prestações é igual a zero)|
-|pastDueInstalments|number¦null|true|Quantidade de prestações vencidas.|
-|balloonPayments|[[UnarrangedAccountOverdraftBalloonPayment](#schemaunarrangedaccountoverdraftballoonpayment)]¦null|true|Lista que traz as datas de vencimento e valor das parcelas não regulares do contrato da modalidade de crédito consultada|
+|typeNumberOfInstalments|[LoansInstalments/properties/typeNumberOfInstalments](#schemaloansinstalments/properties/typenumberofinstalments)|true|Tipo de prazo total do contrato referente à modalidade de crédito informada.|
+|totalNumberOfInstalments|number¦null|true|Prazo Total segundo o tipo (dia, semana, mês, ano) referente à Modalidade de Crédito informada.|
 |typeContractRemaining|string|true|Tipo de prazo remanescente do contrato referente à modalidade de crédito informada.|
+|contractRemainingNumber|number¦null|true|Prazo Remanescente segundo o tipo (dia, semana, mês, ano) referente à Modalidade de Crédito informada.|
+|paidInstalments|number¦null|true|Quantidade de prestações pagas. (No caso de modalidades que não possuam parcelas, o número de prestações é igual a zero)|
+|dueInstalments|number¦null|true|Quantidade de prestações a vencer.(No caso de modalidades que não possuam parcelas, o número de prestações é igual a zero)|
+|pastDueInstalments|number¦null|true|Quantidade de prestações vencidas. (No caso de modalidades que não possuam parcelas, o número de prestações é igual a zero)|
+|balloonPayments|[[UnarrangedAccountOverdraftBalloonPayment](#schemaunarrangedaccountoverdraftballoonpayment)]¦null|true|Lista que traz as datas de vencimento e valor das parcelas não regulares do contrato da modalidade de crédito consultada|
 
 #### Enumerated Values
 
@@ -15556,6 +15551,7 @@ Conjunto de informações referentes ao prazo remanescente e às parcelas de uma
 |typeContractRemaining|SEMANA|
 |typeContractRemaining|MES|
 |typeContractRemaining|ANO|
+|typeContractRemaining|SEM_PRAZO_REMANESCENTE|
 
 <h2 id="tocS_UnarrangedAccountOverdraftPaymentsData">UnarrangedAccountOverdraftPaymentsData</h2>
 

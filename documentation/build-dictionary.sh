@@ -11,8 +11,8 @@ APIS=(
   "unarranged_accounts_overdraft_apis"
   "invoice_financings_apis"
   "resources_apis"
-  "payments_apis"
   "consents_apis"
+  "payments_apis"
 )
 
 APIS_CONDITIONAL=(

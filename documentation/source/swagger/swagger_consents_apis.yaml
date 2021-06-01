@@ -2,14 +2,25 @@
 info:
   title: API Consents - Open Banking Brasil
   description: |
-    API que trata da criação, consulta e revogação de consentimentos para o Open Banking Brasil.  
-    Não possui segregação entre pessoa natural e pessoa jurídica.     
+    API que trata da criação, consulta e revogação de consentimentos para o Open Banking Brasil Fase 2 - customer-data.  
+    Não possui segregação entre pessoa natural e pessoa jurídica.    
+
+    # Orientações importantes
+    A API Consents trata dos consentimentos exclusivamente para a fase 2 do Open Banking Brasil.
+    - As informações da instituição receptora não trafegam na API Consents – a autenticação da receptora se dá através do [DCR](https://openbanking-brasil.github.io/specs-seguranca/open-banking-brasil-dynamic-client-registration-1_ID1.html).   
+    - Na chamada para a criação do consentimento deve-se utilizar um token gerado via `client_credentials`.
+    - Após o `POST` de criação do consentimento, o `STATUS` devolvido na resposta deverá ser `AWAITING_AUTHORISATION`.
+    - O `STATUS` será alterado para `AUTHORISED` somente após autenticação e confirmação por parte do usuário na instituição transmissora dos dados.
+    - Todas as datas trafegadas nesta API seguem o padrão da [RFC3339](https://tools.ietf.org/html/rfc3339) e formato "zulu".
+    - A descrição do fluxo de consentimento encontra-se disponível no [Portal do desenvolvedor](https://openbanking-brasil.github.io/areadesenvolvedor/#em-revisao-fluxo-de-consentimento).
+    - O arquivo com o mapeamento completo entre `Roles`, `scopes` e `permissions` está disponibilizado no Portal do desenvolvedor, no mesmo item acima - descrição do fluxo de consentimento.
+    - É de responsabilidade da instituição receptora de dados, no pedido de criação do consentimento, o envio de todas as `permissions` correspondentes aos agrupamentos de dados selecionados pelo cliente e necessárias às consultas nos endpoints de cada uma das APIs de dados.     
   version: 1.0.0
   license:
     name: Apache 2.0
     url: 'http://www.apache.org/licenses/LICENSE-2.0'
   contact:
-    name: Governança do Open Banking Brasil - Interfaces
+    name: Governança do Open Banking Brasil - Especificações
     email: gt-interfaces@openbankingbr.org
     url: 'https://openbanking-brasil.github.io/areadesenvolvedor/'
 servers:
@@ -34,7 +45,6 @@ paths:
         - $ref: '#/components/parameters/xFapiCustomerIpAddress'
         - $ref: '#/components/parameters/xFapiInteractionId'
         - $ref: '#/components/parameters/xCustomerUserAgent'
-        - $ref: '#/components/parameters/xJwsSignature'
       requestBody:
         content:
           application/json:
@@ -86,7 +96,6 @@ paths:
         - $ref: '#/components/parameters/xFapiCustomerIpAddress'
         - $ref: '#/components/parameters/xFapiInteractionId'
         - $ref: '#/components/parameters/xCustomerUserAgent'
-        - $ref: '#/components/parameters/xJwsSignature'
       responses:
         '200':
           $ref: '#/components/responses/200ConsentsConsentIdRead'
@@ -119,8 +128,8 @@ paths:
       tags:
         - Consents
       summary: Deletar/revogar o consentimento identificado por consentId.
+      operationId: consentsDeleteConsentsConsentId
       description: Método para deletar/revogar o consentimento identificado por consentId.
-      operationId: deleteConsentsConsentId
       parameters:
         - $ref: '#/components/parameters/consentId'
         - $ref: '#/components/parameters/Authorization'
@@ -128,7 +137,6 @@ paths:
         - $ref: '#/components/parameters/xFapiCustomerIpAddress'
         - $ref: '#/components/parameters/xFapiInteractionId'
         - $ref: '#/components/parameters/xCustomerUserAgent'
-        - $ref: '#/components/parameters/xJwsSignature'
       responses:
         '204':
           $ref: '#/components/responses/204ConsentsConsentIdDeleted'
@@ -237,12 +245,6 @@ components:
             - permissions
             - loggedUser
           properties:
-            brandID:
-              type: string
-              description: 'Identifica a Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes.'
-              maxLength: 100
-              pattern: \w*\W*
-              example: '29698749425984912674'
             loggedUser:
               $ref: '#/components/schemas/LoggedUser'
             businessEntity:
@@ -256,7 +258,7 @@ components:
                   - ACCOUNTS_READ
                   - ACCOUNTS_BALANCES_READ
                   - ACCOUNTS_TRANSACTIONS_READ
-                  - ACCOUNTS_OVERDFRAFT_LIMITS_READ
+                  - ACCOUNTS_OVERDRAFT_LIMITS_READ
                   - CREDIT_CARDS_ACCOUNTS_READ
                   - CREDIT_CARDS_ACCOUNTS_BILLS_READ
                   - CREDIT_CARDS_ACCOUNTS_BILLS_TRANSACTIONS_READ
@@ -266,28 +268,29 @@ components:
                   - CUSTOMERS_PERSONAL_ADITTIONALINFO_READ
                   - CUSTOMERS_BUSINESS_IDENTIFICATIONS_READ
                   - CUSTOMERS_BUSINESS_ADITTIONALINFO_READ
-                  - INVOICE_FINANCINGS_READ
-                  - INVOICE_FINANCINGS_INSTALMENTS_READ
-                  - INVOICE_FINANCINGS_PAYMENTS_READ
-                  - INVOICE_FINANCINGS_WARRANTIES_READ
-                  - INVOICE_FINANCINGS_SCHEDULED_INSTALMENTS_READ
                   - FINANCINGS_READ
-                  - FINANCINGS_INSTALMENTS_READ
+                  - FINANCINGS_SCHEDULED_INSTALMENTS_READ
                   - FINANCINGS_PAYMENTS_READ
                   - FINANCINGS_WARRANTIES_READ
+                  - INVOICE_FINANCINGS_READ
+                  - INVOICE_FINANCINGS_SCHEDULED_INSTALMENTS_READ
+                  - INVOICE_FINANCINGS_PAYMENTS_READ
+                  - INVOICE_FINANCINGS_WARRANTIES_READ
                   - LOANS_READ
-                  - LOANS_INSTALMENTS_READ
+                  - LOANS_SCHEDULED_INSTALMENTS_READ
                   - LOANS_PAYMENTS_READ
                   - LOANS_WARRANTIES_READ
-                  - LOANS_SCHEDULED_INSTALMENTS_READ
                   - UNARRANGED_ACCOUNTS_OVERDRAFT_READ
-                  - UNARRANGED_ACCOUNTS_OVERDRAFT_INSTALMENTS_READ
+                  - UNARRANGED_ACCOUNTS_OVERDRAFT_SCHEDULED_INSTALMENTS_READ
                   - UNARRANGED_ACCOUNTS_OVERDRAFT_PAYMENTS_READ
                   - UNARRANGED_ACCOUNTS_OVERDRAFT_WARRANTIES_READ
-                  - UNARRANGED_ACCOUNTS_OVERDRAFT_SCHEDULED_INSTALMENTS_READ
                   - RESOURCES_READ
               minItems: 1
-              maxItems: 29
+              maxItems: 30
+              example:
+                - ACCOUNTS_READ
+                - ACCOUNTS_OVERDRAFT_LIMITS_READ
+                - RESOURCES_READ
             expirationDateTime:
               description: 'Data e hora de expiração da permissão. Se não for preenchido, a permissão terá a data aberta. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).'
               type: string
@@ -322,24 +325,13 @@ components:
             - statusUpdateDateTime
             - permissions
           properties:
-            brandID:
-              type: string
-              description: 'Identifica a Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes.'
-              maxLength: 100
-              pattern: \w*\W*
-              example: '29698749425984912674'
-            brandName:
-              type: string
-              maxLength: 80
-              pattern: \w*\W*
-              description: 'Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes'
-              example: Organização A
             consentId:
               description: Identificador único do consentimento.
               type: string
-              pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
+              pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-\:]{0,99}$'
               minLength: 1
               maxLength: 100
+              example: 'urn:bancoex:C1DD33123'
             creationDateTime:
               description: 'Data e hora em que o recurso foi criado. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).'
               type: string
@@ -353,7 +345,7 @@ components:
                 - AUTHORISED
                 - AWAITING_AUTHORISATION
                 - REJECTED
-                - REVOKED
+              example: AWAITING_AUTHORISATION
             statusUpdateDateTime:
               description: 'Data e hora em que o recurso foi atualizado. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).'
               type: string
@@ -362,7 +354,7 @@ components:
               maxLength: 20
             permissions:
               type: array
-              maxItems: 29
+              maxItems: 30
               minItems: 1
               description: 'Especifica os tipos de permissões de acesso às APIs no escopo do Open Banking Brasil - Fase 2, de acordo com os blocos de consentimento fornecidos pelo usuário e necessários ao acesso a cada endpoint das APIs.'
               items:
@@ -371,7 +363,7 @@ components:
                   - ACCOUNTS_READ
                   - ACCOUNTS_BALANCES_READ
                   - ACCOUNTS_TRANSACTIONS_READ
-                  - ACCOUNTS_OVERDFRAFT_LIMITS_READ
+                  - ACCOUNTS_OVERDRAFT_LIMITS_READ
                   - CREDIT_CARDS_ACCOUNTS_READ
                   - CREDIT_CARDS_ACCOUNTS_BILLS_READ
                   - CREDIT_CARDS_ACCOUNTS_BILLS_TRANSACTIONS_READ
@@ -381,22 +373,27 @@ components:
                   - CUSTOMERS_PERSONAL_ADITTIONALINFO_READ
                   - CUSTOMERS_BUSINESS_IDENTIFICATIONS_READ
                   - CUSTOMERS_BUSINESS_ADITTIONALINFO_READ
-                  - INVOICE_FINANCINGS_READ
-                  - INVOICE_FINANCINGS_INSTALMENTS_READ
-                  - INVOICE_FINANCINGS_PAYMENTS_READ
-                  - INVOICE_FINANCINGS_WARRANTIES_READ
                   - FINANCINGS_READ
-                  - FINANCINGS_INSTALMENTS_READ
+                  - FINANCINGS_SCHEDULED_INSTALMENTS_READ
                   - FINANCINGS_PAYMENTS_READ
                   - FINANCINGS_WARRANTIES_READ
+                  - INVOICE_FINANCINGS_READ
+                  - INVOICE_FINANCINGS_SCHEDULED_INSTALMENTS_READ
+                  - INVOICE_FINANCINGS_PAYMENTS_READ
+                  - INVOICE_FINANCINGS_WARRANTIES_READ
                   - LOANS_READ
-                  - LOANS_INSTALMENTS_READ
+                  - LOANS_SCHEDULED_INSTALMENTS_READ
                   - LOANS_PAYMENTS_READ
                   - LOANS_WARRANTIES_READ
                   - UNARRANGED_ACCOUNTS_OVERDRAFT_READ
-                  - UNARRANGED_ACCOUNTS_OVERDRAFT_INSTALMENTS_READ
+                  - UNARRANGED_ACCOUNTS_OVERDRAFT_SCHEDULED_INSTALMENTS_READ
                   - UNARRANGED_ACCOUNTS_OVERDRAFT_PAYMENTS_READ
                   - UNARRANGED_ACCOUNTS_OVERDRAFT_WARRANTIES_READ
+                  - RESOURCES_READ
+              example:
+                - ACCOUNTS_READ
+                - ACCOUNTS_OVERDRAFT_LIMITS_READ
+                - RESOURCES_READ
             expirationDateTime:
               description: 'Data e hora de expiração da permissão. Se não for preenchido, a permissão terá a data aberta. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).'
               type: string
@@ -458,7 +455,7 @@ components:
       additionalProperties: false
     LoggedUser:
       type: object
-      description: 'Titular, pessoa natural a quem se referem os dados que são objeto de compartilhamento'
+      description: Usuário (pessoa natural) que encontra-se logado na instituição receptora e que iniciará o processo de consentimento para compartilhamento de dados.
       additionalProperties: false
       required:
         - document
@@ -473,18 +470,18 @@ components:
             identification:
               type: string
               maxLength: 11
-              description: Número do documento de identificação oficial do titular.
+              description: Número do documento de identificação oficial do usuário.
               example: '11111111111'
               pattern: '^\d{11}$'
             rel:
               type: string
               maxLength: 3
-              description: Tipo do documento de identificação oficial do titular.
+              description: Tipo do documento de identificação oficial do usuário.
               example: CPF
               pattern: '^[A-Z]{3}$'
     BusinessEntity:
       type: object
-      description: 'Titular, pessoa jurídica a quem se referem os dados que são objeto de compartilhamento'
+      description: 'Titular, pessoa jurídica a quem se referem os dados que são objeto de compartilhamento.'
       additionalProperties: false
       required:
         - document
@@ -568,15 +565,6 @@ components:
         pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
         minLength: 1
         maxLength: 100
-    xJwsSignature:
-      name: x-jws-signature
-      in: header
-      description: Cabeçalho contendo uma assinatura JWS separada do corpo do payload.
-      required: true
-      schema:
-        type: string
-        pattern: \w*\W*
-        maxLength: 2048
   securitySchemes:
     OAuth2Security:
       type: oauth2
@@ -652,6 +640,7 @@ components:
             pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
             minLength: 1
             maxLength: 100
+            example: 73cac523-d3ae-2289-b106-330a6218710d
       content:
         application/json:
           schema:
@@ -668,6 +657,7 @@ components:
             pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
             minLength: 1
             maxLength: 100
+            example: 92cac523-d3ae-2289-b106-330a6218710d
       content:
         application/json:
           schema:
@@ -684,3 +674,4 @@ components:
             pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
             minLength: 1
             maxLength: 100
+            example: 85bac523-d3ae-2289-b106-330a6218710d

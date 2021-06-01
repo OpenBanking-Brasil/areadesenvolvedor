@@ -2,14 +2,25 @@
 info:
   title: API Consents - Open Banking Brasil
   description: |
-    API que trata da criação, consulta e revogação de consentimentos para o Open Banking Brasil.  
-    Não possui segregação entre pessoa natural e pessoa jurídica.     
+    API que trata da criação, consulta e revogação de consentimentos para o Open Banking Brasil Fase 2 - customer-data.  
+    Não possui segregação entre pessoa natural e pessoa jurídica.    
+
+    # Orientações importantes
+    A API Consents trata dos consentimentos exclusivamente para a fase 2 do Open Banking Brasil.
+    - As informações da instituição receptora não trafegam na API Consents – a autenticação da receptora se dá através do [DCR](https://openbanking-brasil.github.io/specs-seguranca/open-banking-brasil-dynamic-client-registration-1_ID1.html).   
+    - Na chamada para a criação do consentimento deve-se utilizar um token gerado via `client_credentials`.
+    - Após o `POST` de criação do consentimento, o `STATUS` devolvido na resposta deverá ser `AWAITING_AUTHORISATION`.
+    - O `STATUS` será alterado para `AUTHORISED` somente após autenticação e confirmação por parte do usuário na instituição transmissora dos dados.
+    - Todas as datas trafegadas nesta API seguem o padrão da [RFC3339](https://tools.ietf.org/html/rfc3339) e formato "zulu".
+    - A descrição do fluxo de consentimento encontra-se disponível no [Portal do desenvolvedor](https://openbanking-brasil.github.io/areadesenvolvedor/#em-revisao-fluxo-de-consentimento).
+    - O arquivo com o mapeamento completo entre `Roles`, `scopes` e `permissions` está disponibilizado no Portal do desenvolvedor, no mesmo item acima - descrição do fluxo de consentimento.
+    - É de responsabilidade da instituição receptora de dados, no pedido de criação do consentimento, o envio de todas as `permissions` correspondentes aos agrupamentos de dados selecionados pelo cliente e necessárias às consultas nos endpoints de cada uma das APIs de dados.     
   version: 1.0.0
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0
   contact:
-    name: Governança do Open Banking Brasil - Interfaces
+    name: Governança do Open Banking Brasil - Especificações
     email: gt-interfaces@openbankingbr.org
     url: https://openbanking-brasil.github.io/areadesenvolvedor/
 servers:
@@ -24,17 +35,16 @@ paths:
   /consents:
     post:
       tags:
-        - Consents
-      summary: Criar novo pedido de consentimento.
+        - "Consents"
+      summary: "Criar novo pedido de consentimento."
       operationId: consentsPostConsents
-      description: Método para a criação de um novo consentimento.
+      description: "Método para a criação de um novo consentimento."
       parameters:
         - $ref: '#/components/parameters/Authorization'
         - $ref: '#/components/parameters/xFapiAuthDate'
         - $ref: '#/components/parameters/xFapiCustomerIpAddress'
         - $ref: '#/components/parameters/xFapiInteractionId'
         - $ref: '#/components/parameters/xCustomerUserAgent'
-        - $ref: '#/components/parameters/xJwsSignature'
       requestBody:
         content:
           application/json:
@@ -75,10 +85,10 @@ paths:
   /consents/{consentId}:
     get:
       tags:
-        - Consents
-      summary: Obter detalhes do consentimento identificado por consentId.
+        - "Consents"
+      summary: "Obter detalhes do consentimento identificado por consentId."
       operationId: consentsGetConsentsConsentId
-      description: Método para obter detalhes do consentimento identificado por consentId.
+      description: "Método para obter detalhes do consentimento identificado por consentId."
       parameters:
         - $ref: "#/components/parameters/consentId"
         - $ref: '#/components/parameters/Authorization'
@@ -86,7 +96,6 @@ paths:
         - $ref: '#/components/parameters/xFapiCustomerIpAddress'
         - $ref: '#/components/parameters/xFapiInteractionId'
         - $ref: '#/components/parameters/xCustomerUserAgent'
-        - $ref: '#/components/parameters/xJwsSignature'
       responses:
         '200':
           $ref: "#/components/responses/200ConsentsConsentIdRead"
@@ -119,8 +128,8 @@ paths:
       tags:
         - "Consents"
       summary: "Deletar/revogar o consentimento identificado por consentId."
+      operationId: consentsDeleteConsentsConsentId
       description: "Método para deletar/revogar o consentimento identificado por consentId."
-      operationId: "deleteConsentsConsentId"
       parameters:
         - $ref: "#/components/parameters/consentId"
         - $ref: '#/components/parameters/Authorization'
@@ -128,7 +137,6 @@ paths:
         - $ref: '#/components/parameters/xFapiCustomerIpAddress'
         - $ref: '#/components/parameters/xFapiInteractionId'
         - $ref: '#/components/parameters/xCustomerUserAgent'
-        - $ref: '#/components/parameters/xJwsSignature'
       responses:
         '204':
           $ref: "#/components/responses/204ConsentsConsentIdDeleted"
@@ -186,8 +194,6 @@ components:
       $ref: ./parameters/XFapiCustomerIpAddress.yaml
     xFapiInteractionId:
       $ref: ./parameters/XFapiInteractionId.yaml
-    xJwsSignature:
-      $ref: ./parameters/XJwsSignature.yaml
   securitySchemes:
     OAuth2Security:
       type: "oauth2"
@@ -226,7 +232,8 @@ components:
             type: string   
             pattern: ^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$
             minLength: 1
-            maxLength: 100             
+            maxLength: 100
+            example: "73cac523-d3ae-2289-b106-330a6218710d"     
       content:
         application/json:
           schema:
@@ -242,7 +249,8 @@ components:
             type: string   
             pattern: ^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$
             minLength: 1
-            maxLength: 100             
+            maxLength: 100    
+            example: "92cac523-d3ae-2289-b106-330a6218710d"
       content:
         application/json:
           schema:
@@ -258,5 +266,6 @@ components:
             type: string   
             pattern: ^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$
             minLength: 1
-            maxLength: 100   
+            maxLength: 100 
+            example: "85bac523-d3ae-2289-b106-330a6218710d"
     
