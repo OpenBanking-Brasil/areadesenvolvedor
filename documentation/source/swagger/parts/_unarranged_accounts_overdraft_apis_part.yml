@@ -35,12 +35,12 @@ info:
     ### `/contracts/{contractId}/payments`
       - permissions:
         - GET: **UNARRANGED_ACCOUNTS_OVERDRAFT_PAYMENTS_READ**
-  version: 1.0.0
+  version: 1.0.0-rc6.4
   license:
     name: Apache 2.0
     url: 'https://www.apache.org/licenses/LICENSE-2.0'
   contact:
-    name: Governança do Open Banking Brasil – Interfaces
+    name: Governança do Open Banking Brasil – Especificações
     email: gt-interfaces@openbankingbr.org
     url: 'https://openbanking-brasil.github.io/areadesenvolvedor/'
 servers:
@@ -89,8 +89,10 @@ paths:
           $ref: '#/components/responses/OKResponseUnarrangedAccountOverdraftContractList'
       security:
         - OpenId:
-            - openId
-            - unarranged-accounts-overdraft
+            - 'openid'     
+          OAuth2Security:
+            - 'consent:consentId'
+            - 'unarranged-accounts-overdraft' 
   /contracts/{contractId}:
     get:
       tags:
@@ -128,8 +130,10 @@ paths:
           $ref: '#/components/responses/OKResponseUnarrangedAccountOverdraftContract'
       security:
         - OpenId:
-            - openId
-            - unarranged-accounts-overdraft
+            - 'openid'     
+          OAuth2Security:
+            - 'consent:consentId'
+            - 'unarranged-accounts-overdraft' 
   /contracts/{contractId}/warranties:
     get:
       tags:
@@ -169,8 +173,10 @@ paths:
           $ref: '#/components/responses/OKResponseUnarrangedAccountOverdraftWarranties'
       security:
         - OpenId:
-            - openId
-            - unarranged-accounts-overdraft
+            - 'openid'     
+          OAuth2Security:
+            - 'consent:consentId'
+            - 'unarranged-accounts-overdraft' 
   /contracts/{contractId}/scheduled-instalments:
     get:
       tags:
@@ -210,8 +216,10 @@ paths:
           $ref: '#/components/responses/OKResponseUnarrangedAccountOverdraftInstalments'
       security:
         - OpenId:
-            - openId
-            - unarranged-accounts-overdraft
+            - 'openid'     
+          OAuth2Security:
+            - 'consent:consentId'
+            - 'unarranged-accounts-overdraft'              
   /contracts/{contractId}/payments:
     get:
       tags:
@@ -251,8 +259,10 @@ paths:
           $ref: '#/components/responses/OKResponseUnarrangedAccountOverdraftPayments'
       security:
         - OpenId:
-            - openId
-            - unarranged-accounts-overdraft
+            - 'openid'     
+          OAuth2Security:
+            - 'consent:consentId'
+            - 'unarranged-accounts-overdraft' 
 components:
   schemas:
     ResponseUnarrangedAccountOverdraftContract:
@@ -342,7 +352,16 @@ components:
   securitySchemes:
     OpenId:
       type: openIdConnect
-      openIdConnectUrl: 'https://authserver.example/.well-known/openid-configuration'
+      openIdConnectUrl: 'https://auth.mockbank.poc.raidiam.io/.well-known/openid-configuration'
+    OAuth2Security:
+      type: oauth2
+      description: "Fluxo OAuth necessário para que a receptora tenha acesso aos dados na instituição transmissora. Requer o processo de redirecionamento e autenticação do usuário a que se referem os dados."
+      flows:
+        authorizationCode:
+          authorizationUrl: "https://authserver.example/authorization"
+          tokenUrl: "https://authserver.example/token"
+          scopes:
+            unarranged-accounts-overdraft: "Escopo necessário para acesso à API Unarranged-accounts-overdraft. O controle dos endpoints específicos é feito via permissions."      
   responses:
     OKResponseUnarrangedAccountOverdraftContractList:
       description: Lista de contratos obtida com sucesso.
