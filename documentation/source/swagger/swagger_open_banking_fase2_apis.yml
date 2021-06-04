@@ -5,33 +5,23 @@ info:
     Clientes poderão solicitar o compartilhamento entre instituições participantes de seus dados cadastrais, de informações sobre transações em suas contas, cartão de crédito e produtos de crédito contratados. 
 
     O compartilhamento ocorre apenas se a pessoa autorizar através da API de Consentimento, sempre para finalidades determinadas e por um prazo específico. E será possível para o cliente cancelar essa autorização a qualquer momento em qualquer uma das instituições envolvidas no compartilhamento.
-  version: 1.0.0
+  
+  version: 1.0.0-rc6.4
 tags:
   - name: API - Consentimento
     description: |
       |Versão|
       |:-----|
-      |1     |
+      |1.0.0-rc6.4|
 
-      #### Visão Geral
+      ### Visão Geral
 
-      A API tem como objetivo garantir que o usuário esteja ciente e concordando com a disponibilização e compartilhamento de determinados dados entre bancos e instituições financeiras e acessível também à estabelecimentos comerciais participantes do Open Banking Brasil.
+      A API Consents viabiliza a criação, consulta e revogação dos consentimentos para a fase 2 (customer-data) do Open Banking Brasil.
 
-      É possível realizar a criação (não possuindo restrição de uso entre pessoa física e pessoa jurídica), consulta e revogação de um consentimento mediante a integração entre as instituições autorizadas.
+      ### Especificação em OAS 3.0
 
-      [EM REVISÃO/ALTERAÇÃO - ABRIL DE 2021]
+      <a href="swagger/swagger_consents_apis.yaml">Download da Especificação (OAS 3.0)</a> 
 
-      #### Especificação em OAS 3.0
-
-      <a href="swagger/swagger_consents_apis.yaml">Download da Especificação (OAS 3.0)</a>
-  - name: API - Resources
-  - name: API - Dados Cadastrais
-  - name: API - Cartão de Crédito
-  - name: API - Contas
-  - name: API - Operações de Crédito - Empréstimos
-  - name: API - Operações de Crédito - Financiamentos
-  - name: API - Operações de Crédito - Adiantamento a Depositantes
-  - name: API - Operações de Crédito - Direitos Creditórios Descontados
 paths:
   /consents/v1/consents:
     post:
@@ -40,9 +30,6 @@ paths:
       summary: Criar novo pedido de consentimento.
       operationId: consentsPostConsents
       description: |
-        |Versão|
-        |:-----|
-        |1     |
 
         ### Visão Geral
 
@@ -105,9 +92,6 @@ paths:
       summary: Obter detalhes do consentimento identificado por consentId.
       operationId: consentsGetConsentsConsentId
       description: |
-        |Versão|
-        |:-----|
-        |1     |
 
         ### Visão Geral
 
@@ -198,6 +182,21 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ResponseError'
+
+  - name: API - Resources
+    description: |
+      |Versão|
+      |:-----|
+      |1.0.0-rc6.4|
+
+      ### Visão Geral
+
+      A API Resources permite a consulta aos status dos recursos compartilhados no Open Banking Brasil - fase 2, considerando a disponibilidade do recurso e também o status do consentimento relacionado.
+
+      ### Especificação em OAS 3.0
+
+      <a href="swagger/swagger_resources_apis.yaml">Download da Especificação (OAS 3.0)</a> 
+
   /resources/v1/resources:
     get:
       tags:
@@ -205,9 +204,6 @@ paths:
       summary: Obtém a lista de recursos consentidos pelo cliente.
       operationId: resourcesGetResources
       description: |
-        |Versão|
-        |:-----|
-        |1     |
 
         ### Visão Geral
 
@@ -217,9 +213,6 @@ paths:
 
         <a href="dictionary/resourcesGetResources_v1.csv" target="_blank">Fazer download do dicionário de dados</a>
 
-        ### Especificação em OAS 3.0
-
-        <a href="swagger/swagger_resources_apis.yaml">Download da Especificação (OAS 3.0)</a>
       parameters:
         - $ref: '#/components/parameters/Authorization'
         - $ref: '#/components/parameters/xFapiAuthDate'
@@ -251,21 +244,33 @@ paths:
           $ref: '#/components/responses/OKResponseResourceList'
       security:
         - OpenId:
-            - openId
             - resources
+              consent:consentId
+ 
+  - name: API - Dados Cadastrais 
+    description: |
+      |Versão|
+      |:-----|
+      |1.0.0-rc6.4|
+
+      ### Visão Geral
+
+      A API Customers permite viabiliza a consulta aos dados cadastrais de clientes, incluindo também dados de qualificação e de relacionamento financeiro.
+
+      ### Especificação em OAS 3.0
+
+      <a href="swagger/swagger_customers_apis.yaml">Download da Especificação (OAS 3.0)</a>  
+      
   /customers/v1/personal/identifications:
     get:
       tags:
         - API - Dados Cadastrais
       summary: Identificação Pessoa Natural
       description: |
-        |Versão|
-        |:-----|
-        |1     |
 
         ### Visão Geral
 
-        Obtém os registros de identificação da pessoa natural
+        Obtém os registros de identificação da pessoa natural.
 
         Esta especificação inclui todos os itens relevantes que permitam a ação e o efeito de identificar de forma única a pessoa natural através de seus dados cadastrais.
 
@@ -298,6 +303,7 @@ paths:
         ### Especificação em OAS 3.0
 
         <a href="swagger/swagger_customers_apis.yaml">Download da Especificação (OAS 3.0)</a>
+        
       operationId: getPersonalCustomersIdentifications
       parameters:
         - $ref: '#/components/parameters/Authorization'
@@ -326,19 +332,17 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
+          
   /customers/v1/business/identifications:
     get:
       tags:
         - API - Dados Cadastrais
       summary: Identificação Pessoa Jurídica
       description: |
-        |Versão|
-        |:-----|
-        |1     |
 
         ### Visão Geral
 
-        Obtém os registros de identificação da pessoa jurídica
+        Obtém os registros de identificação da pessoa jurídica.
 
         Esta especificação inclui todos os itens relevantes que permitam a ação e o efeito de identificar de forma única a pessoa jurídica através de seus dados cadastrais.
 
@@ -405,13 +409,10 @@ paths:
         - API - Dados Cadastrais
       summary: Qualificação Pessoa Natural
       description: |
-        |Versão|
-        |:-----|
-        |1     |
 
         ### Visão Geral
 
-        Obtém os registros de qualificação da pessoa natural
+        Obtém os registros de qualificação da pessoa natural.
 
         Esta especificação inclui todos os itens relevantes, que permitam as instituições apreciar, avaliar, caracterizar e classificar o cliente com a finalidade de conhecer o seu perfil de risco e sua capacidade econômico-financeira.
 
@@ -479,13 +480,10 @@ paths:
         - API - Dados Cadastrais
       summary: Qualificação Pessoa Jurídica
       description: |
-        |Versão|
-        |:-----|
-        |1     |
 
         ### Visão Geral
 
-        Obtém os registros de qualificação da pessoa jurídica
+        Obtém os registros de qualificação da pessoa jurídica.
 
         Esta especificação inclui todos os itens relevantes, que permitam as instituições apreciar, avaliar, caracterizar e classificar o cliente com a finalidade de conhecer o seu perfil de risco e sua capacidade econômico-financeira.
 
@@ -553,9 +551,6 @@ paths:
         - API - Dados Cadastrais
       summary: Relacionamento Pessoa Natural
       description: |
-        |Versão|
-        |:-----|
-        |1     |
 
         ### Visão Geral
 
@@ -627,13 +622,10 @@ paths:
         - API - Dados Cadastrais
       summary: Relacionamento Pessoa Jurídica
       description: |
-        |Versão|
-        |:-----|
-        |1     |
 
         ### Visão Geral
 
-        Obtém os registros de relacionamentos com a instituição financeira e de representantes da pessoa jurídica
+        Obtém os registros de relacionamentos com a instituição financeira e de representantes da pessoa jurídica.
 
         Considera-se relacionamento as informações que permitam conhecer desde quando a pessoa consultada é cliente da instituição, bem como um indicador dos produtos e serviços que ela consome atualmente.
 
@@ -695,15 +687,28 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
+  
+  - name: API - Cartão de Crédito
+    description: |
+      |Versão|
+      |:-----|
+      |1.0.0-rc6.4|
+
+      ### Visão Geral
+
+      A API Credit-cards-accounts viabiliza o compartilhamento dos dados de conta pós-paga(cartão de crédito), tais como limites, transações e faturas.
+
+      ### Especificação em OAS 3.0
+
+      <a href="swagger/swagger_credit_cards_apis.yaml">Download da Especificação (OAS 3.0)</a>  
+      
   /credit-cards-accounts/v1/accounts:
     get:
       tags:
         - API - Cartão de Crédito
       summary: Lista de cartões de crédito
       description: |
-        |Versão|
-        |:-----|
-        |1     |
+
 
         ### Visão Geral
 
@@ -771,9 +776,6 @@ paths:
         - API - Cartão de Crédito
       summary: Identificação de cartão de crédito
       description: |
-        |Versão|
-        |:-----|
-        |1     |
 
         ### Visão Geral
 
@@ -842,9 +844,6 @@ paths:
         - API - Cartão de Crédito
       summary: Limites de cartão de crédito
       description: |
-        |Versão|
-        |:-----|
-        |1     |
 
         ### Visão Geral
 
@@ -913,9 +912,6 @@ paths:
         - API - Cartão de Crédito
       summary: Transações de cartão de crédito
       description: |
-        |Versão|
-        |:-----|
-        |1     |
 
         ### Visão Geral
 
@@ -990,9 +986,6 @@ paths:
         - API - Cartão de Crédito
       summary: Fatura de Cartão de Crédito
       description: |
-        |Versão|
-        |:-----|
-        |1     |
 
         ### Visão Geral
 
@@ -1064,9 +1057,6 @@ paths:
         - API - Cartão de Crédito
       summary: Transações de cartão de crédito por fatura
       description: |
-        |Versão|
-        |:-----|
-        |1     |
 
         ### Visão Geral
 
@@ -1137,17 +1127,28 @@ paths:
           $ref: '#/components/responses/InternalServerError'
       security:
         - OpenId:
-            - openId
             - credit-card
+              consent:consentId
+  
+  - name: API - Contas
+    description: |
+      |Versão|
+      |:-----|
+      |1.0.0-rc6.4|
+
+      ### Visão Geral
+
+      A API Accounts viabiliza o compartilhamento dos dados de contas de depósito à vista, contas de poupança e conta de pagamento pré-paga tais como limites, transações e saldos.
+
+      ### Especificação em OAS 3.0
+
+      <a href="swagger/swagger_accounts_apis.yaml">Download da Especificação (OAS 3.0)</a>  
   /accounts/v1/accounts:
     get:
       tags:
         - API - Contas
       summary: Lista de Contas
       description: |
-        |Versão|
-        |:-----|
-        |1     |
 
         ### Visão Geral
 
@@ -1217,9 +1218,6 @@ paths:
         - API - Contas
       summary: Identificação da Conta
       description: |
-        |Versão|
-        |:-----|
-        |1     |
 
         ### Visão Geral
 
@@ -1289,9 +1287,6 @@ paths:
         - API - Contas
       summary: Saldos da conta
       description: |
-        |Versão|
-        |:-----|
-        |1     |
 
         ### Visão Geral
 
@@ -1365,9 +1360,6 @@ paths:
         - API - Contas
       summary: Transações da conta
       description: |
-        |Versão|
-        |:-----|
-        |1     |
 
         ### Visão Geral
 
@@ -1446,9 +1438,6 @@ paths:
         - API - Contas
       summary: Limites da conta
       description: |
-        |Versão|
-        |:-----|
-        |1     |
 
         ### Visão Geral
 
@@ -1516,6 +1505,21 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
+  
+  - name: API - Operações de Crédito - Empréstimos
+    description: |
+      |Versão|
+      |:-----|
+      |1.0.0-rc6.4|
+
+      ### Visão Geral
+
+      A API Loans viabiliza o compartilhamento de informações das Operações de Crédito do tipo Empréstimo.
+
+      ### Especificação em OAS 3.0
+
+      <a href="swagger/swagger_loans_apis.yaml">Download da Especificação (OAS 3.0)</a>  
+      
   /loans/v1/contracts:
     get:
       tags:
@@ -1523,9 +1527,6 @@ paths:
       summary: Empréstimos
       operationId: loansGetContracts
       description: |
-        |Versão|
-        |:-----|
-        |1     |
 
         ### Visão Geral
 
@@ -1592,9 +1593,6 @@ paths:
       summary: Empréstimos - Contrato
       operationId: loansGetContractsContractId
       description: |
-        |Versão|
-        |:-----|
-        |1     |
 
         ### Visão Geral
 
@@ -1662,9 +1660,6 @@ paths:
       summary: Empréstimos - Garantias do Contrato
       operationId: loansGetContractsContractIdWarranties
       description: |
-        |Versão|
-        |:-----|
-        |1     |
 
         ### Visão Geral
 
@@ -1734,9 +1729,6 @@ paths:
       summary: Empréstimos - Pagamentos do Contrato
       operationId: loansGetContractsContractIdPayments
       description: |
-        |Versão|
-        |:-----|
-        |1     |
 
         ### Visão Geral
 
@@ -1806,9 +1798,6 @@ paths:
       summary: Empréstimos - Parcelas do Contrato
       operationId: loansGetContractsContractIdScheduledInstalments
       description: |
-        |Versão|
-        |:-----|
-        |1     |
 
         ### Visão Geral
 
@@ -1871,6 +1860,21 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
+  
+  - name: API - Operações de Crédito - Financiamentos  
+    description: |
+      |Versão|
+      |:-----|
+      |1.0.0-rc6.4|
+
+      ### Visão Geral
+
+      A API Financings viabiliza o compartilhamento de informações das Operações de Crédito do tipo Financiamento.
+
+      ### Especificação em OAS 3.0
+
+      <a href="swagger/swagger_financings_apis.yaml">Download da Especificação (OAS 3.0)</a>  
+      
   /financings/v1/contracts:
     get:
       tags:
@@ -1878,9 +1882,6 @@ paths:
       summary: Financiamentos
       operationId: financingsGetContracts
       description: |
-        |Versão|
-        |:-----|
-        |1     |
 
         ### Visão Geral
 
@@ -1947,9 +1948,6 @@ paths:
       summary: Financiamentos - Contrato
       operationId: financingsGetContractsContractId
       description: |
-        |Versão|
-        |:-----|
-        |1     |
 
         ### Visão Geral
 
@@ -2017,9 +2015,6 @@ paths:
       summary: Financiamentos - Garantias do Contrato
       operationId: financingsGetContractsContractIdWarranties
       description: |
-        |Versão|
-        |:-----|
-        |1     |
 
         ### Visão Geral
 
@@ -2089,9 +2084,6 @@ paths:
       summary: Financiamentos - Pagamentos do Contrato
       operationId: financingsGetContractsContractIdPayments
       description: |
-        |Versão|
-        |:-----|
-        |1     |
 
         ### Visão Geral
 
@@ -2161,9 +2153,6 @@ paths:
       summary: Financiamentos - Parcelas do Contrato
       operationId: financingsGetContractsContractIdScheduledInstalments
       description: |
-        |Versão|
-        |:-----|
-        |1     |
 
         ### Visão Geral
 
@@ -2226,6 +2215,21 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
+  
+  - name: API - Operações de Crédito - Adiantamento a Depositantes 
+    description: |
+      |Versão|
+      |:-----|
+      |1.0.0-rc6.4|
+
+      ### Visão Geral
+
+      A API Unarranged-accounts-overdraft viabiliza o compartilhamento de informações das Operações de Crédito do tipo Adiantamento a Depositantes.
+
+      ### Especificação em OAS 3.0
+
+      <a href="swagger/swagger_unarranged_accounts_overdraft_apis.yaml">Download da Especificação (OAS 3.0)</a> 
+      
   /unarranged-accounts-overdraft/v1/contracts:
     get:
       tags:
@@ -2233,9 +2237,6 @@ paths:
       summary: Adiantamento a Depositantes
       operationId: unarrangedAccountsOverdraftGetContracts
       description: |
-        |Versão|
-        |:-----|
-        |1     |
 
         ### Visão Geral
 
@@ -2302,9 +2303,6 @@ paths:
       summary: Adiantamento a Depositantes - Contrato
       operationId: unarrangedAccountsOverdraftGetContractsContractId
       description: |
-        |Versão|
-        |:-----|
-        |1     |
 
         ### Visão Geral
 
@@ -2376,9 +2374,6 @@ paths:
       summary: Adiantamento a Depositantes - Garantias do Contrato
       operationId: unarrangedAccountsOverdraftGetContractsContractIdWarranties
       description: |
-        |Versão|
-        |:-----|
-        |1     |
 
         ### Visão Geral
 
@@ -2452,9 +2447,6 @@ paths:
       summary: Adiantamento a Depositantes - Pagamentos do Contrato
       operationId: unarrangedAccountsOverdraftGetContractsContractIdPayments
       description: |
-        |Versão|
-        |:-----|
-        |1     |
 
         ### Visão Geral
 
@@ -2528,9 +2520,6 @@ paths:
       summary: Adiantamento a Depositantes - Parcelas do Contrato
       operationId: unarrangedAccountsOverdraftGetContractsContractIdScheduledInstalments
       description: |
-        |Versão|
-        |:-----|
-        |1     |
 
         ### Visão Geral
 
@@ -2597,6 +2586,20 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
+
+  - name: API - Operações de Crédito - Direitos Creditórios Descontados  
+    description: |
+      |Versão|
+      |:-----|
+      |1.0.0-rc6.4|
+
+      ### Visão Geral
+
+      A API Invoice-financings viabiliza o compartilhamento de informações das Operações de Crédito do tipo Direitos Creditórios Descontados.
+
+      ### Especificação em OAS 3.0
+
+      <a href="swagger/swagger_unarranged_accounts_overdraft_apis.yaml">Download da Especificação (OAS 3.0)</a>   
   /invoice-financings/v1/contracts:
     get:
       tags:
@@ -2604,9 +2607,6 @@ paths:
       summary: Direitos Creditórios Descontados
       operationId: invoiceFinancingsGetContracts
       description: |
-        |Versão|
-        |:-----|
-        |1     |
 
         ### Visão Geral
 
@@ -2673,9 +2673,6 @@ paths:
       summary: Direitos Creditórios Descontados - Contrato
       operationId: invoiceFinancingsGetContractsContractId
       description: |
-        |Versão|
-        |:-----|
-        |1     |
 
         ### Visão Geral
 
@@ -2743,9 +2740,6 @@ paths:
       summary: Direitos Creditórios Descontados - Garantias do Contrato
       operationId: invoiceFinancingsGetContractsContractIdWarranties
       description: |
-        |Versão|
-        |:-----|
-        |1     |
 
         ### Visão Geral
 
@@ -2815,9 +2809,6 @@ paths:
       summary: Direitos Creditórios Descontados - Pagamentos do Contrato
       operationId: invoiceFinancingsGetContractsContractIdPayments
       description: |
-        |Versão|
-        |:-----|
-        |1     |
 
         ### Visão Geral
 
@@ -2887,9 +2878,6 @@ paths:
       summary: Direitos Creditórios Descontados - Parcelas do Contrato
       operationId: invoiceFinancingsGetContractsContractIdScheduledInstalments
       description: |
-        |Versão|
-        |:-----|
-        |1     |
 
         ### Visão Geral
 
