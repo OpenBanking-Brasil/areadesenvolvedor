@@ -12,10 +12,11 @@ APIS=(
   "invoice_financings_apis"
   "resources_apis"
   "consents_apis"
+  "payments_apis"
 )
 
 APIS_CONDITIONAL=(
-  "payments_apis"
+  
 )
 
 function generate() {
