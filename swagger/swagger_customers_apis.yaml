@@ -38,12 +38,12 @@ info:
     ### `/business/financial-relations`
       - permissions:
         - GET: **CUSTOMERS_BUSINESS_ADITTIONALINFO_READ**
-  version: 1.0.0
+  version: 1.0.0-rc6.5
   license:
     name: Apache 2.0
     url: 'https://www.apache.org/licenses/LICENSE-2.0'
   contact:
-    name: Governança do Open Banking Brasil – Interfaces
+    name: Governança do Open Banking Brasil – Especificações
     email: gt-interfaces@openbankingbr.org
     url: 'https://openbanking-brasil.github.io/areadesenvolvedor/'
 servers:
@@ -91,7 +91,9 @@ paths:
           $ref: '#/components/responses/OKResponsePersonalCustomersIdentification'
       security:
         - OpenId:
-            - openId
+            - openid
+          OAuth2Security:
+            - 'consent:consentId'
             - customers
   /personal/qualifications:
     get:
@@ -129,7 +131,9 @@ paths:
           $ref: '#/components/responses/OKResponsePersonalCustomersQualification'
       security:
         - OpenId:
-            - openId
+            - openid
+          OAuth2Security:
+            - 'consent:consentId'
             - customers
   /personal/financial-relations:
     get:
@@ -167,7 +171,9 @@ paths:
           $ref: '#/components/responses/OKResponsePersonalCustomersFinancialRelation'
       security:
         - OpenId:
-            - openId
+            - openid
+          OAuth2Security:
+            - 'consent:consentId'
             - customers
   /business/identifications:
     get:
@@ -205,7 +211,9 @@ paths:
           $ref: '#/components/responses/OKResponseBusinessCustomersIdentification'
       security:
         - OpenId:
-            - openId
+            - openid
+          OAuth2Security:
+            - 'consent:consentId'
             - customers
   /business/qualifications:
     get:
@@ -243,7 +251,9 @@ paths:
           $ref: '#/components/responses/OKResponseBusinessCustomersQualification'
       security:
         - OpenId:
-            - openId
+            - openid
+          OAuth2Security:
+            - 'consent:consentId'
             - customers
   /business/financial-relations:
     get:
@@ -281,7 +291,9 @@ paths:
           $ref: '#/components/responses/OKResponseBusinessCustomersFinancialRelation'
       security:
         - OpenId:
-            - openId
+            - openid
+          OAuth2Security:
+            - 'consent:consentId'
             - customers
 components:
   schemas:
@@ -2053,7 +2065,16 @@ components:
   securitySchemes:
     OpenId:
       type: openIdConnect
-      openIdConnectUrl: 'https://authserver.example/.well-known/openid-configuration'
+      openIdConnectUrl: 'https://auth.mockbank.poc.raidiam.io/.well-known/openid-configuration'
+    OAuth2Security:
+      type: oauth2
+      description: Fluxo OAuth necessário para que a receptora tenha acesso aos dados na instituição transmissora. Requer o processo de redirecionamento e autenticação do usuário a que se referem os dados.
+      flows:
+        authorizationCode:
+          authorizationUrl: 'https://authserver.example/authorization'
+          tokenUrl: 'https://authserver.example/token'
+          scopes:
+            customers: Escopo necessário para acesso à API Customers. O controle dos endpoints específicos é feito via permissions.
   responses:
     OKResponsePersonalCustomersIdentification:
       description: Dados sobre identificação pessoa física.

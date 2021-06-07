@@ -36,12 +36,12 @@ info:
     ### `/contracts/{contractId}/payments`
       - permissions:
         - GET: **FINANCINGS_PAYMENTS_READ**
-  version: 1.0.0
+  version: 1.0.0-rc6.5
   license:
     name: Apache 2.0
     url: 'https://www.apache.org/licenses/LICENSE-2.0'
   contact:
-    name: Governança do Open Banking Brasil – Interfaces
+    name: Governança do Open Banking Brasil – Especificações
     email: gt-interfaces@openbankingbr.org
     url: 'https://openbanking-brasil.github.io/areadesenvolvedor/'
 servers:
@@ -90,7 +90,9 @@ paths:
           $ref: '#/components/responses/OKResponseFinancingsContractList'
       security:
         - OpenId:
-            - openId
+            - openid
+          OAuth2Security:
+            - 'consent:consentId'
             - financings
   '/contracts/{contractId}':
     get:
@@ -129,7 +131,9 @@ paths:
           $ref: '#/components/responses/OKResponseFinancingsContract'
       security:
         - OpenId:
-            - openId
+            - openid
+          OAuth2Security:
+            - 'consent:consentId'
             - financings
   '/contracts/{contractId}/warranties':
     get:
@@ -170,7 +174,9 @@ paths:
           $ref: '#/components/responses/OKResponseFinancingsWarranties'
       security:
         - OpenId:
-            - openId
+            - openid
+          OAuth2Security:
+            - 'consent:consentId'
             - financings
   '/contracts/{contractId}/scheduled-instalments':
     get:
@@ -211,7 +217,9 @@ paths:
           $ref: '#/components/responses/OKResponseFinancingsInstalments'
       security:
         - OpenId:
-            - openId
+            - openid
+          OAuth2Security:
+            - 'consent:consentId'
             - financings
   '/contracts/{contractId}/payments':
     get:
@@ -252,7 +260,9 @@ paths:
           $ref: '#/components/responses/OKResponseFinancingsPayments'
       security:
         - OpenId:
-            - openId
+            - openid
+          OAuth2Security:
+            - 'consent:consentId'
             - financings
 components:
   schemas:
@@ -1360,7 +1370,16 @@ components:
   securitySchemes:
     OpenId:
       type: openIdConnect
-      openIdConnectUrl: 'https://authserver.example/.well-known/openid-configuration'
+      openIdConnectUrl: 'https://auth.mockbank.poc.raidiam.io/.well-known/openid-configuration'
+    OAuth2Security:
+      type: oauth2
+      description: Fluxo OAuth necessário para que a receptora tenha acesso aos dados na instituição transmissora. Requer o processo de redirecionamento e autenticação do usuário a que se referem os dados.
+      flows:
+        authorizationCode:
+          authorizationUrl: 'https://authserver.example/authorization'
+          tokenUrl: 'https://authserver.example/token'
+          scopes:
+            financings: Escopo necessário para acesso à API Financings. O controle dos endpoints específicos é feito via permissions.
   responses:
     OKResponseFinancingsContractList:
       description: Lista de contratos obtida com sucesso.
