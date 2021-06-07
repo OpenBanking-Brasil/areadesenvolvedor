@@ -1169,6 +1169,43 @@ TRAN - TransactingAccount - Conta de Pagamento pré-paga.
 |**|SVGS|
 |**|TRAN|
 
+<h2 id="tocS_EnumAuthorisationStatusType">EnumAuthorisationStatusType</h2>
+
+<a id="schemaenumauthorisationstatustype"></a>
+<a id="schema_EnumAuthorisationStatusType"></a>
+<a id="tocSenumauthorisationstatustype"></a>
+<a id="tocsenumauthorisationstatustype"></a>
+
+```json
+"AWAITING_AUTHORISATION"
+
+```
+
+Retorna o estado do consentimento, o qual no momento de sua criação será AWAITING_AUTHORISATION.
+Este estado será alterado depois da autorização do consentimento na detentora da conta do pagador (Debtor) para AUTHORISED ou REJECTED. 
+O consentimento fica no estado CONSUMED após ocorrer a iniciação do pagamento referente ao consentimento.  
+Em caso de consentimento expirado a detentora deverá retornar o status REJECTED.  
+Estados possíveis:  
+AWAITING_AUTHORISATION - Aguardando autorização  
+AUTHORISED - Autorizado   
+REJECTED - Rejeitado  
+CONSUMED - Consumido 
+
+### Propriedades
+
+|Nome|Tipo|Obrigatório|Descrição|
+|---|---|---|---|---|
+|**|string|false|Retorna o estado do consentimento, o qual no momento de sua criação será AWAITING_AUTHORISATION.<br>Este estado será alterado depois da autorização do consentimento na detentora da conta do pagador (Debtor) para AUTHORISED ou REJECTED. <br>O consentimento fica no estado CONSUMED após ocorrer a iniciação do pagamento referente ao consentimento.  <br>Em caso de consentimento expirado a detentora deverá retornar o status REJECTED.  <br>Estados possíveis:  <br>AWAITING_AUTHORISATION - Aguardando autorização  <br>AUTHORISED - Autorizado   <br>REJECTED - Rejeitado  <br>CONSUMED - Consumido|
+
+#### Enumerated Values
+
+|Nome|Código|
+|---|---|
+|**|AWAITING_AUTHORISATION|
+|**|AUTHORISED|
+|**|REJECTED|
+|**|CONSUMED|
+
 <h2 id="tocS_EnumPaymentPersonType">EnumPaymentPersonType</h2>
 
 <a id="schemaenumpaymentpersontype"></a>
@@ -1603,8 +1640,8 @@ Objeto contendo dados do pagameto como moeda e valor.
 |---|---|---|---|---|
 |errors|[object]|true||
 |» code|[EnumErrorsCreateConsent](#schemaenumerrorscreateconsent)|true|Códigos de erros previstos na criação de consentimento para a iniciação de pagamentos.  <br>• 01 – Forma de pagamento inválida;  <br>• 02 – Data de pagamento inválida;  <br>• 99 – Desconhecido.|
-|» title|string|true|Título específico do erro reportado, de acordo com o código enviado:  <br>• OB01: Forma de pagamento inválida;  <br>• OB02: Data de pagamento inválida;  <br>• OB99: Desconhecido.|
-|» detail|string|true|Descrição específica do erro de acordo com o código reportado.<br>• OB01: Meio de pagamento inválido;  <br>• OB02: Data de pagamento inválida no contexto, por exemplo, data no passado.  <br>Para pagamentos únicos deve ser informada a data atual, do dia corrente.    <br>• OB99: Não informada pela instituição detentora da conta.|
+|» title|string|true|Título específico do erro reportado, de acordo com o código enviado:  <br>• 01: Forma de pagamento inválida;  <br>• 02: Data de pagamento inválida;  <br>• 99: Desconhecido.|
+|» detail|string|true|Descrição específica do erro de acordo com o código reportado.<br>• 01: Meio de pagamento inválido;  <br>• 02: Data de pagamento inválida no contexto, por exemplo, data no passado.  <br>Para pagamentos únicos deve ser informada a data atual, do dia corrente.    <br>• 99: Não informada pela instituição detentora da conta.|
 |meta|[Meta](#schemameta)|false|Meta informações referente a API requisitada.|
 
 <h2 id="tocS_422ResponseErrorCreatePixPayment">422ResponseErrorCreatePixPayment</h2>
@@ -1687,19 +1724,10 @@ Objeto contendo dados do pagameto como moeda e valor.
 |» consentId|string|true|Identificador único do consentimento criado para a iniciação de pagamento solicitada.|
 |» creationDateTime|string(date-time)|true|Data e hora em que o consentimento foi criado. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).|
 |» statusUpdateDateTime|string(date-time)|true|Data e hora em que o recurso foi atualizado. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).|
-|» status|string|true|Retorna o estado do consentimento, o qual no momento de sua criação será AWAITING_AUTHORISATION.<br>Este estado será alterado depois da autorização do consentimento na detentora da conta do pagador (Debtor) para AUTHORISED ou REJECTED. <br>O consentimento fica no estado CONSUMED após ocorrer a iniciação do pagamento referente ao consentimento.  <br>Em caso de consentimento expirado a detentora deverá retornar o status REJECTED.  <br>Estados possíveis:  <br>AWAITING_AUTHORISATION - Aguardando autorização  <br>AUTHORISED - Autorizado   <br>REJECTED - Rejeitado  <br>CONSUMED - Consumido|
+|» status|[EnumAuthorisationStatusType](#schemaenumauthorisationstatustype)|true|Retorna o estado do consentimento, o qual no momento de sua criação será AWAITING_AUTHORISATION.<br>Este estado será alterado depois da autorização do consentimento na detentora da conta do pagador (Debtor) para AUTHORISED ou REJECTED. <br>O consentimento fica no estado CONSUMED após ocorrer a iniciação do pagamento referente ao consentimento.  <br>Em caso de consentimento expirado a detentora deverá retornar o status REJECTED.  <br>Estados possíveis:  <br>AWAITING_AUTHORISATION - Aguardando autorização  <br>AUTHORISED - Autorizado   <br>REJECTED - Rejeitado  <br>CONSUMED - Consumido|
 |» creditor|[Identification](#schemaidentification)|true|Objeto contendo os dados do recebedor (creditor).|
 |» payment|[PaymentConsent](#schemapaymentconsent)|true|Objeto contendo dados de pagamento para consentimento.|
 |» debtorAccount|[DebtorAccount](#schemadebtoraccount)|false|Objeto que contém a identificação da conta de origem do pagador.  <br>As informações quanto à conta de origem do pagador poderão ser trazidas no consentimento para a detentora, caso a iniciadora tenha coletado essas informações do cliente. Do contrário, será coletada na detentora e trazida para a iniciadora como resposta à criação do pagamento.|
-
-#### Enumerated Values
-
-|Nome|Código|
-|---|---|
-|status|AWAITING_AUTHORISATION|
-|status|AUTHORISED|
-|status|REJECTED|
-|status|CONSUMED|
 
 <h2 id="tocS_ResponsePixPayment">ResponsePixPayment</h2>
 
