@@ -1,0 +1,91 @@
+type: object
+description: Objeto contendo dados do pagamento e da conta do recebedor (creditor).
+required:
+  - paymentId
+  - consentId
+  - creationDateTime
+  - statusUpdateDateTime
+  - status
+  - payment
+  - creditor
+properties:
+  paymentId:
+    type: string
+    minLength: 1
+    maxLength: 100
+    pattern: ^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$
+    example: TXpRMU9UQTROMWhZV2xSU1FUazJSMDl
+    description: | 
+      Código ou identificador único informado pela instituição detentora da conta para representar  
+      a iniciação de pagamento individual. O `paymentId` deve ser diferente do `endToEndId` retornado pela detentora.  
+      Este é o identificador que deverá ser utilizado na consulta ao status da iniciação de pagamento efetuada.
+  endToEndId:
+    type: string
+    minLength: 32
+    maxLength: 32
+    pattern: ^([E])([0-9]{8})([0-9]{4})(0[1-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])(2[0-3]|[01][0-9])([0-5][0-9])([a-zA-Z0-9]{11})$
+    example: E9040088820210128000800123873170
+    description: |
+      Código de identificação único da transação no arranjo do Pix. É usado em toda a cadeia de mensagens de uma instrução de pagamento no SPI. É um código gerado pela instituição detentora da conta que está iniciando o pagamento.  
+      Deve ser preenchido no formato padrão ExxxxxxxxyyyyMMddHHmmkkkkkkkkkkk (32 caracteres), sendo:  
+      • “E” – fixo (1 caractere);  
+      • xxxxxxxx – identificação do agente que gerou o `endToEndId`, podendo ser: o ISPB do participante direto ou o ISPB do participante indireto (8 caracteres numéricos [0-9]);  
+      • yyyyMMddHHmm – data, hora e minuto (12 caracteres), seguindo o horário UTC, da submissão da ordem de pagamento, caso a liquidação seja prioritária, ou prevista para o envio da ordem ao sistema de liquidação, caso seja realizado um agendamento. No caso de ordens prioritárias, aceita-se o preenchimento, pelo agente que gerou o <EndToEndId>, com uma tolerância máxima de 1 hora e 30 minutos, para o futuro e para o passado, em relação ao horário efetivo de processamento da ordem pelo SPI. Para ordens não prioritárias, a tolerância máxima é de 12 horas, para o futuro e para o passado;  
+      • kkkkkkkkkkk – sequencial criado pelo agente que gerou o `endToEndId` (11 caracteres alfanuméricos [a-z|A-Z|0-9]). Deve ser único dentro de cada “yyyyMMddHHmm”.  
+      Exemplo: E000000002020080120300000000001B  
+      O `endToEndId` é gerado pela detentora. Ele deve ser único, não podendo ser repetido em qualquer outra operação enviada ao SPI.  
+      [Restrição] É obrigatório o retorno após o status "ACCEPTED_SETTLEMENT_IN_PROCESS".
+  consentId:
+    type: string
+    maxLength: 100
+    pattern: ^[a-zA-Z0-9][a-zA-Z0-9\-\:]{0,99}$
+    example: urn:bancoex:C1DD33123
+    description: | 
+      Identificador único do consentimento.
+  creationDateTime:
+    type: string
+    format: date-time
+    pattern: ^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$
+    example: '2020-07-21T08:30:00Z'
+    description: |
+      Data e hora em que o recurso foi criado.  
+      Uma string com data e hora conforme especificação RFC-3339,  
+      sempre com a utilização de timezone UTC(UTC time format).
+  statusUpdateDateTime:
+    type: string
+    format: date-time
+    pattern: ^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$
+    example: '2020-07-21T08:30:00Z'
+    description: |
+      Data e hora da última atualização da iniciação de pagamento.  
+      Uma string com data e hora conforme especificação RFC-3339,  
+      sempre com a utilização de timezone UTC(UTC time format).
+  pixKey:
+    type: string
+    maxLength: 77
+    pattern: \w*\W*
+    example: '12345678901'
+    description: |
+      Chave cadastrada no DICT pertencente ao recebedor. Os tipos de chaves podem ser: telefone, e-mail, cpf/cnpj ou chave aleatória.  
+      No caso de telefone celular deve ser informado no padrão E.1641.  
+      Para e-mail deve ter o formato xxxxxxxx@xxxxxxx.xxx(.xx) e no máximo 77 caracteres.  
+      No caso de CPF deverá ser informado com 11 números, sem pontos ou traços.  
+      Para o caso de CNPJ deverá ser informado com 14 números, sem pontos ou traços.  
+      No caso de chave aleatória deve ser informado o UUID gerado pelo DICT, conforme formato especificado na RFC41223.  
+      [Restrição] Preenchimento obrigatório para pagamentos via Chave.
+  status:
+    $ref: ../enum/EnumPaymentStatusType.yaml
+  rejectionReason:
+    $ref: ../enum/EnumRejectionReasonType.yaml
+  payment:
+    $ref: ./PaymentPix.yaml
+  remittanceInformation:
+    type: string
+    maxLength: 140
+    pattern: \w*\W*
+    example: Pagamento da nota RSTO035-002.
+    description: |
+      Deve ser preenchido sempre que o usuário pagador inserir alguma informação adicional em um pagamento, a ser enviada ao recebedor.
+  creditorAccount:
+    $ref: ../business_commons/CreditorAccount.yaml
+additionalProperties: false
