@@ -41,12 +41,12 @@ info:
       - permissions:
         - GET: **CREDIT_CARDS_ACCOUNTS_TRANSACTIONS_READ**
   
-  version: 1.0.0
+  version: 1.0.0-rc6.6
   license:
     name: Apache 2.0
     url: 'https://www.apache.org/licenses/LICENSE-2.0'
   contact:
-    name: Governança do Open Banking Brasil – Interfaces
+    name: Governança do Open Banking Brasil – Especificações
     email: gt-interfaces@openbankingbr.org
     url: 'https://openbanking-brasil.github.io/areadesenvolvedor/'
 servers:
@@ -96,8 +96,10 @@ paths:
           $ref: '#/components/responses/OKResponseCreditCardAccountsList'
       security:
         - OpenId:
-            - openId
-            - credit-cards-accounts
+            - 'openid'     
+          OAuth2Security:
+            - 'consent:consentId'
+            - 'credit-cards-accounts'               
   /accounts/{creditCardAccountId}:
     get:
       tags:
@@ -135,8 +137,10 @@ paths:
           $ref: '#/components/responses/OKResponseCreditCardAccountsIdentification'
       security:
         - OpenId:
-            - openId
-            - credit-cards-accounts
+            - 'openid'     
+          OAuth2Security:
+            - 'consent:consentId'
+            - 'credit-cards-accounts' 
   /accounts/{creditCardAccountId}/bills:
     get:
       tags:
@@ -178,8 +182,10 @@ paths:
           $ref: '#/components/responses/OKResponseCreditCardAccountsBills'
       security:
         - OpenId:
-            - openId
-            - credit-cards-accounts
+            - 'openid'     
+          OAuth2Security:
+            - 'consent:consentId'
+            - 'credit-cards-accounts' 
   /accounts/{creditCardAccountId}/bills/{billId}/transactions:
     get:
       tags:
@@ -224,8 +230,10 @@ paths:
           $ref: '#/components/responses/OKResponseCreditCardAccountsTransactions'
       security:
         - OpenId:
-            - openId
-            - credit-cards-accounts
+            - 'openid'     
+          OAuth2Security:
+            - 'consent:consentId'
+            - 'credit-cards-accounts' 
   /accounts/{creditCardAccountId}/limits:
     get:
       tags:
@@ -265,8 +273,10 @@ paths:
           $ref: '#/components/responses/OKResponseCreditCardAccountsLimits'
       security:
         - OpenId:
-            - openId
-            - credit-cards-accounts
+            - 'openid'     
+          OAuth2Security:
+            - 'consent:consentId'
+            - 'credit-cards-accounts' 
   /accounts/{creditCardAccountId}/transactions:
     get:
       tags:
@@ -310,8 +320,10 @@ paths:
           $ref: '#/components/responses/OKResponseCreditCardAccountsTransactions'
       security:
         - OpenId:
-            - openId
-            - credit-card-accounts
+            - 'openid'     
+          OAuth2Security:
+            - 'consent:consentId'
+            - 'credit-cards-accounts' 
 components:
   schemas:
     CreditCardsAccountsIdentificationData:
@@ -406,7 +418,16 @@ components:
   securitySchemes:
     OpenId:
       type: openIdConnect
-      openIdConnectUrl: 'https://authserver.example/.well-known/openid-configuration'
+      openIdConnectUrl: 'https://auth.mockbank.poc.raidiam.io/.well-known/openid-configuration'
+    OAuth2Security:
+      type: oauth2
+      description: "Fluxo OAuth necessário para que a receptora tenha acesso aos dados na instituição transmissora. Requer o processo de redirecionamento e autenticação do usuário a que se referem os dados."
+      flows:
+        authorizationCode:
+          authorizationUrl: "https://authserver.example/authorization"
+          tokenUrl: "https://authserver.example/token"
+          scopes:
+            credit-cards-accounts: "Escopo necessário para acesso à API Credit-cards-accounts. O controle dos endpoints específicos é feito via permissions."      
   responses:
     OKResponseCreditCardAccountsList:
       description: Conjunto de informações das Contas de pagamento pós paga
