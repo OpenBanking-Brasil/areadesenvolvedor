@@ -12,6 +12,9 @@ APIS=(
   "invoice_financings_apis"
   "resources_apis"
   "consents_apis"
+  "customers_apis"
+  "credit_cards_apis"
+  "accounts_apis"
   "payments_apis"
 )
 
