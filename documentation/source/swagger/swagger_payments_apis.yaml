@@ -838,13 +838,21 @@ components:
     consentId:
       name: consentId
       in: path
-      description: Identificador do consentimento.
+      description: |
+        O consentId é o identificador único do consentimento e deverá ser um URN - Uniform Resource Name.  
+        Um URN, conforme definido na [RFC8141](https://tools.ietf.org/html/rfc8141) é um Uniform Resource 
+        Identifier - URI - que é atribuído sob o URI scheme "urn" e um namespace URN específico, com a intenção de que o URN 
+        seja um identificador de recurso persistente e independente da localização.  
+        Considerando a string urn:bancoex:C1DD33123 como exemplo para consentId temos:
+        - o namespace(urn)
+        - o identificador associado ao namespace da instituição transnmissora (bancoex) 
+        - o identificador específico dentro do namespace (C1DD33123).  
+        Informações mais detalhadas sobre a construção de namespaces devem ser consultadas na [RFC8141](https://tools.ietf.org/html/rfc8141).
       required: true
       schema:
         type: string
-        pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
-        minLength: 1
-        maxLength: 100
+        pattern: '^urn:[a-zA-Z0-9][a-zA-Z0-9-]{0,31}:[a-zA-Z0-9()+,\-.:=@;$_!*''%\/?#]+$'
+        maxLength: 256
     paymentId:
       name: paymentId
       in: path
@@ -990,16 +998,17 @@ components:
                   properties:
                     code:
                       type: string
+                      maxLength: 19
                       enum:
-                        - '01'
-                        - '02'
-                        - '99'
+                        - FORMA_PGTO_INVALIDA
+                        - DATA_PGTO_INVALIDA
+                        - NAO_INFORMADO
+                      example: FORMA_PGTO_INVALIDA
                       description: |
-                        Códigos de erros previstos na criação de consentimento para a iniciação de pagamentos.  
-                        • 01 – Forma de pagamento inválida;  
-                        • 02 – Data de pagamento inválida;  
-                        • 99 – Desconhecido.  
-                      example: '01'
+                        Códigos de erros previstos na criação de consentimento para a iniciação de pagamentos:  
+                        • FORMA_PGTO_INVALIDA: Forma de pagamento inválida.  
+                        • DATA_PGTO_INVALIDA: Data de pagamento inválida.  
+                        • NAO_INFORMADO: Não informado.  
                     title:
                       type: string
                       maxLength: 255
@@ -1007,20 +1016,19 @@ components:
                       example: Forma de pagamento inválida.
                       description: |
                         Título específico do erro reportado, de acordo com o código enviado:  
-                        • 01: Forma de pagamento inválida;  
-                        • 02: Data de pagamento inválida;  
-                        • 99: Desconhecido.       
+                        • FORMA_PGTO_INVALIDA: Forma de pagamento inválida.  
+                        • DATA_PGTO_INVALIDA: Data de pagamento inválida.  
+                        • NAO_INFORMADO: Não informado.    
                     detail:
                       type: string
                       maxLength: 2048
                       pattern: \w*\W*
                       example: Meio de pagamento inválido.
                       description: |
-                        Descrição específica do erro de acordo com o código reportado.
-                        • 01: Meio de pagamento inválido;  
-                        • 02: Data de pagamento inválida no contexto, por exemplo, data no passado.  
-                        Para pagamentos únicos deve ser informada a data atual, do dia corrente.    
-                        • 99: Não informada pela instituição detentora da conta. 
+                        Descrição específica do erro de acordo com o código reportado:  
+                        • FORMA_PGTO_INVALIDA – Meio de pagamento inválido.  
+                        • DATA_PGTO_INVALIDA – Data de pagamento inválida no contexto, por exemplo, data no passado. Para pagamentos únicos deve ser informada a data atual, do dia corrente.  
+                        • NAO_INFORMADO – Não reportado/identificado pela instituição detentora de conta.  
                   additionalProperties: false
               meta:
                 $ref: '#/components/schemas/ResponseError/properties/meta'
@@ -1030,8 +1038,8 @@ components:
               summary: Forma de pagamento inválida
               value:
                 errors:
-                  - code: '01'
-                    title: Forma de pagamento inválida
+                  - code: FORMA_PGTO_INVALIDA
+                    title: Forma de pagamento inválida.
                     detail: Meio de pagamento inválido.
                 meta:
                   totalRecords: 1
@@ -1041,8 +1049,8 @@ components:
               summary: Data de pagamento inválida
               value:
                 errors:
-                  - code: '02'
-                    title: Data de pagamento inválida
+                  - code: DATA_PGTO_INVALIDA
+                    title: Data de pagamento inválida.
                     detail: 'Data de pagamento inválida no contexto, por exemplo, data no passado.'
                 meta:
                   totalRecords: 1
@@ -1052,9 +1060,9 @@ components:
               summary: Desconhecido
               value:
                 errors:
-                  - code: '99'
-                    title: Desconhecido
-                    detail: Não informada pela instituição detentora da conta.
+                  - code: NAO_INFORMADO
+                    title: Não informado.
+                    detail: Não reportado/identificado pela instituição detentora de conta.
                 meta:
                   totalRecords: 1
                   totalPages: 1
@@ -1081,60 +1089,61 @@ components:
                   properties:
                     code:
                       type: string
+                      maxLength: 25
                       enum:
-                        - '01'
-                        - '02'
-                        - '03'
-                        - '04'
-                        - '05'
-                        - '06'
-                        - '07'
-                        - '10'
-                        - '99'
+                        - SALDO_INSUFICIENTE
+                        - BENEFICIARIO_INCOMPATIVEL
+                        - VALOR_INCOMPATIVEL
+                        - VALOR_ACIMA_LIMITE
+                        - VALOR_INVALIDO
+                        - COBRANCA_INVALIDA
+                        - CONSENTIMENTO_INVALIDO
+                        - JANELA_OPER_INVALIDA
+                        - NAO_INFORMADO
+                      example: SALDO_INSUFICIENTE
                       description: |
-                        Códigos de erros previstos na criação da iniciação de pagamento.  
-                        • 01 – Saldo insuficiente;  
-                        • 02 – Beneficiário incompatível;  
-                        • 03 – Valor da transação incompatível;  
-                        • 04 – Acima do limite estabelecido;  
-                        • 05 – Valor inválido;  
-                        • 06 – Cobrança inválida;  
-                        • 07 – Consentimento inválido;  
-                        • 10 – Janela de operação inválida;     
-                        • 99 – Desconhecido.  
-                      example: '01'
+                        Códigos de erros previstos na criação da iniciação de pagamento:  
+                        • SALDO_INSUFICIENTE – Saldo insuficiente.  
+                        • BENEFICIARIO_INCOMPATIVEL – Beneficiário incompatível.  
+                        • VALOR_INCOMPATIVEL – Valor da transação incompatível.  
+                        • VALOR_ACIMA_LIMITE – Acima do limite estabelecido.  
+                        • VALOR_INVALIDO – Valor inválido.  
+                        • COBRANCA_INVALIDA – Cobrança inválida.  
+                        • CONSENTIMENTO_INVALIDO – Consentimento inválido.  
+                        • JANELA_OPER_INVALIDA – Janela de operação inválida.  
+                        • NAO_INFORMADO – Não reportado/identificado pela instituição detentora de conta.  
                     title:
                       type: string
                       maxLength: 255
                       pattern: \w*\W*
-                      example: Forma de pagamento inválida.
+                      example: Saldo insuficiente.
                       description: |
                         Título específico do erro reportado, de acordo com o código enviado:  
-                        • 01: Saldo insuficiente;  
-                        • 02: Beneficiário incompatível;  
-                        • 03: Valor da transação incompatível;  
-                        • 04: Acima do limite estabelecido;  
-                        • 05: Valor inválido;  
-                        • 06: Cobrança inválida;  
-                        • 07: Consentimento inválido;  
-                        • 10: Janela de operação inválida;     
-                        • 99: Desconhecido.  
+                        • SALDO_INSUFICIENTE: Saldo insuficiente.  
+                        • BENEFICIARIO_INCOMPATIVEL: Beneficiário incompatível.  
+                        • VALOR_INCOMPATIVEL: Valor da transação incompatível.  
+                        • VALOR_ACIMA_LIMITE: Acima do limite estabelecido.  
+                        • VALOR_INVALIDO: Valor inválido.  
+                        • COBRANCA_INVALIDA: Cobrança inválida.  
+                        • CONSENTIMENTO_INVALIDO: Consentimento inválido.  
+                        • JANELA_OPER_INVALIDA: Janela de operação inválida.  
+                        • NAO_INFORMADO: Não informado.  
                     detail:
                       type: string
                       maxLength: 2048
                       pattern: \w*\W*
-                      example: Meio de pagamento inválido.
+                      example: A conta selecionada não possui saldo suficiente para realizar o pagamento.
                       description: |
-                        Descrição específica do erro de acordo com o código reportado.  
-                        • 01: A conta selecionada não possui saldo suficiente para realizar o pagamento.  
-                        • 02: O beneficiário informado no consentimento não é o mesmo do esperado pelo DICT.  
-                        • 03: O valor informado no consentimento não é o mesmo valor do informado no payload de pagamento.    
-                        • 04: O valor (ou quantidade de transações) ultrapassa a faixa de limite parametrizada na detentora para permitir a realização de transações pelo cliente.  
-                        • 05: O valor enviado não é válido para o QR Code informado.  
-                        • 06: Validação de expiração, validação de vencimento ou Status Válido.  
-                        • 07: Consentimento inválido (status diferente de "AUTHORISED" ou está expirado).  
-                        • 10: Requisição está fora da janela de funcionamento.        
-                        • 99: Não informada pela instituição detentora da conta. 
+                        Descrição específica do erro de acordo com o código reportado:  
+                        • SALDO_INSUFICIENTE: A conta selecionada não possui saldo suficiente para realizar o pagamento.  
+                        • BENEFICIARIO_INCOMPATIVEL: O beneficiário informado no consentimento não é o mesmo do esperado pelo DICT.  
+                        • VALOR_INCOMPATIVEL: O valor informado no consentimento não é o mesmo valor do informado no payload de pagamento.  
+                        • VALOR_ACIMA_LIMITE: O valor (ou quantidade de transações) ultrapassa a faixa de limite parametrizada na detentora para permitir a realização de transações pelo cliente.  
+                        • VALOR_INVALIDO: O valor enviado não é válido para o QR Code informado.  
+                        • COBRANCA_INVALIDA: Validação de expiração, validação de vencimento ou Status Válido.  
+                        • CONSENTIMENTO_INVALIDO: Consentimento inválido (status diferente de "AUTHORISED" ou está expirado).  
+                        • JANELA_OPER_INVALIDA: Requisição está fora da janela de funcionamento.  
+                        • NAO_INFORMADO: Não reportado/identificado pela instituição detentora de conta.  
                   additionalProperties: false
               meta:
                 $ref: '#/components/schemas/ResponseError/properties/meta'
@@ -1144,8 +1153,8 @@ components:
               summary: Saldo insuficiente
               value:
                 errors:
-                  - code: '01'
-                    title: Saldo insuficiente
+                  - code: SALDO_INSUFICIENTE
+                    title: Saldo insuficiente.
                     detail: A conta selecionada não possui saldo suficiente para realizar o pagamento.
                 meta:
                   totalRecords: 1
@@ -1155,8 +1164,8 @@ components:
               summary: Beneficiário incompatível
               value:
                 errors:
-                  - code: '02'
-                    title: Beneficiário incompatível
+                  - code: BENEFICIARIO_INCOMPATIVEL
+                    title: Beneficiário incompatível.
                     detail: O beneficiário informado no consentimento não é o mesmo do esperado pelo DICT.
                 meta:
                   totalRecords: 1
@@ -1166,8 +1175,8 @@ components:
               summary: Valor da transação incompatível
               value:
                 errors:
-                  - code: '03'
-                    title: Valor da transação incompatível
+                  - code: VALOR_INCOMPATIVEL
+                    title: Valor da transação incompatível.
                     detail: O valor informado no consentimento não é o mesmo valor do informado no payload de pagamento.
                 meta:
                   totalRecords: 1
@@ -1177,8 +1186,8 @@ components:
               summary: Acima do limite estabelecido
               value:
                 errors:
-                  - code: '04'
-                    title: Acima do limite estabelecido
+                  - code: VALOR_ACIMA_LIMITE
+                    title: Acima do limite estabelecido.
                     detail: O valor (ou quantidade de transações) ultrapassa a faixa de limite parametrizada na detentora para permitir a realização de transações pelo cliente.
                 meta:
                   totalRecords: 1
@@ -1188,8 +1197,8 @@ components:
               summary: Valor inválido
               value:
                 errors:
-                  - code: '05'
-                    title: Valor inválido
+                  - code: VALOR_INVALIDO
+                    title: Valor inválido.
                     detail: O valor enviado não é válido para o QR Code informado.
                 meta:
                   totalRecords: 1
@@ -1199,8 +1208,8 @@ components:
               summary: Cobrança inválida
               value:
                 errors:
-                  - code: '06'
-                    title: Cobrança inválida
+                  - code: COBRANCA_INVALIDA
+                    title: Cobrança inválida.
                     detail: 'Validação de expiração, validação de vencimento ou Status Válido.'
                 meta:
                   totalRecords: 1
@@ -1210,8 +1219,8 @@ components:
               summary: Consentimento inválido
               value:
                 errors:
-                  - code: '07'
-                    title: Consentimento inválido
+                  - code: CONSENTIMENTO_INVALIDO
+                    title: Consentimento inválido.
                     detail: Consentimento inválido (status diferente de 'AUTHORISED' ou está expirado).
                 meta:
                   totalRecords: 1
@@ -1221,8 +1230,8 @@ components:
               summary: Janela de operação inválida
               value:
                 errors:
-                  - code: '10'
-                    title: Janela de operação inválida
+                  - code: JANELA_OPER_INVALIDA
+                    title: Janela de operação inválida.
                     detail: Requisição está fora da janela de funcionamento.
                 meta:
                   totalRecords: 1
@@ -1232,9 +1241,9 @@ components:
               summary: Desconhecido
               value:
                 errors:
-                  - code: '99'
-                    title: Desconhecido
-                    detail: Não informada pela instituição detentora da conta.
+                  - code: NAO_INFORMADO
+                    title: Não informado.
+                    detail: Não reportado/identificado pela instituição detentora de conta.
                 meta:
                   totalRecords: 1
                   totalPages: 1
