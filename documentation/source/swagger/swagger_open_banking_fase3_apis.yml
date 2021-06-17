@@ -75,6 +75,8 @@ paths:
 
         ### Dicionário de dados
 
+        Campos do retorno do endpoint de `/consents`
+
         <a href='dictionary/paymentsPostConsents_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
       parameters:
         - $ref: '#/components/parameters/Authorization'
@@ -128,6 +130,8 @@ paths:
 
         ### Dicionário de dados
 
+        Campos do retorno do endpoint de `/consents`
+
         <a href='dictionary/paymentsGetConsentsConsentId_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
       parameters:
         - $ref: '#/components/parameters/consentId'
@@ -171,6 +175,8 @@ paths:
         Método para a criação de uma iniciação de pagamento.
 
         ### Dicionário de dados
+
+        Campos do retorno do endpoint de `/pix/payments`
 
         <a href='dictionary/paymentsPostPixPayments_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
       parameters:
@@ -224,6 +230,8 @@ paths:
         Método para consultar uma iniciação de pagamento.
 
         ### Dicionário de dados
+
+        Campos do retorno do endpoint de `/pix/payments`
 
         <a href='dictionary/paymentsGetPixPaymentsPaymentId_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
       parameters:
@@ -307,7 +315,7 @@ components:
       additionalProperties: false
     BusinessEntity:
       type: object
-      description: 'Titular, pessoa jurídica a quem se referem os dados.'
+      description: 'Usuário (pessoa jurídica) que encontra-se logado na instituição Iniciadora de Pagamento. [Restrição] Preenchimento obrigatório se usuário logado na instituição Iniciadora de Pagamento for um CNPJ (pessoa jurídica).'
       additionalProperties: false
       required:
         - document
@@ -785,21 +793,19 @@ components:
       description: Objeto contendo dados de pagamento para consentimento.
       required:
         - type
-        - dateTime
+        - date
         - currency
         - amount
       properties:
         type:
           $ref: '#/components/schemas/EnumPaymentType'
-        dateTime:
+        date:
           type: string
-          format: date-time
-          maxLength: 20
-          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
-          example: '2021-01-01T00:00:00Z'
-          description: |
-            Data e hora do pagamento. 
-            Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).
+          format: date
+          maxLength: 10
+          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
+          example: '2021-01-01'
+          description: 'Data do pagamento, conforme especificação RFC-3339.'
         currency:
           type: string
           maxLength: 3
@@ -1007,8 +1013,8 @@ components:
               maxLength: 20
             expirationDateTime:
               description: |
-                Data e hora em que o consentimento da iniciação de pagamento expira. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).
-                O consentimento é criado com o status AWAITING_AUTHORISATION, e deve assumir o status AUTHORIZED ou CONSUMED antes do tempo de expiração. Caso o tempo de expiração seja atingido, o consentimento assumirá o status REJECTED.
+                Data e hora em que o consentimento da iniciação de pagamento expira, devendo ser sempre o creationDateTime mais 5 minutos. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC (UTC time format). 
+                O consentimento é criado com o status AWAITING_AUTHORISATION, e deve assumir o status AUTHORIZED, REJECTED ou CONSUMED antes do tempo de expiração.
               type: string
               format: date-time
               example: '2021-05-21T08:30:00Z'
@@ -1307,6 +1313,8 @@ components:
             $ref: '#/components/schemas/ResponseError'
       headers:
         x-fapi-interaction-id:
+          description: |
+            Um UUID RFC4122 usado como um ID de correlação. O transmissor deve usar o mesmo valor recebido na requisição para o cabeçalho de resposta recebido na requisição, caso não tenha sido fornecido, deve se usar um UUID RFC4122.
           schema:
             $ref: '#/components/responses/200PaymentsConsentsConsentIdRead/headers/x-fapi-interaction-id/schema'
     Forbidden:
@@ -1317,6 +1325,8 @@ components:
             $ref: '#/components/schemas/ResponseError'
       headers:
         x-fapi-interaction-id:
+          description: |
+            Um UUID RFC4122 usado como um ID de correlação. O transmissor deve usar o mesmo valor recebido na requisição para o cabeçalho de resposta recebido na requisição, caso não tenha sido fornecido, deve se usar um UUID RFC4122.
           schema:
             $ref: '#/components/responses/200PaymentsConsentsConsentIdRead/headers/x-fapi-interaction-id/schema'
     InternalServerError:
@@ -1327,6 +1337,8 @@ components:
             $ref: '#/components/schemas/ResponseError'
       headers:
         x-fapi-interaction-id:
+          description: |
+            Um UUID RFC4122 usado como um ID de correlação. O transmissor deve usar o mesmo valor recebido na requisição para o cabeçalho de resposta recebido na requisição, caso não tenha sido fornecido, deve se usar um UUID RFC4122.
           schema:
             $ref: '#/components/responses/200PaymentsConsentsConsentIdRead/headers/x-fapi-interaction-id/schema'
     MethodNotAllowed:
@@ -1337,6 +1349,8 @@ components:
             $ref: '#/components/schemas/ResponseError'
       headers:
         x-fapi-interaction-id:
+          description: |
+            Um UUID RFC4122 usado como um ID de correlação. O transmissor deve usar o mesmo valor recebido na requisição para o cabeçalho de resposta recebido na requisição, caso não tenha sido fornecido, deve se usar um UUID RFC4122.
           schema:
             $ref: '#/components/responses/200PaymentsConsentsConsentIdRead/headers/x-fapi-interaction-id/schema'
     NotAcceptable:
@@ -1347,6 +1361,8 @@ components:
             $ref: '#/components/schemas/ResponseError'
       headers:
         x-fapi-interaction-id:
+          description: |
+            Um UUID RFC4122 usado como um ID de correlação. O transmissor deve usar o mesmo valor recebido na requisição para o cabeçalho de resposta recebido na requisição, caso não tenha sido fornecido, deve se usar um UUID RFC4122.
           schema:
             $ref: '#/components/responses/200PaymentsConsentsConsentIdRead/headers/x-fapi-interaction-id/schema'
     NotFound:
@@ -1357,6 +1373,8 @@ components:
             $ref: '#/components/schemas/ResponseError'
       headers:
         x-fapi-interaction-id:
+          description: |
+            Um UUID RFC4122 usado como um ID de correlação. O transmissor deve usar o mesmo valor recebido na requisição para o cabeçalho de resposta recebido na requisição, caso não tenha sido fornecido, deve se usar um UUID RFC4122.
           schema:
             $ref: '#/components/responses/200PaymentsConsentsConsentIdRead/headers/x-fapi-interaction-id/schema'
     TooManyRequests:
@@ -1420,6 +1438,8 @@ components:
                   requestDateTime: '2021-05-21T08:30:00Z'
       headers:
         x-fapi-interaction-id:
+          description: |
+            Um UUID RFC4122 usado como um ID de correlação. O transmissor deve usar o mesmo valor recebido na requisição para o cabeçalho de resposta recebido na requisição, caso não tenha sido fornecido, deve se usar um UUID RFC4122.
           schema:
             $ref: '#/components/responses/200PaymentsConsentsConsentIdRead/headers/x-fapi-interaction-id/schema'
     UnprocessableEntityPixPayments:
@@ -1530,6 +1550,8 @@ components:
                   requestDateTime: '2021-05-21T08:30:00Z'
       headers:
         x-fapi-interaction-id:
+          description: |
+            Um UUID RFC4122 usado como um ID de correlação. O transmissor deve usar o mesmo valor recebido na requisição para o cabeçalho de resposta recebido na requisição, caso não tenha sido fornecido, deve se usar um UUID RFC4122.
           schema:
             $ref: '#/components/responses/200PaymentsConsentsConsentIdRead/headers/x-fapi-interaction-id/schema'
     Unauthorized:
@@ -1540,6 +1562,8 @@ components:
             $ref: '#/components/schemas/ResponseError'
       headers:
         x-fapi-interaction-id:
+          description: |
+            Um UUID RFC4122 usado como um ID de correlação. O transmissor deve usar o mesmo valor recebido na requisição para o cabeçalho de resposta recebido na requisição, caso não tenha sido fornecido, deve se usar um UUID RFC4122.
           schema:
             $ref: '#/components/responses/200PaymentsConsentsConsentIdRead/headers/x-fapi-interaction-id/schema'
     UnsupportedMediaType:
@@ -1550,6 +1574,8 @@ components:
             $ref: '#/components/schemas/ResponseError'
       headers:
         x-fapi-interaction-id:
+          description: |
+            Um UUID RFC4122 usado como um ID de correlação. O transmissor deve usar o mesmo valor recebido na requisição para o cabeçalho de resposta recebido na requisição, caso não tenha sido fornecido, deve se usar um UUID RFC4122.
           schema:
             $ref: '#/components/responses/200PaymentsConsentsConsentIdRead/headers/x-fapi-interaction-id/schema'
     201PaymentsConsentsConsentCreated:
