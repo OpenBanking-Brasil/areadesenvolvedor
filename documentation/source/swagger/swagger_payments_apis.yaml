@@ -1,4 +1,4 @@
-﻿openapi: 3.0.0
+openapi: 3.0.0
 info:
   title: API Payment Initiation - Open Banking Brasil
   description: |
@@ -225,6 +225,32 @@ paths:
             - payments-initiation
 components:
   schemas:
+    BusinessEntity:
+      type: object
+      description: 'Titular, pessoa jurídica a quem se referem os dados.'
+      additionalProperties: false
+      required:
+        - document
+      properties:
+        document:
+          type: object
+          additionalProperties: false
+          required:
+            - identification
+            - rel
+          properties:
+            identification:
+              type: string
+              maxLength: 14
+              description: Número do documento de identificação oficial do titular pessoa jurídica.
+              example: '11111111111111'
+              pattern: '^\d{14}$'
+            rel:
+              type: string
+              maxLength: 4
+              description: Tipo do documento de identificação oficial do titular pessoa jurídica.
+              example: CNPJ
+              pattern: '^[A-Z]{4}$'
     CreditorAccount:
       type: object
       description: |
@@ -290,9 +316,14 @@ components:
       type: object
       description: Objeto contendo as informações de consentimento para a iniciação de pagamento individual.
       required:
+        - loggedUser
         - creditor
         - payment
       properties:
+        loggedUser:
+          $ref: '#/components/schemas/LoggedUser'
+        businessEntity:
+          $ref: '#/components/schemas/BusinessEntity'
         creditor:
           $ref: '#/components/schemas/Identification'
         payment:
@@ -393,6 +424,32 @@ components:
         accountType:
           $ref: '#/components/schemas/EnumAccountPaymentsType'
       additionalProperties: false
+    LoggedUser:
+      type: object
+      description: Usuário (pessoa natural) que encontra-se logado na instituição Iniciadora de Pagamento.
+      additionalProperties: false
+      required:
+        - document
+      properties:
+        document:
+          type: object
+          additionalProperties: false
+          required:
+            - identification
+            - rel
+          properties:
+            identification:
+              type: string
+              maxLength: 11
+              description: Número do documento de identificação oficial do usuário.
+              example: '11111111111'
+              pattern: '^\d{11}$'
+            rel:
+              type: string
+              maxLength: 3
+              description: Tipo do documento de identificação oficial do usuário.
+              example: CPF
+              pattern: '^[A-Z]{3}$'
     PaymentConsent:
       type: object
       description: Objeto contendo dados de pagamento para consentimento.
@@ -838,13 +895,21 @@ components:
     consentId:
       name: consentId
       in: path
-      description: Identificador do consentimento.
+      description: |
+        O consentId é o identificador único do consentimento e deverá ser um URN - Uniform Resource Name.  
+        Um URN, conforme definido na [RFC8141](https://tools.ietf.org/html/rfc8141) é um Uniform Resource 
+        Identifier - URI - que é atribuído sob o URI scheme "urn" e um namespace URN específico, com a intenção de que o URN 
+        seja um identificador de recurso persistente e independente da localização.  
+        Considerando a string urn:bancoex:C1DD33123 como exemplo para consentId temos:
+        - o namespace(urn)
+        - o identificador associado ao namespace da instituição transnmissora (bancoex) 
+        - o identificador específico dentro do namespace (C1DD33123).  
+        Informações mais detalhadas sobre a construção de namespaces devem ser consultadas na [RFC8141](https://tools.ietf.org/html/rfc8141).
       required: true
       schema:
         type: string
-        pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
-        minLength: 1
-        maxLength: 100
+        pattern: '^urn:[a-zA-Z0-9][a-zA-Z0-9-]{0,31}:[a-zA-Z0-9()+,\-.:=@;$_!*''%\/?#]+$'
+        maxLength: 256
     paymentId:
       name: paymentId
       in: path

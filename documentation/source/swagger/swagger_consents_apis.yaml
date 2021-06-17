@@ -1,4 +1,4 @@
-﻿openapi: 3.0.0
+openapi: 3.0.0
 info:
   title: API Consents - Open Banking Brasil
   description: |
@@ -15,7 +15,7 @@ info:
     - A descrição do fluxo de consentimento encontra-se disponível no [Portal do desenvolvedor](https://openbanking-brasil.github.io/areadesenvolvedor/#em-revisao-fluxo-de-consentimento).
     - O arquivo com o mapeamento completo entre `Roles`, `scopes` e `permissions` está disponibilizado no Portal do desenvolvedor, no mesmo item acima - descrição do fluxo de consentimento.
     - É de responsabilidade da instituição receptora de dados, no pedido de criação do consentimento, o envio de todas as `permissions` correspondentes aos agrupamentos de dados selecionados pelo cliente e necessárias às consultas nos endpoints de cada uma das APIs de dados.     
-  version: 1.0.0-rc6.5
+  version: 1.0.0-rc6.6
   license:
     name: Apache 2.0
     url: 'http://www.apache.org/licenses/LICENSE-2.0'
@@ -326,11 +326,19 @@ components:
             - permissions
           properties:
             consentId:
-              description: Identificador único do consentimento.
+              description: |
+                O consentId é o identificador único do consentimento e deverá ser um URN - Uniform Resource Name.  
+                Um URN, conforme definido na [RFC8141](https://tools.ietf.org/html/rfc8141) é um Uniform Resource 
+                Identifier - URI - que é atribuído sob o URI scheme "urn" e um namespace URN específico, com a intenção de que o URN 
+                seja um identificador de recurso persistente e independente da localização.  
+                Considerando a string urn:bancoex:C1DD33123 como exemplo para consentId temos:
+                - o namespace(urn)
+                - o identificador associado ao namespace da instituição transnmissora (bancoex) 
+                - o identificador específico dentro do namespace (C1DD33123).  
+                Informações mais detalhadas sobre a construção de namespaces devem ser consultadas na [RFC8141](https://tools.ietf.org/html/rfc8141).
               type: string
-              pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-\:]{0,99}$'
-              minLength: 1
-              maxLength: 100
+              pattern: '^urn:[a-zA-Z0-9][a-zA-Z0-9-]{0,31}:[a-zA-Z0-9()+,\-.:=@;$_!*''%\/?#]+$'
+              maxLength: 256
               example: 'urn:bancoex:C1DD33123'
             creationDateTime:
               description: 'Data e hora em que o recurso foi criado. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).'
@@ -356,8 +364,8 @@ components:
               type: array
               maxItems: 30
               minItems: 1
+              description: 'Especifica os tipos de permissões de acesso às APIs no escopo do Open Banking Brasil - Fase 2, de acordo com os blocos de consentimento fornecidos pelo usuário e necessários ao acesso a cada endpoint das APIs.'
               items:
-                description: 'Especifica os tipos de permissões de acesso às APIs no escopo do Open Banking Brasil - Fase 2, de acordo com os blocos de consentimento fornecidos pelo usuário e necessários ao acesso a cada endpoint das APIs.'
                 type: string
                 enum:
                   - ACCOUNTS_READ
@@ -509,13 +517,21 @@ components:
     consentId:
       name: consentId
       in: path
-      description: Identificador do consentimento.
+      description: |
+        O consentId é o identificador único do consentimento e deverá ser um URN - Uniform Resource Name.  
+        Um URN, conforme definido na [RFC8141](https://tools.ietf.org/html/rfc8141) é um Uniform Resource 
+        Identifier - URI - que é atribuído sob o URI scheme "urn" e um namespace URN específico, com a intenção de que o URN 
+        seja um identificador de recurso persistente e independente da localização.  
+        Considerando a string urn:bancoex:C1DD33123 como exemplo para consentId temos:
+        - o namespace(urn)
+        - o identificador associado ao namespace da instituição transnmissora (bancoex) 
+        - o identificador específico dentro do namespace (C1DD33123).  
+        Informações mais detalhadas sobre a construção de namespaces devem ser consultadas na [RFC8141](https://tools.ietf.org/html/rfc8141).
       required: true
       schema:
         type: string
-        pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
-        minLength: 1
-        maxLength: 100
+        pattern: '^urn:[a-zA-Z0-9][a-zA-Z0-9-]{0,31}:[a-zA-Z0-9()+,\-.:=@;$_!*''%\/?#]+$'
+        maxLength: 256
     Authorization:
       name: Authorization
       in: header
