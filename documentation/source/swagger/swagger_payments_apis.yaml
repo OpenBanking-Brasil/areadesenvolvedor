@@ -41,7 +41,6 @@ paths:
         - $ref: '#/components/parameters/xFapiInteractionId'
         - $ref: '#/components/parameters/xCustomerUserAgent'
         - $ref: '#/components/parameters/XIdempotencyKey'
-        - $ref: '#/components/parameters/XJwsSignature'
       requestBody:
         content:
           application/json:
@@ -139,7 +138,6 @@ paths:
         - $ref: '#/components/parameters/xFapiInteractionId'
         - $ref: '#/components/parameters/xCustomerUserAgent'
         - $ref: '#/components/parameters/XIdempotencyKey'
-        - $ref: '#/components/parameters/XJwsSignature'
       requestBody:
         content:
           application/json:
@@ -225,6 +223,32 @@ paths:
             - payments-initiation
 components:
   schemas:
+    BusinessEntity:
+      type: object
+      description: 'Titular, pessoa jurídica a quem se referem os dados.'
+      additionalProperties: false
+      required:
+        - document
+      properties:
+        document:
+          type: object
+          additionalProperties: false
+          required:
+            - identification
+            - rel
+          properties:
+            identification:
+              type: string
+              maxLength: 14
+              description: Número do documento de identificação oficial do titular pessoa jurídica.
+              example: '11111111111111'
+              pattern: '^\d{14}$'
+            rel:
+              type: string
+              maxLength: 4
+              description: Tipo do documento de identificação oficial do titular pessoa jurídica.
+              example: CNPJ
+              pattern: '^[A-Z]{4}$'
     CreditorAccount:
       type: object
       description: |
@@ -243,13 +267,13 @@ components:
           example: '12345678'
           description: |
             Deve ser preenchido com o ISPB (Identificador do Sistema de Pagamentos Brasileiros) do participante do SPI (Sistema de pagamentos instantâneos) somente com números.
-        branchCode:
+        issuerCode:
           type: string
           maxLength: 4
           pattern: '^\d{4}$'
           example: '1774'
           description: |
-            Código da Agência detentora da conta sem dígito.  
+            Código da Agência emissora da conta sem dígito.  
             (Agência é a dependência destinada ao atendimento aos clientes, ao público em geral e aos associados de cooperativas de crédito,  
             no exercício de atividades da instituição, não podendo ser móvel ou transitória).  
             [Restrição] Preenchimento obrigatório para os seguintes tipos de conta: CACC (CONTA_DEPOSITO_A_VISTA), SVGS (CONTA_POUPANCA) e SLRY (CONTA_SALARIO).
@@ -290,9 +314,14 @@ components:
       type: object
       description: Objeto contendo as informações de consentimento para a iniciação de pagamento individual.
       required:
+        - loggedUser
         - creditor
         - payment
       properties:
+        loggedUser:
+          $ref: '#/components/schemas/LoggedUser'
+        businessEntity:
+          $ref: '#/components/schemas/BusinessEntity'
         creditor:
           $ref: '#/components/schemas/Identification'
         payment:
@@ -306,11 +335,14 @@ components:
       required:
         - payment
         - creditorAccount
+        - endToEndId
       properties:
         payment:
           $ref: '#/components/schemas/PaymentPix'
         creditorAccount:
           $ref: '#/components/schemas/CreditorAccount'
+        endToEndId:
+          $ref: '#/components/schemas/EndToEndId'
         remittanceInformation:
           type: string
           maxLength: 140
@@ -366,13 +398,13 @@ components:
           example: '12345678'
           description: |
             Deve ser preenchido com o ISPB (Identificador do Sistema de Pagamentos Brasileiros) do participante do SPI (Sistema de pagamentos instantâneos) somente com números.
-        branchCode:
+        issuerCode:
           type: string
           maxLength: 4
           pattern: '^\d{4}$'
           example: '1774'
           description: |
-            Código da Agência detentora da conta sem dígito.  
+            Código da Agência emissora da conta sem dígito.  
             (Agência é a dependência destinada ao atendimento aos clientes, ao público em geral e aos associados de cooperativas de crédito,  
             no exercício de atividades da instituição, não podendo ser móvel ou transitória).  
             [Restrição] Preenchimento obrigatório para os seguintes tipos de conta: CACC (CONTA_DEPOSITO_A_VISTA), SVGS (CONTA_POUPANCA) e SLRY (CONTA_SALARIO).
@@ -393,6 +425,45 @@ components:
         accountType:
           $ref: '#/components/schemas/EnumAccountPaymentsType'
       additionalProperties: false
+    EndToEndId:
+      type: string
+      minLength: 32
+      maxLength: 32
+      pattern: '^([E])([0-9]{8})([0-9]{4})(0[1-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])(2[0-3]|[01][0-9])([0-5][0-9])([a-zA-Z0-9]{11})$'
+      example: E9040088820210128000800123873170
+      description: |
+        Código de identificação único da transação no arranjo do Pix. É usado em toda a cadeia de mensagens de uma instrução de pagamento no SPI. É um código gerado pela instituição que está iniciando o pagamento.  
+        Deve ser preenchido no formato padrão ExxxxxxxxyyyyMMddHHmmkkkkkkkkkkk (32 caracteres), sendo: 
+        • “E” – fixo (1 caractere);  
+        • xxxxxxxx – identificação do agente que gerou o `endToEndId`, podendo ser: o ISPB do participante direto ou o ISPB do participante indireto (8 caracteres numéricos);  
+        • yyyyMMddHHmm – data, hora e minuto (12 caracteres), seguindo o horário UTC, da submissão da ordem de pagamento, caso a liquidação seja prioritária, ou prevista para o envio da ordem ao sistema de liquidação, caso seja realizado um agendamento. No caso de ordens prioritárias, aceita-se o preenchimento, pelo agente que gerou o `endToEndId`, com uma tolerância máxima de 1 hora e 30 minutos, para o futuro e para o passado, em relação ao horário efetivo de processamento da ordem pelo SPI. Para ordens não prioritárias, a tolerância máxima é de 12 horas, para o futuro e para o passado;  
+        • kkkkkkkkkkk – sequencial criado pelo agente que gerou o `endToEndId` (11 caracteres alfanuméricos). Deve ser único dentro de cada “yyyyMMddHHmm”.   
+    LoggedUser:
+      type: object
+      description: Usuário (pessoa natural) que encontra-se logado na instituição Iniciadora de Pagamento.
+      additionalProperties: false
+      required:
+        - document
+      properties:
+        document:
+          type: object
+          additionalProperties: false
+          required:
+            - identification
+            - rel
+          properties:
+            identification:
+              type: string
+              maxLength: 11
+              description: Número do documento de identificação oficial do usuário.
+              example: '11111111111'
+              pattern: '^\d{11}$'
+            rel:
+              type: string
+              maxLength: 3
+              description: Tipo do documento de identificação oficial do usuário.
+              example: CPF
+              pattern: '^[A-Z]{3}$'
     PaymentConsent:
       type: object
       description: Objeto contendo dados de pagamento para consentimento.
@@ -428,11 +499,10 @@ components:
             Código da moeda nacional segundo modelo ISO-4217, ou seja, 'BRL'. 
             Todos os valores monetários informados estão representados com a moeda vigente do Brasil.
         amount:
-          type: number
-          format: double
+          type: string
           maxLength: 19
           pattern: '^((\d{1,16}\.\d{2}))$'
-          example: 100000.12
+          example: '100000.12'
           description: |
             Valor da transação com 2 casas decimais.
       additionalProperties: false
@@ -451,7 +521,9 @@ components:
         - consentId
         - statusUpdateDateTime
         - creationDateTime
+        - expirationDateTime
         - status
+        - loggedUser
         - creditor
         - payment
         - debtor
@@ -466,6 +538,15 @@ components:
             Identificador único do consentimento criado para a iniciação de pagamento solicitada.
         creationDateTime:
           description: 'Data e hora em que o consentimento foi criado. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).'
+          type: string
+          format: date-time
+          example: '2021-05-21T08:30:00Z'
+          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
+          maxLength: 20
+        expirationDateTime:
+          description: |
+            Data e hora em que o consentimento da iniciação de pagamento expira. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).
+            O consentimento é criado com o status AWAITING_AUTHORISATION, e deve assumir o status AUTHORIZED ou CONSUMED antes do tempo de expiração. Caso o tempo de expiração seja atingido, o consentimento assumirá o status REJECTED.
           type: string
           format: date-time
           example: '2021-05-21T08:30:00Z'
@@ -498,6 +579,10 @@ components:
             AUTHORISED - Autorizado   
             REJECTED - Rejeitado  
             CONSUMED - Consumido 
+        loggedUser:
+          $ref: '#/components/schemas/LoggedUser'
+        businessEntity:
+          $ref: '#/components/schemas/BusinessEntity'
         creditor:
           $ref: '#/components/schemas/Identification'
         payment:
@@ -576,6 +661,7 @@ components:
       description: Objeto contendo dados do pagamento e da conta do recebedor (creditor).
       required:
         - paymentId
+        - endToEndId
         - consentId
         - creationDateTime
         - statusUpdateDateTime
@@ -591,7 +677,7 @@ components:
           example: TXpRMU9UQTROMWhZV2xSU1FUazJSMDl
           description: |
             Código ou identificador único informado pela instituição detentora da conta para representar  
-            a iniciação de pagamento individual. O `paymentId` deve ser diferente do `endToEndId` retornado pela detentora.  
+            a iniciação de pagamento individual. O `paymentId` deve ser diferente do `endToEndId`.  
             Este é o identificador que deverá ser utilizado na consulta ao status da iniciação de pagamento efetuada.
         endToEndId:
           type: string
@@ -607,8 +693,7 @@ components:
             • yyyyMMddHHmm – data, hora e minuto (12 caracteres), seguindo o horário UTC, da submissão da ordem de pagamento, caso a liquidação seja prioritária, ou prevista para o envio da ordem ao sistema de liquidação, caso seja realizado um agendamento. No caso de ordens prioritárias, aceita-se o preenchimento, pelo agente que gerou o <EndToEndId>, com uma tolerância máxima de 1 hora e 30 minutos, para o futuro e para o passado, em relação ao horário efetivo de processamento da ordem pelo SPI. Para ordens não prioritárias, a tolerância máxima é de 12 horas, para o futuro e para o passado;  
             • kkkkkkkkkkk – sequencial criado pelo agente que gerou o `endToEndId` (11 caracteres alfanuméricos [a-z|A-Z|0-9]). Deve ser único dentro de cada “yyyyMMddHHmm”.  
             Exemplo: E000000002020080120300000000001B  
-            O `endToEndId` é gerado pela detentora. Ele deve ser único, não podendo ser repetido em qualquer outra operação enviada ao SPI.  
-            [Restrição] É obrigatório o retorno após o status "ACCEPTED_SETTLEMENT_IN_PROCESS".
+            O `endToEndId` é gerado pela detentora. Ele deve ser único, não podendo ser repetido em qualquer outra operação enviada ao SPI.
         consentId:
           type: string
           maxLength: 100
@@ -764,11 +849,10 @@ components:
         - currency
       properties:
         amount:
-          type: number
-          format: double
+          type: string
           maxLength: 19
           pattern: '^((\d{1,16}\.\d{2}))$'
-          example: 100000.12
+          example: '100000.12'
           description: |
             Valor da transação com 2 casas decimais.
         currency:
@@ -834,6 +918,11 @@ components:
             Em caso de pessoa natural deve ser informado o nome completo do titular da conta do recebedor.  
             Em caso de pessoa jurídica deve ser informada a razão social ou o nome fantasia da conta do recebedor.
       additionalProperties: false
+    XFapiInteractionId:
+      type: string
+      pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
+      maxLength: 100
+      description: 'Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.'
   parameters:
     consentId:
       name: consentId
@@ -920,15 +1009,6 @@ components:
         type: string
         maxLength: 40
         pattern: ^(?!\s)(.*)(\S)$
-    XJwsSignature:
-      name: x-jws-signature
-      in: header
-      description: Cabeçalho contendo uma assinatura JWS separada do corpo do payload.
-      required: true
-      schema:
-        type: string
-        pattern: \w*\W*
-        maxLength: 2048
   securitySchemes:
     OpenId:
       type: openIdConnect
@@ -940,42 +1020,74 @@ components:
         application/json; charset=utf-8:
           schema:
             $ref: '#/components/schemas/ResponseError'
+      headers:
+        x-fapi-interaction-id:
+          schema:
+            $ref: '#/components/schemas/XFapiInteractionId'
     Forbidden:
       description: O token tem escopo incorreto ou uma política de segurança foi violada
       content:
         application/json; charset=utf-8:
           schema:
             $ref: '#/components/schemas/ResponseError'
+      headers:
+        x-fapi-interaction-id:
+          schema:
+            $ref: '#/components/schemas/XFapiInteractionId'
     InternalServerError:
       description: Ocorreu um erro no gateway da API ou no microsserviço
       content:
         application/json; charset=utf-8:
           schema:
             $ref: '#/components/schemas/ResponseError'
+      headers:
+        x-fapi-interaction-id:
+          schema:
+            $ref: '#/components/schemas/XFapiInteractionId'
     MethodNotAllowed:
       description: O consumidor tentou acessar o recurso com um método não suportado
       content:
         application/json; charset=utf-8:
           schema:
             $ref: '#/components/schemas/ResponseError'
+      headers:
+        x-fapi-interaction-id:
+          schema:
+            $ref: '#/components/schemas/XFapiInteractionId'
     NotAcceptable:
       description: A solicitação continha um cabeçalho Accept diferente dos tipos de mídia permitidos ou um conjunto de caracteres diferente de UTF-8
       content:
         application/json; charset=utf-8:
           schema:
             $ref: '#/components/schemas/ResponseError'
+      headers:
+        x-fapi-interaction-id:
+          schema:
+            $ref: '#/components/schemas/XFapiInteractionId'
     NotFound:
       description: O recurso solicitado não existe ou não foi implementado
       content:
         application/json; charset=utf-8:
           schema:
             $ref: '#/components/schemas/ResponseError'
+      headers:
+        x-fapi-interaction-id:
+          schema:
+            $ref: '#/components/schemas/XFapiInteractionId'
     TooManyRequests:
       description: 'A operação foi recusada, pois muitas solicitações foram feitas dentro de um determinado período ou o limite global de requisições concorrentes foi atingido'
       content:
         application/json; charset=utf-8:
           schema:
             $ref: '#/components/schemas/ResponseError'
+      headers:
+        x-fapi-interaction-id:
+          schema:
+            $ref: '#/components/schemas/XFapiInteractionId'
+        Retry-After:
+          schema:
+            description: Número em segundos para esperar
+            type: integer
     UnprocessableEntityConsents:
       description: 'A solicitação foi bem formada, mas não pôde ser processada devido à lógica de negócios específica da solicitação.'
       content:
@@ -998,16 +1110,17 @@ components:
                   properties:
                     code:
                       type: string
+                      maxLength: 19
                       enum:
-                        - '01'
-                        - '02'
-                        - '99'
+                        - FORMA_PGTO_INVALIDA
+                        - DATA_PGTO_INVALIDA
+                        - NAO_INFORMADO
+                      example: FORMA_PGTO_INVALIDA
                       description: |
-                        Códigos de erros previstos na criação de consentimento para a iniciação de pagamentos.  
-                        • 01 – Forma de pagamento inválida;  
-                        • 02 – Data de pagamento inválida;  
-                        • 99 – Desconhecido.  
-                      example: '01'
+                        Códigos de erros previstos na criação de consentimento para a iniciação de pagamentos:  
+                        • FORMA_PGTO_INVALIDA: Forma de pagamento inválida.  
+                        • DATA_PGTO_INVALIDA: Data de pagamento inválida.  
+                        • NAO_INFORMADO: Não informado.  
                     title:
                       type: string
                       maxLength: 255
@@ -1015,20 +1128,19 @@ components:
                       example: Forma de pagamento inválida.
                       description: |
                         Título específico do erro reportado, de acordo com o código enviado:  
-                        • 01: Forma de pagamento inválida;  
-                        • 02: Data de pagamento inválida;  
-                        • 99: Desconhecido.       
+                        • FORMA_PGTO_INVALIDA: Forma de pagamento inválida.  
+                        • DATA_PGTO_INVALIDA: Data de pagamento inválida.  
+                        • NAO_INFORMADO: Não informado.    
                     detail:
                       type: string
                       maxLength: 2048
                       pattern: \w*\W*
                       example: Meio de pagamento inválido.
                       description: |
-                        Descrição específica do erro de acordo com o código reportado.
-                        • 01: Meio de pagamento inválido;  
-                        • 02: Data de pagamento inválida no contexto, por exemplo, data no passado.  
-                        Para pagamentos únicos deve ser informada a data atual, do dia corrente.    
-                        • 99: Não informada pela instituição detentora da conta. 
+                        Descrição específica do erro de acordo com o código reportado:  
+                        • FORMA_PGTO_INVALIDA – Meio de pagamento inválido.  
+                        • DATA_PGTO_INVALIDA – Data de pagamento inválida no contexto, por exemplo, data no passado. Para pagamentos únicos deve ser informada a data atual, do dia corrente.  
+                        • NAO_INFORMADO – Não reportado/identificado pela instituição detentora de conta.  
                   additionalProperties: false
               meta:
                 $ref: '#/components/schemas/ResponseError/properties/meta'
@@ -1038,8 +1150,8 @@ components:
               summary: Forma de pagamento inválida
               value:
                 errors:
-                  - code: '01'
-                    title: Forma de pagamento inválida
+                  - code: FORMA_PGTO_INVALIDA
+                    title: Forma de pagamento inválida.
                     detail: Meio de pagamento inválido.
                 meta:
                   totalRecords: 1
@@ -1049,8 +1161,8 @@ components:
               summary: Data de pagamento inválida
               value:
                 errors:
-                  - code: '02'
-                    title: Data de pagamento inválida
+                  - code: DATA_PGTO_INVALIDA
+                    title: Data de pagamento inválida.
                     detail: 'Data de pagamento inválida no contexto, por exemplo, data no passado.'
                 meta:
                   totalRecords: 1
@@ -1060,13 +1172,17 @@ components:
               summary: Desconhecido
               value:
                 errors:
-                  - code: '99'
-                    title: Desconhecido
-                    detail: Não informada pela instituição detentora da conta.
+                  - code: NAO_INFORMADO
+                    title: Não informado.
+                    detail: Não reportado/identificado pela instituição detentora de conta.
                 meta:
                   totalRecords: 1
                   totalPages: 1
                   requestDateTime: '2021-05-21T08:30:00Z'
+      headers:
+        x-fapi-interaction-id:
+          schema:
+            $ref: '#/components/schemas/XFapiInteractionId'
     UnprocessableEntityPixPayments:
       description: 'A solicitação foi bem formada, mas não pôde ser processada devido à lógica de negócios específica da solicitação.'
       content:
@@ -1089,60 +1205,61 @@ components:
                   properties:
                     code:
                       type: string
+                      maxLength: 25
                       enum:
-                        - '01'
-                        - '02'
-                        - '03'
-                        - '04'
-                        - '05'
-                        - '06'
-                        - '07'
-                        - '10'
-                        - '99'
+                        - SALDO_INSUFICIENTE
+                        - BENEFICIARIO_INCOMPATIVEL
+                        - VALOR_INCOMPATIVEL
+                        - VALOR_ACIMA_LIMITE
+                        - VALOR_INVALIDO
+                        - COBRANCA_INVALIDA
+                        - CONSENTIMENTO_INVALIDO
+                        - JANELA_OPER_INVALIDA
+                        - NAO_INFORMADO
+                      example: SALDO_INSUFICIENTE
                       description: |
-                        Códigos de erros previstos na criação da iniciação de pagamento.  
-                        • 01 – Saldo insuficiente;  
-                        • 02 – Beneficiário incompatível;  
-                        • 03 – Valor da transação incompatível;  
-                        • 04 – Acima do limite estabelecido;  
-                        • 05 – Valor inválido;  
-                        • 06 – Cobrança inválida;  
-                        • 07 – Consentimento inválido;  
-                        • 10 – Janela de operação inválida;     
-                        • 99 – Desconhecido.  
-                      example: '01'
+                        Códigos de erros previstos na criação da iniciação de pagamento:  
+                        • SALDO_INSUFICIENTE – Saldo insuficiente.  
+                        • BENEFICIARIO_INCOMPATIVEL – Beneficiário incompatível.  
+                        • VALOR_INCOMPATIVEL – Valor da transação incompatível.  
+                        • VALOR_ACIMA_LIMITE – Acima do limite estabelecido.  
+                        • VALOR_INVALIDO – Valor inválido.  
+                        • COBRANCA_INVALIDA – Cobrança inválida.  
+                        • CONSENTIMENTO_INVALIDO – Consentimento inválido.  
+                        • JANELA_OPER_INVALIDA – Janela de operação inválida.  
+                        • NAO_INFORMADO – Não reportado/identificado pela instituição detentora de conta.  
                     title:
                       type: string
                       maxLength: 255
                       pattern: \w*\W*
-                      example: Forma de pagamento inválida.
+                      example: Saldo insuficiente.
                       description: |
                         Título específico do erro reportado, de acordo com o código enviado:  
-                        • 01: Saldo insuficiente;  
-                        • 02: Beneficiário incompatível;  
-                        • 03: Valor da transação incompatível;  
-                        • 04: Acima do limite estabelecido;  
-                        • 05: Valor inválido;  
-                        • 06: Cobrança inválida;  
-                        • 07: Consentimento inválido;  
-                        • 10: Janela de operação inválida;     
-                        • 99: Desconhecido.  
+                        • SALDO_INSUFICIENTE: Saldo insuficiente.  
+                        • BENEFICIARIO_INCOMPATIVEL: Beneficiário incompatível.  
+                        • VALOR_INCOMPATIVEL: Valor da transação incompatível.  
+                        • VALOR_ACIMA_LIMITE: Acima do limite estabelecido.  
+                        • VALOR_INVALIDO: Valor inválido.  
+                        • COBRANCA_INVALIDA: Cobrança inválida.  
+                        • CONSENTIMENTO_INVALIDO: Consentimento inválido.  
+                        • JANELA_OPER_INVALIDA: Janela de operação inválida.  
+                        • NAO_INFORMADO: Não informado.  
                     detail:
                       type: string
                       maxLength: 2048
                       pattern: \w*\W*
-                      example: Meio de pagamento inválido.
+                      example: A conta selecionada não possui saldo suficiente para realizar o pagamento.
                       description: |
-                        Descrição específica do erro de acordo com o código reportado.  
-                        • 01: A conta selecionada não possui saldo suficiente para realizar o pagamento.  
-                        • 02: O beneficiário informado no consentimento não é o mesmo do esperado pelo DICT.  
-                        • 03: O valor informado no consentimento não é o mesmo valor do informado no payload de pagamento.    
-                        • 04: O valor (ou quantidade de transações) ultrapassa a faixa de limite parametrizada na detentora para permitir a realização de transações pelo cliente.  
-                        • 05: O valor enviado não é válido para o QR Code informado.  
-                        • 06: Validação de expiração, validação de vencimento ou Status Válido.  
-                        • 07: Consentimento inválido (status diferente de "AUTHORISED" ou está expirado).  
-                        • 10: Requisição está fora da janela de funcionamento.        
-                        • 99: Não informada pela instituição detentora da conta. 
+                        Descrição específica do erro de acordo com o código reportado:  
+                        • SALDO_INSUFICIENTE: A conta selecionada não possui saldo suficiente para realizar o pagamento.  
+                        • BENEFICIARIO_INCOMPATIVEL: O beneficiário informado no consentimento não é o mesmo do esperado pelo DICT.  
+                        • VALOR_INCOMPATIVEL: O valor informado no consentimento não é o mesmo valor do informado no payload de pagamento.  
+                        • VALOR_ACIMA_LIMITE: O valor (ou quantidade de transações) ultrapassa a faixa de limite parametrizada na detentora para permitir a realização de transações pelo cliente.  
+                        • VALOR_INVALIDO: O valor enviado não é válido para o QR Code informado.  
+                        • COBRANCA_INVALIDA: Validação de expiração, validação de vencimento ou Status Válido.  
+                        • CONSENTIMENTO_INVALIDO: Consentimento inválido (status diferente de "AUTHORISED" ou está expirado).  
+                        • JANELA_OPER_INVALIDA: Requisição está fora da janela de funcionamento.  
+                        • NAO_INFORMADO: Não reportado/identificado pela instituição detentora de conta.  
                   additionalProperties: false
               meta:
                 $ref: '#/components/schemas/ResponseError/properties/meta'
@@ -1152,8 +1269,8 @@ components:
               summary: Saldo insuficiente
               value:
                 errors:
-                  - code: '01'
-                    title: Saldo insuficiente
+                  - code: SALDO_INSUFICIENTE
+                    title: Saldo insuficiente.
                     detail: A conta selecionada não possui saldo suficiente para realizar o pagamento.
                 meta:
                   totalRecords: 1
@@ -1163,8 +1280,8 @@ components:
               summary: Beneficiário incompatível
               value:
                 errors:
-                  - code: '02'
-                    title: Beneficiário incompatível
+                  - code: BENEFICIARIO_INCOMPATIVEL
+                    title: Beneficiário incompatível.
                     detail: O beneficiário informado no consentimento não é o mesmo do esperado pelo DICT.
                 meta:
                   totalRecords: 1
@@ -1174,8 +1291,8 @@ components:
               summary: Valor da transação incompatível
               value:
                 errors:
-                  - code: '03'
-                    title: Valor da transação incompatível
+                  - code: VALOR_INCOMPATIVEL
+                    title: Valor da transação incompatível.
                     detail: O valor informado no consentimento não é o mesmo valor do informado no payload de pagamento.
                 meta:
                   totalRecords: 1
@@ -1185,8 +1302,8 @@ components:
               summary: Acima do limite estabelecido
               value:
                 errors:
-                  - code: '04'
-                    title: Acima do limite estabelecido
+                  - code: VALOR_ACIMA_LIMITE
+                    title: Acima do limite estabelecido.
                     detail: O valor (ou quantidade de transações) ultrapassa a faixa de limite parametrizada na detentora para permitir a realização de transações pelo cliente.
                 meta:
                   totalRecords: 1
@@ -1196,8 +1313,8 @@ components:
               summary: Valor inválido
               value:
                 errors:
-                  - code: '05'
-                    title: Valor inválido
+                  - code: VALOR_INVALIDO
+                    title: Valor inválido.
                     detail: O valor enviado não é válido para o QR Code informado.
                 meta:
                   totalRecords: 1
@@ -1207,8 +1324,8 @@ components:
               summary: Cobrança inválida
               value:
                 errors:
-                  - code: '06'
-                    title: Cobrança inválida
+                  - code: COBRANCA_INVALIDA
+                    title: Cobrança inválida.
                     detail: 'Validação de expiração, validação de vencimento ou Status Válido.'
                 meta:
                   totalRecords: 1
@@ -1218,8 +1335,8 @@ components:
               summary: Consentimento inválido
               value:
                 errors:
-                  - code: '07'
-                    title: Consentimento inválido
+                  - code: CONSENTIMENTO_INVALIDO
+                    title: Consentimento inválido.
                     detail: Consentimento inválido (status diferente de 'AUTHORISED' ou está expirado).
                 meta:
                   totalRecords: 1
@@ -1229,8 +1346,8 @@ components:
               summary: Janela de operação inválida
               value:
                 errors:
-                  - code: '10'
-                    title: Janela de operação inválida
+                  - code: JANELA_OPER_INVALIDA
+                    title: Janela de operação inválida.
                     detail: Requisição está fora da janela de funcionamento.
                 meta:
                   totalRecords: 1
@@ -1240,31 +1357,45 @@ components:
               summary: Desconhecido
               value:
                 errors:
-                  - code: '99'
-                    title: Desconhecido
-                    detail: Não informada pela instituição detentora da conta.
+                  - code: NAO_INFORMADO
+                    title: Não informado.
+                    detail: Não reportado/identificado pela instituição detentora de conta.
                 meta:
                   totalRecords: 1
                   totalPages: 1
                   requestDateTime: '2021-05-21T08:30:00Z'
+      headers:
+        x-fapi-interaction-id:
+          schema:
+            $ref: '#/components/schemas/XFapiInteractionId'
     Unauthorized:
       description: Cabeçalho de autenticação ausente/inválido ou token inválido
       content:
         application/json; charset=utf-8:
           schema:
             $ref: '#/components/schemas/ResponseError'
+      headers:
+        x-fapi-interaction-id:
+          schema:
+            $ref: '#/components/schemas/XFapiInteractionId'
     UnsupportedMediaType:
       description: O formato do payload não é um formato suportado.
       content:
         application/json; charset=utf-8:
           schema:
             $ref: '#/components/schemas/ResponseError'
+      headers:
+        x-fapi-interaction-id:
+          schema:
+            $ref: '#/components/schemas/XFapiInteractionId'
     201PaymentsConsentsConsentCreated:
       description: Consentimento de pagamento criado com sucesso.
       headers:
         x-fapi-interaction-id:
+          description: |
+            Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.
           schema:
-            $ref: '#/components/responses/200PaymentsConsentsConsentIdRead/headers/x-fapi-interaction-id/schema'
+            $ref: '#/components/schemas/XFapiInteractionId'
       content:
         application/json:
           schema:
@@ -1273,11 +1404,10 @@ components:
       description: Dados do consentimento de pagamento obtidos com sucesso.
       headers:
         x-fapi-interaction-id:
+          description: |
+            Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.
           schema:
-            type: string
-            pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
-            maxLength: 100
-            description: 'Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.'
+            $ref: '#/components/schemas/XFapiInteractionId'
       content:
         application/json:
           schema:
@@ -1286,8 +1416,10 @@ components:
       description: Iniciação de pagamento Pix criada com sucesso.
       headers:
         x-fapi-interaction-id:
+          description: |
+            Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.
           schema:
-            $ref: '#/components/responses/200PaymentsConsentsConsentIdRead/headers/x-fapi-interaction-id/schema'
+            $ref: '#/components/schemas/XFapiInteractionId'
       content:
         application/json:
           schema:
@@ -1296,8 +1428,10 @@ components:
       description: Dados de iniciação de pagamento Pix obtidos com sucesso.
       headers:
         x-fapi-interaction-id:
+          description: |
+            Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.
           schema:
-            $ref: '#/components/responses/200PaymentsConsentsConsentIdRead/headers/x-fapi-interaction-id/schema'
+            $ref: '#/components/schemas/XFapiInteractionId'
       content:
         application/json:
           schema:
