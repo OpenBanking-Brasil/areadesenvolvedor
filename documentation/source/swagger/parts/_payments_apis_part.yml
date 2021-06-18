@@ -12,7 +12,7 @@ info:
     Os tokens utilizados para consumo dos `endpoints` desta API devem possuir os `scopes` `openId` e `payments`.  
     Esta API não requer a implementação de `permissions` para sua utilização.
   
-  version: 1.0.0-rc1.0
+  version: 1.0.0-rc2.0
   license:
     name: Apache 2.0
     url: 'https://www.apache.org/licenses/LICENSE-2.0'
@@ -42,7 +42,6 @@ paths:
         - $ref: '#/components/parameters/xFapiInteractionId'
         - $ref: '#/components/parameters/xCustomerUserAgent'
         - $ref: '#/components/parameters/XIdempotencyKey'
-        - $ref: '#/components/parameters/XJwsSignature'
       requestBody:
         content:
           application/json:
@@ -54,7 +53,7 @@ paths:
         '201':
           $ref: '#/components/responses/201PaymentsConsentsConsentCreated'
         '400':
-          $ref: '#/components/responses/BadRequest'
+          $ref: '#/components/responses/BadRequest'          
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -140,7 +139,6 @@ paths:
         - $ref: '#/components/parameters/xFapiInteractionId'
         - $ref: '#/components/parameters/xCustomerUserAgent'
         - $ref: '#/components/parameters/XIdempotencyKey'
-        - $ref: '#/components/parameters/XJwsSignature'
       requestBody:
         content:
           application/json:
@@ -226,6 +224,8 @@ paths:
             - payments-initiation
 components:
   schemas:
+    BusinessEntity:
+      $ref: ./schemas/payments_apis/BusinessEntity.yaml
     CreditorAccount:
       $ref: ./schemas/business_commons/CreditorAccount.yaml      
     CreatePixPayment:
@@ -237,7 +237,11 @@ components:
     CreatePixPaymentData:
       $ref: ./schemas/payments_apis/CreatePixPaymentData.yaml
     DebtorAccount:
-      $ref: ./schemas/business_commons/DebtorAccount.yaml         
+      $ref: ./schemas/business_commons/DebtorAccount.yaml
+    EndToEndId:
+      $ref: ./schemas/business_commons/EndToEndId.yaml
+    LoggedUser:
+      $ref: ./schemas/payments_apis/LoggedUser.yaml       
     PaymentConsent:
       $ref: ./schemas/payments_apis/PaymentConsent.yaml
     ResponsePaymentConsent:
@@ -256,6 +260,8 @@ components:
       $ref: ./schemas/enum/EnumAccountPaymentsType.yaml
     Identification:
       $ref: ./schemas/payments_apis/PaymentIdentification.yaml
+    XFapiInteractionId:  
+      $ref: ./headers/XFapiInteractionId.yaml
   parameters:
     consentId:
       $ref: ./parameters/ConsentId.yaml
@@ -273,41 +279,41 @@ components:
       $ref: ./parameters/XFapiInteractionId.yaml
     XIdempotencyKey:
       $ref: ./parameters/XIdempotencyKey.yaml
-    XJwsSignature:
-      $ref: ./parameters/XJwsSignature.yaml
   securitySchemes:
     OpenId:
       type: openIdConnect
       openIdConnectUrl: 'https://authserver.example/.well-known/openid-configuration'
   responses:
     BadRequest:
-      $ref: ./responses/BadRequest.yaml
+      $ref: ./responses/payments_apis/BadRequest.yaml
     Forbidden:
-      $ref: ./responses/Forbidden.yaml
+      $ref: ./responses/payments_apis/Forbidden.yaml
     InternalServerError:
-      $ref: ./responses/InternalServerError.yaml
+      $ref: ./responses/payments_apis/InternalServerError.yaml
     MethodNotAllowed:
-      $ref: ./responses/MethodNotAllowed.yaml
+      $ref: ./responses/payments_apis/MethodNotAllowed.yaml
     NotAcceptable:
-      $ref: ./responses/NotAcceptable.yaml
+      $ref: ./responses/payments_apis/NotAcceptable.yaml
     NotFound:
-      $ref: ./responses/NotFound.yaml
+      $ref: ./responses/payments_apis/NotFound.yaml
     TooManyRequests:
-      $ref: ./responses/TooManyRequests.yaml
+      $ref: ./responses/payments_apis/TooManyRequests.yaml
     UnprocessableEntityConsents:
       $ref: ./schemas/payments_apis/UnprocessableEntityConsents.yaml
     UnprocessableEntityPixPayments:
       $ref: ./schemas/payments_apis/UnprocessableEntityPixPayments.yaml
     Unauthorized:
-      $ref: ./responses/Unauthorized.yaml
+      $ref: ./responses/payments_apis/Unauthorized.yaml
     UnsupportedMediaType:
-      $ref: ./responses/UnsupportedMediaType.yaml
+      $ref: ./responses/payments_apis/UnsupportedMediaType.yaml
     201PaymentsConsentsConsentCreated:
       description: Consentimento de pagamento criado com sucesso.
       headers:
         x-fapi-interaction-id:
+          description: |
+            Um UUID RFC4122 usado como um ID de correlação. O transmissor deve usar o mesmo valor recebido na requisição para o cabeçalho de resposta recebido na requisição, caso não tenha sido fornecido, deve se usar um UUID RFC4122.
           schema:
-            $ref: ./headers/XFapiInteractionId.yaml           
+            $ref: '#/components/schemas/XFapiInteractionId'         
       content:
         application/json:
           schema:
@@ -316,8 +322,10 @@ components:
       description: Dados do consentimento de pagamento obtidos com sucesso.
       headers:
         x-fapi-interaction-id:
+          description: |
+            Um UUID RFC4122 usado como um ID de correlação. O transmissor deve usar o mesmo valor recebido na requisição para o cabeçalho de resposta recebido na requisição, caso não tenha sido fornecido, deve se usar um UUID RFC4122.
           schema:
-            $ref: ./headers/XFapiInteractionId.yaml
+            $ref: '#/components/schemas/XFapiInteractionId'
       content:
         application/json:
           schema:
@@ -326,8 +334,10 @@ components:
       description: Iniciação de pagamento Pix criada com sucesso.
       headers:
         x-fapi-interaction-id:
+          description: |
+            Um UUID RFC4122 usado como um ID de correlação. O transmissor deve usar o mesmo valor recebido na requisição para o cabeçalho de resposta recebido na requisição, caso não tenha sido fornecido, deve se usar um UUID RFC4122.
           schema:
-            $ref: ./headers/XFapiInteractionId.yaml           
+            $ref: '#/components/schemas/XFapiInteractionId'         
       content:
         application/json:
           schema:
@@ -336,8 +346,10 @@ components:
       description: Dados de iniciação de pagamento Pix obtidos com sucesso.
       headers:
         x-fapi-interaction-id:
+          description: |
+            Um UUID RFC4122 usado como um ID de correlação. O transmissor deve usar o mesmo valor recebido na requisição para o cabeçalho de resposta recebido na requisição, caso não tenha sido fornecido, deve se usar um UUID RFC4122.
           schema:
-            $ref: ./headers/XFapiInteractionId.yaml
+            $ref: '#/components/schemas/XFapiInteractionId'
       content:
         application/json:
           schema:

@@ -47,13 +47,13 @@ info:
     - 300 TPS global, 50 TPS por instituição e 8 TPS por endereço IP (Internet Protocol).  
     Como sugestão, é indicado que a instituição iniciadora do pagamento implemente um retry exponencial.  
 
-  version: 1.0.0-rc1.0
+  version: 1.0.0-rc2.0
 tags:
   - name: API - Pagamentos
     description: |
       |Versão|
       |:-----|
-      |1.0.0-rc1.0|
+      |1.0.0-rc2.0|
 
       #### Visão Geral
       
@@ -76,6 +76,8 @@ paths:
         Método para a criação do consentimento para iniciação de pagamento.
 
         ### Dicionário de dados
+
+        Campos do retorno do endpoint de `/consents`
 
         <a href='dictionary/paymentsPostConsents_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
       
@@ -131,6 +133,8 @@ paths:
 
         ### Dicionário de dados
 
+        Campos do retorno do endpoint de `/consents`
+
         <a href='dictionary/paymentsGetConsentsConsentId_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
         
       parameters:
@@ -175,6 +179,8 @@ paths:
         Método para a criação de uma iniciação de pagamento.
 
         ### Dicionário de dados
+
+        Campos do retorno do endpoint de `/pix/payments`
 
         <a href='dictionary/paymentsPostPixPayments_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
 
@@ -230,6 +236,8 @@ paths:
 
         ### Dicionário de dados
 
+        Campos do retorno do endpoint de `/pix/payments`
+
         <a href='dictionary/paymentsGetPixPaymentsPaymentId_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
         
       parameters:
@@ -268,6 +276,8 @@ components:
   schemas:
     Account:
       $ref: ./schemas/business_commons/Account.yaml
+    BusinessEntity:
+      $ref: ./schemas/payments_apis/BusinessEntity.yaml
     CreatePaymentConsent:
       $ref: ./schemas/payments_apis/CreatePaymentConsent.yaml
     CreatePixPayment:
@@ -296,6 +306,8 @@ components:
       $ref: ./schemas/business_commons/CreditorAccount.yaml
     Identification:
       $ref: ./schemas/payments_apis/PaymentIdentification.yaml
+    LoggedUser:
+      $ref: ./schemas/payments_apis/LoggedUser.yaml
     PaymentConsent:
       $ref: ./schemas/payments_apis/PaymentConsent.yaml
     PaymentPix:
@@ -337,31 +349,33 @@ components:
       $ref: ./parameters/XJwsSignature.yaml
   responses:
     BadRequest:
-      $ref: ./responses/BadRequest.yaml
+      $ref: ./responses/payments_apis/BadRequest.yaml
     Forbidden:
-      $ref: ./responses/Forbidden.yaml
+      $ref: ./responses/payments_apis/Forbidden.yaml
     InternalServerError:
-      $ref: ./responses/InternalServerError.yaml
+      $ref: ./responses/payments_apis/InternalServerError.yaml
     MethodNotAllowed:
-      $ref: ./responses/MethodNotAllowed.yaml
+      $ref: ./responses/payments_apis/MethodNotAllowed.yaml
     NotAcceptable:
-      $ref: ./responses/NotAcceptable.yaml
+      $ref: ./responses/payments_apis/NotAcceptable.yaml
     NotFound:
-      $ref: ./responses/NotFound.yaml
+      $ref: ./responses/payments_apis/NotFound.yaml
     TooManyRequests:
-      $ref: ./responses/TooManyRequests.yaml
+      $ref: ./responses/payments_apis/TooManyRequests.yaml
     UnprocessableEntityConsents:
       $ref: ./schemas/payments_apis/UnprocessableEntityConsents.yaml
     UnprocessableEntityPixPayments:
       $ref: ./schemas/payments_apis/UnprocessableEntityPixPayments.yaml
     Unauthorized:
-      $ref: ./responses/Unauthorized.yaml
+      $ref: ./responses/payments_apis/Unauthorized.yaml
     UnsupportedMediaType:
-      $ref: ./responses/UnsupportedMediaType.yaml
+      $ref: ./responses/payments_apis/UnsupportedMediaType.yaml
     201PaymentsConsentsConsentCreated:
       description: Consentimento de pagamento criado com sucesso.
       headers:
         x-fapi-interaction-id:
+          description: |
+            Um UUID RFC4122 usado como um ID de correlação. O transmissor deve usar o mesmo valor recebido na requisição para o cabeçalho de resposta recebido na requisição, caso não tenha sido fornecido, deve se usar um UUID RFC4122.
           schema:
             $ref: ./headers/XFapiInteractionId.yaml           
       content:
@@ -372,6 +386,8 @@ components:
       description: Dados do consentimento de pagamento obtidos com sucesso.
       headers:
         x-fapi-interaction-id:
+          description: |
+            Um UUID RFC4122 usado como um ID de correlação. O transmissor deve usar o mesmo valor recebido na requisição para o cabeçalho de resposta recebido na requisição, caso não tenha sido fornecido, deve se usar um UUID RFC4122.
           schema:
             $ref: ./headers/XFapiInteractionId.yaml
       content:
@@ -382,6 +398,8 @@ components:
       description: Iniciação de pagamento Pix criada com sucesso.
       headers:
         x-fapi-interaction-id:
+          description: |
+            Um UUID RFC4122 usado como um ID de correlação. O transmissor deve usar o mesmo valor recebido na requisição para o cabeçalho de resposta recebido na requisição, caso não tenha sido fornecido, deve se usar um UUID RFC4122.
           schema:
             $ref: ./headers/XFapiInteractionId.yaml           
       content:
@@ -392,6 +410,8 @@ components:
       description: Dados de iniciação de pagamento Pix obtidos com sucesso.
       headers:
         x-fapi-interaction-id:
+          description: |
+            Um UUID RFC4122 usado como um ID de correlação. O transmissor deve usar o mesmo valor recebido na requisição para o cabeçalho de resposta recebido na requisição, caso não tenha sido fornecido, deve se usar um UUID RFC4122.
           schema:
             $ref: ./headers/XFapiInteractionId.yaml
       content:

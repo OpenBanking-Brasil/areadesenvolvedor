@@ -19,7 +19,7 @@ APIS=(
 )
 
 APIS_CONDITIONAL=(
-  
+  "payments_apis"
 )
 
 function generate() {
