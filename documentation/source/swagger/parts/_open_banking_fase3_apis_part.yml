@@ -2,26 +2,27 @@ openapi: 3.0.0
 info:
   title: Fase 3 - APIs do Open Banking Brasil
   description: |
-    Na fase 3 do Open Banking Brasil, a iniciação de pagamento permitirá que o cliente solicite um pagamento Pix fora dos canais da detentora de conta através de uma iniciadora de transação de pagamento.  
+    ### Iniciação de pagamentos
 
-    A solicitação de pagamento será processada apenas se o cliente consentir na iniciadora, através da API de consentimento fase 3, e autorizar na detentora de conta, por meio de autenticação com credenciais de acesso e confirmação dos dados do pagamento.  
+    Na fase 3 do Open Banking Brasil  será oferecida aos clientes a possibilidade de movimentação financeira a partir de aplicativos e plataformas externas ao ambiente no qual mantém sua conta.
 
-    Diferente da fase 2, o consentimento é dado para cada transação e não pode ser revogado, pois é consumido no momento que a transação é confirmada e processada.  
+    Na prática o que teremos é a oferta de pagamentos, transferências e outras operações executadas a partir de aplicativos de terceiros, sempre com a prévia coleta do consentimento do cliente para a iniciação destas transações.
 
-    O processamento da transação é feito de forma instantânea, não sendo possível agendamentos.
+    No âmbito da Resolução conjunta nº 1, de 04 de maio de 2020 o Open Banking Brasil passa a contar com os atores e operações ali definidos, reproduzidos a seguir.
 
-    ###Idempotência
+    ### Idempotência
+
     Segundo a W3C, "um método HTTP idempotente é um método HTTP que pode ser chamado muitas vezes sem resultados diferentes ou efeitos colaterais. Não importa se o método é chamado apenas uma vez ou dez vezes. O resultado deve ser o mesmo. Essencialmente, significa que o resultado de uma solicitação executada com sucesso é independente do número de vezes que ela é executada. Por exemplo, na aritmética, adicionar zero a um número é uma operação idempotente."
 
     Os conhecidos métodos GET, PUT e DELETE são naturalmente idempotentes, assim como HEAD, OPTIONS e TRACE também são.
 
     Porém, o método POST requer um tratamento especial para que se torne idempotente e, por estarmos tratando aqui de meios de pagamentos, fazer esse tratamento é algo desejável para que não ocorram acidentes.
 
-    ####Por que é necessário tratarmos a Idempotência do POST?
+    #### Por que é necessário tratarmos a Idempotência do POST?
 
     Imagine que seja realizado um POST de pagamento e, depois de alguns segundos, é retornada uma mensagem de Timeout. Nesse caso, não é possível saber se o POST foi efetivo e enviar o POST novamente, sem tratar a idempotência, poderá ocasionar em duplicidade de pagamento.
 
-    ####Como mitigarmos esse risco?
+    #### Como mitigarmos esse risco?
 
     Do lado da iniciadora do pagamento: É necessário que seja enviado o POST com um GUID de Idempotência. Caso o mesmo POST seja reenviado por acidente ou precise ser reenviado, por qualquer motivo que seja, basta reenviar o POST com o mesmo GUID de Idempotência.
 
@@ -31,19 +32,20 @@ info:
 
     A iniciadora não deve usar comportamento idempotente do POST para pesquisar o status dos recursos.
 
-    ####Conjunto inicial de regras propostas na aplicação da idempotencia:
+    #### Conjunto inicial de regras propostas na aplicação da idempotencia:
+
     - A iniciadora/TPP não deve alterar o corpo da solicitação ao usar a mesma chave de idempotência. Se a iniciadora alterar o corpo da solicitação, a detentora/ASPSP não deve modificar o recurso final. A detentora pode tratar este caso como uma ação fraudulenta.  
     - A detentora não deve criar um novo recurso para uma solicitação POST se estiver determinada como uma solicitação idempotente.  
     - Na criação a detentora deve responder à solicitação com o status atual do recurso (ou um status que seja pelo menos tão atual quanto o que estiver disponível nos canais eletrônicos existentes) e um código de status HTTP 201 (CREATED).  
     - A iniciadora não deve usar comportamento idempotente para pesquisar o status dos recursos.  
     - A detentora pode usar a assinatura da mensagem, junto com a chave de idempotência, para garantir que o corpo da solicitação não seja alterado.  
 
-    ###Diagrama de Sequência
+    ### Diagrama de Sequência
     ![Iniciacao_de_Pagamento](images/sequence-diagrams/iniciacao_de_pagamento.png)
     <a href="images/sequence-diagrams/iniciacao_de_pagamento.png" target="_blank">Download do Diagrama de Sequência</a>
     
-    ###Recomendação uso de pooling
-    ####A consulta via GET, para verificar o processamento da transação, pode ser dado a qualquer momento desde que se respeite o rate limit de:  
+    ### Recomendação uso de pooling
+    #### A consulta via GET, para verificar o processamento da transação, pode ser efetuada a qualquer momento desde que se respeite o rate limit de:  
     - 300 TPS global, 50 TPS por instituição e 8 TPS por endereço IP (Internet Protocol).  
     Como sugestão, é indicado que a instituição iniciadora do pagamento implemente um retry exponencial.  
 
@@ -77,10 +79,12 @@ paths:
 
         ### Dicionário de dados
 
-        Campos do retorno do endpoint de `/consents`
+        Campos de resposta do endpoint de `/consents`
 
         <a href='dictionary/paymentsPostConsents_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
-      
+        
+        Consulte a seção **Convenções de payload** para obter mais informações sobre [Atributos Obrigatórios / Opcionais](#convencoes-de-propriedade-dos-atributos).
+   
       parameters:
         - $ref: '#/components/parameters/Authorization'
         - $ref: '#/components/parameters/xFapiAuthDate'
@@ -133,9 +137,11 @@ paths:
 
         ### Dicionário de dados
 
-        Campos do retorno do endpoint de `/consents`
+        Campos de resposta do endpoint de `/consents`
 
         <a href='dictionary/paymentsGetConsentsConsentId_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
+        
+        Consulte a seção **Convenções de payload** para obter mais informações sobre [Atributos Obrigatórios / Opcionais](#convencoes-de-propriedade-dos-atributos).
         
       parameters:
         - $ref: "#/components/parameters/consentId"
@@ -180,9 +186,11 @@ paths:
 
         ### Dicionário de dados
 
-        Campos do retorno do endpoint de `/pix/payments`
+        Campos de resposta do endpoint de `/pix/payments`
 
         <a href='dictionary/paymentsPostPixPayments_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
+        
+        Consulte a seção **Convenções de payload** para obter mais informações sobre [Atributos Obrigatórios / Opcionais](#convencoes-de-propriedade-dos-atributos).
 
       parameters:
         - $ref: '#/components/parameters/Authorization'
@@ -236,10 +244,12 @@ paths:
 
         ### Dicionário de dados
 
-        Campos do retorno do endpoint de `/pix/payments`
-
+        Campos de resposta do endpoint de `/pix/payments`.  
+  
         <a href='dictionary/paymentsGetPixPaymentsPaymentId_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
         
+        Consulte a seção **Convenções de payload** para obter mais informações sobre [Atributos Obrigatórios / Opcionais](#convencoes-de-propriedade-dos-atributos).
+
       parameters:
         - $ref: "#/components/parameters/paymentId"
         - $ref: '#/components/parameters/Authorization'
