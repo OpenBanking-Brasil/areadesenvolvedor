@@ -2,17 +2,29 @@ openapi: "3.0.0"
 info:
   title: API Payment Initiation - Open Banking Brasil
   description: |
-    API de Iniciação de Pagamentos, reponsável por viabilizar as operações de iniciação de pagamentos para o Open Banking Brasil.  
+    API de Iniciação de Pagamentos, responsável por viabilizar as operações de iniciação de pagamentos para o Open Banking Brasil.  
     Para cada uma das formas de pagamento previstas é necessário obter prévio consentimento do cliente através dos `endpoints` dedicados ao consentimento nesta API.
 
     # Orientações
     No diretório de participantes duas `Roles` estão relacionadas à presente API: 
     - `CONTA`, referente às instituições detentoras de conta participantes do Open Banking Brasil;
-    - `PAGTO`, referente às instituições iniciadoras de transação de pagamento de conta participantes do Open Banking Brasil.   
-    Os tokens utilizados para consumo dos `endpoints` desta API devem possuir os `scopes` `openId` e `payments`.  
+    - `PAGTO`, referente às instituições iniciadoras de transação de pagamento, participantes do Open Banking Brasil.   
+    Os tokens utilizados para consumo dos `endpoints` desta API devem possuir os `scopes` `openid` e `payments`.  
     Esta API não requer a implementação de `permissions` para sua utilização.
     
-    Todas as requisições e respostas devem ser assinadas seguindo o protocolo estabelecido na sessão <a href="https://openbanking-brasil.github.io/areadesenvolvedor/#assinaturas" target="_blank">Assinaturas</a> do guia de segurança.
+    ## Assinatura de payloads
+    
+    No contexto da API Payment Initiation, os `payloads` de mensagem que trafegam tanto por parte da instituição iniciadora de transação de pagamento quanto por parte da instituição detentora 
+    de conta devem estar assinados. Para o processo de assinatura destes `payloads` as instituições devem seguir as especificações de segurança publicadas no Portal do desenvolvedor: 
+    
+    - Certificados exigidos para assinatura de mensagens:  
+    [Padrões de certificados digitais Open Banking Brasil](https://github.com/OpenBanking-Brasil/specs-seguranca/blob/main/open-banking-brasil-certificate-standards-1_ID1.md#certificado-de-assinatura-certificadoassinatura)
+    
+    - Algoritmos usados para assinatura de mensagens `JWS`:  
+    [Perfil de segurança FAPI - Open Banking Brasil](https://github.com/OpenBanking-Brasil/specs-seguranca/blob/main/open-banking-brasil-financial-api-1_ID1.md#algorithm-considerations)
+    
+    - Mensagens assinadas, `JWS` e `JWKS`:  
+    [Guia de usuário (Receptoras e iniciadoras de pagamento)](https://github.com/OpenBanking-Brasil/specs-seguranca/blob/main/tpp-user-guide.md#143-what-is-a-jwt-jwe-jws-and-jwk)
   
   version: 1.0.0-rc2.0
   license:
@@ -82,8 +94,10 @@ paths:
                 $ref: '#/components/schemas/ResponseError'
       security:
         - OpenId:
-            - openId
-            - payments-consents
+            - openid
+          OAuth2Security:
+            - 'consent:consentId'
+            - payments
   /consents/{consentId}:
     get:
       tags:
@@ -125,8 +139,10 @@ paths:
                 $ref: '#/components/schemas/ResponseError'
       security:
         - OpenId:
-            - openId
-            - payments-consents
+            - openid
+          OAuth2Security:
+            - 'consent:consentId'
+            - payments
   /pix/payments:
     post:
       tags:
@@ -179,8 +195,10 @@ paths:
                 $ref: '#/components/schemas/ResponseError'
       security:
         - OpenId:
-            - openId
-            - payments-initiation
+            - openid
+          OAuth2Security:
+            - 'consent:consentId'
+            - payments
   /pix/payments/{paymentId}:
     get:
       tags:
@@ -222,8 +240,10 @@ paths:
                 $ref: '#/components/schemas/ResponseError'
       security:
         - OpenId:
-            - openId
-            - payments-initiation
+            - openid
+          OAuth2Security:
+            - 'consent:consentId'
+            - payments
 components:
   schemas:
     BusinessEntity:
@@ -264,6 +284,10 @@ components:
       $ref: ./schemas/payments_apis/PaymentIdentification.yaml
     XFapiInteractionId:  
       $ref: ./headers/XFapiInteractionId.yaml
+    Links:
+      $ref: ./schemas/LinkSingle.yaml
+    Meta:
+      $ref: ./schemas/Meta.yaml
   parameters:
     consentId:
       $ref: ./parameters/ConsentId.yaml
@@ -284,7 +308,16 @@ components:
   securitySchemes:
     OpenId:
       type: openIdConnect
-      openIdConnectUrl: 'https://authserver.example/.well-known/openid-configuration'
+      openIdConnectUrl: 'https://auth.mockbank.poc.raidiam.io/.well-known/openid-configuration'
+    OAuth2Security:
+      type: oauth2
+      description: Fluxo OAuth necessário para que a iniciadora possa iniciar pagamentos. Requer o processo de redirecionamento e autenticação do usuário.
+      flows:
+        authorizationCode:
+          authorizationUrl: 'https://authserver.example/authorization'
+          tokenUrl: 'https://authserver.example/token'
+          scopes:
+            payments: Escopo necessário para acesso à API Payment Initiation.
   responses:
     BadRequest:
       $ref: ./responses/payments_apis/BadRequest.yaml
