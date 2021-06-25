@@ -42,7 +42,7 @@ info:
     ![Iniciacao_de_Pagamento](images/sequence-diagrams/iniciacao_de_pagamento.png)
     <a href="images/sequence-diagrams/iniciacao_de_pagamento.png" target="_blank">Download do Diagrama de Sequência</a>
 
-    ###Recomendação uso de pooling
+    ###Recomendação uso de Polling
     ####A consulta via GET, para verificar o processamento da transação, pode ser dado a qualquer momento desde que se respeite o rate limit de:  
     - 300 TPS global, 50 TPS por instituição e 8 TPS por endereço IP (Internet Protocol).  
     Como sugestão, é indicado que a instituição iniciadora do pagamento implemente um retry exponencial.  
@@ -118,6 +118,9 @@ paths:
           $ref: '#/components/responses/InternalServerError'
       security:
         - OpenId:
+            - openid
+          OAuth2Security:
+            - 'consent:consentId'
             - payments
   '/payments/v1/consents/{consentId}':
     get:
@@ -164,6 +167,9 @@ paths:
           $ref: '#/components/responses/InternalServerError'
       security:
         - OpenId:
+            - openid
+          OAuth2Security:
+            - 'consent:consentId'
             - payments
   /payments/v1/pix/payments:
     post:
@@ -219,6 +225,9 @@ paths:
           $ref: '#/components/responses/InternalServerError'
       security:
         - OpenId:
+            - openid
+          OAuth2Security:
+            - 'consent:consentId'
             - payments
   '/payments/v1/pix/payments/{paymentId}':
     get:
@@ -265,6 +274,9 @@ paths:
           $ref: '#/components/responses/InternalServerError'
       security:
         - OpenId:
+            - openid
+          OAuth2Security:
+            - 'consent:consentId'
             - payments
 components:
   schemas:
@@ -394,9 +406,10 @@ components:
             Código de identificação único da transação no arranjo do Pix. É usado em toda a cadeia de mensagens de uma instrução de pagamento no SPI. É um código gerado pela instituição que está iniciando o pagamento.  
             Deve ser preenchido no formato padrão ExxxxxxxxyyyyMMddHHmmkkkkkkkkkkk (32 caracteres), sendo: 
             • “E” – fixo (1 caractere);  
-            • xxxxxxxx – identificação do agente que gerou o `endToEndId`, podendo ser: o ISPB do participante direto ou o ISPB do participante indireto (8 caracteres numéricos);  
+            • xxxxxxxx – os 8 primeiros caracteres numéricos do CNPJ da instituição Iniciadora do Pagamento;  
             • yyyyMMddHHmm – data, hora e minuto (12 caracteres), seguindo o horário UTC, da submissão da ordem de pagamento, caso a liquidação seja prioritária, ou prevista para o envio da ordem ao sistema de liquidação, caso seja realizado um agendamento. No caso de ordens prioritárias, aceita-se o preenchimento, pelo agente que gerou o `endToEndId`, com uma tolerância máxima de 1 hora e 30 minutos, para o futuro e para o passado, em relação ao horário efetivo de processamento da ordem pelo SPI. Para ordens não prioritárias, a tolerância máxima é de 12 horas, para o futuro e para o passado;  
-            • kkkkkkkkkkk – sequencial criado pelo agente que gerou o `endToEndId` (11 caracteres alfanuméricos). Deve ser único dentro de cada “yyyyMMddHHmm”.   
+            • kkkkkkkkkkk – sequencial criado pelo agente que gerou o `endToEndId` (11 caracteres alfanuméricos). Deve ser único dentro de cada “yyyyMMddHHmm”.  
+            O `endToEndId` é gerado pela detentora. Ele deve ser único, não podendo ser repetido em qualquer outra operação enviada ao SPI.  
         remittanceInformation:
           type: string
           maxLength: 140
@@ -442,7 +455,6 @@ components:
       required:
         - ispb
         - number
-        - checkDigit
         - accountType
       properties:
         ispb:
@@ -469,14 +481,7 @@ components:
           maxLength: 20
           pattern: '^\d{8,20}$'
           example: '1234567890'
-          description: Número da conta sem o dígito.
-        checkDigit:
-          type: string
-          pattern: \w*\W*
-          minLength: 1
-          maxLength: 1
-          example: '4'
-          description: Dígito da conta.
+          description: Número da conta com o dígito.
         accountType:
           $ref: '#/components/schemas/EnumAccountPaymentsType'
       additionalProperties: false
@@ -694,7 +699,6 @@ components:
       required:
         - ispb
         - number
-        - checkDigit
         - accountType
       properties:
         ispb:
@@ -721,14 +725,7 @@ components:
           maxLength: 20
           pattern: '^\d{8,20}$'
           example: '1234567890'
-          description: Número da conta sem o dígito.
-        checkDigit:
-          type: string
-          pattern: \w*\W*
-          minLength: 1
-          maxLength: 1
-          example: '4'
-          description: Dígito da conta.
+          description: Número da conta com o dígito.
         accountType:
           $ref: '#/components/schemas/EnumAccountPaymentsType'
       additionalProperties: false
@@ -981,6 +978,8 @@ components:
       type: object
       required:
         - data
+        - links
+        - meta
       properties:
         data:
           type: object
@@ -994,7 +993,6 @@ components:
             - loggedUser
             - creditor
             - payment
-            - debtor
           properties:
             consentId:
               type: string
@@ -1041,14 +1039,36 @@ components:
             debtorAccount:
               $ref: '#/components/schemas/DebtorAccount'
           additionalProperties: false
+        links:
+          $ref: '#/components/schemas/ResponsePixPayment/properties/links'
+        meta:
+          $ref: '#/components/schemas/Meta'
       additionalProperties: false
     ResponsePixPayment:
       type: object
       required:
         - data
+        - links
+        - meta
       properties:
         data:
           $ref: '#/components/schemas/ResponsePixPaymentData'
+        links:
+          type: object
+          description: Referências para outros recusos da API requisitada.
+          required:
+            - self
+          properties:
+            self:
+              type: string
+              format: uri
+              maxLength: 2000
+              description: URI completo que gerou a resposta atual.
+              example: 'https://api.banco.com.br/open-banking/api/v1/resource'
+              pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
+          additionalProperties: false
+        meta:
+          $ref: '#/components/schemas/Meta'
       additionalProperties: false
     ResponsePixPaymentData:
       type: object
@@ -1061,7 +1081,7 @@ components:
         - statusUpdateDateTime
         - status
         - payment
-        - creditor
+        - creditorAccount
       properties:
         paymentId:
           type: string
@@ -1074,20 +1094,7 @@ components:
             a iniciação de pagamento individual. O `paymentId` deve ser diferente do `endToEndId`.  
             Este é o identificador que deverá ser utilizado na consulta ao status da iniciação de pagamento efetuada.
         endToEndId:
-          type: string
-          minLength: 32
-          maxLength: 32
-          pattern: '^([E])([0-9]{8})([0-9]{4})(0[1-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])(2[0-3]|[01][0-9])([0-5][0-9])([a-zA-Z0-9]{11})$'
-          example: E9040088820210128000800123873170
-          description: |
-            Código de identificação único da transação no arranjo do Pix. É usado em toda a cadeia de mensagens de uma instrução de pagamento no SPI. É um código gerado pela instituição detentora da conta que está iniciando o pagamento.  
-            Deve ser preenchido no formato padrão ExxxxxxxxyyyyMMddHHmmkkkkkkkkkkk (32 caracteres), sendo:  
-            • “E” – fixo (1 caractere);  
-            • xxxxxxxx – identificação do agente que gerou o `endToEndId`, podendo ser: o ISPB do participante direto ou o ISPB do participante indireto (8 caracteres numéricos [0-9]);  
-            • yyyyMMddHHmm – data, hora e minuto (12 caracteres), seguindo o horário UTC, da submissão da ordem de pagamento, caso a liquidação seja prioritária, ou prevista para o envio da ordem ao sistema de liquidação, caso seja realizado um agendamento. No caso de ordens prioritárias, aceita-se o preenchimento, pelo agente que gerou o <EndToEndId>, com uma tolerância máxima de 1 hora e 30 minutos, para o futuro e para o passado, em relação ao horário efetivo de processamento da ordem pelo SPI. Para ordens não prioritárias, a tolerância máxima é de 12 horas, para o futuro e para o passado;  
-            • kkkkkkkkkkk – sequencial criado pelo agente que gerou o `endToEndId` (11 caracteres alfanuméricos [a-z|A-Z|0-9]). Deve ser único dentro de cada “yyyyMMddHHmm”.  
-            Exemplo: E000000002020080120300000000001B  
-            O `endToEndId` é gerado pela detentora. Ele deve ser único, não podendo ser repetido em qualquer outra operação enviada ao SPI.
+          $ref: '#/components/schemas/CreatePixPaymentData/properties/endToEndId'
         consentId:
           type: string
           maxLength: 100
