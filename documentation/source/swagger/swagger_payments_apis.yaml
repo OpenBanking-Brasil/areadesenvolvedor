@@ -2,15 +2,29 @@
 info:
   title: API Payment Initiation - Open Banking Brasil
   description: |
-    API de Iniciação de Pagamentos, reponsável por viabilizar as operações de iniciação de pagamentos para o Open Banking Brasil.  
+    API de Iniciação de Pagamentos, responsável por viabilizar as operações de iniciação de pagamentos para o Open Banking Brasil.  
     Para cada uma das formas de pagamento previstas é necessário obter prévio consentimento do cliente através dos `endpoints` dedicados ao consentimento nesta API.
 
     # Orientações
     No diretório de participantes duas `Roles` estão relacionadas à presente API: 
     - `CONTA`, referente às instituições detentoras de conta participantes do Open Banking Brasil;
-    - `PAGTO`, referente às instituições iniciadoras de transação de pagamento de conta participantes do Open Banking Brasil.   
-    Os tokens utilizados para consumo dos `endpoints` desta API devem possuir os `scopes` `openId` e `payments`.  
+    - `PAGTO`, referente às instituições iniciadoras de transação de pagamento, participantes do Open Banking Brasil.   
+    Os tokens utilizados para consumo dos `endpoints` desta API devem possuir os `scopes` `openid` e `payments`.  
     Esta API não requer a implementação de `permissions` para sua utilização.
+
+    ## Assinatura de payloads
+
+    No contexto da API Payment Initiation, os `payloads` de mensagem que trafegam tanto por parte da instituição iniciadora de transação de pagamento quanto por parte da instituição detentora 
+    de conta devem estar assinados. Para o processo de assinatura destes `payloads` as instituições devem seguir as especificações de segurança publicadas no Portal do desenvolvedor: 
+
+    - Certificados exigidos para assinatura de mensagens:  
+    [Padrões de certificados digitais Open Banking Brasil](https://github.com/OpenBanking-Brasil/specs-seguranca/blob/main/open-banking-brasil-certificate-standards-1_ID1.md#certificado-de-assinatura-certificadoassinatura)
+
+    - Algoritmos usados para assinatura de mensagens `JWS`:  
+    [Perfil de segurança FAPI - Open Banking Brasil](https://github.com/OpenBanking-Brasil/specs-seguranca/blob/main/open-banking-brasil-financial-api-1_ID1.md#algorithm-considerations)
+
+    - Mensagens assinadas, `JWS` e `JWKS`:  
+    [Guia de usuário (Receptoras e iniciadoras de pagamento)](https://github.com/OpenBanking-Brasil/specs-seguranca/blob/main/tpp-user-guide.md#143-what-is-a-jwt-jwe-jws-and-jwk)
   version: 1.0.0-rc2.0
   license:
     name: Apache 2.0
@@ -79,8 +93,10 @@ paths:
                 $ref: '#/components/schemas/ResponseError'
       security:
         - OpenId:
-            - openId
-            - payments-consents
+            - openid
+          OAuth2Security:
+            - 'consent:consentId'
+            - payments
   '/consents/{consentId}':
     get:
       tags:
@@ -122,8 +138,10 @@ paths:
                 $ref: '#/components/schemas/ResponseError'
       security:
         - OpenId:
-            - openId
-            - payments-consents
+            - openid
+          OAuth2Security:
+            - 'consent:consentId'
+            - payments
   /pix/payments:
     post:
       tags:
@@ -176,8 +194,10 @@ paths:
                 $ref: '#/components/schemas/ResponseError'
       security:
         - OpenId:
-            - openId
-            - payments-initiation
+            - openid
+          OAuth2Security:
+            - 'consent:consentId'
+            - payments
   '/pix/payments/{paymentId}':
     get:
       tags:
@@ -219,8 +239,10 @@ paths:
                 $ref: '#/components/schemas/ResponseError'
       security:
         - OpenId:
-            - openId
-            - payments-initiation
+            - openid
+          OAuth2Security:
+            - 'consent:consentId'
+            - payments
 components:
   schemas:
     BusinessEntity:
@@ -256,7 +278,6 @@ components:
       required:
         - ispb
         - number
-        - checkDigit
         - accountType
       properties:
         ispb:
@@ -283,14 +304,7 @@ components:
           maxLength: 20
           pattern: '^\d{8,20}$'
           example: '1234567890'
-          description: Número da conta sem o dígito.
-        checkDigit:
-          type: string
-          pattern: \w*\W*
-          minLength: 1
-          maxLength: 1
-          example: '4'
-          description: Dígito da conta.
+          description: Número da conta com o dígito.
         accountType:
           $ref: '#/components/schemas/EnumAccountPaymentsType'
       additionalProperties: false
@@ -388,7 +402,6 @@ components:
       required:
         - ispb
         - number
-        - checkDigit
         - accountType
       properties:
         ispb:
@@ -415,14 +428,7 @@ components:
           maxLength: 20
           pattern: '^\d{8,20}$'
           example: '1234567890'
-          description: Número da conta sem o dígito.
-        checkDigit:
-          type: string
-          pattern: \w*\W*
-          minLength: 1
-          maxLength: 1
-          example: '4'
-          description: Dígito da conta.
+          description: Número da conta com o dígito.
         accountType:
           $ref: '#/components/schemas/EnumAccountPaymentsType'
       additionalProperties: false
@@ -433,12 +439,13 @@ components:
       pattern: '^([E])([0-9]{8})([0-9]{4})(0[1-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])(2[0-3]|[01][0-9])([0-5][0-9])([a-zA-Z0-9]{11})$'
       example: E9040088820210128000800123873170
       description: |
-        Código de identificação único da transação no arranjo do Pix. É usado em toda a cadeia de mensagens de uma instrução de pagamento no SPI. É um código gerado pela instituição que está iniciando o pagamento.  
-        Deve ser preenchido no formato padrão ExxxxxxxxyyyyMMddHHmmkkkkkkkkkkk (32 caracteres), sendo: 
+        Deve ser preenchido no formato padrão ExxxxxxxxyyyyMMddHHmmkkkkkkkkkkk (32 caracteres; “case sensitive”, isso é, diferencia letras maiúsculas e minúsculas), sendo:
         • “E” – fixo (1 caractere);  
-        • xxxxxxxx – identificação do agente que gerou o `endToEndId`, podendo ser: o ISPB do participante direto ou o ISPB do participante indireto (8 caracteres numéricos);  
-        • yyyyMMddHHmm – data, hora e minuto (12 caracteres), seguindo o horário UTC, da submissão da ordem de pagamento, caso a liquidação seja prioritária, ou prevista para o envio da ordem ao sistema de liquidação, caso seja realizado um agendamento. No caso de ordens prioritárias, aceita-se o preenchimento, pelo agente que gerou o `endToEndId`, com uma tolerância máxima de 1 hora e 30 minutos, para o futuro e para o passado, em relação ao horário efetivo de processamento da ordem pelo SPI. Para ordens não prioritárias, a tolerância máxima é de 12 horas, para o futuro e para o passado;  
-        • kkkkkkkkkkk – sequencial criado pelo agente que gerou o `endToEndId` (11 caracteres alfanuméricos). Deve ser único dentro de cada “yyyyMMddHHmm”.   
+        • xxxxxxxx – identificação do agente que gerou o ´EndToEndId´, podendo ser: o ISPB do participante direto, o ISPB do participante indireto ou os 8 primeiros dígitos do CNPJ do iniciador de pagamento (8 caracteres numéricos [0-9]);  
+        • yyyyMMddHHmm – data, hora e minuto (12 caracteres), seguindo o horário UTC, da submissão da ordem de pagamento, caso a liquidação seja prioritária, ou prevista para o envio da ordem ao sistema de liquidação, caso seja realizado um agendamento. Para ordens prioritárias e não prioritárias, aceita-se o preenchimento, pelo agente que gerou o ´EndToEndId´, com uma tolerância máxima de 12 horas, para o futuro e para o passado, em relação ao horário efetivo de processamento da ordem pelo SPI;  
+        • kkkkkkkkkkk – sequencial criado pelo agente que gerou o ´EndToEndId´ (11 caracteres alfanuméricos [a-z/A-Z/0-9]). Deve ser único dentro de cada “yyyyMMddHHmm”.  
+        Admite-se que o ´EndToEndId´ seja gerado pelo participante direto, pelo participante indireto ou pelo iniciador de pagamento.  
+        Ele deve ser único, não podendo ser repetido em qualquer outra operação enviada ao SPI.
     LoggedUser:
       type: object
       description: Usuário (pessoa natural) que encontra-se logado na instituição Iniciadora de Pagamento.
@@ -509,9 +516,15 @@ components:
       type: object
       required:
         - data
+        - links
+        - meta
       properties:
         data:
           $ref: '#/components/schemas/ResponsePaymentConsentData'
+        links:
+          $ref: '#/components/schemas/Links'
+        meta:
+          $ref: '#/components/schemas/Meta'
       additionalProperties: false
     ResponsePaymentConsentData:
       type: object
@@ -525,7 +538,6 @@ components:
         - loggedUser
         - creditor
         - payment
-        - debtor
       properties:
         consentId:
           type: string
@@ -593,9 +605,15 @@ components:
       type: object
       required:
         - data
+        - links
+        - meta
       properties:
         data:
           $ref: '#/components/schemas/ResponsePixPaymentData'
+        links:
+          $ref: '#/components/schemas/Links'
+        meta:
+          $ref: '#/components/schemas/Meta'
       additionalProperties: false
     ResponseError:
       type: object
@@ -630,30 +648,7 @@ components:
                 maxLength: 2048
             additionalProperties: false
         meta:
-          type: object
-          description: Meta informações referente a API requisitada.
-          required:
-            - totalRecords
-            - totalPages
-            - requestDateTime
-          properties:
-            totalRecords:
-              type: integer
-              format: int32
-              description: Número total de registros no resultado
-              example: 1
-            totalPages:
-              type: integer
-              format: int32
-              description: Número total de páginas no resultado
-              example: 1
-            requestDateTime:
-              description: 'Data e hora da consulta, conforme especificação RFC-3339, formato UTC.'
-              type: string
-              maxLength: 20
-              format: date-time
-              example: '2021-05-21T08:30:00Z'
-          additionalProperties: false
+          $ref: '#/components/schemas/Meta'
       additionalProperties: false
     ResponsePixPaymentData:
       type: object
@@ -666,7 +661,7 @@ components:
         - statusUpdateDateTime
         - status
         - payment
-        - creditor
+        - creditorAccount
       properties:
         paymentId:
           type: string
@@ -679,20 +674,7 @@ components:
             a iniciação de pagamento individual. O `paymentId` deve ser diferente do `endToEndId`.  
             Este é o identificador que deverá ser utilizado na consulta ao status da iniciação de pagamento efetuada.
         endToEndId:
-          type: string
-          minLength: 32
-          maxLength: 32
-          pattern: '^([E])([0-9]{8})([0-9]{4})(0[1-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])(2[0-3]|[01][0-9])([0-5][0-9])([a-zA-Z0-9]{11})$'
-          example: E9040088820210128000800123873170
-          description: |
-            Código de identificação único da transação no arranjo do Pix. É usado em toda a cadeia de mensagens de uma instrução de pagamento no SPI. É um código gerado pela instituição detentora da conta que está iniciando o pagamento.  
-            Deve ser preenchido no formato padrão ExxxxxxxxyyyyMMddHHmmkkkkkkkkkkk (32 caracteres), sendo:  
-            • “E” – fixo (1 caractere);  
-            • xxxxxxxx – identificação do agente que gerou o `endToEndId`, podendo ser: o ISPB do participante direto ou o ISPB do participante indireto (8 caracteres numéricos [0-9]);  
-            • yyyyMMddHHmm – data, hora e minuto (12 caracteres), seguindo o horário UTC, da submissão da ordem de pagamento, caso a liquidação seja prioritária, ou prevista para o envio da ordem ao sistema de liquidação, caso seja realizado um agendamento. No caso de ordens prioritárias, aceita-se o preenchimento, pelo agente que gerou o <EndToEndId>, com uma tolerância máxima de 1 hora e 30 minutos, para o futuro e para o passado, em relação ao horário efetivo de processamento da ordem pelo SPI. Para ordens não prioritárias, a tolerância máxima é de 12 horas, para o futuro e para o passado;  
-            • kkkkkkkkkkk – sequencial criado pelo agente que gerou o `endToEndId` (11 caracteres alfanuméricos [a-z|A-Z|0-9]). Deve ser único dentro de cada “yyyyMMddHHmm”.  
-            Exemplo: E000000002020080120300000000001B  
-            O `endToEndId` é gerado pela detentora. Ele deve ser único, não podendo ser repetido em qualquer outra operação enviada ao SPI.
+          $ref: '#/components/schemas/EndToEndId'
         consentId:
           type: string
           maxLength: 100
@@ -942,6 +924,45 @@ components:
       pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
       maxLength: 100
       description: 'Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.'
+    Links:
+      type: object
+      description: Referências para outros recusos da API requisitada.
+      required:
+        - self
+      properties:
+        self:
+          type: string
+          format: uri
+          maxLength: 2000
+          description: URI completo que gerou a resposta atual.
+          example: 'https://api.banco.com.br/open-banking/api/v1/resource'
+          pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
+      additionalProperties: false
+    Meta:
+      type: object
+      description: Meta informações referente a API requisitada.
+      required:
+        - totalRecords
+        - totalPages
+        - requestDateTime
+      properties:
+        totalRecords:
+          type: integer
+          format: int32
+          description: Número total de registros no resultado
+          example: 1
+        totalPages:
+          type: integer
+          format: int32
+          description: Número total de páginas no resultado
+          example: 1
+        requestDateTime:
+          description: 'Data e hora da consulta, conforme especificação RFC-3339, formato UTC.'
+          type: string
+          maxLength: 20
+          format: date-time
+          example: '2021-05-21T08:30:00Z'
+      additionalProperties: false
   parameters:
     consentId:
       name: consentId
@@ -1031,7 +1052,16 @@ components:
   securitySchemes:
     OpenId:
       type: openIdConnect
-      openIdConnectUrl: 'https://authserver.example/.well-known/openid-configuration'
+      openIdConnectUrl: 'https://auth.mockbank.poc.raidiam.io/.well-known/openid-configuration'
+    OAuth2Security:
+      type: oauth2
+      description: Fluxo OAuth necessário para que a iniciadora possa iniciar pagamentos. Requer o processo de redirecionamento e autenticação do usuário.
+      flows:
+        authorizationCode:
+          authorizationUrl: 'https://authserver.example/authorization'
+          tokenUrl: 'https://authserver.example/token'
+          scopes:
+            payments: Escopo necessário para acesso à API Payment Initiation.
   responses:
     BadRequest:
       description: 'A requisição foi malformada, omitindo atributos obrigatórios, seja no payload ou através de atributos na URL.'
@@ -1179,7 +1209,7 @@ components:
                         • NAO_INFORMADO – Não reportado/identificado pela instituição detentora de conta.  
                   additionalProperties: false
               meta:
-                $ref: '#/components/schemas/ResponseError/properties/meta'
+                $ref: '#/components/schemas/Meta'
             additionalProperties: false
           examples:
             Forma de pagamento inválida:
@@ -1300,7 +1330,7 @@ components:
                         • NAO_INFORMADO: Não reportado/identificado pela instituição detentora de conta.  
                   additionalProperties: false
               meta:
-                $ref: '#/components/schemas/ResponseError/properties/meta'
+                $ref: '#/components/schemas/Meta'
             additionalProperties: false
           examples:
             Saldo insuficiente:
