@@ -3,10 +3,9 @@
 /data/paymentId;paymentId;"Código ou identificador único informado pela instituição detentora da conta para representar  
 a iniciação de pagamento individual. O `paymentId` deve ser diferente do `endToEndId`.  
 Este é o identificador que deverá ser utilizado na consulta ao status da iniciação de pagamento efetuada.";Texto;100;Obrigatório;^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$;;1;1;"";Não permitido;string;TXpRMU9UQTROMWhZV2xSU1FUazJSMDl
-/data/endToEndId;endToEndId;"Código de identificação único da transação no arranjo do Pix. É usado em toda a cadeia de mensagens de uma instrução de pagamento no SPI. É um código gerado pela instituição detentora da conta que está iniciando o pagamento.  
-Deve ser preenchido no formato padrão ExxxxxxxxyyyyMMddHHmmkkkkkkkkkkk (32 caracteres), sendo:  
+/data/endToEndId;endToEndId;"Deve ser preenchido no formato padrão ExxxxxxxxyyyyMMddHHmmkkkkkkkkkkk (32 caracteres; “case sensitive”, isso é, diferencia letras maiúsculas e minúsculas), sendo:
 • “E” – fixo (1 caractere);  
-• xxxxxxxx – identificação do agente que gerou o `endToEndId`, podendo ser: o ISPB do participante direto ou o ISPB do participante indireto (8 caracteres numéricos";Texto;32;Obrigatório;^([E])([0-9]{8})([0-9]{4})(0[1-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])(2[0-3]|[01][0-9])([0-5][0-9])([a-zA-Z0-9]{11})$;;1;1;"";Não permitido;string;E9040088820210128000800123873170
+• xxxxxxxx – identificação do agente que gerou o ´EndToEndId´, podendo ser: o ISPB do participante direto, o ISPB do participante indireto ou os 8 primeiros dígitos do CNPJ do iniciador de pagamento (8 caracteres numéricos";Texto;32;Obrigatório;^([E])([0-9]{8})([0-9]{4})(0[1-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])(2[0-3]|[01][0-9])([0-5][0-9])([a-zA-Z0-9]{11})$;;1;1;"";Não permitido;string;E9040088820210128000800123873170
 /data/consentId;consentId;Identificador único do consentimento.;Texto;100;Obrigatório;^[a-zA-Z0-9][a-zA-Z0-9\-\:]{0,99}$;;1;1;"";Não permitido;string;urn:bancoex:C1DD33123
 /data/creationDateTime;creationDateTime;"Data e hora em que o recurso foi criado.  
 Uma string com data e hora conforme especificação RFC-3339,  
@@ -128,14 +127,14 @@ EXPIRED_BILL";0;1;" Esse motivo deverá ser enviado quando o campo /data/status 
 /data/payment/currency;currency;"Código da moeda nacional segundo modelo ISO-4217, ou seja, 'BRL'.  
 Todos os valores monetários informados estão representados com a moeda vigente do Brasil.";Texto;3;Obrigatório;^(\w{3}){1}$;;1;1;"";Não permitido;string;BRL
 /data/remittanceInformation;remittanceInformation;Deve ser preenchido sempre que o usuário pagador inserir alguma informação adicional em um pagamento, a ser enviada ao recebedor.;Texto;140;Opcional;\w*\W*;;0;1;"";Não permitido;string;Pagamento da nota RSTO035-002.
-/data/creditorAccount;creditorAccount;Objeto que contém a identificação da conta de destino do beneficiário/recebedor.;Objeto;;Opcional;;;0;1;"";Não permitido;object;
+/data/creditorAccount;creditorAccount;Objeto que contém a identificação da conta de destino do beneficiário/recebedor.;Objeto;;Obrigatório;;;1;1;"";Não permitido;object;
 /data/creditorAccount/ispb;ispb;Deve ser preenchido com o ISPB (Identificador do Sistema de Pagamentos Brasileiros) do participante do SPI (Sistema de pagamentos instantâneos) somente com números.;Texto;8;Obrigatório;^[0-9]{8}$;;1;1;"";Não permitido;string;12345678
 /data/creditorAccount/issuer;issuer;"Código da Agência emissora da conta sem dígito.  
 (Agência é a dependência destinada ao atendimento aos clientes, ao público em geral e aos associados de cooperativas de crédito,  
 no exercício de atividades da instituição, não podendo ser móvel ou transitória).";Texto;4;Condicional;^\d{4}$;;0;1;" Preenchimento obrigatório para os seguintes tipos de conta: CACC (CONTA_DEPOSITO_A_VISTA), SVGS (CONTA_POUPANCA) e SLRY (CONTA_SALARIO).
 ";Não permitido;string;1774
-/data/creditorAccount/number;number;Número da conta sem o dígito.;Texto;20;Obrigatório;^\d{8,20}$;;1;1;"";Não permitido;string;1234567890
-/data/creditorAccount/checkDigit;checkDigit;Dígito da conta.;Texto;1;Obrigatório;\w*\W*;;1;1;"";Não permitido;string;4
+/data/creditorAccount/number;number;"Deve ser preenchido com o número da conta do usuário recebedor, com dígito verificador (se este existir),  
+se houver valor alfanumérico, este deve ser convertido para 0.";Texto;20;Obrigatório;^\d{8,20}$;;1;1;"";Não permitido;string;1234567890
 /data/creditorAccount/accountType;accountType;"Tipos de contas usadas para pagamento via Pix.  
 Modalidades tradicionais previstas pela Resolução 4.753, não contemplando contas vinculadas,  
 conta de domiciliados no exterior, contas em moedas estrangeiras e conta correspondente moeda eletrônica.  
