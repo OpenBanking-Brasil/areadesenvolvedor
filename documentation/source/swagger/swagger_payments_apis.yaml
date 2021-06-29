@@ -8,9 +8,10 @@ info:
     # Orientações
     No diretório de participantes duas `Roles` estão relacionadas à presente API: 
     - `CONTA`, referente às instituições detentoras de conta participantes do Open Banking Brasil;
-    - `PAGTO`, referente às instituições iniciadoras de transação de pagamento, participantes do Open Banking Brasil.   
+    - `PAGTO`, referente às instituições iniciadoras de transação de pagamento de conta participantes do Open Banking Brasil.   
     Os tokens utilizados para consumo dos `endpoints` desta API devem possuir os `scopes` `openid` e `payments`.  
-    Esta API não requer a implementação de `permissions` para sua utilização.
+    Esta API não requer a implementação de `permissions` para sua utilização.  
+    Todas as requisições e respostas devem ser assinadas seguindo o protocolo estabelecido na sessão <a href="https://openbanking-brasil.github.io/areadesenvolvedor/#assinaturas" target="_blank">Assinaturas</a> do guia de segurança.
 
     ## Assinatura de payloads
 
@@ -25,7 +26,7 @@ info:
 
     - Mensagens assinadas, `JWS` e `JWKS`:  
     [Guia de usuário (Receptoras e iniciadoras de pagamento)](https://github.com/OpenBanking-Brasil/specs-seguranca/blob/main/tpp-user-guide.md#143-what-is-a-jwt-jwe-jws-and-jwk)
-  version: 1.0.0-rc2.0
+  version: 1.0.0-rc3.0
   license:
     name: Apache 2.0
     url: 'https://www.apache.org/licenses/LICENSE-2.0'
@@ -304,7 +305,9 @@ components:
           maxLength: 20
           pattern: '^\d{8,20}$'
           example: '1234567890'
-          description: Número da conta com o dígito.
+          description: |
+            Deve ser preenchido com o número da conta do usuário recebedor, com dígito verificador (se este existir),  
+            se houver valor alfanumérico, este deve ser convertido para 0.
         accountType:
           $ref: '#/components/schemas/EnumAccountPaymentsType'
       additionalProperties: false
@@ -349,14 +352,25 @@ components:
       required:
         - payment
         - creditorAccount
-        - endToEndId
       properties:
+        mandateRelatedInformation:
+          type: string
+          maxLength: 4
+          enum:
+            - MANU
+            - DICT
+            - QRDN
+            - QRES
+          example: DICT
+          description: |
+            Especifica a forma de iniciação do pagamento.  
+            Deve ser preenchido com uma das opções da tabela de domínios proprietários.  
+            Para inserção manual de dados da conta, MANU, o campo idContaTransacional não deve ser preenchido.  
+            Nos demais casos, o preenchimento do idContaTransacional é obrigatório.
         payment:
           $ref: '#/components/schemas/PaymentPix'
         creditorAccount:
           $ref: '#/components/schemas/CreditorAccount'
-        endToEndId:
-          $ref: '#/components/schemas/EndToEndId'
         remittanceInformation:
           type: string
           maxLength: 140
@@ -428,7 +442,9 @@ components:
           maxLength: 20
           pattern: '^\d{8,20}$'
           example: '1234567890'
-          description: Número da conta com o dígito.
+          description: |
+            Deve ser preenchido com o número da conta transacional do usuário pagador, com dígito verificador (se este existir),  
+            se houver valor alfanumérico, este deve ser convertido para 0.
         accountType:
           $ref: '#/components/schemas/EnumAccountPaymentsType'
       additionalProperties: false
@@ -441,7 +457,7 @@ components:
       description: |
         Deve ser preenchido no formato padrão ExxxxxxxxyyyyMMddHHmmkkkkkkkkkkk (32 caracteres; “case sensitive”, isso é, diferencia letras maiúsculas e minúsculas), sendo:
         • “E” – fixo (1 caractere);  
-        • xxxxxxxx – identificação do agente que gerou o ´EndToEndId´, podendo ser: o ISPB do participante direto, o ISPB do participante indireto ou os 8 primeiros dígitos do CNPJ do iniciador de pagamento (8 caracteres numéricos [0-9]);  
+        • xxxxxxxx – identificação do agente que gerou o <EndToEndId>, podendo ser: o ISPB do participante direto ou o ISPB do participante indireto (8 caracteres numéricos [0-9]);  
         • yyyyMMddHHmm – data, hora e minuto (12 caracteres), seguindo o horário UTC, da submissão da ordem de pagamento, caso a liquidação seja prioritária, ou prevista para o envio da ordem ao sistema de liquidação, caso seja realizado um agendamento. Para ordens prioritárias e não prioritárias, aceita-se o preenchimento, pelo agente que gerou o ´EndToEndId´, com uma tolerância máxima de 12 horas, para o futuro e para o passado, em relação ao horário efetivo de processamento da ordem pelo SPI;  
         • kkkkkkkkkkk – sequencial criado pelo agente que gerou o ´EndToEndId´ (11 caracteres alfanuméricos [a-z/A-Z/0-9]). Deve ser único dentro de cada “yyyyMMddHHmm”.  
         Admite-se que o ´EndToEndId´ seja gerado pelo participante direto, pelo participante indireto ou pelo iniciador de pagamento.  
@@ -506,6 +522,7 @@ components:
             Todos os valores monetários informados estão representados com a moeda vigente do Brasil.
         amount:
           type: string
+          minLength: 4
           maxLength: 19
           pattern: '^((\d{1,16}\.\d{2}))$'
           example: '100000.12'
@@ -1223,28 +1240,6 @@ components:
                   totalRecords: 1
                   totalPages: 1
                   requestDateTime: '2021-05-21T08:30:00Z'
-            Data de pagamento inválida:
-              summary: Data de pagamento inválida
-              value:
-                errors:
-                  - code: DATA_PGTO_INVALIDA
-                    title: Data de pagamento inválida.
-                    detail: 'Data de pagamento inválida no contexto, por exemplo, data no passado.'
-                meta:
-                  totalRecords: 1
-                  totalPages: 1
-                  requestDateTime: '2021-05-21T08:30:00Z'
-            Desconhecido:
-              summary: Desconhecido
-              value:
-                errors:
-                  - code: NAO_INFORMADO
-                    title: Não informado.
-                    detail: Não reportado/identificado pela instituição detentora de conta.
-                meta:
-                  totalRecords: 1
-                  totalPages: 1
-                  requestDateTime: '2021-05-21T08:30:00Z'
       headers:
         x-fapi-interaction-id:
           description: |
@@ -1340,94 +1335,6 @@ components:
                   - code: SALDO_INSUFICIENTE
                     title: Saldo insuficiente.
                     detail: A conta selecionada não possui saldo suficiente para realizar o pagamento.
-                meta:
-                  totalRecords: 1
-                  totalPages: 1
-                  requestDateTime: '2021-05-21T08:30:00Z'
-            Beneficiário incompatível:
-              summary: Beneficiário incompatível
-              value:
-                errors:
-                  - code: BENEFICIARIO_INCOMPATIVEL
-                    title: Beneficiário incompatível.
-                    detail: O beneficiário informado no consentimento não é o mesmo do esperado pelo DICT.
-                meta:
-                  totalRecords: 1
-                  totalPages: 1
-                  requestDateTime: '2021-05-21T08:30:00Z'
-            Valor da transação incompatível:
-              summary: Valor da transação incompatível
-              value:
-                errors:
-                  - code: VALOR_INCOMPATIVEL
-                    title: Valor da transação incompatível.
-                    detail: O valor informado no consentimento não é o mesmo valor do informado no payload de pagamento.
-                meta:
-                  totalRecords: 1
-                  totalPages: 1
-                  requestDateTime: '2021-05-21T08:30:00Z'
-            Acima do limite estabelecido:
-              summary: Acima do limite estabelecido
-              value:
-                errors:
-                  - code: VALOR_ACIMA_LIMITE
-                    title: Acima do limite estabelecido.
-                    detail: O valor (ou quantidade de transações) ultrapassa a faixa de limite parametrizada na detentora para permitir a realização de transações pelo cliente.
-                meta:
-                  totalRecords: 1
-                  totalPages: 1
-                  requestDateTime: '2021-05-21T08:30:00Z'
-            Valor inválido:
-              summary: Valor inválido
-              value:
-                errors:
-                  - code: VALOR_INVALIDO
-                    title: Valor inválido.
-                    detail: O valor enviado não é válido para o QR Code informado.
-                meta:
-                  totalRecords: 1
-                  totalPages: 1
-                  requestDateTime: '2021-05-21T08:30:00Z'
-            Cobrança inválida:
-              summary: Cobrança inválida
-              value:
-                errors:
-                  - code: COBRANCA_INVALIDA
-                    title: Cobrança inválida.
-                    detail: 'Validação de expiração, validação de vencimento ou Status Válido.'
-                meta:
-                  totalRecords: 1
-                  totalPages: 1
-                  requestDateTime: '2021-05-21T08:30:00Z'
-            Consentimento inválido:
-              summary: Consentimento inválido
-              value:
-                errors:
-                  - code: CONSENTIMENTO_INVALIDO
-                    title: Consentimento inválido.
-                    detail: Consentimento inválido (status diferente de 'AUTHORISED' ou está expirado).
-                meta:
-                  totalRecords: 1
-                  totalPages: 1
-                  requestDateTime: '2021-05-21T08:30:00Z'
-            Janela de operação inválida:
-              summary: Janela de operação inválida
-              value:
-                errors:
-                  - code: JANELA_OPER_INVALIDA
-                    title: Janela de operação inválida.
-                    detail: Requisição está fora da janela de funcionamento.
-                meta:
-                  totalRecords: 1
-                  totalPages: 1
-                  requestDateTime: '2021-05-21T08:30:00Z'
-            Desconhecido:
-              summary: Desconhecido
-              value:
-                errors:
-                  - code: NAO_INFORMADO
-                    title: Não informado.
-                    detail: Não reportado/identificado pela instituição detentora de conta.
                 meta:
                   totalRecords: 1
                   totalPages: 1
