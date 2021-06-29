@@ -355,8 +355,8 @@ components:
         - payment
         - creditorAccount
       properties:
-        mandateRelatedInformation:
-          $ref: '#/components/schemas/EnumMandateRelatedInformation'
+        localInstrument:
+          $ref: '#/components/schemas/EnumLocalInstrument'
         payment:
           $ref: '#/components/schemas/PaymentPix'
         creditorAccount:
@@ -396,7 +396,7 @@ components:
             No caso de CPF deverá ser informado com 11 números, sem pontos ou traços.  
             Para o caso de CNPJ deverá ser informado com 14 números, sem pontos ou traços.  
             No caso de chave aleatória deve ser informado o UUID gerado pelo DICT, conforme formato especificado na RFC41223.  
-            [Restrição] Preenchimento obrigatório para pagamentos via Chave.
+            [Restrição] Obrigatório quando o campo localInstrument for igual "DICT".
       additionalProperties: false
     DebtorAccount:
       type: object
@@ -447,7 +447,7 @@ components:
       description: |
         Deve ser preenchido no formato padrão ExxxxxxxxyyyyMMddHHmmkkkkkkkkkkk (32 caracteres; “case sensitive”, isso é, diferencia letras maiúsculas e minúsculas), sendo:
         • “E” – fixo (1 caractere);  
-        • xxxxxxxx – identificação do agente que gerou o <EndToEndId>, podendo ser: o ISPB do participante direto ou o ISPB do participante indireto (8 caracteres numéricos [0-9]);  
+        • xxxxxxxx – identificação do agente que gerou o ´EndToEndId´, podendo ser: o ISPB do participante direto ou o ISPB do participante indireto (8 caracteres numéricos [0-9]);  
         • yyyyMMddHHmm – data, hora e minuto (12 caracteres), seguindo o horário UTC, da submissão da ordem de pagamento, caso a liquidação seja prioritária, ou prevista para o envio da ordem ao sistema de liquidação, caso seja realizado um agendamento. Para ordens prioritárias e não prioritárias, aceita-se o preenchimento, pelo agente que gerou o ´EndToEndId´, com uma tolerância máxima de 12 horas, para o futuro e para o passado, em relação ao horário efetivo de processamento da ordem pelo SPI;  
         • kkkkkkkkkkk – sequencial criado pelo agente que gerou o ´EndToEndId´ (11 caracteres alfanuméricos [a-z/A-Z/0-9]). Deve ser único dentro de cada “yyyyMMddHHmm”.  
         Admite-se que o ´EndToEndId´ seja gerado pelo participante direto, pelo participante indireto ou pelo iniciador de pagamento.  
@@ -698,7 +698,7 @@ components:
         accountType:
           $ref: '#/components/schemas/EnumAccountPaymentsType'
       additionalProperties: false
-    EnumMandateRelatedInformation:
+    EnumLocalInstrument:
       type: string
       maxLength: 4
       enum:
@@ -708,10 +708,11 @@ components:
         - QRES
       example: DICT
       description: |
-        Especifica a forma de iniciação do pagamento.  
-        Deve ser preenchido com uma das opções da tabela de domínios proprietários.  
-        Para inserção manual de dados da conta, MANU, o campo idContaTransacional não deve ser preenchido.  
-        Nos demais casos, o preenchimento do idContaTransacional é obrigatório.
+        Especifica a forma de iniciação do pagamento:  
+        - MANU - Inserção manual de dados da conta transacional  
+        - DICT - Inserção manual de chave Pix  
+        - QRDN - QR code dinâmico  
+        - QRES - QR code estático  
     Identification:
       type: object
       description: Objeto contendo os dados do recebedor (creditor).
