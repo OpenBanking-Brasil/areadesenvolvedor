@@ -5,7 +5,7 @@ a iniciação de pagamento individual. O `paymentId` deve ser diferente do `endT
 Este é o identificador que deverá ser utilizado na consulta ao status da iniciação de pagamento efetuada.";Texto;100;Obrigatório;^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$;;1;1;"";Não permitido;string;TXpRMU9UQTROMWhZV2xSU1FUazJSMDl
 /data/endToEndId;endToEndId;"Deve ser preenchido no formato padrão ExxxxxxxxyyyyMMddHHmmkkkkkkkkkkk (32 caracteres; “case sensitive”, isso é, diferencia letras maiúsculas e minúsculas), sendo:
 • “E” – fixo (1 caractere);  
-• xxxxxxxx – identificação do agente que gerou o ´EndToEndId´, podendo ser: o ISPB do participante direto, o ISPB do participante indireto ou os 8 primeiros dígitos do CNPJ do iniciador de pagamento (8 caracteres numéricos";Texto;32;Obrigatório;^([E])([0-9]{8})([0-9]{4})(0[1-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])(2[0-3]|[01][0-9])([0-5][0-9])([a-zA-Z0-9]{11})$;;1;1;"";Não permitido;string;E9040088820210128000800123873170
+• xxxxxxxx – identificação do agente que gerou o ´EndToEndId´, podendo ser: o ISPB do participante direto ou o ISPB do participante indireto (8 caracteres numéricos";Texto;32;Obrigatório;^([E])([0-9]{8})([0-9]{4})(0[1-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])(2[0-3]|[01][0-9])([0-5][0-9])([a-zA-Z0-9]{11})$;;1;1;"";Não permitido;string;E9040088820210128000800123873170
 /data/consentId;consentId;Identificador único do consentimento.;Texto;100;Obrigatório;^[a-zA-Z0-9][a-zA-Z0-9\-\:]{0,99}$;;1;1;"";Não permitido;string;urn:bancoex:C1DD33123
 /data/creationDateTime;creationDateTime;"Data e hora em que o recurso foi criado.  
 Uma string com data e hora conforme especificação RFC-3339,  
@@ -18,7 +18,7 @@ No caso de telefone celular deve ser informado no padrão E.1641.
 Para e-mail deve ter o formato xxxxxxxx@xxxxxxx.xxx(.xx) e no máximo 77 caracteres.  
 No caso de CPF deverá ser informado com 11 números, sem pontos ou traços.  
 Para o caso de CNPJ deverá ser informado com 14 números, sem pontos ou traços.  
-No caso de chave aleatória deve ser informado o UUID gerado pelo DICT, conforme formato especificado na RFC41223.";Texto;77;Condicional;\w*\W*;;0;1;" Preenchimento obrigatório para pagamentos via Chave.
+No caso de chave aleatória deve ser informado o UUID gerado pelo DICT, conforme formato especificado na RFC41223.";Texto;77;Condicional;\w*\W*;;0;1;" Obrigatório quando o campo localInstrument for igual a DICT.
 ";Não permitido;string;12345678901
 /data/status;status;"Estado atual da iniciação de pagamento. O estado evolui na seguinte ordem:  
 1. PDNG (PENDING) - Iniciação de pagamento ou transação de pagamento está pendente. Checagens adicionais em realização.  
@@ -122,6 +122,14 @@ DENIED_MULTIPLE_AUTHORISATIONS
 EXPIRED_MULTIPLE_AUTHORISATIONS 
 EXPIRED_BILL";0;1;" Esse motivo deverá ser enviado quando o campo /data/status for igual a RJCT (REJECTED).  
 ";Não permitido;string;USER_NOT_YET_ACTIVATED
+/data/localInstrument;localInstrument;"Especifica a forma de iniciação do pagamento:  
+- MANU - Inserção manual de dados da conta transacional  
+- DICT - Inserção manual de chave Pix  
+- QRDN - QR code dinâmico  
+- QRES - QR code estático";Texto;4;Obrigatório;;"MANU 
+DICT 
+QRDN 
+QRES";1;1;"";Não permitido;string;DICT
 /data/payment;payment;Objeto contendo dados do pagameto como moeda e valor.;Objeto;;Obrigatório;;;1;1;"";Não permitido;object;
 /data/payment/amount;amount;Valor da transação com 2 casas decimais.;Texto;19;Obrigatório;^((\d{1,16}\.\d{2}))$;;1;1;"";Não permitido;string;100000.12
 /data/payment/currency;currency;"Código da moeda nacional segundo modelo ISO-4217, ou seja, 'BRL'.  
