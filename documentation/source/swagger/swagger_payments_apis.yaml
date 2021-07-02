@@ -26,7 +26,7 @@ info:
 
     - Mensagens assinadas, `JWS` e `JWKS`:  
     [Guia de usuário (Receptoras e iniciadoras de pagamento)](https://github.com/OpenBanking-Brasil/specs-seguranca/blob/main/tpp-user-guide.md#143-what-is-a-jwt-jwe-jws-and-jwk)
-  version: 1.0.0-rc3.0
+  version: 1.0.0-rc4.0
   license:
     name: Apache 2.0
     url: 'https://www.apache.org/licenses/LICENSE-2.0'
@@ -350,24 +350,12 @@ components:
       type: object
       description: Objeto contendo dados do pagamento e do recebedor (creditor).
       required:
+        - localInstrument
         - payment
         - creditorAccount
       properties:
         localInstrument:
-          type: string
-          maxLength: 4
-          enum:
-            - MANU
-            - DICT
-            - QRDN
-            - QRES
-          example: DICT
-          description: |
-            Especifica a forma de iniciação do pagamento:  
-            - MANU - Inserção manual de dados da conta transacional  
-            - DICT - Inserção manual de chave Pix  
-            - QRDN - QR code dinâmico  
-            - QRES - QR code estático  
+          $ref: '#/components/schemas/EnumLocalInstrument'
         payment:
           $ref: '#/components/schemas/PaymentPix'
         creditorAccount:
@@ -407,7 +395,7 @@ components:
             No caso de CPF deverá ser informado com 11 números, sem pontos ou traços.  
             Para o caso de CNPJ deverá ser informado com 14 números, sem pontos ou traços.  
             No caso de chave aleatória deve ser informado o UUID gerado pelo DICT, conforme formato especificado na RFC41223.  
-            [Restrição] Obrigatório quando o campo localInstrument for igual "DICT".
+            [Restrição] Obrigatório quando o campo localInstrument for igual a DICT.
       additionalProperties: false
     DebtorAccount:
       type: object
@@ -678,6 +666,7 @@ components:
         - creationDateTime
         - statusUpdateDateTime
         - status
+        - localInstrument
         - payment
         - creditorAccount
       properties:
@@ -730,7 +719,7 @@ components:
             No caso de CPF deverá ser informado com 11 números, sem pontos ou traços.  
             Para o caso de CNPJ deverá ser informado com 14 números, sem pontos ou traços.  
             No caso de chave aleatória deve ser informado o UUID gerado pelo DICT, conforme formato especificado na RFC41223.  
-            [Restrição] Preenchimento obrigatório para pagamentos via Chave.
+            [Restrição] Obrigatório quando o campo localInstrument for igual a DICT.
         status:
           type: string
           maxLength: 45
@@ -847,6 +836,8 @@ components:
             EXPIRED_MULTIPLE_AUTHORISATIONS - Um (ou mais) aprovadores na detentora não tomaram ação para aprovar a operação (OB05).  
             EXPIRED_BILL - O QR Code não é mais válido (OB06).  
             [Restrição] Esse motivo deverá ser enviado quando o campo /data/status for igual a RJCT (REJECTED).  
+        localInstrument:
+          $ref: '#/components/schemas/EnumLocalInstrument'
         payment:
           $ref: '#/components/schemas/PaymentPix'
         remittanceInformation:
@@ -901,6 +892,21 @@ components:
         SLRY - Salary - Conta-Salário.  
         SVGS - Savings - Conta de Poupança.  
         TRAN - TransactingAccount - Conta de Pagamento pré-paga.
+    EnumLocalInstrument:
+      type: string
+      maxLength: 4
+      enum:
+        - MANU
+        - DICT
+        - QRDN
+        - QRES
+      example: DICT
+      description: |
+        Especifica a forma de iniciação do pagamento:  
+        - MANU - Inserção manual de dados da conta transacional  
+        - DICT - Inserção manual de chave Pix  
+        - QRDN - QR code dinâmico  
+        - QRES - QR code estático  
     Identification:
       type: object
       description: Objeto contendo os dados do recebedor (creditor).
