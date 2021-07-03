@@ -1865,7 +1865,7 @@
               </ul>
           </li>
           <li>
-            <a href="#fase-3-apis-do-open-banking-brasil" class="toc-h1 toc-link" data-title="Fase 3 - APIs do Open Banking Brasil v1.0.0-rc4.0">Fase 3 - APIs do Open Banking Brasil v1.0.0-rc4.0</a>
+            <a href="#fase-3-apis-do-open-banking-brasil" class="toc-h1 toc-link" data-title="Fase 3 - APIs do Open Banking Brasil v1.0.0-rc5.0">Fase 3 - APIs do Open Banking Brasil v1.0.0-rc5.0</a>
               <ul class="toc-list-h2">
                   <li>
                     <a href="#iniciacao-de-pagamentos" class="toc-h2 toc-link" data-title="Iniciação de pagamentos">Iniciação de pagamentos</a>
@@ -3969,6 +3969,20 @@ interface gráfica, acessar a sessão de FAQ e selecionar o menu &quot;API SysAi
 <td>campo consentId</td>
 <td>No exemplo apresentado no portal, &quot;urn:bancoex:C1DD33123&quot; há a necessidade de esclarecer o item &quot;bancoex&quot;.</td>
 <td>Orientação do GT Arquitetura: Em vista que o id de consentimento não é interoperável, as instituições podem definir o URN seguindo a RFC citada podendo definir o namespace(bancoex) usando critérios próprios, desde que não infrinja as regras da RFC8141.</td>
+</tr>
+<tr>
+<td>API Consents</td>
+<td>POST /consents/</td>
+<td>campo transactionFromDateTime</td>
+<td>As instituições receptoras não devem preencher este campo opcional ao efetuar a criação do pedido de consentimento; já as instituições transmissoras, ainda que recebam este campo devem ignorá-lo completamente, o qual será removido da API em versão futura.</td>
+<td></td>
+</tr>
+<tr>
+<td>API Consents</td>
+<td>POST /consents/</td>
+<td>campo transactionToDateTime</td>
+<td>As instituições receptoras não devem preencher este campo opcional ao efetuar a criação do pedido de consentimento; já as instituições transmissoras, ainda que recebam este campo devem ignorá-lo completamente, o qual será removido da API em versão futura.</td>
+<td></td>
 </tr>
 </tbody></table>
 
@@ -38416,8 +38430,8 @@ This operation does not require authentication
 <tr>
 <td>» expirationDateTime</td>
 <td>string(date-time)</td>
-<td>false</td>
-<td>Data e hora de expiração da permissão. Se não for preenchido, a permissão terá a data aberta. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).</td>
+<td>true</td>
+<td>Data e hora de expiração da permissão. De preenchimento obrigatório, reflete a data limite de validade do consentimento. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).</td>
 </tr>
 <tr>
 <td>» transactionFromDateTime</td>
@@ -38516,8 +38530,8 @@ This operation does not require authentication
 <tr>
 <td>» expirationDateTime</td>
 <td>string(date-time)</td>
-<td>false</td>
-<td>Data e hora de expiração da permissão. Se não for preenchido, a permissão terá a data aberta. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).</td>
+<td>true</td>
+<td>Data e hora de expiração da permissão. De preenchimento obrigatório, reflete a data limite de validade do consentimento. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).</td>
 </tr>
 <tr>
 <td>» transactionFromDateTime</td>
@@ -39345,21 +39359,21 @@ This operation does not require authentication
 </tr>
 <tr>
 <td>productsServicesType</td>
-<td>[<a href="#schemaenumproductservicetype">EnumProductServiceType</a>]</td>
+<td>[<a href="#schemaenumproductservicetype">EnumProductServiceType</a>]¦null</td>
 <td>true</td>
 <td>[Lista com a relação dos produtos e serviços com contrato vigente.]</td>
 </tr>
 <tr>
 <td>procurators</td>
-<td>[<a href="#schemabusinessprocurator">BusinessProcurator</a>]</td>
+<td>[<a href="#schemabusinessprocurator">BusinessProcurator</a>]¦null</td>
 <td>true</td>
 <td>Lista dos representantes. De preenchimento obrigatório se houver representante.</td>
 </tr>
 <tr>
 <td>accounts</td>
-<td>[object]</td>
+<td>[object]¦null</td>
 <td>true</td>
-<td>Lista de contas depósito à vista, poupança e pagamento pré-pagas mantidas pelo cliente na instituição transmissora e para as quais ele tenha fornecido consentimento.</td>
+<td>Lista de contas depósito à vista, poupança e pagamento pré-pagas mantidas pelo cliente na instituição transmissora.</td>
 </tr>
 <tr>
 <td>» compeCode</td>
@@ -39547,7 +39561,7 @@ This operation does not require authentication
 </tr>
 <tr>
 <td>parties</td>
-<td>[<a href="#schemapartiesparticipation">PartiesParticipation</a>]</td>
+<td>[<a href="#schemapartiesparticipation">PartiesParticipation</a>]¦null</td>
 <td>true</td>
 <td>Lista relativa às informações das partes envolvidas, como: sócio e /ou administrador</td>
 </tr>
@@ -39706,7 +39720,7 @@ This operation does not require authentication
 </tr>
 <tr>
 <td>economicActivities</td>
-<td>[<a href="#schemaeconomicactivity">EconomicActivity</a>]</td>
+<td>[<a href="#schemaeconomicactivity">EconomicActivity</a>]¦null</td>
 <td>true</td>
 <td>Lista dos demais códigos relativos às demais atividades econômicas da empresa, segundo padrão CNAE (Classificação Nacional de Atividades Econômicas). De preenchimento obrigatório, se houver</td>
 </tr>
@@ -40635,19 +40649,19 @@ This operation does not require authentication
 </thead><tbody>
 <tr>
 <td>postalAddresses</td>
-<td>[<a href="#schemabusinesspostaladdress">BusinessPostalAddress</a>]</td>
+<td>[<a href="#schemabusinesspostaladdress">BusinessPostalAddress</a>]¦null</td>
 <td>true</td>
 <td>Lista de endereços da pessoa jurídica</td>
 </tr>
 <tr>
 <td>phones</td>
-<td>[<a href="#schemacustomerphone">CustomerPhone</a>]</td>
+<td>[<a href="#schemacustomerphone">CustomerPhone</a>]¦null</td>
 <td>true</td>
 <td>Lista com telefones de contato da pessoa jurídica</td>
 </tr>
 <tr>
 <td>emails</td>
-<td>[<a href="#schemacustomeremail">CustomerEmail</a>]</td>
+<td>[<a href="#schemacustomeremail">CustomerEmail</a>]¦null</td>
 <td>true</td>
 <td>Lista e-mails de contato</td>
 </tr>
@@ -40714,19 +40728,19 @@ This operation does not require authentication
 </thead><tbody>
 <tr>
 <td>postalAddresses</td>
-<td>[<a href="#schemapersonalpostaladdress">PersonalPostalAddress</a>]</td>
+<td>[<a href="#schemapersonalpostaladdress">PersonalPostalAddress</a>]¦null</td>
 <td>true</td>
 <td>Lista de endereços da pessoa natural</td>
 </tr>
 <tr>
 <td>phones</td>
-<td>[<a href="#schemacustomerphone">CustomerPhone</a>]</td>
+<td>[<a href="#schemacustomerphone">CustomerPhone</a>]¦null</td>
 <td>true</td>
 <td>Lista com telefones de contato da pessoa natural</td>
 </tr>
 <tr>
 <td>emails</td>
-<td>[<a href="#schemacustomeremail">CustomerEmail</a>]</td>
+<td>[<a href="#schemacustomeremail">CustomerEmail</a>]¦null</td>
 <td>true</td>
 <td>Lista e-mails de contato</td>
 </tr>
@@ -40755,7 +40769,7 @@ This operation does not require authentication
 </thead><tbody>
 <tr>
 <td>isMain</td>
-<td>boolean</td>
+<td>boolean¦null</td>
 <td>true</td>
 <td>Indica se o email informado é o principal</td>
 </tr>
@@ -40794,7 +40808,7 @@ This operation does not require authentication
 </thead><tbody>
 <tr>
 <td>isMain</td>
-<td>boolean</td>
+<td>boolean¦null</td>
 <td>true</td>
 <td>Indica se o telefone informado é o principal</td>
 </tr>
@@ -40870,7 +40884,7 @@ This operation does not require authentication
 </thead><tbody>
 <tr>
 <td>isMain</td>
-<td>boolean</td>
+<td>boolean¦null</td>
 <td>true</td>
 <td>Indica se o endereço informado é o principal</td>
 </tr>
@@ -40970,7 +40984,7 @@ This operation does not require authentication
 </thead><tbody>
 <tr>
 <td>isMain</td>
-<td>boolean</td>
+<td>boolean¦null</td>
 <td>true</td>
 <td>Indica se o endereço informado é o principal.</td>
 </tr>
@@ -41058,13 +41072,13 @@ This operation does not require authentication
 </thead><tbody>
 <tr>
 <td>code</td>
-<td>number</td>
+<td>number¦null</td>
 <td>true</td>
 <td>Traz o código do ramo da atividade principal da empresa consultada, segundo padrão CNAE (Classificação Nacional de Atividades Econômicas)</td>
 </tr>
 <tr>
 <td>isMain</td>
-<td>boolean</td>
+<td>boolean¦null</td>
 <td>true</td>
 <td>Indica se é o ramo principal de atividade da empresa quando true e se é o ramo secundário quando false.</td>
 </tr>
@@ -49220,13 +49234,13 @@ Adiantamento a depositantes</p>
 </thead><tbody>
 <tr>
 <td>otherNationalitiesInfo</td>
-<td>string</td>
+<td>string¦null</td>
 <td>true</td>
 <td>Campo de preenchimento obrigatório caso o cliente não possua nacionalidade brasileira. Preencher indicando todas suas demais nacionalidades utilizando o código de pais de acordo com o código “alpha3” do ISO-3166.p.ex.&#39;CAN&#39;</td>
 </tr>
 <tr>
 <td>documents</td>
-<td>[<a href="#schemanationalityotherdocument">NationalityOtherDocument</a>]</td>
+<td>[<a href="#schemanationalityotherdocument">NationalityOtherDocument</a>]¦null</td>
 <td>true</td>
 <td>Lista que traz relação de documentos complementares de pessoas com nacionalidade diferente de brasileira</td>
 </tr>
@@ -49642,7 +49656,7 @@ Adiantamento a depositantes</p>
 </tr>
 <tr>
 <td>productsServicesType</td>
-<td>[<a href="#schemaenumproductservicetype">EnumProductServiceType</a>]</td>
+<td>[<a href="#schemaenumproductservicetype">EnumProductServiceType</a>]¦null</td>
 <td>true</td>
 <td>[Lista com a relação dos produtos e serviços com contrato vigente.]</td>
 </tr>
@@ -49654,15 +49668,15 @@ Adiantamento a depositantes</p>
 </tr>
 <tr>
 <td>procurators</td>
-<td>[<a href="#schemapersonalprocurator">PersonalProcurator</a>]</td>
+<td>[<a href="#schemapersonalprocurator">PersonalProcurator</a>]¦null</td>
 <td>true</td>
 <td>Lista dos representantes. De preenchimento obrigatório se houver representante.</td>
 </tr>
 <tr>
 <td>accounts</td>
-<td>[object]</td>
+<td>[object]¦null</td>
 <td>true</td>
-<td>Lista de contas depósito à vista, poupança e pagamento pré-pagas mantidas pelo cliente na instituição transmissora e para as quais ele tenha fornecido consentimento.</td>
+<td>Lista de contas depósito à vista, poupança e pagamento pré-pagas mantidas pelo cliente na instituição transmissora.</td>
 </tr>
 <tr>
 <td>» compeCode</td>
@@ -49926,25 +49940,25 @@ Adiantamento a depositantes</p>
 </tr>
 <tr>
 <td>otherDocuments</td>
-<td>[<a href="#schemapersonalotherdocument">PersonalOtherDocument</a>]</td>
+<td>[<a href="#schemapersonalotherdocument">PersonalOtherDocument</a>]¦null</td>
 <td>true</td>
 <td>Relação dos demais documentos</td>
 </tr>
 <tr>
 <td>hasBrazilianNationality</td>
-<td>boolean</td>
+<td>boolean¦null</td>
 <td>true</td>
 <td>Informa se o Cliente tem nacionalidade brasileira.</td>
 </tr>
 <tr>
 <td>nationality</td>
-<td>[<a href="#schemanationality">Nationality</a>]</td>
+<td>[<a href="#schemanationality">Nationality</a>]¦null</td>
 <td>true</td>
 <td>[Objeto que agrupa informações relativas à nacionalidade da Pessoa Natural]</td>
 </tr>
 <tr>
 <td>filiation</td>
-<td>[object]</td>
+<td>[object]¦null</td>
 <td>true</td>
 <td></td>
 </tr>
@@ -53903,7 +53917,7 @@ Adiantamento a depositantes</p>
 </tr>
 </tbody></table>
 
-<h1 id="fase-3-apis-do-open-banking-brasil">Fase 3 - APIs do Open Banking Brasil v1.0.0-rc4.0</h1>
+<h1 id="fase-3-apis-do-open-banking-brasil">Fase 3 - APIs do Open Banking Brasil v1.0.0-rc5.0</h1>
 
 <blockquote>
 <p>Scroll down for code samples, example requests and responses. Select a language for code samples from the tabs above or the mobile navigation menu.</p>
@@ -54073,7 +54087,7 @@ Como sugestão, é indicado que a instituição iniciadora do pagamento implemen
 </tr>
 </thead><tbody>
 <tr>
-<td style="text-align: left">1.0.0-rc4.0</td>
+<td style="text-align: left">1.0.0-rc5.0</td>
 </tr>
 </tbody></table>
 <h4 id='visao-geral'>Visão Geral</h4>
@@ -57318,7 +57332,7 @@ RJCT (REJECTED) - Instrução de pagamento rejeitada.</p>
 <td>» consentId</td>
 <td>string</td>
 <td>true</td>
-<td>Identificador único do consentimento criado para a iniciação de pagamento solicitada.</td>
+<td>Identificador único do consentimento criado para a iniciação de pagamento solicitada. Deverá ser um URN - Uniform Resource Name.  <br>Um URN, conforme definido na <a href="https://tools.ietf.org/html/rfc8141">RFC8141</a> é um Uniform Resource <br>Identifier - URI - que é atribuído sob o URI scheme &quot;urn&quot; e um namespace URN específico, com a intenção de que o URN <br>seja um identificador de recurso persistente e independente da localização.  <br>Considerando a string urn:bancoex:C1DD33123 como exemplo para consentId temos:<br>- o namespace(urn)<br>- o identificador associado ao namespace da instituição transnmissora (bancoex) <br>- o identificador específico dentro do namespace (C1DD33123).  <br>Informações mais detalhadas sobre a construção de namespaces devem ser consultadas na <a href="https://tools.ietf.org/html/rfc8141">RFC8141</a>.</td>
 </tr>
 <tr>
 <td>» creationDateTime</td>
@@ -57330,7 +57344,7 @@ RJCT (REJECTED) - Instrução de pagamento rejeitada.</p>
 <td>» expirationDateTime</td>
 <td>string(date-time)</td>
 <td>true</td>
-<td>Data e hora em que o consentimento da iniciação de pagamento expira, devendo ser sempre o creationDateTime mais 5 minutos. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC (UTC time format). <br>O consentimento é criado com o status AWAITING_AUTHORISATION, e deve assumir o status AUTHORIZED, REJECTED ou CONSUMED antes do tempo de expiração.</td>
+<td>Data e hora em que o consentimento da iniciação de pagamento expira, devendo ser sempre o creationDateTime mais 5 minutos. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC (UTC time format). <br>O consentimento é criado com o status AWAITING_AUTHORISATION, e deve assumir o status AUTHORIZED, REJECTED ou CONSUMED antes do tempo de expiração - 5 minutos.  <br>Caso não assuma, o status permanece como AWAITING_AUTHORISATION e será necessária a criação de um novo consentimento.  <br>Para o cenário em que o status assumiu AUTHORISED, o tempo máximo (do token FAPI Hybrid Flow) é de 60 minutos, sem refresh, <br>e este é o tempo para consumir o consentimento autorizado, mudando seu status para CONSUMED. Não é possível prorrogar este tempo e a criação de um novo consentimento será necessária para os cenários de insucesso.</td>
 </tr>
 <tr>
 <td>» statusUpdateDateTime</td>
@@ -57521,7 +57535,7 @@ RJCT (REJECTED) - Instrução de pagamento rejeitada.</p>
 <td>consentId</td>
 <td>string</td>
 <td>true</td>
-<td>Identificador único do consentimento.</td>
+<td>Identificador único do consentimento criado para a iniciação de pagamento solicitada. Deverá ser um URN - Uniform Resource Name.  <br>Um URN, conforme definido na <a href="https://tools.ietf.org/html/rfc8141">RFC8141</a> é um Uniform Resource <br>Identifier - URI - que é atribuído sob o URI scheme &quot;urn&quot; e um namespace URN específico, com a intenção de que o URN <br>seja um identificador de recurso persistente e independente da localização.  <br>Considerando a string urn:bancoex:C1DD33123 como exemplo para consentId temos:<br>- o namespace(urn)<br>- o identificador associado ao namespace da instituição transnmissora (bancoex) <br>- o identificador específico dentro do namespace (C1DD33123).  <br>Informações mais detalhadas sobre a construção de namespaces devem ser consultadas na <a href="https://tools.ietf.org/html/rfc8141">RFC8141</a>.</td>
 </tr>
 <tr>
 <td>creationDateTime</td>
