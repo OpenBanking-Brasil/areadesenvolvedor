@@ -1,9 +1,13 @@
 ﻿Xpath;Nome;Definição;Tipo de Dado;Tamanho;Mandatoriedade;Formato;Domínio;Mínimo de Ocorrências;Máximo de Ocorrências;Restrições;Nulidade;Tipo de Dado Json;Exemplo
 /data;data;Objeto contendo as informações de resposta do consentimento para a iniciação de pagamento individual.;Objeto;;Obrigatório;;;1;1;"";Não permitido;object;
-/data/consentId;consentId;Identificador único do consentimento criado para a iniciação de pagamento solicitada.;Texto;100;Obrigatório;^[a-zA-Z0-9][a-zA-Z0-9\-\:]{0,99}$;;1;1;"";Não permitido;string;urn:bancoex:C1DD33123
+/data/consentId;consentId;"Identificador único do consentimento criado para a iniciação de pagamento solicitada. Deverá ser um URN - Uniform Resource Name.  
+Um URN, conforme definido na";Texto;256;Obrigatório;"^urn:[a-zA-Z0-9][a-zA-Z0-9-]{0,31}:[a-zA-Z0-9()+,\-.:=@;$_!*'%\/?#]+$";;1;1;"";Não permitido;string;urn:bancoex:C1DD33123
 /data/creationDateTime;creationDateTime;Data e hora em que o consentimento foi criado. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).;Date Hora;20;Obrigatório;^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$;;1;1;"";Não permitido;string;2021-05-21T08:30:00Z
 /data/expirationDateTime;expirationDateTime;"Data e hora em que o consentimento da iniciação de pagamento expira, devendo ser sempre o creationDateTime mais 5 minutos. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC (UTC time format). 
-O consentimento é criado com o status AWAITING_AUTHORISATION, e deve assumir o status AUTHORIZED, REJECTED ou CONSUMED antes do tempo de expiração.";Date Hora;20;Obrigatório;^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$;;1;1;"";Não permitido;string;2021-05-21T08:30:00Z
+O consentimento é criado com o status AWAITING_AUTHORISATION, e deve assumir o status AUTHORIZED, REJECTED ou CONSUMED antes do tempo de expiração - 5 minutos.  
+Caso não assuma, o status permanece como AWAITING_AUTHORISATION e será necessária a criação de um novo consentimento.  
+Para o cenário em que o status assumiu AUTHORISED, o tempo máximo (do token FAPI Hybrid Flow) é de 60 minutos, sem refresh, 
+e este é o tempo para consumir o consentimento autorizado, mudando seu status para CONSUMED. Não é possível prorrogar este tempo e a criação de um novo consentimento será necessária para os cenários de insucesso.";Date Hora;20;Obrigatório;^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$;;1;1;"";Não permitido;string;2021-05-21T08:30:00Z
 /data/statusUpdateDateTime;statusUpdateDateTime;Data e hora em que o recurso foi atualizado. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).;Date Hora;20;Obrigatório;^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$;;1;1;"";Não permitido;string;2021-05-21T08:30:00Z
 /data/status;status;"Retorna o estado do consentimento, o qual no momento de sua criação será AWAITING_AUTHORISATION.
 Este estado será alterado depois da autorização do consentimento na detentora da conta do pagador (Debtor) para AUTHORISED ou REJECTED. 
@@ -33,7 +37,7 @@ Preencher com o CPF ou CNPJ, de acordo com o valor escolhido no campo type.
 O CPF será utilizado com 11 números e deverá ser informado sem pontos ou traços.  
 O CNPJ será utilizado com 14 números e deverá ser informado sem pontos ou traços.";Texto;14;Obrigatório;^\d{11}$|^\d{14}$;;1;1;"";Não permitido;string;58764789000137
 /data/creditor/name;name;"Em caso de pessoa natural deve ser informado o nome completo do titular da conta do recebedor.  
-Em caso de pessoa jurídica deve ser informada a razão social ou o nome fantasia da conta do recebedor.";Texto;140;Obrigatório;\w*\W*;;1;1;"";Não permitido;string;Marco Antonio de Brito
+Em caso de pessoa jurídica deve ser informada a razão social ou o nome fantasia da conta do recebedor.";Texto;140;Obrigatório;[\w\W\s]*;;1;1;"";Não permitido;string;Marco Antonio de Brito
 /data/payment;payment;Objeto contendo dados de pagamento para consentimento.;Objeto;;Obrigatório;;;1;1;"";Não permitido;object;
 /data/payment/type;type;Este campo define o tipo de pagamento que será iniciado após a autorização do consentimento.;Texto;3;Obrigatório;;PIX;1;1;"";Não permitido;string;PIX
 /data/payment/date;date;Data do pagamento, conforme especificação RFC-3339.;Data;10;Obrigatório;^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$;;1;1;"";Não permitido;string;2021-01-01
