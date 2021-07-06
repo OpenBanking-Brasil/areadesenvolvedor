@@ -23,13 +23,13 @@ info:
     - I - até cinco minutos, com relação aos dados relativos ao saldo e às transações realizadas em conta de depósitos ou de pagamento
 
     - II - até uma hora, para os demais casos.    
-  version: 1.0.0-rc6.7
+  version: 1.0.0
 tags:
   - name: API - Consentimento
     description: |
       |Versão|
       |:-----|
-      |1.0.0-rc6.7|
+      |1.0.0|
 
       ### Visão Geral
 
@@ -42,7 +42,7 @@ tags:
     description: |
       |Versão|
       |:-----|
-      |1.0.0-rc6.7|
+      |1.0.0|
 
       ### Visão Geral
 
@@ -55,7 +55,7 @@ tags:
     description: |
       |Versão|
       |:-----|
-      |1.0.0-rc6.7|
+      |1.0.0|
 
       ### Visão Geral
 
@@ -2949,6 +2949,7 @@ components:
           required:
             - permissions
             - loggedUser
+            - expirationDateTime
           properties:
             loggedUser:
               $ref: '#/components/schemas/LoggedUser'
@@ -2997,7 +2998,7 @@ components:
                 - ACCOUNTS_OVERDRAFT_LIMITS_READ
                 - RESOURCES_READ
             expirationDateTime:
-              description: 'Data e hora de expiração da permissão. Se não for preenchido, a permissão terá a data aberta. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).'
+              description: 'Data e hora de expiração da permissão. De preenchimento obrigatório, reflete a data limite de validade do consentimento. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).'
               type: string
               maxLength: 20
               format: date-time
@@ -3029,6 +3030,7 @@ components:
             - status
             - statusUpdateDateTime
             - permissions
+            - expirationDateTime
           properties:
             consentId:
               description: |
@@ -3108,7 +3110,7 @@ components:
                 - ACCOUNTS_OVERDRAFT_LIMITS_READ
                 - RESOURCES_READ
             expirationDateTime:
-              description: 'Data e hora de expiração da permissão. Se não for preenchido, a permissão terá a data aberta. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).'
+              description: 'Data e hora de expiração da permissão. De preenchimento obrigatório, reflete a data limite de validade do consentimento. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).'
               type: string
               format: date-time
               example: '2021-05-21T08:30:00Z'
@@ -3661,12 +3663,14 @@ components:
           maxItems: 12
           items:
             $ref: '#/components/schemas/EnumProductServiceType'
+          nullable: true
         procurators:
           type: array
           items:
             $ref: '#/components/schemas/BusinessProcurator'
           minItems: 1
           description: Lista dos representantes. De preenchimento obrigatório se houver representante.
+          nullable: true
         accounts:
           type: array
           items:
@@ -3710,7 +3714,8 @@ components:
             additionalProperties: false
           minItems: 1
           description: |
-            Lista de contas depósito à vista, poupança e pagamento pré-pagas mantidas pelo cliente na instituição transmissora e para as quais ele tenha fornecido consentimento.    
+            Lista de contas depósito à vista, poupança e pagamento pré-pagas mantidas pelo cliente na instituição transmissora.    
+          nullable: true
       additionalProperties: false
     BusinessIdentificationData:
       type: object
@@ -3795,6 +3800,7 @@ components:
           minItems: 1
           description: |
             Lista relativa às informações das partes envolvidas, como: sócio e /ou administrador
+          nullable: true
         contacts:
           $ref: '#/components/schemas/BusinessContacts'
     BusinessOtherDocument:
@@ -3883,6 +3889,7 @@ components:
             $ref: '#/components/schemas/EconomicActivity'
           minItems: 1
           description: 'Lista dos demais códigos relativos às demais atividades econômicas da empresa, segundo padrão CNAE (Classificação Nacional de Atividades Econômicas). De preenchimento obrigatório, se houver'
+          nullable: true
         informedRevenue:
           type: object
           required:
@@ -4497,18 +4504,21 @@ components:
             $ref: '#/components/schemas/BusinessPostalAddress'
           minItems: 1
           description: Lista de endereços da pessoa jurídica
+          nullable: true
         phones:
           type: array
           items:
             $ref: '#/components/schemas/CustomerPhone'
           minItems: 1
           description: Lista com telefones de contato da pessoa jurídica
+          nullable: true
         emails:
           type: array
           items:
             $ref: '#/components/schemas/CustomerEmail'
           minItems: 1
           description: Lista e-mails de contato
+          nullable: true
       additionalProperties: false
     PersonalContacts:
       type: object
@@ -4524,18 +4534,21 @@ components:
             $ref: '#/components/schemas/PersonalPostalAddress'
           minItems: 1
           description: Lista de endereços da pessoa natural
+          nullable: true
         phones:
           type: array
           items:
             $ref: '#/components/schemas/CustomerPhone'
           minItems: 1
           description: Lista com telefones de contato da pessoa natural
+          nullable: true
         emails:
           type: array
           items:
             $ref: '#/components/schemas/CustomerEmail'
           minItems: 1
           description: Lista e-mails de contato
+          nullable: true
       additionalProperties: false
     CustomerEmail:
       type: object
@@ -4547,6 +4560,7 @@ components:
           type: boolean
           description: Indica se o email informado é o principal
           example: true
+          nullable: true
         email:
           type: string
           description: Endereço de email
@@ -4568,6 +4582,7 @@ components:
           type: boolean
           description: Indica se o telefone informado é o principal
           example: true
+          nullable: true
         type:
           $ref: '#/components/schemas/EnumCustomerPhoneType'
         additionalInfo:
@@ -4612,6 +4627,7 @@ components:
           type: boolean
           example: true
           description: Indica se o endereço informado é o principal
+          nullable: true
         address:
           type: string
           maxLength: 150
@@ -4681,6 +4697,7 @@ components:
           type: boolean
           example: true
           description: Indica se o endereço informado é o principal.
+          nullable: true
         address:
           type: string
           maxLength: 150
@@ -4748,10 +4765,12 @@ components:
           description: |
             Traz o código do ramo da atividade principal da empresa consultada, segundo padrão CNAE (Classificação Nacional de Atividades Econômicas)
           example: 8599604
+          nullable: true
         isMain:
           type: boolean
           description: Indica se é o ramo principal de atividade da empresa quando true e se é o ramo secundário quando false.
           example: true
+          nullable: true
     EnumAccountSubType:
       type: string
       enum:
@@ -7910,11 +7929,13 @@ components:
           example: CAN
           description: |
             Campo de preenchimento obrigatório caso o cliente não possua nacionalidade brasileira. Preencher indicando todas suas demais nacionalidades utilizando o código de pais de acordo com o código “alpha3” do ISO-3166.p.ex.'CAN'
+          nullable: true
         documents:
           type: array
           items:
             $ref: '#/components/schemas/NationalityOtherDocument'
           description: Lista que traz relação de documentos complementares de pessoas com nacionalidade diferente de brasileira
+          nullable: true
       additionalProperties: false
     NationalityOther:
       type: object
@@ -8169,6 +8190,7 @@ components:
             $ref: '#/components/schemas/EnumProductServiceType'
           minItems: 1
           maxItems: 12
+          nullable: true
         productsServicesTypeAdditionalInfo:
           type: string
           pattern: '[\w\W\s]*'
@@ -8183,6 +8205,7 @@ components:
             $ref: '#/components/schemas/PersonalProcurator'
           minItems: 1
           description: Lista dos representantes. De preenchimento obrigatório se houver representante.
+          nullable: true
         accounts:
           type: array
           items:
@@ -8255,7 +8278,8 @@ components:
             additionalProperties: false
           minItems: 1
           description: |
-            Lista de contas depósito à vista, poupança e pagamento pré-pagas mantidas pelo cliente na instituição transmissora e para as quais ele tenha fornecido consentimento.    
+            Lista de contas depósito à vista, poupança e pagamento pré-pagas mantidas pelo cliente na instituição transmissora.    
+          nullable: true
       additionalProperties: false
     PersonalIdentificationData:
       type: object
@@ -8345,14 +8369,17 @@ components:
             $ref: '#/components/schemas/PersonalOtherDocument'
           minItems: 1
           description: Relação dos demais documentos
+          nullable: true
         hasBrazilianNationality:
           type: boolean
           example: false
           description: Informa se o Cliente tem nacionalidade brasileira.
+          nullable: true
         nationality:
           type: array
           items:
             $ref: '#/components/schemas/Nationality'
+          nullable: true
         filiation:
           type: array
           items:
@@ -8382,6 +8409,7 @@ components:
                   (aquele pelo qual travestis e transexuais se reconhecem, 
                   bem como são identificados por sua comunidade e em seu meio social, conforme Decreto Local)
             additionalProperties: false
+          nullable: true
         contacts:
           $ref: '#/components/schemas/PersonalContacts'
       additionalProperties: false
@@ -9219,7 +9247,7 @@ components:
           $ref: '#/components/schemas/EnumContractFinanceChargeType'
         chargeAdditionalInfo:
           type: string
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           maxLength: 140
           example: Informações adicionais
           description: |
@@ -9299,10 +9327,10 @@ components:
         productName:
           type: string
           maxLength: 140
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
+          example: AD
           description: |
             "Denominação/Identificação do nome da Modalidade da Operação de Crédito divulgado ao cliente"
-          example: AD
         productType:
           $ref: '#/components/schemas/EnumUnarrangedAccountOverdraftProductType'
         productSubType:
@@ -9358,7 +9386,7 @@ components:
           $ref: '#/components/schemas/EnumContractInstalmentPeriodicity'
         instalmentPeriodicityAdditionalInfo:
           type: string
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           maxLength: 50
           example: Informações adicionais sobre periodicidade
           description: |
@@ -9383,7 +9411,7 @@ components:
           $ref: '#/components/schemas/EnumContractAmortizationScheduled'
         amortizationScheduledAdditionalInfo:
           type: string
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           maxLength: 50
           example: NA
           description: |
@@ -9419,13 +9447,13 @@ components:
         feeName:
           type: string
           maxLength: 140
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           description: Denominação da Tarifa pactuada
           example: Excesso em Conta
         feeCode:
           type: string
           maxLength: 140
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           description: Sigla identificadora da tarifa pactuada
           example: EXCESSO_CONTA
         feeChargeType:
@@ -9478,12 +9506,12 @@ components:
           $ref: '#/components/schemas/EnumContractReferentialRateIndexerSubType'
         referentialRateIndexerAdditionalInfo:
           type: string
+          maxLength: 140
+          pattern: '[\w\W\s]*'
+          example: Informações adicionais
           description: |
             Campo livre para complementar a informação relativa ao Tipo de taxa referencial ou indexador.
             [Restrição] Obrigatório para complementar a informação relativa ao Tipo de taxa referencial ou indexador, quando selecionada o tipo ou subtipo OUTRO.
-          maxLength: 140
-          pattern: \w*\W*
-          example: Informações adicionais
         preFixedRate:
           type: number
           description: |
@@ -9503,9 +9531,9 @@ components:
         additionalInfo:
           type: string
           maxLength: 1200
-          description: Texto com informações adicionais sobre a composição das taxas de juros pactuadas
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           example: Informações adicionais
+          description: Texto com informações adicionais sobre a composição das taxas de juros pactuadas
       additionalProperties: false
     UnarrangedAccountOverdraftContractListData:
       type: object
@@ -9521,12 +9549,13 @@ components:
         contractId:
           type: string
           maxLength: 100
+          pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
           description: Um identificador único e imutável usado para identificar o contrato de uma operação de crédito. Este identificador não tem significado para o tomador do crédito
           example: xcjklompowsa279212650822221989319aadrtjk
         brandName:
           type: string
           maxLength: 80
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           description: 'Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes'
           example: Organização A
         companyCnpj:
@@ -9564,11 +9593,11 @@ components:
           $ref: '#/components/schemas/EnumContractFinanceChargeType'
         chargeAdditionalInfo:
           type: string
+          pattern: '[\w\W\s]*'
+          example: Informações adicionais sobre encargos.
           description: |
             Campo para informações adicionais.
             [Restrição] Obrigatório se selecionada a opção 'OUTROS' em Tipo de encargo pactuado no contrato.
-          pattern: \w*\W*$|^NA$
-          example: Informações adicionais sobre encargos.
         chargeRate:
           type: number
           description: |
@@ -9740,13 +9769,13 @@ components:
                     type: string
                     description: Denominação da Tarifa pactuada
                     maxLength: 140
-                    pattern: \w*\W*
+                    pattern: '[\w\W\s]*'
                     example: Saque a descoberto
                   feeCode:
                     type: string
                     description: Sigla identificadora da tarifa avulsa fora da parcela
                     maxLength: 140
-                    pattern: \w*\W*
+                    pattern: '[\w\W\s]*'
                     example: Saque descoberto
                   feeAmount:
                     type: number
@@ -9889,7 +9918,7 @@ components:
       schema:
         type: string
         pattern: '^[a-zA-Z0-9][a-zA-Z0-9-]{0,99}$'
-        maxLength: 40
+        maxLength: 100
     creditDebitIndicator:
       name: creditDebitIndicator
       description: Indicador do tipo de lançamento
