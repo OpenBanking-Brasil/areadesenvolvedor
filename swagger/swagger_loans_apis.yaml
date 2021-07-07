@@ -36,7 +36,7 @@ info:
     ### `/contracts/{contractId}/payments`
       - permissions:
         - GET: **LOANS_PAYMENTS_READ**
-  version: 1.0.0-rc6.7
+  version: 1.0.0
   license:
     name: Apache 2.0
     url: 'https://www.apache.org/licenses/LICENSE-2.0'
@@ -637,7 +637,7 @@ components:
         productName:
           type: string
           maxLength: 140
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           example: Crédito Pessoal Consignado
           description: |
             Denominação/Identificação do nome da Modalidade da Operação de Crédito divulgado ao cliente
@@ -696,7 +696,7 @@ components:
           $ref: '#/components/schemas/EnumContractInstalmentPeriodicity'
         instalmentPeriodicityAdditionalInfo:
           type: string
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           maxLength: 50
           example: Informações adicionais sobre periodicidade
           description: |
@@ -721,7 +721,7 @@ components:
           $ref: '#/components/schemas/EnumContractAmortizationScheduled'
         amortizationScheduledAdditionalInfo:
           type: string
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           maxLength: 50
           example: NA
           description: |
@@ -764,13 +764,13 @@ components:
         feeName:
           type: string
           maxLength: 140
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           description: Denominação da Tarifa pactuada
           example: Renovação de cadastro
         feeCode:
           type: string
           maxLength: 140
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           description: Sigla identificadora da tarifa pactuada
           example: CADASTRO
         feeChargeType:
@@ -827,7 +827,7 @@ components:
             Campo livre para complementar a informação relativa ao Tipo de taxa referencial ou indexador.
             [Restrição] Obrigatório para complementar a informação relativa ao Tipo de taxa referencial ou indexador, quando selecionada o tipo ou subtipo OUTRO.
           maxLength: 140
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           example: Informações adicionais
         preFixedRate:
           type: number
@@ -849,7 +849,7 @@ components:
         additionalInfo:
           type: string
           maxLength: 1200
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           example: Informações adicionais
           description: |
             Texto com informações adicionais sobre a composição das taxas de juros pactuadas.
@@ -866,7 +866,7 @@ components:
           $ref: '#/components/schemas/EnumContractFinanceChargeType'
         chargeAdditionalInfo:
           type: string
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           maxLength: 140
           example: Informações adicionais
           description: |
@@ -991,12 +991,13 @@ components:
       properties:
         contractId:
           type: string
+          pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
           maxLength: 100
           example: '92792126019929279212650822221989319252576'
           description: 'Identifica de forma única o contrato da operação de crédito do cliente, mantendo as regras de imutabilidade dentro da instituição transmissora.'
         brandName:
           type: string
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           maxLength: 80
           example: Organização A
           description: 'Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes'
@@ -1134,13 +1135,13 @@ components:
         feeName:
           type: string
           maxLength: 140
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           example: Reavaliação periódica do bem
           description: Denominação da Tarifa pactuada
         feeCode:
           type: string
           maxLength: 140
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           example: aval_bem
           description: Sigla identificadora da tarifa pactuada
         feeAmount:
@@ -1319,6 +1320,11 @@ components:
         meta:
           $ref: '#/components/schemas/Meta'
       additionalProperties: false
+    XFapiInteractionId:
+      type: string
+      pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
+      maxLength: 100
+      description: 'Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.'
   parameters:
     Authorization:
       name: Authorization
@@ -1337,7 +1343,7 @@ components:
       schema:
         type: string
         pattern: '^[a-zA-Z0-9][a-zA-Z0-9-]{0,99}$'
-        maxLength: 40
+        maxLength: 100
     page:
       name: page
       in: query
@@ -1416,7 +1422,7 @@ components:
       headers:
         x-fapi-interaction-id:
           schema:
-            $ref: '#/components/responses/OKResponseLoansContract/headers/x-fapi-interaction-id/schema'
+            $ref: '#/components/schemas/XFapiInteractionId'
       content:
         application/json:
           schema:
@@ -1426,10 +1432,7 @@ components:
       headers:
         x-fapi-interaction-id:
           schema:
-            type: string
-            pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
-            maxLength: 100
-            description: 'Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.'
+            $ref: '#/components/schemas/XFapiInteractionId'
       content:
         application/json:
           schema:
@@ -1439,7 +1442,7 @@ components:
       headers:
         x-fapi-interaction-id:
           schema:
-            $ref: '#/components/responses/OKResponseLoansContract/headers/x-fapi-interaction-id/schema'
+            $ref: '#/components/schemas/XFapiInteractionId'
       content:
         application/json:
           schema:
@@ -1449,7 +1452,7 @@ components:
       headers:
         x-fapi-interaction-id:
           schema:
-            $ref: '#/components/responses/OKResponseLoansContract/headers/x-fapi-interaction-id/schema'
+            $ref: '#/components/schemas/XFapiInteractionId'
       content:
         application/json:
           schema:
@@ -1459,7 +1462,7 @@ components:
       headers:
         x-fapi-interaction-id:
           schema:
-            $ref: '#/components/responses/OKResponseLoansContract/headers/x-fapi-interaction-id/schema'
+            $ref: '#/components/schemas/XFapiInteractionId'
       content:
         application/json:
           schema:

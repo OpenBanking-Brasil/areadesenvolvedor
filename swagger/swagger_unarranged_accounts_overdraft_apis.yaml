@@ -35,7 +35,7 @@ info:
     ### `/contracts/{contractId}/payments`
       - permissions:
         - GET: **UNARRANGED_ACCOUNTS_OVERDRAFT_PAYMENTS_READ**
-  version: 1.0.0-rc6.7
+  version: 1.0.0
   license:
     name: Apache 2.0
     url: 'https://www.apache.org/licenses/LICENSE-2.0'
@@ -356,12 +356,13 @@ components:
         contractId:
           type: string
           maxLength: 100
+          pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
           description: Um identificador único e imutável usado para identificar o contrato de uma operação de crédito. Este identificador não tem significado para o tomador do crédito
           example: xcjklompowsa279212650822221989319aadrtjk
         brandName:
           type: string
           maxLength: 80
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           description: 'Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes'
           example: Organização A
         companyCnpj:
@@ -602,13 +603,13 @@ components:
           type: string
           description: Denominação da Tarifa pactuada
           maxLength: 140
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           example: Saque a descoberto
         feeCode:
           type: string
           description: Sigla identificadora da tarifa avulsa fora da parcela
           maxLength: 140
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           example: Saque descoberto
         feeAmount:
           type: number
@@ -632,11 +633,11 @@ components:
           $ref: '#/components/schemas/ChargeType'
         chargeAdditionalInfo:
           type: string
+          pattern: '[\w\W\s]*'
+          example: Informações adicionais sobre encargos.
           description: |
             Campo para informações adicionais.
             [Restrição] Obrigatório se selecionada a opção 'OUTROS' em Tipo de encargo pactuado no contrato.
-          pattern: \w*\W*$|^NA$
-          example: Informações adicionais sobre encargos.
         chargeRate:
           type: number
           description: |
@@ -820,13 +821,13 @@ components:
         feeName:
           type: string
           maxLength: 140
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           description: Denominação da Tarifa pactuada
           example: Excesso em Conta
         feeCode:
           type: string
           maxLength: 140
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           description: Sigla identificadora da tarifa pactuada
           example: EXCESSO_CONTA
         feeChargeType:
@@ -926,7 +927,7 @@ components:
           $ref: '#/components/schemas/ChargeType'
         chargeAdditionalInfo:
           type: string
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           maxLength: 140
           example: Informações adicionais
           description: |
@@ -988,10 +989,10 @@ components:
         productName:
           type: string
           maxLength: 140
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
+          example: AD
           description: |
             "Denominação/Identificação do nome da Modalidade da Operação de Crédito divulgado ao cliente"
-          example: AD
         productType:
           $ref: '#/components/schemas/ProductType'
         productSubType:
@@ -1047,7 +1048,7 @@ components:
           $ref: '#/components/schemas/EnumContractInstalmentPeriodicity'
         instalmentPeriodicityAdditionalInfo:
           type: string
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           maxLength: 50
           example: Informações adicionais sobre periodicidade
           description: |
@@ -1086,7 +1087,7 @@ components:
           example: SAC
         amortizationScheduledAdditionalInfo:
           type: string
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           maxLength: 50
           example: NA
           description: |
@@ -1143,12 +1144,12 @@ components:
           $ref: '#/components/schemas/EnumContractReferentialRateIndexerSubType'
         referentialRateIndexerAdditionalInfo:
           type: string
+          maxLength: 140
+          pattern: '[\w\W\s]*'
+          example: Informações adicionais
           description: |
             Campo livre para complementar a informação relativa ao Tipo de taxa referencial ou indexador.
             [Restrição] Obrigatório para complementar a informação relativa ao Tipo de taxa referencial ou indexador, quando selecionada o tipo ou subtipo OUTRO.
-          maxLength: 140
-          pattern: \w*\W*
-          example: Informações adicionais
         preFixedRate:
           type: number
           description: |
@@ -1168,9 +1169,9 @@ components:
         additionalInfo:
           type: string
           maxLength: 1200
-          description: Texto com informações adicionais sobre a composição das taxas de juros pactuadas
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           example: Informações adicionais
+          description: Texto com informações adicionais sobre a composição das taxas de juros pactuadas
       additionalProperties: false
     ProductType:
       type: string
@@ -1266,6 +1267,46 @@ components:
           format: date-time
           example: '2021-05-21T08:30:00Z'
       additionalProperties: false
+    ResponseError:
+      type: object
+      required:
+        - errors
+      properties:
+        errors:
+          type: array
+          minItems: 1
+          maxItems: 13
+          items:
+            type: object
+            required:
+              - code
+              - title
+              - detail
+            properties:
+              code:
+                description: Código de erro específico do endpoint
+                type: string
+                pattern: '[\w\W\s]*'
+                maxLength: 255
+              title:
+                description: Título legível por humanos deste erro específico
+                type: string
+                pattern: '[\w\W\s]*'
+                maxLength: 255
+              detail:
+                description: Descrição legível por humanos deste erro específico
+                type: string
+                pattern: '[\w\W\s]*'
+                maxLength: 2048
+            additionalProperties: false
+        meta:
+          $ref: '#/components/schemas/Meta'
+      additionalProperties: false
+    XFapiInteractionId:
+      type: string
+      pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
+      maxLength: 100
+      description: 'Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.'
   parameters:
     Authorization:
       name: Authorization
@@ -1284,7 +1325,7 @@ components:
       schema:
         type: string
         pattern: '^[a-zA-Z0-9][a-zA-Z0-9-]{0,99}$'
-        maxLength: 40
+        maxLength: 100
     page:
       name: page
       in: query
@@ -1363,7 +1404,7 @@ components:
       headers:
         x-fapi-interaction-id:
           schema:
-            $ref: '#/components/responses/OKResponseUnarrangedAccountOverdraftContract/headers/x-fapi-interaction-id/schema'
+            $ref: '#/components/schemas/XFapiInteractionId'
       content:
         application/json:
           schema:
@@ -1373,10 +1414,7 @@ components:
       headers:
         x-fapi-interaction-id:
           schema:
-            type: string
-            pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
-            maxLength: 100
-            description: 'Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.'
+            $ref: '#/components/schemas/XFapiInteractionId'
       content:
         application/json:
           schema:
@@ -1386,7 +1424,7 @@ components:
       headers:
         x-fapi-interaction-id:
           schema:
-            $ref: '#/components/responses/OKResponseUnarrangedAccountOverdraftContract/headers/x-fapi-interaction-id/schema'
+            $ref: '#/components/schemas/XFapiInteractionId'
       content:
         application/json:
           schema:
@@ -1396,7 +1434,7 @@ components:
       headers:
         x-fapi-interaction-id:
           schema:
-            $ref: '#/components/responses/OKResponseUnarrangedAccountOverdraftContract/headers/x-fapi-interaction-id/schema'
+            $ref: '#/components/schemas/XFapiInteractionId'
       content:
         application/json:
           schema:
@@ -1406,7 +1444,7 @@ components:
       headers:
         x-fapi-interaction-id:
           schema:
-            $ref: '#/components/responses/OKResponseUnarrangedAccountOverdraftContract/headers/x-fapi-interaction-id/schema'
+            $ref: '#/components/schemas/XFapiInteractionId'
       content:
         application/json:
           schema:
@@ -1416,79 +1454,46 @@ components:
       content:
         application/json; charset=utf-8:
           schema:
-            $ref: '#/components/responses/NotFound/content/application~1json%3B%20charset%3Dutf-8/schema'
+            $ref: '#/components/schemas/ResponseError'
     Forbidden:
       description: O token tem escopo incorreto ou uma política de segurança foi violada
       content:
         application/json; charset=utf-8:
           schema:
-            $ref: '#/components/responses/NotFound/content/application~1json%3B%20charset%3Dutf-8/schema'
+            $ref: '#/components/schemas/ResponseError'
     InternalServerError:
       description: Ocorreu um erro no gateway da API ou no microsserviço
       content:
         application/json; charset=utf-8:
           schema:
-            $ref: '#/components/responses/NotFound/content/application~1json%3B%20charset%3Dutf-8/schema'
+            $ref: '#/components/schemas/ResponseError'
     MethodNotAllowed:
       description: O consumidor tentou acessar o recurso com um método não suportado
       content:
         application/json; charset=utf-8:
           schema:
-            $ref: '#/components/responses/NotFound/content/application~1json%3B%20charset%3Dutf-8/schema'
+            $ref: '#/components/schemas/ResponseError'
     NotAcceptable:
       description: A solicitação continha um cabeçalho Accept diferente dos tipos de mídia permitidos ou um conjunto de caracteres diferente de UTF-8
       content:
         application/json; charset=utf-8:
           schema:
-            $ref: '#/components/responses/NotFound/content/application~1json%3B%20charset%3Dutf-8/schema'
+            $ref: '#/components/schemas/ResponseError'
     NotFound:
       description: O recurso solicitado não existe ou não foi implementado
       content:
         application/json; charset=utf-8:
           schema:
-            type: object
-            required:
-              - errors
-            properties:
-              errors:
-                type: array
-                minItems: 1
-                maxItems: 13
-                items:
-                  type: object
-                  required:
-                    - code
-                    - title
-                    - detail
-                  properties:
-                    code:
-                      description: Código de erro específico do endpoint
-                      type: string
-                      pattern: '[\w\W\s]*'
-                      maxLength: 255
-                    title:
-                      description: Título legível por humanos deste erro específico
-                      type: string
-                      pattern: '[\w\W\s]*'
-                      maxLength: 255
-                    detail:
-                      description: Descrição legível por humanos deste erro específico
-                      type: string
-                      pattern: '[\w\W\s]*'
-                      maxLength: 2048
-                  additionalProperties: false
-              meta:
-                $ref: '#/components/schemas/Meta'
-            additionalProperties: false
+            $ref: '#/components/schemas/ResponseError'
     TooManyRequests:
       description: 'A operação foi recusada, pois muitas solicitações foram feitas dentro de um determinado período ou o limite global de requisições concorrentes foi atingido'
       content:
         application/json; charset=utf-8:
           schema:
-            $ref: '#/components/responses/NotFound/content/application~1json%3B%20charset%3Dutf-8/schema'
+            $ref: '#/components/schemas/ResponseError'
     Unauthorized:
       description: Cabeçalho de autenticação ausente/inválido ou token inválido
       content:
         application/json; charset=utf-8:
           schema:
-            $ref: '#/components/responses/NotFound/content/application~1json%3B%20charset%3Dutf-8/schema'
+            $ref: '#/components/schemas/ResponseError'

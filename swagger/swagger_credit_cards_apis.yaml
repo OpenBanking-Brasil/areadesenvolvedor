@@ -40,7 +40,7 @@ info:
     ### `/accounts/{creditCardAccountId}/transactions`
       - permissions:
         - GET: **CREDIT_CARDS_ACCOUNTS_TRANSACTIONS_READ**
-  version: 1.0.0-rc6.7
+  version: 1.0.0
   license:
     name: Apache 2.0
     url: 'https://www.apache.org/licenses/LICENSE-2.0'
@@ -334,7 +334,7 @@ components:
       properties:
         name:
           type: string
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           description: |
             Denominação/Identificação do nome da conta de pagamento pós-paga (cartão). Conforme CIRCULAR Nº 3.680,BCB, 2013: 'conta de pagamento pós-paga: destinada à execução de transações de pagamento que independem do aporte prévio de recursos'.
           maxLength: 50
@@ -343,7 +343,7 @@ components:
           $ref: '#/components/schemas/EnumCreditCardAccountsProductType'
         productAdditionalInfo:
           type: string
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           description: Informações complementares se tipo de Cartão 'OUTROS'
           maxLength: 50
           example: OURO_INTERNACIONAL
@@ -351,7 +351,7 @@ components:
           $ref: '#/components/schemas/EnumCreditCardAccountNetwork'
         networkAdditionalInfo:
           type: string
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           description: Texto livre para especificar categoria de bandeira marcada como 'OUTRAS'.
           maxLength: 50
           example: NA
@@ -445,7 +445,7 @@ components:
         additionalInfo:
           type: string
           maxLength: 140
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           example: Informações Adicionais
           description: 'Campo livre, de preenchimento obrigatório se selecionado tipo de encargo ''OUTROS'''
         amount:
@@ -522,7 +522,7 @@ components:
         brandName:
           type: string
           description: 'Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes'
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           maxLength: 80
           example: Organização A
         companyCnpj:
@@ -534,7 +534,7 @@ components:
         name:
           type: string
           description: 'Denominação/Identificação do nome da conta de pagamento pós-paga (cartão). Conforme CIRCULAR Nº 3.680,BCB, 2013: ''conta de pagamento pós-paga: destinada à execução de transações de pagamento que independem do aporte prévio de recursos'
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           maxLength: 50
           example: Cartão Universitário
         productType:
@@ -542,14 +542,14 @@ components:
         productAdditionalInfo:
           type: string
           description: Informações complementares se tipo de Cartão 'OUTROS'
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           maxLength: 50
         creditCardNetwork:
           $ref: '#/components/schemas/EnumCreditCardAccountNetwork'
         networkAdditionalInfo:
           type: string
           description: Texto livre para especificar categoria de bandeira marcada como 'OUTRAS'
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           maxLength: 50
           example: NA
       additionalProperties: false
@@ -557,7 +557,6 @@ components:
       type: object
       description: Conjunto de informações referentes aos limites da conta de pagamento pós-paga.
       required:
-        - currency
         - creditLineLimitType
         - consolidationType
         - identificationNumber
@@ -584,7 +583,7 @@ components:
           $ref: '#/components/schemas/EnumCreditCardAccountsLineName'
         lineNameAdditionalInfo:
           type: string
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           example: Informações adicionais e complementares.
           description: Campo de preenchimento obrigatório se selecionada a opção 'OUTRAS' em lineName.
         isLimitFlexible:
@@ -704,7 +703,7 @@ components:
         transactionName:
           type: string
           maxLength: 100
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           example: PGTO
           description: Campo de livre preenchimento. Literal usada na instituição financeira para identificar a transação
         billId:
@@ -738,7 +737,7 @@ components:
         chargeIdentificator:
           type: string
           maxLength: 50
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           example: PARCELA_1
           description: Identificador da parcela que está sendo informada. Campo de livre preenchimento
         chargeNumber:
@@ -1148,6 +1147,11 @@ components:
         meta:
           $ref: '#/components/schemas/Meta'
       additionalProperties: false
+    XFapiInteractionId:
+      type: string
+      pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
+      maxLength: 100
+      description: 'Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.'
   parameters:
     Authorization:
       name: Authorization
@@ -1309,12 +1313,8 @@ components:
       description: Conjunto de informações das Contas de pagamento pós paga
       headers:
         x-fapi-interaction-id:
-          description: 'Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.'
           schema:
-            type: string
-            pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
-            maxLength: 100
-            description: 'Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.'
+            $ref: '#/components/schemas/XFapiInteractionId'
       content:
         application/json:
           schema:
@@ -1323,12 +1323,8 @@ components:
       description: Dados de identificação da conta identificada por creditCardAccountId obtidos com sucesso.
       headers:
         x-fapi-interaction-id:
-          description: 'Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.'
           schema:
-            type: string
-            pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
-            maxLength: 100
-            description: 'Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.'
+            $ref: '#/components/schemas/XFapiInteractionId'
       content:
         application/json:
           schema:
@@ -1337,12 +1333,8 @@ components:
       description: Dados referentes à lista de faturas da conta identificada por creditCardAccountId obtidos com sucesso.
       headers:
         x-fapi-interaction-id:
-          description: 'Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.'
           schema:
-            type: string
-            pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
-            maxLength: 100
-            description: 'Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.'
+            $ref: '#/components/schemas/XFapiInteractionId'
       content:
         application/json:
           schema:
@@ -1351,12 +1343,8 @@ components:
       description: Dados dos limites da conta identificada por creditCardAccountId obtidos com sucesso.
       headers:
         x-fapi-interaction-id:
-          description: 'Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.'
           schema:
-            type: string
-            pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
-            maxLength: 100
-            description: 'Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.'
+            $ref: '#/components/schemas/XFapiInteractionId'
       content:
         application/json:
           schema:
@@ -1365,12 +1353,8 @@ components:
       description: Dados das lista de transações da conta identificada obtidos com sucesso.
       headers:
         x-fapi-interaction-id:
-          description: 'Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.'
           schema:
-            type: string
-            pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
-            maxLength: 100
-            description: 'Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.'
+            $ref: '#/components/schemas/XFapiInteractionId'
       content:
         application/json:
           schema:
