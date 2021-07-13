@@ -36,7 +36,7 @@ info:
     ### `/contracts/{contractId}/payments`
       - permissions:
         - GET: **FINANCINGS_PAYMENTS_READ**
-  version: 1.0.0
+  version: 1.0.2
   license:
     name: Apache 2.0
     url: 'https://www.apache.org/licenses/LICENSE-2.0'
@@ -465,38 +465,37 @@ components:
           example: TJLP
         referentialRateIndexerAdditionalInfo:
           type: string
-          description: |
-            Campo livre para complementar a informação relativa ao Tipo de taxa referencial ou indexador.
-            [Restrição] Obrigatório para complementar a informação relativa ao Tipo de taxa referencial ou indexador, quando selecionada o tipo ou subtipo OUTRO.
           maxLength: 140
           pattern: '[\w\W\s]*'
           example: Informações adicionais
+          description: |
+            Campo livre para complementar a informação relativa ao Tipo de taxa referencial ou indexador.
+            [Restrição] Obrigatório para complementar a informação relativa ao Tipo de taxa referencial ou indexador, quando selecionada o tipo ou subtipo OUTRO.
         preFixedRate:
           type: number
+          maxLength: 19
+          example: 0.6
           description: |
             Taxa pré fixada aplicada sob o contrato da modalidade crédito.
             p.ex. 0.0045. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros
             (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)
-          maxLength: 19
-          example: 0.6
-          nullable: true
         postFixedRate:
           type: number
+          maxLength: 19
+          nullable: true
+          example: 0.55
           description: |
             Taxa pós fixada aplicada sob o contrato da modalidade crédito.
             p.ex. 0.0045 .O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros
             (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)
-          maxLength: 19
-          nullable: true
-          example: 0.55
         additionalInfo:
           type: string
           maxLength: 1200
+          pattern: '[\w\W\s]*'
+          example: Informações adicionais
           description: |
             Texto com informações adicionais sobre a composição das taxas de juros pactuadas.
             [Restrição] Caso a instituição não possua a informação para compartilhamento, informar "NA".
-          pattern: '[\w\W\s]*'
-          example: Informações adicionais
       additionalProperties: false
     FinancingsBalloonPayment:
       type: object
@@ -698,7 +697,6 @@ components:
             CET – Custo Efetivo Total deve ser expresso na forma de taxa percentual anual e   incorpora todos os encargos e despesas incidentes nas operações de crédito (taxa de juro, mas também tarifas, tributos, seguros e outras despesas cobradas).
             O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros
             (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)
-          nullable: true
         amortizationScheduled:
           type: string
           description: |
@@ -727,20 +725,17 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/FinancingsContractInterestRate'
-          nullable: true
         contractedFees:
           type: array
           items:
             $ref: '#/components/schemas/FinancingsContractFee'
           minItems: 1
-          nullable: true
         contractedFinanceCharges:
           type: array
           description: Lista que traz os encargos pactuados no contrato
           items:
             $ref: '#/components/schemas/FinancingsFinanceCharge'
           minItems: 1
-          nullable: true
       additionalProperties: false
     FinancingsContractFee:
       type: object
@@ -1006,13 +1001,11 @@ components:
           items:
             $ref: '#/components/schemas/FinancingsFeeOverParcel'
           description: 'Lista das tarifas que foram pagas fora da parcela, só para pagamento avulso.'
-          nullable: true
         charges:
           type: array
           items:
             $ref: '#/components/schemas/FinancingsChargeOverParcel'
           description: Lista dos encargos que foram pagos fora da parcela.
-          nullable: true
       additionalProperties: false
     FinancingsPayments:
       type: object
@@ -1036,13 +1029,11 @@ components:
           maxLength: 20
           minLength: 0
           example: 100000.04
-          nullable: true
         releases:
           type: array
           description: Lista dos pagamentos realizados no período
           items:
             $ref: '#/components/schemas/FinancingsReleases'
-          nullable: true
       additionalProperties: false
     FinancingsReleases:
       type: object
@@ -1065,7 +1056,6 @@ components:
           type: boolean
           example: true
           description: Identifica se é um pagamento pactuado (false) ou avulso (true).
-          nullable: true
         instalmentId:
           type: string
           maxLength: 100
@@ -1097,7 +1087,6 @@ components:
           description: |
             Valor do pagamento referente ao  contrato da modalidade de crédito consultada.
             Expresso em valor monetário com até 4 casas decimais.
-          nullable: true
         overParcel:
           $ref: '#/components/schemas/FinancingsOverParcel'
       additionalProperties: false
@@ -1195,12 +1184,11 @@ components:
         warrantyAmount:
           type: number
           format: double
-          pattern: '^-?\d{1,15}\.\d{2,4}$'
           maxLength: 20
+          pattern: '^-?\d{1,15}\.\d{2,4}$'
+          example: 200.0001
           description: |
             Valor original da garantia. Valor monetário, expresso com até 4 casas decimais.
-          example: 200.0001
-          nullable: true
       additionalProperties: false
     Meta:
       type: object
