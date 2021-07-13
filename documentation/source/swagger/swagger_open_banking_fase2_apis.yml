@@ -23,13 +23,13 @@ info:
     - I - até cinco minutos, com relação aos dados relativos ao saldo e às transações realizadas em conta de depósitos ou de pagamento
 
     - II - até uma hora, para os demais casos.    
-  version: 1.0.0
+  version: 1.0.2
 tags:
   - name: API - Consentimento
     description: |
       |Versão|
       |:-----|
-      |1.0.0|
+      |1.0.2|
 
       ### Visão Geral
 
@@ -42,7 +42,7 @@ tags:
     description: |
       |Versão|
       |:-----|
-      |1.0.0|
+      |1.0.2|
 
       ### Visão Geral
 
@@ -55,7 +55,7 @@ tags:
     description: |
       |Versão|
       |:-----|
-      |1.0.0|
+      |1.0.2|
 
       ### Visão Geral
 
@@ -68,7 +68,7 @@ tags:
     description: |
       |Versão|
       |:-----|
-      |1.0.0-rc6.7|
+      |1.0.0|
 
       ### Visão Geral
 
@@ -81,7 +81,7 @@ tags:
     description: |
       |Versão|
       |:-----|
-      |1.0.0-rc6.7|
+      |1.0.1|
 
       ### Visão Geral
 
@@ -94,7 +94,7 @@ tags:
     description: |
       |Versão|
       |:-----|
-      |1.0.0-rc6.7|
+      |1.0.0|
 
       ### Visão Geral
 
@@ -107,7 +107,7 @@ tags:
     description: |
       |Versão|
       |:-----|
-      |1.0.0-rc6.7|
+      |1.0.0|
 
       ### Visão Geral
 
@@ -120,7 +120,7 @@ tags:
     description: |
       |Versão|
       |:-----|
-      |1.0.0-rc6.7|
+      |1.0.0|
 
       ### Visão Geral
 
@@ -133,7 +133,7 @@ tags:
     description: |
       |Versão|
       |:-----|
-      |1.0.0-rc6.7|
+      |1.0.0|
 
       ### Visão Geral
 
@@ -3325,7 +3325,7 @@ components:
           type: string
           description: 'Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes.'
           maxLength: 80
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           example: Organização A
         companyCnpj:
           type: string
@@ -3356,7 +3356,7 @@ components:
         checkDigit:
           type: string
           description: Dígito da conta
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           maxLength: 1
           example: '4'
         accountId:
@@ -3402,7 +3402,7 @@ components:
         checkDigit:
           type: string
           maxLength: 1
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           description: |
             Dígito da conta
           example: '4'
@@ -3563,7 +3563,7 @@ components:
         transactionName:
           type: string
           maxLength: 60
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           description: Campo livre que corresponde ao identificador da transação na instituição financeira
           example: TRANSFCWAR5TXHCX5I9IDBHML8082N8NEO30M6LNNG7ANAYIJYRM00ZBZPU8
         type:
@@ -3600,14 +3600,16 @@ components:
           example: '43908445778'
         partiePersonType:
           type: string
+          nullable: true
+          enum:
+            - PESSOA_NATURAL
+            - PESSOA_JURIDICA
+            - null
+          example: PESSOA_NATURAL
           description: |
             Identificação do Tipo de Pessoa da pessoa envolvida na transação.
             Pessoa Natural - Informar CPF no campo “payerCnpjCpf”
             Pessoa Jurídica - Informar CNPJ no campo “payerCnpjCpf”
-          enum:
-            - PESSOA_NATURAL
-            - PESSOA_JURIDICA
-          example: PESSOA_NATURAL
         partieCompeCode:
           type: string
           maxLength: 3
@@ -3629,7 +3631,7 @@ components:
         partieCheckDigit:
           type: string
           maxLength: 1
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           description: Dígito da conta da pessoa envolvida na transação
           example: '4'
       additionalProperties: false
@@ -3663,14 +3665,12 @@ components:
           maxItems: 12
           items:
             $ref: '#/components/schemas/EnumProductServiceType'
-          nullable: true
         procurators:
           type: array
           items:
             $ref: '#/components/schemas/BusinessProcurator'
           minItems: 1
           description: Lista dos representantes. De preenchimento obrigatório se houver representante.
-          nullable: true
         accounts:
           type: array
           items:
@@ -3715,7 +3715,6 @@ components:
           minItems: 1
           description: |
             Lista de contas depósito à vista, poupança e pagamento pré-pagas mantidas pelo cliente na instituição transmissora.    
-          nullable: true
       additionalProperties: false
     BusinessIdentificationData:
       type: object
@@ -3800,7 +3799,6 @@ components:
           minItems: 1
           description: |
             Lista relativa às informações das partes envolvidas, como: sócio e /ou administrador
-          nullable: true
         contacts:
           $ref: '#/components/schemas/BusinessContacts'
     BusinessOtherDocument:
@@ -3889,7 +3887,6 @@ components:
             $ref: '#/components/schemas/EconomicActivity'
           minItems: 1
           description: 'Lista dos demais códigos relativos às demais atividades econômicas da empresa, segundo padrão CNAE (Classificação Nacional de Atividades Econômicas). De preenchimento obrigatório, se houver'
-          nullable: true
         informedRevenue:
           type: object
           required:
@@ -4080,6 +4077,7 @@ components:
             $ref: '#/components/schemas/CreditCardAccountsBillsPayment'
           minItems: 1
           description: Lista que traz os valores relativos aos pagamentos da Fatura da conta de pagamento pós-paga
+          nullable: true
       additionalProperties: false
     CreditCardAccountsBillsFinanceCharge:
       type: object
@@ -4093,7 +4091,7 @@ components:
         additionalInfo:
           type: string
           maxLength: 140
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           example: Informações Adicionais
           description: 'Campo livre, de preenchimento obrigatório se selecionado tipo de encargo ''OUTROS'''
         amount:
@@ -4170,7 +4168,7 @@ components:
         brandName:
           type: string
           description: 'Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes'
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           maxLength: 80
           example: Organização A
         companyCnpj:
@@ -4182,7 +4180,7 @@ components:
         name:
           type: string
           description: 'Denominação/Identificação do nome da conta de pagamento pós-paga (cartão). Conforme CIRCULAR Nº 3.680,BCB, 2013: ''conta de pagamento pós-paga: destinada à execução de transações de pagamento que independem do aporte prévio de recursos'
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           maxLength: 50
           example: Cartão Universitário
         productType:
@@ -4190,14 +4188,14 @@ components:
         productAdditionalInfo:
           type: string
           description: Informações complementares se tipo de Cartão 'OUTROS'
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           maxLength: 50
         creditCardNetwork:
           $ref: '#/components/schemas/EnumCreditCardAccountNetwork'
         networkAdditionalInfo:
           type: string
           description: Texto livre para especificar categoria de bandeira marcada como 'OUTRAS'
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           maxLength: 50
           example: NA
       additionalProperties: false
@@ -4212,7 +4210,7 @@ components:
       properties:
         name:
           type: string
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           description: |
             Denominação/Identificação do nome da conta de pagamento pós-paga (cartão). Conforme CIRCULAR Nº 3.680,BCB, 2013: 'conta de pagamento pós-paga: destinada à execução de transações de pagamento que independem do aporte prévio de recursos'.
           maxLength: 50
@@ -4221,7 +4219,7 @@ components:
           $ref: '#/components/schemas/EnumCreditCardAccountsProductType'
         productAdditionalInfo:
           type: string
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           description: Informações complementares se tipo de Cartão 'OUTROS'
           maxLength: 50
           example: OURO_INTERNACIONAL
@@ -4229,7 +4227,7 @@ components:
           $ref: '#/components/schemas/EnumCreditCardAccountNetwork'
         networkAdditionalInfo:
           type: string
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           description: Texto livre para especificar categoria de bandeira marcada como 'OUTRAS'.
           maxLength: 50
           example: NA
@@ -4269,7 +4267,7 @@ components:
           $ref: '#/components/schemas/EnumCreditCardAccountsLineName'
         lineNameAdditionalInfo:
           type: string
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           example: Informações adicionais e complementares.
           description: Campo de preenchimento obrigatório se selecionada a opção 'OUTRAS' em lineName.
         isLimitFlexible:
@@ -4369,7 +4367,7 @@ components:
         transactionName:
           type: string
           maxLength: 100
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           example: PGTO
           description: Campo de livre preenchimento. Literal usada na instituição financeira para identificar a transação
         billId:
@@ -4403,7 +4401,7 @@ components:
         chargeIdentificator:
           type: string
           maxLength: 50
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           example: PARCELA_1
           description: Identificador da parcela que está sendo informada. Campo de livre preenchimento
         chargeNumber:
@@ -4503,21 +4501,18 @@ components:
             $ref: '#/components/schemas/BusinessPostalAddress'
           minItems: 1
           description: Lista de endereços da pessoa jurídica
-          nullable: true
         phones:
           type: array
           items:
             $ref: '#/components/schemas/CustomerPhone'
           minItems: 1
           description: Lista com telefones de contato da pessoa jurídica
-          nullable: true
         emails:
           type: array
           items:
             $ref: '#/components/schemas/CustomerEmail'
           minItems: 1
           description: Lista e-mails de contato
-          nullable: true
       additionalProperties: false
     PersonalContacts:
       type: object
@@ -4533,21 +4528,18 @@ components:
             $ref: '#/components/schemas/PersonalPostalAddress'
           minItems: 1
           description: Lista de endereços da pessoa natural
-          nullable: true
         phones:
           type: array
           items:
             $ref: '#/components/schemas/CustomerPhone'
           minItems: 1
           description: Lista com telefones de contato da pessoa natural
-          nullable: true
         emails:
           type: array
           items:
             $ref: '#/components/schemas/CustomerEmail'
           minItems: 1
           description: Lista e-mails de contato
-          nullable: true
       additionalProperties: false
     CustomerEmail:
       type: object
@@ -4559,7 +4551,6 @@ components:
           type: boolean
           description: Indica se o email informado é o principal
           example: true
-          nullable: true
         email:
           type: string
           description: Endereço de email
@@ -4581,7 +4572,6 @@ components:
           type: boolean
           description: Indica se o telefone informado é o principal
           example: true
-          nullable: true
         type:
           $ref: '#/components/schemas/EnumCustomerPhoneType'
         additionalInfo:
@@ -4626,7 +4616,6 @@ components:
           type: boolean
           example: true
           description: Indica se o endereço informado é o principal
-          nullable: true
         address:
           type: string
           maxLength: 150
@@ -4696,7 +4685,6 @@ components:
           type: boolean
           example: true
           description: Indica se o endereço informado é o principal.
-          nullable: true
         address:
           type: string
           maxLength: 150
@@ -4764,12 +4752,10 @@ components:
           description: |
             Traz o código do ramo da atividade principal da empresa consultada, segundo padrão CNAE (Classificação Nacional de Atividades Econômicas)
           example: 8599604
-          nullable: true
         isMain:
           type: boolean
           description: Indica se é o ramo principal de atividade da empresa quando true e se é o ramo secundário quando false.
           example: true
-          nullable: true
     EnumAccountSubType:
       type: string
       enum:
@@ -5157,8 +5143,6 @@ components:
       example: DIARIA
     EnumMaritalStatusCode:
       type: string
-      description: |
-        Estado marital do cliente. 
       enum:
         - SOLTEIRO
         - CASADO
@@ -5168,14 +5152,17 @@ components:
         - UNIAO_ESTAVEL
         - OUTRO
       example: SOLTEIRO
+      description: |
+        Estado marital do cliente. 
     EnumOccupationMainCodeType:
       type: string
-      description: |
-        Traz a relação dos códigos relativos à ocupação.
       enum:
         - RECEITA_FEDERAL
         - CBO
         - OUTRO
+      example: RECEITA_FEDERAL
+      description: |
+        Traz a relação dos códigos relativos à ocupação.
     EnumBalanceType:
       type: string
       enum:
@@ -5579,14 +5566,14 @@ components:
         Relação dos Códigos dos demais documentos pessoa natural.
     EnumSex:
       type: string
-      description: |
-        "Conjunto de características anatomofisiológicas que distinguem o homem e a mulher: Sexo masculino; sexo feminino". 
-        No caso de não ser feminino nem masculino é classificado como 'OUTRO'
       enum:
         - FEMININO
         - MASCULINO
         - OUTRO
       example: FEMININO
+      description: |
+        "Conjunto de características anatomofisiológicas que distinguem o homem e a mulher: Sexo masculino; sexo feminino". 
+        No caso de não ser feminino nem masculino é classificado como 'OUTRO'
     EnumOverdraftLimitType:
       type: string
       enum:
@@ -5748,7 +5735,7 @@ components:
           $ref: '#/components/schemas/EnumContractFinanceChargeType'
         chargeAdditionalInfo:
           type: string
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           maxLength: 140
           example: Informações adicionais
           description: |
@@ -5828,7 +5815,7 @@ components:
         productName:
           type: string
           maxLength: 140
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           example: Crédito Pessoal Consignado
           description: |
             Denominação/Identificação do nome da Modalidade da Operação de Crédito divulgado ao cliente
@@ -5887,7 +5874,7 @@ components:
           $ref: '#/components/schemas/EnumContractInstalmentPeriodicity'
         instalmentPeriodicityAdditionalInfo:
           type: string
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           maxLength: 50
           example: Informações adicionais sobre periodicidade
           description: |
@@ -5908,11 +5895,12 @@ components:
             CET – Custo Efetivo Total deve ser expresso na forma de taxa percentual anual e   incorpora todos os encargos e despesas incidentes nas operações de crédito (taxa de juro, mas também tarifas, tributos, seguros e outras despesas cobradas).
             O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros
             (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)
+          nullable: true
         amortizationScheduled:
           $ref: '#/components/schemas/EnumContractAmortizationScheduled'
         amortizationScheduledAdditionalInfo:
           type: string
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           maxLength: 50
           example: NA
           description: |
@@ -5922,17 +5910,20 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/FinancingsContractInterestRate'
+          nullable: true
         contractedFees:
           type: array
           items:
             $ref: '#/components/schemas/FinancingsContractedFee'
           minItems: 1
+          nullable: true
         contractedFinanceCharges:
           type: array
           description: Lista que traz os encargos pactuados no contrato
           items:
             $ref: '#/components/schemas/FinancingsFinanceCharge'
           minItems: 1
+          nullable: true
       additionalProperties: false
     FinancingsContractedFee:
       type: object
@@ -5948,13 +5939,13 @@ components:
         feeName:
           type: string
           maxLength: 140
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           description: Denominação da Tarifa pactuada
           example: Excesso em Conta
         feeCode:
           type: string
           maxLength: 140
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           description: Sigla identificadora da tarifa pactuada
           example: EXCESSO_CONTA
         feeChargeType:
@@ -6041,7 +6032,7 @@ components:
             Campo livre para complementar a informação relativa ao Tipo de taxa referencial ou indexador.
             [Restrição] Obrigatório para complementar a informação relativa ao Tipo de taxa referencial ou indexador, quando selecionada o tipo ou subtipo OUTRO.
           maxLength: 140
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           example: Informações adicionais
         preFixedRate:
           type: number
@@ -6051,6 +6042,7 @@ components:
             (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)
           maxLength: 19
           example: 0.6
+          nullable: true
         postFixedRate:
           type: number
           description: |
@@ -6066,7 +6058,7 @@ components:
           description: |
             Texto com informações adicionais sobre a composição das taxas de juros pactuadas.
             [Restrição] Caso a instituição não possua a informação para compartilhamento, informar "NA".
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           example: Informações adicionais
       additionalProperties: false
     FinancingsFinanceCharge:
@@ -6083,7 +6075,7 @@ components:
           description: |
             Campo de preenchimento obrigatório se selecionada a opção 'OUTROS' em Tipo de encargo pactuado no contrato.
             [Restrição] Obrigatório se selecionada a opção 'OUTROS' em Tipo de encargo pactuado no contrato.
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           example: Informações adicionais sobre encargos.
         chargeRate:
           type: number
@@ -6169,12 +6161,13 @@ components:
       properties:
         contractId:
           type: string
+          pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
           maxLength: 100
           example: '92792126019929279212650822221989319252576'
           description: 'Identifica de forma única o contrato da operação de crédito do cliente, mantendo as regras de imutabilidade dentro da instituição transmissora.'
         brandName:
           type: string
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           maxLength: 80
           example: Organização A
           description: 'Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes'
@@ -6225,11 +6218,13 @@ components:
           maxLength: 20
           minLength: 0
           example: 100000.04
+          nullable: true
         releases:
           type: array
           description: Lista dos pagamentos realizados no período
           items:
             $ref: '#/components/schemas/FinancingsReleases'
+          nullable: true
       additionalProperties: false
     FinancingsReleases:
       type: object
@@ -6252,6 +6247,7 @@ components:
           type: boolean
           example: true
           description: Identifica se é um pagamento pactuado (false) ou avulso (true).
+          nullable: true
         instalmentId:
           type: string
           maxLength: 100
@@ -6283,6 +6279,7 @@ components:
           description: |
             Valor do pagamento referente ao  contrato da modalidade de crédito consultada.
             Expresso em valor monetário com até 4 casas decimais.
+          nullable: true
         overParcel:
           type: object
           description: Objeto das tarifas e encargos que foram pagos fora da parcela.
@@ -6302,13 +6299,13 @@ components:
                   feeName:
                     type: string
                     maxLength: 140
-                    pattern: \w*\W*
+                    pattern: '[\w\W\s]*'
                     example: Reavaliação periódica do bem
                     description: Denominação da Tarifa pactuada
                   feeCode:
                     type: string
                     maxLength: 140
-                    pattern: \w*\W*
+                    pattern: '[\w\W\s]*'
                     example: aval_bem
                     description: Sigla identificadora da tarifa pactuada
                   feeAmount:
@@ -6324,11 +6321,13 @@ components:
                       [Restrição] Preenchimento obrigatório quando a forma de cobrança for: Mínimo, Máximo ou Fixo
                 additionalProperties: false
               description: 'Lista das tarifas que foram pagas fora da parcela, só para pagamento avulso.'
+              nullable: true
             charges:
               type: array
               items:
                 $ref: '#/components/schemas/FinancingsChargeOverParcel'
               description: Lista dos encargos que foram pagos fora da parcela.
+              nullable: true
           additionalProperties: false
       additionalProperties: false
     FinancingsTaxesOverParcel:
@@ -6382,6 +6381,7 @@ components:
           description: |
             Valor original da garantia. Valor monetário, expresso com até 4 casas decimais.
           example: 200.0001
+          nullable: true
       additionalProperties: false
     GeographicCoordinates:
       type: object
@@ -6458,7 +6458,8 @@ components:
         chargeAdditionalInfo:
           type: string
           description: Campo de preenchimento obrigatório se selecionada a opção 'OUTROS' em Tipo de encargo pago fora da parcela
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
+          example: Informações adicionais
           maxLength: 140
         chargeAmount:
           description: Valor do pagamento do encargo pago fora da parcela. Expresso em valor monetário com até 4 casas decimais.
@@ -6483,7 +6484,7 @@ components:
           maxLength: 10
           example: '2020-01-10'
         dueAmount:
-          type: string
+          type: number
           description: Traz o valor do pagamento do contrato da modalidade de crédito consultada. Expresso em valor monetário com 2 casas decimais
           maxLength: 12
           example: '200.00'
@@ -6533,7 +6534,7 @@ components:
         productName:
           type: string
           maxLength: 140
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           example: AD
           description: |
             Denominação/Identificação do nome da Modalidade da Operação de Crédito divulgado ao cliente
@@ -6592,7 +6593,7 @@ components:
           $ref: '#/components/schemas/EnumContractInstalmentPeriodicity'
         instalmentPeriodicityAdditionalInfo:
           type: string
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           maxLength: 50
           example: Informações adicionais sobre periodicidade
           description: |
@@ -6607,17 +6608,19 @@ components:
           description: Data de vencimento primeira parcela do principal
         CET:
           type: number
+          format: double
           maxLength: 19
           example: 0.29
           description: |
             CET – Custo Efetivo Total deve ser expresso na forma de taxa percentual anual e   incorpora todos os encargos e despesas incidentes nas operações de crédito (taxa de juro, mas também tarifas, tributos, seguros e outras despesas cobradas).
             O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros
             (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)
+          nullable: true
         amortizationScheduled:
           $ref: '#/components/schemas/EnumContractAmortizationScheduled'
         amortizationScheduledAdditionalInfo:
           type: string
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           maxLength: 50
           example: NA
           description: |
@@ -6627,17 +6630,20 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/InvoiceFinancingsContractInterestRate'
+          nullable: true
         contractedFees:
           type: array
           items:
             $ref: '#/components/schemas/InvoiceFinancingsContractedFee'
           minItems: 1
+          nullable: true
         contractedFinanceCharges:
           type: array
           description: Lista que traz os encargos pactuados no contrato
           items:
             $ref: '#/components/schemas/InvoiceFinancingsFinanceCharge'
           minItems: 1
+          nullable: true
       additionalProperties: false
     InvoiceFinancingsContractData:
       type: object
@@ -6652,13 +6658,14 @@ components:
       properties:
         contractId:
           type: string
+          pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
           maxLength: 100
           example: '92792126019929279212650822221989319252576'
           description: 'Identifica de forma única o contrato da operação de crédito do cliente, mantendo as regras de imutabilidade dentro da instituição transmissora.'
         brandName:
           type: string
           description: 'Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes'
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           maxLength: 80
           example: Organização A
         companyCnpj:
@@ -6700,13 +6707,13 @@ components:
         feeName:
           type: string
           maxLength: 140
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           description: Denominação da Tarifa pactuada
           example: Excesso em Conta
         feeCode:
           type: string
           maxLength: 140
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           description: Sigla identificadora da tarifa pactuada
           example: EXCESSO_CONTA
         feeChargeType:
@@ -6759,6 +6766,7 @@ components:
           maxLength: 20
           minLength: 0
           example: 100000.04
+          nullable: true
       additionalProperties: false
     InvoiceFinancingsContractInterestRate:
       type: object
@@ -6791,18 +6799,21 @@ components:
             Campo livre para complementar a informação relativa ao Tipo de taxa referencial ou indexador.
             [Restrição] Obrigatório para complementar a informação relativa ao Tipo de taxa referencial ou indexador, quando selecionada o tipo ou subtipo OUTRO.
           maxLength: 140
-          pattern: \w*\W*
-          example: ''
+          pattern: '[\w\W\s]*'
+          example: Informações adicionais de Indexador ou tipo de taxa referencial
         preFixedRate:
           type: number
+          format: double
           description: |
             Taxa pré fixada aplicada sob o contrato da modalidade crédito.
             p.ex. 0.0045. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros
             (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)
           maxLength: 19
           example: 0.6
+          nullable: true
         postFixedRate:
           type: number
+          format: double
           description: |
             Taxa pós fixada aplicada sob o contrato da modalidade crédito.
             p.ex. 0.0045 .O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros
@@ -6814,8 +6825,8 @@ components:
           type: string
           maxLength: 1200
           description: Texto com informações adicionais sobre a composição das taxas de juros pactuadas
-          pattern: \w*\W*
-          example: ''
+          pattern: '[\w\W\s]*'
+          example: Informações adicionais
       additionalProperties: false
     InvoiceFinancingsFinanceCharge:
       type: object
@@ -6830,8 +6841,9 @@ components:
           type: string
           description: |
             Campos para informações adicionais.
-            [Restrição] Obrigatório se selecionada a opção 'OUTROS' em Tipo de encargo pactuado no contrato.
-          pattern: \w*\W*$|^NA$
+            [Restrição] Obrigatório se selecionada a opção 'OUTROS' em Tipo de encargo pactuado no contrato. Pode ser retornado NA caso a Instituição não possua essa informação.
+          pattern: '[\w\W\s]*'
+          example: Informações adicionais sobre encargos
         chargeRate:
           type: number
           description: |
@@ -6935,11 +6947,13 @@ components:
           pattern: '^-?\d{1,15}\.\d{2,4}$'
           example: 100000.04
           description: Valor necessario para o cliente liquidar a dívida.
+          nullable: true
         releases:
           type: array
           items:
             $ref: '#/components/schemas/InvoiceFinancingsReleases'
           description: Lista dos pagamentos realizados no período.
+          nullable: true
       additionalProperties: false
     InvoiceFinancingsReleases:
       type: object
@@ -6955,15 +6969,18 @@ components:
         paymentId:
           type: string
           maxLength: 100
+          pattern: '[\w\W\s]*'
           example: Parcela regular
           description: Identificador de pagamento de responsabilidade de cada Instituição transmissora.
         isOverParcelPayment:
           type: boolean
           example: true
           description: Identifica se é um pagamento pactuado (false) ou avulso (true).
+          nullable: true
         instalmentId:
           type: string
           maxLength: 100
+          pattern: '[\w\W\s]*'
           example: '15'
           description: 'Identificador de parcela, de responsabilidade de cada Instituição transmissora.'
         paidDate:
@@ -6991,6 +7008,7 @@ components:
           description: |
             Valor do pagamento referente ao  contrato da modalidade de crédito consultada.
             Expresso em valor monetário com até 4 casas decimais.
+          nullable: true
         overParcel:
           type: object
           description: Objeto das tarifas e encargos que foram pagos fora da parcela.
@@ -7010,13 +7028,13 @@ components:
                   feeName:
                     type: string
                     maxLength: 140
-                    pattern: \w*\W*
+                    pattern: '[\w\W\s]*'
                     description: Denominação da Tarifa pactuada
                     example: Excesso em Conta
                   feeCode:
                     type: string
                     maxLength: 140
-                    pattern: \w*\W*
+                    pattern: '[\w\W\s]*'
                     description: Sigla identificadora da tarifa pactuada
                     example: EXCESSO_CONTA
                   feeAmount:
@@ -7031,11 +7049,13 @@ components:
                     example: 100000.04
                 additionalProperties: false
               description: 'Lista das tarifas que foram pagas fora da parcela, só para pagamento avulso.'
+              nullable: true
             charges:
               type: array
               items:
                 $ref: '#/components/schemas/InvoiceFinancingsChargeOverParcel'
               description: Lista dos encargos que foram pagos fora da parcela.
+              nullable: true
           additionalProperties: false
       additionalProperties: false
     InvoiceFinancingsTaxesOverParcel:
@@ -7054,7 +7074,7 @@ components:
           type: string
           description: Texto livre de responsabilidade de cada Instituição transmissora para identificar o pagamento informado
           maxLength: 80
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           example: Parcela regular
         isOverParcelPayment:
           type: boolean
@@ -7064,7 +7084,7 @@ components:
           type: string
           description: Texto livre de responsabilidade de cada Instituição transmissora para identificar a parcela informada
           maxLength: 40
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           example: '15'
         paidDate:
           description: 'Traz a data de efetivação do pagamento referente ao contrato da modalidade de crédito consultada, conforme especificação RFC-3339.'
@@ -7108,13 +7128,13 @@ components:
                     type: string
                     description: Denominação da Tarifa avulsa paga fora da parcela
                     maxLength: 250
-                    pattern: \w*\W*
+                    pattern: '[\w\W\s]*'
                     example: reavaliação periódica do bem
                   feeCode:
                     type: string
                     description: Sigla identificadora da tarifa avulsa fora da parcela
                     maxLength: 140
-                    pattern: \w*\W*
+                    pattern: '[\w\W\s]*'
                     example: aval_bem
                   feeAmount:
                     description: Valor do pagamento do encargo pago fora da parcela. Expresso em valor monetário com até 4 casas decimais.
@@ -7150,7 +7170,7 @@ components:
                   chargeAdditionalInfo:
                     type: string
                     description: Campo de preenchimento obrigatório se selecionada a opção 'OUTROS' em Tipo de encargo pago fora da parcela
-                    pattern: \w*\W*
+                    pattern: '[\w\W\s]*'
                     maxLength: 140
                     example: Informações Adicionais
                   chargeAmount:
@@ -7247,12 +7267,13 @@ components:
       properties:
         contractId:
           type: string
+          pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
           maxLength: 100
           example: '92792126019929279212650822221989319252576'
           description: 'Identifica de forma única o contrato da operação de crédito do cliente, mantendo as regras de imutabilidade dentro da instituição transmissora.'
         brandName:
           type: string
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           maxLength: 80
           example: Organização A
           description: 'Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes'
@@ -7335,7 +7356,7 @@ components:
           $ref: '#/components/schemas/EnumContractFinanceChargeType'
         chargeAdditionalInfo:
           type: string
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           maxLength: 140
           example: Informações adicionais
           description: |
@@ -7416,7 +7437,7 @@ components:
         productName:
           type: string
           maxLength: 140
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           example: Crédito Pessoal Consignado
           description: |
             Denominação/Identificação do nome da Modalidade da Operação de Crédito divulgado ao cliente
@@ -7475,7 +7496,7 @@ components:
           $ref: '#/components/schemas/EnumContractInstalmentPeriodicity'
         instalmentPeriodicityAdditionalInfo:
           type: string
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           maxLength: 50
           example: Informações adicionais sobre periodicidade
           description: |
@@ -7496,11 +7517,12 @@ components:
             CET – Custo Efetivo Total deve ser expresso na forma de taxa percentual anual e   incorpora todos os encargos e despesas incidentes nas operações de crédito (taxa de juro, mas também tarifas, tributos, seguros e outras despesas cobradas).
             O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros
             (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)
+          nullable: true
         amortizationScheduled:
           $ref: '#/components/schemas/EnumContractAmortizationScheduled'
         amortizationScheduledAdditionalInfo:
           type: string
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           maxLength: 50
           example: NA
           description: |
@@ -7517,17 +7539,20 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/LoansContractInterestRate'
+          nullable: true
         contractedFees:
           type: array
           items:
             $ref: '#/components/schemas/LoansContractedFee'
           minItems: 1
+          nullable: true
         contractedFinanceCharges:
           type: array
           description: Lista que traz os encargos pactuados no contrato
           items:
             $ref: '#/components/schemas/LoansFinanceCharge'
           minItems: 1
+          nullable: true
       additionalProperties: false
     LoansContractedFee:
       type: object
@@ -7543,13 +7568,13 @@ components:
         feeName:
           type: string
           maxLength: 140
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           description: Denominação da Tarifa pactuada
           example: Renovação de cadastro
         feeCode:
           type: string
           maxLength: 140
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           description: Sigla identificadora da tarifa pactuada
           example: CADASTRO
         feeChargeType:
@@ -7608,7 +7633,7 @@ components:
             Campo livre para complementar a informação relativa ao Tipo de taxa referencial ou indexador.
             [Restrição] Obrigatório para complementar a informação relativa ao Tipo de taxa referencial ou indexador, quando selecionada o tipo ou subtipo OUTRO.
           maxLength: 140
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           example: Informações adicionais
         preFixedRate:
           type: number
@@ -7630,7 +7655,7 @@ components:
         additionalInfo:
           type: string
           maxLength: 1200
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           example: Informações adicionais
           description: |
             Texto com informações adicionais sobre a composição das taxas de juros pactuadas.
@@ -7754,11 +7779,13 @@ components:
           pattern: '^-?\d{1,15}\.\d{2,4}$'
           example: 100000.04
           description: Valor necessário para o cliente liquidar a dívida.
+          nullable: true
         releases:
           type: array
           items:
             $ref: '#/components/schemas/LoansReleases'
           description: Lista dos pagamentos realizados no período
+          nullable: true
       additionalProperties: false
     LoansReleases:
       type: object
@@ -7781,6 +7808,7 @@ components:
           type: boolean
           example: true
           description: Identifica se é um pagamento pactuado (false) ou avulso (true).
+          nullable: true
         instalmentId:
           type: string
           maxLength: 100
@@ -7812,6 +7840,7 @@ components:
           description: |
             Valor do pagamento referente ao  contrato da modalidade de crédito consultada.
             Expresso em valor monetário com até 4 casas decimais.
+          nullable: true
         overParcel:
           type: object
           description: Objeto das tarifas e encargos que foram pagos fora da parcela.
@@ -7824,11 +7853,13 @@ components:
               items:
                 $ref: '#/components/schemas/LoansFeeOverParcel'
               description: 'Lista das tarifas que foram pagas fora da parcela, só para pagamento avulso.'
+              nullable: true
             charges:
               type: array
               items:
                 $ref: '#/components/schemas/LoansChargeOverParcel'
               description: Lista dos encargos que foram pagos fora da parcela.
+              nullable: true
           additionalProperties: false
       additionalProperties: false
     LoansFeeOverParcel:
@@ -7841,13 +7872,13 @@ components:
         feeName:
           type: string
           maxLength: 140
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           example: Reavaliação periódica do bem
           description: Denominação da Tarifa pactuada
         feeCode:
           type: string
           maxLength: 140
-          pattern: \w*\W*
+          pattern: '[\w\W\s]*'
           example: aval_bem
           description: Sigla identificadora da tarifa pactuada
         feeAmount:
@@ -7889,6 +7920,7 @@ components:
             Valor original da garantia. Valor monetário, expresso com até 4 casas decimais.
             [Restrição] Preenchimento obrigatório se tipo de garantia selecionada for diferente de 'SEM_TIPO_GARANTIA'
           example: 200.0001
+          nullable: true
       additionalProperties: false
     Meta:
       type: object
@@ -7928,13 +7960,11 @@ components:
           example: CAN
           description: |
             Campo de preenchimento obrigatório caso o cliente não possua nacionalidade brasileira. Preencher indicando todas suas demais nacionalidades utilizando o código de pais de acordo com o código “alpha3” do ISO-3166.p.ex.'CAN'
-          nullable: true
         documents:
           type: array
           items:
             $ref: '#/components/schemas/NationalityOtherDocument'
           description: Lista que traz relação de documentos complementares de pessoas com nacionalidade diferente de brasileira
-          nullable: true
       additionalProperties: false
     NationalityOther:
       type: object
@@ -8189,7 +8219,6 @@ components:
             $ref: '#/components/schemas/EnumProductServiceType'
           minItems: 1
           maxItems: 12
-          nullable: true
         productsServicesTypeAdditionalInfo:
           type: string
           pattern: '[\w\W\s]*'
@@ -8204,7 +8233,6 @@ components:
             $ref: '#/components/schemas/PersonalProcurator'
           minItems: 1
           description: Lista dos representantes. De preenchimento obrigatório se houver representante.
-          nullable: true
         accounts:
           type: array
           items:
@@ -8278,7 +8306,6 @@ components:
           minItems: 1
           description: |
             Lista de contas depósito à vista, poupança e pagamento pré-pagas mantidas pelo cliente na instituição transmissora.    
-          nullable: true
       additionalProperties: false
     PersonalIdentificationData:
       type: object
@@ -8321,7 +8348,6 @@ components:
         civilName:
           type: string
           maxLength: 70
-          nullable: true
           pattern: '[\w\W\s]*'
           example: Juan Kaique Cláudio Fernandes
           description: 'Nome civil completo da pessoa natural (Direito fundamental da pessoa, o nome civil é aquele atribuído à pessoa natural desde o registro de seu nascimento, com o qual será identificada por toda a sua vida, bem como após a sua morte)'
@@ -8368,17 +8394,14 @@ components:
             $ref: '#/components/schemas/PersonalOtherDocument'
           minItems: 1
           description: Relação dos demais documentos
-          nullable: true
         hasBrazilianNationality:
           type: boolean
           example: false
           description: Informa se o Cliente tem nacionalidade brasileira.
-          nullable: true
         nationality:
           type: array
           items:
             $ref: '#/components/schemas/Nationality'
-          nullable: true
         filiation:
           type: array
           items:
@@ -8408,7 +8431,6 @@ components:
                   (aquele pelo qual travestis e transexuais se reconhecem, 
                   bem como são identificados por sua comunidade e em seu meio social, conforme Decreto Local)
             additionalProperties: false
-          nullable: true
         contacts:
           $ref: '#/components/schemas/PersonalContacts'
       additionalProperties: false
@@ -9195,6 +9217,7 @@ components:
                 maxLength: 20
                 minLength: 0
                 example: 100000.04
+                nullable: true
             additionalProperties: false
         links:
           $ref: '#/components/schemas/Links'
@@ -9406,6 +9429,7 @@ components:
             (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)"
           maxLength: 19
           example: 0.29
+          nullable: true
         amortizationScheduled:
           $ref: '#/components/schemas/EnumContractAmortizationScheduled'
         amortizationScheduledAdditionalInfo:
@@ -9420,18 +9444,21 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/UnarrangedAccountOverdraftContractInterestRate'
+          nullable: true
         contractedFees:
           type: array
           items:
             $ref: '#/components/schemas/UnarrangedAccountOverdraftContractedFee'
           minItems: 1
           description: Lista que traz a relação de tarifas pactuadas no contrato
+          nullable: true
         contractedFinanceCharges:
           type: array
           description: Lista que traz os encargos pactuados no contrato
           items:
             $ref: '#/components/schemas/UnarrangedAccountOverdraftFinanceCharge'
           minItems: 1
+          nullable: true
       additionalProperties: false
     UnarrangedAccountOverdraftContractedFee:
       type: object
@@ -9519,6 +9546,7 @@ components:
             (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)"
           maxLength: 19
           example: 0.6
+          nullable: true
         postFixedRate:
           type: number
           description: |
@@ -9527,6 +9555,7 @@ components:
             (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)"
           maxLength: 19
           example: 0.55
+          nullable: true
         additionalInfo:
           type: string
           maxLength: 1200
@@ -9690,11 +9719,13 @@ components:
           pattern: '^-?\d{1,15}\.\d{2,4}$'
           example: 100000.04
           description: Valor necessario para o cliente liquidar a dívida.
+          nullable: true
         releases:
           type: array
           items:
             $ref: '#/components/schemas/UnarrangedAccountOverdraftReleases'
           description: Lista dos pagamentos realizados no período
+          nullable: true
       additionalProperties: false
     UnarrangedAccountOverdraftReleases:
       type: object
@@ -9717,6 +9748,7 @@ components:
           type: boolean
           example: true
           description: Identifica se é um pagamento pactuado (false) ou avulso (true).
+          nullable: true
         instalmentId:
           type: string
           maxLength: 100
@@ -9748,6 +9780,7 @@ components:
           description: |
             Valor do pagamento referente ao  contrato da modalidade de crédito consultada.
             Expresso em valor monetário com até 4 casas decimais.
+          nullable: true
         overParcel:
           type: object
           description: Objeto das tarifas e encargos que foram pagos fora da parcela.
@@ -9789,11 +9822,13 @@ components:
                       [Restrição] Preenchimento obrigatório quando a forma de cobrança for: Mínimo, Máximo ou Fixo
                 additionalProperties: false
               description: 'Lista das tarifas que foram pagas fora da parcela, só para pagamento avulso.'
+              nullable: true
             charges:
               type: array
               items:
                 $ref: '#/components/schemas/UnarrangedAccountOverdraftChargeOverParcel'
               description: Lista dos encargos que foram pagos fora da parcela.
+              nullable: true
           additionalProperties: false
       additionalProperties: false
     UnarrangedAccountOverdraftTaxesOverParcel:
@@ -9868,7 +9903,7 @@ components:
       schema:
         type: string
         maxLength: 1
-        pattern: \w*\W*
+        pattern: '[\w\W\s]*'
       required: true
     accountsCompeCode:
       name: compeCode
