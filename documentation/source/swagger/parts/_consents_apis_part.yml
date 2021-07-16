@@ -14,8 +14,7 @@ info:
     - Todas as datas trafegadas nesta API seguem o padrão da [RFC3339](https://tools.ietf.org/html/rfc3339) e formato "zulu".
     - A descrição do fluxo de consentimento encontra-se disponível no [Portal do desenvolvedor](https://openbanking-brasil.github.io/areadesenvolvedor/#em-revisao-fluxo-de-consentimento).
     - O arquivo com o mapeamento completo entre `Roles`, `scopes` e `permissions` está disponibilizado no Portal do desenvolvedor, no mesmo item acima - descrição do fluxo de consentimento.
-    - É de responsabilidade da instituição receptora de dados, no pedido de criação do consentimento, o envio de todas as `permissions` correspondentes aos agrupamentos de dados selecionados pelo cliente e necessárias às consultas nos endpoints de cada uma das APIs de dados.
-    - As regras de `permissions` para cada agrupamento de dados, as quais a receptora deve enviar obrigatoriamente para os agrupamentos selecionados pelo cliente, quando esta realizar uma chamada `POST`, está relacionado abaixo:
+    - A receptora deve enviar obrigatoriamente, no pedido de criação de consentimento, todas as permissions dos agrupamentos de dados as quais ela deseja consentimento, conforme tabela abaixo:
       
       ```
       |----------------------|-------------------------------|----------------------------------------------------------|
@@ -77,8 +76,10 @@ info:
       |                      |                               | RESOURCES_READ                                           |
       |----------------------|-------------------------------|----------------------------------------------------------|
       ```
-    - A instituição transmissora pode opcionalmente validar os agrupamentos conforme mapeamento acima no momento da geração do consentimento.
-  version: 1.0.2
+    - A instituição transmissora deve validar o preenchimento correto desses agrupamentos no momento da geração do consentimento.
+    - Caso a instiuição receptora envie permissões divergentes ao agrupamento especificado na tabela, a transmissora deve rejeitar o pedido da receptora dando retorno HTTP Status Code 400.
+    - A transmissora deve retornar, da lista de permissions requisitadas, apenas o subconjunto de permissions por ela suportada, removendo da lista as permissions de produtos não suportados e retornando HTTP Status Code 201.
+  version: 1.0.3
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0
