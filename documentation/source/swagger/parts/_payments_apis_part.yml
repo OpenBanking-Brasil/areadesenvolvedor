@@ -25,9 +25,16 @@ info:
     [Perfil de segurança FAPI - Open Banking Brasil](https://github.com/OpenBanking-Brasil/specs-seguranca/blob/main/open-banking-brasil-financial-api-1_ID1.md#algorithm-considerations)
     
     - Mensagens assinadas, `JWS` e `JWKS`:  
-    [Guia de usuário (Receptoras e iniciadoras de pagamento)](https://github.com/OpenBanking-Brasil/specs-seguranca/blob/main/tpp-user-guide.md#143-what-is-a-jwt-jwe-jws-and-jwk)
+    [Guia de usuário (Receptoras e iniciadoras de pagamento)](https://github.com/OpenBanking-Brasil/specs-seguranca/blob/main/tpp-user-guide.md#143-what-is-a-jwt-jwe-jws-and-jwk)  
+
+    ## Controle de acesso  
+
+    O endpoint de consulta de pagamento GET /pix/payments/{​​​paymentId}​​​ deve suportar acesso a partir de access_token emitido por meio de um grant_type do tipo `client credentials`, como opção do uso do token vinculado ao consentimento (hybrid flow).  
+
+    Para evitar vazamento de informação, a detentora deve validar que o pagamento consultado pertence ao ClientId que o criou e, caso haja divergências, retorne um erro HTTP 400.    
   
-  version: 1.0.0-rc5.1
+  
+  version: 1.0.0-rc5.2
   license:
     name: Apache 2.0
     url: 'https://www.apache.org/licenses/LICENSE-2.0'
@@ -97,7 +104,6 @@ paths:
         - OpenId:
             - openid
           OAuth2Security:
-            - 'consent:consentId'
             - payments
   /consents/{consentId}:
     get:
@@ -142,7 +148,6 @@ paths:
         - OpenId:
             - openid
           OAuth2Security:
-            - 'consent:consentId'
             - payments
   /pix/payments:
     post:
@@ -243,8 +248,8 @@ paths:
         - OpenId:
             - openid
           OAuth2Security:
-            - 'consent:consentId'
             - payments
+        
 components:
   schemas:
     BusinessEntity:
