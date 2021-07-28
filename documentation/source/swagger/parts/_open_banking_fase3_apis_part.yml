@@ -184,6 +184,27 @@ info:
 
     Os possíveis status de uma transação de iniciação de pagamento estão detalhados na documentação (<a href="#tocS_EnumPaymentStatusType">Open Banking Brasil</a>).
 
+    ### Maquina de Estados
+    #### Os possíveis status do consentimento são:  
+      
+    AWAITING_AUTHORISATION - Aguardando autorização  
+    AUTHORISED - Autorizado   
+    REJECTED - Rejeitado  
+    CONSUMED - Consumido
+
+    ![Maquina de Estados](images/sequence-diagrams/state-machine_phase3.png)  
+    <a href="images/sequence-diagrams/state-machine_phase3.png" target="_blank">Download da Maquina de Estados</a>
+    
+    Algumas definições são importantes para tratar a transição dos estados do consentimento em diferentes momentos do fluxo:  
+    
+    - O consentimento é sempre criado com o status AWAITING_AUTHORISATION e deve assumir o status AUTHORIZED, REJECTED ou CONSUMED antes do tempo de expiração - 5 minutos.  
+
+    - Em caso de consentimento expirado a detentora deverá retornar o status REJECTED.  
+
+    - Para o cenário em que o consentimento assume o status de AUTHORISED, o tempo máximo (do token FAPI Hybrid Flow) é de 60 minutos, sem refresh, e este é o tempo para consumir o consentimento autorizado, mudando seu status para CONSUMED. Não é possível prorrogar este tempo e a criação de um novo consentimento será necessária para os cenários de insucesso.  
+
+    - O consentimento assume o status CONSUMED após ocorrer a iniciação do pagamento com sucesso referente ao consentimento.  
+
     ### Recomendação uso de polling
     #### A consulta via GET, para verificar o processamento da transação, pode ser efetuada a qualquer momento desde que se respeite o rate limit de:  
     - 300 TPS global, 50 TPS por instituição e 8 TPS por endereço IP (Internet Protocol).  
