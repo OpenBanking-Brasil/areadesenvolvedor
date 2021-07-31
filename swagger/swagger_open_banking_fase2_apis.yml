@@ -2941,318 +2941,6 @@ paths:
           $ref: '#/components/responses/InternalServerError'
 components:
   schemas:
-    CreateConsent:
-      type: object
-      required:
-        - data
-      properties:
-        data:
-          type: object
-          required:
-            - permissions
-            - loggedUser
-            - expirationDateTime
-          properties:
-            loggedUser:
-              $ref: '#/components/schemas/LoggedUser'
-            businessEntity:
-              $ref: '#/components/schemas/BusinessEntity'
-            permissions:
-              type: array
-              items:
-                description: 'Especifica os tipos de permissões de acesso às APIs no escopo do Open Banking Brasil - Fase 2, de acordo com os blocos de consentimento fornecidos pelo usuário e necessários ao acesso a cada endpoint das APIs.'
-                type: string
-                enum:
-                  - ACCOUNTS_READ
-                  - ACCOUNTS_BALANCES_READ
-                  - ACCOUNTS_TRANSACTIONS_READ
-                  - ACCOUNTS_OVERDRAFT_LIMITS_READ
-                  - CREDIT_CARDS_ACCOUNTS_READ
-                  - CREDIT_CARDS_ACCOUNTS_BILLS_READ
-                  - CREDIT_CARDS_ACCOUNTS_BILLS_TRANSACTIONS_READ
-                  - CREDIT_CARDS_ACCOUNTS_LIMITS_READ
-                  - CREDIT_CARDS_ACCOUNTS_TRANSACTIONS_READ
-                  - CUSTOMERS_PERSONAL_IDENTIFICATIONS_READ
-                  - CUSTOMERS_PERSONAL_ADITTIONALINFO_READ
-                  - CUSTOMERS_BUSINESS_IDENTIFICATIONS_READ
-                  - CUSTOMERS_BUSINESS_ADITTIONALINFO_READ
-                  - FINANCINGS_READ
-                  - FINANCINGS_SCHEDULED_INSTALMENTS_READ
-                  - FINANCINGS_PAYMENTS_READ
-                  - FINANCINGS_WARRANTIES_READ
-                  - INVOICE_FINANCINGS_READ
-                  - INVOICE_FINANCINGS_SCHEDULED_INSTALMENTS_READ
-                  - INVOICE_FINANCINGS_PAYMENTS_READ
-                  - INVOICE_FINANCINGS_WARRANTIES_READ
-                  - LOANS_READ
-                  - LOANS_SCHEDULED_INSTALMENTS_READ
-                  - LOANS_PAYMENTS_READ
-                  - LOANS_WARRANTIES_READ
-                  - UNARRANGED_ACCOUNTS_OVERDRAFT_READ
-                  - UNARRANGED_ACCOUNTS_OVERDRAFT_SCHEDULED_INSTALMENTS_READ
-                  - UNARRANGED_ACCOUNTS_OVERDRAFT_PAYMENTS_READ
-                  - UNARRANGED_ACCOUNTS_OVERDRAFT_WARRANTIES_READ
-                  - RESOURCES_READ
-              minItems: 1
-              maxItems: 30
-              example:
-                - ACCOUNTS_READ
-                - ACCOUNTS_OVERDRAFT_LIMITS_READ
-                - RESOURCES_READ
-            expirationDateTime:
-              description: 'Data e hora de expiração da permissão. De preenchimento obrigatório, reflete a data limite de validade do consentimento. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).'
-              type: string
-              maxLength: 20
-              format: date-time
-              example: '2021-05-21T08:30:00Z'
-            transactionFromDateTime:
-              description: 'Data e hora da transação inicial. Se não for preenchido, a transação terá a data aberta e a data será retornada com a primeira transação disponível. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).'
-              type: string
-              maxLength: 20
-              format: date-time
-              example: '2021-01-01T00:00:00Z'
-            transactionToDateTime:
-              description: 'Data e hora final da transação. Se não for preenchido, a transação terá a data aberta e a data será retornada com a ultima transação disponível. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).'
-              type: string
-              maxLength: 20
-              format: date-time
-              example: '2021-02-01T23:59:59Z'
-          additionalProperties: false
-      additionalProperties: false
-    ResponseConsent:
-      type: object
-      required:
-        - data
-      properties:
-        data:
-          type: object
-          required:
-            - consentId
-            - creationDateTime
-            - status
-            - statusUpdateDateTime
-            - permissions
-            - expirationDateTime
-          properties:
-            consentId:
-              description: |
-                O consentId é o identificador único do consentimento e deverá ser um URN - Uniform Resource Name.  
-                Um URN, conforme definido na [RFC8141](https://tools.ietf.org/html/rfc8141) é um Uniform Resource 
-                Identifier - URI - que é atribuído sob o URI scheme "urn" e um namespace URN específico, com a intenção de que o URN 
-                seja um identificador de recurso persistente e independente da localização.  
-                Considerando a string urn:bancoex:C1DD33123 como exemplo para consentId temos:
-                - o namespace(urn)
-                - o identificador associado ao namespace da instituição transnmissora (bancoex) 
-                - o identificador específico dentro do namespace (C1DD33123).  
-                Informações mais detalhadas sobre a construção de namespaces devem ser consultadas na [RFC8141](https://tools.ietf.org/html/rfc8141).
-              type: string
-              pattern: '^urn:[a-zA-Z0-9][a-zA-Z0-9-]{0,31}:[a-zA-Z0-9()+,\-.:=@;$_!*''%\/?#]+$'
-              maxLength: 256
-              example: 'urn:bancoex:C1DD33123'
-            creationDateTime:
-              description: 'Data e hora em que o recurso foi criado. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).'
-              type: string
-              format: date-time
-              example: '2021-05-21T08:30:00Z'
-              maxLength: 20
-            status:
-              description: Estado atual do consentimento cadastrado.
-              type: string
-              enum:
-                - AUTHORISED
-                - AWAITING_AUTHORISATION
-                - REJECTED
-              example: AWAITING_AUTHORISATION
-            statusUpdateDateTime:
-              description: 'Data e hora em que o recurso foi atualizado. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).'
-              type: string
-              format: date-time
-              example: '2021-05-21T08:30:00Z'
-              maxLength: 20
-            permissions:
-              type: array
-              maxItems: 30
-              minItems: 1
-              description: 'Especifica os tipos de permissões de acesso às APIs no escopo do Open Banking Brasil - Fase 2, de acordo com os blocos de consentimento fornecidos pelo usuário e necessários ao acesso a cada endpoint das APIs.'
-              items:
-                type: string
-                enum:
-                  - ACCOUNTS_READ
-                  - ACCOUNTS_BALANCES_READ
-                  - ACCOUNTS_TRANSACTIONS_READ
-                  - ACCOUNTS_OVERDRAFT_LIMITS_READ
-                  - CREDIT_CARDS_ACCOUNTS_READ
-                  - CREDIT_CARDS_ACCOUNTS_BILLS_READ
-                  - CREDIT_CARDS_ACCOUNTS_BILLS_TRANSACTIONS_READ
-                  - CREDIT_CARDS_ACCOUNTS_LIMITS_READ
-                  - CREDIT_CARDS_ACCOUNTS_TRANSACTIONS_READ
-                  - CUSTOMERS_PERSONAL_IDENTIFICATIONS_READ
-                  - CUSTOMERS_PERSONAL_ADITTIONALINFO_READ
-                  - CUSTOMERS_BUSINESS_IDENTIFICATIONS_READ
-                  - CUSTOMERS_BUSINESS_ADITTIONALINFO_READ
-                  - FINANCINGS_READ
-                  - FINANCINGS_SCHEDULED_INSTALMENTS_READ
-                  - FINANCINGS_PAYMENTS_READ
-                  - FINANCINGS_WARRANTIES_READ
-                  - INVOICE_FINANCINGS_READ
-                  - INVOICE_FINANCINGS_SCHEDULED_INSTALMENTS_READ
-                  - INVOICE_FINANCINGS_PAYMENTS_READ
-                  - INVOICE_FINANCINGS_WARRANTIES_READ
-                  - LOANS_READ
-                  - LOANS_SCHEDULED_INSTALMENTS_READ
-                  - LOANS_PAYMENTS_READ
-                  - LOANS_WARRANTIES_READ
-                  - UNARRANGED_ACCOUNTS_OVERDRAFT_READ
-                  - UNARRANGED_ACCOUNTS_OVERDRAFT_SCHEDULED_INSTALMENTS_READ
-                  - UNARRANGED_ACCOUNTS_OVERDRAFT_PAYMENTS_READ
-                  - UNARRANGED_ACCOUNTS_OVERDRAFT_WARRANTIES_READ
-                  - RESOURCES_READ
-              example:
-                - ACCOUNTS_READ
-                - ACCOUNTS_OVERDRAFT_LIMITS_READ
-                - RESOURCES_READ
-            expirationDateTime:
-              description: 'Data e hora de expiração da permissão. De preenchimento obrigatório, reflete a data limite de validade do consentimento. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).'
-              type: string
-              format: date-time
-              example: '2021-05-21T08:30:00Z'
-              maxLength: 20
-            transactionFromDateTime:
-              description: 'Data e hora da transação inicial. Se não for preenchido, a transação terá a data aberta e a data será retornada com a primeira transação disponível. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).'
-              type: string
-              format: date-time
-              example: '2021-01-01T00:00:00Z'
-              maxLength: 20
-            transactionToDateTime:
-              description: 'Data e hora final da transação. Se não for preenchido, a transação terá a data aberta e a data será retornada com a ultima transação disponível. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).'
-              type: string
-              format: date-time
-              example: '2021-02-01T23:59:59Z'
-              maxLength: 20
-          additionalProperties: false
-        links:
-          $ref: '#/components/schemas/Links'
-        meta:
-          $ref: '#/components/schemas/Meta'
-      additionalProperties: false
-    LoggedUser:
-      type: object
-      description: Usuário (pessoa natural) que encontra-se logado na instituição receptora e que iniciará o processo de consentimento para compartilhamento de dados.
-      additionalProperties: false
-      required:
-        - document
-      properties:
-        document:
-          type: object
-          additionalProperties: false
-          required:
-            - identification
-            - rel
-          properties:
-            identification:
-              type: string
-              maxLength: 11
-              description: Número do documento de identificação oficial do usuário.
-              example: '11111111111'
-              pattern: '^\d{11}$'
-            rel:
-              type: string
-              maxLength: 3
-              description: Tipo do documento de identificação oficial do usuário.
-              example: CPF
-              pattern: '^[A-Z]{3}$'
-    BusinessEntity:
-      type: object
-      description: 'Titular, pessoa jurídica a quem se referem os dados que são objeto de compartilhamento.'
-      additionalProperties: false
-      required:
-        - document
-      properties:
-        document:
-          type: object
-          additionalProperties: false
-          required:
-            - identification
-            - rel
-          properties:
-            identification:
-              type: string
-              maxLength: 14
-              description: Número do documento de identificação oficial do titular pessoa jurídica.
-              example: '11111111111111'
-              pattern: '^\d{14}$'
-            rel:
-              type: string
-              maxLength: 4
-              description: Tipo do documento de identificação oficial do titular pessoa jurídica.
-              example: CNPJ
-              pattern: '^[A-Z]{4}$'
-    ResponseResourceList:
-      type: object
-      required:
-        - data
-        - links
-        - meta
-      properties:
-        data:
-          type: array
-          items:
-            type: object
-            required:
-              - type
-              - status
-            properties:
-              resourceId:
-                type: string
-                description: |
-                  Identifica o recurso reportado pelo participante do Open Banking, no caso de:
-                  Contas de depósito à vista, de poupança ou de pagamento pré-paga : corresponde ao accountId;
-                  Conta de pagamento pós-paga: corresponde ao creditCardAccountId;
-                  Empréstimos, Financiamentos, Direitos creditórios descontados e Adiantamento a depositantes: corresponde ao contractId.
-                minLength: 1
-                maxLength: 100
-                pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
-                example: 25cac914-d8ae-6789-b215-650a6215820d
-              type:
-                type: string
-                enum:
-                  - ACCOUNT
-                  - CREDIT_CARD_ACCOUNT
-                  - LOAN
-                  - FINANCING
-                  - UNARRANGED_ACCOUNT_OVERDRAFT
-                  - INVOICE_FINANCING
-                description: |
-                  Tipo de recurso (vide Enum):
-                  Account - Conta de depósito à vista, poupança ou pagamento pré-paga
-                  Credit Card Account - Conta de pagamento pós-paga (Cartão de Crédito)
-                  Loan - Empréstimo
-                  Financing - Financiamento
-                  Unarranged Account Overdraft - Cheque Especial
-                  Invoice Financing - Financiamento de Fatura
-                example: ACCOUNT
-              status:
-                type: string
-                enum:
-                  - AVAILABLE
-                  - UNAVAILABLE
-                  - TEMPORARILY_UNAVAILABLE
-                  - PENDING_AUTHORISATION
-                description: |
-                  Tipo de status de recurso (vide Enum):
-                  Available - Disponível
-                  Unavailable - Indisponível
-                  Temporarily Unavailable - Temporariamente Indisponível
-                  Pending Authorisation - Pendente de Autorização
-                example: AVAILABLE
-            additionalProperties: false
-          minItems: 1
-          description: Lista de recursos e seus respectivos status.
-        links:
-          $ref: '#/components/schemas/Links'
-        meta:
-          $ref: '#/components/schemas/Meta'
-      additionalProperties: false
     AccountBalancesData:
       type: object
       description: |
@@ -3421,62 +3109,6 @@ components:
             Todos os saldos informados estão representados com a moeda vigente do Brasil
           example: BRL
       additionalProperties: false
-    AccountsLimits:
-      type: object
-      description: Conjunto de informações referentes aos limites da conta de  pagamento pós-paga.
-      required:
-        - creditLineLimitType
-        - consolidationType
-        - limitType
-        - limitAmount
-        - avaiableAmount
-        - usedAmount
-      properties:
-        creditLineLimitType:
-          $ref: '#/components/schemas/EnumCreditCardAccountsLineLimitType'
-        consolidationType:
-          $ref: '#/components/schemas/EnumCreditCardAccountsConsolidationType'
-        lineName:
-          $ref: '#/components/schemas/EnumCreditCardAccountsLineName'
-        lineNameAdditionalInfo:
-          type: string
-          pattern: \w*\W*
-          description: Campo de preenchimento obrigatório se selecionada a opção 'OUTRAS' em lineName
-        limitType:
-          $ref: '#/components/schemas/EnumCreditCardAccountsLimitType'
-        limitAmount:
-          type: number
-          format: double
-          pattern: '^-?\d{1,15}\.\d{2,4}$'
-          nullable: true
-          description: Valor total do limite informado Expresso em valor monetário com 4 casas decimais
-          maxLength: 20
-          example: 2000
-        avaiableAmount:
-          type: number
-          format: double
-          pattern: '^-?\d{1,15}\.\d{2,4}$'
-          nullable: true
-          description: Valor disponível do limite informado.  Expresso em valor monetário com 4 casas decimais
-          maxLength: 20
-          example: 2000
-        usedAmount:
-          type: number
-          format: double
-          pattern: '^-?\d{1,15}\.\d{2,4}$'
-          nullable: true
-          description: Valor utilizado do limite informado Expresso em valor monetário com 4 casas decimais
-          maxLength: 20
-          example: 2000
-      example:
-        creditLineLimitType: LIMITE_CREDITO_MODALIDADE_OPERACAO
-        consolidationType: INDIVIDUAL
-        lineName: SAQUE_CREDITO_BRASIL
-        limitType: COM_LIMITE
-        limitAmount: 1000
-        avaiableAmount: 600
-        usedAmount: 400
-      additionalProperties: false
     AccountOverdraftLimitsData:
       type: object
       description: |
@@ -3534,6 +3166,62 @@ components:
           maxLength: 3
           description: 'Moeda referente ao valor de operação contratada em caráter emergencial para cobertura de saldo devedor em conta de depósitos à vista e de excesso sobre o limite pactuado de cheque especial, segundo modelo ISO-4217. p.ex. ''BRL''. Pode ser preenchido com “NA” caso a instituição não possua a informação.'
           example: BRL
+      additionalProperties: false
+    AccountsLimits:
+      type: object
+      description: Conjunto de informações referentes aos limites da conta de  pagamento pós-paga.
+      required:
+        - creditLineLimitType
+        - consolidationType
+        - limitType
+        - limitAmount
+        - avaiableAmount
+        - usedAmount
+      properties:
+        creditLineLimitType:
+          $ref: '#/components/schemas/EnumCreditCardAccountsLineLimitType'
+        consolidationType:
+          $ref: '#/components/schemas/EnumCreditCardAccountsConsolidationType'
+        lineName:
+          $ref: '#/components/schemas/EnumCreditCardAccountsLineName'
+        lineNameAdditionalInfo:
+          type: string
+          pattern: \w*\W*
+          description: Campo de preenchimento obrigatório se selecionada a opção 'OUTRAS' em lineName
+        limitType:
+          $ref: '#/components/schemas/EnumCreditCardAccountsLimitType'
+        limitAmount:
+          type: number
+          format: double
+          pattern: '^-?\d{1,15}\.\d{2,4}$'
+          nullable: true
+          description: Valor total do limite informado Expresso em valor monetário com 4 casas decimais
+          maxLength: 20
+          example: 2000
+        avaiableAmount:
+          type: number
+          format: double
+          pattern: '^-?\d{1,15}\.\d{2,4}$'
+          nullable: true
+          description: Valor disponível do limite informado.  Expresso em valor monetário com 4 casas decimais
+          maxLength: 20
+          example: 2000
+        usedAmount:
+          type: number
+          format: double
+          pattern: '^-?\d{1,15}\.\d{2,4}$'
+          nullable: true
+          description: Valor utilizado do limite informado Expresso em valor monetário com 4 casas decimais
+          maxLength: 20
+          example: 2000
+      example:
+        creditLineLimitType: LIMITE_CREDITO_MODALIDADE_OPERACAO
+        consolidationType: INDIVIDUAL
+        lineName: SAQUE_CREDITO_BRASIL
+        limitType: COM_LIMITE
+        limitAmount: 1000
+        avaiableAmount: 600
+        usedAmount: 400
       additionalProperties: false
     AccountTransactionsData:
       type: object
@@ -3635,6 +3323,59 @@ components:
           description: Dígito da conta da pessoa envolvida na transação
           example: '4'
       additionalProperties: false
+    BusinessContacts:
+      type: object
+      description: Conjunto de informações referentes às formas para contatar o cliente.
+      required:
+        - postalAddresses
+        - phones
+        - emails
+      properties:
+        postalAddresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/BusinessPostalAddress'
+          minItems: 1
+          description: Lista de endereços da pessoa jurídica
+        phones:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerPhone'
+          minItems: 1
+          description: Lista com telefones de contato da pessoa jurídica
+        emails:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerEmail'
+          minItems: 1
+          description: Lista e-mails de contato
+      additionalProperties: false
+    BusinessEntity:
+      type: object
+      description: 'Titular, pessoa jurídica a quem se referem os dados que são objeto de compartilhamento.'
+      additionalProperties: false
+      required:
+        - document
+      properties:
+        document:
+          type: object
+          additionalProperties: false
+          required:
+            - identification
+            - rel
+          properties:
+            identification:
+              type: string
+              maxLength: 14
+              description: Número do documento de identificação oficial do titular pessoa jurídica.
+              example: '11111111111111'
+              pattern: '^\d{14}$'
+            rel:
+              type: string
+              maxLength: 4
+              description: Tipo do documento de identificação oficial do titular pessoa jurídica.
+              example: CNPJ
+              pattern: '^[A-Z]{4}$'
     BusinessFinancialRelationData:
       type: object
       description: 'Objeto que reúne as informações relativas ao relacionamento do cliente junto à Instituição. Considera-se relacionamento as informações que permitam conhecer desde quando a pessoa consultada é cliente da instituição, bem como um indicador dos produtos e serviços que ela consome atualmente e seus representantes'
@@ -3834,6 +3575,75 @@ components:
           example: '2021-05-21'
           description: 'Data vigência do tipo de  documento informado, conforme especificação RFC-3339.'
       additionalProperties: false
+    BusinessPostalAddress:
+      type: object
+      required:
+        - isMain
+        - address
+        - districtName
+        - townName
+        - countrySubDivision
+        - postCode
+        - country
+      properties:
+        isMain:
+          type: boolean
+          example: true
+          description: Indica se o endereço informado é o principal
+        address:
+          type: string
+          maxLength: 150
+          pattern: '[\w\W\s]*'
+          example: 'Av Naburo Ykesaki, 1270'
+          description: Corresponde ao endereço comercial do cliente
+        additionalInfo:
+          type: string
+          maxLength: 30
+          pattern: '[\w\W\s]*'
+          example: Fundos
+          description: Alguns logradouros ainda necessitam ser especificados por meio de complemento
+        districtName:
+          type: string
+          maxLength: 50
+          pattern: '[\w\W\s]*'
+          example: Centro
+          description: Bairro é uma comunidade ou região localizada em uma cidade ou município de acordo com as suas subdivisões geográficas.
+        townName:
+          type: string
+          maxLength: 50
+          pattern: '[\w\W\s]*'
+          example: Marília
+          description: |
+            Localidade: O nome da localidade corresponde à designação da cidade ou município no qual o endereço está localizado.
+        ibgeTownCode:
+          type: string
+          pattern: '\d{7}$'
+          maxLength: 7
+          example: '3550308'
+          description: 'Código IBGE de Município. A Tabela de Códigos de Municípios do IBGE apresenta a lista dos municípios brasileiros associados a um código composto de 7 dígitos, sendo os dois primeiros referentes ao código da Unidade da Federação.'
+        countrySubDivision:
+          $ref: '#/components/schemas/EnumCountrySubDivision'
+        postCode:
+          type: string
+          pattern: '\d{8}|^NA$'
+          maxLength: 8
+          example: '17500001'
+          description: |
+            Código de Endereçamento Postal: Composto por um conjunto numérico de oito dígitos, o objetivo principal do CEP é orientar e acelerar o encaminhamento, o tratamento e a entrega de objetos postados nos Correios, por meio da sua atribuição a localidades, logradouros, unidades dos Correios, serviços, órgãos públicos, empresas e edifícios. p.ex. '01311000'
+        country:
+          type: string
+          maxLength: 80
+          pattern: '[\w\W\s]*'
+          example: Brasil
+          description: Nome do país
+        countryCode:
+          type: string
+          maxLength: 3
+          example: BRA
+          description: Código do pais de acordo com o código “alpha3” do ISO-3166
+        geographicCoordinates:
+          $ref: '#/components/schemas/GeographicCoordinates'
+      additionalProperties: false
     BusinessProcurator:
       type: object
       required:
@@ -3960,6 +3770,84 @@ components:
               pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$|^NA$'
               example: '2021-05-21'
               description: 'Data de referência do Patrimônio, conforme especificação RFC-3339.'
+          additionalProperties: false
+      additionalProperties: false
+    CreateConsent:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: object
+          required:
+            - permissions
+            - loggedUser
+            - expirationDateTime
+          properties:
+            loggedUser:
+              $ref: '#/components/schemas/LoggedUser'
+            businessEntity:
+              $ref: '#/components/schemas/BusinessEntity'
+            permissions:
+              type: array
+              items:
+                description: 'Especifica os tipos de permissões de acesso às APIs no escopo do Open Banking Brasil - Fase 2, de acordo com os blocos de consentimento fornecidos pelo usuário e necessários ao acesso a cada endpoint das APIs.'
+                type: string
+                enum:
+                  - ACCOUNTS_READ
+                  - ACCOUNTS_BALANCES_READ
+                  - ACCOUNTS_TRANSACTIONS_READ
+                  - ACCOUNTS_OVERDRAFT_LIMITS_READ
+                  - CREDIT_CARDS_ACCOUNTS_READ
+                  - CREDIT_CARDS_ACCOUNTS_BILLS_READ
+                  - CREDIT_CARDS_ACCOUNTS_BILLS_TRANSACTIONS_READ
+                  - CREDIT_CARDS_ACCOUNTS_LIMITS_READ
+                  - CREDIT_CARDS_ACCOUNTS_TRANSACTIONS_READ
+                  - CUSTOMERS_PERSONAL_IDENTIFICATIONS_READ
+                  - CUSTOMERS_PERSONAL_ADITTIONALINFO_READ
+                  - CUSTOMERS_BUSINESS_IDENTIFICATIONS_READ
+                  - CUSTOMERS_BUSINESS_ADITTIONALINFO_READ
+                  - FINANCINGS_READ
+                  - FINANCINGS_SCHEDULED_INSTALMENTS_READ
+                  - FINANCINGS_PAYMENTS_READ
+                  - FINANCINGS_WARRANTIES_READ
+                  - INVOICE_FINANCINGS_READ
+                  - INVOICE_FINANCINGS_SCHEDULED_INSTALMENTS_READ
+                  - INVOICE_FINANCINGS_PAYMENTS_READ
+                  - INVOICE_FINANCINGS_WARRANTIES_READ
+                  - LOANS_READ
+                  - LOANS_SCHEDULED_INSTALMENTS_READ
+                  - LOANS_PAYMENTS_READ
+                  - LOANS_WARRANTIES_READ
+                  - UNARRANGED_ACCOUNTS_OVERDRAFT_READ
+                  - UNARRANGED_ACCOUNTS_OVERDRAFT_SCHEDULED_INSTALMENTS_READ
+                  - UNARRANGED_ACCOUNTS_OVERDRAFT_PAYMENTS_READ
+                  - UNARRANGED_ACCOUNTS_OVERDRAFT_WARRANTIES_READ
+                  - RESOURCES_READ
+              minItems: 1
+              maxItems: 30
+              example:
+                - ACCOUNTS_READ
+                - ACCOUNTS_OVERDRAFT_LIMITS_READ
+                - RESOURCES_READ
+            expirationDateTime:
+              description: 'Data e hora de expiração da permissão. De preenchimento obrigatório, reflete a data limite de validade do consentimento. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).'
+              type: string
+              maxLength: 20
+              format: date-time
+              example: '2021-05-21T08:30:00Z'
+            transactionFromDateTime:
+              description: 'Data e hora da transação inicial. Se não for preenchido, a transação terá a data aberta e a data será retornada com a primeira transação disponível. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).'
+              type: string
+              maxLength: 20
+              format: date-time
+              example: '2021-01-01T00:00:00Z'
+            transactionToDateTime:
+              description: 'Data e hora final da transação. Se não for preenchido, a transação terá a data aberta e a data será retornada com a ultima transação disponível. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).'
+              type: string
+              maxLength: 20
+              format: date-time
+              example: '2021-02-01T23:59:59Z'
           additionalProperties: false
       additionalProperties: false
     CreditCardAccountBalances:
@@ -4197,44 +4085,6 @@ components:
           pattern: '[\w\W\s]*'
           maxLength: 50
           example: NA
-      additionalProperties: false
-    CreditCardsAccountsIdentificationData:
-      type: object
-      description: Conjunto de informações referentes à identificação da conta de pagamento pós-paga.
-      required:
-        - name
-        - productType
-        - creditCardNetwork
-        - paymentMethod
-      properties:
-        name:
-          type: string
-          pattern: '[\w\W\s]*'
-          description: |
-            Denominação/Identificação do nome da conta de pagamento pós-paga (cartão). Conforme CIRCULAR Nº 3.680,BCB, 2013: 'conta de pagamento pós-paga: destinada à execução de transações de pagamento que independem do aporte prévio de recursos'.
-          maxLength: 50
-          example: Cartão Universitário
-        productType:
-          $ref: '#/components/schemas/EnumCreditCardAccountsProductType'
-        productAdditionalInfo:
-          type: string
-          pattern: '[\w\W\s]*'
-          description: Informações complementares se tipo de Cartão 'OUTROS'
-          maxLength: 50
-          example: OURO_INTERNACIONAL
-        creditCardNetwork:
-          $ref: '#/components/schemas/EnumCreditCardAccountNetwork'
-        networkAdditionalInfo:
-          type: string
-          pattern: '[\w\W\s]*'
-          description: Texto livre para especificar categoria de bandeira marcada como 'OUTRAS'.
-          maxLength: 50
-          example: NA
-        paymentMethod:
-          type: array
-          items:
-            $ref: '#/components/schemas/CreditCardsAccountPaymentMethod'
-          minItems: 1
       additionalProperties: false
     CreditCardAccountsLimitsData:
       type: object
@@ -4486,59 +4336,43 @@ components:
             Indica se o Cartão de crédito associado à conta pagamento pós-paga é múltiplo ou não. Cartões denominados múltiplos possuem tanto a função crédito quanto a função débito, devendo o proprietário do cartão, no momento de sua utilização, informar se o pagamento é na função crédito (que leva a um pagamento futuro, por meio de uma fatura do cartão de crédito) ou na função débito.
           example: true
       additionalProperties: false
-    BusinessContacts:
+    CreditCardsAccountsIdentificationData:
       type: object
-      description: Conjunto de informações referentes às formas para contatar o cliente.
+      description: Conjunto de informações referentes à identificação da conta de pagamento pós-paga.
       required:
-        - postalAddresses
-        - phones
-        - emails
+        - name
+        - productType
+        - creditCardNetwork
+        - paymentMethod
       properties:
-        postalAddresses:
+        name:
+          type: string
+          pattern: '[\w\W\s]*'
+          description: |
+            Denominação/Identificação do nome da conta de pagamento pós-paga (cartão). Conforme CIRCULAR Nº 3.680,BCB, 2013: 'conta de pagamento pós-paga: destinada à execução de transações de pagamento que independem do aporte prévio de recursos'.
+          maxLength: 50
+          example: Cartão Universitário
+        productType:
+          $ref: '#/components/schemas/EnumCreditCardAccountsProductType'
+        productAdditionalInfo:
+          type: string
+          pattern: '[\w\W\s]*'
+          description: Informações complementares se tipo de Cartão 'OUTROS'
+          maxLength: 50
+          example: OURO_INTERNACIONAL
+        creditCardNetwork:
+          $ref: '#/components/schemas/EnumCreditCardAccountNetwork'
+        networkAdditionalInfo:
+          type: string
+          pattern: '[\w\W\s]*'
+          description: Texto livre para especificar categoria de bandeira marcada como 'OUTRAS'.
+          maxLength: 50
+          example: NA
+        paymentMethod:
           type: array
           items:
-            $ref: '#/components/schemas/BusinessPostalAddress'
+            $ref: '#/components/schemas/CreditCardsAccountPaymentMethod'
           minItems: 1
-          description: Lista de endereços da pessoa jurídica
-        phones:
-          type: array
-          items:
-            $ref: '#/components/schemas/CustomerPhone'
-          minItems: 1
-          description: Lista com telefones de contato da pessoa jurídica
-        emails:
-          type: array
-          items:
-            $ref: '#/components/schemas/CustomerEmail'
-          minItems: 1
-          description: Lista e-mails de contato
-      additionalProperties: false
-    PersonalContacts:
-      type: object
-      description: Conjunto de informações referentes às formas para contatar o cliente.
-      required:
-        - postalAddresses
-        - phones
-        - emails
-      properties:
-        postalAddresses:
-          type: array
-          items:
-            $ref: '#/components/schemas/PersonalPostalAddress'
-          minItems: 1
-          description: Lista de endereços da pessoa natural
-        phones:
-          type: array
-          items:
-            $ref: '#/components/schemas/CustomerPhone'
-          minItems: 1
-          description: Lista com telefones de contato da pessoa natural
-        emails:
-          type: array
-          items:
-            $ref: '#/components/schemas/CustomerEmail'
-          minItems: 1
-          description: Lista e-mails de contato
       additionalProperties: false
     CustomerEmail:
       type: object
@@ -4599,144 +4433,6 @@ components:
           pattern: '^\d{1,5}$|^NA$'
           description: Número do ramal. De preenchimento obrigatório se fizer parte da identificação do número do telefone informado
           example: '932'
-      additionalProperties: false
-    BusinessPostalAddress:
-      type: object
-      required:
-        - isMain
-        - address
-        - districtName
-        - townName
-        - countrySubDivision
-        - postCode
-        - country
-      properties:
-        isMain:
-          type: boolean
-          example: true
-          description: Indica se o endereço informado é o principal
-        address:
-          type: string
-          maxLength: 150
-          pattern: '[\w\W\s]*'
-          example: 'Av Naburo Ykesaki, 1270'
-          description: Corresponde ao endereço comercial do cliente
-        additionalInfo:
-          type: string
-          maxLength: 30
-          pattern: '[\w\W\s]*'
-          example: Fundos
-          description: Alguns logradouros ainda necessitam ser especificados por meio de complemento
-        districtName:
-          type: string
-          maxLength: 50
-          pattern: '[\w\W\s]*'
-          example: Centro
-          description: Bairro é uma comunidade ou região localizada em uma cidade ou município de acordo com as suas subdivisões geográficas.
-        townName:
-          type: string
-          maxLength: 50
-          pattern: '[\w\W\s]*'
-          example: Marília
-          description: |
-            Localidade: O nome da localidade corresponde à designação da cidade ou município no qual o endereço está localizado.
-        ibgeTownCode:
-          type: string
-          pattern: '\d{7}$'
-          maxLength: 7
-          example: '3550308'
-          description: 'Código IBGE de Município. A Tabela de Códigos de Municípios do IBGE apresenta a lista dos municípios brasileiros associados a um código composto de 7 dígitos, sendo os dois primeiros referentes ao código da Unidade da Federação.'
-        countrySubDivision:
-          $ref: '#/components/schemas/EnumCountrySubDivision'
-        postCode:
-          type: string
-          pattern: '\d{8}|^NA$'
-          maxLength: 8
-          example: '17500001'
-          description: |
-            Código de Endereçamento Postal: Composto por um conjunto numérico de oito dígitos, o objetivo principal do CEP é orientar e acelerar o encaminhamento, o tratamento e a entrega de objetos postados nos Correios, por meio da sua atribuição a localidades, logradouros, unidades dos Correios, serviços, órgãos públicos, empresas e edifícios. p.ex. '01311000'
-        country:
-          type: string
-          maxLength: 80
-          pattern: '[\w\W\s]*'
-          example: Brasil
-          description: Nome do país
-        countryCode:
-          type: string
-          maxLength: 3
-          example: BRA
-          description: Código do pais de acordo com o código “alpha3” do ISO-3166
-        geographicCoordinates:
-          $ref: '#/components/schemas/GeographicCoordinates'
-      additionalProperties: false
-    PersonalPostalAddress:
-      type: object
-      required:
-        - isMain
-        - address
-        - districtName
-        - townName
-        - countrySubDivision
-        - postCode
-        - country
-      properties:
-        isMain:
-          type: boolean
-          example: true
-          description: Indica se o endereço informado é o principal.
-        address:
-          type: string
-          maxLength: 150
-          pattern: '[\w\W\s]*'
-          example: 'Av Naburo Ykesaki, 1270'
-          description: Corresponde ao endereço residencial do cliente.
-        additionalInfo:
-          type: string
-          maxLength: 30
-          pattern: '[\w\W\s]*'
-          example: Fundos
-          description: Alguns logradouros ainda necessitam ser especificados por meio de complemento.
-        districtName:
-          type: string
-          maxLength: 50
-          pattern: '[\w\W\s]*'
-          example: Centro
-          description: Bairro é uma comunidade ou região localizada em uma cidade ou município de acordo com as suas subdivisões geográficas.
-        townName:
-          type: string
-          maxLength: 50
-          pattern: '[\w\W\s]*'
-          example: Marília
-          description: |
-            Localidade: O nome da localidade corresponde à designação da cidade ou município no qual o endereço está localizado.
-        ibgeTownCode:
-          type: string
-          pattern: '\d{7}$'
-          maxLength: 7
-          example: '3550308'
-          description: 'Código IBGE de Município. A Tabela de Códigos de Municípios do IBGE apresenta a lista dos municípios brasileiros associados a um código composto de 7 dígitos, sendo os dois primeiros referentes ao código da Unidade da Federação.'
-        countrySubDivision:
-          $ref: '#/components/schemas/EnumCountrySubDivision'
-        postCode:
-          type: string
-          pattern: '\d{8}|^NA$'
-          maxLength: 8
-          example: '17500001'
-          description: |
-            Código de Endereçamento Postal: Composto por um conjunto numérico de oito dígitos, o objetivo principal do CEP é orientar e acelerar o encaminhamento, o tratamento e a entrega de objetos postados nos Correios, por meio da sua atribuição a localidades, logradouros, unidades dos Correios, serviços, órgãos públicos, empresas e edifícios. p.ex. '01311000'.
-        country:
-          type: string
-          maxLength: 80
-          pattern: '[\w\W\s]*'
-          example: Brasil
-          description: Nome do país
-        countryCode:
-          type: string
-          maxLength: 3
-          example: BRA
-          description: Código do pais de acordo com o código “alpha3” do ISO-3166.
-        geographicCoordinates:
-          $ref: '#/components/schemas/GeographicCoordinates'
       additionalProperties: false
     EconomicActivity:
       type: object
@@ -4853,6 +4549,29 @@ components:
         - '98'
         - '99'
         - NA
+    EnumBalanceType:
+      type: string
+      enum:
+        - SALDO_DISPONIVEL
+        - SALDO_BLOQUEADO
+        - SALDO_DISPONIVEL_APLICACAO_AUTOMATICA
+      description: |
+        tipos de saldo em conta: (vide enum) informados:
+        Saldo disponível para utilização imediata. No caso de conta de depósito a vista, sem considerar cheque especial e investimentos atrelados a conta. Admite saldo negativo.
+        Saldo bloqueado não disponível para utilização imediata, por motivo de bloqueio por compensação, ou bloqueio judicial
+        Saldo disponível com aplicação automática - saldo disponível para utilização imediata, referente ao tipo de conta que remunera automaticamente o saldo em conta 
+      example: SALDO_DISPONIVEL
+    EnumCompletedAuthorisedPaymentIndicator:
+      type: string
+      description: |
+        Indicador da transação: 
+        - Transação efetivada
+        - Lançamento futuro
+      maxLength: 19
+      enum:
+        - TRANSACAO_EFETIVADA
+        - LANCAMENTO_FUTURO
+      example: TRANSACAO_EFETIVADA
     EnumContractAmortizationScheduled:
       type: string
       description: |
@@ -4941,250 +4660,6 @@ components:
         - SIMPLES
         - COMPOSTO
       example: SIMPLES
-    EnumContractReferentialRateIndexerType:
-      type: string
-      description: |
-        "Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial ou Indexador (Indx), do Documento 3040"
-      maxLength: 18
-      enum:
-        - SEM_TIPO_INDEXADOR
-        - PRE_FIXADO
-        - POS_FIXADO
-        - FLUTUANTES
-        - INDICES_PRECOS
-        - CREDITO_RURAL
-        - OUTROS_INDEXADORES
-      example: PRE_FIXADO
-    EnumContractReferentialRateIndexerSubType:
-      type: string
-      description: |
-        "Sub tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial ou Indexador (Indx), do Documento 3040"
-      maxLength: 24
-      enum:
-        - SEM_SUB_TIPO_INDEXADOR
-        - PRE_FIXADO
-        - TR_TBF
-        - TJLP
-        - LIBOR
-        - TLP
-        - OUTRAS_TAXAS_POS_FIXADAS
-        - CDI
-        - SELIC
-        - OUTRAS_TAXAS_FLUTUANTES
-        - IGPM
-        - IPCA
-        - IPCC
-        - OUTROS_INDICES_PRECO
-        - TCR_PRE
-        - TCR_POS
-        - TRFC_PRE
-        - TRFC_POS
-        - OUTROS_INDEXADORES
-      example: TJLP
-    EnumContractTaxPeriodicity:
-      type: string
-      description: |
-        "Periodicidade da taxa . (Vide  Enum)
-        a.m - ao mês
-        a.a. - ao ano"
-      maxLength: 2
-      enum:
-        - AM
-        - AA
-      example: AA
-    EnumContractTaxType:
-      type: string
-      description: |
-        "Tipo de Taxa (vide  Enum)
-        - NOMINAL (taxa nominal é uma taxa de juros em que a unidade referencial não coincide com a unidade de tempo da capitalização. Ela é sempre fornecida em termos anuais, e seus períodos de capitalização podem ser diários, mensais, trimestrais ou semestrais. p.ex. Uma taxa de 12% ao ano com capitalização mensal)
-        - EFETIVA (É a taxa de juros em que a unidade referencial coincide com a unidade de tempo da capitalização. Como as unidades de medida de tempo da taxa de juros e dos períodos de capitalização são iguais, usa-se exemplos simples como 1% ao mês, 60% ao ano)"
-      maxLength: 10
-      enum:
-        - NOMINAL
-        - EFETIVA
-      example: EFETIVA
-    EnumWarrantySubType:
-      type: string
-      description: |
-        Denominação/Identificação do sub tipo da garantia que avaliza a Modalidade da Operação de Crédito contratada (Doc 3040, Anexo 12).
-      maxLength: 100
-      enum:
-        - ACOES_DEBENTURES
-        - APLICACOES_FINANCEIRAS_RENDA_FIXA
-        - APLICACOES_FINANCEIRAS_RENDA_VARIAVEL
-        - APOLICES_CREDITO_EXPORTACAO
-        - CCR_CONVENIO_CREDITOS_RECIPROCOS
-        - CHEQUES
-        - CIVIL
-        - DIREITOS_SOBRE_ALUGUEIS
-        - DEPOSITOS_A_VISTA_A_PRAZO_POUPANCA_OURO_TITULOS_PUBLICOS_FEDERAIS_ART_36
-        - DEPOSITO_TITULOS_EMITIDOS_ENTIDADES_ART_23
-        - DUPLICATAS
-        - EMD_ENTIDADES_MULTILATERAIS_DESENVOLVIMENTO_ART_37
-        - EQUIPAMENTOS FATURA_CARTAO_CREDITO
-        - ESTADUAL_OU_DISTRITAL
-        - FATURA_CARTAO_CREDITO
-        - FEDERAL
-        - FCVS_FUNDO_COMPENSACAO_VARIACOES_SALARIAIS
-        - FGI_FUNDO_GARANTIDOR_INVESTIMENTOS
-        - FGPC_FUNDO_GARANTIA_PROMOCAO_COMPETIT
-        - FGTS_FUNDO_GARANTIA_TEMPO_SERVICO
-        - FUNDO_GARANTIDOR_AVAL
-        - GARANTIA_PRESTADA_FGPC_LEI_9531_ART_37
-        - GARANTIA_PRESTADA_FUNDOS_QUAISQUER_OUTROS_MECANISMOS_COBERTURA_RISCO_CREDITO_ART_37
-        - GARANTIA_PRESTADA_TESOURO_NACIONAL_OU_BACEN_ART_37_BENS_DIREITOS_INTEGRANTES_PATRIMONIO_AFETACAO
-        - IMOVEIS
-        - IMOVEIS_RESIDENCIAIS
-        - MITIGADORAS
-        - MUNICIPAL
-        - NAO_MITIGADORAS
-        - NOTAS_PROMISSORIAS_OUTROS_DIREITOS_CREDITO
-        - OUTRAS
-        - OUTROS
-        - OUTROS_BENS
-        - OUTROS_GRAUS
-        - OUTROS_IMOVEIS
-        - OUTROS_SEGUROS_ASSEMELHADOS
-        - PESSOA_FISICA
-        - PESSOA_FISICA_EXTERIOR
-        - PESSOA_JURIDICA
-        - PESSOA_JURIDICA_EXTERIOR
-        - PRIMEIRO_GRAU_BENS_DIREITOS_INTEGRANTES_PATRIMONIO_AFETACAO
-        - PRIMEIRO_GRAU_IMOVEIS_RESIDENCIAIS
-        - PRIMEIRO_GRAU_OUTROS
-        - PRODUTOS_AGROPECUARIOS_COM_WARRANT
-        - PRODUTOS_AGROPECUARIOS_SEM_WARRANT
-        - SBCE_SOCIEDADE_BRASILEIRA_CREDITO_EXPORTAÇÃO
-        - SEGURO_RURAL
-        - TRIBUTOS_RECEITAS_ORCAMENTARIAS
-        - VEICULOS
-        - VEICULOS_AUTOMOTORES
-      example: NOTAS_PROMISSORIAS_OUTROS_DIREITOS_CREDITO
-    EnumWarrantyType:
-      type: string
-      description: 'Denominação/Identificação do tipo da garantia que avaliza a Modalidade da Operação de Crédito contratada  (Doc 3040, Anexo 12)'
-      maxLength: 40
-      enum:
-        - SEM_TIPO_GARANTIA
-        - CESSAO_DIREITOS_CREDITORIOS
-        - CAUCAO
-        - PENHOR
-        - ALIENACAO_FIDUCIARIA
-        - HIPOTECA
-        - OPERACOES_GARANTIDAS_PELO_GOVERNO
-        - OUTRAS_GARANTIAS_NAO_FIDEJUSSORIAS
-        - SEGUROS_ASSEMELHADOS
-        - GARANTIA_FIDEJUSSORIA
-        - BENS_ARRENDADOS
-        - GARANTIAS_INTERNACIONAIS
-        - OPERACOES_GARANTIDAS_OUTRAS_ENTIDADES
-        - ACORDOS_COMPENSACAO
-      example: CESSAO_DIREITOS_CREDITORIOS
-    EnumCustomerPhoneType:
-      type: string
-      description: Identificação do Tipo de telefone do cliente.
-      maxLength: 5
-      enum:
-        - FIXO
-        - MOVEL
-        - OUTRO
-      example: FIXO
-    EnumTaxType:
-      type: string
-      description: Tipo de encargo pago fora da parcela
-      maxLength: 35
-      enum:
-        - JUROS_REMUNERATORIOS_POR_ATRASO
-        - MULTA_ATRASO_PAGAMENTO
-        - JUROS_MORA_ATRASO
-        - IOF_CONTRATACAO
-        - IOF_POR_ATRASO
-        - OUTROS
-      example: JUROS_REMUNERATORIOS_POR_ATRASO
-    EnumFiliationType:
-      type: string
-      enum:
-        - MAE
-        - PAI
-        - SEM_FILIACAO
-      example: PAI
-      description: Tipo de filiação.
-    EnumInformedIncomeFrequency:
-      type: string
-      enum:
-        - DIARIA
-        - SEMANAL
-        - QUINZENAL
-        - MENSAL
-        - BIMESTRAL
-        - TRIMESTRAL
-        - SEMESTRAL
-        - ANUAL
-        - SEM_FREQUENCIA_RENDA_INFORMADA
-        - OUTROS
-      description: Traz a frequência ou período da renda informada.
-    EnumInformedRevenueFrequency:
-      type: string
-      description: |
-        Traz a frequência ou período do faturamento informado.
-        "O faturamento é calculado a partir de todos os benefícios que a empresa conseguiu com sua atividade econômica em um determinado período. Esses benefícios são os rendimentos ou ganhos da organização através de suas vendas ou serviços prestados".
-      enum:
-        - DIARIA
-        - SEMANAL
-        - QUINZENAL
-        - MENSAL
-        - BIMESTRAL
-        - TRIMESTRAL
-        - SEMESTRAL
-        - ANUAL
-        - SEM_FREQUENCIA_FATURAMENTO_INFORMADO
-        - OUTROS
-      example: DIARIA
-    EnumMaritalStatusCode:
-      type: string
-      enum:
-        - SOLTEIRO
-        - CASADO
-        - VIUVO
-        - SEPARADO_JUDICIALMENTE
-        - DIVORCIADO
-        - UNIAO_ESTAVEL
-        - OUTRO
-      example: SOLTEIRO
-      description: |
-        Estado marital do cliente. 
-    EnumOccupationMainCodeType:
-      type: string
-      enum:
-        - RECEITA_FEDERAL
-        - CBO
-        - OUTRO
-      example: RECEITA_FEDERAL
-      description: |
-        Traz a relação dos códigos relativos à ocupação.
-    EnumBalanceType:
-      type: string
-      enum:
-        - SALDO_DISPONIVEL
-        - SALDO_BLOQUEADO
-        - SALDO_DISPONIVEL_APLICACAO_AUTOMATICA
-      description: |
-        tipos de saldo em conta: (vide enum) informados:
-        Saldo disponível para utilização imediata. No caso de conta de depósito a vista, sem considerar cheque especial e investimentos atrelados a conta. Admite saldo negativo.
-        Saldo bloqueado não disponível para utilização imediata, por motivo de bloqueio por compensação, ou bloqueio judicial
-        Saldo disponível com aplicação automática - saldo disponível para utilização imediata, referente ao tipo de conta que remunera automaticamente o saldo em conta 
-      example: SALDO_DISPONIVEL
-    EnumCompletedAuthorisedPaymentIndicator:
-      type: string
-      description: |
-        Indicador da transação: 
-        - Transação efetivada
-        - Lançamento futuro
-      maxLength: 19
-      enum:
-        - TRANSACAO_EFETIVADA
-        - LANCAMENTO_FUTURO
-      example: TRANSACAO_EFETIVADA
     EnumContractProductSubTypeFinancings:
       type: string
       description: |
@@ -5255,6 +4730,68 @@ components:
       enum:
         - EMPRESTIMOS
       example: EMPRESTIMOS
+    EnumContractReferentialRateIndexerSubType:
+      type: string
+      description: |
+        "Sub tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial ou Indexador (Indx), do Documento 3040"
+      maxLength: 24
+      enum:
+        - SEM_SUB_TIPO_INDEXADOR
+        - PRE_FIXADO
+        - TR_TBF
+        - TJLP
+        - LIBOR
+        - TLP
+        - OUTRAS_TAXAS_POS_FIXADAS
+        - CDI
+        - SELIC
+        - OUTRAS_TAXAS_FLUTUANTES
+        - IGPM
+        - IPCA
+        - IPCC
+        - OUTROS_INDICES_PRECO
+        - TCR_PRE
+        - TCR_POS
+        - TRFC_PRE
+        - TRFC_POS
+        - OUTROS_INDEXADORES
+      example: TJLP
+    EnumContractReferentialRateIndexerType:
+      type: string
+      description: |
+        "Tipos de taxas referenciais ou indexadores, conforme Anexo 5: Taxa referencial ou Indexador (Indx), do Documento 3040"
+      maxLength: 18
+      enum:
+        - SEM_TIPO_INDEXADOR
+        - PRE_FIXADO
+        - POS_FIXADO
+        - FLUTUANTES
+        - INDICES_PRECOS
+        - CREDITO_RURAL
+        - OUTROS_INDEXADORES
+      example: PRE_FIXADO
+    EnumContractTaxPeriodicity:
+      type: string
+      description: |
+        "Periodicidade da taxa . (Vide  Enum)
+        a.m - ao mês
+        a.a. - ao ano"
+      maxLength: 2
+      enum:
+        - AM
+        - AA
+      example: AA
+    EnumContractTaxType:
+      type: string
+      description: |
+        "Tipo de Taxa (vide  Enum)
+        - NOMINAL (taxa nominal é uma taxa de juros em que a unidade referencial não coincide com a unidade de tempo da capitalização. Ela é sempre fornecida em termos anuais, e seus períodos de capitalização podem ser diários, mensais, trimestrais ou semestrais. p.ex. Uma taxa de 12% ao ano com capitalização mensal)
+        - EFETIVA (É a taxa de juros em que a unidade referencial coincide com a unidade de tempo da capitalização. Como as unidades de medida de tempo da taxa de juros e dos períodos de capitalização são iguais, usa-se exemplos simples como 1% ao mês, 60% ao ano)"
+      maxLength: 10
+      enum:
+        - NOMINAL
+        - EFETIVA
+      example: EFETIVA
     EnumCountrySubDivision:
       type: string
       description: 'Enumeração referente a cada sigla da unidade da federação que identifica o estado ou o distrito federal, no qual o endereço está localizado. p.ex. ''AC''. São consideradas apenas as siglas para os estados brasileiros'
@@ -5423,6 +4960,19 @@ components:
         - EMPRESTIMO
         - OUTROS
       example: CREDITO_ROTATIVO
+    EnumCreditCardAccountsPaymentMode:
+      type: string
+      description: |
+        Traz as formas de efetivação do pagamento realizado: (Vide Enum)
+        - Débito em conta corrente
+        - Boleto bancário
+        - Averbação em folha
+        - PIX
+      enum:
+        - DEBITO_CONTA_CORRENTE
+        - BOLETO_BANCARIO
+        - AVERBACAO_FOLHA
+        - PIX
     EnumCreditCardAccountsPaymentType:
       type: string
       description: Traz os tipos de pagamento. Preenchimento obrigatório se selecionado tipo de transação PAGAMENTO.
@@ -5484,19 +5034,76 @@ components:
         - CREDITO
         - DEBITO
       example: DEBITO
-    EnumCreditCardAccountsPaymentMode:
+    EnumCustomerPhoneType:
+      type: string
+      description: Identificação do Tipo de telefone do cliente.
+      maxLength: 5
+      enum:
+        - FIXO
+        - MOVEL
+        - OUTRO
+      example: FIXO
+    EnumFiliationType:
+      type: string
+      enum:
+        - MAE
+        - PAI
+        - SEM_FILIACAO
+      example: PAI
+      description: Tipo de filiação.
+    EnumInformedIncomeFrequency:
+      type: string
+      enum:
+        - DIARIA
+        - SEMANAL
+        - QUINZENAL
+        - MENSAL
+        - BIMESTRAL
+        - TRIMESTRAL
+        - SEMESTRAL
+        - ANUAL
+        - SEM_FREQUENCIA_RENDA_INFORMADA
+        - OUTROS
+      description: Traz a frequência ou período da renda informada.
+    EnumInformedRevenueFrequency:
       type: string
       description: |
-        Traz as formas de efetivação do pagamento realizado: (Vide Enum)
-        - Débito em conta corrente
-        - Boleto bancário
-        - Averbação em folha
-        - PIX
+        Traz a frequência ou período do faturamento informado.
+        "O faturamento é calculado a partir de todos os benefícios que a empresa conseguiu com sua atividade econômica em um determinado período. Esses benefícios são os rendimentos ou ganhos da organização através de suas vendas ou serviços prestados".
       enum:
-        - DEBITO_CONTA_CORRENTE
-        - BOLETO_BANCARIO
-        - AVERBACAO_FOLHA
-        - PIX
+        - DIARIA
+        - SEMANAL
+        - QUINZENAL
+        - MENSAL
+        - BIMESTRAL
+        - TRIMESTRAL
+        - SEMESTRAL
+        - ANUAL
+        - SEM_FREQUENCIA_FATURAMENTO_INFORMADO
+        - OUTROS
+      example: DIARIA
+    EnumMaritalStatusCode:
+      type: string
+      enum:
+        - SOLTEIRO
+        - CASADO
+        - VIUVO
+        - SEPARADO_JUDICIALMENTE
+        - DIVORCIADO
+        - UNIAO_ESTAVEL
+        - OUTRO
+      example: SOLTEIRO
+      description: |
+        Estado marital do cliente. 
+    EnumOccupationMainCodeType:
+      type: string
+      enum:
+        - RECEITA_FEDERAL
+        - CBO
+        - OUTRO
+      example: RECEITA_FEDERAL
+      description: |
+        Traz a relação dos códigos relativos à ocupação.
     EnumOverdraftLimit:
       type: string
       description: |
@@ -5513,6 +5120,17 @@ components:
         - FAIXA_4
         - FAIXA_5
       example: FAIXA_1
+    EnumOverdraftLimitType:
+      type: string
+      enum:
+        - VALOR_CONTRATADO_LIMITE
+        - VALOR_UTILIZADO_LIMITE
+        - SALDO_DESCOBERTO
+      description: |
+        Tipo de  saldo informado: (vide Enum)
+        - Valor utilizado do limite do cheque especial
+        - Saldo a descoberto em conta de depósito à vista (relativo ao excesso do limite de cheque especial ou ao adiantamento a depositante)
+      example: VALOR_UTILIZADO_LIMITE
     EnumPartiesParticipationDocumentType:
       type: string
       enum:
@@ -5532,20 +5150,20 @@ components:
       enum:
         - SOCIO
         - ADMINISTRADOR
-    EnumPayerPersonType:
+    EnumPayeePersonType:
       type: string
       description: |
-        Identificação do Tipo de Pessoa do Pagador da transação. Vide Enum
+        Identificação do Tipo de Pessoa do Recebedor da transação. Vide Enum
         Pessoa Natural - Informar CPF no campo “payerCnpjCpf”
         Pessoa Jurídica - Informar CNPJ no campo “payerCnpjCpf”
       enum:
         - PESSOA_NATURAL
         - PESSOA_JURIDICA
       example: PESSOA_NATURAL
-    EnumPayeePersonType:
+    EnumPayerPersonType:
       type: string
       description: |
-        Identificação do Tipo de Pessoa do Recebedor da transação. Vide Enum
+        Identificação do Tipo de Pessoa do Pagador da transação. Vide Enum
         Pessoa Natural - Informar CPF no campo “payerCnpjCpf”
         Pessoa Jurídica - Informar CNPJ no campo “payerCnpjCpf”
       enum:
@@ -5563,28 +5181,6 @@ components:
         - SEM_OUTROS_DOCUMENTOS
       description: |
         Relação dos Códigos dos demais documentos pessoa natural.
-    EnumSex:
-      type: string
-      enum:
-        - FEMININO
-        - MASCULINO
-        - OUTRO
-        - NAO_DISPONIVEL
-      example: FEMININO
-      description: |
-        "Conjunto de características anatomofisiológicas que distinguem o homem e a mulher: Sexo masculino; sexo feminino". 
-        No caso de não ser feminino nem masculino é classificado como 'OUTRO'
-    EnumOverdraftLimitType:
-      type: string
-      enum:
-        - VALOR_CONTRATADO_LIMITE
-        - VALOR_UTILIZADO_LIMITE
-        - SALDO_DESCOBERTO
-      description: |
-        Tipo de  saldo informado: (vide Enum)
-        - Valor utilizado do limite do cheque especial
-        - Saldo a descoberto em conta de depósito à vista (relativo ao excesso do limite de cheque especial ou ao adiantamento a depositante)
-      example: VALOR_UTILIZADO_LIMITE
     EnumProcuratorsTypeBusiness:
       type: string
       maxLength: 19
@@ -5627,6 +5223,29 @@ components:
         - OUTROS
       example: SEGURO
       description: Lista com a relação dos produtos e serviços com contrato vigente.
+    EnumSex:
+      type: string
+      enum:
+        - FEMININO
+        - MASCULINO
+        - OUTRO
+        - NAO_DISPONIVEL
+      example: FEMININO
+      description: |
+        "Conjunto de características anatomofisiológicas que distinguem o homem e a mulher: Sexo masculino; sexo feminino". 
+        No caso de não ser feminino nem masculino é classificado como 'OUTRO'
+    EnumTaxType:
+      type: string
+      description: Tipo de encargo pago fora da parcela
+      maxLength: 35
+      enum:
+        - JUROS_REMUNERATORIOS_POR_ATRASO
+        - MULTA_ATRASO_PAGAMENTO
+        - JUROS_MORA_ATRASO
+        - IOF_CONTRATACAO
+        - IOF_POR_ATRASO
+        - OUTROS
+      example: JUROS_REMUNERATORIOS_POR_ATRASO
     EnumTransactionTypes:
       type: string
       description: |
@@ -5668,6 +5287,83 @@ components:
       enum:
         - ADIANTAMENTO_A_DEPOSITANTES
       example: ADIANTAMENTO_A_DEPOSITANTES
+    EnumWarrantySubType:
+      type: string
+      description: |
+        Denominação/Identificação do sub tipo da garantia que avaliza a Modalidade da Operação de Crédito contratada (Doc 3040, Anexo 12).
+      maxLength: 100
+      enum:
+        - ACOES_DEBENTURES
+        - APLICACOES_FINANCEIRAS_RENDA_FIXA
+        - APLICACOES_FINANCEIRAS_RENDA_VARIAVEL
+        - APOLICES_CREDITO_EXPORTACAO
+        - CCR_CONVENIO_CREDITOS_RECIPROCOS
+        - CHEQUES
+        - CIVIL
+        - DIREITOS_SOBRE_ALUGUEIS
+        - DEPOSITOS_A_VISTA_A_PRAZO_POUPANCA_OURO_TITULOS_PUBLICOS_FEDERAIS_ART_36
+        - DEPOSITO_TITULOS_EMITIDOS_ENTIDADES_ART_23
+        - DUPLICATAS
+        - EMD_ENTIDADES_MULTILATERAIS_DESENVOLVIMENTO_ART_37
+        - EQUIPAMENTOS FATURA_CARTAO_CREDITO
+        - ESTADUAL_OU_DISTRITAL
+        - FATURA_CARTAO_CREDITO
+        - FEDERAL
+        - FCVS_FUNDO_COMPENSACAO_VARIACOES_SALARIAIS
+        - FGI_FUNDO_GARANTIDOR_INVESTIMENTOS
+        - FGPC_FUNDO_GARANTIA_PROMOCAO_COMPETIT
+        - FGTS_FUNDO_GARANTIA_TEMPO_SERVICO
+        - FUNDO_GARANTIDOR_AVAL
+        - GARANTIA_PRESTADA_FGPC_LEI_9531_ART_37
+        - GARANTIA_PRESTADA_FUNDOS_QUAISQUER_OUTROS_MECANISMOS_COBERTURA_RISCO_CREDITO_ART_37
+        - GARANTIA_PRESTADA_TESOURO_NACIONAL_OU_BACEN_ART_37_BENS_DIREITOS_INTEGRANTES_PATRIMONIO_AFETACAO
+        - IMOVEIS
+        - IMOVEIS_RESIDENCIAIS
+        - MITIGADORAS
+        - MUNICIPAL
+        - NAO_MITIGADORAS
+        - NOTAS_PROMISSORIAS_OUTROS_DIREITOS_CREDITO
+        - OUTRAS
+        - OUTROS
+        - OUTROS_BENS
+        - OUTROS_GRAUS
+        - OUTROS_IMOVEIS
+        - OUTROS_SEGUROS_ASSEMELHADOS
+        - PESSOA_FISICA
+        - PESSOA_FISICA_EXTERIOR
+        - PESSOA_JURIDICA
+        - PESSOA_JURIDICA_EXTERIOR
+        - PRIMEIRO_GRAU_BENS_DIREITOS_INTEGRANTES_PATRIMONIO_AFETACAO
+        - PRIMEIRO_GRAU_IMOVEIS_RESIDENCIAIS
+        - PRIMEIRO_GRAU_OUTROS
+        - PRODUTOS_AGROPECUARIOS_COM_WARRANT
+        - PRODUTOS_AGROPECUARIOS_SEM_WARRANT
+        - SBCE_SOCIEDADE_BRASILEIRA_CREDITO_EXPORTAÇÃO
+        - SEGURO_RURAL
+        - TRIBUTOS_RECEITAS_ORCAMENTARIAS
+        - VEICULOS
+        - VEICULOS_AUTOMOTORES
+      example: NOTAS_PROMISSORIAS_OUTROS_DIREITOS_CREDITO
+    EnumWarrantyType:
+      type: string
+      description: 'Denominação/Identificação do tipo da garantia que avaliza a Modalidade da Operação de Crédito contratada  (Doc 3040, Anexo 12)'
+      maxLength: 40
+      enum:
+        - SEM_TIPO_GARANTIA
+        - CESSAO_DIREITOS_CREDITORIOS
+        - CAUCAO
+        - PENHOR
+        - ALIENACAO_FIDUCIARIA
+        - HIPOTECA
+        - OPERACOES_GARANTIDAS_PELO_GOVERNO
+        - OUTRAS_GARANTIAS_NAO_FIDEJUSSORIAS
+        - SEGUROS_ASSEMELHADOS
+        - GARANTIA_FIDEJUSSORIA
+        - BENS_ARRENDADOS
+        - GARANTIAS_INTERNACIONAIS
+        - OPERACOES_GARANTIDAS_OUTRAS_ENTIDADES
+        - ACORDOS_COMPENSACAO
+      example: CESSAO_DIREITOS_CREDITORIOS
     Errors:
       type: object
       required:
@@ -7230,54 +6926,6 @@ components:
           example: 'https://api.banco.com.br/open-banking/api/v1/resource'
           pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
       additionalProperties: false
-    LoansListContractData:
-      type: object
-      description: Conjunto de informações de contratos de empréstimo mantidos pelo cliente na instituição transmissora e para os quais ele tenha fornecido consentimento
-      required:
-        - contractId
-        - brandName
-        - companyCnpj
-        - productType
-        - productSubType
-        - ipocCode
-      properties:
-        contractId:
-          type: string
-          pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
-          maxLength: 100
-          example: '92792126019929279212650822221989319252576'
-          description: 'Identifica de forma única o contrato da operação de crédito do cliente, mantendo as regras de imutabilidade dentro da instituição transmissora.'
-        brandName:
-          type: string
-          pattern: '[\w\W\s]*'
-          maxLength: 80
-          example: Organização A
-          description: 'Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes'
-        companyCnpj:
-          type: string
-          pattern: '\d{14}|^NA$'
-          maxLength: 14
-          example: '21128159000166'
-          description: 'Número completo do CNPJ da instituição responsável pelo Cadastro - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. Deve-se ter apenas os números do CNPJ, sem máscara.'
-        productType:
-          $ref: '#/components/schemas/EnumContractProductTypeLoans'
-        productSubType:
-          $ref: '#/components/schemas/EnumContractProductSubTypeLoans'
-        ipocCode:
-          type: string
-          maxLength: 67
-          example: '92792126019929279212650822221989319252576'
-          description: |
-            Número padronizado do contrato - IPOC (Identificação Padronizada da Operação de Crédito). Segundo DOC 3040, composta por:
-            - **CNPJ da instituição:** 8 (oito) posições iniciais;
-            - **Modalidade da operação:** 4 (quatro) posições;
-            - **Tipo do cliente:** 1 (uma) posição( 1 = pessoa natural - CPF, 2= pessoa jurídica – CNPJ, 3 = pessoa física no exterior, 4 = pessoa jurídica no exterior, 5 = pessoa natural sem CPF e 6 = pessoa jurídica sem CNPJ);
-            - **Código do cliente:** O número de posições varia conforme o tipo do cliente:
-              1. Para clientes pessoa física com CPF (tipo de cliente = 1), informar as 11 (onze) posições do CPF;
-              2. Para clientes pessoa jurídica com CNPJ (tipo de cliente = 2), informar as 8 (oito) posições iniciais do CNPJ;
-              3. Para os demais clientes (tipos de cliente 3, 4, 5 e 6), informar 14 (catorze) posições com complemento de zeros à esquerda se a identificação tiver tamanho inferior;
-            - **Código do contrato:** 1 (uma) até 40 (quarenta) posições, sem complemento de caracteres.
-      additionalProperties: false
     LoansBalloonPayment:
       type: object
       description: Lista que traz as datas de vencimento e valor das parcelas não regulares  do contrato da modalidade de crédito consultada.
@@ -7633,6 +7281,37 @@ components:
             Texto com informações adicionais sobre a composição das taxas de juros pactuadas.
             [Restrição] Caso a instituição não possua a informação para compartilhamento, informar NA.       
       additionalProperties: false
+    LoansFeeOverParcel:
+      type: object
+      required:
+        - feeName
+        - feeCode
+        - feeAmount
+      properties:
+        feeName:
+          type: string
+          maxLength: 140
+          pattern: '[\w\W\s]*'
+          example: Reavaliação periódica do bem
+          description: Denominação da Tarifa pactuada
+        feeCode:
+          type: string
+          maxLength: 140
+          pattern: '[\w\W\s]*'
+          example: aval_bem
+          description: Sigla identificadora da tarifa pactuada
+        feeAmount:
+          type: number
+          format: double
+          pattern: '^-?\d{1,15}\.\d{2,4}$'
+          maxLength: 20
+          minLength: 0
+          nullable: true
+          example: 100000.04
+          description: |
+            Valor monetário da tarifa pactuada no contrato.
+            [Restrição] Preenchimento obrigatório quando a forma de cobrança for: Mínimo, Máximo ou Fixo
+      additionalProperties: false
     LoansFinanceCharge:
       type: object
       description: Conjunto de informações referentes à identificação da operação de crédito
@@ -7728,6 +7407,54 @@ components:
           minItems: 0
           description: Lista que traz as datas de vencimento e valor das parcelas não regulares do contrato da modalidade de crédito consultada
           nullable: true
+      additionalProperties: false
+    LoansListContractData:
+      type: object
+      description: Conjunto de informações de contratos de empréstimo mantidos pelo cliente na instituição transmissora e para os quais ele tenha fornecido consentimento
+      required:
+        - contractId
+        - brandName
+        - companyCnpj
+        - productType
+        - productSubType
+        - ipocCode
+      properties:
+        contractId:
+          type: string
+          pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
+          maxLength: 100
+          example: '92792126019929279212650822221989319252576'
+          description: 'Identifica de forma única o contrato da operação de crédito do cliente, mantendo as regras de imutabilidade dentro da instituição transmissora.'
+        brandName:
+          type: string
+          pattern: '[\w\W\s]*'
+          maxLength: 80
+          example: Organização A
+          description: 'Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes'
+        companyCnpj:
+          type: string
+          pattern: '\d{14}|^NA$'
+          maxLength: 14
+          example: '21128159000166'
+          description: 'Número completo do CNPJ da instituição responsável pelo Cadastro - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. Deve-se ter apenas os números do CNPJ, sem máscara.'
+        productType:
+          $ref: '#/components/schemas/EnumContractProductTypeLoans'
+        productSubType:
+          $ref: '#/components/schemas/EnumContractProductSubTypeLoans'
+        ipocCode:
+          type: string
+          maxLength: 67
+          example: '92792126019929279212650822221989319252576'
+          description: |
+            Número padronizado do contrato - IPOC (Identificação Padronizada da Operação de Crédito). Segundo DOC 3040, composta por:
+            - **CNPJ da instituição:** 8 (oito) posições iniciais;
+            - **Modalidade da operação:** 4 (quatro) posições;
+            - **Tipo do cliente:** 1 (uma) posição( 1 = pessoa natural - CPF, 2= pessoa jurídica – CNPJ, 3 = pessoa física no exterior, 4 = pessoa jurídica no exterior, 5 = pessoa natural sem CPF e 6 = pessoa jurídica sem CNPJ);
+            - **Código do cliente:** O número de posições varia conforme o tipo do cliente:
+              1. Para clientes pessoa física com CPF (tipo de cliente = 1), informar as 11 (onze) posições do CPF;
+              2. Para clientes pessoa jurídica com CNPJ (tipo de cliente = 2), informar as 8 (oito) posições iniciais do CNPJ;
+              3. Para os demais clientes (tipos de cliente 3, 4, 5 e 6), informar 14 (catorze) posições com complemento de zeros à esquerda se a identificação tiver tamanho inferior;
+            - **Código do contrato:** 1 (uma) até 40 (quarenta) posições, sem complemento de caracteres.
       additionalProperties: false
     LoansPayments:
       type: object
@@ -7828,37 +7555,6 @@ components:
               description: Lista dos encargos que foram pagos fora da parcela.
           additionalProperties: false
       additionalProperties: false
-    LoansFeeOverParcel:
-      type: object
-      required:
-        - feeName
-        - feeCode
-        - feeAmount
-      properties:
-        feeName:
-          type: string
-          maxLength: 140
-          pattern: '[\w\W\s]*'
-          example: Reavaliação periódica do bem
-          description: Denominação da Tarifa pactuada
-        feeCode:
-          type: string
-          maxLength: 140
-          pattern: '[\w\W\s]*'
-          example: aval_bem
-          description: Sigla identificadora da tarifa pactuada
-        feeAmount:
-          type: number
-          format: double
-          pattern: '^-?\d{1,15}\.\d{2,4}$'
-          maxLength: 20
-          minLength: 0
-          nullable: true
-          example: 100000.04
-          description: |
-            Valor monetário da tarifa pactuada no contrato.
-            [Restrição] Preenchimento obrigatório quando a forma de cobrança for: Mínimo, Máximo ou Fixo
-      additionalProperties: false
     LoansWarranties:
       type: object
       description: Conjunto de informações referentes à identificação da operação de crédito de empréstimo
@@ -7887,6 +7583,32 @@ components:
             Valor original da garantia. Valor monetário, expresso com até 4 casas decimais.
             [Restrição] Preenchimento obrigatório se tipo de garantia selecionada for diferente de 'SEM_TIPO_GARANTIA'
       additionalProperties: false
+    LoggedUser:
+      type: object
+      description: Usuário (pessoa natural) que encontra-se logado na instituição receptora e que iniciará o processo de consentimento para compartilhamento de dados.
+      additionalProperties: false
+      required:
+        - document
+      properties:
+        document:
+          type: object
+          additionalProperties: false
+          required:
+            - identification
+            - rel
+          properties:
+            identification:
+              type: string
+              maxLength: 11
+              description: Número do documento de identificação oficial do usuário.
+              example: '11111111111'
+              pattern: '^\d{11}$'
+            rel:
+              type: string
+              maxLength: 3
+              description: Tipo do documento de identificação oficial do usuário.
+              example: CPF
+              pattern: '^[A-Z]{3}$'
     Meta:
       type: object
       description: Meta informações referente a API requisitada.
@@ -7994,6 +7716,23 @@ components:
           description: Campo livre de preenchimento obrigatório se selecionada a opção OUTROS tipos de documentos.
           example: Informações adicionais.
       additionalProperties: false
+    OverdraftLimitsBalance:
+      type: object
+      required:
+        - type
+        - amount
+      properties:
+        type:
+          $ref: '#/components/schemas/EnumOverdraftLimitType'
+        amount:
+          type: number
+          format: double
+          pattern: '^-?\d{1,15}\.\d{2,4}$'
+          nullable: true
+          maxLength: 20
+          example: 500
+          description: Valor do saldo. Expressa em valor monetário com 4 casas decimais.
+      additionalProperties: false
     PartiesParticipation:
       type: object
       description: |
@@ -8091,6 +7830,33 @@ components:
           example: '2021-05-21'
           description: 'Data de emissão do documento, conforme especificação RFC-3339.'
       additionalProperties: false
+    PersonalContacts:
+      type: object
+      description: Conjunto de informações referentes às formas para contatar o cliente.
+      required:
+        - postalAddresses
+        - phones
+        - emails
+      properties:
+        postalAddresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/PersonalPostalAddress'
+          minItems: 1
+          description: Lista de endereços da pessoa natural
+        phones:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerPhone'
+          minItems: 1
+          description: Lista com telefones de contato da pessoa natural
+        emails:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerEmail'
+          minItems: 1
+          description: Lista e-mails de contato
+      additionalProperties: false
     PersonalDocument:
       type: object
       description: Objeto agrupador de informações relativas a Documentos da pessoa natural
@@ -8136,23 +7902,6 @@ components:
           pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$|^NA$'
           example: '2021-05-21'
           description: 'Data de emissão do passaporte, conforme especificação RFC-3339.'
-      additionalProperties: false
-    OverdraftLimitsBalance:
-      type: object
-      required:
-        - type
-        - amount
-      properties:
-        type:
-          $ref: '#/components/schemas/EnumOverdraftLimitType'
-        amount:
-          type: number
-          format: double
-          pattern: '^-?\d{1,15}\.\d{2,4}$'
-          nullable: true
-          maxLength: 20
-          example: 500
-          description: Valor do saldo. Expressa em valor monetário com 4 casas decimais.
       additionalProperties: false
     PersonalFinancialRelationData:
       type: object
@@ -8445,6 +8194,75 @@ components:
           example: '2021-05-21'
           description: 'Data de validade do documento informado, conforme especificação RFC-3339.'
       additionalProperties: false
+    PersonalPostalAddress:
+      type: object
+      required:
+        - isMain
+        - address
+        - districtName
+        - townName
+        - countrySubDivision
+        - postCode
+        - country
+      properties:
+        isMain:
+          type: boolean
+          example: true
+          description: Indica se o endereço informado é o principal.
+        address:
+          type: string
+          maxLength: 150
+          pattern: '[\w\W\s]*'
+          example: 'Av Naburo Ykesaki, 1270'
+          description: Corresponde ao endereço residencial do cliente.
+        additionalInfo:
+          type: string
+          maxLength: 30
+          pattern: '[\w\W\s]*'
+          example: Fundos
+          description: Alguns logradouros ainda necessitam ser especificados por meio de complemento.
+        districtName:
+          type: string
+          maxLength: 50
+          pattern: '[\w\W\s]*'
+          example: Centro
+          description: Bairro é uma comunidade ou região localizada em uma cidade ou município de acordo com as suas subdivisões geográficas.
+        townName:
+          type: string
+          maxLength: 50
+          pattern: '[\w\W\s]*'
+          example: Marília
+          description: |
+            Localidade: O nome da localidade corresponde à designação da cidade ou município no qual o endereço está localizado.
+        ibgeTownCode:
+          type: string
+          pattern: '\d{7}$'
+          maxLength: 7
+          example: '3550308'
+          description: 'Código IBGE de Município. A Tabela de Códigos de Municípios do IBGE apresenta a lista dos municípios brasileiros associados a um código composto de 7 dígitos, sendo os dois primeiros referentes ao código da Unidade da Federação.'
+        countrySubDivision:
+          $ref: '#/components/schemas/EnumCountrySubDivision'
+        postCode:
+          type: string
+          pattern: '\d{8}|^NA$'
+          maxLength: 8
+          example: '17500001'
+          description: |
+            Código de Endereçamento Postal: Composto por um conjunto numérico de oito dígitos, o objetivo principal do CEP é orientar e acelerar o encaminhamento, o tratamento e a entrega de objetos postados nos Correios, por meio da sua atribuição a localidades, logradouros, unidades dos Correios, serviços, órgãos públicos, empresas e edifícios. p.ex. '01311000'.
+        country:
+          type: string
+          maxLength: 80
+          pattern: '[\w\W\s]*'
+          example: Brasil
+          description: Nome do país
+        countryCode:
+          type: string
+          maxLength: 3
+          example: BRA
+          description: Código do pais de acordo com o código “alpha3” do ISO-3166.
+        geographicCoordinates:
+          $ref: '#/components/schemas/GeographicCoordinates'
+      additionalProperties: false
     PersonalProcurator:
       type: object
       required:
@@ -8577,24 +8395,6 @@ components:
               description: 'Ano de referência do Patrimônio, conforme especificação RFC-3339.'
           additionalProperties: false
       additionalProperties: false
-    ResponseAccountList:
-      type: object
-      required:
-        - data
-        - links
-        - meta
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/AccountData'
-          minItems: 1
-          description: 'Lista de contas depósito à vista, poupança e pagamento pré-pagas mantidas pelo cliente na instituição transmissora e para as quais ele tenha fornecido consentimento'
-        links:
-          $ref: '#/components/schemas/Links'
-        meta:
-          $ref: '#/components/schemas/Meta'
-      additionalProperties: false
     ResponseAccountBalances:
       type: object
       required:
@@ -8618,6 +8418,24 @@ components:
       properties:
         data:
           $ref: '#/components/schemas/AccountIdentificationData'
+        links:
+          $ref: '#/components/schemas/Links'
+        meta:
+          $ref: '#/components/schemas/Meta'
+      additionalProperties: false
+    ResponseAccountList:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountData'
+          minItems: 1
+          description: 'Lista de contas depósito à vista, poupança e pagamento pré-pagas mantidas pelo cliente na instituição transmissora e para as quais ele tenha fornecido consentimento'
         links:
           $ref: '#/components/schemas/Links'
         meta:
@@ -8700,33 +8518,117 @@ components:
         meta:
           $ref: '#/components/schemas/Meta'
       additionalProperties: false
-    ResponseCreditCardAccountsList:
+    ResponseConsent:
       type: object
       required:
         - data
-        - links
-        - meta
       properties:
         data:
-          type: array
-          description: Conjunto de informações de conta de pagamento pós-paga
-          items:
-            $ref: '#/components/schemas/CreditCardAccountsData'
-          minItems: 1
-        links:
-          $ref: '#/components/schemas/Links'
-        meta:
-          $ref: '#/components/schemas/Meta'
-      additionalProperties: false
-    ResponseCreditCardAccountsIdentification:
-      type: object
-      required:
-        - data
-        - links
-        - meta
-      properties:
-        data:
-          $ref: '#/components/schemas/CreditCardsAccountsIdentificationData'
+          type: object
+          required:
+            - consentId
+            - creationDateTime
+            - status
+            - statusUpdateDateTime
+            - permissions
+            - expirationDateTime
+          properties:
+            consentId:
+              description: |
+                O consentId é o identificador único do consentimento e deverá ser um URN - Uniform Resource Name.  
+                Um URN, conforme definido na [RFC8141](https://tools.ietf.org/html/rfc8141) é um Uniform Resource 
+                Identifier - URI - que é atribuído sob o URI scheme "urn" e um namespace URN específico, com a intenção de que o URN 
+                seja um identificador de recurso persistente e independente da localização.  
+                Considerando a string urn:bancoex:C1DD33123 como exemplo para consentId temos:
+                - o namespace(urn)
+                - o identificador associado ao namespace da instituição transnmissora (bancoex) 
+                - o identificador específico dentro do namespace (C1DD33123).  
+                Informações mais detalhadas sobre a construção de namespaces devem ser consultadas na [RFC8141](https://tools.ietf.org/html/rfc8141).
+              type: string
+              pattern: '^urn:[a-zA-Z0-9][a-zA-Z0-9-]{0,31}:[a-zA-Z0-9()+,\-.:=@;$_!*''%\/?#]+$'
+              maxLength: 256
+              example: 'urn:bancoex:C1DD33123'
+            creationDateTime:
+              description: 'Data e hora em que o recurso foi criado. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).'
+              type: string
+              format: date-time
+              example: '2021-05-21T08:30:00Z'
+              maxLength: 20
+            status:
+              description: Estado atual do consentimento cadastrado.
+              type: string
+              enum:
+                - AUTHORISED
+                - AWAITING_AUTHORISATION
+                - REJECTED
+              example: AWAITING_AUTHORISATION
+            statusUpdateDateTime:
+              description: 'Data e hora em que o recurso foi atualizado. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).'
+              type: string
+              format: date-time
+              example: '2021-05-21T08:30:00Z'
+              maxLength: 20
+            permissions:
+              type: array
+              maxItems: 30
+              minItems: 1
+              description: 'Especifica os tipos de permissões de acesso às APIs no escopo do Open Banking Brasil - Fase 2, de acordo com os blocos de consentimento fornecidos pelo usuário e necessários ao acesso a cada endpoint das APIs.'
+              items:
+                type: string
+                enum:
+                  - ACCOUNTS_READ
+                  - ACCOUNTS_BALANCES_READ
+                  - ACCOUNTS_TRANSACTIONS_READ
+                  - ACCOUNTS_OVERDRAFT_LIMITS_READ
+                  - CREDIT_CARDS_ACCOUNTS_READ
+                  - CREDIT_CARDS_ACCOUNTS_BILLS_READ
+                  - CREDIT_CARDS_ACCOUNTS_BILLS_TRANSACTIONS_READ
+                  - CREDIT_CARDS_ACCOUNTS_LIMITS_READ
+                  - CREDIT_CARDS_ACCOUNTS_TRANSACTIONS_READ
+                  - CUSTOMERS_PERSONAL_IDENTIFICATIONS_READ
+                  - CUSTOMERS_PERSONAL_ADITTIONALINFO_READ
+                  - CUSTOMERS_BUSINESS_IDENTIFICATIONS_READ
+                  - CUSTOMERS_BUSINESS_ADITTIONALINFO_READ
+                  - FINANCINGS_READ
+                  - FINANCINGS_SCHEDULED_INSTALMENTS_READ
+                  - FINANCINGS_PAYMENTS_READ
+                  - FINANCINGS_WARRANTIES_READ
+                  - INVOICE_FINANCINGS_READ
+                  - INVOICE_FINANCINGS_SCHEDULED_INSTALMENTS_READ
+                  - INVOICE_FINANCINGS_PAYMENTS_READ
+                  - INVOICE_FINANCINGS_WARRANTIES_READ
+                  - LOANS_READ
+                  - LOANS_SCHEDULED_INSTALMENTS_READ
+                  - LOANS_PAYMENTS_READ
+                  - LOANS_WARRANTIES_READ
+                  - UNARRANGED_ACCOUNTS_OVERDRAFT_READ
+                  - UNARRANGED_ACCOUNTS_OVERDRAFT_SCHEDULED_INSTALMENTS_READ
+                  - UNARRANGED_ACCOUNTS_OVERDRAFT_PAYMENTS_READ
+                  - UNARRANGED_ACCOUNTS_OVERDRAFT_WARRANTIES_READ
+                  - RESOURCES_READ
+              example:
+                - ACCOUNTS_READ
+                - ACCOUNTS_OVERDRAFT_LIMITS_READ
+                - RESOURCES_READ
+            expirationDateTime:
+              description: 'Data e hora de expiração da permissão. De preenchimento obrigatório, reflete a data limite de validade do consentimento. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).'
+              type: string
+              format: date-time
+              example: '2021-05-21T08:30:00Z'
+              maxLength: 20
+            transactionFromDateTime:
+              description: 'Data e hora da transação inicial. Se não for preenchido, a transação terá a data aberta e a data será retornada com a primeira transação disponível. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).'
+              type: string
+              format: date-time
+              example: '2021-01-01T00:00:00Z'
+              maxLength: 20
+            transactionToDateTime:
+              description: 'Data e hora final da transação. Se não for preenchido, a transação terá a data aberta e a data será retornada com a ultima transação disponível. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).'
+              type: string
+              format: date-time
+              example: '2021-02-01T23:59:59Z'
+              maxLength: 20
+          additionalProperties: false
         links:
           $ref: '#/components/schemas/Links'
         meta:
@@ -8748,6 +8650,20 @@ components:
         meta:
           $ref: '#/components/schemas/Meta'
       additionalProperties: false
+    ResponseCreditCardAccountsIdentification:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          $ref: '#/components/schemas/CreditCardsAccountsIdentificationData'
+        links:
+          $ref: '#/components/schemas/Links'
+        meta:
+          $ref: '#/components/schemas/Meta'
+      additionalProperties: false
     ResponseCreditCardAccountsLimits:
       type: object
       required:
@@ -8759,6 +8675,24 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CreditCardAccountsLimitsData'
+        links:
+          $ref: '#/components/schemas/Links'
+        meta:
+          $ref: '#/components/schemas/Meta'
+      additionalProperties: false
+    ResponseCreditCardAccountsList:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          type: array
+          description: Conjunto de informações de conta de pagamento pós-paga
+          items:
+            $ref: '#/components/schemas/CreditCardAccountsData'
+          minItems: 1
         links:
           $ref: '#/components/schemas/Links'
         meta:
@@ -8815,50 +8749,6 @@ components:
         meta:
           $ref: '#/components/schemas/Meta'
       additionalProperties: false
-    ResponsePersonalCustomersFinancialRelation:
-      type: object
-      required:
-        - data
-        - links
-        - meta
-      properties:
-        data:
-          $ref: '#/components/schemas/PersonalFinancialRelationData'
-        links:
-          $ref: '#/components/schemas/Links'
-        meta:
-          $ref: '#/components/schemas/Meta'
-      additionalProperties: false
-    ResponsePersonalCustomersIdentification:
-      type: object
-      required:
-        - data
-        - links
-        - meta
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/PersonalIdentificationData'
-        links:
-          $ref: '#/components/schemas/Links'
-        meta:
-          $ref: '#/components/schemas/Meta'
-      additionalProperties: false
-    ResponsePersonalCustomersQualification:
-      type: object
-      required:
-        - data
-        - links
-        - meta
-      properties:
-        data:
-          $ref: '#/components/schemas/PersonalQualificationData'
-        links:
-          $ref: '#/components/schemas/Links'
-        meta:
-          $ref: '#/components/schemas/Meta'
-      additionalProperties: false
     ResponseFinancingsContract:
       type: object
       required:
@@ -8868,20 +8758,6 @@ components:
       properties:
         data:
           $ref: '#/components/schemas/FinancingsContract'
-        links:
-          $ref: '#/components/schemas/Links'
-        meta:
-          $ref: '#/components/schemas/Meta'
-      additionalProperties: false
-    ResponseFinancingsInstalments:
-      type: object
-      required:
-        - data
-        - links
-        - meta
-      properties:
-        data:
-          $ref: '#/components/schemas/FinancingsInstalments'
         links:
           $ref: '#/components/schemas/Links'
         meta:
@@ -8898,6 +8774,20 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/FinancingsListContract'
+        links:
+          $ref: '#/components/schemas/Links'
+        meta:
+          $ref: '#/components/schemas/Meta'
+      additionalProperties: false
+    ResponseFinancingsInstalments:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          $ref: '#/components/schemas/FinancingsInstalments'
         links:
           $ref: '#/components/schemas/Links'
         meta:
@@ -8928,82 +8818,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/FinancingsWarranties'
-        links:
-          $ref: '#/components/schemas/Links'
-        meta:
-          $ref: '#/components/schemas/Meta'
-      additionalProperties: false
-    ResponseLoansContractList:
-      type: object
-      required:
-        - data
-        - links
-        - meta
-      properties:
-        data:
-          type: array
-          description: Conjunto de informações de contratos de empréstimo mantidos pelo cliente na instituição transmissora e para os quais ele tenha fornecido consentimento
-          items:
-            $ref: '#/components/schemas/LoansListContractData'
-        links:
-          $ref: '#/components/schemas/Links'
-        meta:
-          $ref: '#/components/schemas/Meta'
-      additionalProperties: false
-    ResponseLoansContract:
-      type: object
-      required:
-        - data
-        - links
-        - meta
-      properties:
-        data:
-          $ref: '#/components/schemas/LoansContract'
-        links:
-          $ref: '#/components/schemas/Links'
-        meta:
-          $ref: '#/components/schemas/Meta'
-      additionalProperties: false
-    ResponseLoansInstalments:
-      type: object
-      required:
-        - data
-        - links
-        - meta
-      properties:
-        data:
-          $ref: '#/components/schemas/LoansInstalments'
-        links:
-          $ref: '#/components/schemas/Links'
-        meta:
-          $ref: '#/components/schemas/Meta'
-      additionalProperties: false
-    ResponseLoansPayments:
-      type: object
-      required:
-        - data
-        - links
-        - meta
-      properties:
-        data:
-          $ref: '#/components/schemas/LoansPayments'
-        links:
-          $ref: '#/components/schemas/Links'
-        meta:
-          $ref: '#/components/schemas/Meta'
-      additionalProperties: false
-    ResponseLoansWarranties:
-      type: object
-      required:
-        - data
-        - links
-        - meta
-      properties:
-        data:
-          type: array
-          description: Conjunto de informações referentes à identificação da operação de crédito de empréstimo
-          items:
-            $ref: '#/components/schemas/LoansWarranties'
         links:
           $ref: '#/components/schemas/Links'
         meta:
@@ -9080,6 +8894,192 @@ components:
           description: Conjunto de informações referentes às garantias que avalizam a operação de direitos creditórios descontados contratada
           items:
             $ref: '#/components/schemas/InvoiceFinancingsContractedWarranty'
+        links:
+          $ref: '#/components/schemas/Links'
+        meta:
+          $ref: '#/components/schemas/Meta'
+      additionalProperties: false
+    ResponseLoansContract:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          $ref: '#/components/schemas/LoansContract'
+        links:
+          $ref: '#/components/schemas/Links'
+        meta:
+          $ref: '#/components/schemas/Meta'
+      additionalProperties: false
+    ResponseLoansContractList:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          type: array
+          description: Conjunto de informações de contratos de empréstimo mantidos pelo cliente na instituição transmissora e para os quais ele tenha fornecido consentimento
+          items:
+            $ref: '#/components/schemas/LoansListContractData'
+        links:
+          $ref: '#/components/schemas/Links'
+        meta:
+          $ref: '#/components/schemas/Meta'
+      additionalProperties: false
+    ResponseLoansInstalments:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          $ref: '#/components/schemas/LoansInstalments'
+        links:
+          $ref: '#/components/schemas/Links'
+        meta:
+          $ref: '#/components/schemas/Meta'
+      additionalProperties: false
+    ResponseLoansPayments:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          $ref: '#/components/schemas/LoansPayments'
+        links:
+          $ref: '#/components/schemas/Links'
+        meta:
+          $ref: '#/components/schemas/Meta'
+      additionalProperties: false
+    ResponseLoansWarranties:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          type: array
+          description: Conjunto de informações referentes à identificação da operação de crédito de empréstimo
+          items:
+            $ref: '#/components/schemas/LoansWarranties'
+        links:
+          $ref: '#/components/schemas/Links'
+        meta:
+          $ref: '#/components/schemas/Meta'
+      additionalProperties: false
+    ResponsePersonalCustomersFinancialRelation:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          $ref: '#/components/schemas/PersonalFinancialRelationData'
+        links:
+          $ref: '#/components/schemas/Links'
+        meta:
+          $ref: '#/components/schemas/Meta'
+      additionalProperties: false
+    ResponsePersonalCustomersIdentification:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PersonalIdentificationData'
+        links:
+          $ref: '#/components/schemas/Links'
+        meta:
+          $ref: '#/components/schemas/Meta'
+      additionalProperties: false
+    ResponsePersonalCustomersQualification:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          $ref: '#/components/schemas/PersonalQualificationData'
+        links:
+          $ref: '#/components/schemas/Links'
+        meta:
+          $ref: '#/components/schemas/Meta'
+      additionalProperties: false
+    ResponseResourceList:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            required:
+              - type
+              - status
+            properties:
+              resourceId:
+                type: string
+                description: |
+                  Identifica o recurso reportado pelo participante do Open Banking, no caso de:
+                  Contas de depósito à vista, de poupança ou de pagamento pré-paga : corresponde ao accountId;
+                  Conta de pagamento pós-paga: corresponde ao creditCardAccountId;
+                  Empréstimos, Financiamentos, Direitos creditórios descontados e Adiantamento a depositantes: corresponde ao contractId.
+                minLength: 1
+                maxLength: 100
+                pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
+                example: 25cac914-d8ae-6789-b215-650a6215820d
+              type:
+                type: string
+                enum:
+                  - ACCOUNT
+                  - CREDIT_CARD_ACCOUNT
+                  - LOAN
+                  - FINANCING
+                  - UNARRANGED_ACCOUNT_OVERDRAFT
+                  - INVOICE_FINANCING
+                description: |
+                  Tipo de recurso (vide Enum):
+                  Account - Conta de depósito à vista, poupança ou pagamento pré-paga
+                  Credit Card Account - Conta de pagamento pós-paga (Cartão de Crédito)
+                  Loan - Empréstimo
+                  Financing - Financiamento
+                  Unarranged Account Overdraft - Cheque Especial
+                  Invoice Financing - Financiamento de Fatura
+                example: ACCOUNT
+              status:
+                type: string
+                enum:
+                  - AVAILABLE
+                  - UNAVAILABLE
+                  - TEMPORARILY_UNAVAILABLE
+                  - PENDING_AUTHORISATION
+                description: |
+                  Tipo de status de recurso (vide Enum):
+                  Available - Disponível
+                  Unavailable - Indisponível
+                  Temporarily Unavailable - Temporariamente Indisponível
+                  Pending Authorisation - Pendente de Autorização
+                example: AVAILABLE
+            additionalProperties: false
+          minItems: 1
+          description: Lista de recursos e seus respectivos status.
         links:
           $ref: '#/components/schemas/Links'
         meta:

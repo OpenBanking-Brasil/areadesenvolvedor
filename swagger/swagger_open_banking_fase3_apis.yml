@@ -43,7 +43,6 @@ paths:
         - $ref: '#/components/parameters/xFapiInteractionId'
         - $ref: '#/components/parameters/xCustomerUserAgent'
         - $ref: '#/components/parameters/XIdempotencyKey'
-        - $ref: '#/components/parameters/XJwsSignature'
       requestBody:
         content:
           application/json:
@@ -103,7 +102,6 @@ paths:
         - $ref: '#/components/parameters/xFapiCustomerIpAddress'
         - $ref: '#/components/parameters/xFapiInteractionId'
         - $ref: '#/components/parameters/xCustomerUserAgent'
-        - $ref: '#/components/parameters/XJwsSignature'
       responses:
         '200':
           $ref: '#/components/responses/200PaymentsConsentsConsentIdRead'
@@ -154,7 +152,6 @@ paths:
         - $ref: '#/components/parameters/xFapiInteractionId'
         - $ref: '#/components/parameters/xCustomerUserAgent'
         - $ref: '#/components/parameters/XIdempotencyKey'
-        - $ref: '#/components/parameters/XJwsSignature'
       requestBody:
         content:
           application/json:
@@ -214,7 +211,6 @@ paths:
         - $ref: '#/components/parameters/xFapiCustomerIpAddress'
         - $ref: '#/components/parameters/xFapiInteractionId'
         - $ref: '#/components/parameters/xCustomerUserAgent'
-        - $ref: '#/components/parameters/XJwsSignature'
       responses:
         '200':
           $ref: '#/components/responses/200PaymentsInitiationPixPaymentIdRead'
@@ -244,6 +240,102 @@ paths:
             - payments
 components:
   schemas:
+    422ResponseErrorCreateConsent:
+      type: object
+      required:
+        - errors
+      properties:
+        errors:
+          type: array
+          minItems: 1
+          maxItems: 3
+          items:
+            type: object
+            required:
+              - code
+              - title
+              - detail
+            properties:
+              code:
+                $ref: '#/components/schemas/EnumErrorsCreateConsent'
+              title:
+                type: string
+                maxLength: 255
+                pattern: \w*\W*
+                example: Forma de pagamento inválida.
+                description: |
+                  Título específico do erro reportado, de acordo com o código enviado:  
+                  • FORMA_PGTO_INVALIDA: Forma de pagamento inválida.  
+                  • DATA_PGTO_INVALIDA: Data de pagamento inválida.  
+                  • NAO_INFORMADO: Não informado.    
+              detail:
+                type: string
+                maxLength: 2048
+                pattern: \w*\W*
+                example: Meio de pagamento inválido.
+                description: |
+                  Descrição específica do erro de acordo com o código reportado:  
+                  • FORMA_PGTO_INVALIDA – Meio de pagamento inválido.  
+                  • DATA_PGTO_INVALIDA – Data de pagamento inválida no contexto, por exemplo, data no passado. Para pagamentos únicos deve ser informada a data atual, do dia corrente.  
+                  • NAO_INFORMADO – Não reportado/identificado pela instituição detentora de conta.  
+            additionalProperties: false
+        meta:
+          $ref: '#/components/schemas/Meta'
+      additionalProperties: false
+    422ResponseErrorCreatePixPayment:
+      type: object
+      required:
+        - errors
+      properties:
+        errors:
+          type: array
+          minItems: 1
+          maxItems: 9
+          items:
+            type: object
+            required:
+              - code
+              - title
+              - detail
+            properties:
+              code:
+                $ref: '#/components/schemas/EnumErrorsCreatePayment'
+              title:
+                type: string
+                maxLength: 255
+                pattern: \w*\W*
+                example: Saldo insuficiente.
+                description: |
+                  Título específico do erro reportado, de acordo com o código enviado:  
+                  • SALDO_INSUFICIENTE: Saldo insuficiente.  
+                  • BENEFICIARIO_INCOMPATIVEL: Beneficiário incompatível.  
+                  • VALOR_INCOMPATIVEL: Valor da transação incompatível.  
+                  • VALOR_ACIMA_LIMITE: Acima do limite estabelecido.  
+                  • VALOR_INVALIDO: Valor inválido.  
+                  • COBRANCA_INVALIDA: Cobrança inválida.  
+                  • CONSENTIMENTO_INVALIDO: Consentimento inválido.  
+                  • JANELA_OPER_INVALIDA: Janela de operação inválida.  
+                  • NAO_INFORMADO: Não informado.  
+              detail:
+                type: string
+                maxLength: 2048
+                pattern: \w*\W*
+                example: A conta selecionada não possui saldo suficiente para realizar o pagamento.
+                description: |
+                  Descrição específica do erro de acordo com o código reportado:  
+                  • SALDO_INSUFICIENTE: A conta selecionada não possui saldo suficiente para realizar o pagamento.  
+                  • BENEFICIARIO_INCOMPATIVEL: O beneficiário informado no consentimento não é o mesmo do esperado pelo DICT.  
+                  • VALOR_INCOMPATIVEL: O valor informado no consentimento não é o mesmo valor do informado no payload de pagamento.  
+                  • VALOR_ACIMA_LIMITE: O valor (ou quantidade de transações) ultrapassa a faixa de limite parametrizada na detentora para permitir a realização de transações pelo cliente.  
+                  • VALOR_INVALIDO: O valor enviado não é válido para o QR Code informado.  
+                  • COBRANCA_INVALIDA: Validação de expiração, validação de vencimento ou Status Válido.  
+                  • CONSENTIMENTO_INVALIDO: Consentimento inválido (status diferente de "AUTHORISED" ou está expirado).  
+                  • JANELA_OPER_INVALIDA: Requisição está fora da janela de funcionamento.  
+                  • NAO_INFORMADO: Não reportado/identificado pela instituição detentora de conta.  
+            additionalProperties: false
+        meta:
+          $ref: '#/components/schemas/Meta'
+      additionalProperties: false
     Account:
       type: object
       description: |
@@ -400,6 +492,45 @@ components:
             No caso de chave aleatória deve ser informado o UUID gerado pelo DICT, conforme formato especificado na RFC41223.  
             [Restrição] Obrigatório quando o campo localInstrument for igual a DICT.
       additionalProperties: false
+    CreditorAccount:
+      type: object
+      description: |
+        Objeto que contém a identificação da conta de destino do beneficiário/recebedor.  
+      required:
+        - ispb
+        - number
+        - accountType
+      properties:
+        ispb:
+          type: string
+          minLength: 8
+          maxLength: 8
+          pattern: '^[0-9]{8}$'
+          example: '12345678'
+          description: |
+            Deve ser preenchido com o ISPB (Identificador do Sistema de Pagamentos Brasileiros) do participante do SPI (Sistema de pagamentos instantâneos) somente com números.
+        issuer:
+          type: string
+          maxLength: 4
+          pattern: '^\d{4}$'
+          example: '1774'
+          description: |
+            Código da Agência emissora da conta sem dígito.  
+            (Agência é a dependência destinada ao atendimento aos clientes, ao público em geral e aos associados de cooperativas de crédito,  
+            no exercício de atividades da instituição, não podendo ser móvel ou transitória).  
+            [Restrição] Preenchimento obrigatório para os seguintes tipos de conta: CACC (CONTA_DEPOSITO_A_VISTA), SVGS (CONTA_POUPANCA) e SLRY (CONTA_SALARIO).
+        number:
+          type: string
+          minLength: 3
+          maxLength: 20
+          pattern: '^\d{3,20}$'
+          example: '1234567890'
+          description: |
+            Deve ser preenchido com o número da conta do usuário recebedor, com dígito verificador (se este existir),  
+            se houver valor alfanumérico, este deve ser convertido para 0.
+        accountType:
+          $ref: '#/components/schemas/EnumAccountPaymentsType'
+      additionalProperties: false
     DebtorAccount:
       type: object
       description: |
@@ -491,22 +622,6 @@ components:
         AUTHORISED - Autorizado   
         REJECTED - Rejeitado  
         CONSUMED - Consumido 
-    EnumPaymentPersonType:
-      type: string
-      maxLength: 15
-      enum:
-        - PESSOA_NATURAL
-        - PESSOA_JURIDICA
-      description: |
-        Titular, pessoa natural ou juridica a quem se referem os dados de recebedor (creditor).
-    EnumPaymentType:
-      type: string
-      maxLength: 3
-      enum:
-        - PIX
-      example: PIX
-      description: |
-        Este campo define o tipo de pagamento que será iniciado após a autorização do consentimento.
     EnumErrorsCreateConsent:
       type: string
       maxLength: 19
@@ -545,6 +660,57 @@ components:
         • CONSENTIMENTO_INVALIDO – Consentimento inválido (status não é "authorised" ou está expirado).  
         • JANELA_OPER_INVALIDA – Requisição está fora da janela de funcionamento.  
         • NAO_INFORMADO – Não informada pela detentora de conta.  
+    EnumLocalInstrument:
+      type: string
+      maxLength: 4
+      enum:
+        - MANU
+        - DICT
+        - QRDN
+        - QRES
+      example: DICT
+      description: |
+        Especifica a forma de iniciação do pagamento:  
+        - MANU - Inserção manual de dados da conta transacional  
+        - DICT - Inserção manual de chave Pix  
+        - QRDN - QR code dinâmico (*Domínio reservado para uso futuro*)  
+        - QRES - QR code estático (*Domínio reservado para uso futuro*)  
+    EnumPaymentPersonType:
+      type: string
+      maxLength: 15
+      enum:
+        - PESSOA_NATURAL
+        - PESSOA_JURIDICA
+      description: |
+        Titular, pessoa natural ou juridica a quem se referem os dados de recebedor (creditor).
+    EnumPaymentStatusType:
+      type: string
+      maxLength: 45
+      enum:
+        - PDNG
+        - PART
+        - ACSP
+        - ACSC
+        - ACCC
+        - RJCT
+      example: PDNG
+      description: |
+        Estado atual da iniciação de pagamento. O estado evolui na seguinte ordem:  
+        1. PDNG (PENDING) - Iniciação de pagamento ou transação de pagamento está pendente. Checagens adicionais em realização.  
+        2. PART (PARTIALLY ACCEPTED) - Aguardando autorização múltipla alçada.  
+        3. ACSP (ACCEPTED_SETTLEMENT_IN_PROCESS) - Iniciação de pagamento aceita e processamento do pagamento foi iniciado.  
+        4. ACSC (ACCEPTED_SETTLEMENT_COMPLETED_DEBITOR_ACCOUNT) - Débito realizado na conta do pagador.  
+        5. ACCC (ACCEPTED_SETTLEMENT_COMPLETED) - Crédito realizado na instituição de destino.  
+        Em caso insucesso:  
+        RJCT (REJECTED) - Instrução de pagamento rejeitada.
+    EnumPaymentType:
+      type: string
+      maxLength: 3
+      enum:
+        - PIX
+      example: PIX
+      description: |
+        Este campo define o tipo de pagamento que será iniciado após a autorização do consentimento.
     EnumRejectionReasonType:
       type: string
       maxLength: 50
@@ -641,80 +807,6 @@ components:
         EXPIRED_MULTIPLE_AUTHORISATIONS - Um (ou mais) aprovadores na detentora não tomaram ação para aprovar a operação (OB05).  
         EXPIRED_BILL - O QR Code não é mais válido (OB06).  
         [Restrição] Esse motivo deverá ser enviado quando o campo /data/status for igual a RJCT (REJECTED).  
-    EnumPaymentStatusType:
-      type: string
-      maxLength: 45
-      enum:
-        - PDNG
-        - PART
-        - ACSP
-        - ACSC
-        - ACCC
-        - RJCT
-      example: PDNG
-      description: |
-        Estado atual da iniciação de pagamento. O estado evolui na seguinte ordem:  
-        1. PDNG (PENDING) - Iniciação de pagamento ou transação de pagamento está pendente. Checagens adicionais em realização.  
-        2. PART (PARTIALLY ACCEPTED) - Aguardando autorização múltipla alçada.  
-        3. ACSP (ACCEPTED_SETTLEMENT_IN_PROCESS) - Iniciação de pagamento aceita e processamento do pagamento foi iniciado.  
-        4. ACSC (ACCEPTED_SETTLEMENT_COMPLETED_DEBITOR_ACCOUNT) - Débito realizado na conta do pagador.  
-        5. ACCC (ACCEPTED_SETTLEMENT_COMPLETED) - Crédito realizado na instituição de destino.  
-        Em caso insucesso:  
-        RJCT (REJECTED) - Instrução de pagamento rejeitada.
-    CreditorAccount:
-      type: object
-      description: |
-        Objeto que contém a identificação da conta de destino do beneficiário/recebedor.  
-      required:
-        - ispb
-        - number
-        - accountType
-      properties:
-        ispb:
-          type: string
-          minLength: 8
-          maxLength: 8
-          pattern: '^[0-9]{8}$'
-          example: '12345678'
-          description: |
-            Deve ser preenchido com o ISPB (Identificador do Sistema de Pagamentos Brasileiros) do participante do SPI (Sistema de pagamentos instantâneos) somente com números.
-        issuer:
-          type: string
-          maxLength: 4
-          pattern: '^\d{4}$'
-          example: '1774'
-          description: |
-            Código da Agência emissora da conta sem dígito.  
-            (Agência é a dependência destinada ao atendimento aos clientes, ao público em geral e aos associados de cooperativas de crédito,  
-            no exercício de atividades da instituição, não podendo ser móvel ou transitória).  
-            [Restrição] Preenchimento obrigatório para os seguintes tipos de conta: CACC (CONTA_DEPOSITO_A_VISTA), SVGS (CONTA_POUPANCA) e SLRY (CONTA_SALARIO).
-        number:
-          type: string
-          minLength: 3
-          maxLength: 20
-          pattern: '^\d{3,20}$'
-          example: '1234567890'
-          description: |
-            Deve ser preenchido com o número da conta do usuário recebedor, com dígito verificador (se este existir),  
-            se houver valor alfanumérico, este deve ser convertido para 0.
-        accountType:
-          $ref: '#/components/schemas/EnumAccountPaymentsType'
-      additionalProperties: false
-    EnumLocalInstrument:
-      type: string
-      maxLength: 4
-      enum:
-        - MANU
-        - DICT
-        - QRDN
-        - QRES
-      example: DICT
-      description: |
-        Especifica a forma de iniciação do pagamento:  
-        - MANU - Inserção manual de dados da conta transacional  
-        - DICT - Inserção manual de chave Pix  
-        - QRDN - QR code dinâmico (*Domínio reservado para uso futuro*)  
-        - QRES - QR code estático (*Domínio reservado para uso futuro*)  
     Identification:
       type: object
       description: Objeto contendo os dados do recebedor (creditor).
@@ -745,6 +837,48 @@ components:
             Em caso de pessoa natural deve ser informado o nome completo do titular da conta do recebedor.  
             Em caso de pessoa jurídica deve ser informada a razão social ou o nome fantasia da conta do recebedor.
       additionalProperties: false
+    Links:
+      type: object
+      description: Referências para outros recusos da API requisitada.
+      required:
+        - self
+      properties:
+        self:
+          type: string
+          format: uri
+          maxLength: 2000
+          description: URI completo que gerou a resposta atual.
+          example: 'https://api.banco.com.br/open-banking/api/v1/resource'
+          pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
+        first:
+          type: string
+          format: uri
+          maxLength: 2000
+          description: URI da primeira página que originou essa lista de resultados. Restrição - Obrigatório quando não for a primeira página da resposta
+          example: 'https://api.banco.com.br/open-banking/api/v1/resource'
+          pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
+        prev:
+          type: string
+          format: uri
+          maxLength: 2000
+          description: "URI da página anterior dessa lista de resultados. Restrição - \tObrigatório quando não for a primeira página da resposta"
+          example: 'https://api.banco.com.br/open-banking/api/v1/resource'
+          pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
+        next:
+          type: string
+          format: uri
+          maxLength: 2000
+          description: URI da próxima página dessa lista de resultados. Restrição - Obrigatório quando não for a última página da resposta
+          example: 'https://api.banco.com.br/open-banking/api/v1/resource'
+          pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
+        last:
+          type: string
+          format: uri
+          maxLength: 2000
+          description: URI da última página dessa lista de resultados. Restrição - Obrigatório quando não for a última página da resposta
+          example: 'https://api.banco.com.br/open-banking/api/v1/resource'
+          pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
+      additionalProperties: false
     LoggedUser:
       type: object
       description: Usuário (pessoa natural) que encontra-se logado na instituição Iniciadora de Pagamento.
@@ -771,6 +905,31 @@ components:
               description: Tipo do documento de identificação oficial do usuário.
               example: CPF
               pattern: '^[A-Z]{3}$'
+    Meta:
+      type: object
+      description: Meta informações referente a API requisitada.
+      required:
+        - totalRecords
+        - totalPages
+        - requestDateTime
+      properties:
+        totalRecords:
+          type: integer
+          format: int32
+          description: Número total de registros no resultado
+          example: 1
+        totalPages:
+          type: integer
+          format: int32
+          description: Número total de páginas no resultado
+          example: 1
+        requestDateTime:
+          description: 'Data e hora da consulta, conforme especificação RFC-3339, formato UTC.'
+          type: string
+          maxLength: 20
+          format: date-time
+          example: '2021-05-21T08:30:00Z'
+      additionalProperties: false
     PaymentConsent:
       type: object
       description: Objeto contendo dados de pagamento para consentimento.
@@ -861,102 +1020,6 @@ components:
                 type: string
                 pattern: '[\w\W\s]*'
                 maxLength: 2048
-            additionalProperties: false
-        meta:
-          $ref: '#/components/schemas/Meta'
-      additionalProperties: false
-    422ResponseErrorCreateConsent:
-      type: object
-      required:
-        - errors
-      properties:
-        errors:
-          type: array
-          minItems: 1
-          maxItems: 3
-          items:
-            type: object
-            required:
-              - code
-              - title
-              - detail
-            properties:
-              code:
-                $ref: '#/components/schemas/EnumErrorsCreateConsent'
-              title:
-                type: string
-                maxLength: 255
-                pattern: \w*\W*
-                example: Forma de pagamento inválida.
-                description: |
-                  Título específico do erro reportado, de acordo com o código enviado:  
-                  • FORMA_PGTO_INVALIDA: Forma de pagamento inválida.  
-                  • DATA_PGTO_INVALIDA: Data de pagamento inválida.  
-                  • NAO_INFORMADO: Não informado.    
-              detail:
-                type: string
-                maxLength: 2048
-                pattern: \w*\W*
-                example: Meio de pagamento inválido.
-                description: |
-                  Descrição específica do erro de acordo com o código reportado:  
-                  • FORMA_PGTO_INVALIDA – Meio de pagamento inválido.  
-                  • DATA_PGTO_INVALIDA – Data de pagamento inválida no contexto, por exemplo, data no passado. Para pagamentos únicos deve ser informada a data atual, do dia corrente.  
-                  • NAO_INFORMADO – Não reportado/identificado pela instituição detentora de conta.  
-            additionalProperties: false
-        meta:
-          $ref: '#/components/schemas/Meta'
-      additionalProperties: false
-    422ResponseErrorCreatePixPayment:
-      type: object
-      required:
-        - errors
-      properties:
-        errors:
-          type: array
-          minItems: 1
-          maxItems: 9
-          items:
-            type: object
-            required:
-              - code
-              - title
-              - detail
-            properties:
-              code:
-                $ref: '#/components/schemas/EnumErrorsCreatePayment'
-              title:
-                type: string
-                maxLength: 255
-                pattern: \w*\W*
-                example: Saldo insuficiente.
-                description: |
-                  Título específico do erro reportado, de acordo com o código enviado:  
-                  • SALDO_INSUFICIENTE: Saldo insuficiente.  
-                  • BENEFICIARIO_INCOMPATIVEL: Beneficiário incompatível.  
-                  • VALOR_INCOMPATIVEL: Valor da transação incompatível.  
-                  • VALOR_ACIMA_LIMITE: Acima do limite estabelecido.  
-                  • VALOR_INVALIDO: Valor inválido.  
-                  • COBRANCA_INVALIDA: Cobrança inválida.  
-                  • CONSENTIMENTO_INVALIDO: Consentimento inválido.  
-                  • JANELA_OPER_INVALIDA: Janela de operação inválida.  
-                  • NAO_INFORMADO: Não informado.  
-              detail:
-                type: string
-                maxLength: 2048
-                pattern: \w*\W*
-                example: A conta selecionada não possui saldo suficiente para realizar o pagamento.
-                description: |
-                  Descrição específica do erro de acordo com o código reportado:  
-                  • SALDO_INSUFICIENTE: A conta selecionada não possui saldo suficiente para realizar o pagamento.  
-                  • BENEFICIARIO_INCOMPATIVEL: O beneficiário informado no consentimento não é o mesmo do esperado pelo DICT.  
-                  • VALOR_INCOMPATIVEL: O valor informado no consentimento não é o mesmo valor do informado no payload de pagamento.  
-                  • VALOR_ACIMA_LIMITE: O valor (ou quantidade de transações) ultrapassa a faixa de limite parametrizada na detentora para permitir a realização de transações pelo cliente.  
-                  • VALOR_INVALIDO: O valor enviado não é válido para o QR Code informado.  
-                  • COBRANCA_INVALIDA: Validação de expiração, validação de vencimento ou Status Válido.  
-                  • CONSENTIMENTO_INVALIDO: Consentimento inválido (status diferente de "AUTHORISED" ou está expirado).  
-                  • JANELA_OPER_INVALIDA: Requisição está fora da janela de funcionamento.  
-                  • NAO_INFORMADO: Não reportado/identificado pela instituição detentora de conta.  
             additionalProperties: false
         meta:
           $ref: '#/components/schemas/Meta'
@@ -1157,73 +1220,6 @@ components:
         creditorAccount:
           $ref: '#/components/schemas/CreditorAccount'
       additionalProperties: false
-    Links:
-      type: object
-      description: Referências para outros recusos da API requisitada.
-      required:
-        - self
-      properties:
-        self:
-          type: string
-          format: uri
-          maxLength: 2000
-          description: URI completo que gerou a resposta atual.
-          example: 'https://api.banco.com.br/open-banking/api/v1/resource'
-          pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
-        first:
-          type: string
-          format: uri
-          maxLength: 2000
-          description: URI da primeira página que originou essa lista de resultados. Restrição - Obrigatório quando não for a primeira página da resposta
-          example: 'https://api.banco.com.br/open-banking/api/v1/resource'
-          pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
-        prev:
-          type: string
-          format: uri
-          maxLength: 2000
-          description: "URI da página anterior dessa lista de resultados. Restrição - \tObrigatório quando não for a primeira página da resposta"
-          example: 'https://api.banco.com.br/open-banking/api/v1/resource'
-          pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
-        next:
-          type: string
-          format: uri
-          maxLength: 2000
-          description: URI da próxima página dessa lista de resultados. Restrição - Obrigatório quando não for a última página da resposta
-          example: 'https://api.banco.com.br/open-banking/api/v1/resource'
-          pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
-        last:
-          type: string
-          format: uri
-          maxLength: 2000
-          description: URI da última página dessa lista de resultados. Restrição - Obrigatório quando não for a última página da resposta
-          example: 'https://api.banco.com.br/open-banking/api/v1/resource'
-          pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
-      additionalProperties: false
-    Meta:
-      type: object
-      description: Meta informações referente a API requisitada.
-      required:
-        - totalRecords
-        - totalPages
-        - requestDateTime
-      properties:
-        totalRecords:
-          type: integer
-          format: int32
-          description: Número total de registros no resultado
-          example: 1
-        totalPages:
-          type: integer
-          format: int32
-          description: Número total de páginas no resultado
-          example: 1
-        requestDateTime:
-          description: 'Data e hora da consulta, conforme especificação RFC-3339, formato UTC.'
-          type: string
-          maxLength: 20
-          format: date-time
-          example: '2021-05-21T08:30:00Z'
-      additionalProperties: false
   parameters:
     consentId:
       name: consentId
@@ -1310,15 +1306,6 @@ components:
         type: string
         maxLength: 40
         pattern: ^(?!\s)(.*)(\S)$
-    XJwsSignature:
-      name: x-jws-signature
-      in: header
-      description: Cabeçalho contendo uma assinatura JWS separada do corpo do payload.
-      required: true
-      schema:
-        type: string
-        pattern: \w*\W*
-        maxLength: 2048
   responses:
     BadRequest:
       description: 'A requisição foi malformada, omitindo atributos obrigatórios, seja no payload ou através de atributos na URL.'
