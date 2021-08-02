@@ -197,17 +197,20 @@ info:
     
     Algumas definições são importantes para tratar a transição dos estados do consentimento em diferentes momentos do fluxo:  
 
+    #### AWAITING_AUTHORISATION
     - O consentimento é sempre criado com o status AWAITING_AUTHORISATION e deve assumir o status AUTHORIZED ou REJECTED  antes do tempo de expiração de 5 minutos.  
 
-    - Em caso de consentimento expirado a detentora deverá retornar o status REJECTED.  
-
-    - Em caso de consentimento rejeitado pelo usuário a detentora deverá retornar o status REJECTED.  
-
+    #### AUTHORISED
     - Para o cenário em que o consentimento assume o status de AUTHORISED, o tempo máximo de expiração (do token FAPI Hybrid Flow) é de 60 minutos, com refresh token, e este é o tempo para consumir o consentimento autorizado, mudando seu status para CONSUMED. Não é possível prorrogar este tempo e a criação de um novo consentimento será necessária para os cenários de insucesso.  
-
-    - O consentimento assume o status CONSUMED após ocorrer com sucesso a iniciação do pagamento (HTTP 201) ou ainda em casos de erro (HTTP 422) retornados pela detentora.  Para os demais códigos HTTP não há mudança de status do consentimento.  
-
-
+    
+    ##### REJECTED
+    - Em caso de consentimento expirado a detentora deverá retornar o status REJECTED.  
+    - Em caso de consentimento rejeitado pelo usuário a detentora deverá retornar o status REJECTED.  
+   
+    #### CONSUMED
+    - O consentimento assume o status CONSUMED após ocorrer a iniciação do pagamento com sucesso (HTTP 201) ou ainda em casos de insucesso (HTTP 422) retornados pela detentora. Para os demais códigos HTTP não há mudança de status do consentimento, o mesmo permanecerá AUTHORISED, respeitando o tempo máximo de expiração do token (60 minutos).  
+    
+    
     ### Recomendação uso de polling
     #### A consulta via GET, para verificar o processamento da transação, pode ser efetuada a qualquer momento desde que se respeite o rate limit de:  
     - 300 TPS global, 50 TPS por instituição e 8 TPS por endereço IP (Internet Protocol).  
