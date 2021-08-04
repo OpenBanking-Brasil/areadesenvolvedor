@@ -145,9 +145,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ResponseError'
       security:
-        - OpenId:
-            - openid
-          OAuth2ClientCredentials:
+        - OAuth2ClientCredentials:
             - payments
   /pix/payments:
     post:
@@ -200,11 +198,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/ResponseError'
       security:
-        - OpenId:
-            - openid
-          OAuth2MultipleFlows:
-            - 'consent:consentId'
-            - payments
+        - OAuth2AuthorizationCode:
+          - 'consent:consentId'
+          - payments
   /pix/payments/{paymentId}:
     get:
       tags:
@@ -245,10 +241,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/ResponseError'
       security:
-        - OpenId:
-            - openid
-          OAuth2MultipleFlows:
+        - OAuth2AuthorizationCode:
             - payments
+        - OAuth2ClientCredentials:
+            - payments      
 components:
   schemas:
     BusinessEntity:
@@ -324,16 +320,12 @@ components:
           tokenUrl: 'https://authserver.example/token'
           scopes:
             payments: Escopo necessário para acesso à API Payment Initiation.
-    OAuth2MultipleFlows:
+    OAuth2AuthorizationCode:
       type: oauth2
       description: Fluxo OAuth necessário para que a iniciadora possa iniciar pagamentos. Requer o processo de redirecionamento e autenticação do usuário.
       flows:
         authorizationCode:
           authorizationUrl: 'https://authserver.example/token'
-          tokenUrl: 'https://authserver.example/token'
-          scopes:
-            payments: Escopo necessário para acesso à API Payment Initiation.
-        clientCredentials:
           tokenUrl: 'https://authserver.example/token'
           scopes:
             payments: Escopo necessário para acesso à API Payment Initiation.
