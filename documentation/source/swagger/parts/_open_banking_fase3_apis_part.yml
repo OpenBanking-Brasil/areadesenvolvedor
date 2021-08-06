@@ -216,12 +216,103 @@ info:
     - 300 TPS global, 50 TPS por instituição e 8 TPS por endereço IP (Internet Protocol).  
     Como sugestão, é indicado que a instituição iniciadora do pagamento implemente um retry exponencial.  
 
-    ### Controle de acesso  
+    ### Controle de acesso
 
     O endpoint de consulta de pagamento GET /pix/payments/{​​​paymentId}​​​ deve suportar acesso a partir de access_token emitido por meio de um grant_type do tipo `client credentials`, como opção do uso do token vinculado ao consentimento (hybrid flow).  
     Para evitar vazamento de informação, a detentora deve validar que o pagamento consultado pertence ao ClientId que o criou e, caso haja divergências, retorne um erro HTTP 400.  
     
+    ### Como assinar o payload
 
+    - **Passo 1** - Identifique a chave privada e o certificado de assinatura correspondente a serem usados para assinatura:
+
+    O Iniciadora deve usar uma chave privada que tenha um certificado digital correspondente (que contém a chave pública correspondente) emitido pelo Open Banking Brasil.
+
+    O certificado de assinatura deve ser válido no momento da criação do JWS.
+
+    - **Passo 2** - Geração do JOSE Header
+
+    O JOSE Header da assinatura deve conter os seguintes campos:
+
+    |Nome|Tipo|Obrigatório|Descrição|
+    |---|---|---|---|---|
+    |alg|string|true|O algoritmo que será usado para assinar o JWS.  A lista de algoritmos válidos está aqui <a href="https://tools.ietf.org/html/rfc7518#section-3.1" target="_blank">https://tools.ietf.org/html/rfc7518#section-3.1</a>.|
+    |kid|string|true|Corresponder ao  certificado de assinatura da passo 1.|
+    |typ|string|true|É o tipo de conteúdo usado para trafegar mensagens na API. Nesse caso será sempre JWT.|
+
+    - **Passo 3** - Montando a mensagem JWS
+
+    Para garantir a integridade e o não-repúdio das informações tramitadas em *API´s sensíveis e que indicam essa necessidade na sua documentação**, deve ser adotado a estrutura no padrão JWS definida na [<a href="https://datatracker.ietf.org/doc/html/rfc7515" target="_blank">RFC7515</a>] e que inclui:
+
+    **Cabeçalho** (_JSON Object Signing and Encryption – JOSE Header_), onde se define o algoritmo utilizado e inclui informações sobre a chave pública ou certificado que podem ser utilizadas para validar a assinatura;
+    
+    **Payload** (_JWS Payload_): conteúdo propriamente dito e detalhado na especificação da API;
+    
+    **Assinatura digital** (_JWS Signature_): assinatura digital, realizada conforme parâmetros do cabeçalho.
+
+    O payload das mensagens (_Request Object_ e _Response Object_) assinadas devem incluir as seguintes `claims` presentes na [<a href="https://datatracker.ietf.org/doc/html/rfc7519#section-4.1" target="_blank">RFC7519</a>] (JWT):
+
+    |Nome|Tipo|Obrigatório|Descrição|
+    |---|---|---|---|---|
+    |aud|string|true|(***Request Object***): o Provedor do Recurso (p. ex. a instituição detentora da conta) deverá validar se o valor do campo **aud** coincide com o endpoint sendo acionado.<br>(***Response Object***): o cliente da API (p. e. instituição iniciadora) deverá validar se o valor do campo **aud** coincide com o seu próprio `organisationId` listado no diretório.|
+    |iss|string|true|(***Request Object*** e ***Response Object***): o receptor da mensagem deverá validar se o valor do campo **iss** coincide com o `organisationId` do emissor.|
+    |jti|string|true|(***Request Object*** e ***Response Object***): o valor do campo **jit** deverá ser preenchido com o UUID definido pela instituição de acordo com a RFC 4122 usando o versão 4.|
+    |iat|string|true|(***Request Object*** e ***Response Object***): o valor do campo **iat** deverá ser preenchido com o _timestamp_ com horário da geração da mensagem.|
+
+    Cada elemento acima deve ser codificado utilizando o padrão Base64url [<a href="https://datatracker.ietf.org/doc/html/rfc4648#section-5" target="_blank">RFC4648</a>] e, feito isso, os elementos devem ser concatenados com “.” (método JWS Compact Serialization, conforme definido na [<a href="https://datatracker.ietf.org/doc/html/rfc7515#section-3.1" target="_blank">RFC7515</a>]).
+
+    Formato da mensagem JWS:
+
+    <span style="background: #e9e8e8; padding: 3px;">**payload** = Base64url(**JOSEHeader**)  +  "." + Base64url(**payload json**)  +  "."  +  Base64url(**digital signature**)</span>
+
+    Veja ao lado exemplo de mensagem JWS do consentimento contendo os dados do JOSE Header e mais as informações do payload do consentimento.
+
+    > Exemplo de mensagem JWS
+
+    ```json
+    {
+      "alg": "PS256"
+      "kid": "imNEXb2RM58wAdlzCgX5FkyCyibRNC4mvUew2sSaCos"
+      "typ": "JWT"
+    }  
+    {
+      "iss": "11212121",
+      "aud": "https://amazingbanking.com.br/authorize",
+      "iat": "1516239022",
+      "jti": "xxxxxx",
+      "data": {
+          "loggedUser": {
+              "document": {
+                  "identification": "11111111111",
+                  "rel": "CPF"
+              }
+          },
+          "businessEntity": {
+              "document": {
+                  "identification": "11111111111111",
+                  "rel": "CNPJ"
+              }
+          },
+          "creditor": {
+              "personType": "PESSOA_NATURAL",
+              "cpfCnpj": "58764789000137",
+              "name": "Marco Antonio de Brito"
+          },
+          "payment": {
+              "type": "PIX",
+              "date": "2021-01-01",
+              "currency": "BRL",
+              "amount": "100000.12"
+          },
+          "debtorAccount": {
+              "ispb": "12345678",
+              "issuer": "1774",
+              "number": "1234567890",
+              "accountType": "CACC"
+          }
+    }
+    ```
+
+        
   version: 1.0.0-rc5.2
 tags:
   - name: API - Pagamentos
