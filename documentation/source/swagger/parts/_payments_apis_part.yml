@@ -103,7 +103,7 @@ paths:
       security:
         - OpenId:
             - openid
-          OAuth2Security:
+          OAuth2ClientCredentials:
             - payments
   /consents/{consentId}:
     get:
@@ -145,9 +145,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ResponseError'
       security:
-        - OpenId:
-            - openid
-          OAuth2Security:
+        - OAuth2ClientCredentials:
             - payments
   /pix/payments:
     post:
@@ -200,11 +198,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/ResponseError'
       security:
-        - OpenId:
-            - openid
-          OAuth2Security:
-            - 'consent:consentId'
-            - payments
+        - OAuth2AuthorizationCode:
+          - 'consent:consentId'
+          - payments
   /pix/payments/{paymentId}:
     get:
       tags:
@@ -245,11 +241,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/ResponseError'
       security:
-        - OpenId:
-            - openid
-          OAuth2Security:
+        - OAuth2AuthorizationCode:
             - payments
-        
+        - OAuth2ClientCredentials:
+            - payments      
 components:
   schemas:
     BusinessEntity:
@@ -317,12 +312,20 @@ components:
     OpenId:
       type: openIdConnect
       openIdConnectUrl: 'https://auth.mockbank.poc.raidiam.io/.well-known/openid-configuration'
-    OAuth2Security:
+    OAuth2ClientCredentials:
+      type: oauth2
+      description: Fluxo OAuth necessário para que a iniciadora possa iniciar pagamentos. Requer o processo de redirecionamento e autenticação do usuário.
+      flows:
+        clientCredentials:
+          tokenUrl: 'https://authserver.example/token'
+          scopes:
+            payments: Escopo necessário para acesso à API Payment Initiation.
+    OAuth2AuthorizationCode:
       type: oauth2
       description: Fluxo OAuth necessário para que a iniciadora possa iniciar pagamentos. Requer o processo de redirecionamento e autenticação do usuário.
       flows:
         authorizationCode:
-          authorizationUrl: 'https://authserver.example/authorization'
+          authorizationUrl: 'https://authserver.example/token'
           tokenUrl: 'https://authserver.example/token'
           scopes:
             payments: Escopo necessário para acesso à API Payment Initiation.
