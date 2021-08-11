@@ -210,7 +210,7 @@
     </a>
     <div class="toc-wrapper">
       <img src="images/logo-7ed2e1f6.png" class="logo" alt="" />
-      <small style="padding: 23px; color: white">Versão: v1.0.0-rc8.1</small>
+      <small style="padding: 23px; color: white">Versão: v1.0.0-rc8.2</small>
         <div class="lang-selector">
               <a href="#" data-language-name="javascript">javascript</a>
               <a href="#" data-language-name="python">python</a>
@@ -1859,7 +1859,7 @@
               </ul>
           </li>
           <li>
-            <a href="#fase-3-apis-do-open-banking-brasil" class="toc-h1 toc-link" data-title="Fase 3 - APIs do Open Banking Brasil v1.0.0-rc5.2">Fase 3 - APIs do Open Banking Brasil v1.0.0-rc5.2</a>
+            <a href="#fase-3-apis-do-open-banking-brasil" class="toc-h1 toc-link" data-title="Fase 3 - APIs do Open Banking Brasil v1.0.0-rc5.3">Fase 3 - APIs do Open Banking Brasil v1.0.0-rc5.3</a>
               <ul class="toc-list-h2">
                   <li>
                     <a href="#iniciacao-de-pagamentos" class="toc-h2 toc-link" data-title="Iniciação de pagamentos">Iniciação de pagamentos</a>
@@ -1871,10 +1871,16 @@
                     <a href="#diagrama-de-sequencia" class="toc-h2 toc-link" data-title="Diagrama de Sequência">Diagrama de Sequência</a>
                   </li>
                   <li>
+                    <a href="#maquina-de-estados" class="toc-h2 toc-link" data-title="Maquina de Estados">Maquina de Estados</a>
+                  </li>
+                  <li>
                     <a href="#recomendacao-uso-de-polling" class="toc-h2 toc-link" data-title="Recomendação uso de polling">Recomendação uso de polling</a>
                   </li>
                   <li>
                     <a href="#controle-de-acesso" class="toc-h2 toc-link" data-title="Controle de acesso">Controle de acesso</a>
+                  </li>
+                  <li>
+                    <a href="#como-assinar-o-payload" class="toc-h2 toc-link" data-title="Como assinar o payload">Como assinar o payload</a>
                   </li>
               </ul>
           </li>
@@ -3558,9 +3564,9 @@ Os detalhes deste guia podem ser consultados nos endereços:</p>
 
 <p>Os detalhes das especificações devem ser consultadas nos endereços:</p>
 
-<p><a href="https://openbanking-brasil.github.io/specs-seguranca/open-banking-brasil-financial-api-1_ID1-ptbr.html">https://openbanking-brasil.github.io/specs-seguranca/open-banking-brasil-financial-api-1_ID1-ptbr.html</a> (em português)</p>
+<p><a href="https://openbanking-brasil.github.io/specs-seguranca/open-banking-brasil-financial-api-1_ID2-ptbr.html">https://openbanking-brasil.github.io/specs-seguranca/open-banking-brasil-financial-api-1_ID2-ptbr.html</a> (em português)</p>
 
-<p><a href="https://openbanking-brasil.github.io/specs-seguranca/open-banking-brasil-financial-api-1_ID1.html">https://openbanking-brasil.github.io/specs-seguranca/open-banking-brasil-financial-api-1_ID1.html</a> (em inglês)</p>
+<p><a href="https://openbanking-brasil.github.io/specs-seguranca/open-banking-brasil-financial-api-1_ID2.html">https://openbanking-brasil.github.io/specs-seguranca/open-banking-brasil-financial-api-1_ID2.html</a> (em inglês)</p>
 
 <h2 id='padrao-de-certificados'>Padrão de Certificados</h2>
 
@@ -53533,7 +53539,7 @@ Adiantamento a depositantes</p>
 </tr>
 </tbody></table>
 
-<h1 id="fase-3-apis-do-open-banking-brasil">Fase 3 - APIs do Open Banking Brasil v1.0.0-rc5.2</h1>
+<h1 id="fase-3-apis-do-open-banking-brasil">Fase 3 - APIs do Open Banking Brasil v1.0.0-rc5.3</h1>
 
 <blockquote>
 <p>Scroll down for code samples, example requests and responses. Select a language for code samples from the tabs above or the mobile navigation menu.</p>
@@ -53689,14 +53695,285 @@ A consulta encontra-se detalhada na seção das APIs para Pagamentos (<a href="
 </ul>
 
 <p>Os possíveis status de uma transação de iniciação de pagamento estão detalhados na documentação (<a href="#tocS_EnumPaymentStatusType">Open Banking Brasil</a>).</p>
+<h3 id='maquina-de-estados'>Maquina de Estados</h3><h4 id='os-possiveis-status-do-consentimento-sao'>Os possíveis status do consentimento são:</h4>
+<p>AWAITING_AUTHORISATION - Aguardando autorização<br>
+AUTHORISED - Autorizado<br>
+REJECTED - Rejeitado<br>
+CONSUMED - Consumido</p>
+
+<p><img src="images/sequence-diagrams/state-machine_phase3-46ad623c.png" alt="Maquina de Estados" /><br>
+<a href="images/sequence-diagrams/state-machine_phase3-46ad623c.png" target="_blank">Download da Maquina de Estados</a></p>
+
+<p>Algumas definições são importantes para tratar a transição dos estados do consentimento em diferentes momentos do fluxo:  </p>
+<h4 id='awaiting_authorisation'>AWAITING_AUTHORISATION</h4>
+<ul>
+<li>O consentimento é sempre criado com o status AWAITING_AUTHORISATION e deve assumir o status AUTHORISED ou REJECTED  antes do tempo de expiração de 5 minutos.<br></li>
+</ul>
+<h4 id='authorised'>AUTHORISED</h4>
+<ul>
+<li>Para o cenário em que o status assumiu AUTHORISED, o tempo máximo do expirationDateTime do consentimento deve assumir &quot;now + 60 minutos&quot;. Este é o tempo para consumir o consentimento autorizado, mudando seu status para CONSUMED. Não é possível prorrogar este tempo e a criação de um novo consentimento será necessária para os cenários de insucesso. O tempo do expirationDateTime é garantido com os 15 minutos do access token, sendo possível utilizar mais três refresh tokens até totalizar 60 minutos.<br></li>
+</ul>
+<h5 id='rejected'>REJECTED</h5>
+<ul>
+<li>Em caso de consentimento expirado a Detentora deverá retornar o status REJECTED.<br></li>
+<li>Em caso de consentimento rejeitado pelo usuário ou por regra de negócio da Detentora, o status deverá ser retornado como REJECTED.<br></li>
+</ul>
+<h4 id='consumed'>CONSUMED</h4>
+<ul>
+<li>O consentimento assume o status CONSUMED após ocorrer o processamento da iniciação do pagamento, seja ele com sucesso (HTTP 201) ou ainda em casos de insucesso (HTTP 422) retornados pela Detentora. Para os demais códigos HTTP não há mudança de status do consentimento, o mesmo permanecerá AUTHORISED, respeitando o tempo máximo de expiração do consentimento (60 minutos).<br></li>
+</ul>
 <h3 id='recomendacao-uso-de-polling'>Recomendação uso de polling</h3><h4 id='a-consulta-via-get-para-verificar-o-processamento-da-transacao-pode-ser-efetuada-a-qualquer-momento-desde-que-se-respeite-o-rate-limit-de'>A consulta via GET, para verificar o processamento da transação, pode ser efetuada a qualquer momento desde que se respeite o rate limit de:</h4>
 <ul>
 <li>300 TPS global, 50 TPS por instituição e 8 TPS por endereço IP (Internet Protocol).<br>
 Como sugestão, é indicado que a instituição iniciadora do pagamento implemente um retry exponencial.<br></li>
 </ul>
 <h3 id='controle-de-acesso'>Controle de acesso</h3>
-<p>O endpoint de consulta de pagamento GET /pix/payments/{​​​paymentId}​​​ deve suportar acesso a partir de access_token emitido por meio de um grant_type do tipo <code>client credentials</code>, como opção do uso do token vinculado ao consentimento (hybrid flow).<br>
-Para evitar vazamento de informação, a detentora deve validar que o pagamento consultado pertence ao ClientId que o criou e, caso haja divergências, retorne um erro HTTP 400.  </p>
+<p>O endpoint de consulta de pagamento GET /pix/payments/{​​​paymentId}​​​ deve suportar acesso a partir de access_token emitido por meio de um <em>grant_type</em> do tipo <code>client credentials</code>, como opção do uso do token vinculado ao consentimento (hybrid flow).<br>
+Para evitar vazamento de informação, a detentora deve validar que o pagamento consultado pertence ao <code>client_id</code> que o criou e, caso haja divergências, retorne um erro HTTP 400.  </p>
+<h3 id='como-assinar-o-payload'>Como assinar o payload</h3>
+<p>No contexto da API Payment Initiation, os payloads de mensagem de consentimento e de pagamento que trafegam tanto por parte da instituição iniciadora de transação de pagamento quanto por parte da instituição detentora de conta devem estar assinados. Abaixo temos as orientações para assinatura das mensagens JWS.  </p>
+
+<p>Informações complementares de segurança podem ser consultadas em <a href="https://github.com/OpenBanking-Brasil/specs-seguranca/blob/main/open-banking-brasil-financial-api-1_ID2-ptbr.md" target="_blank"> https://github.com/OpenBanking-Brasil/specs-seguranca/blob/main/open-banking-brasil-financial-api-1_ID2-ptbr.md</a>.</p>
+
+<ul>
+<li><strong>Passo 1</strong> - Identifique a chave privada e o certificado de assinatura correspondente a serem usados para assinatura:</li>
+</ul>
+
+<p>As assinaturas devem ser realizadas com uso do certificado digital de assinatura especificado no <a href="https://github.com/OpenBanking-Brasil/specs-seguranca/blob/main/open-banking-brasil-certificate-standards-1_ID1-ptbr.md#certificado-de-assinatura-certificadoassinatura" target="_blank">Padrão de Certificados Open Banking Brasil</a>.</p>
+
+<p>O certificado de assinatura deve ser válido no momento da criação do JWS.</p>
+
+<ul>
+<li><strong>Passo 2</strong> - Geração do JOSE Header</li>
+</ul>
+
+<p>O JOSE Header deve conter os seguintes campos:</p>
+
+<table><thead>
+<tr>
+<th>Nome</th>
+<th>Tipo</th>
+<th>Obrigatório</th>
+<th>Descrição</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>alg</td>
+<td>string</td>
+<td>true</td>
+<td>O algoritmo que será usado para assinar o JWS. Deve ser preenchido com o valor <code>PS256</code>.</td>
+</tr>
+<tr>
+<td>kid</td>
+<td>string</td>
+<td>true</td>
+<td>Deve ser obrigatoriamente preenchido com o valor do identificador da chave utilizado para a assinatura.</td>
+</tr>
+<tr>
+<td>typ</td>
+<td>string</td>
+<td>true</td>
+<td>É o tipo de conteúdo usado para trafegar mensagens na API. Deve ser preenchido com o valor <code>JWT</code>.</td>
+</tr>
+</tbody></table>
+
+<ul>
+<li><strong>Passo 3</strong> - Montando a mensagem JWS</li>
+</ul>
+
+<p>Para garantir a integridade e o não-repúdio das informações tramitadas em <em>API´s sensíveis e que indicam essa necessidade na sua documentação</em>, deve ser adotado a estrutura no padrão JWS definida na [<a href="https://datatracker.ietf.org/doc/html/rfc7515" target="_blank">RFC7515</a>] e que inclui:</p>
+
+<p><strong>Cabeçalho</strong> (<em>JSON Object Signing and Encryption – JOSE Header</em>), onde se define o algoritmo utilizado e inclui informações sobre a chave pública ou certificado que podem ser utilizadas para validar a assinatura;</p>
+
+<p><strong>Payload</strong> (<em>JWS Payload</em>): conteúdo propriamente dito e detalhado na especificação da API além de informações sobre <code>claims</code> JWT ;</p>
+
+<p><strong>Assinatura digital</strong> (<em>JWS Signature</em>): assinatura digital, realizada conforme parâmetros do cabeçalho.</p>
+
+<p>O payload das mensagens (requisição e resposta <em>JWT</em>) assinadas devem incluir as seguintes <code>claims</code> presentes na <a href="JWT"><a href="https://datatracker.ietf.org/doc/html/rfc7519#section-4.1" target="_blank">RFC7519</a></a>:</p>
+
+<table><thead>
+<tr>
+<th>Nome</th>
+<th>Tipo</th>
+<th>Obrigatório</th>
+<th>Descrição</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>aud</td>
+<td>string</td>
+<td>true</td>
+<td>(<strong><em>requisição JWT</em></strong>): o Provedor do Recurso (p. ex. a instituição Detentora da Conta) deverá validar se o valor do campo <strong>aud</strong> coincide com o endpoint sendo acionado.<br>(<strong><em>resposta JWT</em></strong>): o cliente da API (p. ex. instituição Iniciadora) deverá validar se o valor do campo <strong>aud</strong> coincide com o seu próprio <code>organisationId</code> listado no diretório.</td>
+</tr>
+<tr>
+<td>iss</td>
+<td>string</td>
+<td>true</td>
+<td>(<strong><em>requisição JWT</em></strong> e <strong><em>resposta JWT</em></strong>): o receptor da mensagem deverá validar se o valor do campo <strong>iss</strong> coincide com o seu prório <code>organisationId</code> listado no diretório.</td>
+</tr>
+<tr>
+<td>jti</td>
+<td>string</td>
+<td>true</td>
+<td>(<strong><em>requisição JWT</em></strong> e <strong><em>resposta JWT</em></strong>): o valor do campo <strong>jti</strong> deverá ser preenchido com o UUID definido pela instituição de acordo com a <a href="https://datatracker.ietf.org/doc/html/rfc4122" target="_blank">RFC 4122</a> usando o versão 4.</td>
+</tr>
+<tr>
+<td>iat</td>
+<td>string</td>
+<td>true</td>
+<td>(<strong><em>requisição JWT</em></strong> e <strong><em>resposta JWT</em></strong>): o valor do campo <strong>iat</strong> deverá ser preenchido com o horário da geração da mensagem e de acordo com o padrão estabelecido na <a href="https://datatracker.ietf.org/doc/html/rfc7519#section-2" target="_blank">RFC7519</a> para o formato <em>NumericDate</em></td>
+</tr>
+</tbody></table>
+
+<p>Cada elemento acima deve ser codificado utilizando o padrão Base64url [<a href="https://datatracker.ietf.org/doc/html/rfc4648#section-5" target="_blank">RFC4648</a>] e, feito isso, os elementos devem ser concatenados com “.” (método JWS Compact Serialization, conforme definido na [<a href="https://datatracker.ietf.org/doc/html/rfc7515#section-3.1" target="_blank">RFC7515</a>]).</p>
+
+<p>Formato da mensagem JWS:</p>
+
+<p><span style="background: #e9e8e8; padding: 3px;"><strong>payload</strong> = Base64url(<strong>JOSEHeader</strong>)  +  &quot;.&quot; + Base64url(<strong>payload JWT</strong>)  +  &quot;.&quot;  +  Base64url(<strong>digital signature</strong>)</span></p>
+
+<p>Veja ao lado exemplo de mensagem JWS assinada e codificada e um exemplo de mensagem JWS decodificada.</p>
+
+<blockquote>
+<p>Exemplo de requisição - JWS assinada e codificada</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"eyJhbGciOiJQUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlBXQWk1cnVRY0hmelB6cTJKRmRwWTduQVVoNkx6VFRRdERCVXBPTTM3SlEifQ.
+  eyJhdWQiOiJodHRwczovL2FwaS5iYW5jby5jb20uYnIvb3BlbmJhbmtpbmcvcGF5bWVudHMvdjEvY29uc2VudHMiLCJpc3MiOiI1NjQ3ZmU5MC1mNmJjLTExZWItOWEwMy0wMjQyYWMxMzAwMDMiLCJqdGkiOiI3OTYwNTc3Yy02NjJjLTQ1NmUtOGNmNS1lNjMwODI4YWY2MzUiLCJpYXQiOiIxNjI4MjU3NDg0IiwiZGF0YSI6eyJsb2dnZWRVc2VyIjp7ImRvY3VtZW50Ijp7ImlkZW50aWZpY2F0aW9uIjoiMTExMTExMTExMTEiLCJyZWwiOiJDUEYifX0sImJ1c2luZXNzRW50aXR5Ijp7ImRvY3VtZW50Ijp7ImlkZW50aWZpY2F0aW9uIjoiMTExMTExMTExMTExMTEiLCJyZWwiOiJDTlBKIn19LCJjcmVkaXRvciI6eyJwZXJzb25UeXBlIjoiUEVTU09BX05BVFVSQUwiLCJjcGZDbnBqIjoiNTg3NjQ3ODkwMDAxMzciLCJuYW1lIjoiTWFyY28gQW50b25pbyBkZSBCcml0byJ9LCJwYXltZW50Ijp7InR5cGUiOiJQSVgiLCJkYXRlIjoiMjAyMS0wMS0wMSIsImN1cnJlbmN5IjoiQlJMIiwiYW1vdW50IjoiMTAwMDAwLjEyIn0sImRlYnRvckFjY291bnQiOnsiaXNwYiI6IjEyMzQ1Njc4IiwiaXNzdWVyIjoiMTc3NCIsIm51bWJlciI6IjEyMzQ1Njc4OTAiLCJhY2NvdW50VHlwZSI6IkNBQ0MifX19.
+  QPeCCkH45tZ4kMRYwLNIFXnHGIe0smk5V1qVrM7Iw_YcNUbla45ThCFzU_NEeYx3FaPJko_PIGWzxC62c_yrh0R5yYpGJ_V4PZxGer27p_tZgyJ_x7MZbMkMaRqO8w9rcfa8FrNc9zBXbkdh2D0GmC_fDtAV5F-ndYhaztH2w-G5OGg7S57wifA4HVq11vQLmk5p3VjKFA530KALurU5kRmAfgK0mYA6_EaOtXiQTeP06_gu6g9JIenGLaDVeKLXKTtv8YhCZhoO_eHNBdAmmFJTQW_zPQrKnlj1Qo6XJIgRQ0sqigV9lOOOQNWjpFwZ2DYYcXbdHumCznlN_yb5yw
+}
+</span></code></pre></div>
+
+<blockquote>
+<p>Exemplo de requisição - JWS decodificada</p>
+</blockquote>
+
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"alg"</span><span class="p">:</span><span class="w"> </span><span class="s2">"PS256"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"typ"</span><span class="p">:</span><span class="w"> </span><span class="s2">"JWT"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"kid"</span><span class="p">:</span><span class="w"> </span><span class="s2">"PWAi5ruQcHfzPzq2JFdpY7nAUh6LzTTQtDBUpOM37JQ"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span><span class="p">{</span><span class="w">
+  </span><span class="nl">"aud"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://api.banco.com.br/openbanking/payments/v1/consents"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"iss"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5647fe90-f6bc-11eb-9a03-0242ac130003"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"jti"</span><span class="p">:</span><span class="w"> </span><span class="s2">"7960577c-662c-456e-8cf5-e630828af635"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"iat"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1628257484"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"loggedUser"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"document"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"identification"</span><span class="p">:</span><span class="w"> </span><span class="s2">"11111111111"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"rel"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CPF"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"businessEntity"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"document"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"identification"</span><span class="p">:</span><span class="w"> </span><span class="s2">"11111111111111"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"rel"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CNPJ"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"creditor"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"personType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"PESSOA_NATURAL"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"cpfCnpj"</span><span class="p">:</span><span class="w"> </span><span class="s2">"58764789000137"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Marco Antonio de Brito"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"payment"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"PIX"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2021-01-01"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BRL"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"amount"</span><span class="p">:</span><span class="w"> </span><span class="s2">"100000.12"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"debtorAccount"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"ispb"</span><span class="p">:</span><span class="w"> </span><span class="s2">"12345678"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"issuer"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1774"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"number"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1234567890"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"accountType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CACC"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w"> 
+
+</span><span class="err">*</span><span class="w"> </span><span class="s2">"Assinatura omitida por questões de brevidade"</span><span class="w">
+
+</span></code></pre></div>
+
+<blockquote>
+<p>Exemplo de resposta - JWS assinada e codificada</p>
+</blockquote>
+
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"eyJhbGciOiJQUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlBXQWk1cnVRY0hmelB6cTJKRmRwWTduQVVoNkx6VFRRdERCVXBPTTM3SlEifQ.
+  eyJhdWQiOiIzNDQ5YmYyMS0wYjA3LTQ4ZTYtYjZmYy0xM2ViMTYxYTk5MDEiLCJpc3MiOiJjYTFiOThlMS05N2EyLTQzZGItOTQ3Zi04YTA4MDU0YzM0MmUiLCJqdGkiOiJhMmZkMzkzYy0xMDdhLTRhZDQtYmUyMi0zY2ZlZWVhOTBlZmUiLCJpYXQiOiIxNjI4MjU3NzM3IiwiZGF0YSI6eyJjb25zZW50SWQiOiJ1cm46YmFuY29leDpDMUREMzMxMjMiLCJjcmVhdGlvbkRhdGVUaW1lIjoiMjAyMS0wNS0yMVQwODozMDowMFoiLCJleHBpcmF0aW9uRGF0ZVRpbWUiOiIyMDIxLTA1LTIxVDA4OjMwOjAwWiIsInN0YXR1c1VwZGF0ZURhdGVUaW1lIjoiMjAyMS0wNS0yMVQwODozMDowMFoiLCJzdGF0dXMiOiJBV0FJVElOR19BVVRIT1JJU0FUSU9OIiwibG9nZ2VkVXNlciI6eyJkb2N1bWVudCI6eyJpZGVudGlmaWNhdGlvbiI6IjExMTExMTExMTExIiwicmVsIjoiQ1BGIn19LCJidXNpbmVzc0VudGl0eSI6eyJkb2N1bWVudCI6eyJpZGVudGlmaWNhdGlvbiI6IjExMTExMTExMTExMTExIiwicmVsIjoiQ05QSiJ9fSwiY3JlZGl0b3IiOnsicGVyc29uVHlwZSI6IlBFU1NPQV9OQVRVUkFMIiwiY3BmQ25waiI6IjU4NzY0Nzg5MDAwMTM3IiwibmFtZSI6Ik1hcmNvIEFudG9uaW8gZGUgQnJpdG8ifSwicGF5bWVudCI6eyJ0eXBlIjoiUElYIiwiZGF0ZSI6IjIwMjEtMDEtMDEiLCJjdXJyZW5jeSI6IkJSTCIsImFtb3VudCI6IjEwMDAwMC4xMiJ9LCJkZWJ0b3JBY2NvdW50Ijp7ImlzcGIiOiIxMjM0NTY3OCIsImlzc3VlciI6IjE3NzQiLCJudW1iZXIiOiIxMjM0NTY3ODkwIiwiYWNjb3VudFR5cGUiOiJDQUNDIn19LCJsaW5rcyI6eyJzZWxmIjoiaHR0cHM6Ly9hcGkuYmFuY28uY29tLmJyL29wZW4tYmFua2luZy9hcGkvdjEvcmVzb3VyY2UifSwibWV0YSI6eyJ0b3RhbFJlY29yZHMiOjEsInRvdGFsUGFnZXMiOjEsInJlcXVlc3REYXRlVGltZSI6IjIwMjEtMDUtMjFUMDg6MzA6MDBaIn19.
+  08SM6dnS_-COzDmhlhJ-OfBAqyMpwPiaKCJPkggUKRgns7dFMvezsv2fWlX4tYkDw_Hc8NL-fsfw5eI13FoDTSQUPdKt8KRpPNZ5qXNsjyIIwtV13hmIepGSNsyaOlhX7JXVhxWceE5VfMcVp5no62tDqh1u84liOx8dOV5G31SlkBknPR5v-M-xNUFAo63WCFy6Zew-uuLbP3ruP4CSdY_h1BkOABJnraoa-yPhuByHg2zwbNY_ELYigf2FPyrFZsEH48hU_UZG1EOLt7cII9hzJxTYLtJX5SJiwH8kxegQtpbLpxZ3Se282Bc_OYyX1Fz4_lHjSDmuLwW3PzEbhQ"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+
+<blockquote>
+<p>Exemplo de resposta - JWS decodificada</p>
+</blockquote>
+
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"alg"</span><span class="p">:</span><span class="w"> </span><span class="s2">"PS256"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"typ"</span><span class="p">:</span><span class="w"> </span><span class="s2">"JWT"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"kid"</span><span class="p">:</span><span class="w"> </span><span class="s2">"PWAi5ruQcHfzPzq2JFdpY7nAUh6LzTTQtDBUpOM37JQ"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span><span class="p">{</span><span class="w">
+  </span><span class="nl">"aud"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3449bf21-0b07-48e6-b6fc-13eb161a9901"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"iss"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ca1b98e1-97a2-43db-947f-8a08054c342e"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"jti"</span><span class="p">:</span><span class="w"> </span><span class="s2">"a2fd393c-107a-4ad4-be22-3cfeeea90efe"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"iat"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1628257737"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"consentId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"urn:bancoex:C1DD33123"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"creationDateTime"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2021-05-21T08:30:00Z"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"expirationDateTime"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2021-05-21T08:30:00Z"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"statusUpdateDateTime"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2021-05-21T08:30:00Z"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"AWAITING_AUTHORISATION"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"loggedUser"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"document"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"identification"</span><span class="p">:</span><span class="w"> </span><span class="s2">"11111111111"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"rel"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CPF"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"businessEntity"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"document"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"identification"</span><span class="p">:</span><span class="w"> </span><span class="s2">"11111111111111"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"rel"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CNPJ"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"creditor"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"personType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"PESSOA_NATURAL"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"cpfCnpj"</span><span class="p">:</span><span class="w"> </span><span class="s2">"58764789000137"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Marco Antonio de Brito"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"payment"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"PIX"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2021-01-01"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BRL"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"amount"</span><span class="p">:</span><span class="w"> </span><span class="s2">"100000.12"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"debtorAccount"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"ispb"</span><span class="p">:</span><span class="w"> </span><span class="s2">"12345678"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"issuer"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1774"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"number"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1234567890"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"accountType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CACC"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"self"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://api.banco.com.br/open-banking/api/v1/resource"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"meta"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"totalRecords"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"totalPages"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"requestDateTime"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2021-05-21T08:30:00Z"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">  
+
+</span><span class="err">*</span><span class="w"> </span><span class="s2">"Assinatura omitida por questões de brevidade"</span><span class="w">
+</span></code></pre></div>
+
+<p><strong>Em caso de erro</strong></p>
+
+<ul>
+<li><p>Na validação da assinatura pelo Provedor do Recurso a API deve retornar mensagem de erro <code>HTTP</code> com status code <code>400</code> e a resposta deve incluir na propriedade code do objeto de resposta de erro especificado na API (<em>ResponseError</em>) a indicação da falha com o conteúdo <code>BAD_SIGNATURE</code>.  </p></li>
+<li><p>Erros na validação da mensagem recebida pela aplicação cliente (p. ex. iniciador de pagamento) devem ser registrados e o <code>Provedor do Recurso</code> (p. ex. instituição detentora de conta) deve ser notificado.</p></li>
+</ul>
 
 <h1 id="fase-3-apis-do-open-banking-brasil-api-pagamentos">API - Pagamentos</h1>
 
@@ -53706,21 +53983,28 @@ Para evitar vazamento de informação, a detentora deve validar que o pagamento 
 </tr>
 </thead><tbody>
 <tr>
-<td style="text-align: left">1.0.0-rc5.2</td>
+<td style="text-align: left">1.0.0-rc5.3</td>
 </tr>
 </tbody></table>
+
 <h4 id='visao-geral'>Visão Geral</h4>
-<p>A API tem como objetivo coletar o consentimento e ralizar a iniciação de pagamento entre bancos e instituições financeiras e acessível também à estabelecimentos comerciais participantes do Open Banking Brasil.</p>
+
+<p>A API tem como objetivo coletar o consentimento e realizar a iniciação de pagamento entre bancos e instituições financeiras e acessível também à estabelecimentos comerciais participantes do Open Banking Brasil.</p>
 
 <p>Os recursos estão disponíveis para pagadores que possuem vínculo com uma instituição detentora de conta participante do Open Banking, independentemente de serem pessoa física ou jurídica.</p>
+
 <h4 id='especificacao-em-oas-3-0'>Especificação em OAS 3.0</h4>
+
 <p><a href="swagger/swagger_payments_apis.yaml" target="_blank">Download da Especificação (OAS 3.0)</a>  </p>
+
 <h2 id='em-revisao-criar-consentimento-para-iniciacao-de-pagamento'>[Em Revisão] Criar consentimento para iniciação de pagamento.</h2>
+
 <p><a id="opIdpaymentsPostConsents"></a></p>
 
 <blockquote>
 <p>Exemplo de código</p>
 </blockquote>
+
 <div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">const</span> <span class="nx">data</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">({</span>
   <span class="dl">"</span><span class="s2">data</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
     <span class="dl">"</span><span class="s2">loggedUser</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
@@ -57031,7 +57315,7 @@ EXPIRED_BILL - O QR Code não é mais válido (OB06).<br>
 <td>» expirationDateTime</td>
 <td>string(date-time)</td>
 <td>true</td>
-<td>Data e hora em que o consentimento da iniciação de pagamento expira, devendo ser sempre o creationDateTime mais 5 minutos. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC (UTC time format). <br>O consentimento é criado com o status AWAITING_AUTHORISATION, e deve assumir o status AUTHORIZED, REJECTED ou CONSUMED antes do tempo de expiração - 5 minutos.  <br>Caso não assuma, o status permanece como AWAITING_AUTHORISATION e será necessária a criação de um novo consentimento.  <br>Para o cenário em que o status assumiu AUTHORISED, o tempo máximo (do token FAPI Hybrid Flow) é de 60 minutos, sem refresh, <br>e este é o tempo para consumir o consentimento autorizado, mudando seu status para CONSUMED. Não é possível prorrogar este tempo e a criação de um novo consentimento será necessária para os cenários de insucesso.</td>
+<td>Data e hora em que o consentimento da iniciação de pagamento expira, devendo ser sempre o creationDateTime mais 5 minutos. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC (UTC time format).<br>O consentimento é criado com o status AWAITING_AUTHORISATION, e deve assumir o status AUTHORIZED ou REJECTED antes do tempo de expiração - 5 minutos. Caso o tempo seja expirado, o status deve assumir REJECTED.<br>Para o cenário em que o status assumiu AUTHORISED, o tempo máximo do expirationDateTime do consentimento deve assumir &quot;now + 60 minutos&quot;. Este é o tempo para consumir o consentimento autorizado, mudando seu status para CONSUMED. Não é possível prorrogar este tempo e a criação de um novo consentimento será necessária para os cenários de insucesso.<br>O tempo do expirationDateTime é garantido com os 15 minutos do access token, sendo possível utilizar mais três refresh tokens até totalizar 60 minutos.</td>
 </tr>
 <tr>
 <td>» statusUpdateDateTime</td>
@@ -57469,6 +57753,12 @@ Espera-se que o detentor dos dados garanta que a medição do tempo de resposta 
 </tr>
 </thead><tbody>
 <tr>
+<td>10/08/2021</td>
+<td>v1.0.0-rc8.2</td>
+<td>Correções na API da Fase 3.</td>
+<td>Consulte o <a href="includes/release_notes/releasenotes_v1.0.0_rc8.2.html">Release Notes</a>.</td>
+</tr>
+<tr>
 <td>30/07/2021</td>
 <td>v1.0.0-rc8.1</td>
 <td>Correções nas APIs da Fase 1 e 3.</td>
@@ -57773,6 +58063,7 @@ Para esclarecimento reiteramos que a modalidade 08.02 não faz parte do reportin
 <p>A princípio não há exigência normativa para se apresentar a distribuição de frequência para essas outras modalidades de crédito relacionadas à cartão de crédito. Conforme a Instrução Normativa BCB 35, de 2020, somente recairia essa exigência, no caso de cartão de crédito, sobre as operações de crédito rotativo e de parcelamento do saldo devedor da fatura, que já são operações que observam alguma espécie de padronização. De qualquer forma, esse é o escopo mínimo de dados, o que não impede que o GT e o conselho deliberativo deliberem por sua expansão em algum momento.</p>
 <h1 id='versoes-anteriores'>Versões anteriores</h1>
 <ul>
+<li><a href="./versions/v1.0.0-rc8.1/index.html" target="_blank">v1.0.0-rc8.1</a></li>
 <li><a href="./versions/v1.0.0-rc8.0/index.html" target="_blank">v1.0.0-rc8.0</a></li>
 <li><a href="./versions/v1.0.0-rc7.9/index.html" target="_blank">v1.0.0-rc7.9</a></li>
 <li><a href="./versions/v1.0.0-rc7.8/index.html" target="_blank">v1.0.0-rc7.8</a></li>
