@@ -184,28 +184,242 @@ info:
 
     Os possíveis status de uma transação de iniciação de pagamento estão detalhados na documentação (<a href="#tocS_EnumPaymentStatusType">Open Banking Brasil</a>).
 
+    ### Maquina de Estados
+    #### Os possíveis status do consentimento são:  
+      
+    AWAITING_AUTHORISATION - Aguardando autorização  
+    AUTHORISED - Autorizado   
+    REJECTED - Rejeitado  
+    CONSUMED - Consumido
+
+    ![Maquina de Estados](images/sequence-diagrams/state-machine_phase3.png)  
+    <a href="images/sequence-diagrams/state-machine_phase3.png" target="_blank">Download da Maquina de Estados</a>
+    
+    Algumas definições são importantes para tratar a transição dos estados do consentimento em diferentes momentos do fluxo:  
+
+    #### AWAITING_AUTHORISATION
+    - O consentimento é sempre criado com o status AWAITING_AUTHORISATION e deve assumir o status AUTHORISED ou REJECTED  antes do tempo de expiração de 5 minutos.  
+
+    #### AUTHORISED
+    - Para o cenário em que o status assumiu AUTHORISED, o tempo máximo do expirationDateTime do consentimento deve assumir "now + 60 minutos". Este é o tempo para consumir o consentimento autorizado, mudando seu status para CONSUMED. Não é possível prorrogar este tempo e a criação de um novo consentimento será necessária para os cenários de insucesso. O tempo do expirationDateTime é garantido com os 15 minutos do access token, sendo possível utilizar mais três refresh tokens até totalizar 60 minutos.  
+    
+    ##### REJECTED
+    - Em caso de consentimento expirado a Detentora deverá retornar o status REJECTED.  
+    - Em caso de consentimento rejeitado pelo usuário ou por regra de negócio da Detentora, o status deverá ser retornado como REJECTED.  
+   
+    #### CONSUMED
+    - O consentimento assume o status CONSUMED após ocorrer o processamento da iniciação do pagamento, seja ele com sucesso (HTTP 201) ou ainda em casos de insucesso (HTTP 422) retornados pela Detentora. Para os demais códigos HTTP não há mudança de status do consentimento, o mesmo permanecerá AUTHORISED, respeitando o tempo máximo de expiração do consentimento (60 minutos).    
+    
+
     ### Recomendação uso de polling
     #### A consulta via GET, para verificar o processamento da transação, pode ser efetuada a qualquer momento desde que se respeite o rate limit de:  
     - 300 TPS global, 50 TPS por instituição e 8 TPS por endereço IP (Internet Protocol).  
     Como sugestão, é indicado que a instituição iniciadora do pagamento implemente um retry exponencial.  
 
-    ### Controle de acesso  
+    ### Controle de acesso
 
-    O endpoint de consulta de pagamento GET /pix/payments/{​​​paymentId}​​​ deve suportar acesso a partir de access_token emitido por meio de um grant_type do tipo `client credentials`, como opção do uso do token vinculado ao consentimento (hybrid flow).  
-    Para evitar vazamento de informação, a detentora deve validar que o pagamento consultado pertence ao ClientId que o criou e, caso haja divergências, retorne um erro HTTP 400.  
+    O endpoint de consulta de pagamento GET /pix/payments/{​​​paymentId}​​​ deve suportar acesso a partir de access_token emitido por meio de um _grant_type_ do tipo `client credentials`, como opção do uso do token vinculado ao consentimento (hybrid flow).  
+    Para evitar vazamento de informação, a detentora deve validar que o pagamento consultado pertence ao `client_id` que o criou e, caso haja divergências, retorne um erro HTTP 400.  
+    
+    ### Como assinar o payload  
+
+    No contexto da API Payment Initiation, os payloads de mensagem de consentimento e de pagamento que trafegam tanto por parte da instituição iniciadora de transação de pagamento quanto por parte da instituição detentora de conta devem estar assinados. Abaixo temos as orientações para assinatura das mensagens JWS.  
+    
+    Informações complementares de segurança podem ser consultadas em <a href="https://github.com/OpenBanking-Brasil/specs-seguranca/blob/main/open-banking-brasil-financial-api-1_ID2-ptbr.md" target="_blank"> https://github.com/OpenBanking-Brasil/specs-seguranca/blob/main/open-banking-brasil-financial-api-1_ID2-ptbr.md</a>.
+    
+    - **Passo 1** - Identifique a chave privada e o certificado de assinatura correspondente a serem usados para assinatura:
+
+    As assinaturas devem ser realizadas com uso do certificado digital de assinatura especificado no <a href="https://github.com/OpenBanking-Brasil/specs-seguranca/blob/main/open-banking-brasil-certificate-standards-1_ID1-ptbr.md#certificado-de-assinatura-certificadoassinatura" target="_blank">Padrão de Certificados Open Banking Brasil</a>.
+
+    O certificado de assinatura deve ser válido no momento da criação do JWS.
+    
+    - **Passo 2** - Geração do JOSE Header
+
+    O JOSE Header deve conter os seguintes campos:
+
+    |Nome|Tipo|Obrigatório|Descrição|
+    |---|---|---|---|---|
+    |alg|string|true|O algoritmo que será usado para assinar o JWS. Deve ser preenchido com o valor `PS256`.|
+    |kid|string|true|Deve ser obrigatoriamente preenchido com o valor do identificador da chave utilizado para a assinatura.|
+    |typ|string|true|É o tipo de conteúdo usado para trafegar mensagens na API. Deve ser preenchido com o valor `JWT`.|
+
+    - **Passo 3** - Montando a mensagem JWS
+
+    Para garantir a integridade e o não-repúdio das informações tramitadas em *API´s sensíveis e que indicam essa necessidade na sua documentação*, deve ser adotado a estrutura no padrão JWS definida na [<a href="https://datatracker.ietf.org/doc/html/rfc7515" target="_blank">RFC7515</a>] e que inclui:
+
+    **Cabeçalho** (_JSON Object Signing and Encryption – JOSE Header_), onde se define o algoritmo utilizado e inclui informações sobre a chave pública ou certificado que podem ser utilizadas para validar a assinatura;
+    
+    **Payload** (_JWS Payload_): conteúdo propriamente dito e detalhado na especificação da API além de informações sobre `claims` JWT ;
+    
+    **Assinatura digital** (_JWS Signature_): assinatura digital, realizada conforme parâmetros do cabeçalho.
+
+    O payload das mensagens (requisição e resposta _JWT_) assinadas devem incluir as seguintes `claims` presentes na [<a href="https://datatracker.ietf.org/doc/html/rfc7519#section-4.1" target="_blank">RFC7519</a>] (JWT):
+
+    |Nome|Tipo|Obrigatório|Descrição|
+    |---|---|---|---|---|
+    |aud|string|true|(***requisição JWT***): o Provedor do Recurso (p. ex. a instituição Detentora da Conta) deverá validar se o valor do campo **aud** coincide com o endpoint sendo acionado.<br>(***resposta JWT***): o cliente da API (p. ex. instituição Iniciadora) deverá validar se o valor do campo **aud** coincide com o seu próprio `organisationId` listado no diretório.|
+    |iss|string|true|(***requisição JWT*** e ***resposta JWT***): o receptor da mensagem deverá validar se o valor do campo **iss** coincide com o seu prório `organisationId` listado no diretório.|
+    |jti|string|true|(***requisição JWT*** e ***resposta JWT***): o valor do campo **jti** deverá ser preenchido com o UUID definido pela instituição de acordo com a <a href="https://datatracker.ietf.org/doc/html/rfc4122" target="_blank">RFC 4122</a> usando o versão 4.|
+    |iat|string|true|(***requisição JWT*** e ***resposta JWT***): o valor do campo **iat** deverá ser preenchido com o horário da geração da mensagem e de acordo com o padrão estabelecido na <a href="https://datatracker.ietf.org/doc/html/rfc7519#section-2" target="_blank">RFC7519</a> para o formato _NumericDate_|
+
+    Cada elemento acima deve ser codificado utilizando o padrão Base64url [<a href="https://datatracker.ietf.org/doc/html/rfc4648#section-5" target="_blank">RFC4648</a>] e, feito isso, os elementos devem ser concatenados com “.” (método JWS Compact Serialization, conforme definido na [<a href="https://datatracker.ietf.org/doc/html/rfc7515#section-3.1" target="_blank">RFC7515</a>]).
+
+    Formato da mensagem JWS:
+
+    <span style="background: #e9e8e8; padding: 3px;">**payload** = Base64url(**JOSEHeader**)  +  "." + Base64url(**payload JWT**)  +  "."  +  Base64url(**digital signature**)</span>
+
+    Veja ao lado exemplo de mensagem JWS assinada e codificada e um exemplo de mensagem JWS decodificada.
+
+    > Exemplo de requisição - JWS assinada e codificada
+
+    ```json
+    {
+      "eyJhbGciOiJQUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlBXQWk1cnVRY0hmelB6cTJKRmRwWTduQVVoNkx6VFRRdERCVXBPTTM3SlEifQ.
+      eyJhdWQiOiJodHRwczovL2FwaS5iYW5jby5jb20uYnIvb3BlbmJhbmtpbmcvcGF5bWVudHMvdjEvY29uc2VudHMiLCJpc3MiOiI1NjQ3ZmU5MC1mNmJjLTExZWItOWEwMy0wMjQyYWMxMzAwMDMiLCJqdGkiOiI3OTYwNTc3Yy02NjJjLTQ1NmUtOGNmNS1lNjMwODI4YWY2MzUiLCJpYXQiOiIxNjI4MjU3NDg0IiwiZGF0YSI6eyJsb2dnZWRVc2VyIjp7ImRvY3VtZW50Ijp7ImlkZW50aWZpY2F0aW9uIjoiMTExMTExMTExMTEiLCJyZWwiOiJDUEYifX0sImJ1c2luZXNzRW50aXR5Ijp7ImRvY3VtZW50Ijp7ImlkZW50aWZpY2F0aW9uIjoiMTExMTExMTExMTExMTEiLCJyZWwiOiJDTlBKIn19LCJjcmVkaXRvciI6eyJwZXJzb25UeXBlIjoiUEVTU09BX05BVFVSQUwiLCJjcGZDbnBqIjoiNTg3NjQ3ODkwMDAxMzciLCJuYW1lIjoiTWFyY28gQW50b25pbyBkZSBCcml0byJ9LCJwYXltZW50Ijp7InR5cGUiOiJQSVgiLCJkYXRlIjoiMjAyMS0wMS0wMSIsImN1cnJlbmN5IjoiQlJMIiwiYW1vdW50IjoiMTAwMDAwLjEyIn0sImRlYnRvckFjY291bnQiOnsiaXNwYiI6IjEyMzQ1Njc4IiwiaXNzdWVyIjoiMTc3NCIsIm51bWJlciI6IjEyMzQ1Njc4OTAiLCJhY2NvdW50VHlwZSI6IkNBQ0MifX19.
+      QPeCCkH45tZ4kMRYwLNIFXnHGIe0smk5V1qVrM7Iw_YcNUbla45ThCFzU_NEeYx3FaPJko_PIGWzxC62c_yrh0R5yYpGJ_V4PZxGer27p_tZgyJ_x7MZbMkMaRqO8w9rcfa8FrNc9zBXbkdh2D0GmC_fDtAV5F-ndYhaztH2w-G5OGg7S57wifA4HVq11vQLmk5p3VjKFA530KALurU5kRmAfgK0mYA6_EaOtXiQTeP06_gu6g9JIenGLaDVeKLXKTtv8YhCZhoO_eHNBdAmmFJTQW_zPQrKnlj1Qo6XJIgRQ0sqigV9lOOOQNWjpFwZ2DYYcXbdHumCznlN_yb5yw
+    }
+    ```
+
+    > Exemplo de requisição - JWS decodificada
+
+    ```json
+    {
+      "alg": "PS256",
+      "typ": "JWT",
+      "kid": "PWAi5ruQcHfzPzq2JFdpY7nAUh6LzTTQtDBUpOM37JQ"
+    }
+    {
+      "aud": "https://api.banco.com.br/openbanking/payments/v1/consents",
+      "iss": "5647fe90-f6bc-11eb-9a03-0242ac130003",
+      "jti": "7960577c-662c-456e-8cf5-e630828af635",
+      "iat": "1628257484",
+      "data": {
+        "loggedUser": {
+          "document": {
+            "identification": "11111111111",
+            "rel": "CPF"
+          }
+        },
+        "businessEntity": {
+          "document": {
+            "identification": "11111111111111",
+            "rel": "CNPJ"
+          }
+        },
+        "creditor": {
+          "personType": "PESSOA_NATURAL",
+          "cpfCnpj": "58764789000137",
+          "name": "Marco Antonio de Brito"
+        },
+        "payment": {
+          "type": "PIX",
+          "date": "2021-01-01",
+          "currency": "BRL",
+          "amount": "100000.12"
+        },
+        "debtorAccount": {
+          "ispb": "12345678",
+          "issuer": "1774",
+          "number": "1234567890",
+          "accountType": "CACC"
+        }
+      }
+    } 
+
+    * "Assinatura omitida por questões de brevidade"
+
+    ```
+
+     > Exemplo de resposta - JWS assinada e codificada
+
+    ```json
+    {
+      "eyJhbGciOiJQUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlBXQWk1cnVRY0hmelB6cTJKRmRwWTduQVVoNkx6VFRRdERCVXBPTTM3SlEifQ.
+      eyJhdWQiOiIzNDQ5YmYyMS0wYjA3LTQ4ZTYtYjZmYy0xM2ViMTYxYTk5MDEiLCJpc3MiOiJjYTFiOThlMS05N2EyLTQzZGItOTQ3Zi04YTA4MDU0YzM0MmUiLCJqdGkiOiJhMmZkMzkzYy0xMDdhLTRhZDQtYmUyMi0zY2ZlZWVhOTBlZmUiLCJpYXQiOiIxNjI4MjU3NzM3IiwiZGF0YSI6eyJjb25zZW50SWQiOiJ1cm46YmFuY29leDpDMUREMzMxMjMiLCJjcmVhdGlvbkRhdGVUaW1lIjoiMjAyMS0wNS0yMVQwODozMDowMFoiLCJleHBpcmF0aW9uRGF0ZVRpbWUiOiIyMDIxLTA1LTIxVDA4OjMwOjAwWiIsInN0YXR1c1VwZGF0ZURhdGVUaW1lIjoiMjAyMS0wNS0yMVQwODozMDowMFoiLCJzdGF0dXMiOiJBV0FJVElOR19BVVRIT1JJU0FUSU9OIiwibG9nZ2VkVXNlciI6eyJkb2N1bWVudCI6eyJpZGVudGlmaWNhdGlvbiI6IjExMTExMTExMTExIiwicmVsIjoiQ1BGIn19LCJidXNpbmVzc0VudGl0eSI6eyJkb2N1bWVudCI6eyJpZGVudGlmaWNhdGlvbiI6IjExMTExMTExMTExMTExIiwicmVsIjoiQ05QSiJ9fSwiY3JlZGl0b3IiOnsicGVyc29uVHlwZSI6IlBFU1NPQV9OQVRVUkFMIiwiY3BmQ25waiI6IjU4NzY0Nzg5MDAwMTM3IiwibmFtZSI6Ik1hcmNvIEFudG9uaW8gZGUgQnJpdG8ifSwicGF5bWVudCI6eyJ0eXBlIjoiUElYIiwiZGF0ZSI6IjIwMjEtMDEtMDEiLCJjdXJyZW5jeSI6IkJSTCIsImFtb3VudCI6IjEwMDAwMC4xMiJ9LCJkZWJ0b3JBY2NvdW50Ijp7ImlzcGIiOiIxMjM0NTY3OCIsImlzc3VlciI6IjE3NzQiLCJudW1iZXIiOiIxMjM0NTY3ODkwIiwiYWNjb3VudFR5cGUiOiJDQUNDIn19LCJsaW5rcyI6eyJzZWxmIjoiaHR0cHM6Ly9hcGkuYmFuY28uY29tLmJyL29wZW4tYmFua2luZy9hcGkvdjEvcmVzb3VyY2UifSwibWV0YSI6eyJ0b3RhbFJlY29yZHMiOjEsInRvdGFsUGFnZXMiOjEsInJlcXVlc3REYXRlVGltZSI6IjIwMjEtMDUtMjFUMDg6MzA6MDBaIn19.
+      08SM6dnS_-COzDmhlhJ-OfBAqyMpwPiaKCJPkggUKRgns7dFMvezsv2fWlX4tYkDw_Hc8NL-fsfw5eI13FoDTSQUPdKt8KRpPNZ5qXNsjyIIwtV13hmIepGSNsyaOlhX7JXVhxWceE5VfMcVp5no62tDqh1u84liOx8dOV5G31SlkBknPR5v-M-xNUFAo63WCFy6Zew-uuLbP3ruP4CSdY_h1BkOABJnraoa-yPhuByHg2zwbNY_ELYigf2FPyrFZsEH48hU_UZG1EOLt7cII9hzJxTYLtJX5SJiwH8kxegQtpbLpxZ3Se282Bc_OYyX1Fz4_lHjSDmuLwW3PzEbhQ"
+    }
+    ```
+
+    > Exemplo de resposta - JWS decodificada
+
+    ```json
+    {
+      "alg": "PS256",
+      "typ": "JWT",
+      "kid": "PWAi5ruQcHfzPzq2JFdpY7nAUh6LzTTQtDBUpOM37JQ"
+    }
+    {
+      "aud": "3449bf21-0b07-48e6-b6fc-13eb161a9901",
+      "iss": "ca1b98e1-97a2-43db-947f-8a08054c342e",
+      "jti": "a2fd393c-107a-4ad4-be22-3cfeeea90efe",
+      "iat": "1628257737",
+      "data": {
+        "consentId": "urn:bancoex:C1DD33123",
+        "creationDateTime": "2021-05-21T08:30:00Z",
+        "expirationDateTime": "2021-05-21T08:30:00Z",
+        "statusUpdateDateTime": "2021-05-21T08:30:00Z",
+        "status": "AWAITING_AUTHORISATION",
+        "loggedUser": {
+          "document": {
+            "identification": "11111111111",
+            "rel": "CPF"
+          }
+        },
+        "businessEntity": {
+          "document": {
+            "identification": "11111111111111",
+            "rel": "CNPJ"
+          }
+        },
+        "creditor": {
+          "personType": "PESSOA_NATURAL",
+          "cpfCnpj": "58764789000137",
+          "name": "Marco Antonio de Brito"
+        },
+        "payment": {
+          "type": "PIX",
+          "date": "2021-01-01",
+          "currency": "BRL",
+          "amount": "100000.12"
+        },
+        "debtorAccount": {
+          "ispb": "12345678",
+          "issuer": "1774",
+          "number": "1234567890",
+          "accountType": "CACC"
+        }
+      },
+      "links": {
+        "self": "https://api.banco.com.br/open-banking/api/v1/resource"
+      },
+      "meta": {
+        "totalRecords": 1,
+        "totalPages": 1,
+        "requestDateTime": "2021-05-21T08:30:00Z"
+      }
+    }  
+
+    * "Assinatura omitida por questões de brevidade"
+    ```
     
 
-  version: 1.0.0-rc5.2
+    **Em caso de erro**
+
+    * Na validação da assinatura pelo Provedor do Recurso a API deve retornar mensagem de erro `HTTP` com status code `400` e a resposta deve incluir na propriedade code do objeto de resposta de erro especificado na API (*ResponseError*) a indicação da falha com o conteúdo `BAD_SIGNATURE`.  
+    
+    * Erros na validação da mensagem recebida pela aplicação cliente (p. ex. iniciador de pagamento) devem ser registrados e o `Provedor do Recurso` (p. ex. instituição detentora de conta) deve ser notificado.
+
+  version: 1.0.0-rc5.3
 tags:
   - name: API - Pagamentos
     description: |
       |Versão|
       |:-----|
-      |1.0.0-rc5.2|
+      |1.0.0-rc5.3|
 
       #### Visão Geral
       
-      A API tem como objetivo coletar o consentimento e ralizar a iniciação de pagamento entre bancos e instituições financeiras e acessível também à estabelecimentos comerciais participantes do Open Banking Brasil.
+      A API tem como objetivo coletar o consentimento e realizar a iniciação de pagamento entre bancos e instituições financeiras e acessível também à estabelecimentos comerciais participantes do Open Banking Brasil.
       
       Os recursos estão disponíveis para pagadores que possuem vínculo com uma instituição detentora de conta participante do Open Banking, independentemente de serem pessoa física ou jurídica.
       

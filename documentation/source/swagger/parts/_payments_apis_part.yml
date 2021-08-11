@@ -34,7 +34,7 @@ info:
     Para evitar vazamento de informação, a detentora deve validar que o pagamento consultado pertence ao ClientId que o criou e, caso haja divergências, retorne um erro HTTP 400.    
   
   
-  version: 1.0.0-rc5.2
+  version: 1.0.0-rc5.3
   license:
     name: Apache 2.0
     url: 'https://www.apache.org/licenses/LICENSE-2.0'
@@ -66,7 +66,7 @@ paths:
         - $ref: '#/components/parameters/XIdempotencyKey'
       requestBody:
         content:
-          application/json:
+          application/jwt:
             schema:
               $ref: "#/components/schemas/CreatePaymentConsent"
         description: Payload para criação do consentimento para iniciação do pagamento.
@@ -103,7 +103,7 @@ paths:
       security:
         - OpenId:
             - openid
-          OAuth2Security:
+          OAuth2ClientCredentials:
             - payments
   /consents/{consentId}:
     get:
@@ -145,9 +145,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ResponseError'
       security:
-        - OpenId:
-            - openid
-          OAuth2Security:
+        - OAuth2ClientCredentials:
             - payments
   /pix/payments:
     post:
@@ -165,7 +163,7 @@ paths:
         - $ref: '#/components/parameters/XIdempotencyKey'
       requestBody:
         content:
-          application/json:
+          application/jwt:
             schema:
               $ref: "#/components/schemas/CreatePixPayment"
         description: Payload para criação da iniciação do pagamento Pix.
@@ -200,11 +198,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/ResponseError'
       security:
-        - OpenId:
-            - openid
-          OAuth2Security:
-            - 'consent:consentId'
-            - payments
+        - OAuth2AuthorizationCode:
+          - 'consent:consentId'
+          - payments
   /pix/payments/{paymentId}:
     get:
       tags:
@@ -245,11 +241,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/ResponseError'
       security:
-        - OpenId:
-            - openid
-          OAuth2Security:
+        - OAuth2AuthorizationCode:
             - payments
-        
+        - OAuth2ClientCredentials:
+            - payments      
 components:
   schemas:
     BusinessEntity:
@@ -317,12 +312,20 @@ components:
     OpenId:
       type: openIdConnect
       openIdConnectUrl: 'https://auth.mockbank.poc.raidiam.io/.well-known/openid-configuration'
-    OAuth2Security:
+    OAuth2ClientCredentials:
+      type: oauth2
+      description: Fluxo OAuth necessário para que a iniciadora possa iniciar pagamentos. Requer o processo de redirecionamento e autenticação do usuário.
+      flows:
+        clientCredentials:
+          tokenUrl: 'https://authserver.example/token'
+          scopes:
+            payments: Escopo necessário para acesso à API Payment Initiation.
+    OAuth2AuthorizationCode:
       type: oauth2
       description: Fluxo OAuth necessário para que a iniciadora possa iniciar pagamentos. Requer o processo de redirecionamento e autenticação do usuário.
       flows:
         authorizationCode:
-          authorizationUrl: 'https://authserver.example/authorization'
+          authorizationUrl: 'https://authserver.example/token'
           tokenUrl: 'https://authserver.example/token'
           scopes:
             payments: Escopo necessário para acesso à API Payment Initiation.
@@ -358,7 +361,7 @@ components:
           schema:
             $ref: '#/components/schemas/XFapiInteractionId'         
       content:
-        application/json:
+        application/jwt:
           schema:
             $ref: '#/components/schemas/ResponsePaymentConsent'
     200PaymentsConsentsConsentIdRead:
@@ -370,7 +373,7 @@ components:
           schema:
             $ref: '#/components/schemas/XFapiInteractionId'
       content:
-        application/json:
+        application/jwt:
           schema:
             $ref: '#/components/schemas/ResponsePaymentConsent'
     201PaymentsInitiationPixPaymentCreated:
@@ -382,7 +385,7 @@ components:
           schema:
             $ref: '#/components/schemas/XFapiInteractionId'         
       content:
-        application/json:
+        application/jwt:
           schema:
             $ref: '#/components/schemas/ResponsePixPayment'
     200PaymentsInitiationPixPaymentIdRead:
@@ -394,7 +397,7 @@ components:
           schema:
             $ref: '#/components/schemas/XFapiInteractionId'
       content:
-        application/json:
+        application/jwt:
           schema:
             $ref: '#/components/schemas/ResponsePixPayment'
       
