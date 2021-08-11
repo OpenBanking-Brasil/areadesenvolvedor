@@ -32,7 +32,7 @@ info:
     O endpoint de consulta de pagamento GET /pix/payments/{​​​paymentId}​​​ deve suportar acesso a partir de access_token emitido por meio de um grant_type do tipo `client credentials`, como opção do uso do token vinculado ao consentimento (hybrid flow).  
 
     Para evitar vazamento de informação, a detentora deve validar que o pagamento consultado pertence ao ClientId que o criou e, caso haja divergências, retorne um erro HTTP 400.    
-  version: 1.0.0-rc5.3
+  version: 1.0.0-rc5.4
   license:
     name: Apache 2.0
     url: 'https://www.apache.org/licenses/LICENSE-2.0'
@@ -450,7 +450,8 @@ components:
         • yyyyMMddHHmm – data, hora e minuto (12 caracteres), seguindo o horário UTC, da submissão da ordem de pagamento, caso a liquidação seja prioritária, ou prevista para o envio da ordem ao sistema de liquidação, caso seja realizado um agendamento. Para ordens prioritárias e não prioritárias, aceita-se o preenchimento, pelo agente que gerou o ´EndToEndId´, com uma tolerância máxima de 12 horas, para o futuro e para o passado, em relação ao horário efetivo de processamento da ordem pelo SPI;  
         • kkkkkkkkkkk – sequencial criado pelo agente que gerou o ´EndToEndId´ (11 caracteres alfanuméricos [a-z/A-Z/0-9]). Deve ser único dentro de cada “yyyyMMddHHmm”.  
         Admite-se que o ´EndToEndId´ seja gerado pelo participante direto, pelo participante indireto ou pelo iniciador de pagamento.  
-        Ele deve ser único, não podendo ser repetido em qualquer outra operação enviada ao SPI.
+        Ele deve ser único, não podendo ser repetido em qualquer outra operação enviada ao SPI.  
+        [Restrição] O ´EndToEndId´ deve ser informado obrigatoriamente caso o status do pagamento seja ACCEPTED_SETTLEMENT_COMPLETED.
     LoggedUser:
       type: object
       description: Usuário (pessoa natural) que encontra-se logado na instituição Iniciadora de Pagamento.
@@ -670,7 +671,6 @@ components:
       description: Objeto contendo dados do pagamento e da conta do recebedor (creditor).
       required:
         - paymentId
-        - endToEndId
         - consentId
         - creationDateTime
         - statusUpdateDateTime
