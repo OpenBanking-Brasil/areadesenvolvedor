@@ -32,7 +32,7 @@ info:
     O endpoint de consulta de pagamento GET /pix/payments/{​​​paymentId}​​​ deve suportar acesso a partir de access_token emitido por meio de um grant_type do tipo `client credentials`, como opção do uso do token vinculado ao consentimento (hybrid flow).  
 
     Para evitar vazamento de informação, a detentora deve validar que o pagamento consultado pertence ao ClientId que o criou e, caso haja divergências, retorne um erro HTTP 400.    
-  version: 1.0.0-rc5.4
+  version: 1.0.0
   license:
     name: Apache 2.0
     url: 'https://www.apache.org/licenses/LICENSE-2.0'
@@ -352,6 +352,7 @@ components:
         - localInstrument
         - payment
         - creditorAccount
+        - cnpjInitiator
       properties:
         localInstrument:
           $ref: '#/components/schemas/EnumLocalInstrument'
@@ -396,6 +397,12 @@ components:
             Para o caso de CNPJ deverá ser informado com 14 números, sem pontos ou traços.  
             No caso de chave aleatória deve ser informado o UUID gerado pelo DICT, conforme formato especificado na RFC41223.  
             [Restrição] Obrigatório quando o campo localInstrument for igual a DICT.
+        cnpjInitiator:
+          type: string
+          pattern: '^\d{14}$'
+          maxLength: 14
+          example: '50685362000135'
+          description: CNPJ do Iniciador de Pagamento devidamente habilitado para a prestação de Serviço de Iniciação no Pix.
       additionalProperties: false
     DebtorAccount:
       type: object
@@ -678,6 +685,7 @@ components:
         - localInstrument
         - payment
         - creditorAccount
+        - cnpjInitiator
       properties:
         paymentId:
           type: string
@@ -855,6 +863,12 @@ components:
             [Restrição] Esse motivo deverá ser enviado quando o campo /data/status for igual a RJCT (REJECTED).  
         localInstrument:
           $ref: '#/components/schemas/EnumLocalInstrument'
+        cnpjInitiator:
+          type: string
+          pattern: '^\d{14}$'
+          maxLength: 14
+          example: '50685362000135'
+          description: CNPJ do Iniciador de Pagamento devidamente habilitado para a prestação de Serviço de Iniciação no Pix.
         payment:
           $ref: '#/components/schemas/PaymentPix'
         remittanceInformation:
@@ -1206,7 +1220,7 @@ components:
     UnprocessableEntityConsents:
       description: 'A solicitação foi bem formada, mas não pôde ser processada devido à lógica de negócios específica da solicitação.'
       content:
-        application/json; charset=utf-8:
+        application/jwt:
           schema:
             type: object
             required:
@@ -1281,7 +1295,7 @@ components:
     UnprocessableEntityPixPayments:
       description: 'A solicitação foi bem formada, mas não pôde ser processada devido à lógica de negócios específica da solicitação.'
       content:
-        application/json; charset=utf-8:
+        application/jwt:
           schema:
             type: object
             required:
