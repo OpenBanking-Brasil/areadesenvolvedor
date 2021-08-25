@@ -1,0 +1,383 @@
+## AvailabilityMetrics
+<a id="schemaAvailabilityMetrics"></a>
+
+```json
+{
+  "uptime" : {
+      "generalUptimeRate" : "",
+      "endpoints" : [
+          {
+              "url" : "",
+              "uptimeRate" : ""
+          }
+      ]
+  },
+  "downtime" : {
+      "generalDowntime" : 0,
+      "scheduledOutage" : 0,
+      "endpoints" : [
+          {
+              "url" : "",
+              "partialDowntime" : 0
+          }
+      ]
+  }
+}
+```
+
+|Nome|Tipo|Obrigatório|Definição|
+|---|---|---|---|
+|uptime|object|Sim|Tempos de uptime por endpoint|
+|» generalUptimeRate|[RateString](#introducao-tipos-de-dados-comuns)|Sim|Taxa de disponibilidade (considerando todos os serviços ativos ao mesmo tempo).|
+|» endpoints|[EndpointUptime](#schemaEndpointUptime)|Sim|Tempos de uptime por endpoint.|
+|downtime|object|Sim|Tempos de downtime por endpoint.|
+|» generalDowntime|number|Sim|Quantidade de segundos de downtime (considerando qualquer api em downtime).|
+|» scheduledOutage|number|Sim|Quantidade de segundos de indisponibilidade agendada.|
+|» endpoints|[EndpointDowntime](#schemaEndpointDowntime)|Sim|Tempos de downtime por endpoint.|
+
+## AverageMetrics
+<a id="schemaAverageMetrics"></a>
+
+```json
+{
+  "unauthenticated": {
+    "currentDay": 0,
+    "previousDays": [
+      0
+    ]
+  },
+  "highPriority": {
+    "currentDay": 0,
+    "previousDays": [
+      0
+    ]
+  },
+  "mediumPriority": {
+    "currentDay": 0,
+    "previousDays": [
+      0
+    ]
+  },
+  "unattended": {
+    "currentDay": 0,
+    "previousDays": [
+      0
+    ]
+  },
+}
+
+```
+
+|Nome|Tipo|Obrigatório|Definição|
+|---|---|---|---|
+|unauthenticated|object|Sim|Tempo médio de resposta em milissegundos para chamadas não autenticadas.|
+|» currentDay|integer|Sim|Tempo médio de resposta em milissegundos para chamadas no dia atual.|
+|» previousDays|[integer]|Sim|Tempo médio de resposta em milissegundos para chamadas nos dias anteriores. O primeiro item do array é referente a ontem, e assim por diante. Devem ser retornados no máximo sete dias caso estejam disponíveis.|
+|highPriority|object|Sim|Tempo médio de resposta em milissegundos para chamadas para o nível de alta prioridade.|
+|» currentDay|integer|Sim|Tempo médio de resposta em milissegundos para chamadas no dia atual.|
+|» previousDays|[integer]|Sim|Tempo médio de resposta em milissegundos para chamadas nos dias anteriores. O primeiro item do array é referente a ontem, e assim por diante. Devem ser retornados no máximo sete dias caso estejam disponíveis.|
+|mediumPriority|object|Sim|Tempo médio de resposta em milissegundos para chamadas para o nível de média prioridade.|
+|» currentDay|integer|Sim|Tempo médio de resposta em milissegundos para chamadas no dia atual.|
+|» previousDays|[integer]|Sim|Tempo médio de resposta em milissegundos para chamadas nos dias anteriores. O primeiro item do array é referente a ontem, e assim por diante. Devem ser retornados no máximo sete dias caso estejam disponíveis.|
+|unattended|object|Sim|Tempo médio de resposta em milissegundos para chamadas para o nível não acompanhado.|
+|» currentDay|integer|Sim|Tempo médio de resposta em milissegundos para chamadas no dia atual.|
+|» previousDays|[integer]|Sim|Tempo médio de resposta em milissegundos para chamadas nos dias anteriores. O primeiro item do array é referente a ontem, e assim por diante. Devem ser retornados no máximo sete dias caso estejam disponíveis.|
+
+## AverageTPSMetrics
+<a id="schemaAverageTPSMetrics"></a>
+
+```json
+{
+  "currentDay": 0,
+  "previousDays": [
+    0
+  ]
+}
+```
+
+|Nome|Tipo|Obrigatório|Definição|
+|---|---|---|---|
+|currentDay|number|Sim|Número médio de chamadas por segundo no dia.|
+|previousDays|[number]|Sim|Número médio de chamadas por segundo nos dias anteriores. O primeiro item do array é referente a ontem, e assim por diante. Devem ser retornados no máximo sete dias caso estejam disponíveis.|
+
+## DiscoveryOutage
+<a id="schemaDiscoveryOutage"></a>
+
+```json
+{
+  "outageTime": "string",
+  "duration": "string",
+  "isPartial": boolean,
+  "explanation": "string",
+  "unavailableEndpoints": [
+    "string"
+  ]
+}
+```
+
+|     Nome            |  Tipo                                               |Obrigatório |Definição                                                                                                                       |
+|:------------------- |:----------------------------------------------------|:-----------|:-------------------------------------------------------------------------------------------------------------------------------|
+|outageTime           |[DateTimeString](#introducao-tipos-de-dados-comuns)  |Sim         |Data e hora planejada do início da indisponibilidade.                                                                           |
+|duration             |[DurationString](#introducao-tipos-de-dados-comuns)  |Sim         |Duração prevista da indisponibilidade.                                                                                          |
+|isPartial            |boolean                                              |Não         |Flag que indica se a indisponibilidade é parcial (atingindo apenas alguns endpoints) ou total (atingindo todos os endpoints).   | 
+|explanation          |String                                               |Sim         |Explicação sobre os motivos da indisponibilidade.                                                                               |
+|unavailableEndpoints |array                                                |Não         |Endpoints com indisponibilidade                                                                                                 |
+
+## DiscoveryStatus
+<a id="schemaDiscoveryStatus"></a>
+
+```json
+{
+  "code": "string",
+  "explanation": "string",
+  "detectionTime": "string",
+  "expectedResolutionTime": "string",
+  "updateTime": "string",
+  "unavailableEndpoints": [
+    "string"
+  ]
+}
+```
+
+|          Nome        |  Tipo                                      |Obrigatório|Restrição                                                                                |Definição                                                                              |
+|:---------------------|:-------------------------------------------|:----------|:----------------------------------------------------------------------------------------|:--------------------------------------------------------------------------------------|
+|code                  |[StatusCode](#schemaStatusCode)             |Sim        |                                                                                         |Condição atual da API.                                                                 |
+|explanation           |string                                      |Sim        |Será obrigatoriamente preenchido se code tiver algum valor que não seja OK               |Fornece uma explicação da interrupção atual que pode ser exibida para um cliente final.|
+|detectionTime         |[DateTimeString](#commonFieldDateTimeString)|Não        |Será obrigatoriamente preenchido se a propriedade code for PARTIAL_FAILURE ou UNAVAILABLE|A data e hora em que a interrupção atual foi detectada.                                |
+|expectedResolutionTime|[DateTimeString](#commonFieldDateTimeString)|Não        |Será obrigatoriamente preenchido se code tiver algum valor que não seja OK               |A data e hora em que o serviço completo deve continuar (se conhecido).                 |
+|updateTime            |[DateTimeString](#commonFieldDateTimeString)|Não        |                                                                                         |A data e hora em que esse status foi atualizado pela última vez pelo titular dos dados.|
+|unavailableEndpoints  |array                                       |Não        |                                                                                         |Endpoints com indisponibilidade                                                        |
+
+
+
+|Nome |Tipo                              |                            Definição                        |Mandatoriedade| Restrição                                              |
+|:----|:---------------------------------|:------------------------------------------------------------|:-------------|:-------------------------------------------------------|
+|self |[URIString](#commonFieldURIString)|URI completo que gerou a resposta atual.                     |Mandatório    |                                                        |
+|first|[URIString](#commonFieldURIString)|URI da primeira página que originou essa lista de resultados.|Opcional      |Obrigatório quando não for a primeira página da resposta|
+|prev |[URIString](#commonFieldURIString)|URI da página anterior dessa lista de resultados.            |Opcional      |Obrigatório quando não for a primeira página da resposta|
+|next |[URIString](#commonFieldURIString)|URI da próxima página dessa lista de resultados.             |Opcional      |Obrigatório quando não for a última página da resposta  |
+|last |[URIString](#commonFieldURIString)|URI da última página dessa lista de resultados.              |Opcional      |Obrigatório quando não for a última página da resposta  |
+
+<h2 id="schemaLinksPaginatedAllPhases">LinksPaginated</h2>
+
+|Nome |Tipo                              |                            Definição                        |Mandatoriedade| Restrição                                              |
+|:----|:---------------------------------|:------------------------------------------------------------|:-------------|:-------------------------------------------------------|
+|self |[URIString](#commonFieldURIString)|URI completo que gerou a resposta atual.                     |Mandatório    |                                                        |
+|first|[URIString](#commonFieldURIString)|URI da primeira página que originou essa lista de resultados.|Opcional      |Obrigatório quando não for a primeira página da resposta|
+|prev |[URIString](#commonFieldURIString)|URI da página anterior dessa lista de resultados.            |Opcional      |Obrigatório quando não for a primeira página da resposta|
+|next |[URIString](#commonFieldURIString)|URI da próxima página dessa lista de resultados.             |Opcional      |Obrigatório quando não for a última página da resposta  |
+|last |[URIString](#commonFieldURIString)|URI da última página dessa lista de resultados.              |Opcional      |Obrigatório quando não for a última página da resposta  |
+
+
+<h2 id="schemaMetaPaginatedAllPhases">MetaPaginated</h2>
+
+|     Nome   |  Tipo | Definição                            |Mandatoriedade|Restrição|
+|:-----------|:------|:-------------------------------------|:-------------|:--------|
+|totalRecords|integer|Número total de registros no resultado|Mandatório    |         |
+|totalPages  |integer|Número total de páginas no resultado  |Mandatório    |         |
+
+
+## ResponseDiscoveryStatusList
+<a id="schemaResponseDiscoveryStatusList"></a>
+
+```json
+{
+  "data": {
+    "status": [
+      {
+        "code": "string",
+        "explanation": "string",
+        "detectionTime": "string",
+        "expectedResolutionTime": "string",
+        "updateTime": "string",
+        "unavailableEndpoints": [
+          "string"
+        ]
+      },
+      {
+        "code": "string",
+        "explanation": "string",
+        "detectionTime": "string",
+        "expectedResolutionTime": "string",
+        "updateTime": "string",
+        "unavailableEndpoints": [
+          "string"
+        ]
+      }
+    ],
+    "links": {
+      "self": "string"
+    },
+    "meta": {
+      "totalRecords": 1,
+      "totalPages": 1
+    }
+  }
+}
+```
+
+|  Nome    |  Tipo                                     | Obrigatório  |Definição                           |
+|:---------|:------------------------------------------|:-------------|:---------------------------------- |
+| data     | object                                    | Sim          |                                    |
+| » status | [DiscoveryStatus](#schemaDiscoveryStatus) | Sim          | Lista de códigos de status da API. |
+| links    | [LinksPaginated](#schemaLinksPaginatedAllPhases)   | Sim          |                                    |
+| meta     | [MetaPaginated](#schemaMetaPaginatedAllPhases)     | Sim          |                                    |
+
+## ResponseMetricsList
+<a id="schemaResponseMetricsList"></a>
+
+```json
+{
+  "data": {
+    "requestTime": "string",
+    "availability": {
+        "uptime" : {
+            "generalUptimeRate" : "",
+            "endpoints" : [
+                {
+                    "url" : "",
+                    "uptimeRate" : ""
+                }
+            ]
+        },
+        "downtime" : {
+            "generalDowntime" : 0,
+            "scheduledOutage" : 0,
+            "endpoints" : [
+                {
+                    "url" : "",
+                    "partialDowntime" : 0
+                }
+            ]
+        }
+    },
+    "invocations": {
+      "unauthenticated": {
+        "currentDay": 0,
+        "previousDays": [
+          0
+        ]
+      },
+      "highPriority": {
+        "currentDay": 0,
+        "previousDays": [
+          0
+        ]
+      },
+      "mediumPriority": {
+        "currentDay": 0,
+        "previousDays": [
+          0
+        ]
+      },
+      "unattended": {
+        "currentDay": 0,
+        "previousDays": [
+          0
+        ]
+      },
+    },
+    "averageResponse": {
+      "unauthenticated": {
+        "currentDay": 0,
+        "previousDays": [
+          0
+        ]
+      },
+      "highPriority": {
+        "currentDay": 0,
+        "previousDays": [
+          0
+        ]
+      },
+      "mediumPriority": {
+        "currentDay": 0,
+        "previousDays": [
+          0
+        ]
+      },
+      "unattended": {
+        "currentDay": 0,
+        "previousDays": [
+          0
+        ]
+      },
+    },
+    "averageTps": {
+      "currentDay": 0,
+      "previousDays": [
+        0
+      ]
+    },
+    "peakTps": {
+      "currentDay": 0,
+      "previousDays": [
+        0
+      ]
+    },
+    "errors": {
+      "currentDay": 0,
+      "previousDays": [
+        0
+      ]
+    },
+    "rejections": {
+      "currentDay": 0,
+      "previousDays": [
+        0
+      ]
+    }
+  },
+  "links": {
+    "self": "string"
+  },
+  "meta": {}
+}
+```
+
+|Nome|Tipo|Obrigatório|Definição|
+|---|---|---|---|
+|data|object|Sim||
+|» requestTime|[DateTimeString](#common-field-types)|Sim|Data e hora que as métricas foram requisitadas.|
+|» availability|[AvailabilityMetrics](#schemaAvailabilityMetrics)|Sim|Índices de disponibilidades das APIs.|
+|» invocations|[InvocationMetrics](#schemaInvocationMetrics)|Sim|Número de chamadas em cada nível e prioridade.|
+|» averageResponse|[AverageMetrics](#schemaAverageMetrics)|Sim|Tempo médio de reposta em milissegundos em cada nível e prioridade.|
+|» averageTps|[AverageTPSMetrics](#schemaAverageTPSMetrics)|Sim|Transações em média por segundo.|
+|» peakTps|[PeakTPSMetrics](#schemaPeakTPSMetrics)|Sim|Número máximo de transações por segundo.|
+|» errors|[ErrorMetrics](#schemaErrorMetrics)|Sim|Número de chamadas que resultaram em erro devido ao servidor.|
+|» rejections|[RejectionMetrics](#schemaRejectionMetrics)|Sim|Número de chamadas rejeitadas devido aos limites.|
+|links|[Links](#schemalinks)|Sim||
+|meta|[Meta](#schemameta)|Não||
+
+## ResponseDiscoveryOutagesList
+<a id="schemaResponseDiscoveryOutagesList"></a>
+
+```json
+{
+  "data": {
+    "outages": [
+      {
+        "outageTime": "string",
+        "duration": "string",
+        "isPartial": boolean,
+        "explanation": "string",
+        "unavailableEndpoints": [
+          "string"
+         ]
+      }
+    ]
+  },
+  "links": {
+    "self": "string"
+  },
+  "meta": {}
+}
+```
+
+|     Nome          |  Tipo                                       | Obrigatório  |Definição                               |
+|:------------------|:--------------------------------------------|:-------------|:-------------------------------------- |
+| data              | object                                      | Sim          |                                        |
+| outages           | [DiscoveryOutage](#schemaDiscoveryOutage)   | Sim          | Lista de indisponibilidades planejadas. |
+| links             | [LinksPaginated](#schemaLinksPaginatedAllPhases)     | Sim          |                                        |
+| meta              | [MetaPaginated](#schemaMetaPaginatedAllPhases)       | Sim          |                                        |
+
