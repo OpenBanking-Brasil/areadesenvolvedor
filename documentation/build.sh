@@ -21,10 +21,10 @@ swagger-cli bundle source/swagger/parts/_open_banking_fase2_apis_part.yml --outf
 # Open Banking Fase 3
 #v1
 swagger-cli bundle source/swagger/parts/_payments_apis_part.yml --outfile source/swagger/swagger_payments_apis.yaml --type=yaml
-swagger-cli bundle source/swagger/parts/_payments_apis_part.yml --outfile source/swagger/swagger_payments_apis.yaml --type=yaml
+swagger-cli bundle source/swagger/parts/_payments_apis_part_v2.yml --outfile source/swagger/swagger_payments_apis_v2.yaml --type=yaml
 #v2
 swagger-cli bundle source/swagger/parts/_open_banking_fase3_apis_part.yml --outfile source/swagger/swagger_open_banking_fase3_apis.yml --type=yaml
-swagger-cli bundle source/swagger/parts/_open_banking_fase3_apis_part.yml --outfile source/swagger/swagger_open_banking_fase3_apis_v2.yml --type=yaml
+swagger-cli bundle source/swagger/parts/_open_banking_fase3_apis_part_v2.yml --outfile source/swagger/swagger_open_banking_fase3_apis_v2.yml --type=yaml
 
 # Generate dictionary
 sh ./build-dictionary.sh
