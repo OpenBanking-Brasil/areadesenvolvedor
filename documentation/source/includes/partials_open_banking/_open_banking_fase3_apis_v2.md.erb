@@ -1,7 +1,11 @@
 
-<h1 id="fase-3-apis-do-open-banking-brasil-v2">Fase 3 - APIs do Open Banking Brasil v2 v2.0.0-rc1.0</h1>
+<h1 id="fase-3-apis-do-open-banking-brasil-v2">Fase 3 - APIs do Open Banking Brasil v2.0.0</h1>
 
 > Scroll down for code samples, example requests and responses. Select a language for code samples from the tabs above or the mobile navigation menu.
+
+###Iniciação pelo Recebedor  
+
+Iniciação pelo recebedor ocorre quando a prestação de serviço pela iniciadora é para, e somente para,  o recebedor. Nestes casos somente será permitido como beneficiário do pagamento o próprio recebedor.Algumas Instituições detentoras de conta precisarão ajustar seus sistemas de forma a apropriar o campo em sua estrutura ao invés de gerá-lo nos casos pertinentes.
 
 <h1 id="fase-3-apis-do-open-banking-brasil-v2-api-pagamentos">API - Pagamentos</h1>
 
@@ -17,7 +21,7 @@ Os recursos estão disponíveis para pagadores que possuem vínculo com uma inst
 
 #### Especificação em OAS 3.0
 
-<a href="swagger/swagger_payments_apis.yaml" target="_blank">Download da Especificação (OAS 3.0)</a>  
+<a href="swagger/swagger_payments_apis_v2.yaml" target="_blank">Download da Especificação (OAS 3.0)</a>  
 
 ## [Em Revisão] Criar consentimento para iniciação de pagamento.
 
@@ -69,7 +73,7 @@ xhr.addEventListener("readystatechange", function () {
   }
 });
 
-xhr.open("POST", "https://example.com/payments/v1/consents");
+xhr.open("POST", "https://example.com/payments/v2/consents");
 xhr.setRequestHeader("Content-Type", "application/json");
 xhr.setRequestHeader("Accept", "application/json");
 xhr.setRequestHeader("Authorization", "string");
@@ -100,7 +104,7 @@ headers = {
     'x-idempotency-key': "string"
     }
 
-conn.request("POST", "/payments/v1/consents", payload, headers)
+conn.request("POST", "/payments/v2/consents", payload, headers)
 
 res = conn.getresponse()
 data = res.read()
@@ -109,7 +113,7 @@ print(data.decode("utf-8"))
 ```
 
 ```java
-HttpResponse<String> response = Unirest.post("https://example.com/payments/v1/consents")
+HttpResponse<String> response = Unirest.post("https://example.com/payments/v2/consents")
   .header("Content-Type", "application/json")
   .header("Accept", "application/json")
   .header("Authorization", "string")
@@ -122,7 +126,7 @@ HttpResponse<String> response = Unirest.post("https://example.com/payments/v1/co
   .asString();
 ```
 
-`POST /payments/v1/consents`
+`POST /payments/v2/consents`
 
 Método para a criação do consentimento para iniciação de pagamento.
 
@@ -239,23 +243,6 @@ Consulte a seção **Convenções de payload** para obter mais informações sob
 
 > A solicitação foi bem formada, mas não pôde ser processada devido à lógica de negócios específica da solicitação.
 
-```json
-{
-  "errors": [
-    {
-      "code": "FORMA_PGTO_INVALIDA",
-      "title": "Forma de pagamento inválida.",
-      "detail": "Meio de pagamento inválido."
-    }
-  ],
-  "meta": {
-    "totalRecords": 1,
-    "totalPages": 1,
-    "requestDateTime": "2021-05-21T08:30:00Z"
-  }
-}
-```
-
 <h3 id="[em-revisão]-criar-consentimento-para-iniciação-de-pagamento.-responses">Resposta</h3>
 
 |Status|Significado|Descrição|Schema|
@@ -313,7 +300,7 @@ xhr.addEventListener("readystatechange", function () {
   }
 });
 
-xhr.open("GET", "https://example.com/payments/v1/consents/string");
+xhr.open("GET", "https://example.com/payments/v2/consents/string");
 xhr.setRequestHeader("Accept", "application/json");
 xhr.setRequestHeader("Authorization", "string");
 xhr.setRequestHeader("x-fapi-auth-date", "stringstringstringstringstrin");
@@ -338,7 +325,7 @@ headers = {
     'x-customer-user-agent': "string"
     }
 
-conn.request("GET", "/payments/v1/consents/string", headers=headers)
+conn.request("GET", "/payments/v2/consents/string", headers=headers)
 
 res = conn.getresponse()
 data = res.read()
@@ -347,7 +334,7 @@ print(data.decode("utf-8"))
 ```
 
 ```java
-HttpResponse<String> response = Unirest.get("https://example.com/payments/v1/consents/string")
+HttpResponse<String> response = Unirest.get("https://example.com/payments/v2/consents/string")
   .header("Accept", "application/json")
   .header("Authorization", "string")
   .header("x-fapi-auth-date", "stringstringstringstringstrin")
@@ -357,7 +344,7 @@ HttpResponse<String> response = Unirest.get("https://example.com/payments/v1/con
   .asString();
 ```
 
-`GET /payments/v1/consents/{consentId}`
+`GET /payments/v2/consents/{consentId}`
 
 Método para consultar o consentimento para iniciação de pagamento.
 
@@ -504,7 +491,9 @@ const data = JSON.stringify({
     },
     "remittanceInformation": "Pagamento da nota XPTO035-002.",
     "qrCode": "00020104141234567890123426660014BR.GOV.BCB.PIX014466756C616E6F32303139406578616D706C652E636F6D27300012  \nBR.COM.OUTRO011001234567895204000053039865406123.455802BR5915NOMEDORECEBEDOR6008BRASILIA61087007490062  \n530515RP12345678-201950300017BR.GOV.BCB.BRCODE01051.0.080450014BR.GOV.BCB.PIX0123PADRAO.URL.PIX/0123AB  \nCD81390012BR.COM.OUTRO01190123.ABCD.3456.WXYZ6304EB76\n",
-    "proxy": "12345678901"
+    "proxy": "12345678901",
+    "cnpjInitiator": "50685362000135",
+    "transactionIdentification": "50685362000135"
   }
 });
 
@@ -517,7 +506,7 @@ xhr.addEventListener("readystatechange", function () {
   }
 });
 
-xhr.open("POST", "https://example.com/payments/v1/pix/payments");
+xhr.open("POST", "https://example.com/payments/v2/pix/payments");
 xhr.setRequestHeader("Content-Type", "application/json");
 xhr.setRequestHeader("Accept", "application/json");
 xhr.setRequestHeader("Authorization", "string");
@@ -535,7 +524,7 @@ import http.client
 
 conn = http.client.HTTPSConnection("example.com")
 
-payload = "{\"data\":{\"localInstrument\":\"DICT\",\"payment\":{\"amount\":\"100000.12\",\"currency\":\"BRL\"},\"creditorAccount\":{\"ispb\":\"12345678\",\"issuer\":\"1774\",\"number\":\"1234567890\",\"accountType\":\"CACC\"},\"remittanceInformation\":\"Pagamento da nota XPTO035-002.\",\"qrCode\":\"00020104141234567890123426660014BR.GOV.BCB.PIX014466756C616E6F32303139406578616D706C652E636F6D27300012  \\nBR.COM.OUTRO011001234567895204000053039865406123.455802BR5915NOMEDORECEBEDOR6008BRASILIA61087007490062  \\n530515RP12345678-201950300017BR.GOV.BCB.BRCODE01051.0.080450014BR.GOV.BCB.PIX0123PADRAO.URL.PIX/0123AB  \\nCD81390012BR.COM.OUTRO01190123.ABCD.3456.WXYZ6304EB76\\n\",\"proxy\":\"12345678901\"}}"
+payload = "{\"data\":{\"localInstrument\":\"DICT\",\"payment\":{\"amount\":\"100000.12\",\"currency\":\"BRL\"},\"creditorAccount\":{\"ispb\":\"12345678\",\"issuer\":\"1774\",\"number\":\"1234567890\",\"accountType\":\"CACC\"},\"remittanceInformation\":\"Pagamento da nota XPTO035-002.\",\"qrCode\":\"00020104141234567890123426660014BR.GOV.BCB.PIX014466756C616E6F32303139406578616D706C652E636F6D27300012  \\nBR.COM.OUTRO011001234567895204000053039865406123.455802BR5915NOMEDORECEBEDOR6008BRASILIA61087007490062  \\n530515RP12345678-201950300017BR.GOV.BCB.BRCODE01051.0.080450014BR.GOV.BCB.PIX0123PADRAO.URL.PIX/0123AB  \\nCD81390012BR.COM.OUTRO01190123.ABCD.3456.WXYZ6304EB76\\n\",\"proxy\":\"12345678901\",\"cnpjInitiator\":\"50685362000135\",\"transactionIdentification\":\"50685362000135\"}}"
 
 headers = {
     'Content-Type': "application/json",
@@ -548,7 +537,7 @@ headers = {
     'x-idempotency-key': "string"
     }
 
-conn.request("POST", "/payments/v1/pix/payments", payload, headers)
+conn.request("POST", "/payments/v2/pix/payments", payload, headers)
 
 res = conn.getresponse()
 data = res.read()
@@ -557,7 +546,7 @@ print(data.decode("utf-8"))
 ```
 
 ```java
-HttpResponse<String> response = Unirest.post("https://example.com/payments/v1/pix/payments")
+HttpResponse<String> response = Unirest.post("https://example.com/payments/v2/pix/payments")
   .header("Content-Type", "application/json")
   .header("Accept", "application/json")
   .header("Authorization", "string")
@@ -566,11 +555,11 @@ HttpResponse<String> response = Unirest.post("https://example.com/payments/v1/pi
   .header("x-fapi-interaction-id", "string")
   .header("x-customer-user-agent", "string")
   .header("x-idempotency-key", "string")
-  .body("{\"data\":{\"localInstrument\":\"DICT\",\"payment\":{\"amount\":\"100000.12\",\"currency\":\"BRL\"},\"creditorAccount\":{\"ispb\":\"12345678\",\"issuer\":\"1774\",\"number\":\"1234567890\",\"accountType\":\"CACC\"},\"remittanceInformation\":\"Pagamento da nota XPTO035-002.\",\"qrCode\":\"00020104141234567890123426660014BR.GOV.BCB.PIX014466756C616E6F32303139406578616D706C652E636F6D27300012  \\nBR.COM.OUTRO011001234567895204000053039865406123.455802BR5915NOMEDORECEBEDOR6008BRASILIA61087007490062  \\n530515RP12345678-201950300017BR.GOV.BCB.BRCODE01051.0.080450014BR.GOV.BCB.PIX0123PADRAO.URL.PIX/0123AB  \\nCD81390012BR.COM.OUTRO01190123.ABCD.3456.WXYZ6304EB76\\n\",\"proxy\":\"12345678901\"}}")
+  .body("{\"data\":{\"localInstrument\":\"DICT\",\"payment\":{\"amount\":\"100000.12\",\"currency\":\"BRL\"},\"creditorAccount\":{\"ispb\":\"12345678\",\"issuer\":\"1774\",\"number\":\"1234567890\",\"accountType\":\"CACC\"},\"remittanceInformation\":\"Pagamento da nota XPTO035-002.\",\"qrCode\":\"00020104141234567890123426660014BR.GOV.BCB.PIX014466756C616E6F32303139406578616D706C652E636F6D27300012  \\nBR.COM.OUTRO011001234567895204000053039865406123.455802BR5915NOMEDORECEBEDOR6008BRASILIA61087007490062  \\n530515RP12345678-201950300017BR.GOV.BCB.BRCODE01051.0.080450014BR.GOV.BCB.PIX0123PADRAO.URL.PIX/0123AB  \\nCD81390012BR.COM.OUTRO01190123.ABCD.3456.WXYZ6304EB76\\n\",\"proxy\":\"12345678901\",\"cnpjInitiator\":\"50685362000135\",\"transactionIdentification\":\"50685362000135\"}}")
   .asString();
 ```
 
-`POST /payments/v1/pix/payments`
+`POST /payments/v2/pix/payments`
 
 Método para a criação de uma iniciação de pagamento.
 
@@ -600,7 +589,9 @@ Consulte a seção **Convenções de payload** para obter mais informações sob
     },
     "remittanceInformation": "Pagamento da nota XPTO035-002.",
     "qrCode": "00020104141234567890123426660014BR.GOV.BCB.PIX014466756C616E6F32303139406578616D706C652E636F6D27300012  \nBR.COM.OUTRO011001234567895204000053039865406123.455802BR5915NOMEDORECEBEDOR6008BRASILIA61087007490062  \n530515RP12345678-201950300017BR.GOV.BCB.BRCODE01051.0.080450014BR.GOV.BCB.PIX0123PADRAO.URL.PIX/0123AB  \nCD81390012BR.COM.OUTRO01190123.ABCD.3456.WXYZ6304EB76\n",
-    "proxy": "12345678901"
+    "proxy": "12345678901",
+    "cnpjInitiator": "50685362000135",
+    "transactionIdentification": "50685362000135"
   }
 }
 ```
@@ -633,10 +624,12 @@ Consulte a seção **Convenções de payload** para obter mais informações sob
     "status": "PDNG",
     "rejectionReason": "USER_NOT_YET_ACTIVATED",
     "localInstrument": "DICT",
+    "cnpjInitiator": "50685362000135",
     "payment": {
       "amount": "100000.12",
       "currency": "BRL"
     },
+    "transactionIdentification": "50685362000135",
     "remittanceInformation": "Pagamento da nota RSTO035-002.",
     "creditorAccount": {
       "ispb": "12345678",
@@ -657,23 +650,6 @@ Consulte a seção **Convenções de payload** para obter mais informações sob
 ```
 
 > A solicitação foi bem formada, mas não pôde ser processada devido à lógica de negócios específica da solicitação.
-
-```json
-{
-  "errors": [
-    {
-      "code": "SALDO_INSUFICIENTE",
-      "title": "Saldo insuficiente.",
-      "detail": "A conta selecionada não possui saldo suficiente para realizar o pagamento."
-    }
-  ],
-  "meta": {
-    "totalRecords": 1,
-    "totalPages": 1,
-    "requestDateTime": "2021-05-21T08:30:00Z"
-  }
-}
-```
 
 <h3 id="[em-revisão]-pix---criar-iniciação-de-pagamento.-responses">Resposta</h3>
 
@@ -732,7 +708,7 @@ xhr.addEventListener("readystatechange", function () {
   }
 });
 
-xhr.open("GET", "https://example.com/payments/v1/pix/payments/string");
+xhr.open("GET", "https://example.com/payments/v2/pix/payments/string");
 xhr.setRequestHeader("Accept", "application/json");
 xhr.setRequestHeader("Authorization", "string");
 xhr.setRequestHeader("x-fapi-auth-date", "stringstringstringstringstrin");
@@ -757,7 +733,7 @@ headers = {
     'x-customer-user-agent': "string"
     }
 
-conn.request("GET", "/payments/v1/pix/payments/string", headers=headers)
+conn.request("GET", "/payments/v2/pix/payments/string", headers=headers)
 
 res = conn.getresponse()
 data = res.read()
@@ -766,7 +742,7 @@ print(data.decode("utf-8"))
 ```
 
 ```java
-HttpResponse<String> response = Unirest.get("https://example.com/payments/v1/pix/payments/string")
+HttpResponse<String> response = Unirest.get("https://example.com/payments/v2/pix/payments/string")
   .header("Accept", "application/json")
   .header("Authorization", "string")
   .header("x-fapi-auth-date", "stringstringstringstringstrin")
@@ -776,7 +752,7 @@ HttpResponse<String> response = Unirest.get("https://example.com/payments/v1/pix
   .asString();
 ```
 
-`GET /payments/v1/pix/payments/{paymentId}`
+`GET /payments/v2/pix/payments/{paymentId}`
 
 Método para consultar uma iniciação de pagamento.
 
@@ -815,10 +791,12 @@ Consulte a seção **Convenções de payload** para obter mais informações sob
     "status": "PDNG",
     "rejectionReason": "USER_NOT_YET_ACTIVATED",
     "localInstrument": "DICT",
+    "cnpjInitiator": "50685362000135",
     "payment": {
       "amount": "100000.12",
       "currency": "BRL"
     },
+    "transactionIdentification": "50685362000135",
     "remittanceInformation": "Pagamento da nota RSTO035-002.",
     "creditorAccount": {
       "ispb": "12345678",
@@ -875,7 +853,7 @@ Para realizar esta operação, você deve estar autenticado e autorizado com os 
 openid,consent:consentId,payments
 </aside>
 
-<h1 id="fase-3-apis-do-open-banking-brasil-v2-schemas">Schemas</h1>
+<h1 id="fase-3-apis-do-open-banking-brasil-schemas">Schemas</h1>
 
 <h2 id="tocS_422ResponseErrorCreateConsent">422ResponseErrorCreateConsent</h2>
 
@@ -1055,7 +1033,10 @@ Usuário (pessoa jurídica) que encontra-se logado na instituição Iniciadora d
 |data|object|true|Objeto contendo as informações de consentimento para a iniciação de pagamento individual.|
 |» loggedUser|[LoggedUser](#schemaloggeduser)|true|Usuário (pessoa natural) que encontra-se logado na instituição Iniciadora de Pagamento.|
 |» businessEntity|[BusinessEntity](#schemabusinessentity)|false|Usuário (pessoa jurídica) que encontra-se logado na instituição Iniciadora de Pagamento. [Restrição] Preenchimento obrigatório se usuário logado na instituição Iniciadora de Pagamento for um CNPJ (pessoa jurídica).|
-|» creditor|[Identification](#schemaidentification)|true|Objeto contendo os dados do recebedor (creditor).|
+|» creditor|object|true|Objeto contendo os dados do recebedor (creditor).|
+|»» personType|[EnumPaymentPersonType](#schemaenumpaymentpersontype)|true|Titular, pessoa natural ou juridica a quem se referem os dados de recebedor (creditor).|
+|»» cpfCnpj|string|true|Identificação da pessoa envolvida na transação.  <br>Preencher com o CPF ou CNPJ, de acordo com o valor escolhido no campo type.  <br>O CPF será utilizado com 11 números e deverá ser informado sem pontos ou traços.  <br>O CNPJ será utilizado com 14 números e deverá ser informado sem pontos ou traços.|
+|»» name|string|true|Em caso de pessoa natural deve ser informado o nome completo do titular da conta do recebedor.  <br>Em caso de pessoa jurídica deve ser informada a razão social ou o nome fantasia da conta do recebedor.|
 |» payment|[PaymentConsent](#schemapaymentconsent)|true|Objeto contendo dados de pagamento para consentimento.|
 |» debtorAccount|[DebtorAccount](#schemadebtoraccount)|false|Objeto que contém a identificação da conta de origem do pagador.  <br>As informações quanto à conta de origem do pagador poderão ser trazidas no consentimento para a detentora, caso a iniciadora tenha coletado essas informações do cliente. Do contrário, será coletada na detentora e trazida para a iniciadora como resposta à criação do pagamento.|
 
@@ -1082,7 +1063,9 @@ Usuário (pessoa jurídica) que encontra-se logado na instituição Iniciadora d
     },
     "remittanceInformation": "Pagamento da nota XPTO035-002.",
     "qrCode": "00020104141234567890123426660014BR.GOV.BCB.PIX014466756C616E6F32303139406578616D706C652E636F6D27300012  \nBR.COM.OUTRO011001234567895204000053039865406123.455802BR5915NOMEDORECEBEDOR6008BRASILIA61087007490062  \n530515RP12345678-201950300017BR.GOV.BCB.BRCODE01051.0.080450014BR.GOV.BCB.PIX0123PADRAO.URL.PIX/0123AB  \nCD81390012BR.COM.OUTRO01190123.ABCD.3456.WXYZ6304EB76\n",
-    "proxy": "12345678901"
+    "proxy": "12345678901",
+    "cnpjInitiator": "50685362000135",
+    "transactionIdentification": "50685362000135"
   }
 }
 
@@ -1116,7 +1099,9 @@ Usuário (pessoa jurídica) que encontra-se logado na instituição Iniciadora d
   },
   "remittanceInformation": "Pagamento da nota XPTO035-002.",
   "qrCode": "00020104141234567890123426660014BR.GOV.BCB.PIX014466756C616E6F32303139406578616D706C652E636F6D27300012  \nBR.COM.OUTRO011001234567895204000053039865406123.455802BR5915NOMEDORECEBEDOR6008BRASILIA61087007490062  \n530515RP12345678-201950300017BR.GOV.BCB.BRCODE01051.0.080450014BR.GOV.BCB.PIX0123PADRAO.URL.PIX/0123AB  \nCD81390012BR.COM.OUTRO01190123.ABCD.3456.WXYZ6304EB76\n",
-  "proxy": "12345678901"
+  "proxy": "12345678901",
+  "cnpjInitiator": "50685362000135",
+  "transactionIdentification": "50685362000135"
 }
 
 ```
@@ -1133,6 +1118,8 @@ Objeto contendo dados do pagamento e do recebedor (creditor).
 |remittanceInformation|string|false|Deve ser preenchido sempre que o usuário pagador inserir alguma informação adicional em um pagamento, a ser enviada ao recebedor.|
 |qrCode|string|false|Obs: Campo reservado para uso futuro.  <br>Sequência de caracteres que corresponde ao QR Code disponibilizado para o pagador.  <br>É a sequência de caracteres que seria lida pelo leitor de QR Code, e deve propiciar o retorno dos dados do pagador após consulta na DICT.  <br>Essa funcionalidade é possível tanto para QR Code estático quanto para QR Code dinâmico.  <br>No arranjo do Pix esta é a mesma sequência gerada e/ou lida pela funcionalidade Pix Copia e Cola.  <br>Este campo deverá ser no formato UTF-8.  <br>[Restrição] Preenchimento obrigatório para pagamentos por QR Code, observado o tamanho máximo de 512 bytes.|
 |proxy|string|false|Chave cadastrada no DICT pertencente ao recebedor. Os tipos de chaves podem ser: telefone, e-mail, cpf/cnpj ou chave aleatória.  <br>No caso de telefone celular deve ser informado no padrão E.1641.  <br>Para e-mail deve ter o formato xxxxxxxx@xxxxxxx.xxx(.xx) e no máximo 77 caracteres.  <br>No caso de CPF deverá ser informado com 11 números, sem pontos ou traços.  <br>Para o caso de CNPJ deverá ser informado com 14 números, sem pontos ou traços.  <br>No caso de chave aleatória deve ser informado o UUID gerado pelo DICT, conforme formato especificado na RFC41223.  <br>[Restrição] Obrigatório quando o campo localInstrument for igual a DICT.|
+|cnpjInitiator|string|true|CNPJ do Iniciador de Pagamento devidamente habilitado para a prestação de Serviço de Iniciação no Pix.|
+|transactionIdentification|string|false|Trata-se de um identificador de transação que deve ser retransmitido intacto pelo PSP do pagador ao gerar a ordem de pagamento. Essa informação permitirá ao recebedor identificar e correlacionar a transferência, quando recebida, com a apresentação das instruções ao pagador. Os caracteres permitidos no contexto do Pix para o campo txid (EMV 62-05) são: - Letras minúsculas, de ‘a’ a ‘z’ - Letras maiúsculas, de ‘A’ a ‘Z’ - Dígitos decimais, de ‘0’ a ‘9’ [Restrição] Se localInstrument for igual a INIC, o campo transactionIdentification deve ser preenchido obrigatoriamente. Se localInstrument for igual a MANU ou DICT, o campo transactionIdentification não deve ser preenchido. A detentora de conta deve validar se a condicionalidade do campo foi atendida pela iniciadora de pagamento.|
 
 <h2 id="tocS_CreditorAccount">CreditorAccount</h2>
 
@@ -1868,7 +1855,7 @@ Objeto contendo dados do pagameto como moeda e valor.
 |» status|[EnumAuthorisationStatusType](#schemaenumauthorisationstatustype)|true|Retorna o estado do consentimento, o qual no momento de sua criação será AWAITING_AUTHORISATION.<br>Este estado será alterado depois da autorização do consentimento na detentora da conta do pagador (Debtor) para AUTHORISED ou REJECTED. <br>O consentimento fica no estado CONSUMED após ocorrer a iniciação do pagamento referente ao consentimento.  <br>Em caso de consentimento expirado a detentora deverá retornar o status REJECTED.  <br>Estados possíveis:  <br>AWAITING_AUTHORISATION - Aguardando autorização  <br>AUTHORISED - Autorizado   <br>REJECTED - Rejeitado  <br>CONSUMED - Consumido|
 |» loggedUser|[LoggedUser](#schemaloggeduser)|true|Usuário (pessoa natural) que encontra-se logado na instituição Iniciadora de Pagamento.|
 |» businessEntity|[BusinessEntity](#schemabusinessentity)|false|Usuário (pessoa jurídica) que encontra-se logado na instituição Iniciadora de Pagamento. [Restrição] Preenchimento obrigatório se usuário logado na instituição Iniciadora de Pagamento for um CNPJ (pessoa jurídica).|
-|» creditor|[Identification](#schemaidentification)|true|Objeto contendo os dados do recebedor (creditor).|
+|» creditor|[#/paths/~1payments~1v2~1consents/post/requestBody/content/application~1json/schema/properties/data/properties/creditor](#schema#/paths/~1payments~1v2~1consents/post/requestbody/content/application~1json/schema/properties/data/properties/creditor)|true|Objeto contendo os dados do recebedor (creditor).|
 |» payment|[PaymentConsent](#schemapaymentconsent)|true|Objeto contendo dados de pagamento para consentimento.|
 |» debtorAccount|[DebtorAccount](#schemadebtoraccount)|false|Objeto que contém a identificação da conta de origem do pagador.  <br>As informações quanto à conta de origem do pagador poderão ser trazidas no consentimento para a detentora, caso a iniciadora tenha coletado essas informações do cliente. Do contrário, será coletada na detentora e trazida para a iniciadora como resposta à criação do pagamento.|
 |links|[ResponsePixPayment/properties/links](#schemaresponsepixpayment/properties/links)|true|Referências para outros recusos da API requisitada.|
@@ -1893,10 +1880,12 @@ Objeto contendo dados do pagameto como moeda e valor.
     "status": "PDNG",
     "rejectionReason": "USER_NOT_YET_ACTIVATED",
     "localInstrument": "DICT",
+    "cnpjInitiator": "50685362000135",
     "payment": {
       "amount": "100000.12",
       "currency": "BRL"
     },
+    "transactionIdentification": "50685362000135",
     "remittanceInformation": "Pagamento da nota RSTO035-002.",
     "creditorAccount": {
       "ispb": "12345678",
@@ -1944,10 +1933,12 @@ Objeto contendo dados do pagameto como moeda e valor.
   "status": "PDNG",
   "rejectionReason": "USER_NOT_YET_ACTIVATED",
   "localInstrument": "DICT",
+  "cnpjInitiator": "50685362000135",
   "payment": {
     "amount": "100000.12",
     "currency": "BRL"
   },
+  "transactionIdentification": "50685362000135",
   "remittanceInformation": "Pagamento da nota RSTO035-002.",
   "creditorAccount": {
     "ispb": "12345678",
@@ -1974,7 +1965,9 @@ Objeto contendo dados do pagamento e da conta do recebedor (creditor).
 |status|[EnumPaymentStatusType](#schemaenumpaymentstatustype)|true|Estado atual da iniciação de pagamento. O estado evolui na seguinte ordem:  <br>1. PDNG (PENDING) - Iniciação de pagamento ou transação de pagamento está pendente. Checagens adicionais em realização.  <br>2. PART (PARTIALLY ACCEPTED) - Aguardando autorização múltipla alçada.  <br>3. ACSP (ACCEPTED_SETTLEMENT_IN_PROCESS) - Iniciação de pagamento aceita e processamento do pagamento foi iniciado.  <br>4. ACSC (ACCEPTED_SETTLEMENT_COMPLETED_DEBITOR_ACCOUNT) - Débito realizado na conta do pagador.  <br>5. ACCC (ACCEPTED_SETTLEMENT_COMPLETED) - Crédito realizado na instituição de destino.  <br>Em caso insucesso:  <br>RJCT (REJECTED) - Instrução de pagamento rejeitada.|
 |rejectionReason|[EnumRejectionReasonType](#schemaenumrejectionreasontype)|false|Motivo da rejeição do pagamento. Informações complementares sobre o motivo do status.  <br>ABORTED_SETTLEMENT_TIMEOUT - Liquidação da transação interrompida devido a timeout no SPI (AB03).<br>ERROR_CREDITOR_AGENT - Transação interrompida devido a erro no participante do usuário recebedor (AB09).<br>TIMEOUT_DEBTOR_AGENT - Timeout do participante emissor da ordem de pagamento (AB11).<br>INVALID_CREDITOR_ACCOUNT_NUMBER - Número da conta transacional do usuário recebedor inexistente ou inválido (AC03).<br>BLOCKED_ACCOUNT - Conta transacional do usuário recebedor encontra-se bloqueada (AC06).<br>CLOSED_CREDITOR_ACCOUNT_NUMBER - Número da conta transacional do usuário recebedor encerrada (AC07).<br>INVALID_CREDITOR_ACCOUNTTYPE - Tipo incorreto para a conta transacional do usuário recebedor (AC14).<br>TRANSACTION_NOT_SUPPORTED - Tipo de transação não é suportado/autorizado na conta transacional do usuário recebedor (AG03). Exemplo: transferência para conta salário.<br>NOT_ALLOWED_BOOK_TRANSFER - Não é permitida ordem de pagamento/devolução no SPI cujos recursos sejam transferidos de uma conta transacional para outra em uma mesma instituição participante ou entre participantes que utilizem o serviço de liquidação de um mesmo participante liquidante no SPI (booktransfer) (AG12).<br>FORBIDDEN_RETURN_PAYMENT - Não é permitido devolver a devolução de um pagamento instantâneo (AG13).<br>INCORRECT_AGENT - Participante direto não é liquidante do participante do usuário pagador / participante do usuário recebedor (AGNT).<br>ZERO_AMOUNT - Ordem de pagamento instantâneo com valor zero (AM01).<br>NOT_ALLOWED_AMOUNT - Ordem de pagamento/devolução em valor que faz superar o limite permitido para o tipo de conta transacional creditada (AM02).<br>INSUFFICIENT_FUNDS - Saldo insuficiente na conta PI do participante do usuário pagador (AM04).<br>WRONG_AMOUNT - Devolução de pagamento em valor que faz superar o valor da ordem de pagamento instantâneo correspondente (AM09).<br>INVALID_AMOUNT - Divergência entre a somatória dos valores do bloco ‘valorDoDinheiroOuCompra’ e o campo ‘valor’ (AM12).<br>INVALID_NUMBER_OF_TRANSACTIONS - Quantidade de transações inválida (AM18).<br>INCONSISTENT_WITH_END_CUSTOMER - CPF/CNPJ do usuário recebedor não é consistente com o titular da conta transacional especificada (BE01).<br>INVALID_IDENTIFICATION_CODE - Código de situação de pagamento ou de erro inválido (BE15).<br>INVALID_CREDITOR_IDENTIFICATION_CODE - QR Code rejeitado pelo participante do usuário recebedor (BE17).<br>CREDITOR_IDENTIFIER_INCORRECT - CPF/CNPJ do usuário recebedor incorreto (CH11).<br>ELEMENT_CONTENT_FORMALLY_INCORRECT - Elemento da mensagem incorreto (CH16).<br>ORDER_REJECTED - Ordem rejeitada pelo participante do usuário recebedor (DS04).<br>NOT_ALLOWED_PAYMENT - Participante que assinou a mensagem não é autorizado a realizar a operação na conta PI debitada. No caso em que o participante que assinou a mensagem não é o titular da conta PI debitada nem é o liquidante no SPI do participante do usuário pagador (DS0G).<br>NOT_ALLOWED_ACCOUNT - ISPB do participante que submeteu a resposta à ordem de pagamento/devolução diferente do ISPB do participante creditado pela ordem (DS0H).<br>USER_NOT_YET_ACTIVATED - Participante não se encontra cadastrado ou ainda não iniciou a operação no SPI (DS27).<br>INVALID_CREATION_DATE - Data e Hora do envio da mensagem inválida (DT02).<br>INVALID_CUT_OFF_DATE - Transação extrapola o prazo máximo para devolução de pagamento instantâneo regulamentado pelo Arranjo PIX (DT05).<br>SETTLEMENT_FAILED - Erro no processamento do pagamento instantâneo (ED05).<br>INVALID_PURPOSE - Inconsistência entre a finalidade da transação e o preenchimento do bloco elementos Structured (FF07).<br>INVALID_END_TO_END_ID - Identificador da operação mal formatado (FF08).<br>INVALID_DEBTOR_CLEARING_SYSTEM_MEMBER_IDENTIFIER - ISPB do participante do usuário pagador inválido ou inexistente (RC09).<br>INVALID_CREDITOR_CLEARING_SYSTEM_MEMBER_IDENTIFIER - ISPB do participante do usuário recebedor inválido ou inexistente (RC10).<br>REGULATORY_REASON - Ordem de pagamento em que o usuário pagador é sancionado por resolução do Conselho de Segurança das Nações Unidas (CSNU). Nos casos em que o usuário recebedor for o sancionado, a ordem de pagamento não deve ser rejeitada (RR4).<br>SPECIFIC_SERVICE_OFFERED_BY_CREDITOR_AGENT - A transação original não está relacionada ao serviço de Saque Pix (SL02).<br>INVALID_BILL - Validação de expiração, validação de vencimento, Status Válido (INDT).  <br>OPERATION_WINDOW - Requisição está fora da janela de funcionamento (IDEA).  <br>INCOMPATIBLE_DATE - Data do pagamento divergente da data consentida ou divergente da data atual do QR Code (TERM).  <br>MISMATCH_AMOUNT - O valor informado no consentimento não é o mesmo valor do informado no payload de pagamento (OB01).  <br>OVER_LIMIT - O valor (ou quantidade de transações) ultrapassa a faixa de limite parametrizada na detentora para permitir a realização de transações pelo cliente (OB02).   <br>INVALID_CONSENT - Consentimento inválido (status não é "authorised" ou está expirado) (OB03).  <br>DENIED_MULTIPLE_AUTHORISATIONS - Um (ou mais) aprovadores na detentora recusaram a operação (OB04).  <br>EXPIRED_MULTIPLE_AUTHORISATIONS - Um (ou mais) aprovadores na detentora não tomaram ação para aprovar a operação (OB05).  <br>EXPIRED_BILL - O QR Code não é mais válido (OB06).  <br>[Restrição] Esse motivo deverá ser enviado quando o campo /data/status for igual a RJCT (REJECTED).|
 |localInstrument|[EnumLocalInstrument](#schemaenumlocalinstrument)|true|Especifica a forma de iniciação do pagamento:  <br>- MANU - Inserção manual de dados da conta transacional  <br>- DICT - Inserção manual de chave Pix  <br>- QRDN - QR code dinâmico (*Domínio reservado para uso futuro*)  <br>- QRES - QR code estático (*Domínio reservado para uso futuro*)|
+|cnpjInitiator|string|true|CNPJ do Iniciador de Pagamento devidamente habilitado para a prestação de Serviço de Iniciação no Pix.|
 |payment|[PaymentPix](#schemapaymentpix)|true|Objeto contendo dados do pagameto como moeda e valor.|
+|transactionIdentification|string|false|Trata-se de um identificador de transação que deve ser retransmitido intacto pelo PSP do pagador ao gerar a ordem de pagamento. Essa informação permitirá ao recebedor identificar e correlacionar a transferência, quando recebida, com a apresentação das instruções ao pagador. Os caracteres permitidos no contexto do Pix para o campo txid (EMV 62-05) são: - Letras minúsculas, de ‘a’ a ‘z’ - Letras maiúsculas, de ‘A’ a ‘Z’ - Dígitos decimais, de ‘0’ a ‘9’ [Restrição] Se localInstrument for igual a INIC, o campo transactionIdentification deve ser preenchido obrigatoriamente. Se localInstrument for igual a MANU ou DICT, o campo transactionIdentification não deve ser preenchido. A detentora de conta deve validar se a condicionalidade do campo foi atendida pela iniciadora de pagamento.|
 |remittanceInformation|string|false|Deve ser preenchido sempre que o usuário pagador inserir alguma informação adicional em um pagamento, a ser enviada ao recebedor.|
 |creditorAccount|[CreditorAccount](#schemacreditoraccount)|true|Objeto que contém a identificação da conta de destino do beneficiário/recebedor.|
 
