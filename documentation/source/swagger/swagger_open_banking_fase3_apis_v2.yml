@@ -481,7 +481,22 @@ components:
         - cnpjInitiator
       properties:
         localInstrument:
-          $ref: '#/components/schemas/EnumLocalInstrument'
+          type: string
+          maxLength: 4
+          enum:
+            - MANU
+            - DICT
+            - QRDN
+            - QRES
+            - INIC
+          example: DICT
+          description: |
+            Especifica a forma de iniciação do pagamento:  
+            - MANU - Inserção manual de dados da conta transacional  
+            - DICT - Inserção manual de chave Pix  
+            - QRDN - QR code dinâmico (*Domínio reservado para uso futuro*)  
+            - QRES - QR code estático (*Domínio reservado para uso futuro*)  
+            - INIC - Indica que o recebedor (creditor) contratou o Iniciador de Pagamentos especificamente para realizar iniciações de pagamento em que o beneficiário é previamente conhecido.  
         payment:
           $ref: '#/components/schemas/PaymentPix'
         creditorAccount:
@@ -522,7 +537,9 @@ components:
             No caso de CPF deverá ser informado com 11 números, sem pontos ou traços.  
             Para o caso de CNPJ deverá ser informado com 14 números, sem pontos ou traços.  
             No caso de chave aleatória deve ser informado o UUID gerado pelo DICT, conforme formato especificado na RFC41223.  
-            [Restrição] Obrigatório quando o campo localInstrument for igual a DICT.
+            Se informado, a detentora da conta deve validar o proxy no DICT quando localInstrument for igual a DICT, QRDN (uso futuro) ou QRES (uso futuro) e validar o campo creditorAccount.
+            Esta validação é opcional caso o localInstrument for igual a INIC.
+            [Restrição] Se localInstrument for igual a MANU, o campo proxy não deve ser preenchido. Se localInstrument for igual INIC, DICT, QRDN (uso futuro) ou QRES(uso futuro), o campo proxy deve ser sempre preenchido com a chave Pix.
         cnpjInitiator:
           type: string
           pattern: '^\d{14}$'
@@ -1245,13 +1262,15 @@ components:
             No caso de CPF deverá ser informado com 11 números, sem pontos ou traços.  
             Para o caso de CNPJ deverá ser informado com 14 números, sem pontos ou traços.  
             No caso de chave aleatória deve ser informado o UUID gerado pelo DICT, conforme formato especificado na RFC41223.  
-            [Restrição] Obrigatório quando o campo localInstrument for igual a DICT.
+            Se informado, a detentora da conta deve validar o proxy no DICT quando localInstrument for igual a DICT, QRDN (uso futuro) ou QRES (uso futuro) e validar o campo creditorAccount.
+            Esta validação é opcional caso o localInstrument for igual a INIC.  
+            [Restrição] Se localInstrument for igual a MANU, o campo proxy não deve ser preenchido. Se localInstrument for igual INIC, DICT, QRDN (uso futuro) ou QRES(uso futuro), o campo proxy deve ser sempre preenchido com a chave Pix.
         status:
           $ref: '#/components/schemas/EnumPaymentStatusType'
         rejectionReason:
           $ref: '#/components/schemas/EnumRejectionReasonType'
         localInstrument:
-          $ref: '#/components/schemas/EnumLocalInstrument'
+          $ref: '#/components/schemas/CreatePixPaymentData/properties/localInstrument'
         cnpjInitiator:
           type: string
           pattern: '^\d{14}$'
