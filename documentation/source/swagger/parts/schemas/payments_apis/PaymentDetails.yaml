@@ -1,24 +1,15 @@
 type: object
-description: Objeto contendo dados do pagamento e do recebedor (creditor).
+description: |
+  Objeto contendo os detalhes do pagamento.  
+  [Restrição] No método POST /consents deve ser enviado obrigatoriamente. No método GET /consents/{consentId} é obrigatório para todo consentimento gerado que contêm as informações do recebedor. Consentimentos gerados anteriormente ao início da vigência da versão 2.0.0 da API, não deve existir o campo no payload de resposta.
 required:
   - localInstrument
-  - payment
   - creditorAccount
-  - cnpjInitiator
+  - qrCode
+  - proxy
 properties:
   localInstrument:
     $ref: ../enum/EnumLocalInstrument.yaml
-  payment:
-    $ref: ./PaymentPix.yaml
-  creditorAccount:
-    $ref: ../business_commons/CreditorAccount.yaml
-  remittanceInformation:
-    type: string
-    maxLength: 140
-    pattern: '[\w\W\s]*'
-    example: Pagamento da nota XPTO035-002.
-    description: |
-      Deve ser preenchido sempre que o usuário pagador inserir alguma informação adicional em um pagamento, a ser enviada ao recebedor.
   qrCode:
     type: string
     maxLength: 512
@@ -50,26 +41,7 @@ properties:
       No caso de chave aleatória deve ser informado o UUID gerado pelo DICT, conforme formato especificado na RFC41223.  
       Se informado, a detentora da conta deve validar o proxy no DICT quando localInstrument for igual a DICT, QRDN (uso futuro) ou QRES (uso futuro) e validar o campo creditorAccount.
       Esta validação é opcional caso o localInstrument for igual a INIC.  
-      [Restrição] Se localInstrument for igual a MANU, o campo proxy não deve ser preenchido. Se localInstrument for igual INIC, DICT, QRDN (uso futuro) ou QRES(uso futuro), o campo proxy deve ser sempre preenchido com a chave Pix.  
-  cnpjInitiator:
-    type: string
-    pattern: '^\d{14}$'
-    maxLength: 14
-    example: '50685362000135'
-    description: 'CNPJ do Iniciador de Pagamento devidamente habilitado para a prestação de Serviço de Iniciação no Pix.'
-  transactionIdentification:
-    type: string
-    pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,25}$'
-    maxLength: 25
-    example: 'E00038166201907261559y6j6'
-    description: |
-      Trata-se de um identificador de transação que deve ser retransmitido intacto pelo PSP do pagador ao gerar a ordem de pagamento. Essa informação permitirá ao recebedor identificar e correlacionar a transferência, quando recebida, com a apresentação das instruções ao pagador.
-      Os caracteres permitidos no contexto do Pix para o campo txid (EMV 62-05) são:    
-      - Letras minúsculas, de ‘a’ a ‘z’ 
-      - Letras maiúsculas, de ‘A’ a ‘z’   
-      - Dígitos decimais, de ‘0’ a ‘9’ 
-          
-      [Restrição] Se localInstrument for igual a INIC, o campo transactionIdentification deve ser preenchido obrigatoriamente.
-      Se localInstrument for igual a MANU ou DICT, o campo transactionIdentification não deve ser preenchido.
-      A detentora de conta deve validar se a condicionalidade do campo foi atendida pela iniciadora de pagamento.
-    additionalProperties: false
+      [Restrição] Se localInstrument for igual a MANU, o campo proxy não deve ser preenchido. Se localInstrument for igual INIC, DICT, QRDN (uso futuro) ou QRES(uso futuro), o campo proxy deve ser sempre preenchido com a chave Pix.
+  creditorAccount:
+    $ref: ../business_commons/CreditorAccount.yaml
+additionalProperties: false
