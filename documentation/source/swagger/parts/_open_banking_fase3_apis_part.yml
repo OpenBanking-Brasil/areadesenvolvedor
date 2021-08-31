@@ -149,7 +149,10 @@ info:
 
     #### POST /payments/v1/consents
     Para a criação de consentimento, considerando o requerido para FAPI - Loding Intent (<a href="https://bitbucket.org/openid/fapi/src/master/Financial_API_Lodging_Intent.md" target="_blank">Financial_API_Lodging_Intent.md</a>), após a obtenção do token de acesso, a Instituição Iniciadora deverá usar esse token de acesso para fazer a requisição POST de consentimento.  
-    A criação do consentimento encontra-se detalhada na seção das APIs para Pagamentos (<a href="#em-revisao-criar-consentimento-para-iniciacao-de-pagamento">Open Banking Brasil</a>).
+    A criação do consentimento encontra-se detalhada na seção das APIs para Pagamentos (<a href="#em-revisao-criar-consentimento-para-iniciacao-de-pagamento">Open Banking Brasil</a>).  
+
+    ###Iniciação pelo Recebedor  
+    Iniciação pelo recebedor ocorre quando a prestação de serviço pela iniciadora é para, e somente para,  o recebedor. Nestes casos somente será permitido como beneficiário do pagamento o próprio recebedor.Algumas Instituições detentoras de conta precisarão ajustar seus sistemas de forma a apropriar o campo em sua estrutura ao invés de gerá-lo nos casos pertinentes.  
 
     #### 201 Created
     A API de Consentimento deverá responder o Http Status 201 e Payload contendo ***consentId***, e status inicial do consentimento em **AWAITING_AUTHORISATION** conforme especificado na documentação <a href="#em-revisao-criar-consentimento-para-iniciacao-de-pagamento">Open Banking Brasil</a>.
@@ -161,6 +164,10 @@ info:
     #### Validações de negócios (Detentora)
 
     Ao receber o POST /pix/payments é importante observar que a Detentora deverá validar as informações passadas pela Iniciadora nos campos do payload de envio do consentimento e do pagamento (como, por exemplo, valores e dados do creditado), além de ser necessário decodificar o código para os casos de pagamentos iniciados a partir de um Pix QRCode, a fim de que a Detentora carregue as informações complementares (como, por exemplo, o TxID) na mensageria do Pix (atenção para a PACS008 e as <a href="https://www.bcb.gov.br/estabilidadefinanceira/pix?modalAberto=regulamentacao_pix" target="_blank">regulamentações do Pix</a>).
+
+    #### POST /payments/v1/pix/payments
+    A Detentora deve validar as informações do payload com os dados do consentimento, de acordo com a forma de pagamento. 
+    Caso os dados do detalhe informados no consentimento sejam diferente dos dados enviados na iniciação de pagamento, a Detentora de retornar erro HTTP 422 Unprocessable Entity, com o code BENEFICIARIO_INCOMPATIVEL. Nesse cenário, o consentimento não deve assumir o status CONSUMED.  
 
     #### Efetivação do pagamento&lt;&lt;Assync&gt;&gt;
     A Detentora de Conta efetua a transação de pagamento entre o Debtor e Creditor através da forma de pagamento escolhida pelo Debtor. A efetivação da transação acontece de maneira assíncrona ao fluxo do Open Banking, seguindo as regras e interfaces do arranjo utilizado (apenas PIX disponível nesse momento).
@@ -209,8 +216,7 @@ info:
    
     #### CONSUMED
     - O consentimento assume o status CONSUMED após ocorrer o processamento da iniciação do pagamento, seja ele com sucesso (HTTP 201) ou ainda em casos de insucesso (HTTP 422) retornados pela Detentora. Para os demais códigos HTTP não há mudança de status do consentimento, o mesmo permanecerá AUTHORISED, respeitando o tempo máximo de expiração do consentimento (60 minutos).    
-    
-
+      
     ### Recomendação uso de polling
     #### A consulta via GET, para verificar o processamento da transação, pode ser efetuada a qualquer momento desde que se respeite o rate limit de:  
     - 300 TPS global, 50 TPS por instituição e 8 TPS por endereço IP (Internet Protocol).  
@@ -405,13 +411,13 @@ info:
     
     * Erros na validação da mensagem recebida pela aplicação cliente (p. ex. iniciador de pagamento) devem ser registrados e o `Provedor do Recurso` (p. ex. instituição detentora de conta) deve ser notificado.
 
-  version: 1.0.1
+  version: 1.0.1-rc1.0
 tags:
   - name: API - Pagamentos
     description: |
       |Versão|
       |:-----|
-      |1.0.1|
+      |1.0.1-rc1.0|
 
       #### Visão Geral
       
@@ -666,6 +672,8 @@ components:
       $ref: ./schemas/business_commons/CreditorAccount.yaml
     DebtorAccount:
       $ref: ./schemas/business_commons/DebtorAccount.yaml
+    Details:
+      $ref: ./schemas/payments_apis/PaymentDetails.yaml
     EndToEndId:
       $ref: ./schemas/business_commons/EndToEndId.yaml
     EnumAccountPaymentsType:
