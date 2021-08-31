@@ -19,8 +19,12 @@ swagger-cli bundle source/swagger/parts/_unarranged_accounts_overdraft_apis_part
 swagger-cli bundle source/swagger/parts/_open_banking_fase2_apis_part.yml --outfile source/swagger/swagger_open_banking_fase2_apis.yml --type=yaml
 
 # Open Banking Fase 3
+#v1
 swagger-cli bundle source/swagger/parts/_payments_apis_part.yml --outfile source/swagger/swagger_payments_apis.yaml --type=yaml
+swagger-cli bundle source/swagger/parts/_payments_apis_part_v2.yml --outfile source/swagger/swagger_payments_apis_v2.yaml --type=yaml
+#v2
 swagger-cli bundle source/swagger/parts/_open_banking_fase3_apis_part.yml --outfile source/swagger/swagger_open_banking_fase3_apis.yml --type=yaml
+swagger-cli bundle source/swagger/parts/_open_banking_fase3_apis_part_v2.yml --outfile source/swagger/swagger_open_banking_fase3_apis_v2.yml --type=yaml
 
 # Generate dictionary
 sh ./build-dictionary.sh
@@ -45,6 +49,7 @@ swagger-cli validate source/swagger/swagger_open_banking_fase2_apis.yml
 # Open Banking Fase 3
 swagger-cli validate source/swagger/swagger_payments_apis.yaml
 swagger-cli validate source/swagger/swagger_open_banking_fase3_apis.yml
+swagger-cli validate source/swagger/swagger_open_banking_fase3_apis_v2.yml
 
 ###
 #ATENÇÃO: não é parar ligar a automação da Fase 1 sem a autorização do comitê de Open Banking
@@ -53,6 +58,7 @@ swagger-cli validate source/swagger/swagger_open_banking_fase3_apis.yml
 
 widdershins source/swagger/swagger_open_banking_fase2_apis.yml -o source/includes/partials_open_banking/_open_banking_fase2_apis.md.erb --user_templates source/templates/openapi3/ --language_tabs "javascript:JavaScript:request" "python:Python:request" "java:Java::request" --omitHeader --summary --httpsnippet
 widdershins source/swagger/swagger_open_banking_fase3_apis.yml -o source/includes/partials_open_banking/_open_banking_fase3_apis.md.erb --user_templates source/templates/openapi3/ --language_tabs "javascript:JavaScript:request" "python:Python:request" "java:Java::request" --omitHeader --summary --httpsnippet
+widdershins source/swagger/swagger_open_banking_fase3_apis_v2.yml -o source/includes/partials_open_banking/_open_banking_fase3_apis_v2.md.erb --user_templates source/templates/openapi3/ --language_tabs "javascript:JavaScript:request" "python:Python:request" "java:Java::request" --omitHeader --summary --httpsnippet
 
 spectral lint source/swagger/*_apis.yaml
 
