@@ -1,4 +1,4 @@
-﻿openapi: 3.0.0
+openapi: 3.0.0
 info:
   title: API Payment Initiation - Open Banking Brasil
   description: |
@@ -735,6 +735,31 @@ components:
         • DATA_PGTO_INVALIDA: Data de pagamento inválida.  
         • DETALHE_PGTO_INVALIDO: Detalhe do pagamento inválido.
         • NAO_INFORMADO: Não informado.   
+    EnumErrorsCreatePayment:
+      type: string
+      maxLength: 25
+      enum:
+        - SALDO_INSUFICIENTE
+        - BENEFICIARIO_INCOMPATIVEL
+        - VALOR_INCOMPATIVEL
+        - VALOR_ACIMA_LIMITE
+        - VALOR_INVALIDO
+        - COBRANCA_INVALIDA
+        - CONSENTIMENTO_INVALIDO
+        - JANELA_OPER_INVALIDA
+        - NAO_INFORMADO
+      example: SALDO_INSUFICIENTE
+      description: |
+        Códigos de erros previstos na criação da iniciação de pagamento:  
+        • SALDO_INSUFICIENTE – Esta conta não possui saldo suficiente para realizar o pagamento.  
+        • BENEFICIARIO_INCOMPATIVEL – O beneficiário informado no consentimento não é o mesmo do esperado pelo DICT.  
+        • VALOR_INCOMPATIVEL – O valor informado no consentimento não é o mesmo valor do informado no payload de pagamento.  
+        • VALOR_ACIMA_LIMITE – O valor (ou quantidade de transações) ultrapassa a faixa de limite parametrizada na detentora para permitir a realização de transações pelo cliente.  
+        • VALOR_INVALIDO – O valor enviado não é válido para o QR Code informado.  
+        • COBRANCA_INVALIDA – Validação de expiração, validação de vencimento, Status Válido.  
+        • CONSENTIMENTO_INVALIDO – Consentimento inválido (status não é "authorised" ou está expirado).  
+        • JANELA_OPER_INVALIDA – Requisição está fora da janela de funcionamento.  
+        • NAO_INFORMADO – Não informada pela detentora de conta.  
     EnumLocalInstrument:
       type: string
       maxLength: 4
@@ -885,6 +910,78 @@ components:
         EXPIRED_BILL - O QR Code não é mais válido (OB06).  
         [Restrição] Esse motivo deverá ser enviado quando o campo /data/status for igual a RJCT (REJECTED).  
     Identification:
+      type: object
+      description: Objeto contendo os dados do recebedor (creditor).
+      required:
+        - personType
+        - cpfCnpj
+        - name
+      properties:
+        personType:
+          $ref: '#/components/schemas/EnumPaymentPersonType'
+        cpfCnpj:
+          type: string
+          minLength: 11
+          maxLength: 14
+          pattern: '^\d{11}$|^\d{14}$'
+          example: '58764789000137'
+          description: |
+            Identificação da pessoa envolvida na transação.  
+            Preencher com o CPF ou CNPJ, de acordo com o valor escolhido no campo type.  
+            O CPF será utilizado com 11 números e deverá ser informado sem pontos ou traços.  
+            O CNPJ será utilizado com 14 números e deverá ser informado sem pontos ou traços.
+        name:
+          type: string
+          maxLength: 140
+          pattern: '[\w\W\s]*'
+          example: Marco Antonio de Brito
+          description: |
+            Em caso de pessoa natural deve ser informado o nome completo do titular da conta do recebedor.  
+            Em caso de pessoa jurídica deve ser informada a razão social ou o nome fantasia da conta do recebedor.
+      additionalProperties: false
+    Links:
+      type: object
+      description: Referências para outros recusos da API requisitada.
+      required:
+        - self
+      properties:
+        self:
+          type: string
+          format: uri
+          maxLength: 2000
+          description: URI completo que gerou a resposta atual.
+          example: 'https://api.banco.com.br/open-banking/api/v1/resource'
+          pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
+        first:
+          type: string
+          format: uri
+          maxLength: 2000
+          description: URI da primeira página que originou essa lista de resultados. Restrição - Obrigatório quando não for a primeira página da resposta
+          example: 'https://api.banco.com.br/open-banking/api/v1/resource'
+          pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
+        prev:
+          type: string
+          format: uri
+          maxLength: 2000
+          description: "URI da página anterior dessa lista de resultados. Restrição - \tObrigatório quando não for a primeira página da resposta"
+          example: 'https://api.banco.com.br/open-banking/api/v1/resource'
+          pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
+        next:
+          type: string
+          format: uri
+          maxLength: 2000
+          description: URI da próxima página dessa lista de resultados. Restrição - Obrigatório quando não for a última página da resposta
+          example: 'https://api.banco.com.br/open-banking/api/v1/resource'
+          pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
+        last:
+          type: string
+          format: uri
+          maxLength: 2000
+          description: URI da última página dessa lista de resultados. Restrição - Obrigatório quando não for a última página da resposta
+          example: 'https://api.banco.com.br/open-banking/api/v1/resource'
+          pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
+      additionalProperties: false
+    LoggedUser:
       type: object
       description: Objeto contendo os dados do recebedor (creditor).
       required:
