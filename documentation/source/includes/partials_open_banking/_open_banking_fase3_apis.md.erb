@@ -1,5 +1,5 @@
 
-<h1 id="fase-3-apis-do-open-banking-brasil">Fase 3 - APIs do Open Banking Brasil v1.0.1</h1>
+<h1 id="fase-3-apis-do-open-banking-brasil">Fase 3 - APIs do Open Banking Brasil v1.0.1-rc1.0</h1>
 
 > Scroll down for code samples, example requests and responses. Select a language for code samples from the tabs above or the mobile navigation menu.
 
@@ -159,8 +159,8 @@ No caso do consentimento ter sido criado com sucesso, a Instituição Iniciadora
 Esse redirecionamento é o passo que permitirá o início da autenticação do usuário na Instituição Detentora da Conta.
 
 #### Validações de negócios (Detentora)
-
-Ao receber o POST /pix/payments é importante observar que a Detentora deverá validar as informações passadas pela Iniciadora nos campos do payload de envio do consentimento e do pagamento (como, por exemplo, valores e dados do creditado), além de ser necessário decodificar o código para os casos de pagamentos iniciados a partir de um Pix QRCode, a fim de que a Detentora carregue as informações complementares (como, por exemplo, o TxID) na mensageria do Pix (atenção para a PACS008 e as <a href="https://www.bcb.gov.br/estabilidadefinanceira/pix?modalAberto=regulamentacao_pix" target="_blank">regulamentações do Pix</a>).
+Ao receber o POST /payments/v1/pix/payments é importante observar que a Detentora deverá validar as informações passadas pela Iniciadora nos campos do payload de envio do consentimento e do pagamento (como, por exemplo, valores e dados do creditado), além de ser necessário decodificar o código para os casos de pagamentos iniciados a partir de um Pix QRCode, a fim de que a Detentora carregue as informações complementares (como, por exemplo, o TxID) na mensageria do Pix (atenção para a PACS008 e as <a href="https://www.bcb.gov.br/estabilidadefinanceira/pix?modalAberto=regulamentacao_pix" target="_blank">regulamentações do Pix</a>).   
+A Detentora deve validar as informações de detalhes do payload com os dados de detalhes do consentimento, de acordo com a forma de pagamento. Caso os dados do detalhe informados no consentimento sejam diferente dos dados enviados na iniciação de pagamento, a Detentora de retornar erro HTTP 422 Unprocessable Entity, com o code BENEFICIARIO_INCOMPATIVEL.  
 
 #### Efetivação do pagamento&lt;&lt;Assync&gt;&gt;
 A Detentora de Conta efetua a transação de pagamento entre o Debtor e Creditor através da forma de pagamento escolhida pelo Debtor. A efetivação da transação acontece de maneira assíncrona ao fluxo do Open Banking, seguindo as regras e interfaces do arranjo utilizado (apenas PIX disponível nesse momento).
@@ -411,7 +411,7 @@ Veja ao lado exemplo de mensagem JWS assinada e codificada e um exemplo de mensa
 
 |Versão|
 |:-----|
-|1.0.1|
+|1.0.1-rc1.0|
 
 #### Visão Geral
 
@@ -661,17 +661,6 @@ Consulte a seção **Convenções de payload** para obter mais informações sob
       "issuer": "1774",
       "number": "1234567890",
       "accountType": "CACC"
-    },
-    "details": {
-      "localInstrument": "DICT",
-      "qrCode": "00020104141234567890123426660014BR.GOV.BCB.PIX014466756C616E6F32303139406578616D706C652E636F6D27300012  \nBR.COM.OUTRO011001234567895204000053039865406123.455802BR5915NOMEDORECEBEDOR6008BRASILIA61087007490062  \n530515RP12345678-201950300017BR.GOV.BCB.BRCODE01051.0.080450014BR.GOV.BCB.PIX0123PADRAO.URL.PIX/0123AB  \nCD81390012BR.COM.OUTRO01190123.ABCD.3456.WXYZ6304EB76\n",
-      "proxy": "12345678901",
-      "creditorAccount": {
-        "ispb": "12345678",
-        "issuer": "1774",
-        "number": "1234567890",
-        "accountType": "CACC"
-      }
     }
   },
   "links": {
@@ -874,17 +863,6 @@ Informações mais detalhadas sobre a construção de namespaces devem ser consu
       "issuer": "1774",
       "number": "1234567890",
       "accountType": "CACC"
-    },
-    "details": {
-      "localInstrument": "DICT",
-      "qrCode": "00020104141234567890123426660014BR.GOV.BCB.PIX014466756C616E6F32303139406578616D706C652E636F6D27300012  \nBR.COM.OUTRO011001234567895204000053039865406123.455802BR5915NOMEDORECEBEDOR6008BRASILIA61087007490062  \n530515RP12345678-201950300017BR.GOV.BCB.BRCODE01051.0.080450014BR.GOV.BCB.PIX0123PADRAO.URL.PIX/0123AB  \nCD81390012BR.COM.OUTRO01190123.ABCD.3456.WXYZ6304EB76\n",
-      "proxy": "12345678901",
-      "creditorAccount": {
-        "ispb": "12345678",
-        "issuer": "1774",
-        "number": "1234567890",
-        "accountType": "CACC"
-      }
     }
   },
   "links": {
@@ -1095,7 +1073,7 @@ Consulte a seção **Convenções de payload** para obter mais informações sob
       "amount": "100000.12",
       "currency": "BRL"
     },
-    "transactionIdentification": "50685362000135",
+    "transactionIdentification": "E00038166201907261559y6j6",
     "remittanceInformation": "Pagamento da nota RSTO035-002.",
     "creditorAccount": {
       "ispb": "12345678",
@@ -1262,7 +1240,7 @@ Consulte a seção **Convenções de payload** para obter mais informações sob
       "amount": "100000.12",
       "currency": "BRL"
     },
-    "transactionIdentification": "50685362000135",
+    "transactionIdentification": "E00038166201907261559y6j6",
     "remittanceInformation": "Pagamento da nota RSTO035-002.",
     "creditorAccount": {
       "ispb": "12345678",
@@ -1351,7 +1329,7 @@ openid,consent:consentId,payments
 |Nome|Tipo|Obrigatório|Descrição|
 |---|---|---|---|---|
 |errors|[object]|true||
-|» code|string|true|Códigos de erros previstos na criação de consentimento para a iniciação de pagamentos:  <br>• FORMA_PGTO_INVALIDA: Forma de pagamento inválida.  <br>• DATA_PGTO_INVALIDA: Data de pagamento inválida.  <br>• DETALHE_PGTO_INVALIDO: Detalhe do pagamento inválido.<br>• NAO_INFORMADO: Não informado.|
+|» code|string|true|Códigos de erros previstos na criação de consentimento para a iniciação de pagamentos:  <br>• FORMA_PGTO_INVALIDA: Forma de pagamento inválida.  <br>• DATA_PGTO_INVALIDA: Data de pagamento inválida.  <br>• DETALHE_PGTO_INVALIDO: Detalhe do pagamento inválido.  <br>• NAO_INFORMADO: Não informado.|
 |» title|string|true|Título específico do erro reportado, de acordo com o código enviado:  <br>• FORMA_PGTO_INVALIDA: Forma de pagamento inválida.  <br>• DATA_PGTO_INVALIDA: Data de pagamento inválida. <br>• DETALHE_PGTO_INVALIDO: Detalhe do pagamento inválido.<br>• NAO_INFORMADO: Não informado.|
 |» detail|string|true|Descrição específica do erro de acordo com o código reportado:  <br>• FORMA_PGTO_INVALIDA – Meio de pagamento inválido.  <br>• DATA_PGTO_INVALIDA – Data de pagamento inválida no contexto, por exemplo, data no passado. Para pagamentos únicos deve ser informada a data atual, do dia corrente.  <br>• DETALHE_PGTO_INVALIDO: O campo [nome_campo] não atende os requisitos de preenchimento.  <br>• NAO_INFORMADO – Não reportado/identificado pela instituição detentora de conta.|
 |meta|[Meta](#schemameta)|false|Meta informações referente a API requisitada.|
@@ -1600,7 +1578,7 @@ Objeto contendo dados do pagamento e do recebedor (creditor).
 |creditorAccount|[CreditorAccount](#schemacreditoraccount)|true|Objeto que contém a identificação da conta de destino do beneficiário/recebedor.|
 |remittanceInformation|string|false|Deve ser preenchido sempre que o usuário pagador inserir alguma informação adicional em um pagamento, a ser enviada ao recebedor.|
 |qrCode|string|false|Obs: Campo reservado para uso futuro.  <br>Sequência de caracteres que corresponde ao QR Code disponibilizado para o pagador.  <br>É a sequência de caracteres que seria lida pelo leitor de QR Code, e deve propiciar o retorno dos dados do pagador após consulta na DICT.  <br>Essa funcionalidade é possível tanto para QR Code estático quanto para QR Code dinâmico.  <br>No arranjo do Pix esta é a mesma sequência gerada e/ou lida pela funcionalidade Pix Copia e Cola.  <br>Este campo deverá ser no formato UTF-8.  <br>[Restrição] Preenchimento obrigatório para pagamentos por QR Code, observado o tamanho máximo de 512 bytes.|
-|proxy|string|false|Chave cadastrada no DICT pertencente ao recebedor. Os tipos de chaves podem ser: telefone, e-mail, cpf/cnpj ou chave aleatória.  <br>No caso de telefone celular deve ser informado no padrão E.1641.  <br>Para e-mail deve ter o formato xxxxxxxx@xxxxxxx.xxx(.xx) e no máximo 77 caracteres.  <br>No caso de CPF deverá ser informado com 11 números, sem pontos ou traços.  <br>Para o caso de CNPJ deverá ser informado com 14 números, sem pontos ou traços.  <br>No caso de chave aleatória deve ser informado o UUID gerado pelo DICT, conforme formato especificado na RFC41223.  <br>Se informado, a detentora da conta deve validar o proxy no DICT quando localInstrument for igual a DICT, QRDN (uso futuro) ou QRES (uso futuro) e validar o campo creditorAccount.<br>Esta validação é opcional caso o localInstrument for igual a INIC.  <br>[Restrição] Se localInstrument for igual a MANU, o campo proxy não deve ser preenchido. Se localInstrument for igual INIC, DICT, QRDN (uso futuro) ou QRES(uso futuro), o campo proxy deve ser sempre preenchido com a chave Pix.|
+|proxy|string|false|Chave cadastrada no DICT pertencente ao recebedor. Os tipos de chaves podem ser: telefone, e-mail, cpf/cnpj ou chave aleatória.  <br>No caso de telefone celular deve ser informado no padrão E.1641.  <br>Para e-mail deve ter o formato xxxxxxxx@xxxxxxx.xxx(.xx) e no máximo 77 caracteres.  <br>No caso de CPF deverá ser informado com 11 números, sem pontos ou traços.  <br>Para o caso de CNPJ deverá ser informado com 14 números, sem pontos ou traços.  <br>No caso de chave aleatória deve ser informado o UUID gerado pelo DICT, conforme formato especificado na RFC41223.  <br>Se informado, a detentora da conta deve validar o proxy no DICT quando localInstrument for igual a DICT, QRDN (uso futuro) ou QRES (uso futuro) e validar o campo creditorAccount.<br>Esta validação é opcional caso o localInstrument for igual a INIC.  <br>[Restrição] Se localInstrument for igual a MANU, o campo proxy não deve ser preenchido. Se localInstrument for igual INIC, DICT, QRDN (uso futuro) ou QRES (uso futuro), o campo proxy deve ser sempre preenchido com a chave Pix.|
 |cnpjInitiator|string|true|CNPJ do Iniciador de Pagamento devidamente habilitado para a prestação de Serviço de Iniciação no Pix.|
 |transactionIdentification|string|false|Trata-se de um identificador de transação que deve ser retransmitido intacto pelo PSP do pagador ao gerar a ordem de pagamento. Essa informação permitirá ao recebedor identificar e correlacionar a transferência, quando recebida, com a apresentação das instruções ao pagador.<br>Os caracteres permitidos no contexto do Pix para o campo txid (EMV 62-05) são:    <br>- Letras minúsculas, de ‘a’ a ‘z’ <br>- Letras maiúsculas, de ‘A’ a ‘z’   <br>- Dígitos decimais, de ‘0’ a ‘9’ <br>    <br>[Restrição] Se localInstrument for igual a INIC, o campo transactionIdentification deve ser preenchido obrigatoriamente.<br>Se localInstrument for igual a MANU ou DICT, o campo transactionIdentification não deve ser preenchido.<br>A detentora de conta deve validar se a condicionalidade do campo foi atendida pela iniciadora de pagamento.|
 
@@ -2230,10 +2208,10 @@ Objeto contendo dados de pagamento para consentimento.
 |date|string(date)|true|Data do pagamento, conforme especificação RFC-3339.|
 |currency|string|true|Código da moeda nacional segundo modelo ISO-4217, ou seja, 'BRL'. <br>Todos os valores monetários informados estão representados com a moeda vigente do Brasil.|
 |amount|string|true|Valor da transação com 2 casas decimais.|
-|details|object|false|Objeto contendo os detalhes do pagamento.  <br>[Restrição] No método POST /consents deve ser enviado obrigatoriamente. No método GET /consents/{consentId} é obrigatório para todo consentimento gerado que contêm as informações do recebedor. Consentimentos gerados anteriormente ao início da vigência da versão 2.0.0 da API, não deve existir o campo no payload de resposta.|
+|details|object|true|Objeto contendo os detalhes do pagamento.|
 |» localInstrument|[CreatePixPaymentData/properties/localInstrument](#schemacreatepixpaymentdata/properties/localinstrument)|true|Especifica a forma de iniciação do pagamento:  <br>- MANU - Inserção manual de dados da conta transacional  <br>- DICT - Inserção manual de chave Pix  <br>- QRDN - QR code dinâmico (*Domínio reservado para uso futuro*)  <br>- QRES - QR code estático (*Domínio reservado para uso futuro*)  <br>- INIC - Indica que o recebedor (creditor) contratou o Iniciador de Pagamentos especificamente para realizar iniciações de pagamento em que o beneficiário é previamente conhecido.|
 |» qrCode|string|true|Obs: Campo reservado para uso futuro.  <br>Sequência de caracteres que corresponde ao QR Code disponibilizado para o pagador.  <br>É a sequência de caracteres que seria lida pelo leitor de QR Code, e deve propiciar o retorno dos dados do pagador após consulta na DICT.  <br>Essa funcionalidade é possível tanto para QR Code estático quanto para QR Code dinâmico.  <br>No arranjo do Pix esta é a mesma sequência gerada e/ou lida pela funcionalidade Pix Copia e Cola.  <br>Este campo deverá ser no formato UTF-8.  <br>[Restrição] Preenchimento obrigatório para pagamentos por QR Code, observado o tamanho máximo de 512 bytes.|
-|» proxy|string|true|Chave cadastrada no DICT pertencente ao recebedor. Os tipos de chaves podem ser: telefone, e-mail, cpf/cnpj ou chave aleatória.  <br>No caso de telefone celular deve ser informado no padrão E.1641.  <br>Para e-mail deve ter o formato xxxxxxxx@xxxxxxx.xxx(.xx) e no máximo 77 caracteres.  <br>No caso de CPF deverá ser informado com 11 números, sem pontos ou traços.  <br>Para o caso de CNPJ deverá ser informado com 14 números, sem pontos ou traços.  <br>No caso de chave aleatória deve ser informado o UUID gerado pelo DICT, conforme formato especificado na RFC41223.  <br>Se informado, a detentora da conta deve validar o proxy no DICT quando localInstrument for igual a DICT, QRDN (uso futuro) ou QRES (uso futuro) e validar o campo creditorAccount.<br>Esta validação é opcional caso o localInstrument for igual a INIC.  <br>[Restrição] Se localInstrument for igual a MANU, o campo proxy não deve ser preenchido. Se localInstrument for igual INIC, DICT, QRDN (uso futuro) ou QRES(uso futuro), o campo proxy deve ser sempre preenchido com a chave Pix.|
+|» proxy|string|true|Chave cadastrada no DICT pertencente ao recebedor. Os tipos de chaves podem ser: telefone, e-mail, cpf/cnpj ou chave aleatória.  <br>No caso de telefone celular deve ser informado no padrão E.1641.  <br>Para e-mail deve ter o formato xxxxxxxx@xxxxxxx.xxx(.xx) e no máximo 77 caracteres.  <br>No caso de CPF deverá ser informado com 11 números, sem pontos ou traços.  <br>Para o caso de CNPJ deverá ser informado com 14 números, sem pontos ou traços.  <br>No caso de chave aleatória deve ser informado o UUID gerado pelo DICT, conforme formato especificado na RFC41223.  <br>Se informado, a detentora da conta deve validar o proxy no DICT quando localInstrument for igual a DICT, QRDN (uso futuro) ou QRES (uso futuro) e validar o campo creditorAccount.<br>Esta validação é opcional caso o localInstrument for igual a INIC.  <br>[Restrição] Se localInstrument for igual a MANU, o campo proxy não deve ser preenchido. Se localInstrument for igual INIC, DICT, QRDN (uso futuro) ou QRES (uso futuro), o campo proxy deve ser sempre preenchido com a chave Pix.|
 |» creditorAccount|[CreditorAccount](#schemacreditoraccount)|true|Objeto que contém a identificação da conta de destino do beneficiário/recebedor.|
 
 <h2 id="tocS_PaymentPix">PaymentPix</h2>
@@ -2349,17 +2327,6 @@ Objeto contendo dados do pagameto como moeda e valor.
       "issuer": "1774",
       "number": "1234567890",
       "accountType": "CACC"
-    },
-    "details": {
-      "localInstrument": "DICT",
-      "qrCode": "00020104141234567890123426660014BR.GOV.BCB.PIX014466756C616E6F32303139406578616D706C652E636F6D27300012  \nBR.COM.OUTRO011001234567895204000053039865406123.455802BR5915NOMEDORECEBEDOR6008BRASILIA61087007490062  \n530515RP12345678-201950300017BR.GOV.BCB.BRCODE01051.0.080450014BR.GOV.BCB.PIX0123PADRAO.URL.PIX/0123AB  \nCD81390012BR.COM.OUTRO01190123.ABCD.3456.WXYZ6304EB76\n",
-      "proxy": "12345678901",
-      "creditorAccount": {
-        "ispb": "12345678",
-        "issuer": "1774",
-        "number": "1234567890",
-        "accountType": "CACC"
-      }
     }
   },
   "links": {
@@ -2389,7 +2356,6 @@ Objeto contendo dados do pagameto como moeda e valor.
 |» creditor|[Identification](#schemaidentification)|true|Objeto contendo os dados do recebedor (creditor).|
 |» payment|[PaymentConsent](#schemapaymentconsent)|true|Objeto contendo dados de pagamento para consentimento.|
 |» debtorAccount|[DebtorAccount](#schemadebtoraccount)|false|Objeto que contém a identificação da conta de origem do pagador.  <br>As informações quanto à conta de origem do pagador poderão ser trazidas no consentimento para a detentora, caso a iniciadora tenha coletado essas informações do cliente. Do contrário, será coletada na detentora e trazida para a iniciadora como resposta à criação do pagamento.|
-|» details|[PaymentConsent/properties/details](#schemapaymentconsent/properties/details)|true|Objeto contendo os detalhes do pagamento.  <br>[Restrição] No método POST /consents deve ser enviado obrigatoriamente. No método GET /consents/{consentId} é obrigatório para todo consentimento gerado que contêm as informações do recebedor. Consentimentos gerados anteriormente ao início da vigência da versão 2.0.0 da API, não deve existir o campo no payload de resposta.|
 |links|[ResponsePixPayment/properties/links](#schemaresponsepixpayment/properties/links)|true|Referências para outros recusos da API requisitada.|
 |meta|[Meta](#schemameta)|true|Meta informações referente a API requisitada.|
 
@@ -2417,7 +2383,7 @@ Objeto contendo dados do pagameto como moeda e valor.
       "amount": "100000.12",
       "currency": "BRL"
     },
-    "transactionIdentification": "50685362000135",
+    "transactionIdentification": "E00038166201907261559y6j6",
     "remittanceInformation": "Pagamento da nota RSTO035-002.",
     "creditorAccount": {
       "ispb": "12345678",
@@ -2470,7 +2436,7 @@ Objeto contendo dados do pagameto como moeda e valor.
     "amount": "100000.12",
     "currency": "BRL"
   },
-  "transactionIdentification": "50685362000135",
+  "transactionIdentification": "E00038166201907261559y6j6",
   "remittanceInformation": "Pagamento da nota RSTO035-002.",
   "creditorAccount": {
     "ispb": "12345678",
@@ -2499,7 +2465,7 @@ Objeto contendo dados do pagamento e da conta do recebedor (creditor).
 |localInstrument|[CreatePixPaymentData/properties/localInstrument](#schemacreatepixpaymentdata/properties/localinstrument)|true|Especifica a forma de iniciação do pagamento:  <br>- MANU - Inserção manual de dados da conta transacional  <br>- DICT - Inserção manual de chave Pix  <br>- QRDN - QR code dinâmico (*Domínio reservado para uso futuro*)  <br>- QRES - QR code estático (*Domínio reservado para uso futuro*)  <br>- INIC - Indica que o recebedor (creditor) contratou o Iniciador de Pagamentos especificamente para realizar iniciações de pagamento em que o beneficiário é previamente conhecido.|
 |cnpjInitiator|string|true|CNPJ do Iniciador de Pagamento devidamente habilitado para a prestação de Serviço de Iniciação no Pix.|
 |payment|[PaymentPix](#schemapaymentpix)|true|Objeto contendo dados do pagameto como moeda e valor.|
-|transactionIdentification|string|false|Trata-se de um identificador de transação que deve ser retransmitido intacto pelo PSP do pagador ao gerar a ordem de pagamento. Essa informação permitirá ao recebedor identificar e correlacionar a transferência, quando recebida, com a apresentação das instruções ao pagador. Os caracteres permitidos no contexto do Pix para o campo txid (EMV 62-05) são: - Letras minúsculas, de ‘a’ a ‘z’ - Letras maiúsculas, de ‘A’ a ‘Z’ - Dígitos decimais, de ‘0’ a ‘9’ [Restrição] Se localInstrument for igual a INIC, o campo transactionIdentification deve ser preenchido obrigatoriamente. Se localInstrument for igual a MANU ou DICT, o campo transactionIdentification não deve ser preenchido. A detentora de conta deve validar se a condicionalidade do campo foi atendida pela iniciadora de pagamento.|
+|transactionIdentification|string|false|Trata-se de um identificador de transação que deve ser retransmitido intacto pelo PSP do pagador ao gerar a ordem de pagamento. Essa informação permitirá ao recebedor identificar e correlacionar a transferência, quando recebida, com a apresentação das instruções ao pagador.<br>Os caracteres permitidos no contexto do Pix para o campo txid (EMV 62-05) são:    <br>- Letras minúsculas, de ‘a’ a ‘z’ <br>- Letras maiúsculas, de ‘A’ a ‘z’   <br>- Dígitos decimais, de ‘0’ a ‘9’  <br>    <br>[Restrição] Se localInstrument for igual a INIC, o campo transactionIdentification deve ser preenchido obrigatoriamente.<br>Se localInstrument for igual a MANU ou DICT, o campo transactionIdentification não deve ser preenchido.<br>A detentora de conta deve validar se a condicionalidade do campo foi atendida pela iniciadora de pagamento.|
 |remittanceInformation|string|false|Deve ser preenchido sempre que o usuário pagador inserir alguma informação adicional em um pagamento, a ser enviada ao recebedor.|
 |creditorAccount|[CreditorAccount](#schemacreditoraccount)|true|Objeto que contém a identificação da conta de destino do beneficiário/recebedor.|
 
