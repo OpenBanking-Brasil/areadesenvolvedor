@@ -33,6 +33,9 @@ info:
 
     Futuramente com a evolução do ecossistema novas modalidades de operações serão agregadas, assim como a possibilidade de agendamentos.
 
+    #### Iniciação pelo Recebedor  
+    Iniciação pelo recebedor ocorre quando a prestação de serviço pela iniciadora é para, e somente para,  o recebedor. Nestes casos somente será permitido como beneficiário do pagamento o próprio recebedor. Algumas Instituições Detentoras de conta precisarão ajustar seus sistemas de forma a apropriar o campo em sua estrutura ao invés de gerá-lo nos casos pertinentes.  
+
     ### Idempotência
 
     Segundo a W3C, "um método HTTP idempotente é um método HTTP que pode ser chamado muitas vezes sem resultados diferentes ou efeitos colaterais. Não importa se o método é chamado apenas uma vez ou dez vezes. O resultado deve ser o mesmo. Essencialmente, significa que o resultado de uma solicitação executada com sucesso é independente do número de vezes que ela é executada. Por exemplo, na aritmética, adicionar zero a um número é uma operação idempotente."
@@ -149,7 +152,7 @@ info:
 
     #### POST /payments/v1/consents
     Para a criação de consentimento, considerando o requerido para FAPI - Loding Intent (<a href="https://bitbucket.org/openid/fapi/src/master/Financial_API_Lodging_Intent.md" target="_blank">Financial_API_Lodging_Intent.md</a>), após a obtenção do token de acesso, a Instituição Iniciadora deverá usar esse token de acesso para fazer a requisição POST de consentimento.  
-    A criação do consentimento encontra-se detalhada na seção das APIs para Pagamentos (<a href="#em-revisao-criar-consentimento-para-iniciacao-de-pagamento">Open Banking Brasil</a>).
+    A criação do consentimento encontra-se detalhada na seção das APIs para Pagamentos (<a href="#em-revisao-criar-consentimento-para-iniciacao-de-pagamento">Open Banking Brasil</a>).  
 
     #### 201 Created
     A API de Consentimento deverá responder o Http Status 201 e Payload contendo ***consentId***, e status inicial do consentimento em **AWAITING_AUTHORISATION** conforme especificado na documentação <a href="#em-revisao-criar-consentimento-para-iniciacao-de-pagamento">Open Banking Brasil</a>.
@@ -157,10 +160,10 @@ info:
     #### Redirecionamento
     No caso do consentimento ter sido criado com sucesso, a Instituição Iniciadora deverá fazer o redirecionamento para a Instituição Detentora da Conta. Esse fluxo de redirecionamento deve considerar todos os requisitos definidos para o objeto de requisição OpenID Connect (Seção 4.3 da especificação de segurança - <a href="https://openbanking-brasil.github.io/specs-seguranca/tpp-user-guide.html" target="_blank">Third Party Provider End To End User Guide</a>).  
     Esse redirecionamento é o passo que permitirá o início da autenticação do usuário na Instituição Detentora da Conta.
-
+ 
     #### Validações de negócios (Detentora)
-
-    Ao receber o POST /pix/payments é importante observar que a Detentora deverá validar as informações passadas pela Iniciadora nos campos do payload de envio do consentimento e do pagamento (como, por exemplo, valores e dados do creditado), além de ser necessário decodificar o código para os casos de pagamentos iniciados a partir de um Pix QRCode, a fim de que a Detentora carregue as informações complementares (como, por exemplo, o TxID) na mensageria do Pix (atenção para a PACS008 e as <a href="https://www.bcb.gov.br/estabilidadefinanceira/pix?modalAberto=regulamentacao_pix" target="_blank">regulamentações do Pix</a>).
+    Ao receber o POST /payments/v1/pix/payments é importante observar que a Detentora deverá validar as informações passadas pela Iniciadora nos campos do payload de envio do consentimento e do pagamento (como, por exemplo, valores e dados do creditado), além de ser necessário decodificar o código para os casos de pagamentos iniciados a partir de um Pix QRCode, a fim de que a Detentora carregue as informações complementares (como, por exemplo, o TxID) na mensageria do Pix (atenção para a PACS008 e as <a href="https://www.bcb.gov.br/estabilidadefinanceira/pix?modalAberto=regulamentacao_pix" target="_blank">regulamentações do Pix</a>).   
+    A Detentora deve validar as informações de detalhes do payload com os dados de detalhes do consentimento, de acordo com a forma de pagamento. Caso os dados do detalhe informados no consentimento sejam diferente dos dados enviados na iniciação de pagamento, a Detentora de retornar erro HTTP 422 Unprocessable Entity, com o code BENEFICIARIO_INCOMPATIVEL.  
 
     #### Efetivação do pagamento&lt;&lt;Assync&gt;&gt;
     A Detentora de Conta efetua a transação de pagamento entre o Debtor e Creditor através da forma de pagamento escolhida pelo Debtor. A efetivação da transação acontece de maneira assíncrona ao fluxo do Open Banking, seguindo as regras e interfaces do arranjo utilizado (apenas PIX disponível nesse momento).
@@ -209,8 +212,7 @@ info:
    
     #### CONSUMED
     - O consentimento assume o status CONSUMED após ocorrer o processamento da iniciação do pagamento, seja ele com sucesso (HTTP 201) ou ainda em casos de insucesso (HTTP 422) retornados pela Detentora. Para os demais códigos HTTP não há mudança de status do consentimento, o mesmo permanecerá AUTHORISED, respeitando o tempo máximo de expiração do consentimento (60 minutos).    
-    
-
+      
     ### Recomendação uso de polling
     #### A consulta via GET, para verificar o processamento da transação, pode ser efetuada a qualquer momento desde que se respeite o rate limit de:  
     - 300 TPS global, 50 TPS por instituição e 8 TPS por endereço IP (Internet Protocol).  
@@ -258,7 +260,7 @@ info:
     |Nome|Tipo|Obrigatório|Descrição|
     |---|---|---|---|---|
     |aud|string|true|(***requisição JWT***): o Provedor do Recurso (p. ex. a instituição Detentora da Conta) deverá validar se o valor do campo **aud** coincide com o endpoint sendo acionado.<br>(***resposta JWT***): o cliente da API (p. ex. instituição Iniciadora) deverá validar se o valor do campo **aud** coincide com o seu próprio `organisationId` listado no diretório.|
-    |iss|string|true|(***requisição JWT*** e ***resposta JWT***): o receptor da mensagem deverá validar se o valor do campo **iss** coincide com o seu prório `organisationId` listado no diretório.|
+    |iss|string|true|(***requisição JWT*** e ***resposta JWT***): o receptor da mensagem deverá validar se o valor do campo **iss** coincide com o `organisationId` da outra parte listado no diretório.|
     |jti|string|true|(***requisição JWT*** e ***resposta JWT***): o valor do campo **jti** deverá ser preenchido com o UUID definido pela instituição de acordo com a <a href="https://datatracker.ietf.org/doc/html/rfc4122" target="_blank">RFC 4122</a> usando o versão 4.|
     |iat|string|true|(***requisição JWT*** e ***resposta JWT***): o valor do campo **iat** deverá ser preenchido com o horário da geração da mensagem e de acordo com o padrão estabelecido na <a href="https://datatracker.ietf.org/doc/html/rfc7519#section-2" target="_blank">RFC7519</a> para o formato _NumericDate_|
 
@@ -273,11 +275,9 @@ info:
     > Exemplo de requisição - JWS assinada e codificada
 
     ```json
-    {
-      "eyJhbGciOiJQUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlBXQWk1cnVRY0hmelB6cTJKRmRwWTduQVVoNkx6VFRRdERCVXBPTTM3SlEifQ.
+      eyJhbGciOiJQUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlBXQWk1cnVRY0hmelB6cTJKRmRwWTduQVVoNkx6VFRRdERCVXBPTTM3SlEifQ.
       eyJhdWQiOiJodHRwczovL2FwaS5iYW5jby5jb20uYnIvb3BlbmJhbmtpbmcvcGF5bWVudHMvdjEvY29uc2VudHMiLCJpc3MiOiI1NjQ3ZmU5MC1mNmJjLTExZWItOWEwMy0wMjQyYWMxMzAwMDMiLCJqdGkiOiI3OTYwNTc3Yy02NjJjLTQ1NmUtOGNmNS1lNjMwODI4YWY2MzUiLCJpYXQiOiIxNjI4MjU3NDg0IiwiZGF0YSI6eyJsb2dnZWRVc2VyIjp7ImRvY3VtZW50Ijp7ImlkZW50aWZpY2F0aW9uIjoiMTExMTExMTExMTEiLCJyZWwiOiJDUEYifX0sImJ1c2luZXNzRW50aXR5Ijp7ImRvY3VtZW50Ijp7ImlkZW50aWZpY2F0aW9uIjoiMTExMTExMTExMTExMTEiLCJyZWwiOiJDTlBKIn19LCJjcmVkaXRvciI6eyJwZXJzb25UeXBlIjoiUEVTU09BX05BVFVSQUwiLCJjcGZDbnBqIjoiNTg3NjQ3ODkwMDAxMzciLCJuYW1lIjoiTWFyY28gQW50b25pbyBkZSBCcml0byJ9LCJwYXltZW50Ijp7InR5cGUiOiJQSVgiLCJkYXRlIjoiMjAyMS0wMS0wMSIsImN1cnJlbmN5IjoiQlJMIiwiYW1vdW50IjoiMTAwMDAwLjEyIn0sImRlYnRvckFjY291bnQiOnsiaXNwYiI6IjEyMzQ1Njc4IiwiaXNzdWVyIjoiMTc3NCIsIm51bWJlciI6IjEyMzQ1Njc4OTAiLCJhY2NvdW50VHlwZSI6IkNBQ0MifX19.
       QPeCCkH45tZ4kMRYwLNIFXnHGIe0smk5V1qVrM7Iw_YcNUbla45ThCFzU_NEeYx3FaPJko_PIGWzxC62c_yrh0R5yYpGJ_V4PZxGer27p_tZgyJ_x7MZbMkMaRqO8w9rcfa8FrNc9zBXbkdh2D0GmC_fDtAV5F-ndYhaztH2w-G5OGg7S57wifA4HVq11vQLmk5p3VjKFA530KALurU5kRmAfgK0mYA6_EaOtXiQTeP06_gu6g9JIenGLaDVeKLXKTtv8YhCZhoO_eHNBdAmmFJTQW_zPQrKnlj1Qo6XJIgRQ0sqigV9lOOOQNWjpFwZ2DYYcXbdHumCznlN_yb5yw
-    }
     ```
 
     > Exemplo de requisição - JWS decodificada
@@ -333,11 +333,9 @@ info:
      > Exemplo de resposta - JWS assinada e codificada
 
     ```json
-    {
-      "eyJhbGciOiJQUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlBXQWk1cnVRY0hmelB6cTJKRmRwWTduQVVoNkx6VFRRdERCVXBPTTM3SlEifQ.
+      eyJhbGciOiJQUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlBXQWk1cnVRY0hmelB6cTJKRmRwWTduQVVoNkx6VFRRdERCVXBPTTM3SlEifQ.
       eyJhdWQiOiIzNDQ5YmYyMS0wYjA3LTQ4ZTYtYjZmYy0xM2ViMTYxYTk5MDEiLCJpc3MiOiJjYTFiOThlMS05N2EyLTQzZGItOTQ3Zi04YTA4MDU0YzM0MmUiLCJqdGkiOiJhMmZkMzkzYy0xMDdhLTRhZDQtYmUyMi0zY2ZlZWVhOTBlZmUiLCJpYXQiOiIxNjI4MjU3NzM3IiwiZGF0YSI6eyJjb25zZW50SWQiOiJ1cm46YmFuY29leDpDMUREMzMxMjMiLCJjcmVhdGlvbkRhdGVUaW1lIjoiMjAyMS0wNS0yMVQwODozMDowMFoiLCJleHBpcmF0aW9uRGF0ZVRpbWUiOiIyMDIxLTA1LTIxVDA4OjMwOjAwWiIsInN0YXR1c1VwZGF0ZURhdGVUaW1lIjoiMjAyMS0wNS0yMVQwODozMDowMFoiLCJzdGF0dXMiOiJBV0FJVElOR19BVVRIT1JJU0FUSU9OIiwibG9nZ2VkVXNlciI6eyJkb2N1bWVudCI6eyJpZGVudGlmaWNhdGlvbiI6IjExMTExMTExMTExIiwicmVsIjoiQ1BGIn19LCJidXNpbmVzc0VudGl0eSI6eyJkb2N1bWVudCI6eyJpZGVudGlmaWNhdGlvbiI6IjExMTExMTExMTExMTExIiwicmVsIjoiQ05QSiJ9fSwiY3JlZGl0b3IiOnsicGVyc29uVHlwZSI6IlBFU1NPQV9OQVRVUkFMIiwiY3BmQ25waiI6IjU4NzY0Nzg5MDAwMTM3IiwibmFtZSI6Ik1hcmNvIEFudG9uaW8gZGUgQnJpdG8ifSwicGF5bWVudCI6eyJ0eXBlIjoiUElYIiwiZGF0ZSI6IjIwMjEtMDEtMDEiLCJjdXJyZW5jeSI6IkJSTCIsImFtb3VudCI6IjEwMDAwMC4xMiJ9LCJkZWJ0b3JBY2NvdW50Ijp7ImlzcGIiOiIxMjM0NTY3OCIsImlzc3VlciI6IjE3NzQiLCJudW1iZXIiOiIxMjM0NTY3ODkwIiwiYWNjb3VudFR5cGUiOiJDQUNDIn19LCJsaW5rcyI6eyJzZWxmIjoiaHR0cHM6Ly9hcGkuYmFuY28uY29tLmJyL29wZW4tYmFua2luZy9hcGkvdjEvcmVzb3VyY2UifSwibWV0YSI6eyJ0b3RhbFJlY29yZHMiOjEsInRvdGFsUGFnZXMiOjEsInJlcXVlc3REYXRlVGltZSI6IjIwMjEtMDUtMjFUMDg6MzA6MDBaIn19.
-      08SM6dnS_-COzDmhlhJ-OfBAqyMpwPiaKCJPkggUKRgns7dFMvezsv2fWlX4tYkDw_Hc8NL-fsfw5eI13FoDTSQUPdKt8KRpPNZ5qXNsjyIIwtV13hmIepGSNsyaOlhX7JXVhxWceE5VfMcVp5no62tDqh1u84liOx8dOV5G31SlkBknPR5v-M-xNUFAo63WCFy6Zew-uuLbP3ruP4CSdY_h1BkOABJnraoa-yPhuByHg2zwbNY_ELYigf2FPyrFZsEH48hU_UZG1EOLt7cII9hzJxTYLtJX5SJiwH8kxegQtpbLpxZ3Se282Bc_OYyX1Fz4_lHjSDmuLwW3PzEbhQ"
-    }
+      08SM6dnS_-COzDmhlhJ-OfBAqyMpwPiaKCJPkggUKRgns7dFMvezsv2fWlX4tYkDw_Hc8NL-fsfw5eI13FoDTSQUPdKt8KRpPNZ5qXNsjyIIwtV13hmIepGSNsyaOlhX7JXVhxWceE5VfMcVp5no62tDqh1u84liOx8dOV5G31SlkBknPR5v-M-xNUFAo63WCFy6Zew-uuLbP3ruP4CSdY_h1BkOABJnraoa-yPhuByHg2zwbNY_ELYigf2FPyrFZsEH48hU_UZG1EOLt7cII9hzJxTYLtJX5SJiwH8kxegQtpbLpxZ3Se282Bc_OYyX1Fz4_lHjSDmuLwW3PzEbhQ
     ```
 
     > Exemplo de resposta - JWS decodificada
@@ -390,7 +388,7 @@ info:
         }
       },
       "links": {
-        "self": "https://api.banco.com.br/open-banking/api/v1/resource"
+        "self": "https://api.banco.com.br/open-banking/payments/v1/consents"
       },
       "meta": {
         "totalRecords": 1,
@@ -409,13 +407,13 @@ info:
     
     * Erros na validação da mensagem recebida pela aplicação cliente (p. ex. iniciador de pagamento) devem ser registrados e o `Provedor do Recurso` (p. ex. instituição detentora de conta) deve ser notificado.
 
-  version: 1.0.1
+  version: 1.0.1-rc1.0
 tags:
   - name: API - Pagamentos
     description: |
       |Versão|
       |:-----|
-      |1.0.1|
+      |1.0.1-rc1.0|
 
       #### Visão Geral
       
@@ -670,6 +668,8 @@ components:
       $ref: ./schemas/business_commons/CreditorAccount.yaml
     DebtorAccount:
       $ref: ./schemas/business_commons/DebtorAccount.yaml
+    Details:
+      $ref: ./schemas/payments_apis/PaymentDetails.yaml
     EndToEndId:
       $ref: ./schemas/business_commons/EndToEndId.yaml
     EnumAccountPaymentsType:
