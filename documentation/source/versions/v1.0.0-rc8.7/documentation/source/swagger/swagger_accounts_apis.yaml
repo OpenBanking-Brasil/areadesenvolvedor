@@ -37,12 +37,12 @@ info:
     ### `/accounts/{accountId}/overdraft-limits`
       - permissions:
         - GET: **ACCOUNTS_OVERDRAFT_LIMITS_READ**
-  version: 1.0.3
+  version: 1.0.0
   license:
     name: Apache 2.0
     url: 'https://www.apache.org/licenses/LICENSE-2.0'
   contact:
-    name: Governança do Open Banking Brasil – Especificações
+    name: Governança do Open Banking Brasil – Interfaces
     email: gt-interfaces@openbankingbr.org
     url: 'https://openbanking-brasil.github.io/areadesenvolvedor/'
 servers:
@@ -59,8 +59,8 @@ paths:
       tags:
         - Accounts
       summary: Obtém a lista de contas consentidas pelo cliente.
-      operationId: accountsGetAccounts
       description: 'Método para obter a lista de contas depósito à vista, poupança e pagamento pré-pagas mantidas pelo cliente na instituição transmissora e para as quais ele tenha fornecido consentimento.'
+      operationId: getAccounts
       parameters:
         - $ref: '#/components/parameters/Authorization'
         - $ref: '#/components/parameters/xFapiAuthDate'
@@ -93,9 +93,7 @@ paths:
           $ref: '#/components/responses/OKResponseAccountList'
       security:
         - OpenId:
-            - openid
-          OAuth2Security:
-            - 'consent:consentId'
+            - openId
             - accounts
   '/accounts/{accountId}':
     get:
@@ -103,7 +101,7 @@ paths:
         - Accounts
       summary: Obtém os dados de identificação da conta identificada por accountId.
       description: 'Método para obter os dados de identificação da conta de depósito à vista, poupança ou pagamento pré-paga identificada por accountId mantida pelo cliente na instituição transmissora.'
-      operationId: accountsGetAccountsAccountId
+      operationId: getAccountsAccountId
       parameters:
         - $ref: '#/components/parameters/Authorization'
         - $ref: '#/components/parameters/xFapiAuthDate'
@@ -134,17 +132,15 @@ paths:
           $ref: '#/components/responses/OKResponseAccountIdentification'
       security:
         - OpenId:
-            - openid
-          OAuth2Security:
-            - 'consent:consentId'
+            - openId
             - accounts
   '/accounts/{accountId}/balances':
     get:
       tags:
         - Accounts
       summary: Obtém os saldos da conta identificada por accountId.
-      operationId: accountsGetAccountsAccountIdBalances
       description: 'Método para obter os saldos da conta de depósito à vista, poupança ou pagamento pré-paga identificada por accountId mantida pelo cliente na instituição transmissora.'
+      operationId: getAccountsAccountIdBalances
       parameters:
         - $ref: '#/components/parameters/Authorization'
         - $ref: '#/components/parameters/xFapiAuthDate'
@@ -175,17 +171,15 @@ paths:
           $ref: '#/components/responses/OKResponseAccountBalances'
       security:
         - OpenId:
-            - openid
-          OAuth2Security:
-            - 'consent:consentId'
+            - openId
             - accounts
   '/accounts/{accountId}/transactions':
     get:
       tags:
         - Accounts
       summary: Obtém a lista de transações da conta identificada por accountId.
-      operationId: accountsGetAccountsAccountIdTransactions
       description: 'Método para obter a lista de transações da conta de depósito à vista, poupança ou pagamento pré-paga identificada por accountId mantida pelo cliente na instituição transmissora.'
+      operationId: getAccountsAccountIdTransactions
       parameters:
         - $ref: '#/components/parameters/Authorization'
         - $ref: '#/components/parameters/xFapiAuthDate'
@@ -221,17 +215,15 @@ paths:
           $ref: '#/components/responses/OKResponseAccountTransactions'
       security:
         - OpenId:
-            - openid
-          OAuth2Security:
-            - 'consent:consentId'
+            - openId
             - accounts
   '/accounts/{accountId}/overdraft-limits':
     get:
       tags:
         - Accounts
       summary: Obtém os limites da conta identificada por accountId.
-      operationId: accountsGetAccountsAccountIdOverdraftLimits
       description: 'Método para obter os limites da conta de depósito à vista, poupança ou pagamento pré-paga identificada por accountId mantida pelo cliente na instituição transmissora.'
+      operationId: getAccountsAccountIdOverdraftLimits
       parameters:
         - $ref: '#/components/parameters/Authorization'
         - $ref: '#/components/parameters/xFapiAuthDate'
@@ -262,9 +254,7 @@ paths:
           $ref: '#/components/responses/OKResponseAccountOverdraftLimits'
       security:
         - OpenId:
-            - openid
-          OAuth2Security:
-            - 'consent:consentId'
+            - openId
             - accounts
 components:
   schemas:
@@ -283,9 +273,9 @@ components:
         availableAmount:
           type: number
           format: double
-          pattern: '^-?\d{1,15}\.\d{2,4}$'
+          pattern: '(-?\d{15}(.\d{4}?))$'
           description: 'Saldo disponível para utilização imediata. No caso de conta de depósito a vista, sem considerar cheque especial e investimentos atrelados a conta. Admite saldo negativo. Expresso em valor monetário com 4 casas decimais.'
-          maxLength: 20
+          maxLength: 19
           minLength: 0
           nullable: true
           example: 100000.04
@@ -298,9 +288,9 @@ components:
         blockedAmount:
           type: number
           format: double
-          pattern: '^-?\d{1,15}\.\d{2,4}$'
+          pattern: '(-?\d{15}(.\d{4}?))$'
           description: 'Saldo bloqueado, não disponível para utilização imediata, por motivo de bloqueio apresentado para o cliente nos canais eletrônicos Expresso em valor monetário com 4 casas decimais.'
-          maxLength: 20
+          maxLength: 19
           minLength: 0
           nullable: true
           example: 99.9999
@@ -313,12 +303,12 @@ components:
         automaticallyInvestedAmount:
           type: number
           format: double
-          pattern: '^-?\d{1,15}\.\d{2,4}$'
+          pattern: '(-?\d{15}(.\d{4}?))$'
           description: Saldo disponível com aplicação automática - corresponde a soma do saldo disponível acrescido do valor obtido a partir da aplicação automática Expresso em valor monetário com 4 casas decimais.
-          maxLength: 20
+          maxLength: 19
           minLength: 0
           nullable: true
-          example: 100000.04
+          example: 2566449494219
         automaticallyInvestedAmountCurrency:
           type: string
           pattern: '^(\w{3}){1}$'
@@ -336,13 +326,13 @@ components:
         - branchCode
         - number
         - checkDigit
-        - accountId
+        - accountID
       properties:
         brandName:
           type: string
           description: 'Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes.'
           maxLength: 80
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           example: Organização A
         companyCnpj:
           type: string
@@ -373,13 +363,13 @@ components:
         checkDigit:
           type: string
           description: Dígito da conta
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           maxLength: 1
           example: '4'
-        accountId:
+        accountID:
           type: string
           description: 'Identifica de forma única  a conta do cliente, mantendo as regras de imutabilidade dentro da instituição transmissora.'
-          pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
+          pattern: \w*\W*
           maxLength: 100
           example: '92792126019929279212650822221989319252576'
       additionalProperties: false
@@ -419,7 +409,7 @@ components:
         checkDigit:
           type: string
           maxLength: 1
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           description: |
             Dígito da conta
           example: '4'
@@ -451,9 +441,9 @@ components:
         overdraftContractedLimit:
           type: number
           format: double
-          pattern: '^-?\d{1,15}\.\d{2,4}$'
+          pattern: '(-?\d{15}(.\d{4}?))$'
           description: Valor do limite contratado do cheque especial.
-          maxLength: 20
+          maxLength: 19
           minLength: 0
           nullable: true
           example: 99.9999
@@ -466,9 +456,9 @@ components:
         overdraftUsedLimit:
           type: number
           format: double
-          pattern: '^-?\d{1,15}\.\d{2,4}$'
+          pattern: '(-?\d{15}(.\d{4}?))$'
           description: Valor utilizado total do limite do cheque especial e o adiantamento a depositante.
-          maxLength: 20
+          maxLength: 19
           minLength: 0
           nullable: true
           example: 10000.9999
@@ -481,9 +471,9 @@ components:
         unarrangedOverdraftAmount:
           type: number
           format: double
-          pattern: '^-?\d{1,15}\.\d{2,4}$'
+          pattern: '(-?\d{15}(.\d{4}?))$'
           description: Valor de operação contratada em caráter emergencial para cobertura de saldo devedor em conta de depósitos à vista e de excesso sobre o limite pactuado de cheque especial.
-          maxLength: 20
+          maxLength: 19
           minLength: 0
           example: 99.9999
           nullable: true
@@ -524,7 +514,7 @@ components:
         transactionName:
           type: string
           maxLength: 60
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           description: Campo livre que corresponde ao identificador da transação na instituição financeira
           example: TRANSFCWAR5TXHCX5I9IDBHML8082N8NEO30M6LNNG7ANAYIJYRM00ZBZPU8
         type:
@@ -532,9 +522,9 @@ components:
         amount:
           type: number
           format: double
-          pattern: '^-?\d{1,15}\.\d{2,4}$'
+          pattern: '(-?\d{15}(.\d{4}?))$'
           description: Valor da transação. Expressa em valor monetário com 4 casas decimais.
-          maxLength: 20
+          maxLength: 19
           minLength: 0
           example: 500.54
         transactionCurrency:
@@ -582,13 +572,12 @@ components:
         partieCheckDigit:
           type: string
           maxLength: 1
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           description: Dígito da conta da pessoa envolvida na transação
           example: '4'
       additionalProperties: false
     EnumAccountSubType:
       type: string
-      maxLength: 18
       enum:
         - INDIVIDUAL
         - CONJUNTA_SIMPLES
@@ -601,7 +590,6 @@ components:
       example: INDIVIDUAL
     EnumAccountType:
       type: string
-      maxLength: 24
       enum:
         - CONTA_DEPOSITO_A_VISTA
         - CONTA_POUPANCA
@@ -636,15 +624,14 @@ components:
       example: DEBITO
     EnumPartiePersonType:
       type: string
-      maxLength: 15
-      enum:
-        - PESSOA_NATURAL
-        - PESSOA_JURIDICA
-      example: PESSOA_NATURAL
       description: |
         Identificação do Tipo de Pessoa da pessoa envolvida na transação.
         Pessoa Natural - Informar CPF no campo “payerCnpjCpf”
         Pessoa Jurídica - Informar CNPJ no campo “payerCnpjCpf”
+      enum:
+        - PESSOA_NATURAL
+        - PESSOA_JURIDICA
+      example: PESSOA_NATURAL
     EnumTransactionTypes:
       type: string
       description: |
@@ -748,7 +735,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AccountData'
-          minItems: 0
+          minItems: 1
           description: 'Lista de contas depósito à vista, poupança e pagamento pré-pagas mantidas pelo cliente na instituição transmissora e para as quais ele tenha fornecido consentimento'
         links:
           $ref: '#/components/schemas/Links'
@@ -808,7 +795,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AccountTransactionsData'
-          minItems: 0
+          minItems: 1
           description: |
             Lista dos lançamentos referentes às transações realizadas e de lançamentos futuros para as contas de: depósito à vista, poupança e de pagamento pré-paga
         links:
@@ -835,27 +822,22 @@ components:
               code:
                 description: Código de erro específico do endpoint
                 type: string
-                pattern: '[\w\W\s]*'
+                pattern: \w*\W*
                 maxLength: 255
               title:
                 description: Título legível por humanos deste erro específico
                 type: string
-                pattern: '[\w\W\s]*'
+                pattern: \w*\W*
                 maxLength: 255
               detail:
                 description: Descrição legível por humanos deste erro específico
                 type: string
-                pattern: '[\w\W\s]*'
+                pattern: \w*\W*
                 maxLength: 2048
             additionalProperties: false
         meta:
           $ref: '#/components/schemas/Meta'
       additionalProperties: false
-    XFapiInteractionId:
-      type: string
-      pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
-      maxLength: 100
-      description: 'Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.'
   parameters:
     accountId:
       name: accountId
@@ -882,7 +864,7 @@ components:
       schema:
         type: string
         maxLength: 1
-        pattern: '[\w\W\s]*'
+        pattern: \w*\W*
       required: true
     accountsCompeCode:
       name: compeCode
@@ -916,7 +898,7 @@ components:
       required: true
       schema:
         type: string
-        pattern: '[\w\W\s]*'
+        pattern: \w*\W*
         maxLength: 2048
     creditDebitIndicator:
       name: creditDebitIndicator
@@ -971,7 +953,7 @@ components:
       required: false
       schema:
         type: string
-        pattern: '[\w\W\s]*'
+        pattern: \w*\W*
         minLength: 1
         maxLength: 100
     xFapiAuthDate:
@@ -991,7 +973,7 @@ components:
       required: false
       schema:
         type: string
-        pattern: '[\w\W\s]*'
+        pattern: \w*\W*
         minLength: 1
         maxLength: 100
     xFapiInteractionId:
@@ -1007,23 +989,17 @@ components:
   securitySchemes:
     OpenId:
       type: openIdConnect
-      openIdConnectUrl: 'https://auth.mockbank.poc.raidiam.io/.well-known/openid-configuration'
-    OAuth2Security:
-      type: oauth2
-      description: Fluxo OAuth necessário para que a receptora tenha acesso aos dados na instituição transmissora. Requer o processo de redirecionamento e autenticação do usuário a que se referem os dados.
-      flows:
-        authorizationCode:
-          authorizationUrl: 'https://authserver.example/authorization'
-          tokenUrl: 'https://authserver.example/token'
-          scopes:
-            accounts: Escopo necessário para acesso à API Accounts. O controle dos endpoints específicos é feito via permissions.
+      openIdConnectUrl: 'https://authserver.example/.well-known/openid-configuration'
   responses:
     OKResponseAccountList:
       description: Dados de identificação das contas obtidos com sucesso.
       headers:
         x-fapi-interaction-id:
           schema:
-            $ref: '#/components/schemas/XFapiInteractionId'
+            type: string
+            pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
+            maxLength: 100
+            description: 'Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.'
       content:
         application/json:
           schema:
@@ -1033,7 +1009,7 @@ components:
       headers:
         x-fapi-interaction-id:
           schema:
-            $ref: '#/components/schemas/XFapiInteractionId'
+            $ref: '#/components/responses/OKResponseAccountList/headers/x-fapi-interaction-id/schema'
       content:
         application/json:
           schema:
@@ -1043,7 +1019,7 @@ components:
       headers:
         x-fapi-interaction-id:
           schema:
-            $ref: '#/components/schemas/XFapiInteractionId'
+            $ref: '#/components/responses/OKResponseAccountList/headers/x-fapi-interaction-id/schema'
       content:
         application/json:
           schema:
@@ -1053,7 +1029,7 @@ components:
       headers:
         x-fapi-interaction-id:
           schema:
-            $ref: '#/components/schemas/XFapiInteractionId'
+            $ref: '#/components/responses/OKResponseAccountList/headers/x-fapi-interaction-id/schema'
       content:
         application/json:
           schema:
@@ -1063,7 +1039,7 @@ components:
       headers:
         x-fapi-interaction-id:
           schema:
-            $ref: '#/components/schemas/XFapiInteractionId'
+            $ref: '#/components/responses/OKResponseAccountList/headers/x-fapi-interaction-id/schema'
       content:
         application/json:
           schema:

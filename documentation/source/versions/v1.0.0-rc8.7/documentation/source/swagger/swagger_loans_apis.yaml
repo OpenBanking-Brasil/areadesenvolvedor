@@ -36,7 +36,7 @@ info:
     ### `/contracts/{contractId}/payments`
       - permissions:
         - GET: **LOANS_PAYMENTS_READ**
-  version: 1.0.3
+  version: 1.0.0
   license:
     name: Apache 2.0
     url: 'https://www.apache.org/licenses/LICENSE-2.0'
@@ -90,9 +90,7 @@ paths:
           $ref: '#/components/responses/OKResponseLoansContractList'
       security:
         - OpenId:
-            - openid
-          OAuth2Security:
-            - 'consent:consentId'
+            - openId
             - loans
   '/contracts/{contractId}':
     get:
@@ -131,9 +129,7 @@ paths:
           $ref: '#/components/responses/OKResponseLoansContract'
       security:
         - OpenId:
-            - openid
-          OAuth2Security:
-            - 'consent:consentId'
+            - openId
             - loans
   '/contracts/{contractId}/warranties':
     get:
@@ -174,9 +170,7 @@ paths:
           $ref: '#/components/responses/OKResponseLoansWarranties'
       security:
         - OpenId:
-            - openid
-          OAuth2Security:
-            - 'consent:consentId'
+            - openId
             - loans
   '/contracts/{contractId}/scheduled-instalments':
     get:
@@ -217,9 +211,7 @@ paths:
           $ref: '#/components/responses/OKResponseLoansInstalments'
       security:
         - OpenId:
-            - openid
-          OAuth2Security:
-            - 'consent:consentId'
+            - openId
             - loans
   '/contracts/{contractId}/payments':
     get:
@@ -260,9 +252,7 @@ paths:
           $ref: '#/components/responses/OKResponseLoansPayments'
       security:
         - OpenId:
-            - openid
-          OAuth2Security:
-            - 'consent:consentId'
+            - openId
             - loans
 components:
   schemas:
@@ -584,9 +574,9 @@ components:
           description: Valor monetário da parcela não regular a vencer. Expresso em valor monetário com 4 casas decimais.
           type: number
           format: double
-          pattern: '^-?\d{1,15}\.\d{2,4}$'
+          pattern: '(-?\d{15}(.\d{4}?))$'
           nullable: true
-          maxLength: 20
+          maxLength: 19
           minLength: 0
           example: 100000.04
       additionalProperties: false
@@ -637,7 +627,7 @@ components:
         productName:
           type: string
           maxLength: 140
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           example: Crédito Pessoal Consignado
           description: |
             Denominação/Identificação do nome da Modalidade da Operação de Crédito divulgado ao cliente
@@ -672,8 +662,8 @@ components:
           type: number
           format: double
           minLength: 0
-          maxLength: 20
-          pattern: '^-?\d{1,15}\.\d{2,4}$'
+          maxLength: 19
+          pattern: '(-?\d{15}(.\d{4}?))$'
           example: 100000.04
           nullable: true
           description: Valor contratado da operação. Expresso em valor monetário com até 4 casas decimais
@@ -696,7 +686,7 @@ components:
           $ref: '#/components/schemas/EnumContractInstalmentPeriodicity'
         instalmentPeriodicityAdditionalInfo:
           type: string
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           maxLength: 50
           example: Informações adicionais sobre periodicidade
           description: |
@@ -721,7 +711,7 @@ components:
           $ref: '#/components/schemas/EnumContractAmortizationScheduled'
         amortizationScheduledAdditionalInfo:
           type: string
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           maxLength: 50
           example: NA
           description: |
@@ -764,13 +754,13 @@ components:
         feeName:
           type: string
           maxLength: 140
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           description: Denominação da Tarifa pactuada
           example: Renovação de cadastro
         feeCode:
           type: string
           maxLength: 140
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           description: Sigla identificadora da tarifa pactuada
           example: CADASTRO
         feeChargeType:
@@ -779,13 +769,11 @@ components:
           $ref: '#/components/schemas/EnumContractFeeCharge'
         feeAmount:
           type: number
-          format: double
-          maxLength: 20
-          pattern: '^-?\d{1,15}\.\d{2,4}$'
           description: |
             Valor monetário da tarifa pactuada no contrato. Preenchimento obrigatório quando a forma de cobrança for: Mínimo, Máximo ou Fixo.
+          maxLength: 19
           nullable: true
-          example: 100000.04
+          example: 50
         feeRate:
           type: number
           format: double
@@ -827,7 +815,7 @@ components:
             Campo livre para complementar a informação relativa ao Tipo de taxa referencial ou indexador.
             [Restrição] Obrigatório para complementar a informação relativa ao Tipo de taxa referencial ou indexador, quando selecionada o tipo ou subtipo OUTRO.
           maxLength: 140
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           example: Informações adicionais
         preFixedRate:
           type: number
@@ -849,7 +837,7 @@ components:
         additionalInfo:
           type: string
           maxLength: 1200
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           example: Informações adicionais
           description: |
             Texto com informações adicionais sobre a composição das taxas de juros pactuadas.
@@ -866,7 +854,7 @@ components:
           $ref: '#/components/schemas/EnumContractFinanceChargeType'
         chargeAdditionalInfo:
           type: string
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           maxLength: 140
           example: Informações adicionais
           description: |
@@ -877,8 +865,8 @@ components:
           type: number
           format: double
           nullable: true
-          pattern: '^-?\d{1,15}\.\d{2,4}$'
-          maxLength: 20
+          pattern: '(-?\d{15}(.\d{4}?))$'
+          maxLength: 19
           minLength: 0
           example: 100000.04
       additionalProperties: false
@@ -991,13 +979,12 @@ components:
       properties:
         contractId:
           type: string
-          pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
           maxLength: 100
           example: '92792126019929279212650822221989319252576'
           description: 'Identifica de forma única o contrato da operação de crédito do cliente, mantendo as regras de imutabilidade dentro da instituição transmissora.'
         brandName:
           type: string
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           maxLength: 80
           example: Organização A
           description: 'Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes'
@@ -1044,8 +1031,8 @@ components:
           type: number
           format: double
           minLength: 0
-          maxLength: 20
-          pattern: '^-?\d{1,15}\.\d{2,4}$'
+          maxLength: 19
+          pattern: '(-?\d{15}(.\d{4}?))$'
           example: 100000.04
           description: Valor necessário para o cliente liquidar a dívida.
         releases:
@@ -1099,9 +1086,9 @@ components:
         paidAmount:
           type: number
           format: double
+          maxLength: 19
           minLength: 0
-          maxLength: 20
-          pattern: '^-?\d{1,15}\.\d{2,4}$'
+          pattern: '(-?\d{15}(.\d{4}?))$'
           example: 100000.04
           description: |
             Valor do pagamento referente ao  contrato da modalidade de crédito consultada.
@@ -1135,20 +1122,20 @@ components:
         feeName:
           type: string
           maxLength: 140
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           example: Reavaliação periódica do bem
           description: Denominação da Tarifa pactuada
         feeCode:
           type: string
           maxLength: 140
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           example: aval_bem
           description: Sigla identificadora da tarifa pactuada
         feeAmount:
           type: number
           format: double
-          pattern: '^-?\d{1,15}\.\d{2,4}$'
-          maxLength: 20
+          pattern: '(-?\d{15}(.\d{4}?))$'
+          maxLength: 19
           minLength: 0
           nullable: true
           example: 100000.04
@@ -1177,12 +1164,12 @@ components:
         warrantyAmount:
           type: number
           format: double
-          maxLength: 20
-          pattern: '^-?\d{1,15}\.\d{2,4}$'
-          example: 200.0001
+          maxLength: 19
+          pattern: '(-?\d{15}(.\d{4}?))$'
           description: |
             Valor original da garantia. Valor monetário, expresso com até 4 casas decimais.
             [Restrição] Preenchimento obrigatório se tipo de garantia selecionada for diferente de 'SEM_TIPO_GARANTIA'
+          example: 200.0001
       additionalProperties: false
     Meta:
       type: object
@@ -1228,17 +1215,17 @@ components:
               code:
                 description: Código de erro específico do endpoint
                 type: string
-                pattern: '[\w\W\s]*'
+                pattern: \w*\W*
                 maxLength: 255
               title:
                 description: Título legível por humanos deste erro específico
                 type: string
-                pattern: '[\w\W\s]*'
+                pattern: \w*\W*
                 maxLength: 255
               detail:
                 description: Descrição legível por humanos deste erro específico
                 type: string
-                pattern: '[\w\W\s]*'
+                pattern: \w*\W*
                 maxLength: 2048
             additionalProperties: false
         meta:
@@ -1320,11 +1307,6 @@ components:
         meta:
           $ref: '#/components/schemas/Meta'
       additionalProperties: false
-    XFapiInteractionId:
-      type: string
-      pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
-      maxLength: 100
-      description: 'Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.'
   parameters:
     Authorization:
       name: Authorization
@@ -1333,7 +1315,7 @@ components:
       required: true
       schema:
         type: string
-        pattern: '[\w\W\s]*'
+        pattern: \w*\W*
         maxLength: 2048
     contractId:
       name: contractId
@@ -1343,7 +1325,7 @@ components:
       schema:
         type: string
         pattern: '^[a-zA-Z0-9][a-zA-Z0-9-]{0,99}$'
-        maxLength: 100
+        maxLength: 40
     page:
       name: page
       in: query
@@ -1370,7 +1352,7 @@ components:
       required: false
       schema:
         type: string
-        pattern: '[\w\W\s]*'
+        pattern: \w*\W*
         minLength: 1
         maxLength: 100
     xFapiAuthDate:
@@ -1390,7 +1372,7 @@ components:
       required: false
       schema:
         type: string
-        pattern: '[\w\W\s]*'
+        pattern: \w*\W*
         minLength: 1
         maxLength: 100
     xFapiInteractionId:
@@ -1406,23 +1388,14 @@ components:
   securitySchemes:
     OpenId:
       type: openIdConnect
-      openIdConnectUrl: 'https://auth.mockbank.poc.raidiam.io/.well-known/openid-configuration'
-    OAuth2Security:
-      type: oauth2
-      description: Fluxo OAuth necessário para que a receptora tenha acesso aos dados na instituição transmissora. Requer o processo de redirecionamento e autenticação do usuário a que se referem os dados.
-      flows:
-        authorizationCode:
-          authorizationUrl: 'https://authserver.example/authorization'
-          tokenUrl: 'https://authserver.example/token'
-          scopes:
-            loans: Escopo necessário para acesso à API Loans. O controle dos endpoints específicos é feito via permissions.
+      openIdConnectUrl: 'https://authserver.example/.well-known/openid-configuration'
   responses:
     OKResponseLoansContractList:
       description: Dados dos contratos de empréstimos obtidos com sucesso.
       headers:
         x-fapi-interaction-id:
           schema:
-            $ref: '#/components/schemas/XFapiInteractionId'
+            $ref: '#/components/responses/OKResponseLoansContract/headers/x-fapi-interaction-id/schema'
       content:
         application/json:
           schema:
@@ -1432,7 +1405,10 @@ components:
       headers:
         x-fapi-interaction-id:
           schema:
-            $ref: '#/components/schemas/XFapiInteractionId'
+            type: string
+            pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
+            maxLength: 100
+            description: 'Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.'
       content:
         application/json:
           schema:
@@ -1442,7 +1418,7 @@ components:
       headers:
         x-fapi-interaction-id:
           schema:
-            $ref: '#/components/schemas/XFapiInteractionId'
+            $ref: '#/components/responses/OKResponseLoansContract/headers/x-fapi-interaction-id/schema'
       content:
         application/json:
           schema:
@@ -1452,7 +1428,7 @@ components:
       headers:
         x-fapi-interaction-id:
           schema:
-            $ref: '#/components/schemas/XFapiInteractionId'
+            $ref: '#/components/responses/OKResponseLoansContract/headers/x-fapi-interaction-id/schema'
       content:
         application/json:
           schema:
@@ -1462,7 +1438,7 @@ components:
       headers:
         x-fapi-interaction-id:
           schema:
-            $ref: '#/components/schemas/XFapiInteractionId'
+            $ref: '#/components/responses/OKResponseLoansContract/headers/x-fapi-interaction-id/schema'
       content:
         application/json:
           schema:

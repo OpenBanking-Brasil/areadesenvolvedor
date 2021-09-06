@@ -35,12 +35,12 @@ info:
     ### `/contracts/{contractId}/payments`
       - permissions:
         - GET: **UNARRANGED_ACCOUNTS_OVERDRAFT_PAYMENTS_READ**
-  version: 1.0.3
+  version: 1.0.0
   license:
     name: Apache 2.0
     url: 'https://www.apache.org/licenses/LICENSE-2.0'
   contact:
-    name: Governança do Open Banking Brasil – Especificações
+    name: Governança do Open Banking Brasil – Interfaces
     email: gt-interfaces@openbankingbr.org
     url: 'https://openbanking-brasil.github.io/areadesenvolvedor/'
 servers:
@@ -89,9 +89,7 @@ paths:
           $ref: '#/components/responses/OKResponseUnarrangedAccountOverdraftContractList'
       security:
         - OpenId:
-            - openid
-          OAuth2Security:
-            - 'consent:consentId'
+            - openId
             - unarranged-accounts-overdraft
   '/contracts/{contractId}':
     get:
@@ -130,9 +128,7 @@ paths:
           $ref: '#/components/responses/OKResponseUnarrangedAccountOverdraftContract'
       security:
         - OpenId:
-            - openid
-          OAuth2Security:
-            - 'consent:consentId'
+            - openId
             - unarranged-accounts-overdraft
   '/contracts/{contractId}/warranties':
     get:
@@ -173,9 +169,7 @@ paths:
           $ref: '#/components/responses/OKResponseUnarrangedAccountOverdraftWarranties'
       security:
         - OpenId:
-            - openid
-          OAuth2Security:
-            - 'consent:consentId'
+            - openId
             - unarranged-accounts-overdraft
   '/contracts/{contractId}/scheduled-instalments':
     get:
@@ -216,9 +210,7 @@ paths:
           $ref: '#/components/responses/OKResponseUnarrangedAccountOverdraftInstalments'
       security:
         - OpenId:
-            - openid
-          OAuth2Security:
-            - 'consent:consentId'
+            - openId
             - unarranged-accounts-overdraft
   '/contracts/{contractId}/payments':
     get:
@@ -259,9 +251,7 @@ paths:
           $ref: '#/components/responses/OKResponseUnarrangedAccountOverdraftPayments'
       security:
         - OpenId:
-            - openid
-          OAuth2Security:
-            - 'consent:consentId'
+            - openId
             - unarranged-accounts-overdraft
 components:
   schemas:
@@ -356,13 +346,12 @@ components:
         contractId:
           type: string
           maxLength: 100
-          pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
           description: Um identificador único e imutável usado para identificar o contrato de uma operação de crédito. Este identificador não tem significado para o tomador do crédito
           example: xcjklompowsa279212650822221989319aadrtjk
         brandName:
           type: string
           maxLength: 80
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           description: 'Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes'
           example: Organização A
         companyCnpj:
@@ -603,19 +592,19 @@ components:
           type: string
           description: Denominação da Tarifa pactuada
           maxLength: 140
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           example: Saque a descoberto
         feeCode:
           type: string
           description: Sigla identificadora da tarifa avulsa fora da parcela
           maxLength: 140
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           example: Saque descoberto
         feeAmount:
           type: number
           format: double
-          pattern: '^-?\d{1,15}\.\d{2,4}$'
-          maxLength: 20
+          pattern: '(-?\d{15}(.\d{4}?))$'
+          maxLength: 19
           minLength: 0
           nullable: true
           example: 100000.04
@@ -633,11 +622,11 @@ components:
           $ref: '#/components/schemas/ChargeType'
         chargeAdditionalInfo:
           type: string
-          pattern: '[\w\W\s]*'
-          example: Informações adicionais sobre encargos.
           description: |
             Campo para informações adicionais.
             [Restrição] Obrigatório se selecionada a opção 'OUTROS' em Tipo de encargo pactuado no contrato.
+          pattern: \w*\W*$|^NA$
+          example: Informações adicionais sobre encargos.
         chargeRate:
           type: number
           description: |
@@ -727,8 +716,8 @@ components:
           type: number
           format: double
           minLength: 0
-          maxLength: 20
-          pattern: '^-?\d{1,15}\.\d{2,4}$'
+          maxLength: 19
+          pattern: '(-?\d{15}(.\d{4}?))$'
           example: 100000.04
           description: Valor necessario para o cliente liquidar a dívida.
         releases:
@@ -782,9 +771,9 @@ components:
         paidAmount:
           type: number
           format: double
-          maxLength: 20
+          maxLength: 19
           minLength: 0
-          pattern: '^-?\d{1,15}\.\d{2,4}$'
+          pattern: '(-?\d{15}(.\d{4}?))$'
           example: 100000.04
           description: |
             Valor do pagamento referente ao  contrato da modalidade de crédito consultada.
@@ -821,13 +810,13 @@ components:
         feeName:
           type: string
           maxLength: 140
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           description: Denominação da Tarifa pactuada
           example: Excesso em Conta
         feeCode:
           type: string
           maxLength: 140
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           description: Sigla identificadora da tarifa pactuada
           example: EXCESSO_CONTA
         feeChargeType:
@@ -835,14 +824,11 @@ components:
         feeCharge:
           $ref: '#/components/schemas/EnumContractFeeCharge'
         feeAmount:
-          type: number
-          format: double
-          pattern: '^-?\d{1,15}\.\d{2,4}$'
-          maxLength: 20
           description: |
             Valor monetário da tarifa pactuada no contrato. Preenchimento obrigatório quando a forma de cobrança for: Mínimo, Máximo ou Fixo.
+          maxLength: 19
           nullable: true
-          example: 100000.04
+          example: 50
         feeRate:
           type: number
           format: double
@@ -877,8 +863,8 @@ components:
             Valor original da garantia. Valor monetário, expresso com até 4 casas decimais.
           type: number
           format: double
-          pattern: '^-?\d{1,15}\.\d{2,4}$'
-          maxLength: 20
+          pattern: '(-?\d{15}(.\d{4}?))$'
+          maxLength: 19
           minLength: 0
           example: 100000.04
       additionalProperties: false
@@ -909,9 +895,9 @@ components:
           description: Valor monetário da parcela não regular a vencer. Expresso em valor monetário com 4 casas decimais.
           type: number
           format: double
-          pattern: '^-?\d{1,15}\.\d{2,4}$'
+          pattern: '(-?\d{15}(.\d{4}?))$'
           nullable: true
-          maxLength: 20
+          maxLength: 19
           minLength: 0
           example: 100000.04
       additionalProperties: false
@@ -927,7 +913,7 @@ components:
           $ref: '#/components/schemas/ChargeType'
         chargeAdditionalInfo:
           type: string
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           maxLength: 140
           example: Informações adicionais
           description: |
@@ -938,8 +924,8 @@ components:
           type: number
           format: double
           nullable: true
-          pattern: '^-?\d{1,15}\.\d{2,4}$'
-          maxLength: 20
+          pattern: '(-?\d{15}(.\d{4}?))$'
+          maxLength: 19
           minLength: 0
           example: 100000.04
       additionalProperties: false
@@ -989,10 +975,10 @@ components:
         productName:
           type: string
           maxLength: 140
-          pattern: '[\w\W\s]*'
-          example: AD
+          pattern: \w*\W*
           description: |
             "Denominação/Identificação do nome da Modalidade da Operação de Crédito divulgado ao cliente"
+          example: AD
         productType:
           $ref: '#/components/schemas/ProductType'
         productSubType:
@@ -1024,8 +1010,8 @@ components:
           description: Valor contratado da operação. Expresso em valor monetário com até 4 casas decimais
           type: number
           format: double
-          pattern: '^-?\d{1,15}\.\d{2,4}$'
-          maxLength: 20
+          pattern: '(-?\d{15}(.\d{4}?))$'
+          maxLength: 19
           minLength: 0
           example: 100000.04
           nullable: true
@@ -1048,7 +1034,7 @@ components:
           $ref: '#/components/schemas/EnumContractInstalmentPeriodicity'
         instalmentPeriodicityAdditionalInfo:
           type: string
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           maxLength: 50
           example: Informações adicionais sobre periodicidade
           description: |
@@ -1087,7 +1073,7 @@ components:
           example: SAC
         amortizationScheduledAdditionalInfo:
           type: string
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           maxLength: 50
           example: NA
           description: |
@@ -1144,12 +1130,12 @@ components:
           $ref: '#/components/schemas/EnumContractReferentialRateIndexerSubType'
         referentialRateIndexerAdditionalInfo:
           type: string
-          maxLength: 140
-          pattern: '[\w\W\s]*'
-          example: Informações adicionais
           description: |
             Campo livre para complementar a informação relativa ao Tipo de taxa referencial ou indexador.
             [Restrição] Obrigatório para complementar a informação relativa ao Tipo de taxa referencial ou indexador, quando selecionada o tipo ou subtipo OUTRO.
+          maxLength: 140
+          pattern: \w*\W*
+          example: Informações adicionais
         preFixedRate:
           type: number
           description: |
@@ -1169,9 +1155,9 @@ components:
         additionalInfo:
           type: string
           maxLength: 1200
-          pattern: '[\w\W\s]*'
-          example: Informações adicionais
           description: Texto com informações adicionais sobre a composição das taxas de juros pactuadas
+          pattern: \w*\W*
+          example: Informações adicionais
       additionalProperties: false
     ProductType:
       type: string
@@ -1267,46 +1253,6 @@ components:
           format: date-time
           example: '2021-05-21T08:30:00Z'
       additionalProperties: false
-    ResponseError:
-      type: object
-      required:
-        - errors
-      properties:
-        errors:
-          type: array
-          minItems: 1
-          maxItems: 13
-          items:
-            type: object
-            required:
-              - code
-              - title
-              - detail
-            properties:
-              code:
-                description: Código de erro específico do endpoint
-                type: string
-                pattern: '[\w\W\s]*'
-                maxLength: 255
-              title:
-                description: Título legível por humanos deste erro específico
-                type: string
-                pattern: '[\w\W\s]*'
-                maxLength: 255
-              detail:
-                description: Descrição legível por humanos deste erro específico
-                type: string
-                pattern: '[\w\W\s]*'
-                maxLength: 2048
-            additionalProperties: false
-        meta:
-          $ref: '#/components/schemas/Meta'
-      additionalProperties: false
-    XFapiInteractionId:
-      type: string
-      pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
-      maxLength: 100
-      description: 'Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.'
   parameters:
     Authorization:
       name: Authorization
@@ -1315,7 +1261,7 @@ components:
       required: true
       schema:
         type: string
-        pattern: '[\w\W\s]*'
+        pattern: \w*\W*
         maxLength: 2048
     contractId:
       name: contractId
@@ -1325,7 +1271,7 @@ components:
       schema:
         type: string
         pattern: '^[a-zA-Z0-9][a-zA-Z0-9-]{0,99}$'
-        maxLength: 100
+        maxLength: 40
     page:
       name: page
       in: query
@@ -1352,7 +1298,7 @@ components:
       required: false
       schema:
         type: string
-        pattern: '[\w\W\s]*'
+        pattern: \w*\W*
         minLength: 1
         maxLength: 100
     xFapiAuthDate:
@@ -1372,7 +1318,7 @@ components:
       required: false
       schema:
         type: string
-        pattern: '[\w\W\s]*'
+        pattern: \w*\W*
         minLength: 1
         maxLength: 100
     xFapiInteractionId:
@@ -1388,23 +1334,14 @@ components:
   securitySchemes:
     OpenId:
       type: openIdConnect
-      openIdConnectUrl: 'https://auth.mockbank.poc.raidiam.io/.well-known/openid-configuration'
-    OAuth2Security:
-      type: oauth2
-      description: Fluxo OAuth necessário para que a receptora tenha acesso aos dados na instituição transmissora. Requer o processo de redirecionamento e autenticação do usuário a que se referem os dados.
-      flows:
-        authorizationCode:
-          authorizationUrl: 'https://authserver.example/authorization'
-          tokenUrl: 'https://authserver.example/token'
-          scopes:
-            unarranged-accounts-overdraft: Escopo necessário para acesso à API Unarranged-accounts-overdraft. O controle dos endpoints específicos é feito via permissions.
+      openIdConnectUrl: 'https://authserver.example/.well-known/openid-configuration'
   responses:
     OKResponseUnarrangedAccountOverdraftContractList:
       description: Lista de contratos obtida com sucesso.
       headers:
         x-fapi-interaction-id:
           schema:
-            $ref: '#/components/schemas/XFapiInteractionId'
+            $ref: '#/components/responses/OKResponseUnarrangedAccountOverdraftContract/headers/x-fapi-interaction-id/schema'
       content:
         application/json:
           schema:
@@ -1414,7 +1351,10 @@ components:
       headers:
         x-fapi-interaction-id:
           schema:
-            $ref: '#/components/schemas/XFapiInteractionId'
+            type: string
+            pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
+            maxLength: 100
+            description: 'Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.'
       content:
         application/json:
           schema:
@@ -1424,7 +1364,7 @@ components:
       headers:
         x-fapi-interaction-id:
           schema:
-            $ref: '#/components/schemas/XFapiInteractionId'
+            $ref: '#/components/responses/OKResponseUnarrangedAccountOverdraftContract/headers/x-fapi-interaction-id/schema'
       content:
         application/json:
           schema:
@@ -1434,7 +1374,7 @@ components:
       headers:
         x-fapi-interaction-id:
           schema:
-            $ref: '#/components/schemas/XFapiInteractionId'
+            $ref: '#/components/responses/OKResponseUnarrangedAccountOverdraftContract/headers/x-fapi-interaction-id/schema'
       content:
         application/json:
           schema:
@@ -1444,7 +1384,7 @@ components:
       headers:
         x-fapi-interaction-id:
           schema:
-            $ref: '#/components/schemas/XFapiInteractionId'
+            $ref: '#/components/responses/OKResponseUnarrangedAccountOverdraftContract/headers/x-fapi-interaction-id/schema'
       content:
         application/json:
           schema:
@@ -1454,46 +1394,79 @@ components:
       content:
         application/json; charset=utf-8:
           schema:
-            $ref: '#/components/schemas/ResponseError'
+            $ref: '#/components/responses/NotFound/content/application~1json%3B%20charset%3Dutf-8/schema'
     Forbidden:
       description: O token tem escopo incorreto ou uma política de segurança foi violada
       content:
         application/json; charset=utf-8:
           schema:
-            $ref: '#/components/schemas/ResponseError'
+            $ref: '#/components/responses/NotFound/content/application~1json%3B%20charset%3Dutf-8/schema'
     InternalServerError:
       description: Ocorreu um erro no gateway da API ou no microsserviço
       content:
         application/json; charset=utf-8:
           schema:
-            $ref: '#/components/schemas/ResponseError'
+            $ref: '#/components/responses/NotFound/content/application~1json%3B%20charset%3Dutf-8/schema'
     MethodNotAllowed:
       description: O consumidor tentou acessar o recurso com um método não suportado
       content:
         application/json; charset=utf-8:
           schema:
-            $ref: '#/components/schemas/ResponseError'
+            $ref: '#/components/responses/NotFound/content/application~1json%3B%20charset%3Dutf-8/schema'
     NotAcceptable:
       description: A solicitação continha um cabeçalho Accept diferente dos tipos de mídia permitidos ou um conjunto de caracteres diferente de UTF-8
       content:
         application/json; charset=utf-8:
           schema:
-            $ref: '#/components/schemas/ResponseError'
+            $ref: '#/components/responses/NotFound/content/application~1json%3B%20charset%3Dutf-8/schema'
     NotFound:
       description: O recurso solicitado não existe ou não foi implementado
       content:
         application/json; charset=utf-8:
           schema:
-            $ref: '#/components/schemas/ResponseError'
+            type: object
+            required:
+              - errors
+            properties:
+              errors:
+                type: array
+                minItems: 1
+                maxItems: 13
+                items:
+                  type: object
+                  required:
+                    - code
+                    - title
+                    - detail
+                  properties:
+                    code:
+                      description: Código de erro específico do endpoint
+                      type: string
+                      pattern: \w*\W*
+                      maxLength: 255
+                    title:
+                      description: Título legível por humanos deste erro específico
+                      type: string
+                      pattern: \w*\W*
+                      maxLength: 255
+                    detail:
+                      description: Descrição legível por humanos deste erro específico
+                      type: string
+                      pattern: \w*\W*
+                      maxLength: 2048
+                  additionalProperties: false
+              meta:
+                $ref: '#/components/schemas/Meta'
+            additionalProperties: false
     TooManyRequests:
       description: 'A operação foi recusada, pois muitas solicitações foram feitas dentro de um determinado período ou o limite global de requisições concorrentes foi atingido'
       content:
         application/json; charset=utf-8:
           schema:
-            $ref: '#/components/schemas/ResponseError'
+            $ref: '#/components/responses/NotFound/content/application~1json%3B%20charset%3Dutf-8/schema'
     Unauthorized:
       description: Cabeçalho de autenticação ausente/inválido ou token inválido
       content:
         application/json; charset=utf-8:
           schema:
-            $ref: '#/components/schemas/ResponseError'
+            $ref: '#/components/responses/NotFound/content/application~1json%3B%20charset%3Dutf-8/schema'
