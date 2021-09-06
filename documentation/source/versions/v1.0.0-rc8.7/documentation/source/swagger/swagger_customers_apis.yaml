@@ -38,12 +38,12 @@ info:
     ### `/business/financial-relations`
       - permissions:
         - GET: **CUSTOMERS_BUSINESS_ADITTIONALINFO_READ**
-  version: 1.0.3
+  version: 1.0.0
   license:
     name: Apache 2.0
     url: 'https://www.apache.org/licenses/LICENSE-2.0'
   contact:
-    name: Governança do Open Banking Brasil – Especificações
+    name: Governança do Open Banking Brasil – Interfaces
     email: gt-interfaces@openbankingbr.org
     url: 'https://openbanking-brasil.github.io/areadesenvolvedor/'
 servers:
@@ -61,7 +61,7 @@ paths:
         - Customers
       summary: Obtém os registros de identificação da pessoa natural.
       description: Método para obter os registros de identificação da pessoa natural mantidos na instituição transmissora.
-      operationId: customersGetPersonalIdentifications
+      operationId: getCustomersPersonalIdentifications
       parameters:
         - $ref: '#/components/parameters/Authorization'
         - $ref: '#/components/parameters/xFapiAuthDate'
@@ -91,9 +91,7 @@ paths:
           $ref: '#/components/responses/OKResponsePersonalCustomersIdentification'
       security:
         - OpenId:
-            - openid
-          OAuth2Security:
-            - 'consent:consentId'
+            - openId
             - customers
   /personal/qualifications:
     get:
@@ -101,7 +99,7 @@ paths:
         - Customers
       summary: Obtém os registros de qualificação da pessoa natural.
       description: Método para obter os registros de qualificação da pessoa natural mantidos na instituição transmissora.
-      operationId: customersGetPersonalQualifications
+      operationId: getCustomersPersonalQualifications
       parameters:
         - $ref: '#/components/parameters/Authorization'
         - $ref: '#/components/parameters/xFapiAuthDate'
@@ -131,9 +129,7 @@ paths:
           $ref: '#/components/responses/OKResponsePersonalCustomersQualification'
       security:
         - OpenId:
-            - openid
-          OAuth2Security:
-            - 'consent:consentId'
+            - openId
             - customers
   /personal/financial-relations:
     get:
@@ -141,7 +137,7 @@ paths:
         - Customers
       summary: Obtém os registros de relacionamentos com a instituição financeira e de representantes da pessoa natural.
       description: Método para obter registros de relacionamentos com a instituição financeira e de representantes da pessoa natural mantidos na instituição transmissora.
-      operationId: customersGetPersonalFinancialRelations
+      operationId: getCustomersPersonalRelationships
       parameters:
         - $ref: '#/components/parameters/Authorization'
         - $ref: '#/components/parameters/xFapiAuthDate'
@@ -171,9 +167,7 @@ paths:
           $ref: '#/components/responses/OKResponsePersonalCustomersFinancialRelation'
       security:
         - OpenId:
-            - openid
-          OAuth2Security:
-            - 'consent:consentId'
+            - openId
             - customers
   /business/identifications:
     get:
@@ -181,7 +175,7 @@ paths:
         - Customers
       summary: Obtém os registros de identificação da pessoa jurídica.
       description: Método para obter os registros de identificação da pessoa jurídica mantidos na instituição transmissora
-      operationId: customersGetBusinessIdentifications
+      operationId: getCustomersBusinessIdentifications
       parameters:
         - $ref: '#/components/parameters/Authorization'
         - $ref: '#/components/parameters/xFapiAuthDate'
@@ -211,9 +205,7 @@ paths:
           $ref: '#/components/responses/OKResponseBusinessCustomersIdentification'
       security:
         - OpenId:
-            - openid
-          OAuth2Security:
-            - 'consent:consentId'
+            - openId
             - customers
   /business/qualifications:
     get:
@@ -221,7 +213,7 @@ paths:
         - Customers
       summary: Obtém os registros de qualificação da pessoa jurídica.
       description: Método para obter os registros de qualificação da pessoa jurídica mantidos na instituição transmissora.
-      operationId: customersGetBusinessQualifications
+      operationId: getCustomersBusinessQualifications
       parameters:
         - $ref: '#/components/parameters/Authorization'
         - $ref: '#/components/parameters/xFapiAuthDate'
@@ -251,9 +243,7 @@ paths:
           $ref: '#/components/responses/OKResponseBusinessCustomersQualification'
       security:
         - OpenId:
-            - openid
-          OAuth2Security:
-            - 'consent:consentId'
+            - openId
             - customers
   /business/financial-relations:
     get:
@@ -261,7 +251,7 @@ paths:
         - Customers
       summary: Obtém os registros de relacionamentos com a instituição financeira e de representantes da pessoa jurídica.
       description: Método para obter registros de relacionamentos com a instituição financeira e de representantes da pessoa jurídica mantidos na instituição transmissora.
-      operationId: customersGetBusinessFinancialRelations
+      operationId: getCustomersBusinessRelationships
       parameters:
         - $ref: '#/components/parameters/Authorization'
         - $ref: '#/components/parameters/xFapiAuthDate'
@@ -291,9 +281,7 @@ paths:
           $ref: '#/components/responses/OKResponseBusinessCustomersFinancialRelation'
       security:
         - OpenId:
-            - openid
-          OAuth2Security:
-            - 'consent:consentId'
+            - openId
             - customers
 components:
   schemas:
@@ -339,7 +327,7 @@ components:
             $ref: '#/components/schemas/BusinessAccount'
           minItems: 1
           description: |
-            Lista de contas depósito à vista, poupança e pagamento pré-pagas mantidas pelo cliente na instituição transmissora.    
+            Lista de contas depósito à vista, poupança e pagamento pré-pagas mantidas pelo cliente na instituição transmissora e para as quais ele tenha fornecido consentimento.    
       additionalProperties: false
     BusinessIdentificationData:
       type: object
@@ -365,26 +353,26 @@ components:
         businessId:
           type: string
           maxLength: 100
-          pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
+          pattern: \w*\W*
           example: 578-psd-71md6971kjh-2d414
           description: Um identificador único e imutável usado para identificar o recurso cliente pessoa jurídica. Este identificador não tem significado para o cliente que deu o consentimento
         brandName:
           type: string
           maxLength: 80
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           example: Organização A
           description: |
             Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a 'marca' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes
         companyName:
           type: string
           maxLength: 70
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           example: Luiza e Benjamin Assessoria Jurídica Ltda
           description: Razão social da empresa consultada é o termo registrado sob o qual uma pessoa jurídica (PJ) se individualiza e exerce suas atividades. Também pode ser chamada por denominação social ou firma empresarial
         tradeName:
           type: string
           maxLength: 70
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           example: Mundo da Eletronica
           description: 'Nome fantasia da pessoa jurídica, se houver. (É o nome popular da empresa, utilizado para divulgação da empresa e melhor fixação com o público). De preenchimento obrigatório se houver'
         incorporationDate:
@@ -455,13 +443,13 @@ components:
         civilName:
           type: string
           maxLength: 70
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           example: Elza Milena Stefany Teixeira
           description: Nome civil completo ou Razão Social
         socialName:
           type: string
           maxLength: 70
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           example: Stefany Teixeirass
           description: |
             Nome social da pessoa natural, se houver. Aquele pelo qual travestis e transexuais se reconhecem, 
@@ -501,7 +489,7 @@ components:
             frequencyAdditionalInfo:
               type: string
               maxLength: 100
-              pattern: '[\w\W\s]*'
+              pattern: \w*\W*
               example: Informações adicionais
               description: |
                 Texto livre para complementar informação relativa ao patrimonio. 
@@ -510,9 +498,9 @@ components:
               type: number
               format: double
               minLength: 0
-              maxLength: 20
+              maxLength: 19
               nullable: true
-              pattern: '^-?\d{1,15}\.\d{2,4}$'
+              pattern: '(-?\d{15}(.\d{4}?))$'
               example: 100000.04
               description: |
                 Valor do patrimônio informado. Expresso em valor monetário com 4 casas decimais.
@@ -544,13 +532,13 @@ components:
         type:
           type: string
           maxLength: 20
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           example: EIN
           description: 'Número do Tipo de documento informado. De preenchimento obrigatório, para a Pessoa jurídica com domicílio ou sede no exterior, desobrigada de inscrição no CNPJ'
         number:
           type: string
           maxLength: 20
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           example: '128328453'
           description: 'Número do outro documento. De preenchimento obrigatório, para a Pessoa jurídica com domicílio ou sede no exterior, desobrigada de inscrição no CNPJ'
         country:
@@ -632,9 +620,9 @@ components:
           type: number
           format: double
           minLength: 0
-          maxLength: 20
+          maxLength: 19
           nullable: true
-          pattern: '^-?\d{1,15}\.\d{2,4}$'
+          pattern: '(-?\d{15}(.\d{4}?))$'
           example: 100000.04
           description: |
             Valor do patrimônio informado. Expresso em valor monetário com 4 casas decimais.
@@ -664,9 +652,9 @@ components:
           type: number
           format: double
           minLength: 0
-          maxLength: 20
+          maxLength: 19
           nullable: true
-          pattern: '^-?\d{1,15}\.\d{2,4}$'
+          pattern: '(-?\d{15}(.\d{4}?))$'
           example: 100000.04
           description: |
             Valor do patrimônio informado. Expresso em valor monetário com 4 casas decimais.
@@ -699,7 +687,7 @@ components:
           type: string
           description: Endereço de email
           maxLength: 320
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           example: karinafernandes-81@br.inter.net
       additionalProperties: false
     CustomerPhone:
@@ -721,7 +709,7 @@ components:
         additionalInfo:
           type: string
           description: 'Informação complementar relativa ao tipo de telefone selecionado. [Restrição] De preenchimento obrigatório quando selecionado o tipo ''OUTRO''.'
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           maxLength: 70
           example: Informações adicionais.
         countryCallingCode:
@@ -763,25 +751,25 @@ components:
         address:
           type: string
           maxLength: 150
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*|^NA$
           example: 'Av Naburo Ykesaki, 1270'
           description: Corresponde ao endereço comercial do cliente
         additionalInfo:
           type: string
           maxLength: 30
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           example: Fundos
           description: Alguns logradouros ainda necessitam ser especificados por meio de complemento
         districtName:
           type: string
           maxLength: 50
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*|^NA$
           example: Centro
           description: Bairro é uma comunidade ou região localizada em uma cidade ou município de acordo com as suas subdivisões geográficas.
         townName:
           type: string
           maxLength: 50
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*|^NA$
           example: Marília
           description: |
             Localidade: O nome da localidade corresponde à designação da cidade ou município no qual o endereço está localizado.
@@ -803,7 +791,7 @@ components:
         country:
           type: string
           maxLength: 80
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*|^NA$
           example: Brasil
           description: Nome do país
         countryCode:
@@ -832,25 +820,25 @@ components:
         address:
           type: string
           maxLength: 150
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           example: 'Av Naburo Ykesaki, 1270'
           description: Corresponde ao endereço residencial do cliente.
         additionalInfo:
           type: string
           maxLength: 30
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           example: Fundos
           description: Alguns logradouros ainda necessitam ser especificados por meio de complemento.
         districtName:
           type: string
           maxLength: 50
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*|^NA$
           example: Centro
           description: Bairro é uma comunidade ou região localizada em uma cidade ou município de acordo com as suas subdivisões geográficas.
         townName:
           type: string
           maxLength: 50
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           example: Marília
           description: |
             Localidade: O nome da localidade corresponde à designação da cidade ou município no qual o endereço está localizado.
@@ -872,7 +860,7 @@ components:
         country:
           type: string
           maxLength: 80
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           example: Brasil
           description: Nome do país
         countryCode:
@@ -915,7 +903,7 @@ components:
         checkDigit:
           type: string
           maxLength: 1
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           description: |
             Dígito da conta
           example: '4'
@@ -969,7 +957,7 @@ components:
         checkDigit:
           type: string
           maxLength: 1
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           description: |
             Dígito da conta
           example: '4'
@@ -1164,6 +1152,8 @@ components:
       description: Traz a frequência ou período da renda informada.
     EnumMaritalStatusCode:
       type: string
+      description: |
+        Estado marital do cliente. 
       enum:
         - SOLTEIRO
         - CASADO
@@ -1173,17 +1163,14 @@ components:
         - UNIAO_ESTAVEL
         - OUTRO
       example: SOLTEIRO
-      description: |
-        Estado marital do cliente. 
     EnumOccupationMainCodeType:
       type: string
+      description: |
+        Traz a relação dos códigos relativos à ocupação.
       enum:
         - RECEITA_FEDERAL
         - CBO
         - OUTRO
-      example: RECEITA_FEDERAL
-      description: |
-        Traz a relação dos códigos relativos à ocupação.
     EnumPartiesParticipationDocumentType:
       type: string
       enum:
@@ -1236,15 +1223,14 @@ components:
       description: Lista com a relação dos produtos e serviços com contrato vigente.
     EnumSex:
       type: string
+      description: |
+        "Conjunto de características anatomofisiológicas que distinguem o homem e a mulher: Sexo masculino; sexo feminino". 
+        No caso de não ser feminino nem masculino é classificado como 'OUTRO'
       enum:
         - FEMININO
         - MASCULINO
         - OUTRO
-        - NAO_DISPONIVEL
       example: FEMININO
-      description: |
-        "Conjunto de características anatomofisiológicas que distinguem o homem e a mulher: Sexo masculino; sexo feminino". 
-        No caso de não ser feminino nem masculino é classificado como 'OUTRO'
     GeographicCoordinates:
       type: object
       description: 'Conjunto de informações, que correspondem aos valores das coordenadas geográficas em graus decimais, no Sistema de referência WGS84'
@@ -1361,13 +1347,13 @@ components:
         type:
           type: string
           maxLength: 10
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           description: 'Tipo de documento. Campo livre, de preenchimento obrigatório quando a nacionalidade for diferente de brasileira. Informar tipo e número do documento, além da, vigência e demais informações complementares para se identificar o documento de pessoa estrangeira'
           example: SOCIAL SEC
         number:
           type: string
           maxLength: 40
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           description: 'Número de identificação do documento. Campo livre, de preenchimento obrigatório quando a nacionalidade for diferente de brasileira. Informar o número do documento e demais informações complementares para se identificar o documento de pessoa estrangeira'
           example: '423929299'
         expirationDate:
@@ -1387,13 +1373,13 @@ components:
         country:
           type: string
           maxLength: 80
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           example: Brasil
           description: Nome do país
         typeAdditionalInfo:
           type: string
           maxLength: 70
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           description: Campo livre de preenchimento obrigatório se selecionada a opção OUTROS tipos de documentos.
           example: Informações adicionais.
       additionalProperties: false
@@ -1433,32 +1419,31 @@ components:
         civilName:
           type: string
           maxLength: 70
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           example: Juan Kaique Cláudio Fernandes
           description: 'Nome civil completo da pessoa natural (Direito fundamental da pessoa, o nome civil é aquele atribuído à pessoa natural desde o registro de seu nascimento, com o qual será identificada por toda a sua vida, bem como após a sua morte)'
         socialName:
           type: string
           maxLength: 70
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           example: Karina
           description: 'Nome social da pessoa natural, se houver. (aquele pelo qual travestis e transexuais se reconhecem, bem como são identificados por sua comunidade e em seu meio social, conforme Decreto Local)'
         companyName:
           type: string
           maxLength: 70
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           example: Luiza e Benjamin Assessoria Jurídica Ltda
           description: Razão social da empresa consultada é o termo registrado sob o qual uma pessoa jurídica (PJ) se individualiza e exerce suas atividades. Também pode ser chamada por denominação social ou firma empresarial
         tradeName:
           type: string
           maxLength: 70
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           example: Mundo da Eletronica
           description: 'Nome fantasia da pessoa jurídica, se houver. (É o nome popular da empresa, utilizado para divulgação da empresa e melhor fixação com o público). De preenchimento obrigatório se houver'
         startDate:
           type: string
           maxLength: 20
           format: date-time
-          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
           example: '2021-05-21T08:30:00Z'
           description: 'Data de início da participação, conforme especificação RFC-3339.'
         shareholding:
@@ -1473,13 +1458,13 @@ components:
         documentNumber:
           type: string
           maxLength: 20
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           example: '73677831148'
           description: Número do documento informado. Campo Texto Livre para preencher número e dígito do documento se houver
         documentAdditionalInfo:
           type: string
           maxLength: 100
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           example: CNH
           description: 'Campo livre, de preenchimento obrigatório quando o documento informado tiver informações complementares relevantes para a sua identificação'
         documentCountry:
@@ -1520,7 +1505,7 @@ components:
         passportNumber:
           type: string
           maxLength: 20
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*|^NA$
           example: '75253468744594820620'
           description: |
             Número do Passaporte. Documento concedido aos viajantes por uma autoridade
@@ -1580,7 +1565,7 @@ components:
           maxItems: 12
         productsServicesTypeAdditionalInfo:
           type: string
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           maxLength: 100
           example: Informações adicionais do tipo de serviço.
           description: |
@@ -1598,7 +1583,7 @@ components:
             $ref: '#/components/schemas/PersonalAccount'
           minItems: 1
           description: |
-            Lista de contas depósito à vista, poupança e pagamento pré-pagas mantidas pelo cliente na instituição transmissora.    
+            Lista de contas depósito à vista, poupança e pagamento pré-pagas mantidas pelo cliente na instituição transmissora e para as quais ele tenha fornecido consentimento.    
       additionalProperties: false
     PersonalIdentificationData:
       type: object
@@ -1624,31 +1609,30 @@ components:
           type: string
           maxLength: 20
           format: date-time
-          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
           example: '2021-05-21T08:30:00Z'
         personalId:
           type: string
-          pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
+          pattern: \w*\W*
           maxLength: 100
           description: Um identificador único e imutável usado para identificar o recurso cliente pessoa natural. Este identificador não tem significado para o cliente que deu o consentimento
           example: 578-psd-71md6971kjh-2d414
         brandName:
           type: string
           maxLength: 80
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           example: Organização A
           description: 'Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes'
         civilName:
           type: string
           maxLength: 70
-          pattern: '[\w\W\s]*'
+          nullable: true
+          pattern: \w*\W*
           example: Juan Kaique Cláudio Fernandes
           description: 'Nome civil completo da pessoa natural (Direito fundamental da pessoa, o nome civil é aquele atribuído à pessoa natural desde o registro de seu nascimento, com o qual será identificada por toda a sua vida, bem como após a sua morte)'
         socialName:
           type: string
           maxLength: 70
-          pattern: '[\w\W\s]*'
-          example: Jaqueline de Freitas
+          pattern: \w*\W*
           description: 'Nome social da pessoa natural, se houver. (aquele pelo qual travestis e transexuais se reconhecem, bem como são identificados por sua comunidade e em seu meio social, conforme Decreto Local)'
         birthDate:
           type: string
@@ -1661,9 +1645,9 @@ components:
           $ref: '#/components/schemas/EnumMaritalStatusCode'
         maritalStatusAdditionalInfo:
           type: string
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           maxLength: 50
-          example: Casado
+          example: ''
           description: 'Campo livre para complementar a informação relativa ao estado marital, quando selecionada a opção ''OUTROS'''
         sex:
           $ref: '#/components/schemas/EnumSex'
@@ -1689,7 +1673,6 @@ components:
           description: Relação dos demais documentos
         hasBrazilianNationality:
           type: boolean
-          nullable: true
           example: false
           description: Informa se o Cliente tem nacionalidade brasileira.
         nationality:
@@ -1709,7 +1692,7 @@ components:
               civilName:
                 type: string
                 maxLength: 70
-                pattern: '[\w\W\s]*'
+                pattern: \w*\W*|^NA$
                 example: Marcelo Cláudio Fernandes
                 description: |
                   Nome civil completo da pessoa relativa à filiação.
@@ -1718,7 +1701,7 @@ components:
               socialName:
                 type: string
                 maxLength: 70
-                pattern: '[\w\W\s]*'
+                pattern: \w*\W*|^NA$
                 example: NA
                 description: |
                   Nome social da pessoa natural, se houver. 
@@ -1742,25 +1725,25 @@ components:
         typeAdditionalInfo:
           type: string
           maxLength: 70
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           example: NA
           description: Campo livre de preenchimento obrigatório se selecionada a opção OUTROS tipos de documentos
         number:
           type: string
           maxLength: 11
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           example: '15291908'
           description: Identificação/Número do documento informado
         checkDigit:
           type: string
           maxLength: 2
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           example: P
           description: Dígito verificador do documento informado. De preenchimento obrigatório se o documento informado tiver dígito verificador
         additionalInfo:
           type: string
           maxLength: 50
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           example: SSP/SP
           description: |
             Para documentos em que se aplique o uso do local de emissão o mesmo deve ser enviado mandatoriamente, com a informação de órgão e UF. Exemplo: RG, local de emissão: SSP/RS.
@@ -1792,13 +1775,13 @@ components:
         civilName:
           type: string
           maxLength: 70
-          pattern: '[\w\W\s]*'
           example: Elza Milena Stefany Teixeira
+          pattern: \w*\W*
           description: 'Nome civil completo da pessoa natural. (Direito fundamental da pessoa, o nome civil é aquele atribuído à pessoa natural desde o registro de seu nascimento, com o qual será identificada por toda a sua vida, bem como após a sua morte)'
         socialName:
           type: string
           maxLength: 70
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           example: Carlos
           description: 'Nome social da pessoa natural, se houver. (aquele pelo qual travestis e transexuais se reconhecem, bem como são identificados por sua comunidade e em seu meio social, conforme Decreto Nº 51.180, de 14 de janeiro de 2010)'
       additionalProperties: false
@@ -1832,7 +1815,7 @@ components:
         occupationDescription:
           type: string
           maxLength: 100
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           example: '01'
           description: 'Campo livre, de preenchimento obrigatório. Traz o código da ocupação ou o descritivo da ocupação, se selecionada a opção ''OUTRO'''
         informedIncome:
@@ -1849,9 +1832,9 @@ components:
               type: number
               format: double
               minLength: 0
-              maxLength: 20
+              maxLength: 19
               nullable: true
-              pattern: '^-?\d{1,15}\.\d{2,4}$'
+              pattern: '(-?\d{15}(.\d{4}?))$'
               example: 100000.04
               description: |
                 Valor total da renda informada. Expresso em valor monetário com 4 casas decimais. 
@@ -1938,17 +1921,17 @@ components:
               code:
                 description: Código de erro específico do endpoint
                 type: string
-                pattern: '[\w\W\s]*'
+                pattern: \w*\W*
                 maxLength: 255
               title:
                 description: Título legível por humanos deste erro específico
                 type: string
-                pattern: '[\w\W\s]*'
+                pattern: \w*\W*
                 maxLength: 255
               detail:
                 description: Descrição legível por humanos deste erro específico
                 type: string
-                pattern: '[\w\W\s]*'
+                pattern: \w*\W*
                 maxLength: 2048
             additionalProperties: false
         meta:
@@ -1998,11 +1981,6 @@ components:
         meta:
           $ref: '#/components/schemas/Meta'
       additionalProperties: false
-    XFapiInteractionId:
-      type: string
-      pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
-      maxLength: 100
-      description: 'Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.'
   parameters:
     Authorization:
       name: Authorization
@@ -2011,7 +1989,7 @@ components:
       required: true
       schema:
         type: string
-        pattern: '[\w\W\s]*'
+        pattern: \w*\W*
         maxLength: 2048
     page:
       name: page
@@ -2039,7 +2017,7 @@ components:
       required: false
       schema:
         type: string
-        pattern: '[\w\W\s]*'
+        pattern: \w*\W*
         minLength: 1
         maxLength: 100
     xFapiAuthDate:
@@ -2059,7 +2037,7 @@ components:
       required: false
       schema:
         type: string
-        pattern: '[\w\W\s]*'
+        pattern: \w*\W*
         minLength: 1
         maxLength: 100
     xFapiInteractionId:
@@ -2075,23 +2053,14 @@ components:
   securitySchemes:
     OpenId:
       type: openIdConnect
-      openIdConnectUrl: 'https://auth.mockbank.poc.raidiam.io/.well-known/openid-configuration'
-    OAuth2Security:
-      type: oauth2
-      description: Fluxo OAuth necessário para que a receptora tenha acesso aos dados na instituição transmissora. Requer o processo de redirecionamento e autenticação do usuário a que se referem os dados.
-      flows:
-        authorizationCode:
-          authorizationUrl: 'https://authserver.example/authorization'
-          tokenUrl: 'https://authserver.example/token'
-          scopes:
-            customers: Escopo necessário para acesso à API Customers. O controle dos endpoints específicos é feito via permissions.
+      openIdConnectUrl: 'https://authserver.example/.well-known/openid-configuration'
   responses:
     OKResponsePersonalCustomersIdentification:
       description: Dados sobre identificação pessoa física.
       headers:
         x-fapi-interaction-id:
           schema:
-            $ref: '#/components/schemas/XFapiInteractionId'
+            $ref: '#/components/responses/OKResponsePersonalCustomersQualification/headers/x-fapi-interaction-id/schema'
       content:
         application/json:
           schema:
@@ -2101,7 +2070,10 @@ components:
       headers:
         x-fapi-interaction-id:
           schema:
-            $ref: '#/components/schemas/XFapiInteractionId'
+            type: string
+            pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
+            maxLength: 100
+            description: 'Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.'
       content:
         application/json:
           schema:
@@ -2111,7 +2083,7 @@ components:
       headers:
         x-fapi-interaction-id:
           schema:
-            $ref: '#/components/schemas/XFapiInteractionId'
+            $ref: '#/components/responses/OKResponsePersonalCustomersQualification/headers/x-fapi-interaction-id/schema'
       content:
         application/json:
           schema:
@@ -2121,7 +2093,7 @@ components:
       headers:
         x-fapi-interaction-id:
           schema:
-            $ref: '#/components/schemas/XFapiInteractionId'
+            $ref: '#/components/responses/OKResponsePersonalCustomersQualification/headers/x-fapi-interaction-id/schema'
       content:
         application/json:
           schema:
@@ -2131,7 +2103,7 @@ components:
       headers:
         x-fapi-interaction-id:
           schema:
-            $ref: '#/components/schemas/XFapiInteractionId'
+            $ref: '#/components/responses/OKResponsePersonalCustomersQualification/headers/x-fapi-interaction-id/schema'
       content:
         application/json:
           schema:
@@ -2141,7 +2113,7 @@ components:
       headers:
         x-fapi-interaction-id:
           schema:
-            $ref: '#/components/schemas/XFapiInteractionId'
+            $ref: '#/components/responses/OKResponsePersonalCustomersQualification/headers/x-fapi-interaction-id/schema'
       content:
         application/json:
           schema:

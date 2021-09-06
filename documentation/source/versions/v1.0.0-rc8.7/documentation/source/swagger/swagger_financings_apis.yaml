@@ -36,12 +36,12 @@ info:
     ### `/contracts/{contractId}/payments`
       - permissions:
         - GET: **FINANCINGS_PAYMENTS_READ**
-  version: 1.0.3
+  version: 1.0.0
   license:
     name: Apache 2.0
     url: 'https://www.apache.org/licenses/LICENSE-2.0'
   contact:
-    name: Governança do Open Banking Brasil – Especificações
+    name: Governança do Open Banking Brasil – Interfaces
     email: gt-interfaces@openbankingbr.org
     url: 'https://openbanking-brasil.github.io/areadesenvolvedor/'
 servers:
@@ -90,9 +90,7 @@ paths:
           $ref: '#/components/responses/OKResponseFinancingsContractList'
       security:
         - OpenId:
-            - openid
-          OAuth2Security:
-            - 'consent:consentId'
+            - openId
             - financings
   '/contracts/{contractId}':
     get:
@@ -131,9 +129,7 @@ paths:
           $ref: '#/components/responses/OKResponseFinancingsContract'
       security:
         - OpenId:
-            - openid
-          OAuth2Security:
-            - 'consent:consentId'
+            - openId
             - financings
   '/contracts/{contractId}/warranties':
     get:
@@ -174,9 +170,7 @@ paths:
           $ref: '#/components/responses/OKResponseFinancingsWarranties'
       security:
         - OpenId:
-            - openid
-          OAuth2Security:
-            - 'consent:consentId'
+            - openId
             - financings
   '/contracts/{contractId}/scheduled-instalments':
     get:
@@ -217,9 +211,7 @@ paths:
           $ref: '#/components/responses/OKResponseFinancingsInstalments'
       security:
         - OpenId:
-            - openid
-          OAuth2Security:
-            - 'consent:consentId'
+            - openId
             - financings
   '/contracts/{contractId}/payments':
     get:
@@ -260,9 +252,7 @@ paths:
           $ref: '#/components/responses/OKResponseFinancingsPayments'
       security:
         - OpenId:
-            - openid
-          OAuth2Security:
-            - 'consent:consentId'
+            - openId
             - financings
 components:
   schemas:
@@ -465,37 +455,37 @@ components:
           example: TJLP
         referentialRateIndexerAdditionalInfo:
           type: string
-          maxLength: 140
-          pattern: '[\w\W\s]*'
-          example: Informações adicionais
           description: |
             Campo livre para complementar a informação relativa ao Tipo de taxa referencial ou indexador.
             [Restrição] Obrigatório para complementar a informação relativa ao Tipo de taxa referencial ou indexador, quando selecionada o tipo ou subtipo OUTRO.
+          maxLength: 140
+          pattern: \w*\W*
+          example: Informações adicionais
         preFixedRate:
           type: number
-          maxLength: 19
-          example: 0.6
           description: |
             Taxa pré fixada aplicada sob o contrato da modalidade crédito.
             p.ex. 0.0045. O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros
             (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)
+          maxLength: 19
+          example: 0.6
         postFixedRate:
           type: number
-          maxLength: 19
-          nullable: true
-          example: 0.55
           description: |
             Taxa pós fixada aplicada sob o contrato da modalidade crédito.
             p.ex. 0.0045 .O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros
             (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)
+          maxLength: 19
+          nullable: true
+          example: 0.55
         additionalInfo:
           type: string
           maxLength: 1200
-          pattern: '[\w\W\s]*'
-          example: Informações adicionais
           description: |
             Texto com informações adicionais sobre a composição das taxas de juros pactuadas.
             [Restrição] Caso a instituição não possua a informação para compartilhamento, informar "NA".
+          pattern: \w*\W*
+          example: Informações adicionais
       additionalProperties: false
     FinancingsBalloonPayment:
       type: object
@@ -524,9 +514,9 @@ components:
           description: Valor monetário da parcela não regular a vencer. Expresso em valor monetário com 4 casas decimais.
           type: number
           format: double
-          pattern: '^-?\d{1,15}\.\d{2,4}$'
+          pattern: '(-?\d{15}(.\d{4}?))$'
           nullable: true
-          maxLength: 20
+          maxLength: 19
           minLength: 0
           example: 100000.04
       additionalProperties: false
@@ -541,7 +531,7 @@ components:
           $ref: '#/components/schemas/FinancingsFinanceCharge/properties/chargeType'
         chargeAdditionalInfo:
           type: string
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           maxLength: 140
           example: Informações adicionais
           description: |
@@ -552,8 +542,8 @@ components:
           type: number
           format: double
           nullable: true
-          pattern: '^-?\d{1,15}\.\d{2,4}$'
-          maxLength: 20
+          pattern: '(-?\d{15}(.\d{4}?))$'
+          maxLength: 19
           minLength: 0
           example: 100000.04
       additionalProperties: false
@@ -603,7 +593,7 @@ components:
         productName:
           type: string
           maxLength: 140
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           example: Crédito Pessoal Consignado
           description: |
             Denominação/Identificação do nome da Modalidade da Operação de Crédito divulgado ao cliente
@@ -639,8 +629,8 @@ components:
           type: number
           format: double
           minLength: 0
-          maxLength: 20
-          pattern: '^-?\d{1,15}\.\d{2,4}$'
+          maxLength: 19
+          pattern: '(-?\d{15}(.\d{4}?))$'
           example: 100000.04
           nullable: true
         currency:
@@ -676,7 +666,7 @@ components:
           example: SEMANAL
         instalmentPeriodicityAdditionalInfo:
           type: string
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           maxLength: 50
           example: Informações adicionais sobre periodicidade
           description: |
@@ -715,7 +705,7 @@ components:
           example: SAC
         amortizationScheduledAdditionalInfo:
           type: string
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           maxLength: 50
           example: NA
           description: |
@@ -751,13 +741,13 @@ components:
         feeName:
           type: string
           maxLength: 140
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           description: Denominação da Tarifa pactuada
           example: Excesso em Conta
         feeCode:
           type: string
           maxLength: 140
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           description: Sigla identificadora da tarifa pactuada
           example: EXCESSO_CONTA
         feeChargeType:
@@ -788,8 +778,7 @@ components:
             "Valor monetário da tarifa pactuada no contrato. Preenchimento obrigatório quando a forma de cobrança for: Mínimo, Máximo ou Fixo"
           type: number
           format: double
-          pattern: '^-?\d{1,15}\.\d{2,4}$'
-          maxLength: 20
+          maxLength: 19
           minLength: 0
           nullable: true
           example: 100000.04
@@ -813,20 +802,20 @@ components:
         feeName:
           type: string
           maxLength: 140
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           example: Reavaliação periódica do bem
           description: Denominação da Tarifa pactuada
         feeCode:
           type: string
           maxLength: 140
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           example: aval_bem
           description: Sigla identificadora da tarifa pactuada
         feeAmount:
           type: number
           format: double
-          pattern: '^-?\d{1,15}\.\d{2,4}$'
-          maxLength: 20
+          pattern: '(-?\d{15}(.\d{4}?))$'
+          maxLength: 19
           minLength: 0
           nullable: true
           example: 100000.04
@@ -859,7 +848,7 @@ components:
           description: |
             Campo de preenchimento obrigatório se selecionada a opção 'OUTROS' em Tipo de encargo pactuado no contrato.
             [Restrição] Obrigatório se selecionada a opção 'OUTROS' em Tipo de encargo pactuado no contrato.
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           example: Informações adicionais sobre encargos.
         chargeRate:
           type: number
@@ -954,13 +943,12 @@ components:
       properties:
         contractId:
           type: string
-          pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
           maxLength: 100
           example: '92792126019929279212650822221989319252576'
           description: 'Identifica de forma única o contrato da operação de crédito do cliente, mantendo as regras de imutabilidade dentro da instituição transmissora.'
         brandName:
           type: string
-          pattern: '[\w\W\s]*'
+          pattern: \w*\W*
           maxLength: 80
           example: Organização A
           description: 'Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes'
@@ -1025,8 +1013,8 @@ components:
           description: Valor necessario para o cliente liquidar a dívida.
           type: number
           format: double
-          pattern: '^-?\d{1,15}\.\d{2,4}$'
-          maxLength: 20
+          pattern: '(-?\d{15}(.\d{4}?))$'
+          maxLength: 19
           minLength: 0
           example: 100000.04
         releases:
@@ -1080,8 +1068,8 @@ components:
         paidAmount:
           type: number
           format: double
-          pattern: '^-?\d{1,15}\.\d{2,4}$'
-          maxLength: 20
+          pattern: '(-?\d{15}(.\d{4}?))$'
+          maxLength: 19
           minLength: 0
           example: 100000.04
           description: |
@@ -1184,11 +1172,10 @@ components:
         warrantyAmount:
           type: number
           format: double
-          maxLength: 20
-          pattern: '^-?\d{1,15}\.\d{2,4}$'
-          example: 200.0001
+          maxLength: 19
           description: |
             Valor original da garantia. Valor monetário, expresso com até 4 casas decimais.
+          example: 200.0001
       additionalProperties: false
     Meta:
       type: object
@@ -1276,17 +1263,17 @@ components:
               code:
                 description: Código de erro específico do endpoint
                 type: string
-                pattern: '[\w\W\s]*'
+                pattern: \w*\W*
                 maxLength: 255
               title:
                 description: Título legível por humanos deste erro específico
                 type: string
-                pattern: '[\w\W\s]*'
+                pattern: \w*\W*
                 maxLength: 255
               detail:
                 description: Descrição legível por humanos deste erro específico
                 type: string
-                pattern: '[\w\W\s]*'
+                pattern: \w*\W*
                 maxLength: 2048
             additionalProperties: false
         meta:
@@ -1300,7 +1287,7 @@ components:
       required: true
       schema:
         type: string
-        pattern: '[\w\W\s]*'
+        pattern: \w*\W*
         maxLength: 2048
     contractId:
       name: contractId
@@ -1310,7 +1297,7 @@ components:
       schema:
         type: string
         pattern: '^[a-zA-Z0-9][a-zA-Z0-9-]{0,99}$'
-        maxLength: 100
+        maxLength: 40
     page:
       name: page
       in: query
@@ -1337,7 +1324,7 @@ components:
       required: false
       schema:
         type: string
-        pattern: '[\w\W\s]*'
+        pattern: \w*\W*
         minLength: 1
         maxLength: 100
     xFapiAuthDate:
@@ -1357,7 +1344,7 @@ components:
       required: false
       schema:
         type: string
-        pattern: '[\w\W\s]*'
+        pattern: \w*\W*
         minLength: 1
         maxLength: 100
     xFapiInteractionId:
@@ -1373,16 +1360,7 @@ components:
   securitySchemes:
     OpenId:
       type: openIdConnect
-      openIdConnectUrl: 'https://auth.mockbank.poc.raidiam.io/.well-known/openid-configuration'
-    OAuth2Security:
-      type: oauth2
-      description: Fluxo OAuth necessário para que a receptora tenha acesso aos dados na instituição transmissora. Requer o processo de redirecionamento e autenticação do usuário a que se referem os dados.
-      flows:
-        authorizationCode:
-          authorizationUrl: 'https://authserver.example/authorization'
-          tokenUrl: 'https://authserver.example/token'
-          scopes:
-            financings: Escopo necessário para acesso à API Financings. O controle dos endpoints específicos é feito via permissions.
+      openIdConnectUrl: 'https://authserver.example/.well-known/openid-configuration'
   responses:
     OKResponseFinancingsContractList:
       description: Lista de contratos obtida com sucesso.
