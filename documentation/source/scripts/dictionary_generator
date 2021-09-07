@@ -129,7 +129,15 @@ oas['paths'].each_with_index do |(path, methods)|
         return
       end
 
-      extract_fields(response['content']['application/json']['schema'], '', []).each do |field|
+      applicationData = response['content'];
+
+      if response['content']['application/json'] != nil
+        applicationData = response['content']['application/json'];
+      elsif response['content']['application/jwt'] != nil
+        applicationData = response['content']['application/jwt'];
+      end
+      
+      extract_fields(applicationData['schema'], '', []).each do |field|
         min_items = field['minItems']
         max_items = field['maxItems']
         data_type = field['type']
