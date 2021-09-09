@@ -1,0 +1,91 @@
+type: object
+required:
+  - completedAuthorisedPaymentType
+  - creditDebitType
+  - transactionName
+  - type
+  - amount
+  - transactionCurrency
+  - transactionDate
+  - partieCnpjCpf
+  - partiePersonType
+  - partieCompeCode
+  - partieBranchCode
+  - partieNumber
+  - partieCheckDigit
+properties:
+  transactionId:
+    type: string
+    description: Código ou identificador único prestado pela instituição que mantém a conta para representar a transação individual.
+    maxLength: 100
+    pattern: ^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$
+    example: "TXpRMU9UQTROMWhZV2xSU1FUazJSMDl"
+  completedAuthorisedPaymentType:
+    $ref: ../enum/EnumCompletedAuthorisedPaymentIndicator.yaml
+  creditDebitType:
+    $ref: ../enum/EnumCreditDebitIndicator.yaml
+  transactionName:
+    type: string
+    maxLength: 60
+    pattern: '[\w\W\s]*'
+    description: Campo livre que corresponde ao identificador da transação na instituição financeira
+    example: "TRANSFCWAR5TXHCX5I9IDBHML8082N8NEO30M6LNNG7ANAYIJYRM00ZBZPU8"
+  type:
+    $ref: ../enum/EnumTransactionTypes.yaml
+  amount:
+    type: number
+    format: double
+    pattern: '^-?\d{1,15}\.\d{2,4}$'
+    description: Valor da transação. Expressa em valor monetário com 4 casas decimais.
+    maxLength: 20
+    minLength: 0
+    example: 500.54
+  transactionCurrency:
+    type: string
+    pattern: '^(\w{3}){1}$'
+    maxLength: 3
+    description: Moeda referente ao valor da transação, segundo modelo ISO-4217. p.ex. 'BRL'.
+    example: BRL
+  transactionDate:
+    type: string
+    maxLength: 10
+    pattern: ^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$
+    description: |
+      Se indicador de transação:
+      TRANSACAO_EFETIVADA - corresponde a data de lançamento da transação
+      LANCAMENTO_FUTURO - corresponde a data prevista de efetivação da transação
+    example: "2021-01-07"
+  partieCnpjCpf:
+    type: string
+    maxLength: 14
+    pattern: ^\d{11}$|^\d{14}$|^NA$
+    description: |
+      Identificação da pessoa envolvida na transação: pagador ou recebedor (Preencher com o CPF ou CNPJ, sem formatação)
+    example: "43908445778"
+  partiePersonType:
+    $ref: ../enum/EnumPartiePersonType.yaml
+  partieCompeCode:
+    type: string
+    maxLength: 3
+    pattern: \d{3}|^NA$
+    description: Código identificador atribuído pelo Banco Central do Brasil às instituições participantes do STR (Sistema de Transferência de reservas) referente à pessoa envolvida na transação. O número-código substituiu o antigo código COMPE. Todos os participantes do STR, exceto as Infraestruturas do Mercado Financeiro (IMF) e a Secretaria do Tesouro Nacional, possuem um número-código independentemente de participarem da Centralizadora da Compensação de Cheques (Compe). O campo tem a anotação “n/a” (“não se aplica”) para os participantes do STR aos quais não é atribuído um número-código
+    example: "001"
+  partieBranchCode:
+    type: string
+    maxLength: 4
+    pattern: \d{4}|^NA$
+    description: Código da Agência detentora da conta da pessoa envolvida na transação. (Agência é a dependência destinada ao atendimento aos clientes, ao público em geral e aos associados de cooperativas de crédito, no exercício de atividades da instituição, não podendo ser móvel ou transitória)
+    example: "6272"
+  partieNumber:
+    type: string
+    maxLength: 20
+    pattern: ^\d{8,20}$|^NA$
+    description: Número da conta da pessoa envolvida na transação
+    example: "67890854360"
+  partieCheckDigit:
+    type: string
+    maxLength: 1
+    pattern: '[\w\W\s]*'
+    description: Dígito da conta da pessoa envolvida na transação
+    example: "4"
+additionalProperties: false
