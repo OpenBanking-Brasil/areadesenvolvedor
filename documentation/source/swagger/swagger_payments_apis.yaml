@@ -18,7 +18,8 @@ info:
     No contexto da API Payment Initiation, os `payloads` de mensagem que trafegam tanto por parte da instituição iniciadora de transação de pagamento quanto por parte da instituição detentora 
     de conta devem estar assinados. Para o processo de assinatura destes `payloads` as instituições devem seguir as especificações de segurança publicadas no Portal do desenvolvedor: 
 
-    - Certificados exigidos para assinatura de mensagens: [Padrões de certificados digitais Open Banking Brasil](https://openbanking-brasil.github.io/specs-seguranca/open-banking-brasil-certificate-standards-1_ID1.html)
+    - Certificados exigidos para assinatura de mensagens:  
+    [Padrões de certificados digitais Open Banking Brasil](https://github.com/OpenBanking-Brasil/specs-seguranca/blob/main/open-banking-brasil-certificate-standards-1_ID1.md#certificado-de-assinatura-certificadoassinatura)
 
     - Como assinar o payload JWS: [https://openbanking-brasil.github.io/areadesenvolvedor/#como-assinar-o-payload](https://openbanking-brasil.github.io/areadesenvolvedor/#como-assinar-o-payload)
 
@@ -27,7 +28,7 @@ info:
     O endpoint de consulta de pagamento GET /pix/payments/{​​​paymentId}​​​ deve suportar acesso a partir de access_token emitido por meio de um grant_type do tipo `client credentials`, como opção do uso do token vinculado ao consentimento (hybrid flow).  
 
     Para evitar vazamento de informação, a detentora deve validar que o pagamento consultado pertence ao ClientId que o criou e, caso haja divergências, retorne um erro HTTP 400.    
-  version: 1.0.1-rc1.0
+  version: 1.0.1-rc1.1
   license:
     name: Apache 2.0
     url: 'https://www.apache.org/licenses/LICENSE-2.0'
@@ -257,7 +258,20 @@ components:
               - detail
             properties:
               code:
-                $ref: '#/components/schemas/EnumErrorsCreateConsent'
+                type: string
+                maxLength: 21
+                enum:
+                  - FORMA_PGTO_INVALIDA
+                  - DATA_PGTO_INVALIDA
+                  - DETALHE_PGTO_INVALIDO
+                  - NAO_INFORMADO
+                example: FORMA_PGTO_INVALIDA
+                description: |
+                  Códigos de erros previstos na criação de consentimento para a iniciação de pagamentos:  
+                  • FORMA_PGTO_INVALIDA: Forma de pagamento inválida.  
+                  • DATA_PGTO_INVALIDA: Data de pagamento inválida.  
+                  • DETALHE_PGTO_INVALIDO: Detalhe do pagamento inválido.  
+                  • NAO_INFORMADO: Não informado.   
               title:
                 type: string
                 maxLength: 255
@@ -301,39 +315,41 @@ components:
               - detail
             properties:
               code:
-
+                $ref: '#/components/schemas/EnumErrorsCreatePayment'
               title:
                 type: string
                 maxLength: 255
                 pattern: \w*\W*
                 example: Saldo insuficiente.
                 description: |
-                  Título específico do erro reportado, de acordo com o código enviado:  
-                  • SALDO_INSUFICIENTE: Saldo insuficiente.  
-                  • BENEFICIARIO_INCOMPATIVEL: Beneficiário incompatível.  
-                  • VALOR_INCOMPATIVEL: Valor da transação incompatível.  
-                  • VALOR_ACIMA_LIMITE: Acima do limite estabelecido.  
-                  • VALOR_INVALIDO: Valor inválido.  
-                  • COBRANCA_INVALIDA: Cobrança inválida.  
-                  • CONSENTIMENTO_INVALIDO: Consentimento inválido.  
-                  • JANELA_OPER_INVALIDA: Janela de operação inválida.  
-                  • NAO_INFORMADO: Não informado.  
+                  Título específico do erro reportado, de acordo com o código enviado:
+                  • SALDO_INSUFICIENTE: Saldo insuficiente.
+                  • BENEFICIARIO_INCOMPATIVEL: Beneficiário incompatível.
+                  • VALOR_INCOMPATIVEL: Valor da transação incompatível.
+                  • VALOR_ACIMA_LIMITE: Acima do limite estabelecido.
+                  • VALOR_INVALIDO: Valor inválido.
+                  • COBRANCA_INVALIDA: Cobrança inválida.
+                  • CONSENTIMENTO_INVALIDO: Consentimento inválido.
+                  • JANELA_OPER_INVALIDA: Janela de operação inválida.
+                  • NAO_INFORMADO: Não informado.
+                  • PAGAMENTO_DIVERGENTE_DO_CONSENTIMENTO: divergência entre pagamento e consentimento.
               detail:
                 type: string
                 maxLength: 2048
                 pattern: \w*\W*
                 example: A conta selecionada não possui saldo suficiente para realizar o pagamento.
                 description: |
-                  Descrição específica do erro de acordo com o código reportado:  
-                  • SALDO_INSUFICIENTE: A conta selecionada não possui saldo suficiente para realizar o pagamento.  
-                  • BENEFICIARIO_INCOMPATIVEL: O beneficiário informado no consentimento não é o mesmo do esperado pelo DICT.  
-                  • VALOR_INCOMPATIVEL: O valor informado no consentimento não é o mesmo valor do informado no payload de pagamento.  
-                  • VALOR_ACIMA_LIMITE: O valor (ou quantidade de transações) ultrapassa a faixa de limite parametrizada na detentora para permitir a realização de transações pelo cliente.  
-                  • VALOR_INVALIDO: O valor enviado não é válido para o QR Code informado.  
-                  • COBRANCA_INVALIDA: Validação de expiração, validação de vencimento ou Status Válido.  
-                  • CONSENTIMENTO_INVALIDO: Consentimento inválido (status diferente de "AUTHORISED" ou está expirado).  
-                  • JANELA_OPER_INVALIDA: Requisição está fora da janela de funcionamento.  
-                  • NAO_INFORMADO: Não reportado/identificado pela instituição detentora de conta.  
+                  Descrição específica do erro de acordo com o código reportado:
+                  • SALDO_INSUFICIENTE: A conta selecionada não possui saldo suficiente para realizar o pagamento.
+                  • BENEFICIARIO_INCOMPATIVEL: O beneficiário informado no consentimento não é o mesmo do esperado pelo DICT.
+                  • VALOR_INCOMPATIVEL: O valor informado no consentimento não é o mesmo valor do informado no payload de pagamento.
+                  • VALOR_ACIMA_LIMITE: O valor (ou quantidade de transações) ultrapassa a faixa de limite parametrizada na detentora para permitir a realização de transações pelo cliente.
+                  • VALOR_INVALIDO: O valor enviado não é válido para o QR Code informado.
+                  • COBRANCA_INVALIDA: Validação de expiração, validação de vencimento ou Status Válido.
+                  • CONSENTIMENTO_INVALIDO: Consentimento inválido (status diferente de "AUTHORISED" ou está expirado).
+                  • JANELA_OPER_INVALIDA: Requisição está fora da janela de funcionamento.
+                  • NAO_INFORMADO: Não reportado/identificado pela instituição detentora de conta.
+                  • PAGAMENTO_DIVERGENTE_DO_CONSENTIMENTO: Dados do pagamento divergentes dos dados do consentimento.
             additionalProperties: false
         meta:
           $ref: '#/components/schemas/Meta'
@@ -407,7 +423,22 @@ components:
         - cnpjInitiator
       properties:
         localInstrument:
-          $ref: '#/components/schemas/EnumLocalInstrument'
+          type: string
+          maxLength: 4
+          enum:
+            - MANU
+            - DICT
+            - QRDN
+            - QRES
+            - INIC
+          example: DICT
+          description: |
+            Especifica a forma de iniciação do pagamento:  
+            - MANU - Inserção manual de dados da conta transacional  
+            - DICT - Inserção manual de chave Pix  
+            - QRDN - QR code dinâmico (*Domínio reservado para uso futuro*)  
+            - QRES - QR code estático (*Domínio reservado para uso futuro*)  
+            - INIC - Indica que o recebedor (creditor) contratou o Iniciador de Pagamentos especificamente para realizar iniciações de pagamento em que o beneficiário é previamente conhecido.  
         payment:
           $ref: '#/components/schemas/PaymentPix'
         creditorAccount:
@@ -429,7 +460,6 @@ components:
             530515RP12345678-201950300017BR.GOV.BCB.BRCODE01051.0.080450014BR.GOV.BCB.PIX0123PADRAO.URL.PIX/0123AB
             CD81390012BR.COM.OUTRO01190123.ABCD.3456.WXYZ6304EB76
           description: |
-            Obs: Campo reservado para uso futuro.
             Sequência de caracteres que corresponde ao QR Code disponibilizado para o pagador.
             É a sequência de caracteres que seria lida pelo leitor de QR Code, e deve propiciar o retorno dos dados do pagador após consulta na DICT.
             Essa funcionalidade é possível tanto para QR Code estático quanto para QR Code dinâmico.
@@ -448,9 +478,9 @@ components:
             No caso de CPF deverá ser informado com 11 números, sem pontos ou traços.
             Para o caso de CNPJ deverá ser informado com 14 números, sem pontos ou traços.
             No caso de chave aleatória deve ser informado o UUID gerado pelo DICT, conforme formato especificado na RFC41223.
-            Se informado, a detentora da conta deve validar o proxy no DICT quando localInstrument for igual a DICT, QRDN (uso futuro) ou QRES (uso futuro) e validar o campo creditorAccount.
+            Se informado, a detentora da conta deve validar o proxy no DICT quando localInstrument for igual a DICT, QRDN ou QRES e validar o campo creditorAccount.
             Esta validação é opcional caso o localInstrument for igual a INIC.
-            [Restrição] Se localInstrument for igual a MANU, o campo proxy não deve ser preenchido. Se localInstrument for igual INIC, DICT, QRDN (uso futuro) ou QRES (uso futuro), o campo proxy deve ser sempre preenchido com a chave Pix.
+            [Restrição] Se localInstrument for igual a MANU, o campo proxy não deve ser preenchido. Se localInstrument for igual INIC, DICT, QRDN ou QRES, o campo proxy deve ser sempre preenchido com a chave Pix.
         cnpjInitiator:
           type: string
           pattern: '^\d{14}$'
@@ -473,6 +503,14 @@ components:
             Se localInstrument for igual a MANU ou DICT, o campo transactionIdentification não deve ser preenchido.
             A detentora de conta deve validar se a condicionalidade do campo foi atendida pela iniciadora de pagamento.
           additionalProperties: false
+        ibgeTownCode:
+          type: string
+          minLength: 7
+          maxLength: 7
+          pattern: '^\d{7}$'
+          example: '5300108'
+          description: |
+            Traz o código da cidade segundo o IBGE (Instituto Brasileiro de Geografia e Estatística)
     CreditorAccount:
       type: object
       description: |
@@ -555,11 +593,10 @@ components:
     Details:
       type: object
       description: |
-        Objeto contendo os detalhes do pagamento.  
+        Objeto contendo os detalhes do pagamento.
       required:
         - localInstrument
         - creditorAccount
-
       properties:
         localInstrument:
           $ref: '#/components/schemas/EnumLocalInstrument'
@@ -568,17 +605,16 @@ components:
           maxLength: 512
           pattern: '[\w\W\s]*'
           example: |
-            00020104141234567890123426660014BR.GOV.BCB.PIX014466756C616E6F32303139406578616D706C652E636F6D27300012  
-            BR.COM.OUTRO011001234567895204000053039865406123.455802BR5915NOMEDORECEBEDOR6008BRASILIA61087007490062  
-            530515RP12345678-201950300017BR.GOV.BCB.BRCODE01051.0.080450014BR.GOV.BCB.PIX0123PADRAO.URL.PIX/0123AB  
+            00020104141234567890123426660014BR.GOV.BCB.PIX014466756C616E6F32303139406578616D706C652E636F6D27300012
+            BR.COM.OUTRO011001234567895204000053039865406123.455802BR5915NOMEDORECEBEDOR6008BRASILIA61087007490062
+            530515RP12345678-201950300017BR.GOV.BCB.BRCODE01051.0.080450014BR.GOV.BCB.PIX0123PADRAO.URL.PIX/0123AB
             CD81390012BR.COM.OUTRO01190123.ABCD.3456.WXYZ6304EB76
           description: |
-            Obs: Campo reservado para uso futuro.  
-            Sequência de caracteres que corresponde ao QR Code disponibilizado para o pagador.  
-            É a sequência de caracteres que seria lida pelo leitor de QR Code, e deve propiciar o retorno dos dados do pagador após consulta na DICT.  
-            Essa funcionalidade é possível tanto para QR Code estático quanto para QR Code dinâmico.  
-            No arranjo do Pix esta é a mesma sequência gerada e/ou lida pela funcionalidade Pix Copia e Cola.  
-            Este campo deverá ser no formato UTF-8.  
+            Sequência de caracteres que corresponde ao QR Code disponibilizado para o pagador.
+            É a sequência de caracteres que seria lida pelo leitor de QR Code, e deve propiciar o retorno dos dados do pagador após consulta na DICT.
+            Essa funcionalidade é possível tanto para QR Code estático quanto para QR Code dinâmico.
+            No arranjo do Pix esta é a mesma sequência gerada e/ou lida pela funcionalidade Pix Copia e Cola.
+            Este campo deverá ser no formato UTF-8.
             [Restrição] Preenchimento obrigatório para pagamentos por QR Code, observado o tamanho máximo de 512 bytes.
         proxy:
           type: string
@@ -586,15 +622,17 @@ components:
           pattern: '[\w\W\s]*'
           example: '12345678901'
           description: |
-            Chave cadastrada no DICT pertencente ao recebedor. Os tipos de chaves podem ser: telefone, e-mail, cpf/cnpj ou chave aleatória.  
-            No caso de telefone celular deve ser informado no padrão E.1641.  
-            Para e-mail deve ter o formato xxxxxxxx@xxxxxxx.xxx(.xx) e no máximo 77 caracteres.  
-            No caso de CPF deverá ser informado com 11 números, sem pontos ou traços.  
-            Para o caso de CNPJ deverá ser informado com 14 números, sem pontos ou traços.  
-            No caso de chave aleatória deve ser informado o UUID gerado pelo DICT, conforme formato especificado na RFC41223.  
-            Se informado, a detentora da conta deve validar o proxy no DICT quando localInstrument for igual a DICT, QRDN (uso futuro) ou QRES (uso futuro) e validar o campo creditorAccount.
-            Esta validação é opcional caso o localInstrument for igual a INIC.  
-
+            Chave cadastrada no DICT pertencente ao recebedor. Os tipos de chaves podem ser: telefone, e-mail, cpf/cnpj ou chave aleatória.
+            No caso de telefone celular deve ser informado no padrão E.1641.
+            Para e-mail deve ter o formato xxxxxxxx@xxxxxxx.xxx(.xx) e no máximo 77 caracteres.
+            No caso de CPF deverá ser informado com 11 números, sem pontos ou traços.
+            Para o caso de CNPJ deverá ser informado com 14 números, sem pontos ou traços.
+            No caso de chave aleatória deve ser informado o UUID gerado pelo DICT, conforme formato especificado na RFC41223.
+            Se informado, a detentora da conta deve validar o proxy no DICT quando localInstrument for igual a DICT, QRDN ou QRES e validar o campo creditorAccount.
+            Esta validação é opcional caso o localInstrument for igual a INIC.
+            [Restrição]
+            Se localInstrument for igual a MANU, o campo proxy não deve ser preenchido.
+            Se localInstrument for igual INIC, DICT, QRDN ou QRES, o campo proxy deve ser sempre preenchido com a chave Pix.
         creditorAccount:
           $ref: '#/components/schemas/CreditorAccount'
       additionalProperties: false
@@ -701,12 +739,12 @@ components:
         - INIC
       example: DICT
       description: |
-        Especifica a forma de iniciação do pagamento:  
-        - MANU - Inserção manual de dados da conta transacional  
-        - DICT - Inserção manual de chave Pix  
-        - QRDN - QR code dinâmico (*Domínio reservado para uso futuro*)  
-        - QRES - QR code estático (*Domínio reservado para uso futuro*)  
-        - INIC - Indica que o recebedor (creditor) contratou o Iniciador de Pagamentos especificamente para realizar iniciações de pagamento em que o beneficiário é previamente conhecido.  
+        Especifica a forma de iniciação do pagamento:
+        - MANU - Inserção manual de dados da conta transacional
+        - DICT - Inserção manual de chave Pix
+        - QRDN - QR code dinâmico
+        - QRES - QR code estático
+        - INIC - Indica que o recebedor (creditor) contratou o Iniciador de Pagamentos especificamente para realizar iniciações de pagamento em que o beneficiário é previamente conhecido.
     EnumPaymentPersonType:
       type: string
       maxLength: 15
@@ -869,7 +907,6 @@ components:
             Em caso de pessoa natural deve ser informado o nome completo do titular da conta do recebedor.  
             Em caso de pessoa jurídica deve ser informada a razão social ou o nome fantasia da conta do recebedor.
       additionalProperties: false
-
     LoggedUser:
       type: object
       description: Usuário (pessoa natural) que encontra-se logado na instituição Iniciadora de Pagamento.
@@ -897,7 +934,100 @@ components:
               example: CPF
               pattern: '^[A-Z]{3}$'
     Meta:
-
+      type: object
+      description: Meta informações referente a API requisitada.
+      required:
+        - totalRecords
+        - totalPages
+        - requestDateTime
+      properties:
+        totalRecords:
+          type: integer
+          format: int32
+          description: Número total de registros no resultado
+          example: 1
+        totalPages:
+          type: integer
+          format: int32
+          description: Número total de páginas no resultado
+          example: 1
+        requestDateTime:
+          description: 'Data e hora da consulta, conforme especificação RFC-3339, formato UTC.'
+          type: string
+          maxLength: 20
+          format: date-time
+          example: '2021-05-21T08:30:00Z'
+      additionalProperties: false
+    PaymentConsent:
+      type: object
+      description: Objeto contendo dados de pagamento para consentimento.
+      required:
+        - type
+        - date
+        - currency
+        - amount
+        - details
+      properties:
+        type:
+          $ref: '#/components/schemas/EnumPaymentType'
+        date:
+          type: string
+          format: date
+          maxLength: 10
+          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
+          example: '2021-01-01'
+          description: 'Data do pagamento, conforme especificação RFC-3339.'
+        currency:
+          type: string
+          maxLength: 3
+          pattern: '^([A-Z]{3})$'
+          example: BRL
+          description: |
+            Código da moeda nacional segundo modelo ISO-4217, ou seja, 'BRL'.
+            Todos os valores monetários informados estão representados com a moeda vigente do Brasil.
+        amount:
+          type: string
+          minLength: 4
+          maxLength: 19
+          pattern: '^((\d{1,16}\.\d{2}))$'
+          example: '100000.12'
+          description: |
+            Valor da transação com 2 casas decimais.
+        ibgeTownCode:
+          type: string
+          minLength: 7
+          maxLength: 7
+          pattern: '^\d{7}$'
+          example: '5300108'
+          description: |
+            Traz o código da cidade segundo o IBGE (Instituto Brasileiro de Geografia e Estatística).
+            Para o preenchimento deste campo, o Iniciador de Pagamentos deve seguir a orientação do arranjo da forma de pagamento.
+            O preenchimento do campo tanto em pix/payments quanto /consents deve ser igual. Caso haja divergência dos valores, a instituição deve retornar HTTP 422 com o código de erro PAGAMENTO_DIVERGENTE_DO_CONSENTIMENTO.
+            Este campo faz referência ao campo CodMun do arranjo Pix.
+        details:
+          $ref: '#/components/schemas/Details'
+      additionalProperties: false
+    PaymentPix:
+      type: object
+      description: Objeto contendo dados do pagameto como moeda e valor.
+      required:
+        - amount
+        - currency
+      properties:
+        amount:
+          type: string
+          minLength: 4
+          maxLength: 19
+          pattern: '^((\d{1,16}\.\d{2}))$'
+          example: '100000.12'
+          description: |
+            Valor da transação com 2 casas decimais.
+        currency:
+          type: string
+          maxLength: 3
+          pattern: '^([A-Z]{3})$'
+          example: BRL
+          description: |
             Código da moeda nacional segundo modelo ISO-4217, ou seja, 'BRL'.  
             Todos os valores monetários informados estão representados com a moeda vigente do Brasil.
       additionalProperties: false
@@ -962,14 +1092,14 @@ components:
               pattern: '^urn:[a-zA-Z0-9][a-zA-Z0-9-]{0,31}:[a-zA-Z0-9()+,\-.:=@;$_!*''%\/?#]+$'
               example: 'urn:bancoex:C1DD33123'
               description: |
-                Identificador único do consentimento criado para a iniciação de pagamento solicitada. Deverá ser um URN - Uniform Resource Name.  
-                Um URN, conforme definido na [RFC8141](https://tools.ietf.org/html/rfc8141) é um Uniform Resource 
-                Identifier - URI - que é atribuído sob o URI scheme "urn" e um namespace URN específico, com a intenção de que o URN 
-                seja um identificador de recurso persistente e independente da localização.  
+                Identificador único do consentimento criado para a iniciação de pagamento solicitada. Deverá ser um URN - Uniform Resource Name.
+                Um URN, conforme definido na [RFC8141](https://tools.ietf.org/html/rfc8141) é um Uniform Resource
+                Identifier - URI - que é atribuído sob o URI scheme "urn" e um namespace URN específico, com a intenção de que o URN
+                seja um identificador de recurso persistente e independente da localização.
                 Considerando a string urn:bancoex:C1DD33123 como exemplo para consentId temos:
                 - o namespace(urn)
-                - o identificador associado ao namespace da instituição transnmissora (bancoex) 
-                - o identificador específico dentro do namespace (C1DD33123).  
+                - o identificador associado ao namespace da instituição transnmissora (bancoex)
+                - o identificador específico dentro do namespace (C1DD33123).
                 Informações mais detalhadas sobre a construção de namespaces devem ser consultadas na [RFC8141](https://tools.ietf.org/html/rfc8141).
             creationDateTime:
               description: 'Data e hora em que o consentimento foi criado. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).'
@@ -989,6 +1119,14 @@ components:
               example: '2021-05-21T08:30:00Z'
               pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$'
               maxLength: 20
+            ibgeTownCode:
+              type: string
+              minLength: 7
+              maxLength: 7
+              pattern: '^\d{7}$'
+              example: '5300108'
+              description: |
+                Traz o código da cidade segundo o IBGE (Instituto Brasileiro de Geografia e Estatística)
             statusUpdateDateTime:
               type: string
               format: date-time
@@ -1112,15 +1250,24 @@ components:
             No caso de CPF deverá ser informado com 11 números, sem pontos ou traços.
             Para o caso de CNPJ deverá ser informado com 14 números, sem pontos ou traços.
             No caso de chave aleatória deve ser informado o UUID gerado pelo DICT, conforme formato especificado na RFC41223.
-            Se informado, a detentora da conta deve validar o proxy no DICT quando localInstrument for igual a DICT, QRDN (uso futuro) ou QRES (uso futuro) e validar o campo creditorAccount.
+            Se informado, a detentora da conta deve validar o proxy no DICT quando localInstrument for igual a DICT, QRDN ou QRES e validar o campo creditorAccount.
             Esta validação é opcional caso o localInstrument for igual a INIC.
+            [Restrição] Se localInstrument for igual a MANU, o campo proxy não deve ser preenchido. Se localInstrument for igual INIC, DICT, QRDN ou QRES, o campo proxy deve ser sempre preenchido com a chave Pix.
             [Restrição] Se localInstrument for igual a MANU, o campo proxy não deve ser preenchido. Se localInstrument for igual INIC, DICT, QRDN (uso futuro) ou QRES(uso futuro), o campo proxy deve ser sempre preenchido com a chave Pix.
+        ibgeTownCode:
+          type: string
+          minLength: 7
+          maxLength: 7
+          pattern: '^\d{7}$'
+          example: '5300108'
+          description: |
+            Traz o código da cidade segundo o IBGE (Instituto Brasileiro de Geografia e Estatística)
         status:
           $ref: '#/components/schemas/EnumPaymentStatusType'
         rejectionReason:
           $ref: '#/components/schemas/EnumRejectionReasonType'
         localInstrument:
-          $ref: '#/components/schemas/EnumLocalInstrument'
+          $ref: '#/components/schemas/CreatePixPaymentData/properties/localInstrument'
         cnpjInitiator:
           type: string
           pattern: '^\d{14}$'
