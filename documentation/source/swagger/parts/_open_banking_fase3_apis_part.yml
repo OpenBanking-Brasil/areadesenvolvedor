@@ -33,8 +33,8 @@ info:
 
     Futuramente com a evolução do ecossistema novas modalidades de operações serão agregadas, assim como a possibilidade de agendamentos.
 
-    #### Iniciação pelo Recebedor  
-    Iniciação pelo recebedor ocorre quando a prestação de serviço pela iniciadora é para, e somente para,  o recebedor. Nestes casos somente será permitido como beneficiário do pagamento o próprio recebedor. Algumas Instituições Detentoras de conta precisarão ajustar seus sistemas de forma a apropriar o campo em sua estrutura ao invés de gerá-lo nos casos pertinentes.  
+    #### Iniciação pelo Recebedor
+    Iniciação pelo recebedor ocorre quando a prestação de serviço pela iniciadora é para, e somente para,  o recebedor. Nestes casos somente será permitido como beneficiário do pagamento o próprio recebedor. Algumas Instituições Detentoras de conta precisarão ajustar seus sistemas de forma a apropriar o campo em sua estrutura ao invés de gerá-lo nos casos pertinentes.
 
     ### Idempotência
 
@@ -60,32 +60,32 @@ info:
 
     #### Conjunto inicial de regras propostas na aplicação da idempotencia:
 
-    - A iniciadora/TPP não deve alterar o corpo da solicitação ao usar a mesma chave de idempotência. Se a iniciadora alterar o corpo da solicitação, a detentora/ASPSP não deve modificar o recurso final. A detentora pode tratar este caso como uma ação fraudulenta.  
-    - A detentora não deve criar um novo recurso para uma solicitação POST se estiver determinada como uma solicitação idempotente.  
-    - Na criação a detentora deve responder à solicitação com o status atual do recurso (ou um status que seja pelo menos tão atual quanto o que estiver disponível nos canais eletrônicos existentes) e um código de status HTTP 201 (CREATED).  
-    - A iniciadora não deve usar comportamento idempotente para pesquisar o status dos recursos.  
-    - A detentora pode usar a assinatura da mensagem, junto com a chave de idempotência, para garantir que o corpo da solicitação não seja alterado.  
+    - A iniciadora/TPP não deve alterar o corpo da solicitação ao usar a mesma chave de idempotência. Se a iniciadora alterar o corpo da solicitação, a detentora/ASPSP não deve modificar o recurso final. A detentora pode tratar este caso como uma ação fraudulenta.
+    - A detentora não deve criar um novo recurso para uma solicitação POST se estiver determinada como uma solicitação idempotente.
+    - Na criação a detentora deve responder à solicitação com o status atual do recurso (ou um status que seja pelo menos tão atual quanto o que estiver disponível nos canais eletrônicos existentes) e um código de status HTTP 201 (CREATED).
+    - A iniciadora não deve usar comportamento idempotente para pesquisar o status dos recursos.
+    - A detentora pode usar a assinatura da mensagem, junto com a chave de idempotência, para garantir que o corpo da solicitação não seja alterado.
 
     ### Diagrama de Sequência
     ![Iniciacao_de_Pagamento](images/sequence-diagrams/iniciacao_de_pagamento.png)
     <a href="images/sequence-diagrams/iniciacao_de_pagamento.png" target="_blank">Download do Diagrama de Sequência</a>
-    
+
     #### Descrição do Diagrama de Sequência – APIs Fase 3
 
     #### Detalhamento da iniciação de pagamento:
 
-    1. Debtor (Usuário) inicia o processo de pagamento na iniciadora.  
-    2. Na iniciadora, o debtor seleciona a detentora e os dados de pagamentos:  
-    <b>Observação</b>: não serão ofertados, no primeiro momento, <b>Pix Saque e Pix troco</b>. Também não será possível agendamentos para <b>Pix QR Codes Dinâmico com vencimento</b>. 
-      <a href="https://www.bcb.gov.br/estabilidadefinanceira/pix?modalAberto=regulamentacao_pix" target="_blank">Aqui referências a regulamentação relacionada ao Pix</a>.  
-         
+    1. Debtor (Usuário) inicia o processo de pagamento na iniciadora.
+    2. Na iniciadora, o debtor seleciona a detentora e os dados de pagamentos:
+    <b>Observação</b>: não serão ofertados, no primeiro momento, <b>Pix Saque e Pix troco</b>. Também não será possível agendamentos para <b>Pix QR Codes Dinâmico com vencimento</b>.
+      <a href="https://www.bcb.gov.br/estabilidadefinanceira/pix?modalAberto=regulamentacao_pix" target="_blank">Aqui referências a regulamentação relacionada ao Pix</a>.
+
         <ol type="a">
           <li>Se transação por Chave Pix ou QR Code Estático:
             <ol type="i">
               <li>É realizada consulta ao DICT (diretório de contas).<br>
-              <b>Observação</b>: se a Iniciadora for um participante direto, detentora ou não de conta, no ecossistema do Pix, ele fará a consulta de forma direta ao DICT. Se a iniciadora for um participante indireto, será necessário consulta por meio de uma instituição com acesso direto com a qual a iniciadora possua relacionamento.  
+              <b>Observação</b>: se a Iniciadora for um participante direto, detentora ou não de conta, no ecossistema do Pix, ele fará a consulta de forma direta ao DICT. Se a iniciadora for um participante indireto, será necessário consulta por meio de uma instituição com acesso direto com a qual a iniciadora possua relacionamento.
               </li>
-              <li>A iniciadora recebe as informações consultadas:  
+              <li>A iniciadora recebe as informações consultadas:
                 <ol>
                   <li>Dados de chave</li>
                   <li>Nome do creditor</li>
@@ -129,16 +129,16 @@ info:
             </ol>
           </li>
         </ol>
- 
+
     3. Após consultas, a iniciadora segue para o fluxo de autorização e consentimento.
 
     #### Estabelece TLS
-    Toda comunicação máquina-a-máquina (m2m) usará mTLS, conforme RFC rfc8705 e detalhado na especificação de segurança: 
+    Toda comunicação máquina-a-máquina (m2m) usará mTLS, conforme RFC rfc8705 e detalhado na especificação de segurança:
       <a href="https://openbanking-brasil.github.io/specs-seguranca/open-banking-brasil-financial-api-1_ID1.html" target="_blank">Open Banking Brasil Financial-grade API Security Profile 1.0 Implementers Draft 1</a>.
 
     #### POST /tokens - Pedido de access_token e scope: payments, openid
     Antes de começar o fluxo de iniciação de pagamento, a Instituição Iniciadora deverá ter se cadastrado como *client* na Instituição Detentora da Conta, em acordo com o especificado para o Registro Dinâmico de Clientes (Dynamic Client Registration). Os detalhes dessa etapa podem ser encontrados na especificação de segurança: 
-    <a href="https://openbanking-brasil.github.io/specs-seguranca/open-banking-brasil-dynamic-client-registration-1_ID1.html" target="_blank">Open Banking Brasil Financial-grade API Dynamic Client Registration 1.0 Implementers Draft 1</a>.  
+    <a href="https://openbanking-brasil.github.io/specs-seguranca/open-banking-brasil-dynamic-client-registration-1_ID1.html" target="_blank">Open Banking Brasil Financial-grade API Dynamic Client Registration 1.0 Implementers Draft 1</a>.
     Uma vez cadastrada, a Instituição Iniciadora deverá obter o token de acesso (*access_token*) pelo fluxo de *client credentials*, conforme especificado pela RFC 6749 (rfc6749), com os escopos *payments* e *openid*.
 
     #### Valida certificado SSL e scopes
@@ -151,33 +151,33 @@ info:
     O Servidor de Autorização da Instituição Detentora da Conta deverá responder à requisição com o *access_token* conforme padrões a serem definidos pelo GT de Segurança.
 
     #### POST /payments/v1/consents
-    Para a criação de consentimento, considerando o requerido para FAPI - Loding Intent (<a href="https://bitbucket.org/openid/fapi/src/master/Financial_API_Lodging_Intent.md" target="_blank">Financial_API_Lodging_Intent.md</a>), após a obtenção do token de acesso, a Instituição Iniciadora deverá usar esse token de acesso para fazer a requisição POST de consentimento.  
-    A criação do consentimento encontra-se detalhada na seção das APIs para Pagamentos (<a href="#em-revisao-criar-consentimento-para-iniciacao-de-pagamento">Open Banking Brasil</a>).  
+    Para a criação de consentimento, considerando o requerido para FAPI - Loding Intent (<a href="https://bitbucket.org/openid/fapi/src/master/Financial_API_Lodging_Intent.md" target="_blank">Financial_API_Lodging_Intent.md</a>), após a obtenção do token de acesso, a Instituição Iniciadora deverá usar esse token de acesso para fazer a requisição POST de consentimento.
+    A criação do consentimento encontra-se detalhada na seção das APIs para Pagamentos (<a href="#em-revisao-criar-consentimento-para-iniciacao-de-pagamento">Open Banking Brasil</a>).
 
     #### 201 Created
     A API de Consentimento deverá responder o Http Status 201 e Payload contendo ***consentId***, e status inicial do consentimento em **AWAITING_AUTHORISATION** conforme especificado na documentação <a href="#em-revisao-criar-consentimento-para-iniciacao-de-pagamento">Open Banking Brasil</a>.
 
     #### Redirecionamento
-    No caso do consentimento ter sido criado com sucesso, a Instituição Iniciadora deverá fazer o redirecionamento para a Instituição Detentora da Conta. Esse fluxo de redirecionamento deve considerar todos os requisitos definidos para o objeto de requisição OpenID Connect (Seção 4.3 da especificação de segurança - <a href="https://openbanking-brasil.github.io/specs-seguranca/tpp-user-guide.html" target="_blank">Third Party Provider End To End User Guide</a>).  
+    No caso do consentimento ter sido criado com sucesso, a Instituição Iniciadora deverá fazer o redirecionamento para a Instituição Detentora da Conta. Esse fluxo de redirecionamento deve considerar todos os requisitos definidos para o objeto de requisição OpenID Connect (Seção 4.3 da especificação de segurança - <a href="https://openbanking-brasil.github.io/specs-seguranca/tpp-user-guide.html" target="_blank">Third Party Provider End To End User Guide</a>).
     Esse redirecionamento é o passo que permitirá o início da autenticação do usuário na Instituição Detentora da Conta.
- 
+
     #### Validações de negócios (Detentora)
-    Ao receber o POST /payments/v1/pix/payments é importante observar que a Detentora deverá validar as informações passadas pela Iniciadora nos campos do payload de envio do consentimento e do pagamento (como, por exemplo, valores e dados do creditado), além de ser necessário decodificar o código para os casos de pagamentos iniciados a partir de um Pix QRCode, a fim de que a Detentora carregue as informações complementares (como, por exemplo, o TxID) na mensageria do Pix (atenção para a PACS008 e as <a href="https://www.bcb.gov.br/estabilidadefinanceira/pix?modalAberto=regulamentacao_pix" target="_blank">regulamentações do Pix</a>).   
-    A Detentora deve validar as informações de detalhes do payload com os dados de detalhes do consentimento, de acordo com a forma de pagamento. Caso os dados do detalhe informados no consentimento sejam diferente dos dados enviados na iniciação de pagamento, a Detentora de retornar erro HTTP 422 Unprocessable Entity, com o code BENEFICIARIO_INCOMPATIVEL.  
+    Ao receber o POST /payments/v1/pix/payments é importante observar que a Detentora deverá validar as informações passadas pela Iniciadora nos campos do payload de envio do consentimento e do pagamento (como, por exemplo, valores e dados do creditado), além de ser necessário decodificar o código para os casos de pagamentos iniciados a partir de um Pix QRCode, a fim de que a Detentora carregue as informações complementares (como, por exemplo, o TxID) na mensageria do Pix (atenção para a PACS008 e as <a href="https://www.bcb.gov.br/estabilidadefinanceira/pix?modalAberto=regulamentacao_pix" target="_blank">regulamentações do Pix</a>).
+    A Detentora deve validar as informações de detalhes do payload com os dados de detalhes do consentimento, de acordo com a forma de pagamento. Caso os dados do detalhe informados no consentimento sejam diferente dos dados enviados na iniciação de pagamento, a Detentora de retornar erro HTTP 422 Unprocessable Entity, com o code BENEFICIARIO_INCOMPATIVEL.
 
     #### Efetivação do pagamento&lt;&lt;Assync&gt;&gt;
     A Detentora de Conta efetua a transação de pagamento entre o Debtor e Creditor através da forma de pagamento escolhida pelo Debtor. A efetivação da transação acontece de maneira assíncrona ao fluxo do Open Banking, seguindo as regras e interfaces do arranjo utilizado (apenas PIX disponível nesse momento).
 
     #### Loop (Polling)
-    A Iniciadora deverá consultar periodicamente a Instituição Detentora de Conta para verificar o status da transação de iniciação pagamento.  
-    Os possíveis status de uma transação de iniciação de pagamento estão detalhados na documentação (<a href="#tocS_EnumPaymentStatusType">Open Banking Brasil</a>).  
-    Como sugestão, é indicado que a Instituição Iniciadora do pagamento implemente um retry exponencial e respeite o “rate limit” descriminado na documentação.  
+    A Iniciadora deverá consultar periodicamente a Instituição Detentora de Conta para verificar o status da transação de iniciação pagamento.
+    Os possíveis status de uma transação de iniciação de pagamento estão detalhados na documentação (<a href="#tocS_EnumPaymentStatusType">Open Banking Brasil</a>).
+    Como sugestão, é indicado que a Instituição Iniciadora do pagamento implemente um retry exponencial e respeite o “rate limit” descriminado na documentação.
     A recomendação para uso do polling encontra-se detalhada na seção de “Recomendação uso de polling” (<a href="#recomendacao-uso-de-polling">Open Banking Brasil</a>)).
 
-    #### GET pix/payments/{paymentId} 
-    Durante o período de polling a Iniciadora deverá consultar o status da transação através da rota “Get pix/payments/{paymentId}” informado o respectivo paymentId da transação.  
+    #### GET pix/payments/{paymentId}
+    Durante o período de polling a Iniciadora deverá consultar o status da transação através da rota “Get pix/payments/{paymentId}” informado o respectivo paymentId da transação.
     A consulta encontra-se detalhada na seção das APIs para Pagamentos (<a href="#em-revisao-pix-consultar-iniciacao-de-pagamento">Open Banking Brasil</a>).
-    
+
     #### Exibe comprovante de iniciação de pagamento
     Caso a Iniciadora identifique que a transação de pagamento foi aprovada pela Detentora de Conta (status “ACCC”), poderá ser exibido o comprovante da **efetivação** da Transação de Pagamento. Caso o status do pagamento seja diferente de “ACCC” e/ou “RJCT”, deverá ser apresentada a efetivação da **solicitação** de Iniciação de Pagamento, apresentando as informações (<a href="#guia-do-usuario-instituicao-receptora-ou-iniciadora-de-pagamentos">segundo Guia de Usuário</a> – “Etapa 6: Efetivação da Solicitação):
 
@@ -188,53 +188,53 @@ info:
     Os possíveis status de uma transação de iniciação de pagamento estão detalhados na documentação (<a href="#tocS_EnumPaymentStatusType">Open Banking Brasil</a>).
 
     ### Máquina de Estados
-    #### Os possíveis status do consentimento são:  
-      
-    AWAITING_AUTHORISATION - Aguardando autorização  
-    AUTHORISED - Autorizado   
-    REJECTED - Rejeitado  
+    #### Os possíveis status do consentimento são:
+
+    AWAITING_AUTHORISATION - Aguardando autorização
+    AUTHORISED - Autorizado
+    REJECTED - Rejeitado
     CONSUMED - Consumido
 
-    ![Maquina de Estados](images/sequence-diagrams/state-machine_phase3.png)  
+    ![Maquina de Estados](images/sequence-diagrams/state-machine_phase3.png)
     <a href="images/sequence-diagrams/state-machine_phase3.png" target="_blank">Download da Máquina de Estados</a>
-    
-    Algumas definições são importantes para tratar a transição dos estados do consentimento em diferentes momentos do fluxo:  
+
+    Algumas definições são importantes para tratar a transição dos estados do consentimento em diferentes momentos do fluxo:
 
     #### AWAITING_AUTHORISATION
-    - O consentimento é sempre criado com o status AWAITING_AUTHORISATION e deve assumir o status AUTHORISED ou REJECTED  antes do tempo de expiração de 5 minutos.  
+    - O consentimento é sempre criado com o status AWAITING_AUTHORISATION. Ele pode ser aprovado antes do tempo de expiração de 5 minutos, assumindo o status AUTHORISED. Se não, deve assumir o status REJECTED caso expire ou seja cancelado pelo usuário.
 
     #### AUTHORISED
-    - Para o cenário em que o status assumiu AUTHORISED, o tempo máximo do expirationDateTime do consentimento deve assumir "now + 60 minutos". Este é o tempo para consumir o consentimento autorizado, mudando seu status para CONSUMED. Não é possível prorrogar este tempo e a criação de um novo consentimento será necessária para os cenários de insucesso. O tempo do expirationDateTime é garantido com os 15 minutos do access token, sendo possível utilizar mais três refresh tokens até totalizar 60 minutos.  
-    
+    - Para o cenário em que o status assumiu AUTHORISED, o tempo máximo do expirationDateTime do consentimento deve assumir "now + 60 minutos". Este é o tempo para consumir o consentimento autorizado, mudando seu status para CONSUMED. Não é possível prorrogar este tempo e a criação de um novo consentimento será necessária para os cenários de insucesso. O tempo do expirationDateTime é garantido com os 15 minutos do access token, sendo possível utilizar mais três refresh tokens até totalizar 60 minutos.
+
     ##### REJECTED
-    - Em caso de consentimento expirado a Detentora deverá retornar o status REJECTED.  
-    - Em caso de consentimento rejeitado pelo usuário ou por regra de negócio da Detentora, o status deverá ser retornado como REJECTED.  
-   
+    - Em caso de consentimento expirado a Detentora deverá retornar o status REJECTED.
+    - Em caso de consentimento rejeitado pelo usuário ou por regra de negócio da Detentora, o status deverá ser retornado como REJECTED.
+
     #### CONSUMED
-    - O consentimento assume o status CONSUMED após ocorrer o processamento da iniciação do pagamento, seja ele com sucesso (HTTP 201) ou ainda em casos de insucesso (HTTP 422) retornados pela Detentora. Para os demais códigos HTTP não há mudança de status do consentimento, o mesmo permanecerá AUTHORISED, respeitando o tempo máximo de expiração do consentimento (60 minutos).    
-      
+    - O consentimento assume o status CONSUMED após ocorrer o processamento da iniciação do pagamento, seja ele com sucesso (HTTP 201) ou ainda em casos de insucesso (HTTP 422) retornados pela Detentora. Para os demais códigos HTTP não há mudança de status do consentimento, o mesmo permanecerá AUTHORISED, respeitando o tempo máximo de expiração do consentimento (60 minutos).
+
     ### Recomendação uso de polling
-    #### A consulta via GET, para verificar o processamento da transação, pode ser efetuada a qualquer momento desde que se respeite o rate limit de:  
-    - 300 TPS global, 50 TPS por instituição e 8 TPS por endereço IP (Internet Protocol).  
-    Como sugestão, é indicado que a instituição iniciadora do pagamento implemente um retry exponencial.  
+    #### A consulta via GET, para verificar o processamento da transação, pode ser efetuada a qualquer momento desde que se respeite o rate limit de:
+    - 300 TPS global, 50 TPS por instituição e 8 TPS por endereço IP (Internet Protocol).
+    Como sugestão, é indicado que a instituição iniciadora do pagamento implemente um retry exponencial.
 
     ### Controle de acesso
 
-    O endpoint de consulta de pagamento GET /pix/payments/{​​​paymentId}​​​ deve suportar acesso a partir de access_token emitido por meio de um _grant_type_ do tipo `client credentials`, como opção do uso do token vinculado ao consentimento (hybrid flow).  
-    Para evitar vazamento de informação, a detentora deve validar que o pagamento consultado pertence ao `client_id` que o criou e, caso haja divergências, retorne um erro HTTP 400.  
-    
-    ### Como assinar o payload  
+    O endpoint de consulta de pagamento GET /pix/payments/{​​​paymentId}​​​ deve suportar acesso a partir de access_token emitido por meio de um _grant_type_ do tipo `client credentials`, como opção do uso do token vinculado ao consentimento (hybrid flow).
+    Para evitar vazamento de informação, a detentora deve validar que o pagamento consultado pertence ao `client_id` que o criou e, caso haja divergências, retorne um erro HTTP 400.
 
-    No contexto da API Payment Initiation, os payloads de mensagem de consentimento e de pagamento que trafegam tanto por parte da instituição iniciadora de transação de pagamento quanto por parte da instituição detentora de conta devem estar assinados. Abaixo temos as orientações para assinatura das mensagens JWS.  
-    
+    ### Como assinar o payload
+
+    No contexto da API Payment Initiation, os payloads de mensagem de consentimento e de pagamento que trafegam tanto por parte da instituição iniciadora de transação de pagamento quanto por parte da instituição detentora de conta devem estar assinados. Abaixo temos as orientações para assinatura das mensagens JWS.
+
     Informações complementares de segurança podem ser consultadas em <a href="https://github.com/OpenBanking-Brasil/specs-seguranca/blob/main/open-banking-brasil-financial-api-1_ID2-ptbr.md" target="_blank"> https://github.com/OpenBanking-Brasil/specs-seguranca/blob/main/open-banking-brasil-financial-api-1_ID2-ptbr.md</a>.
-    
+
     - **Passo 1** - Identifique a chave privada e o certificado de assinatura correspondente a serem usados para assinatura:
 
     As assinaturas devem ser realizadas com uso do certificado digital de assinatura especificado no <a href="https://github.com/OpenBanking-Brasil/specs-seguranca/blob/main/open-banking-brasil-certificate-standards-1_ID1-ptbr.md#certificado-de-assinatura-certificadoassinatura" target="_blank">Padrão de Certificados Open Banking Brasil</a>.
 
     O certificado de assinatura deve ser válido no momento da criação do JWS.
-    
+
     - **Passo 2** - Geração do JOSE Header
 
     O JOSE Header deve conter os seguintes campos:
@@ -250,9 +250,9 @@ info:
     Para garantir a integridade e o não-repúdio das informações tramitadas em *API´s sensíveis e que indicam essa necessidade na sua documentação*, deve ser adotado a estrutura no padrão JWS definida na [<a href="https://datatracker.ietf.org/doc/html/rfc7515" target="_blank">RFC7515</a>] e que inclui:
 
     **Cabeçalho** (_JSON Object Signing and Encryption – JOSE Header_), onde se define o algoritmo utilizado e inclui informações sobre a chave pública ou certificado que podem ser utilizadas para validar a assinatura;
-    
+
     **Payload** (_JWS Payload_): conteúdo propriamente dito e detalhado na especificação da API além de informações sobre `claims` JWT ;
-    
+
     **Assinatura digital** (_JWS Signature_): assinatura digital, realizada conforme parâmetros do cabeçalho.
 
     O payload das mensagens (requisição e resposta _JWT_) assinadas devem incluir as seguintes `claims` presentes na [<a href="https://datatracker.ietf.org/doc/html/rfc7519#section-4.1" target="_blank">RFC7519</a>] (JWT):
@@ -324,7 +324,7 @@ info:
           "accountType": "CACC"
         }
       }
-    } 
+    }
 
     * "Assinatura omitida por questões de brevidade"
 
@@ -395,35 +395,35 @@ info:
         "totalPages": 1,
         "requestDateTime": "2021-05-21T08:30:00Z"
       }
-    }  
+    }
 
     * "Assinatura omitida por questões de brevidade"
     ```
-    
+
 
     **Em caso de erro**
 
-    * Na validação da assinatura pelo Provedor do Recurso a API deve retornar mensagem de erro `HTTP` com status code `400` e a resposta deve incluir na propriedade code do objeto de resposta de erro especificado na API (*ResponseError*) a indicação da falha com o conteúdo `BAD_SIGNATURE`.  
-    
+    * Na validação da assinatura pelo Provedor do Recurso a API deve retornar mensagem de erro `HTTP` com status code `400` e a resposta deve incluir na propriedade code do objeto de resposta de erro especificado na API (*ResponseError*) a indicação da falha com o conteúdo `BAD_SIGNATURE`.
+
     * Erros na validação da mensagem recebida pela aplicação cliente (p. ex. iniciador de pagamento) devem ser registrados e o `Provedor do Recurso` (p. ex. instituição detentora de conta) deve ser notificado.
 
-  version: 1.0.1-rc1.0
+  version: 1.0.1-rc1.1
 tags:
   - name: API - Pagamentos
     description: |
       |Versão|
       |:-----|
-      |1.0.1-rc1.0|
+      |1.0.1-rc1.1|
 
       #### Visão Geral
-      
+
       A API tem como objetivo coletar o consentimento e realizar a iniciação de pagamento entre bancos e instituições financeiras e acessível também à estabelecimentos comerciais participantes do Open Banking Brasil.
-      
+
       Os recursos estão disponíveis para pagadores que possuem vínculo com uma instituição detentora de conta participante do Open Banking, independentemente de serem pessoa física ou jurídica.
-      
+
       #### Especificação em OAS 3.0
 
-      <a href="swagger/swagger_payments_apis.yaml" target="_blank">Download da Especificação (OAS 3.0)</a>  
+      <a href="swagger/swagger_payments_apis.yaml" target="_blank">Download da Especificação (OAS 3.0)</a>
 
 paths:
   /payments/v1/consents:
@@ -440,9 +440,9 @@ paths:
         Campos de resposta do endpoint de `/consents`
 
         <a href='dictionary/paymentsPostConsents_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
-        
+
         Consulte a seção **Convenções de payload** para obter mais informações sobre [Atributos Obrigatórios / Opcionais](#convencoes-de-propriedade-dos-atributos).
-   
+
       parameters:
         - $ref: '#/components/parameters/Authorization'
         - $ref: '#/components/parameters/xFapiAuthDate'
@@ -500,9 +500,9 @@ paths:
         Campos de resposta do endpoint de `/consents`
 
         <a href='dictionary/paymentsGetConsentsConsentId_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
-        
+
         Consulte a seção **Convenções de payload** para obter mais informações sobre [Atributos Obrigatórios / Opcionais](#convencoes-de-propriedade-dos-atributos).
-        
+
       parameters:
         - $ref: "#/components/parameters/consentId"
         - $ref: '#/components/parameters/Authorization'
@@ -551,7 +551,7 @@ paths:
         Campos de resposta do endpoint de `/pix/payments`
 
         <a href='dictionary/paymentsPostPixPayments_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
-        
+
         Consulte a seção **Convenções de payload** para obter mais informações sobre [Atributos Obrigatórios / Opcionais](#convencoes-de-propriedade-dos-atributos).
 
       parameters:
@@ -608,10 +608,10 @@ paths:
 
         ### Dicionário de dados
 
-        Campos de resposta do endpoint de `/pix/payments`.  
-  
+        Campos de resposta do endpoint de `/pix/payments`.
+
         <a href='dictionary/paymentsGetPixPaymentsPaymentId_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
-        
+
         Consulte a seção **Convenções de payload** para obter mais informações sobre [Atributos Obrigatórios / Opcionais](#convencoes-de-propriedade-dos-atributos).
 
       parameters:
@@ -757,7 +757,7 @@ components:
           description: |
             Um UUID RFC4122 usado como um ID de correlação. O transmissor deve usar o mesmo valor recebido na requisição para o cabeçalho de resposta recebido na requisição, caso não tenha sido fornecido, deve se usar um UUID RFC4122.
           schema:
-            $ref: ./headers/XFapiInteractionId.yaml           
+            $ref: ./headers/XFapiInteractionId.yaml
       content:
         application/json:
           schema:
@@ -781,7 +781,7 @@ components:
           description: |
             Um UUID RFC4122 usado como um ID de correlação. O transmissor deve usar o mesmo valor recebido na requisição para o cabeçalho de resposta recebido na requisição, caso não tenha sido fornecido, deve se usar um UUID RFC4122.
           schema:
-            $ref: ./headers/XFapiInteractionId.yaml           
+            $ref: ./headers/XFapiInteractionId.yaml
       content:
         application/json:
           schema:
