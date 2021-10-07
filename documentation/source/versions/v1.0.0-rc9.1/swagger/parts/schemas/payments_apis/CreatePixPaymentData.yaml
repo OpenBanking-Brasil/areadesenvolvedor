@@ -1,0 +1,85 @@
+type: object
+description: Objeto contendo dados do pagamento e do recebedor (creditor).
+required:
+  - localInstrument
+  - payment
+  - creditorAccount
+  - cnpjInitiator
+properties:
+  localInstrument:
+    $ref: ../enum/EnumLocalInstrument.yaml
+  payment:
+    $ref: ./PaymentPix.yaml
+  creditorAccount:
+    $ref: ../business_commons/CreditorAccount.yaml
+  remittanceInformation:
+    type: string
+    maxLength: 140
+    pattern: '[\w\W\s]*'
+    example: Pagamento da nota XPTO035-002.
+    description: |
+      Deve ser preenchido sempre que o usuário pagador inserir alguma informação adicional em um pagamento, a ser enviada ao recebedor.
+  qrCode:
+    type: string
+    maxLength: 512
+    pattern: '[\w\W\s]*'
+    example: |
+      00020104141234567890123426660014BR.GOV.BCB.PIX014466756C616E6F32303139406578616D706C652E636F6D27300012
+      BR.COM.OUTRO011001234567895204000053039865406123.455802BR5915NOMEDORECEBEDOR6008BRASILIA61087007490062
+      530515RP12345678-201950300017BR.GOV.BCB.BRCODE01051.0.080450014BR.GOV.BCB.PIX0123PADRAO.URL.PIX/0123AB
+      CD81390012BR.COM.OUTRO01190123.ABCD.3456.WXYZ6304EB76
+    description: |
+      Sequência de caracteres que corresponde ao QR Code disponibilizado para o pagador.
+      É a sequência de caracteres que seria lida pelo leitor de QR Code, e deve propiciar o retorno dos dados do pagador após consulta na DICT.
+      Essa funcionalidade é possível tanto para QR Code estático quanto para QR Code dinâmico.
+      No arranjo do Pix esta é a mesma sequência gerada e/ou lida pela funcionalidade Pix Copia e Cola.
+      Este campo deverá ser no formato UTF-8.
+      [Restrição] Preenchimento obrigatório para pagamentos por QR Code, observado o tamanho máximo de 512 bytes.
+  proxy:
+    type: string
+    maxLength: 77
+    pattern: '[\w\W\s]*'
+    example: '12345678901'
+    description: |
+      Chave cadastrada no DICT pertencente ao recebedor. Os tipos de chaves podem ser: telefone, e-mail, cpf/cnpj ou chave aleatória.
+      No caso de telefone celular deve ser informado no padrão E.1641.
+      Para e-mail deve ter o formato xxxxxxxx@xxxxxxx.xxx(.xx) e no máximo 77 caracteres.
+      No caso de CPF deverá ser informado com 11 números, sem pontos ou traços.
+      Para o caso de CNPJ deverá ser informado com 14 números, sem pontos ou traços.
+      No caso de chave aleatória deve ser informado o UUID gerado pelo DICT, conforme formato especificado na RFC41223.
+      Se informado, a detentora da conta deve validar o proxy no DICT quando localInstrument for igual a DICT, QRDN ou QRES e validar o campo creditorAccount.
+      Esta validação é opcional caso o localInstrument for igual a INIC.
+      [Restrição] Se localInstrument for igual a MANU, o campo proxy não deve ser preenchido. Se localInstrument for igual INIC, DICT, QRDN ou QRES, o campo proxy deve ser sempre preenchido com a chave Pix.
+  cnpjInitiator:
+    type: string
+    pattern: '^\d{14}$'
+    maxLength: 14
+    example: '50685362000135'
+    description: 'CNPJ do Iniciador de Pagamento devidamente habilitado para a prestação de Serviço de Iniciação no Pix.'
+  transactionIdentification:
+    type: string
+    pattern: '^[a-zA-Z0-9][a-zA-Z0-9]{0,24}$'
+    maxLength: 25
+    example: 'E00038166201907261559y6j6'
+    description: |
+      Trata-se de um identificador de transação que deve ser retransmitido intacto pelo PSP do pagador ao gerar a ordem de pagamento. Essa informação permitirá ao recebedor identificar e correlacionar a transferência, quando recebida, com a apresentação das instruções ao pagador.
+      Os caracteres permitidos no contexto do Pix para o campo txid (EMV 62-05) são:
+      - Letras minúsculas, de ‘a’ a ‘z’
+      - Letras maiúsculas, de ‘A’ a ‘z’
+      - Dígitos decimais, de ‘0’ a ‘9’
+
+      [Restrição] Se localInstrument for igual a INIC, o campo transactionIdentification deve ser preenchido obrigatoriamente.
+      Se localInstrument for igual a MANU ou DICT, o campo transactionIdentification não deve ser preenchido.
+      A detentora de conta deve validar se a condicionalidade do campo foi atendida pela iniciadora de pagamento.
+    additionalProperties: false
+  ibgeTownCode:
+    type: string
+    minLength: 7
+    maxLength: 7
+    pattern: ^\d{7}$
+    example: '5300108'
+    description: |
+      Traz o código da cidade segundo o IBGE (Instituto Brasileiro de Geografia e Estatística).
+      Para o preenchimento deste campo, o Iniciador de Pagamentos deve seguir a orientação do arranjo da forma de pagamento.
+      O preenchimento do campo tanto em pix/payments quanto /consents deve ser igual. Caso haja divergência dos valores, a instituição deve retornar HTTP 422 com o código de erro PAGAMENTO_DIVERGENTE_DO_CONSENTIMENTO.
+      Este campo faz referência ao campo CodMun do arranjo Pix.

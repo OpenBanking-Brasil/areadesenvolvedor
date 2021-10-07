@@ -1,0 +1,48 @@
+type: object
+description: Objeto contendo dados de pagamento para consentimento.
+required:
+  - type
+  - date
+  - currency
+  - amount
+  - details
+properties:
+  type:
+    $ref: '../enum/EnumPaymentType.yaml'
+  date:
+    type: string
+    format: date
+    maxLength: 10
+    pattern: ^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$
+    example: '2021-01-01'
+    description: Data do pagamento, conforme especificação RFC-3339.
+  currency:
+    type: string
+    maxLength: 3
+    pattern: ^([A-Z]{3})$
+    example: BRL
+    description: |
+      Código da moeda nacional segundo modelo ISO-4217, ou seja, 'BRL'.
+      Todos os valores monetários informados estão representados com a moeda vigente do Brasil.
+  amount:
+    type: string
+    minLength: 4
+    maxLength: 19
+    pattern: ^((\d{1,16}\.\d{2}))$
+    example: '100000.12'
+    description: |
+      Valor da transação com 2 casas decimais.
+  ibgeTownCode:
+    type: string
+    minLength: 7
+    maxLength: 7
+    pattern: ^\d{7}$
+    example: '5300108'
+    description: |
+      Traz o código da cidade segundo o IBGE (Instituto Brasileiro de Geografia e Estatística).
+      Para o preenchimento deste campo, o Iniciador de Pagamentos deve seguir a orientação do arranjo da forma de pagamento.
+      O preenchimento do campo tanto em pix/payments quanto /consents deve ser igual. Caso haja divergência dos valores, a instituição deve retornar HTTP 422 com o código de erro PAGAMENTO_DIVERGENTE_DO_CONSENTIMENTO.
+      Este campo faz referência ao campo CodMun do arranjo Pix.
+  details:
+    $ref: ./PaymentDetails.yaml
+additionalProperties: false
