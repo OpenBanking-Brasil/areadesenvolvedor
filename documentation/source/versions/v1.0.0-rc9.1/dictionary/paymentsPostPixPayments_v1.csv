@@ -1,0 +1,176 @@
+﻿Xpath;Nome;Definição;Tipo de Dado;Tamanho;Mandatoriedade;Formato;Domínio;Mínimo de Ocorrências;Máximo de Ocorrências;Restrições;Nulidade;Tipo de Dado Json;Exemplo
+/data;data;Objeto contendo dados do pagamento e da conta do recebedor (creditor).;Objeto;;Obrigatório;;;1;1;"";Não permitido;object;
+/data/paymentId;paymentId;"Código ou identificador único informado pela instituição detentora da conta para representar
+a iniciação de pagamento individual. O `paymentId` deve ser diferente do `endToEndId`.
+Este é o identificador que deverá ser utilizado na consulta ao status da iniciação de pagamento efetuada.";Texto;100;Obrigatório;^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$;;1;1;"";Não permitido;string;TXpRMU9UQTROMWhZV2xSU1FUazJSMDl
+/data/endToEndId;endToEndId;"Deve ser preenchido no formato padrão ExxxxxxxxyyyyMMddHHmmkkkkkkkkkkk (32 caracteres; “case sensitive”, isso é, diferencia letras maiúsculas e minúsculas), sendo:
+• “E” – fixo (1 caractere);  
+• xxxxxxxx – identificação do agente que gerou o ´EndToEndId´, podendo ser: o ISPB do participante direto ou o ISPB do participante indireto (8 caracteres numéricos";Texto;32;Condicional;^([E])([0-9]{8})([0-9]{4})(0[1-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])(2[0-3]|[01][0-9])([0-5][0-9])([a-zA-Z0-9]{11})$;;0;1;" O ´EndToEndId´ deve ser informado obrigatoriamente caso o status do pagamento seja ACCEPTED_SETTLEMENT_COMPLETED.
+";Não permitido;string;E9040088820210128000800123873170
+/data/consentId;consentId;"Identificador único do consentimento criado para a iniciação de pagamento solicitada. Deverá ser um URN - Uniform Resource Name.
+Um URN, conforme definido na";Texto;256;Obrigatório;"^urn:[a-zA-Z0-9][a-zA-Z0-9-]{0,31}:[a-zA-Z0-9()+,\-.:=@;$_!*'%\/?#]+$";;1;1;"";Não permitido;string;urn:bancoex:C1DD33123
+/data/creationDateTime;creationDateTime;"Data e hora em que o recurso foi criado.
+Uma string com data e hora conforme especificação RFC-3339,
+sempre com a utilização de timezone UTC(UTC time format).";Date Hora;;Obrigatório;^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$;;1;1;"";Não permitido;string;2020-07-21T08:30:00Z
+/data/statusUpdateDateTime;statusUpdateDateTime;"Data e hora da última atualização da iniciação de pagamento.
+Uma string com data e hora conforme especificação RFC-3339,
+sempre com a utilização de timezone UTC(UTC time format).";Date Hora;;Obrigatório;^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$;;1;1;"";Não permitido;string;2020-07-21T08:30:00Z
+/data/proxy;proxy;"Chave cadastrada no DICT pertencente ao recebedor. Os tipos de chaves podem ser: telefone, e-mail, cpf/cnpj ou chave aleatória.
+No caso de telefone celular deve ser informado no padrão E.1641.
+Para e-mail deve ter o formato xxxxxxxx@xxxxxxx.xxx(.xx) e no máximo 77 caracteres.
+No caso de CPF deverá ser informado com 11 números, sem pontos ou traços.
+Para o caso de CNPJ deverá ser informado com 14 números, sem pontos ou traços.
+No caso de chave aleatória deve ser informado o UUID gerado pelo DICT, conforme formato especificado na RFC41223.
+Se informado, a detentora da conta deve validar o proxy no DICT quando localInstrument for igual a DICT, QRDN ou QRES e validar o campo creditorAccount.
+Esta validação é opcional caso o localInstrument for igual a INIC.";Texto;77;Condicional;[\w\W\s]*;;0;1;" Se localInstrument for igual a MANU, o campo proxy não deve ser preenchido. Se localInstrument for igual INIC, DICT, QRDN ou QRES, o campo proxy deve ser sempre preenchido com a chave Pix.
+[Restrição] Se localInstrument for igual a MANU, o campo proxy não deve ser preenchido. Se localInstrument for igual INIC, DICT, QRDN ou QRES, o campo proxy deve ser sempre preenchido com a chave Pix.
+";Não permitido;string;12345678901
+/data/ibgeTownCode;ibgeTownCode;"Traz o código da cidade segundo o IBGE (Instituto Brasileiro de Geografia e Estatística).
+Para o preenchimento deste campo, o Iniciador de Pagamentos deve seguir a orientação do arranjo da forma de pagamento.
+O preenchimento do campo tanto em pix/payments quanto /consents deve ser igual. Caso haja divergência dos valores, a instituição deve retornar HTTP 422 com o código de erro PAGAMENTO_DIVERGENTE_DO_CONSENTIMENTO.
+Este campo faz referência ao campo CodMun do arranjo Pix.";Texto;7;Opcional;^\d{7}$;;0;1;"";Não permitido;string;5300108
+/data/status;status;"Estado atual da iniciação de pagamento. O estado evolui na seguinte ordem:  
+1. PDNG (PENDING) - Iniciação de pagamento ou transação de pagamento está pendente. Checagens adicionais em realização.  
+2. PART (PARTIALLY ACCEPTED) - Aguardando autorização múltipla alçada.  
+3. ACSP (ACCEPTED_SETTLEMENT_IN_PROCESS) - Iniciação de pagamento aceita e processamento do pagamento foi iniciado.  
+4. ACSC (ACCEPTED_SETTLEMENT_COMPLETED_DEBITOR_ACCOUNT) - Débito realizado na conta do pagador.  
+5. ACCC (ACCEPTED_SETTLEMENT_COMPLETED) - Crédito realizado na instituição de destino.  
+Em caso insucesso:  
+RJCT (REJECTED) - Instrução de pagamento rejeitada.";Texto;45;Obrigatório;;"PDNG 
+PART 
+ACSP 
+ACSC 
+ACCC 
+RJCT";1;1;"";Não permitido;string;PDNG
+/data/rejectionReason;rejectionReason;"Motivo da rejeição do pagamento. Informações complementares sobre o motivo do status.  
+ABORTED_SETTLEMENT_TIMEOUT - Liquidação da transação interrompida devido a timeout no SPI (AB03).
+ERROR_CREDITOR_AGENT - Transação interrompida devido a erro no participante do usuário recebedor (AB09).
+TIMEOUT_DEBTOR_AGENT - Timeout do participante emissor da ordem de pagamento (AB11).
+INVALID_CREDITOR_ACCOUNT_NUMBER - Número da conta transacional do usuário recebedor inexistente ou inválido (AC03).
+BLOCKED_ACCOUNT - Conta transacional do usuário recebedor encontra-se bloqueada (AC06).
+CLOSED_CREDITOR_ACCOUNT_NUMBER - Número da conta transacional do usuário recebedor encerrada (AC07).
+INVALID_CREDITOR_ACCOUNTTYPE - Tipo incorreto para a conta transacional do usuário recebedor (AC14).
+TRANSACTION_NOT_SUPPORTED - Tipo de transação não é suportado/autorizado na conta transacional do usuário recebedor (AG03). Exemplo: transferência para conta salário.
+NOT_ALLOWED_BOOK_TRANSFER - Não é permitida ordem de pagamento/devolução no SPI cujos recursos sejam transferidos de uma conta transacional para outra em uma mesma instituição participante ou entre participantes que utilizem o serviço de liquidação de um mesmo participante liquidante no SPI (booktransfer) (AG12).
+FORBIDDEN_RETURN_PAYMENT - Não é permitido devolver a devolução de um pagamento instantâneo (AG13).
+INCORRECT_AGENT - Participante direto não é liquidante do participante do usuário pagador / participante do usuário recebedor (AGNT).
+ZERO_AMOUNT - Ordem de pagamento instantâneo com valor zero (AM01).
+NOT_ALLOWED_AMOUNT - Ordem de pagamento/devolução em valor que faz superar o limite permitido para o tipo de conta transacional creditada (AM02).
+INSUFFICIENT_FUNDS - Saldo insuficiente na conta PI do participante do usuário pagador (AM04).
+WRONG_AMOUNT - Devolução de pagamento em valor que faz superar o valor da ordem de pagamento instantâneo correspondente (AM09).
+INVALID_AMOUNT - Divergência entre a somatória dos valores do bloco ‘valorDoDinheiroOuCompra’ e o campo ‘valor’ (AM12).
+INVALID_NUMBER_OF_TRANSACTIONS - Quantidade de transações inválida (AM18).
+INCONSISTENT_WITH_END_CUSTOMER - CPF/CNPJ do usuário recebedor não é consistente com o titular da conta transacional especificada (BE01).
+INVALID_IDENTIFICATION_CODE - Código de situação de pagamento ou de erro inválido (BE15).
+INVALID_CREDITOR_IDENTIFICATION_CODE - QR Code rejeitado pelo participante do usuário recebedor (BE17).
+CREDITOR_IDENTIFIER_INCORRECT - CPF/CNPJ do usuário recebedor incorreto (CH11).
+ELEMENT_CONTENT_FORMALLY_INCORRECT - Elemento da mensagem incorreto (CH16).
+ORDER_REJECTED - Ordem rejeitada pelo participante do usuário recebedor (DS04).
+NOT_ALLOWED_PAYMENT - Participante que assinou a mensagem não é autorizado a realizar a operação na conta PI debitada. No caso em que o participante que assinou a mensagem não é o titular da conta PI debitada nem é o liquidante no SPI do participante do usuário pagador (DS0G).
+NOT_ALLOWED_ACCOUNT - ISPB do participante que submeteu a resposta à ordem de pagamento/devolução diferente do ISPB do participante creditado pela ordem (DS0H).
+USER_NOT_YET_ACTIVATED - Participante não se encontra cadastrado ou ainda não iniciou a operação no SPI (DS27).
+INVALID_CREATION_DATE - Data e Hora do envio da mensagem inválida (DT02).
+INVALID_CUT_OFF_DATE - Transação extrapola o prazo máximo para devolução de pagamento instantâneo regulamentado pelo Arranjo PIX (DT05).
+SETTLEMENT_FAILED - Erro no processamento do pagamento instantâneo (ED05).
+INVALID_PURPOSE - Inconsistência entre a finalidade da transação e o preenchimento do bloco elementos Structured (FF07).
+INVALID_END_TO_END_ID - Identificador da operação mal formatado (FF08).
+INVALID_DEBTOR_CLEARING_SYSTEM_MEMBER_IDENTIFIER - ISPB do participante do usuário pagador inválido ou inexistente (RC09).
+INVALID_CREDITOR_CLEARING_SYSTEM_MEMBER_IDENTIFIER - ISPB do participante do usuário recebedor inválido ou inexistente (RC10).
+REGULATORY_REASON - Ordem de pagamento em que o usuário pagador é sancionado por resolução do Conselho de Segurança das Nações Unidas (CSNU). Nos casos em que o usuário recebedor for o sancionado, a ordem de pagamento não deve ser rejeitada (RR4).
+SPECIFIC_SERVICE_OFFERED_BY_CREDITOR_AGENT - A transação original não está relacionada ao serviço de Saque Pix (SL02).
+INVALID_BILL - Validação de expiração, validação de vencimento, Status Válido (INDT).  
+OPERATION_WINDOW - Requisição está fora da janela de funcionamento (IDEA).  
+INCOMPATIBLE_DATE - Data do pagamento divergente da data consentida ou divergente da data atual do QR Code (TERM).  
+MISMATCH_AMOUNT - O valor informado no consentimento não é o mesmo valor do informado no payload de pagamento (OB01).  
+OVER_LIMIT - O valor (ou quantidade de transações) ultrapassa a faixa de limite parametrizada na detentora para permitir a realização de transações pelo cliente (OB02).   
+INVALID_CONSENT - Consentimento inválido (status não é authorised ou está expirado) (OB03).  
+DENIED_MULTIPLE_AUTHORISATIONS - Um (ou mais) aprovadores na detentora recusaram a operação (OB04).  
+EXPIRED_MULTIPLE_AUTHORISATIONS - Um (ou mais) aprovadores na detentora não tomaram ação para aprovar a operação (OB05).  
+EXPIRED_BILL - O QR Code não é mais válido (OB06).";Texto;50;Condicional;;"ABORTED_SETTLEMENT_TIMEOUT 
+ERROR_CREDITOR_AGENT 
+TIMEOUT_DEBTOR_AGENT 
+INVALID_CREDITOR_ACCOUNT_NUMBER 
+BLOCKED_ACCOUNT 
+CLOSED_CREDITOR_ACCOUNT_NUMBER 
+INVALID_CREDITOR_ACCOUNTTYPE 
+TRANSACTION_NOT_SUPPORTED 
+NOT_ALLOWED_BOOK_TRANSFER 
+FORBIDDEN_RETURN_PAYMENT 
+INCORRECT_AGENT 
+ZERO_AMOUNT 
+NOT_ALLOWED_AMOUNT 
+INSUFFICIENT_FUNDS 
+WRONG_AMOUNT 
+INVALID_AMOUNT 
+INVALID_NUMBER_OF_TRANSACTIONS 
+INCONSISTENT_WITH_END_CUSTOMER 
+INVALID_IDENTIFICATION_CODE 
+INVALID_CREDITOR_IDENTIFICATION_CODE 
+CREDITOR_IDENTIFIER_INCORRECT 
+ELEMENT_CONTENT_FORMALLY_INCORRECT 
+ORDER_REJECTED 
+NOT_ALLOWED_PAYMENT 
+NOT_ALLOWED_ACCOUNT 
+USER_NOT_YET_ACTIVATED 
+INVALID_CREATION_DATE 
+INVALID_CUT_OFF_DATE 
+SETTLEMENT_FAILED 
+INVALID_PURPOSE 
+INVALID_END_TO_END_ID 
+INVALID_DEBTOR_CLEARING_SYSTEM_MEMBER_IDENTIFIER 
+INVALID_CREDITOR_CLEARING_SYSTEM_MEMBER_IDENTIFIER 
+REGULATORY_REASON 
+SPECIFIC_SERVICE_OFFERED_BY_CREDITOR_AGENT 
+INVALID_BILL 
+OPERATION_WINDOW 
+INCOMPATIBLE_DATE 
+MISMATCH_AMOUNT 
+OVER_LIMIT 
+INVALID_CONSENT 
+DENIED_MULTIPLE_AUTHORISATIONS 
+EXPIRED_MULTIPLE_AUTHORISATIONS 
+EXPIRED_BILL";0;1;" Esse motivo deverá ser enviado quando o campo /data/status for igual a RJCT (REJECTED).  
+";Não permitido;string;USER_NOT_YET_ACTIVATED
+/data/localInstrument;localInstrument;"Especifica a forma de iniciação do pagamento:
+- MANU - Inserção manual de dados da conta transacional
+- DICT - Inserção manual de chave Pix
+- QRDN - QR code dinâmico
+- QRES - QR code estático
+- INIC - Indica que o recebedor (creditor) contratou o Iniciador de Pagamentos especificamente para realizar iniciações de pagamento em que o beneficiário é previamente conhecido.";Texto;4;Obrigatório;;"MANU 
+DICT 
+QRDN 
+QRES 
+INIC";1;1;"";Não permitido;string;DICT
+/data/cnpjInitiator;cnpjInitiator;CNPJ do Iniciador de Pagamento devidamente habilitado para a prestação de Serviço de Iniciação no Pix.;Texto;14;Obrigatório;^\d{14}$;;1;1;"";Não permitido;string;50685362000135
+/data/payment;payment;Objeto contendo dados do pagameto como moeda e valor.;Objeto;;Obrigatório;;;1;1;"";Não permitido;object;
+/data/payment/amount;amount;Valor da transação com 2 casas decimais.;Texto;19;Obrigatório;^((\d{1,16}\.\d{2}))$;;1;1;"";Não permitido;string;100000.12
+/data/payment/currency;currency;"Código da moeda nacional segundo modelo ISO-4217, ou seja, 'BRL'.  
+Todos os valores monetários informados estão representados com a moeda vigente do Brasil.";Texto;3;Obrigatório;^([A-Z]{3})$;;1;1;"";Não permitido;string;BRL
+/data/transactionIdentification;transactionIdentification;"Trata-se de um identificador de transação que deve ser retransmitido intacto pelo PSP do pagador ao gerar a ordem de pagamento. Essa informação permitirá ao recebedor identificar e correlacionar a transferência, quando recebida, com a apresentação das instruções ao pagador.
+Os caracteres permitidos no contexto do Pix para o campo txid (EMV 62-05) são:
+- Letras minúsculas, de ‘a’ a ‘z’
+- Letras maiúsculas, de ‘A’ a ‘z’
+- Dígitos decimais, de ‘0’ a ‘9’";Texto;25;Condicional;^[a-zA-Z0-9][a-zA-Z0-9]{0,24}$;;0;1;" Se localInstrument for igual a INIC, o campo transactionIdentification deve ser preenchido obrigatoriamente.
+Se localInstrument for igual a MANU ou DICT, o campo transactionIdentification não deve ser preenchido.
+A detentora de conta deve validar se a condicionalidade do campo foi atendida pela iniciadora de pagamento.
+";Não permitido;string;E00038166201907261559y6j6
+/data/remittanceInformation;remittanceInformation;Deve ser preenchido sempre que o usuário pagador inserir alguma informação adicional em um pagamento, a ser enviada ao recebedor.;Texto;140;Opcional;[\w\W\s]*;;0;1;"";Não permitido;string;Pagamento da nota RSTO035-002.
+/data/creditorAccount;creditorAccount;Objeto que contém a identificação da conta de destino do beneficiário/recebedor.;Objeto;;Obrigatório;;;1;1;"";Não permitido;object;
+/data/creditorAccount/ispb;ispb;Deve ser preenchido com o ISPB (Identificador do Sistema de Pagamentos Brasileiros) do participante do SPI (Sistema de pagamentos instantâneos) somente com números.;Texto;8;Obrigatório;^[0-9]{8}$;;1;1;"";Não permitido;string;12345678
+/data/creditorAccount/issuer;issuer;"Código da Agência emissora da conta sem dígito.  
+(Agência é a dependência destinada ao atendimento aos clientes, ao público em geral e aos associados de cooperativas de crédito,  
+no exercício de atividades da instituição, não podendo ser móvel ou transitória).";Texto;4;Condicional;^\d{4}$;;0;1;" Preenchimento obrigatório para os seguintes tipos de conta: CACC (CONTA_DEPOSITO_A_VISTA), SVGS (CONTA_POUPANCA) e SLRY (CONTA_SALARIO).
+";Não permitido;string;1774
+/data/creditorAccount/number;number;"Deve ser preenchido com o número da conta do usuário recebedor, com dígito verificador (se este existir),  
+se houver valor alfanumérico, este deve ser convertido para 0.";Texto;20;Obrigatório;^\d{3,20}$;;1;1;"";Não permitido;string;1234567890
+/data/creditorAccount/accountType;accountType;"Tipos de contas usadas para pagamento via Pix.  
+Modalidades tradicionais previstas pela Resolução 4.753, não contemplando contas vinculadas,  
+conta de domiciliados no exterior, contas em moedas estrangeiras e conta correspondente moeda eletrônica.  
+Segue descrição de cada valor do ENUM para o escopo do Pix.  
+CACC - Current - Conta Corrente.  
+SLRY - Salary - Conta-Salário.  
+SVGS - Savings - Conta de Poupança.  
+TRAN - TransactingAccount - Conta de Pagamento pré-paga.";Texto;4;Obrigatório;;"CACC 
+SLRY 
+SVGS 
+TRAN";1;1;"";Não permitido;string;CACC

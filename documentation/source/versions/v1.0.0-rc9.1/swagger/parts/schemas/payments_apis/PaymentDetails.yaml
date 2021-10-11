@@ -1,0 +1,45 @@
+type: object
+description: |
+  Objeto contendo os detalhes do pagamento.
+required:
+  - localInstrument
+  - creditorAccount
+properties:
+  localInstrument:
+    $ref: ../enum/EnumLocalInstrument.yaml
+  qrCode:
+    type: string
+    maxLength: 512
+    pattern: '[\w\W\s]*'
+    example: |
+      00020104141234567890123426660014BR.GOV.BCB.PIX014466756C616E6F32303139406578616D706C652E636F6D27300012
+      BR.COM.OUTRO011001234567895204000053039865406123.455802BR5915NOMEDORECEBEDOR6008BRASILIA61087007490062
+      530515RP12345678-201950300017BR.GOV.BCB.BRCODE01051.0.080450014BR.GOV.BCB.PIX0123PADRAO.URL.PIX/0123AB
+      CD81390012BR.COM.OUTRO01190123.ABCD.3456.WXYZ6304EB76
+    description: |
+      Sequência de caracteres que corresponde ao QR Code disponibilizado para o pagador.
+      É a sequência de caracteres que seria lida pelo leitor de QR Code, e deve propiciar o retorno dos dados do pagador após consulta na DICT.
+      Essa funcionalidade é possível tanto para QR Code estático quanto para QR Code dinâmico.
+      No arranjo do Pix esta é a mesma sequência gerada e/ou lida pela funcionalidade Pix Copia e Cola.
+      Este campo deverá ser no formato UTF-8.
+      [Restrição] Preenchimento obrigatório para pagamentos por QR Code, observado o tamanho máximo de 512 bytes.
+  proxy:
+    type: string
+    maxLength: 77
+    pattern: '[\w\W\s]*'
+    example: '12345678901'
+    description: |
+      Chave cadastrada no DICT pertencente ao recebedor. Os tipos de chaves podem ser: telefone, e-mail, cpf/cnpj ou chave aleatória.
+      No caso de telefone celular deve ser informado no padrão E.1641.
+      Para e-mail deve ter o formato xxxxxxxx@xxxxxxx.xxx(.xx) e no máximo 77 caracteres.
+      No caso de CPF deverá ser informado com 11 números, sem pontos ou traços.
+      Para o caso de CNPJ deverá ser informado com 14 números, sem pontos ou traços.
+      No caso de chave aleatória deve ser informado o UUID gerado pelo DICT, conforme formato especificado na RFC41223.
+      Se informado, a detentora da conta deve validar o proxy no DICT quando localInstrument for igual a DICT, QRDN ou QRES e validar o campo creditorAccount.
+      Esta validação é opcional caso o localInstrument for igual a INIC.
+      [Restrição]
+      Se localInstrument for igual a MANU, o campo proxy não deve ser preenchido.
+      Se localInstrument for igual INIC, DICT, QRDN ou QRES, o campo proxy deve ser sempre preenchido com a chave Pix.
+  creditorAccount:
+    $ref: ../business_commons/CreditorAccount.yaml
+additionalProperties: false
