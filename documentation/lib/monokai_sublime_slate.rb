@@ -11,7 +11,7 @@ module Rouge
 
         palette :black          => '#000000'
         palette :bright_green   => '#a6e22e'
-        palette :bright_pink    => '#f92672'
+        palette :bright_pink    => '#ff70a4'
         palette :carmine        => '#960050'
         palette :dark           => '#49483e'
         palette :dark_grey      => '#888888'
@@ -42,7 +42,7 @@ module Rouge
               Comment,                          :fg => :dimgrey
         style Error,
               Generic::Error,
-              Generic::Traceback,               :fg => :carmine
+              Generic::Traceback,               :fg => :bright_pink
         style Generic::Deleted,
               Generic::Inserted,
               Generic::Emph,                    :fg => :dark
