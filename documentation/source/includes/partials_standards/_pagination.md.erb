@@ -28,36 +28,76 @@ O valor padrão será assumido sempre que o parâmetro não estiver preenchido o
 
 > Exemplo de paginação
 
+> Apenas uma página
+
 ```json
 {
-  "data": {
+    "data": {
+        "..."
+    },
+    "links": {
+        "self": "https://api.banco.com.br/open-banking/channels/v1/branches",
+    },
+    "meta": {
+        "totalRecords": 1,
+        "totalPages": 1
+    }
+}
+```
+> Primeira página
+
+```json
+{
+    "data": {
+        "..."
+    },
+    "links": {
+        "self": "https://api.banco.com.br/open-banking/channels/v1/branches?page=1&page-size=25",
+        "next": "https://api.banco.com.br/open-banking/channels/v1/branches?page=2&page-size=25",
+        "last": "https://api.banco.com.br/open-banking/channels/v1/branches?page=10&page-size=25"
+    },
+    "meta": {
+        "totalRecords": 250,
+        "totalPages": 10
+    }
+}
+```
+```
+> Última Página
+
+```json
+{
+"data": {
     "..."
-  },
-  "links": {
-    "self": "https://api.banco.com.br/open-banking/products-services/v1/personal-invoice-financing",
-    "first": "https://api.banco.com.br/open-banking/products-services/v1/personal-invoice-financing",
-    "prev": null,
-    "next": null,
-    "last": "https://api.banco.com.br/open-banking/products-services/v1/personal-invoice-financing"
-  },
-  "meta": {
-    "totalRecords": 1,
-    "totalPages": 1
-  }
+},
+"links": {
+    "self": "https://api.banco.com.br/open-banking/channels/v1/branches?page=10&page-size=25",
+    "first": "https://api.banco.com.br/open-banking/channels/v1/branches?page=1&page-size=25",
+    "prev": "https://api.banco.com.br/open-banking/channels/v1/branches?page=9&page-size=25"
+},
+"meta": {
+    "totalRecords": 250,
+    "totalPages": 10
 }
 ```
 
 Além dos dados requisitados, as respostas paginadas também terão em sua estrutura dois objetos adicionais que incluirão parâmetros para facilitar a navegação das páginas:
 
 ### Links
-O objeto `links` passará por revisão subsequente de modo a atender as próximas Fases do Open Banking, em especial a partir da Fase 2. No objeto `links`, serão retornadas hypermedia (referências para os recursos relacionados) de paginação conforme parâmetros abaixo:
+O objeto `links` passará por revisão subsequente de modo a atender as próximas Fases do Open Banking, em especial a partir da Fase 2.
 
-| Parâmetro | Descrição                                                                  | Restrição                                             |
-|:--------- |:-------------------------------------------------------------------------- |:----------------------------------------------------- |
-| first     | A URI para requisitar a primeira página.                                   | Obrigatório se a resposta não for a primeira página.  |
-| last      | A URI para requisitar a última página.                                     | Obrigatório se a resposta não for a última página.    |
-| prev      | A URI para requisitar a página anterior.                                   | Obrigatório se a resposta não for a primeira página.  |
-| next      | A URI para requisitar a próxima página.                                    | Obrigatório se a resposta não for a última página.    |
+Os `links` devem sempre ser validados de acordo com o pattern publicado no swagger.
+  
+Quando preenchidos devem ter a mesma estrutura (schema, host, api, versao e recurso) do que esta sendo paginado.
+  
+No objeto `links`, serão retornadas hypermedia (referências para os recursos relacionados) de paginação conforme parâmetros abaixo: 
+
+| Parâmetro | Descrição                                                                  | Restrição                                                                                      |
+|:--------- |:-------------------------------------------------------------------------- |:---------------------------------------------------------------------------------------------- |
+| first     | A URI para requisitar a primeira página.                                   | Obrigatório se a resposta não for a primeira página.                                           |
+| last      | A URI para requisitar a última página.                                     | Obrigatório se a resposta não for a última página.                                             |
+| prev      | A URI para requisitar a página anterior.                                   | Obrigatório quando houver página anterior. Não deve ser enviado quando for a primeira página.  |
+| next      | A URI para requisitar a próxima página.                                    | Obrigatório quando houver página posterior. Não deve ser enviado quando for a última página.   |
 
 ### Meta
 No objeto `meta`, serão retornadas informações sobre o total de registros disponíveis
