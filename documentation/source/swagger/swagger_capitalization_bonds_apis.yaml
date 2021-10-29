@@ -368,6 +368,39 @@ components:
           maxLength: 1024
           example: 'https://ACME.exemplo/capitalizacao/tradicional/pdf/condicoes_gerais.pdf'
       additionalProperties: false
+    CapitalizationBondsProductQuota:
+      type: object
+      description: Conjunto de informações relativas ao Título de Capitalização
+      required:
+        - tranche
+        - capitalization
+        - drawing
+        - loadingRate
+      properties:
+        tranche:
+          type: integer
+          description: Número da parcela.
+          maxLength: 3
+          example: 999
+        capitalization:
+          type: number
+          format: double
+          description: Percentual da contribuição destinado à constituição de capital referente ao direito de resgate. (Resolução CNSP 384/20) Em porcentagem(%).
+          maxLength: 8
+          example: 100000.04
+        drawing:
+          type: number
+          format: double
+          description: 'Percentual da contribuição destinado a custear os sorteios, se previstos no plano. (Resolução CNSP 384/20) Em porcentagem(%).'
+          maxLength: 8
+          example: 100000.04
+        loadingRate:
+          type: number
+          format: double
+          description: 'Percentual da contribuição destinado aos custos de despesas com corretagem, colocação e administração do título de capitalização, emissão, divulgação, lucro da sociedade de capitalização e eventuais despesas relativas ao custeio da contemplação obrigatória e da distribuição de bônus. (Resolução CNSP 384/20) Em porcentagem(%).'
+          maxLength: 8
+          example: 100000.04
+      additionalProperties: false
     CapitalizationPeriod:
       type: object
       description: Conjunto de informações relativas ao Título de Capitalização
@@ -449,19 +482,21 @@ components:
           maxLength: 3
           example: 999
         periodUpdateIndex:
-          type: string
-          maxLength: 33
-          enum:
-            - IPCA_IBGE
-            - IGPM_FGV
-            - INPC_IBGE
-            - TR_BC
-            - SAVINGS_DEPOSITS_REMUNERATION_TAX
-            - OTHER
-          example: IPCA_IBGE
-          description: |
-            ...
+          $ref: '#/components/schemas/CapitalizationBondsProductPeriodUpdateIndex'
       additionalProperties: false
+    CapitalizationBondsProductPeriodUpdateIndex:
+      type: string
+      maxLength: 33
+      enum:
+        - IPCA_IBGE
+        - IGPM_FGV
+        - INPC_IBGE
+        - TR_BC
+        - SAVINGS_DEPOSITS_REMUNERATION_TAX
+        - OTHER
+      example: IPCA_IBGE
+      description: |
+        ...
     LatePayment:
       type: object
       description: Conjunto de informações relativas aos Títulos de Capitalização
@@ -492,53 +527,57 @@ components:
         - adjustmentIndexOthers
       properties:
         paymentMethod:
-          type: string
-          maxLength: 33
-          enum:
-            - CARTAO_DE_CREDITO
-            - CARTAO_DE_DEBITO
-            - DEBITO_EM_CONTA_CORRENTE
-            - DEBITO_EM_CONTA_POUPANCA
-            - BOLETO_BANCARIO
-            - PIX
-            - CONSIGNACAO_EM_FOLHA_DE_PAGAMENTO
-            - PONTOS_DE_PROGRAMAS_DE_BENEFICIO
-            - OUTROS
-          example: CARTAO_DE_CREDITO
-          description: |
-            Meio de Pagamento utilizado para pagamento da contribuição. A considerar os domínios abaixo:
-              1. Cartão de Crédito
-              2. Cartão de Débito
-              3. Débito em conta corrente
-              4. Débito em conta poupança
-              5. Boleto bancário
-              6. PIX
-              7. Consignação em Folha de Pagamento
-              8. Pontos de Programas de Benefício
-              9. Outros
+          $ref: '#/components/schemas/CapitalizationBondsProductPaymentMethod'
         adjustmentIndex:
           type: number
           description: Lista string a ser preenchida pelas participantes quando houver ‘Outros’ no campo ‘Meio de pagamento’.
           maxLength: 2
           example: 99
         updateIndex:
-          type: string
-          maxLength: 33
-          enum:
-            - IPCA_IBGE
-            - IGPM_FGV
-            - INPC_IBGE
-            - TR_BC
-            - OUTROS
-          example: IPCA_IBGE
-          description: |
-            Índice utilizado na atualização dos pagamentos mensais (para títulos com mais de 12 meses de vigência) (não aplicável a pagamento único). A considerar os domínios abaixo:
-              1. IPCA (IBGE)
-              2. IGP M (FGV)
-              3. INPC (IBGE)
-              4. TR (BC)
-              5. Outros
+          $ref: '#/components/schemas/CapitalizationBondsProductUpdateIndex'
       additionalProperties: false
+    CapitalizationBondsProductPaymentMethod:
+      type: string
+      maxLength: 33
+      enum:
+        - CARTAO_DE_CREDITO
+        - CARTAO_DE_DEBITO
+        - DEBITO_EM_CONTA_CORRENTE
+        - DEBITO_EM_CONTA_POUPANCA
+        - BOLETO_BANCARIO
+        - PIX
+        - CONSIGNACAO_EM_FOLHA_DE_PAGAMENTO
+        - PONTOS_DE_PROGRAMAS_DE_BENEFICIO
+        - OUTROS
+      example: CARTAO_DE_CREDITO
+      description: |
+        Meio de Pagamento utilizado para pagamento da contribuição. A considerar os domínios abaixo:
+          1. Cartão de Crédito
+          2. Cartão de Débito
+          3. Débito em conta corrente
+          4. Débito em conta poupança
+          5. Boleto bancário
+          6. PIX
+          7. Consignação em Folha de Pagamento
+          8. Pontos de Programas de Benefício
+          9. Outros
+    CapitalizationBondsProductUpdateIndex:
+      type: string
+      maxLength: 33
+      enum:
+        - IPCA_IBGE
+        - IGPM_FGV
+        - INPC_IBGE
+        - TR_BC
+        - OUTROS
+      example: IPCA_IBGE
+      description: |
+        Índice utilizado na atualização dos pagamentos mensais (para títulos com mais de 12 meses de vigência) (não aplicável a pagamento único). A considerar os domínios abaixo:
+          1. IPCA (IBGE)
+          2. IGP M (FGV)
+          3. INPC (IBGE)
+          4. TR (BC)
+          5. Outros
     PrizeDraw:
       type: object
       description: Conjunto de informações relativas aos Títulos de Capitalização
@@ -553,34 +592,7 @@ components:
         - minimumProbability
       properties:
         periodicity:
-          type: string
-          maxLength: 33
-          enum:
-            - UNICO
-            - DIARIO
-            - SEMANAL
-            - QUINZENAL
-            - MENSAL
-            - BIMESTRAL
-            - TRIMESTRAL
-            - QUADRIMESTRAL
-            - SEMESTRAL
-            - ANUAL
-            - OUTROS
-          example: UNICO
-          description: |
-            Intervalo de tempo regular previsto entre os sorteios. Conforme os domínios:
-              Único
-              Diário
-              Semanal
-              Quinzenal
-              Mensal
-              Bimestral
-              Trimestral
-              QuadrimestraL
-              Semestral
-              Anual
-              Outros
+          $ref: '#/components/schemas/EnumCapitalizationBondsFrequency'
         periodicityOthers:
           type: number
           description: Lista string a ser preenchida pelas participantes quando houver ‘Outros’ no campo‘Informações - Periodicidade’.
@@ -626,6 +638,35 @@ components:
           maxLength: 7
           example: 0.000001
       additionalProperties: false
+    EnumCapitalizationBondsFrequency:
+      type: string
+      maxLength: 33
+      enum:
+        - UNICO
+        - DIARIO
+        - SEMANAL
+        - QUINZENAL
+        - MENSAL
+        - BIMESTRAL
+        - TRIMESTRAL
+        - QUADRIMESTRAL
+        - SEMESTRAL
+        - ANUAL
+        - OUTROS
+      example: UNICO
+      description: |
+        Intervalo de tempo regular previsto entre os sorteios. Conforme os domínios:
+          Único
+          Diário
+          Semanal
+          Quinzenal
+          Mensal
+          Bimestral
+          Trimestral
+          QuadrimestraL
+          Semestral
+          Anual
+          Outros
     EnumTargetAudience:
       type: string
       maxLength: 15
