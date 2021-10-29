@@ -24,8 +24,17 @@ paths:
     post:
       tags:
         - API - Titulos de Capitalização
-      summary: Conjunto de informações dos Títulos de Capitalização.
-      description: Método para obter a lista de Títulos de Capitalização.
+      summary: Conjunto de informações dos Títulos de Capitalização.---
+      description: |
+        Método para obter a lista de Títulos de Capitalização.
+
+        ### Dicionário de dados
+
+        Campos de resposta do endpoint de `/products`
+
+        <a href='dictionary/paymentsPostConsents_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
+
+        Consulte a seção **Convenções de payload** para obter mais informações sobre [Atributos Obrigatórios / Opcionais](#convencoes-de-propriedade-dos-atributos).
       parameters:
         - $ref: '#/components/parameters/Authorization'
         - $ref: '#/components/parameters/xFapiAuthDate'
@@ -55,6 +64,41 @@ paths:
           $ref: '#/components/responses/InternalServerError'
         default:
           $ref: '#/components/responses/OKResponseCapitalizationBondsProductsList'
+  '/products/{productId}':
+    get:
+      tags:
+        - Capitalization Bonds
+      summary: Obtém os dados do Título de Capitalização por productId.
+      operationId: productId
+      description: Método para obter os dados do Título de Capitalização.
+      parameters:
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/xFapiAuthDate'
+        - $ref: '#/components/parameters/xFapiCustomerIpAddress'
+        - $ref: '#/components/parameters/xFapiInteractionId'
+        - $ref: '#/components/parameters/xCustomerUserAgent'
+        - $ref: '#/components/parameters/productId'
+      responses:
+        '200':
+          $ref: '#/components/responses/OKResponseCapitalizationBondsProductIdentification'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/OKResponseCapitalizationBondsProductIdentification'
 components:
   schemas:
     ResponseCapitalizationBondsProductsList:
@@ -762,6 +806,14 @@ components:
         type: string
         pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
         minLength: 1
+        maxLength: 100
+    productId:
+      name: productId
+      in: path
+      description: Identifica de forma única um Titulo de Capitalização
+      required: true
+      schema:
+        type: string
         maxLength: 100
   responses:
     OKResponseCapitalizationBondsProductsList:
