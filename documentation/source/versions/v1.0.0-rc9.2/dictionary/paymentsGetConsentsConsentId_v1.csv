@@ -1,0 +1,120 @@
+﻿Xpath;Nome;Definição;Tipo de Dado;Tamanho;Mandatoriedade;Formato;Domínio;Mínimo de Ocorrências;Máximo de Ocorrências;Restrições;Nulidade;Tipo de Dado Json;Exemplo
+/data;data;Objeto contendo as informações de resposta do consentimento para a iniciação de pagamento individual.;Objeto;;Obrigatório;;;1;1;"";Não permitido;object;
+/data/consentId;consentId;"Identificador único do consentimento criado para a iniciação de pagamento solicitada. Deverá ser um URN - Uniform Resource Name.
+Um URN, conforme definido na";Texto;256;Obrigatório;"^urn:[a-zA-Z0-9][a-zA-Z0-9-]{0,31}:[a-zA-Z0-9()+,\-.:=@;$_!*'%\/?#]+$";;1;1;"";Não permitido;string;urn:bancoex:C1DD33123
+/data/creationDateTime;creationDateTime;Data e hora em que o consentimento foi criado. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).;Date Hora;20;Obrigatório;^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$;;1;1;"";Não permitido;string;2021-05-21T08:30:00Z
+/data/expirationDateTime;expirationDateTime;"Data e hora em que o consentimento da iniciação de pagamento expira, devendo ser sempre o creationDateTime mais 5 minutos. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC (UTC time format).
+O consentimento é criado com o status AWAITING_AUTHORISATION, e deve assumir o status AUTHORIZED ou REJECTED antes do tempo de expiração - 5 minutos. Caso o tempo seja expirado, o status deve assumir REJECTED.
+Para o cenário em que o status assumiu AUTHORISED, o tempo máximo do expirationDateTime do consentimento deve assumir now + 60 minutos. Este é o tempo para consumir o consentimento autorizado, mudando seu status para CONSUMED. Não é possível prorrogar este tempo e a criação de um novo consentimento será necessária para os cenários de insucesso.
+O tempo do expirationDateTime é garantido com os 15 minutos do access token, sendo possível utilizar mais três refresh tokens até totalizar 60 minutos.";Date Hora;20;Obrigatório;^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$;;1;1;"";Não permitido;string;2021-05-21T08:30:00Z
+/data/statusUpdateDateTime;statusUpdateDateTime;Data e hora em que o recurso foi atualizado. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).;Date Hora;20;Obrigatório;^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$;;1;1;"";Não permitido;string;2021-05-21T08:30:00Z
+/data/status;status;"Retorna o estado do consentimento, o qual no momento de sua criação será AWAITING_AUTHORISATION.
+Este estado será alterado depois da autorização do consentimento na detentora da conta do pagador (Debtor) para AUTHORISED ou REJECTED. 
+O consentimento fica no estado CONSUMED após ocorrer a iniciação do pagamento referente ao consentimento.  
+Em caso de consentimento expirado a detentora deverá retornar o status REJECTED.  
+Estados possíveis:  
+AWAITING_AUTHORISATION - Aguardando autorização  
+AUTHORISED - Autorizado   
+REJECTED - Rejeitado  
+CONSUMED - Consumido";Texto;22;Obrigatório;;"AWAITING_AUTHORISATION 
+AUTHORISED 
+REJECTED 
+CONSUMED";1;1;"";Não permitido;string;AWAITING_AUTHORISATION
+/data/loggedUser;loggedUser;Usuário (pessoa natural) que encontra-se logado na instituição Iniciadora de Pagamento.;Objeto;;Obrigatório;;;1;1;"";Não permitido;object;
+/data/loggedUser/document;document;"";Objeto;;Obrigatório;;;1;1;"";Não permitido;object;
+/data/loggedUser/document/identification;identification;Número do documento de identificação oficial do usuário.;Texto;11;Obrigatório;^\d{11}$;;1;1;"";Não permitido;string;11111111111
+/data/loggedUser/document/rel;rel;Tipo do documento de identificação oficial do usuário.;Texto;3;Obrigatório;^[A-Z]{3}$;;1;1;"";Não permitido;string;CPF
+/data/businessEntity;businessEntity;Usuário (pessoa jurídica) que encontra-se logado na instituição Iniciadora de Pagamento.;Objeto;;Condicional;;;0;1; Preenchimento obrigatório se usuário logado na instituição Iniciadora de Pagamento for um CNPJ (pessoa jurídica).;Não permitido;object;
+/data/businessEntity/document;document;"";Objeto;;Obrigatório;;;1;1;"";Não permitido;object;
+/data/businessEntity/document/identification;identification;Número do documento de identificação oficial do titular pessoa jurídica.;Texto;14;Obrigatório;^\d{14}$;;1;1;"";Não permitido;string;11111111111111
+/data/businessEntity/document/rel;rel;Tipo do documento de identificação oficial do titular pessoa jurídica.;Texto;4;Obrigatório;^[A-Z]{4}$;;1;1;"";Não permitido;string;CNPJ
+/data/creditor;creditor;Objeto contendo os dados do recebedor (creditor).;Objeto;;Obrigatório;;;1;1;"";Não permitido;object;
+/data/creditor/personType;personType;Titular, pessoa natural ou juridica a quem se referem os dados de recebedor (creditor).;Texto;15;Obrigatório;;"PESSOA_NATURAL 
+PESSOA_JURIDICA";1;1;"";Não permitido;string;
+/data/creditor/cpfCnpj;cpfCnpj;"Identificação da pessoa envolvida na transação.  
+Preencher com o CPF ou CNPJ, de acordo com o valor escolhido no campo type.  
+O CPF será utilizado com 11 números e deverá ser informado sem pontos ou traços.  
+O CNPJ será utilizado com 14 números e deverá ser informado sem pontos ou traços.";Texto;14;Obrigatório;^\d{11}$|^\d{14}$;;1;1;"";Não permitido;string;58764789000137
+/data/creditor/name;name;"Em caso de pessoa natural deve ser informado o nome completo do titular da conta do recebedor.  
+Em caso de pessoa jurídica deve ser informada a razão social ou o nome fantasia da conta do recebedor.";Texto;140;Obrigatório;[\w\W\s]*;;1;1;"";Não permitido;string;Marco Antonio de Brito
+/data/payment;payment;Objeto contendo dados de pagamento para consentimento.;Objeto;;Obrigatório;;;1;1;"";Não permitido;object;
+/data/payment/type;type;Este campo define o tipo de pagamento que será iniciado após a autorização do consentimento.;Texto;3;Obrigatório;;PIX;1;1;"";Não permitido;string;PIX
+/data/payment/date;date;Data do pagamento, conforme especificação RFC-3339.;Data;10;Obrigatório;^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$;;1;1;"";Não permitido;string;2021-01-01
+/data/payment/currency;currency;"Código da moeda nacional segundo modelo ISO-4217, ou seja, 'BRL'.
+Todos os valores monetários informados estão representados com a moeda vigente do Brasil.";Texto;3;Obrigatório;^([A-Z]{3})$;;1;1;"";Não permitido;string;BRL
+/data/payment/amount;amount;Valor da transação com 2 casas decimais.;Texto;19;Obrigatório;^((\d{1,16}\.\d{2}))$;;1;1;"";Não permitido;string;100000.12
+/data/payment/ibgeTownCode;ibgeTownCode;"Traz o código da cidade segundo o IBGE (Instituto Brasileiro de Geografia e Estatística).
+Para o preenchimento deste campo, o Iniciador de Pagamentos deve seguir a orientação do arranjo da forma de pagamento.
+O preenchimento do campo tanto em pix/payments quanto /consents deve ser igual. Caso haja divergência dos valores, a instituição deve retornar HTTP 422 com o código de erro PAGAMENTO_DIVERGENTE_DO_CONSENTIMENTO.
+Este campo faz referência ao campo CodMun do arranjo Pix.";Texto;7;Opcional;^\d{7}$;;0;1;"";Não permitido;string;5300108
+/data/payment/details;details;Objeto contendo os detalhes do pagamento.;Objeto;;Obrigatório;;;1;1;"";Não permitido;object;
+/data/payment/details/localInstrument;localInstrument;"Especifica a forma de iniciação do pagamento:
+- MANU - Inserção manual de dados da conta transacional
+- DICT - Inserção manual de chave Pix
+- QRDN - QR code dinâmico
+- QRES - QR code estático
+- INIC - Indica que o recebedor (creditor) contratou o Iniciador de Pagamentos especificamente para realizar iniciações de pagamento em que o beneficiário é previamente conhecido.";Texto;4;Obrigatório;;"MANU 
+DICT 
+QRDN 
+QRES 
+INIC";1;1;"";Não permitido;string;DICT
+/data/payment/details/qrCode;qrCode;"Sequência de caracteres que corresponde ao QR Code disponibilizado para o pagador.
+É a sequência de caracteres que seria lida pelo leitor de QR Code, e deve propiciar o retorno dos dados do pagador após consulta na DICT.
+Essa funcionalidade é possível tanto para QR Code estático quanto para QR Code dinâmico.
+No arranjo do Pix esta é a mesma sequência gerada e/ou lida pela funcionalidade Pix Copia e Cola.
+Este campo deverá ser no formato UTF-8.";Texto;512;Condicional;[\w\W\s]*;;0;1;" Preenchimento obrigatório para pagamentos por QR Code, observado o tamanho máximo de 512 bytes.
+";Não permitido;string;"00020104141234567890123426660014BR.GOV.BCB.PIX014466756C616E6F32303139406578616D706C652E636F6D27300012
+BR.COM.OUTRO011001234567895204000053039865406123.455802BR5915NOMEDORECEBEDOR6008BRASILIA61087007490062
+530515RP12345678-201950300017BR.GOV.BCB.BRCODE01051.0.080450014BR.GOV.BCB.PIX0123PADRAO.URL.PIX/0123AB
+CD81390012BR.COM.OUTRO01190123.ABCD.3456.WXYZ6304EB76
+"
+/data/payment/details/proxy;proxy;"Chave cadastrada no DICT pertencente ao recebedor. Os tipos de chaves podem ser: telefone, e-mail, cpf/cnpj ou chave aleatória.
+No caso de telefone celular deve ser informado no padrão E.1641.
+Para e-mail deve ter o formato xxxxxxxx@xxxxxxx.xxx(.xx) e no máximo 77 caracteres.
+No caso de CPF deverá ser informado com 11 números, sem pontos ou traços.
+Para o caso de CNPJ deverá ser informado com 14 números, sem pontos ou traços.
+No caso de chave aleatória deve ser informado o UUID gerado pelo DICT, conforme formato especificado na RFC41223.
+Se informado, a detentora da conta deve validar o proxy no DICT quando localInstrument for igual a DICT, QRDN ou QRES e validar o campo creditorAccount.
+Esta validação é opcional caso o localInstrument for igual a INIC.";Texto;77;Condicional;[\w\W\s]*;;0;1;"
+Se localInstrument for igual a MANU, o campo proxy não deve ser preenchido.
+Se localInstrument for igual INIC, DICT, QRDN ou QRES, o campo proxy deve ser sempre preenchido com a chave Pix.
+";Não permitido;string;12345678901
+/data/payment/details/creditorAccount;creditorAccount;Objeto que contém a identificação da conta de destino do beneficiário/recebedor.;Objeto;;Obrigatório;;;1;1;"";Não permitido;object;
+/data/payment/details/creditorAccount/ispb;ispb;Deve ser preenchido com o ISPB (Identificador do Sistema de Pagamentos Brasileiros) do participante do SPI (Sistema de pagamentos instantâneos) somente com números.;Texto;8;Obrigatório;^[0-9]{8}$;;1;1;"";Não permitido;string;12345678
+/data/payment/details/creditorAccount/issuer;issuer;"Código da Agência emissora da conta sem dígito.  
+(Agência é a dependência destinada ao atendimento aos clientes, ao público em geral e aos associados de cooperativas de crédito,  
+no exercício de atividades da instituição, não podendo ser móvel ou transitória).";Texto;4;Condicional;^\d{4}$;;0;1;" Preenchimento obrigatório para os seguintes tipos de conta: CACC (CONTA_DEPOSITO_A_VISTA), SVGS (CONTA_POUPANCA) e SLRY (CONTA_SALARIO).
+";Não permitido;string;1774
+/data/payment/details/creditorAccount/number;number;"Deve ser preenchido com o número da conta do usuário recebedor, com dígito verificador (se este existir),  
+se houver valor alfanumérico, este deve ser convertido para 0.";Texto;20;Obrigatório;^\d{3,20}$;;1;1;"";Não permitido;string;1234567890
+/data/payment/details/creditorAccount/accountType;accountType;"Tipos de contas usadas para pagamento via Pix.  
+Modalidades tradicionais previstas pela Resolução 4.753, não contemplando contas vinculadas,  
+conta de domiciliados no exterior, contas em moedas estrangeiras e conta correspondente moeda eletrônica.  
+Segue descrição de cada valor do ENUM para o escopo do Pix.  
+CACC - Current - Conta Corrente.  
+SLRY - Salary - Conta-Salário.  
+SVGS - Savings - Conta de Poupança.  
+TRAN - TransactingAccount - Conta de Pagamento pré-paga.";Texto;4;Obrigatório;;"CACC 
+SLRY 
+SVGS 
+TRAN";1;1;"";Não permitido;string;CACC
+/data/debtorAccount;debtorAccount;"Objeto que contém a identificação da conta de origem do pagador.  
+As informações quanto à conta de origem do pagador poderão ser trazidas no consentimento para a detentora, caso a iniciadora tenha coletado essas informações do cliente. Do contrário, será coletada na detentora e trazida para a iniciadora como resposta à criação do pagamento.";Objeto;;Opcional;;;0;1;"";Não permitido;object;
+/data/debtorAccount/ispb;ispb;Deve ser preenchido com o ISPB (Identificador do Sistema de Pagamentos Brasileiros) do participante do SPI (Sistema de pagamentos instantâneos) somente com números.;Texto;8;Obrigatório;^[0-9]{8}$;;1;1;"";Não permitido;string;12345678
+/data/debtorAccount/issuer;issuer;"Código da Agência emissora da conta sem dígito.  
+(Agência é a dependência destinada ao atendimento aos clientes, ao público em geral e aos associados de cooperativas de crédito,  
+no exercício de atividades da instituição, não podendo ser móvel ou transitória).";Texto;4;Condicional;^\d{4}$;;0;1;" Preenchimento obrigatório para os seguintes tipos de conta: CACC (CONTA_DEPOSITO_A_VISTA), SVGS (CONTA_POUPANCA) e SLRY (CONTA_SALARIO).
+";Não permitido;string;1774
+/data/debtorAccount/number;number;"Deve ser preenchido com o número da conta transacional do usuário pagador, com dígito verificador (se este existir),  
+se houver valor alfanumérico, este deve ser convertido para 0.";Texto;20;Obrigatório;^\d{3,20}$;;1;1;"";Não permitido;string;1234567890
+/data/debtorAccount/accountType;accountType;"Tipos de contas usadas para pagamento via Pix.  
+Modalidades tradicionais previstas pela Resolução 4.753, não contemplando contas vinculadas,  
+conta de domiciliados no exterior, contas em moedas estrangeiras e conta correspondente moeda eletrônica.  
+Segue descrição de cada valor do ENUM para o escopo do Pix.  
+CACC - Current - Conta Corrente.  
+SLRY - Salary - Conta-Salário.  
+SVGS - Savings - Conta de Poupança.  
+TRAN - TransactingAccount - Conta de Pagamento pré-paga.";Texto;4;Obrigatório;;"CACC 
+SLRY 
+SVGS 
+TRAN";1;1;"";Não permitido;string;CACC
