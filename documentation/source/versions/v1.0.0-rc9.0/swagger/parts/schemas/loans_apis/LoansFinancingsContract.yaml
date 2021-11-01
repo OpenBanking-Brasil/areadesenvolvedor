@@ -1,0 +1,159 @@
+type: object
+description: Conjunto de informações referentes à identificação da operação de crédito de empréstimo
+required:
+  - contractNumber
+  - ipocCode
+  - productName
+  - productType
+  - productSubType
+  - contractDate
+  - contractAmount
+  - settlementDate
+  - currency
+  - dueDate
+  - instalmentPeriodicity
+  - instalmentPeriodicityAdditionalInfo
+  - firstInstalmentDueDate
+  - CET
+  - amortizationScheduled
+  - amortizationScheduledAdditionalInfo
+  - cnpjConsignee
+  - interestRates
+  - contractedFees
+  - contractedFinanceCharges
+properties:
+  contractNumber:
+    type: string
+    maxLength: 100
+    example: '1324926521496'
+    description: Número do contrato dado pela instituição contratante.
+  ipocCode:
+    type: string
+    maxLength: 67
+    example: '92792126019929279212650822221989319252576'
+    description: |
+      Número padronizado do contrato - IPOC (Identificação Padronizada da Operação de Crédito). Segundo DOC 3040, composta por:
+      - **CNPJ da instituição:** 8 (oito) posições iniciais;
+      - **Modalidade da operação:** 4 (quatro) posições;
+      - **Tipo do cliente:** 1 (uma) posição( 1 = pessoa natural - CPF, 2= pessoa jurídica – CNPJ, 3 = pessoa física no exterior, 4 = pessoa jurídica no exterior, 5 = pessoa natural sem CPF e 6 = pessoa jurídica sem CNPJ);
+      - **Código do cliente:** O número de posições varia conforme o tipo do cliente:
+        1. Para clientes pessoa física com CPF (tipo de cliente = 1), informar as 11 (onze) posições do CPF;
+        2. Para clientes pessoa jurídica com CNPJ (tipo de cliente = 2), informar as 8 (oito) posições iniciais do CNPJ;
+        3. Para os demais clientes (tipos de cliente 3, 4, 5 e 6), informar 14 (catorze) posições com complemento de zeros à esquerda se a identificação tiver tamanho inferior;
+      - **Código do contrato:** 1 (uma) até 40 (quarenta) posições, sem complemento de caracteres.
+  productName:
+    type: string
+    maxLength: 140
+    pattern: '[\w\W\s]*'
+    example: "Crédito Pessoal Consignado"
+    description: |
+      Denominação/Identificação do nome da Modalidade da Operação de Crédito divulgado ao cliente
+  productType:
+    $ref: ../enum/EnumContractProductTypeLoans.yaml
+  productSubType:
+    $ref: ../enum/EnumContractProductSubTypeLoans.yaml
+  contractDate:
+    type: string
+    format: date
+    maxLength: 10
+    pattern: ^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$
+    example: '2018-01-05'
+    description: Data de contratação da operação de crédito. Especificação RFC-3339
+  disbursementDate:
+    type: string
+    format: date
+    maxLength: 10
+    pattern: ^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$
+    example: '2018-01-15'
+    description: Data do Desembolso do valor contratado. Especificação RFC-3339
+  settlementDate:
+    type: string
+    format: date
+    maxLength: 10
+    pattern: ^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$|^NA$
+    example: '2018-01-15'
+    description: |
+      Data de liquidação da operação.
+      [Restrição] Deve aceitar NA caso não seja retornado pela instituição.
+  contractAmount:
+    type: number
+    format: double
+    minLength: 0
+    maxLength: 20
+    pattern: '^-?\d{1,15}\.\d{2,4}$'
+    example: 100000.0400
+    nullable: true
+    description: Valor contratado da operação. Expresso em valor monetário com até 4 casas decimais
+  currency:
+    type: string
+    maxLength: 3
+    pattern: '^(\w{3}){1}$'
+    example: BRL
+    description: |
+      Moeda referente ao valor da garantia, segundo modelo ISO-4217. p.ex. 'BRL'
+      Todos os valores monetários informados estão representados com a moeda vigente do Brasil
+  dueDate:
+    type: string
+    format: date
+    maxLength: 10
+    pattern: ^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$
+    example: '2028-01-15'
+    description: Data de vencimento Final da operação. Especificação RFC-3339
+  instalmentPeriodicity:
+    $ref: ../enum/EnumContractInstalmentPeriodicity.yaml
+  instalmentPeriodicityAdditionalInfo:
+    type: string
+    pattern: '[\w\W\s]*'
+    maxLength: 50
+    example: "Informações adicionais sobre periodicidade"
+    description: |
+      Campo obrigatório para complementar a informação relativa à periodicidade de pagamento regular quando tiver a opção OUTROS.
+      [Restrição] Obrigatório para complementar a informação relativa da periodicidade de pagamento regular, quando selecionada o tipo ou subtipo OUTRO.
+  firstInstalmentDueDate:
+    type: string
+    format: date
+    maxLength: 10
+    pattern: ^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$
+    example: '2018-02-15'
+    description: Data de vencimento primeira parcela do principal
+  CET:
+    type: number
+    maxLength: 19
+    example: 0.2900
+    description: |
+      CET – Custo Efetivo Total deve ser expresso na forma de taxa percentual anual e   incorpora todos os encargos e despesas incidentes nas operações de crédito (taxa de juro, mas também tarifas, tributos, seguros e outras despesas cobradas).
+      O preenchimento deve respeitar as 4 casas decimais, mesmo que venham preenchidas com zeros
+      (representação de porcentagem p.ex: 0.1500. Este valor representa 15%. O valor 1 representa 100%)
+  amortizationScheduled:
+    $ref: ../enum/EnumContractAmortizationScheduled.yaml
+  amortizationScheduledAdditionalInfo:
+    type: string
+    pattern: '[\w\W\s]*'
+    maxLength: 50
+    example: "NA"
+    description: |
+      Campo obrigatório para complementar a informação relativa à amortização quando selecionada a opção OUTROS.
+      [Restrição] Obrigatório para complementar a informação relativa à amortização quando selecionada a opção OUTROS, para os demais casos informar "NA".
+  cnpjConsignee:
+    type: string
+    maxLength: 14
+    pattern: \d{14}|^NA$
+    example: "60500998000135"
+    description: |
+      CNPJ do consignante (CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica). Deve-se ter apenas os números do CNPJ, sem máscara. Informação adicional específica para Modalidade de Crédito: Empréstimo-Crédito Pessoal Consignado
+  interestRates:
+    type: array
+    items:
+      $ref: ./LoansFinancingsContractInterestRate.yaml
+  contractedFees:
+    type: array
+    items:
+      $ref: ./LoansFinancingsContractedFee.yaml
+    minItems: 0
+  contractedFinanceCharges:
+    type: array
+    description: Lista que traz os encargos pactuados no contrato
+    items:
+      $ref: ./LoansFinanceCharge.yaml
+    minItems: 0
+additionalProperties: false
