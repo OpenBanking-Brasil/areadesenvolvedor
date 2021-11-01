@@ -60,19 +60,19 @@ info:
 
     #### Conjunto inicial de regras propostas na aplicação da idempotencia:
 
-    - A iniciadora/TPP não deve alterar o corpo da solicitação ao usar a mesma chave de idempotência. Se a iniciadora alterar o corpo da solicitação, a detentora/ASPSP não deve modificar o recurso final. A detentora pode tratar este caso como uma ação fraudulenta.
-    - A detentora não deve criar um novo recurso para uma solicitação POST se estiver determinada como uma solicitação idempotente.
-    - Na criação a detentora deve responder à solicitação com o status atual do recurso (ou um status que seja pelo menos tão atual quanto o que estiver disponível nos canais eletrônicos existentes) e um código de status HTTP 201 (CREATED).
-    - A iniciadora não deve usar comportamento idempotente para pesquisar o status dos recursos.
-    - A detentora pode usar a assinatura da mensagem, junto com a chave de idempotência, para garantir que o corpo da solicitação não seja alterado.
-    - Para a API de Iniciação de Pagamento, a chave de idempotência deverá ser armazenada para controle quando a requisição for processada com sucesso (HTTP Status 201) ou quando ocorrer um erro de negócio (HTTP Status 422).
-    - Para a API Consentimento de Pagamento, a chave de idempotência deverá ser armazenada para controle quando a requisição for processada com sucesso (HTTP Status 201).
-    - O comportamento idempotente deve ser mantido por 24 horas para uma mesma chave de idempotencia.
+    - A iniciadora/TPP não deve alterar o corpo da solicitação ao usar a mesma chave de idempotência. Se a iniciadora alterar o corpo da solicitação, a detentora/ASPSP não deve modificar o recurso final. A detentora pode tratar este caso como uma ação fraudulenta;
+    - A detentora não deve criar um novo recurso para uma solicitação POST se estiver determinada como uma solicitação idempotente;
+    - Na criação a detentora deve responder à solicitação com o status atual do recurso (ou um status que seja pelo menos tão atual quanto o que estiver disponível nos canais eletrônicos existentes) e um código de status HTTP 201 (CREATED);
+    - A iniciadora não deve usar comportamento idempotente para pesquisar o status dos recursos;
+    - A detentora pode usar a assinatura da mensagem, junto com a chave de idempotência, para garantir que o corpo da solicitação não seja alterado;
+    - Para a API de Iniciação de Pagamento, a chave de idempotência deverá ser armazenada para controle quando a requisição for processada com sucesso (HTTP Status 201) ou quando ocorrer um erro de negócio (HTTP Status 422);
+    - Para a API Consentimento de Pagamento, a chave de idempotência deverá ser armazenada para controle quando a requisição for processada com sucesso (HTTP Status 201);
+    - O comportamento idempotente deve ser mantido por 24 horas para uma mesma chave de idempotencia;
     - Toda nova requisição exige que a assinatura da mensagem seja refeita, contendo um novo jti e iat.
 
     #### Cenários de uso de idempotência
-    - **a.** Ao receber uma requisição com o mesmo x-idempotency-key e com a claim data do JWT com conteúdo idêntico ao da requisição original, a requisição deverá ser processada entregando o mesmo resultado obtido anteriormente. Isso significa que, caso a requisição inicial tenha criado um recurso, este mesmo recurso deverá ser retornado, com seu status atualizado.
-    - **b.** Ao receber uma requisição com o mesmo x-idempotency-key e com a claim data do JWT com conteúdo diferente do original a requisição deverá ser recusada com o HTTP Status 422 com código NAO_INFORMADO.
+    - **1.** Ao receber uma requisição com o mesmo x-idempotency-key e com a claim data do JWT com conteúdo idêntico ao da requisição original, a requisição deverá ser processada entregando o mesmo resultado obtido anteriormente. Isso significa que, caso a requisição inicial tenha criado um recurso, este mesmo recurso deverá ser retornado, com seu status atualizado.
+    - **2.** Ao receber uma requisição com o mesmo x-idempotency-key e com a claim data do JWT com conteúdo diferente do original a requisição deverá ser recusada com o HTTP Status 422 com código NAO_INFORMADO.
 
     ### Diagrama de Sequência
     ![Iniciacao_de_Pagamento](images/sequence-diagrams/iniciacao_de_pagamento.png)
@@ -142,11 +142,11 @@ info:
 
     #### Estabelece TLS
     Toda comunicação máquina-a-máquina (m2m) usará mTLS, conforme RFC rfc8705 e detalhado na especificação de segurança:
-      <a href="https://openbanking-brasil.github.io/specs-seguranca/open-banking-brasil-financial-api-1_ID1.html" target="_blank">Open Banking Brasil Financial-grade API Security Profile 1.0 Implementers Draft 1</a>.
+      <a href="https://openbanking-brasil.github.io/specs-seguranca/open-banking-brasil-financial-api-1_ID3.html" target="_blank">Open Banking Brasil Financial-grade API Security Profile 1.0 Implementers Draft 3</a>.
 
     #### POST /tokens - Pedido de access_token e scope: payments, openid
     Antes de começar o fluxo de iniciação de pagamento, a Instituição Iniciadora deverá ter se cadastrado como *client* na Instituição Detentora da Conta, em acordo com o especificado para o Registro Dinâmico de Clientes (Dynamic Client Registration). Os detalhes dessa etapa podem ser encontrados na especificação de segurança: 
-    <a href="https://openbanking-brasil.github.io/specs-seguranca/open-banking-brasil-dynamic-client-registration-1_ID1.html" target="_blank">Open Banking Brasil Financial-grade API Dynamic Client Registration 1.0 Implementers Draft 1</a>.
+    <a href="https://openbanking-brasil.github.io/specs-seguranca/open-banking-brasil-dynamic-client-registration-1_ID2.html" target="_blank">Open Banking Brasil Financial-grade API Dynamic Client Registration 1.0 Implementers Draft 2</a>.
     Uma vez cadastrada, a Instituição Iniciadora deverá obter o token de acesso (*access_token*) pelo fluxo de *client credentials*, conforme especificado pela RFC 6749 (rfc6749), com os escopos *payments* e *openid*.
 
     #### Valida certificado SSL e scopes
@@ -235,7 +235,7 @@ info:
 
     No contexto da API Payment Initiation, os payloads de mensagem de consentimento e de pagamento que trafegam tanto por parte da instituição iniciadora de transação de pagamento quanto por parte da instituição detentora de conta devem estar assinados. Abaixo temos as orientações para assinatura das mensagens JWS.
 
-    Informações complementares de segurança podem ser consultadas em <a href="https://github.com/OpenBanking-Brasil/specs-seguranca/blob/main/open-banking-brasil-financial-api-1_ID2-ptbr.md" target="_blank"> https://github.com/OpenBanking-Brasil/specs-seguranca/blob/main/open-banking-brasil-financial-api-1_ID2-ptbr.md</a>.
+    Informações complementares de segurança podem ser consultadas em <a href="https://github.com/OpenBanking-Brasil/specs-seguranca/blob/main/open-banking-brasil-financial-api-1_ID3-ptbr.md"> https://github.com/OpenBanking-Brasil/specs-seguranca/blob/main/open-banking-brasil-financial-api-1_ID3-ptbr.md</a>.
 
     - **Passo 1** - Identifique a chave privada e o certificado de assinatura correspondente a serem usados para assinatura:
 

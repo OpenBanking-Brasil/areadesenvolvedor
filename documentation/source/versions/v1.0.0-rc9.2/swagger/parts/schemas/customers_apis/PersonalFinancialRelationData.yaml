@@ -1,0 +1,51 @@
+type: object
+description: 'Objeto que reúne as informações relativas ao relacionamento do cliente junto à Instituição. Considera-se relacionamento as informações que permitam conhecer desde quando a pessoa consultada é cliente da instituição, bem como um indicador dos produtos e serviços que ela consome atualmente e seus representantes'
+required:
+  - updateDateTime
+  - startDate
+  - procurators
+  - productsServicesType
+  - accounts
+properties:
+  updateDateTime:
+    type: string
+    format: date-time
+    maxLength: 20
+    pattern: ^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$
+    example: '2021-05-21T08:30:00Z'
+    description: Data e hora da atualização do bloco de Relacionamento, conforme especificação RFC-3339, formato UTC.
+  startDate:
+    type: string
+    format: date-time
+    maxLength: 20
+    pattern: ^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$
+    example: '2021-05-21T08:30:00Z'
+    description: Data de início de relacionamento com a Instituição Financeira. Deve trazer o menor valor entre a informação reportada ao BACEN pelo DOC 3040 e CCS.
+  productsServicesType:
+    type: array
+    items:
+      $ref: ../enum/EnumProductServiceType.yaml
+    minItems: 1
+    maxItems: 12
+  productsServicesTypeAdditionalInfo:
+    type: string
+    pattern: '[\w\W\s]*'
+    maxLength: 100
+    example: Informações adicionais do tipo de serviço.
+    description: |
+      Informações adicionais do tipo de serviço.
+      [Restrição] Campo obrigatório quando productsServicesType for 'OUTROS'.
+  procurators:
+    type: array
+    items:
+      $ref: ./PersonalProcurator.yaml
+    minItems: 1
+    description: Lista dos representantes. De preenchimento obrigatório se houver representante.
+  accounts:
+    type: array
+    items:
+      $ref: ./PersonalAccount.yaml
+    minItems: 1
+    description: |
+      Lista de contas depósito à vista, poupança e pagamento pré-pagas mantidas pelo cliente na instituição transmissora.    
+additionalProperties: false
