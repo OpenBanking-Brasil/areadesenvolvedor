@@ -2,9 +2,9 @@
 info:
   title: API Capitalization-bonds - Open Banking Brasil
   description: |
-    API de Titulos de Capitalização do Open Banking Brasil – Fase 4.
-    API que retorna informações dos Titulos de Capitalização.
-  version: v1.0.0-rc1.0
+    Estas APIs visam o compartilhamento de dados sobre Títulos de Capitalização e suas 
+    características entre as Instituições Financeiras participantes do Open Banking Brasil.
+  version: 1.0.0-rc1.0
   license:
     name: Apache 2.0
     url: 'https://www.apache.org/licenses/LICENSE-2.0'
@@ -19,21 +19,16 @@ servers:
     description: Servidor de Homologação
 tags:
   - name: Capitalization Bonds
-    description: Operações para listagem das informações de Titulos de Capitalização.
+    description: Operação para listagem das informações de Títulos de Capitalização.
 paths:
   /products:
     get:
       tags:
         - Capitalization Bonds
       summary: Conjunto de informações dos Títulos de Capitalização.
-      operationId: capitalizationBondsProducts
+      operationId: capitalizationBondsGetProducts
       description: Método para obter a lista de Títulos de Capitalização.
       parameters:
-        - $ref: '#/components/parameters/Authorization'
-        - $ref: '#/components/parameters/xFapiAuthDate'
-        - $ref: '#/components/parameters/xFapiCustomerIpAddress'
-        - $ref: '#/components/parameters/xFapiInteractionId'
-        - $ref: '#/components/parameters/xCustomerUserAgent'
         - $ref: '#/components/parameters/page'
         - $ref: '#/components/parameters/pageSize'
       responses:
@@ -41,10 +36,6 @@ paths:
           $ref: '#/components/responses/OKResponseCapitalizationBondsProductsList'
         '400':
           $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
         '405':
@@ -55,37 +46,20 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-        default:
-          $ref: '#/components/responses/OKResponseCapitalizationBondsProductsList'
-      security:
-        - OpenId:
-            - openid
-          OAuth2Security:
-            - 'consent:consentId'
-            - credit-cards-accounts
   '/products/{productId}':
     get:
       tags:
         - Capitalization Bonds
       summary: Obtém os dados do Título de Capitalização por productId.
-      operationId: productId
+      operationId: capitalizationBondsGetProductsProductId
       description: Método para obter os dados do Título de Capitalização.
       parameters:
-        - $ref: '#/components/parameters/Authorization'
-        - $ref: '#/components/parameters/xFapiAuthDate'
-        - $ref: '#/components/parameters/xFapiCustomerIpAddress'
-        - $ref: '#/components/parameters/xFapiInteractionId'
-        - $ref: '#/components/parameters/xCustomerUserAgent'
         - $ref: '#/components/parameters/productId'
       responses:
         '200':
           $ref: '#/components/responses/OKResponseCapitalizationBondsProductIdentification'
         '400':
           $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
         '405':
@@ -96,14 +70,6 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-        default:
-          $ref: '#/components/responses/OKResponseCapitalizationBondsProductIdentification'
-      security:
-        - OpenId:
-            - openid
-          OAuth2Security:
-            - 'consent:consentId'
-            - credit-cards-accounts
 components:
   schemas:
     ResponseCapitalizationBondsProductsList:
@@ -115,7 +81,7 @@ components:
       properties:
         data:
           type: array
-          description: Conjunto de informações do Titulo de Capitalização
+          description: Conjunto de informações do Título de Capitalização
           items:
             $ref: '#/components/schemas/CapitalizationBondsProductData'
           minItems: 0
@@ -126,7 +92,7 @@ components:
       additionalProperties: false
     CapitalizationBondsProductData:
       type: object
-      description: Conjunto de informações do Titulo de Capitalização
+      description: Conjunto de informações do Título de Capitalização
       required:
         - participantIdentification
         - societyIdentification
@@ -259,7 +225,7 @@ components:
       additionalProperties: false
     CapitalizationBondsProductIdentificationData:
       type: object
-      description: Conjunto de informações do Titulo de Capitalização
+      description: Conjunto de informações do Título de Capitalização
       required:
         - termsAndConditions
         - quotas
@@ -688,7 +654,7 @@ components:
       additionalProperties: false
     Meta:
       type: object
-      description: Meta informações referente a API requisitada.
+      description: Meta informações referente à API requisitada.
       required:
         - totalRecords
         - totalPages
@@ -746,25 +712,11 @@ components:
         meta:
           $ref: '#/components/schemas/Meta'
       additionalProperties: false
-    XFapiInteractionId:
-      type: string
-      pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
-      maxLength: 100
-      description: 'Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.'
   parameters:
-    Authorization:
-      name: Authorization
-      in: header
-      description: Cabeçalho HTTP padrão. Permite que as credenciais sejam fornecidas dependendo do tipo de recurso solicitado
-      required: true
-      schema:
-        type: string
-        pattern: '[\w\W\s]*'
-        maxLength: 2048
     productId:
       name: productId
       in: path
-      description: Identifica de forma única um Titulo de Capitalização
+      description: Identifica de forma única um Título de Capitalização
       required: true
       schema:
         type: string
@@ -788,88 +740,21 @@ components:
         minimum: 1
         format: int32
         maximum: 1000
-    xCustomerUserAgent:
-      name: x-customer-user-agent
-      in: header
-      description: Indica o user-agent que o usuário utiliza.
-      required: false
-      schema:
-        type: string
-        pattern: '[\w\W\s]*'
-        minLength: 1
-        maxLength: 100
-    xFapiAuthDate:
-      name: x-fapi-auth-date
-      in: header
-      description: 'Data em que o usuário logou pela última vez com o receptor. Representada de acordo com a [RFC7231](https://tools.ietf.org/html/rfc7231).Exemplo: Sun, 10 Sep 2017 19:43:31 UTC'
-      required: false
-      schema:
-        type: string
-        pattern: '^(Mon|Tue|Wed|Thu|Fri|Sat|Sun), \d{2} (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) \d{4} \d{2}:\d{2}:\d{2} (GMT|UTC)$'
-        minLength: 29
-        maxLength: 29
-    xFapiCustomerIpAddress:
-      name: x-fapi-customer-ip-address
-      in: header
-      description: O endereço IP do usuário se estiver atualmente logado com o receptor.
-      required: false
-      schema:
-        type: string
-        pattern: '[\w\W\s]*'
-        minLength: 1
-        maxLength: 100
-    xFapiInteractionId:
-      name: x-fapi-interaction-id
-      in: header
-      description: 'Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.'
-      required: false
-      schema:
-        type: string
-        pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
-        minLength: 1
-        maxLength: 100
-  securitySchemes:
-    OpenId:
-      type: openIdConnect
-      openIdConnectUrl: 'https://auth.mockbank.poc.raidiam.io/.well-known/openid-configuration'
-    OAuth2Security:
-      type: oauth2
-      description: Fluxo OAuth necessário para que a receptora tenha acesso aos dados na instituição transmissora. Requer o processo de redirecionamento e autenticação do usuário a que se referem os dados.
-      flows:
-        authorizationCode:
-          authorizationUrl: 'https://authserver.example/authorization'
-          tokenUrl: 'https://authserver.example/token'
-          scopes:
-            credit-cards-accounts: Escopo necessário para acesso à API Credit-cards-accounts. O controle dos endpoints específicos é feito via permissions.
   responses:
     OKResponseCapitalizationBondsProductsList:
-      description: Conjunto de informações das Contas de pagamento pós paga
-      headers:
-        x-fapi-interaction-id:
-          schema:
-            $ref: '#/components/schemas/XFapiInteractionId'
+      description: Conjunto de informações dos Títulos de Capitalização.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ResponseCapitalizationBondsProductsList'
     OKResponseCapitalizationBondsProductIdentification:
-      description: Dados de identificação da conta identificada por creditCardAccountId obtidos com sucesso.
-      headers:
-        x-fapi-interaction-id:
-          schema:
-            $ref: '#/components/schemas/XFapiInteractionId'
+      description: Dados de Título de Capitalização por productId obtidos com sucesso.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ResponseCapitalizationBondsProductIdentification'
     BadRequest:
       description: 'A requisição foi malformada, omitindo atributos obrigatórios, seja no payload ou através de atributos na URL.'
-      content:
-        application/json; charset=utf-8:
-          schema:
-            $ref: '#/components/schemas/ResponseError'
-    Forbidden:
-      description: O token tem escopo incorreto ou uma política de segurança foi violada
       content:
         application/json; charset=utf-8:
           schema:
@@ -900,12 +785,6 @@ components:
             $ref: '#/components/schemas/ResponseError'
     TooManyRequests:
       description: 'A operação foi recusada, pois muitas solicitações foram feitas dentro de um determinado período ou o limite global de requisições concorrentes foi atingido'
-      content:
-        application/json; charset=utf-8:
-          schema:
-            $ref: '#/components/schemas/ResponseError'
-    Unauthorized:
-      description: Cabeçalho de autenticação ausente/inválido ou token inválido
       content:
         application/json; charset=utf-8:
           schema:

@@ -2,12 +2,11 @@ openapi: 3.0.0
 info:
   title: Fase 4 - APIs do Open Banking Brasil
   description: |
-    Estas APIs visam o compartilhamento de dados não sensíveis de Capitalização das instituições financeiras participantes do Open Banking Brasil.  
-    Desta forma as instituições participantes irão compartilhar entre si dados sobre os produtos de capitalização e suas características. são válidos apenas para instituições 
-
+    Estas APIs visam o compartilhamento de dados sobre Títulos de Capitalização e suas 
+    características entre as Instituições Financeiras participantes do Open Banking Brasil
   version: 1.0.0-rc1.0
 tags:
-  - name: API - Titulos de Capitalização
+  - name: API - Títulos de Capitalização
     description: |
       |Versão|
       |:-----|
@@ -15,7 +14,7 @@ tags:
 
       #### Visão Geral
 
-      As instituições financeiras participantes podem consultar a lista de  produtos de capitalização de outras instituições participantes. 
+      As instituições financeiras participantes podem consultar a lista de Títulos de Capitalização de outras instituições participantes
       
       #### Especificação em OAS 3.0
 
@@ -23,27 +22,23 @@ tags:
 
 paths:
   /capitalization-bonds/v1/products:
-    post:
+    get:
       tags:
-        - API - Titulos de Capitalização
-      summary: Conjunto de informações dos Títulos de Capitalização.---
+        - API - Títulos de Capitalização
+      summary: Conjunto de informações dos Títulos de Capitalização
+      operationId: capitalizationBondsGetProducts
       description: |
-        Método para obter a lista de Títulos de Capitalização.
+        Método para obter a lista de Títulos de Capitalização
         
         ### Dicionário de dados
 
         Campos de resposta do endpoint de `/products`
 
-        <a href='dictionary/paymentsPostConsents_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
+        <a href='dictionary/capitalizationBondsGetProducts_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
 
         Consulte a seção **Convenções de payload** para obter mais informações sobre [Atributos Obrigatórios / Opcionais](#convencoes-de-propriedade-dos-atributos).
 
       parameters:
-        - $ref: '#/components/parameters/Authorization'
-        - $ref: '#/components/parameters/xFapiAuthDate'
-        - $ref: '#/components/parameters/xFapiCustomerIpAddress'
-        - $ref: '#/components/parameters/xFapiInteractionId'
-        - $ref: '#/components/parameters/xCustomerUserAgent'
         - $ref: '#/components/parameters/page'
         - $ref: '#/components/parameters/pageSize'
       responses:
@@ -51,10 +46,6 @@ paths:
           $ref: '#/components/responses/OKResponseCapitalizationBondsProductsList'
         '400':
           $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
         '405':
@@ -65,31 +56,30 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-        default:
-          $ref: '#/components/responses/OKResponseCapitalizationBondsProductsList'
-  /products/{productId}:
+  /capitalization-bonds/v1/products/{productId}:
     get:
       tags:
-        - Capitalization Bonds
-      summary: Obtém os dados do Título de Capitalização por productId.
-      operationId: productId
-      description: Método para obter os dados do Título de Capitalização.
+        - API - Títulos de Capitalização
+      summary: Obtém os dados do Título de Capitalização por productId
+      operationId: capitalizationBondsGetProductsProductId
+      description: |
+        Método para obter os dados do Título de Capitalização por productId
+        
+        ### Dicionário de dados
+
+        Campos de resposta do endpoint de `/products/{productId}`
+
+        <a href='dictionary/capitalizationBondsGetProductsProductId_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
+
+        Consulte a seção **Convenções de payload** para obter mais informações sobre [Atributos Obrigatórios / Opcionais](#convencoes-de-propriedade-dos-atributos).
+
       parameters:
-        - $ref: '#/components/parameters/Authorization'
-        - $ref: '#/components/parameters/xFapiAuthDate'
-        - $ref: '#/components/parameters/xFapiCustomerIpAddress'
-        - $ref: '#/components/parameters/xFapiInteractionId'
-        - $ref: '#/components/parameters/xCustomerUserAgent'
         - $ref: '#/components/parameters/productId'
       responses:
         '200':
           $ref: '#/components/responses/OKResponseCapitalizationBondsProductIdentification'
         '400':
           $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
         '405':
@@ -100,8 +90,6 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-        default:
-          $ref: '#/components/responses/OKResponseCapitalizationBondsProductIdentification'
 components:
   schemas:
     ResponseCapitalizationBondsProductsList:
@@ -110,10 +98,8 @@ components:
       $ref: ./schemas/capitalization_bonds_apis/CapitalizationBondsProductData.yaml
     CapitalizationBondsParticipantIdentification:
       $ref: ./schemas/capitalization_bonds_apis/CapitalizationBondsParticipantIdentification.yaml
-
     CapitalizationBondsInsuranceCompanyIdentification:
       $ref: ./schemas/capitalization_bonds_apis/CapitalizationBondsInsuranceCompanyIdentification.yaml
-
     CapitalizationBondsProduct:
       $ref: ./schemas/capitalization_bonds_apis/CapitalizationBondsProduct.yaml
     EnumCapitalizationBondsProductModality:
@@ -122,64 +108,34 @@ components:
       $ref: ./schemas/enum/EnumCapitalizationBondsProductPaymentFrequency.yaml
     ResponseCapitalizationBondsProductIdentification:
       $ref: ./schemas/capitalization_bonds_apis/ResponseCapitalizationBondsProductIdentification.yaml
-
     Links:
       $ref: ./schemas/Links.yaml
     Meta:
       $ref: ./schemas/Meta.yaml
-
     ResponseError:
       $ref: ./schemas/ResponseError.yaml
-    XFapiInteractionId:
-      $ref: ./headers/XFapiInteractionId.yaml
   parameters:
-    Authorization:
-      $ref: ./parameters/Authorization.yaml
-    creditCardAccountId:
-      $ref: ./parameters/CreditCardAccountId.yaml
     page:
       $ref: ./parameters/Page.yaml
     pageSize:
       $ref: ./parameters/PageSize.yaml
-    xCustomerUserAgent:
-      $ref: ./parameters/XCustomerUserAgent.yaml
-    xFapiAuthDate:
-      $ref: ./parameters/XFapiAuthDate.yaml
-    xFapiCustomerIpAddress:
-      $ref: ./parameters/XFapiCustomerIpAddress.yaml
-    xFapiInteractionId:
-      $ref: ./parameters/XFapiInteractionId.yaml
     productId:
       $ref: ./parameters/CapitalizationBondsProductId.yaml
   responses:
     OKResponseCapitalizationBondsProductsList:
       description: Conjunto de informações das Contas de pagamento pós paga
-      headers:
-        x-fapi-interaction-id:
-          schema:
-            $ref: '#/components/schemas/XFapiInteractionId'
       content:
         application/json:
           schema:
             $ref: ./schemas/capitalization_bonds_apis/ResponseCapitalizationBondsProductsList.yaml
     OKResponseCapitalizationBondsProductIdentification:
       description: Dados de identificação da conta identificada por creditCardAccountId obtidos com sucesso.
-      headers:
-        x-fapi-interaction-id:
-          schema:
-            $ref: '#/components/schemas/XFapiInteractionId'
       content:
         application/json:
           schema:
             $ref: ./schemas/capitalization_bonds_apis/ResponseCapitalizationBondsProductIdentification.yaml
     BadRequest:
       description: 'A requisição foi malformada, omitindo atributos obrigatórios, seja no payload ou através de atributos na URL.'
-      content:
-        application/json; charset=utf-8:
-          schema:
-            $ref: ./schemas/ResponseError.yaml
-    Forbidden:
-      description: O token tem escopo incorreto ou uma política de segurança foi violada
       content:
         application/json; charset=utf-8:
           schema:
@@ -210,12 +166,6 @@ components:
             $ref: ./schemas/ResponseError.yaml
     TooManyRequests:
       description: 'A operação foi recusada, pois muitas solicitações foram feitas dentro de um determinado período ou o limite global de requisições concorrentes foi atingido'
-      content:
-        application/json; charset=utf-8:
-          schema:
-            $ref: ./schemas/ResponseError.yaml
-    Unauthorized:
-      description: Cabeçalho de autenticação ausente/inválido ou token inválido
       content:
         application/json; charset=utf-8:
           schema:
