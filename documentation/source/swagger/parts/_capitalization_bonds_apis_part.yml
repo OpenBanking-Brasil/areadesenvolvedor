@@ -4,7 +4,7 @@ info:
   description: |
     API de Titulos de Capitalização do Open Banking Brasil – Fase 4.
     API que retorna informações dos Titulos de Capitalização.
-  version: v1.0.0-rc1.0
+  version: 1.0.0-rc1.0
   license:
     name: Apache 2.0
     url: 'https://www.apache.org/licenses/LICENSE-2.0'
@@ -19,21 +19,16 @@ servers:
     description: Servidor de Homologação
 tags:
   - name: Capitalization Bonds
-    description: Operações para listagem das informações de Titulos de Capitalização.
+    description: Operação para listagem das informações de Titulos de Capitalização.
 paths:
   /products:
     get:
       tags:
         - Capitalization Bonds
       summary: Conjunto de informações dos Títulos de Capitalização.
-      operationId: capitalizationBondsProducts
+      operationId: capitalizationBondsGetProducts
       description: Método para obter a lista de Títulos de Capitalização.
       parameters:
-        - $ref: '#/components/parameters/Authorization'
-        - $ref: '#/components/parameters/xFapiAuthDate'
-        - $ref: '#/components/parameters/xFapiCustomerIpAddress'
-        - $ref: '#/components/parameters/xFapiInteractionId'
-        - $ref: '#/components/parameters/xCustomerUserAgent'
         - $ref: '#/components/parameters/page'
         - $ref: '#/components/parameters/pageSize'
       responses:
@@ -60,22 +55,14 @@ paths:
       security:
         - OpenId:
             - 'openid'
-          OAuth2Security:
-            - 'consent:consentId'
-            - 'credit-cards-accounts'
   /products/{productId}:
     get:
       tags:
         - Capitalization Bonds
       summary: Obtém os dados do Título de Capitalização por productId.
-      operationId: productId
+      operationId: capitalizationBondsGetProductsProductId
       description: Método para obter os dados do Título de Capitalização.
       parameters:
-        - $ref: '#/components/parameters/Authorization'
-        - $ref: '#/components/parameters/xFapiAuthDate'
-        - $ref: '#/components/parameters/xFapiCustomerIpAddress'
-        - $ref: '#/components/parameters/xFapiInteractionId'
-        - $ref: '#/components/parameters/xCustomerUserAgent'
         - $ref: '#/components/parameters/productId'
       responses:
         '200':
@@ -101,9 +88,6 @@ paths:
       security:
         - OpenId:
             - 'openid'
-          OAuth2Security:
-            - 'consent:consentId'
-            - 'credit-cards-accounts'
 components:
   schemas:
     ResponseCapitalizationBondsProductsList:
@@ -120,9 +104,6 @@ components:
       $ref: ./schemas/enum/EnumCapitalizationBondsProductModality.yaml
     EnumCapitalizationBondsProductPaymentFrequency:
       $ref: ./schemas/enum/EnumCapitalizationBondsProductPaymentTerm.yaml
-
-
-
     ResponseCapitalizationBondsProductIdentification:
       $ref: ./schemas/capitalization_bonds_apis/ResponseCapitalizationBondsProductIdentification.yaml
     CapitalizationBondsProductIdentificationData:
@@ -160,40 +141,21 @@ components:
     XFapiInteractionId:
       $ref: ./headers/XFapiInteractionId.yaml
   parameters:
-    Authorization:
-      $ref: ./parameters/Authorization.yaml
     productId:
       $ref: ./parameters/CapitalizationBondsProductId.yaml
     page:
       $ref: ./parameters/Page.yaml
     pageSize:
       $ref: ./parameters/PageSize.yaml
-    xCustomerUserAgent:
-      $ref: ./parameters/XCustomerUserAgent.yaml
-    xFapiAuthDate:
-      $ref: ./parameters/XFapiAuthDate.yaml
-    xFapiCustomerIpAddress:
-      $ref: ./parameters/XFapiCustomerIpAddress.yaml
-    xFapiInteractionId:
-      $ref: ./parameters/XFapiInteractionId.yaml
 
   securitySchemes:
     OpenId:
       type: openIdConnect
       openIdConnectUrl: 'https://auth.mockbank.poc.raidiam.io/.well-known/openid-configuration'
-    OAuth2Security:
-      type: oauth2
-      description: "Fluxo OAuth necessário para que a receptora tenha acesso aos dados na instituição transmissora. Requer o processo de redirecionamento e autenticação do usuário a que se referem os dados."
-      flows:
-        authorizationCode:
-          authorizationUrl: "https://authserver.example/authorization"
-          tokenUrl: "https://authserver.example/token"
-          scopes:
-            credit-cards-accounts: "Escopo necessário para acesso à API Credit-cards-accounts. O controle dos endpoints específicos é feito via permissions."
 
   responses:
     OKResponseCapitalizationBondsProductsList:
-      description: Conjunto de informações das Contas de pagamento pós paga
+      description: Conjunto de informações dos Títulos de Capitalização.
       headers:
         x-fapi-interaction-id:
           schema:
@@ -203,7 +165,7 @@ components:
           schema:
             $ref: ./schemas/capitalization_bonds_apis/ResponseCapitalizationBondsProductsList.yaml
     OKResponseCapitalizationBondsProductIdentification:
-      description: Dados de identificação da conta identificada por creditCardAccountId obtidos com sucesso.
+      description: Dados de Título de Capitalização por productId obtidos com sucesso.
       headers:
         x-fapi-interaction-id:
           schema:

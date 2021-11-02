@@ -2,8 +2,7 @@
 info:
   title: Fase 4 - APIs do Open Banking Brasil
   description: |
-    Estas APIs visam o compartilhamento de dados não sensíveis de Capitalização das instituições financeiras participantes do Open Banking Brasil.  
-    Desta forma as instituições participantes irão compartilhar entre si dados sobre os produtos de capitalização e suas características. são válidos apenas para instituições 
+    Estas APIs visam o compartilhamento de dados sobre Títulos de Capitalização e suas características entre as Instituições Financeiras participantes do Open Banking Brasil.
   version: 1.0.0-rc1.0
 tags:
   - name: API - Titulos de Capitalização
@@ -14,17 +13,18 @@ tags:
 
       #### Visão Geral
 
-      As instituições financeiras participantes podem consultar a lista de  produtos de capitalização de outras instituições participantes. 
+      As instituições financeiras participantes podem consultar a lista de Títulos de Capitalização de outras instituições participantes. 
 
       #### Especificação em OAS 3.0
 
       <a href="swagger/swagger_capitalization_bonds_apis.yaml" target="_blank">Download da Especificação (OAS 3.0)</a>
 paths:
   /capitalization-bonds/v1/products:
-    post:
+    get:
       tags:
         - API - Titulos de Capitalização
-      summary: Conjunto de informações dos Títulos de Capitalização.---
+      summary: Conjunto de informações dos Títulos de Capitalização.
+      operationId: capitalizationBondsGetProducts
       description: |
         Método para obter a lista de Títulos de Capitalização.
 
@@ -32,15 +32,10 @@ paths:
 
         Campos de resposta do endpoint de `/products`
 
-        <a href='dictionary/paymentsPostConsents_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
+        <a href='dictionary/capitalizationBondsGetProducts_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
 
         Consulte a seção **Convenções de payload** para obter mais informações sobre [Atributos Obrigatórios / Opcionais](#convencoes-de-propriedade-dos-atributos).
       parameters:
-        - $ref: '#/components/parameters/Authorization'
-        - $ref: '#/components/parameters/xFapiAuthDate'
-        - $ref: '#/components/parameters/xFapiCustomerIpAddress'
-        - $ref: '#/components/parameters/xFapiInteractionId'
-        - $ref: '#/components/parameters/xCustomerUserAgent'
         - $ref: '#/components/parameters/page'
         - $ref: '#/components/parameters/pageSize'
       responses:
@@ -64,19 +59,23 @@ paths:
           $ref: '#/components/responses/InternalServerError'
         default:
           $ref: '#/components/responses/OKResponseCapitalizationBondsProductsList'
-  '/products/{productId}':
+  '/capitalization-bonds/v1/products/{productId}':
     get:
       tags:
-        - Capitalization Bonds
+        - API - Titulos de Capitalização
       summary: Obtém os dados do Título de Capitalização por productId.
-      operationId: productId
-      description: Método para obter os dados do Título de Capitalização.
+      operationId: capitalizationBondsGetProductsProductId
+      description: |
+        Método para obter os dados do Título de Capitalização por productId.
+
+        ### Dicionário de dados
+
+        Campos de resposta do endpoint de `/products/{productId}`
+
+        <a href='dictionary/capitalizationBondsGetProductsProductId_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
+
+        Consulte a seção **Convenções de payload** para obter mais informações sobre [Atributos Obrigatórios / Opcionais](#convencoes-de-propriedade-dos-atributos).
       parameters:
-        - $ref: '#/components/parameters/Authorization'
-        - $ref: '#/components/parameters/xFapiAuthDate'
-        - $ref: '#/components/parameters/xFapiCustomerIpAddress'
-        - $ref: '#/components/parameters/xFapiInteractionId'
-        - $ref: '#/components/parameters/xCustomerUserAgent'
         - $ref: '#/components/parameters/productId'
       responses:
         '200':
@@ -730,24 +729,6 @@ components:
       maxLength: 100
       description: 'Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.'
   parameters:
-    Authorization:
-      name: Authorization
-      in: header
-      description: Cabeçalho HTTP padrão. Permite que as credenciais sejam fornecidas dependendo do tipo de recurso solicitado
-      required: true
-      schema:
-        type: string
-        pattern: '[\w\W\s]*'
-        maxLength: 2048
-    creditCardAccountId:
-      name: creditCardAccountId
-      in: path
-      description: 'Identifica de forma única a conta pagamento pós-paga do cliente, mantendo as regras de imutabilidade detro da instituição transmissora'
-      required: true
-      schema:
-        type: string
-        pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
-        maxLength: 100
     page:
       name: page
       in: query
@@ -767,46 +748,6 @@ components:
         minimum: 1
         format: int32
         maximum: 1000
-    xCustomerUserAgent:
-      name: x-customer-user-agent
-      in: header
-      description: Indica o user-agent que o usuário utiliza.
-      required: false
-      schema:
-        type: string
-        pattern: '[\w\W\s]*'
-        minLength: 1
-        maxLength: 100
-    xFapiAuthDate:
-      name: x-fapi-auth-date
-      in: header
-      description: 'Data em que o usuário logou pela última vez com o receptor. Representada de acordo com a [RFC7231](https://tools.ietf.org/html/rfc7231).Exemplo: Sun, 10 Sep 2017 19:43:31 UTC'
-      required: false
-      schema:
-        type: string
-        pattern: '^(Mon|Tue|Wed|Thu|Fri|Sat|Sun), \d{2} (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) \d{4} \d{2}:\d{2}:\d{2} (GMT|UTC)$'
-        minLength: 29
-        maxLength: 29
-    xFapiCustomerIpAddress:
-      name: x-fapi-customer-ip-address
-      in: header
-      description: O endereço IP do usuário se estiver atualmente logado com o receptor.
-      required: false
-      schema:
-        type: string
-        pattern: '[\w\W\s]*'
-        minLength: 1
-        maxLength: 100
-    xFapiInteractionId:
-      name: x-fapi-interaction-id
-      in: header
-      description: 'Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.'
-      required: false
-      schema:
-        type: string
-        pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
-        minLength: 1
-        maxLength: 100
     productId:
       name: productId
       in: path
