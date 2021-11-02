@@ -2,8 +2,8 @@
 info:
   title: API Capitalization-bonds - Open Banking Brasil
   description: |
-    API de Titulos de Capitalização do Open Banking Brasil – Fase 4.
-    API que retorna informações dos Titulos de Capitalização.
+    Estas APIs visam o compartilhamento de dados sobre Títulos de Capitalização e suas 
+    características entre as Instituições Financeiras participantes do Open Banking Brasil.
   version: 1.0.0-rc1.0
   license:
     name: Apache 2.0
@@ -19,7 +19,7 @@ servers:
     description: Servidor de Homologação
 tags:
   - name: Capitalization Bonds
-    description: Operação para listagem das informações de Titulos de Capitalização.
+    description: Operação para listagem das informações de Títulos de Capitalização.
 paths:
   /products:
     get:
@@ -36,10 +36,6 @@ paths:
           $ref: '#/components/responses/OKResponseCapitalizationBondsProductsList'
         '400':
           $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
         '405':
@@ -50,11 +46,6 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-        default:
-          $ref: '#/components/responses/OKResponseCapitalizationBondsProductsList'
-      security:
-        - OpenId:
-            - openid
   '/products/{productId}':
     get:
       tags:
@@ -69,10 +60,6 @@ paths:
           $ref: '#/components/responses/OKResponseCapitalizationBondsProductIdentification'
         '400':
           $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
         '405':
@@ -83,11 +70,6 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-        default:
-          $ref: '#/components/responses/OKResponseCapitalizationBondsProductIdentification'
-      security:
-        - OpenId:
-            - openid
 components:
   schemas:
     ResponseCapitalizationBondsProductsList:
@@ -99,7 +81,7 @@ components:
       properties:
         data:
           type: array
-          description: Conjunto de informações do Titulo de Capitalização
+          description: Conjunto de informações do Título de Capitalização
           items:
             $ref: '#/components/schemas/CapitalizationBondsProductData'
           minItems: 0
@@ -110,7 +92,7 @@ components:
       additionalProperties: false
     CapitalizationBondsProductData:
       type: object
-      description: Conjunto de informações do Titulo de Capitalização
+      description: Conjunto de informações do Título de Capitalização
       required:
         - participantIdentification
         - societyIdentification
@@ -243,7 +225,7 @@ components:
       additionalProperties: false
     CapitalizationBondsProductIdentificationData:
       type: object
-      description: Conjunto de informações do Titulo de Capitalização
+      description: Conjunto de informações do Título de Capitalização
       required:
         - termsAndConditions
         - quotas
@@ -672,7 +654,7 @@ components:
       additionalProperties: false
     Meta:
       type: object
-      description: Meta informações referente a API requisitada.
+      description: Meta informações referente à API requisitada.
       required:
         - totalRecords
         - totalPages
@@ -730,16 +712,11 @@ components:
         meta:
           $ref: '#/components/schemas/Meta'
       additionalProperties: false
-    XFapiInteractionId:
-      type: string
-      pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
-      maxLength: 100
-      description: 'Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.'
   parameters:
     productId:
       name: productId
       in: path
-      description: Identifica de forma única um Titulo de Capitalização
+      description: Identifica de forma única um Título de Capitalização
       required: true
       schema:
         type: string
@@ -763,39 +740,21 @@ components:
         minimum: 1
         format: int32
         maximum: 1000
-  securitySchemes:
-    OpenId:
-      type: openIdConnect
-      openIdConnectUrl: 'https://auth.mockbank.poc.raidiam.io/.well-known/openid-configuration'
   responses:
     OKResponseCapitalizationBondsProductsList:
       description: Conjunto de informações dos Títulos de Capitalização.
-      headers:
-        x-fapi-interaction-id:
-          schema:
-            $ref: '#/components/schemas/XFapiInteractionId'
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ResponseCapitalizationBondsProductsList'
     OKResponseCapitalizationBondsProductIdentification:
       description: Dados de Título de Capitalização por productId obtidos com sucesso.
-      headers:
-        x-fapi-interaction-id:
-          schema:
-            $ref: '#/components/schemas/XFapiInteractionId'
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ResponseCapitalizationBondsProductIdentification'
     BadRequest:
       description: 'A requisição foi malformada, omitindo atributos obrigatórios, seja no payload ou através de atributos na URL.'
-      content:
-        application/json; charset=utf-8:
-          schema:
-            $ref: '#/components/schemas/ResponseError'
-    Forbidden:
-      description: O token tem escopo incorreto ou uma política de segurança foi violada
       content:
         application/json; charset=utf-8:
           schema:
@@ -826,12 +785,6 @@ components:
             $ref: '#/components/schemas/ResponseError'
     TooManyRequests:
       description: 'A operação foi recusada, pois muitas solicitações foram feitas dentro de um determinado período ou o limite global de requisições concorrentes foi atingido'
-      content:
-        application/json; charset=utf-8:
-          schema:
-            $ref: '#/components/schemas/ResponseError'
-    Unauthorized:
-      description: Cabeçalho de autenticação ausente/inválido ou token inválido
       content:
         application/json; charset=utf-8:
           schema:
