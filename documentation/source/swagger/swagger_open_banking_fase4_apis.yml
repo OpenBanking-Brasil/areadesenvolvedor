@@ -2,8 +2,8 @@
 info:
   title: Fase 4 - APIs do Open Banking Brasil
   description: |
-    Estas APIs visam o compartilhamento de dados sobre Títulos de Capitalização e suas 
-    características entre as Instituições Financeiras participantes do Open Banking Brasil.    
+    Estas APIs visam o compartilhamento de dados sobre Títulos de Capitalização e suas
+    características entre as Instituições Financeiras participantes do Open Banking Brasil
   version: 1.0.0-rc1.0
 tags:
   - name: API - Títulos de Capitalização
@@ -14,7 +14,7 @@ tags:
 
       #### Visão Geral
 
-      As instituições financeiras participantes podem consultar a lista de Títulos de Capitalização de outras instituições participantes. 
+      As instituições financeiras participantes podem consultar a lista de Títulos de Capitalização de outras instituições participantes
 
       #### Especificação em OAS 3.0
 
@@ -24,10 +24,10 @@ paths:
     get:
       tags:
         - API - Títulos de Capitalização
-      summary: Conjunto de informações dos Títulos de Capitalização.
+      summary: Conjunto de informações dos Títulos de Capitalização
       operationId: capitalizationBondsGetProducts
       description: |
-        Método para obter a lista de Títulos de Capitalização.
+        Método para obter a lista de Títulos de Capitalização
 
         ### Dicionário de dados
 
@@ -48,8 +48,6 @@ paths:
           $ref: '#/components/responses/NotFound'
         '405':
           $ref: '#/components/responses/MethodNotAllowed'
-        '406':
-          $ref: '#/components/responses/NotAcceptable'
         '429':
           $ref: '#/components/responses/TooManyRequests'
         '500':
@@ -58,10 +56,10 @@ paths:
     get:
       tags:
         - API - Títulos de Capitalização
-      summary: Obtém os dados do Título de Capitalização por productId.
+      summary: Obtém os dados do Título de Capitalização por productId
       operationId: capitalizationBondsGetProductsProductId
       description: |
-        Método para obter os dados do Título de Capitalização por productId.
+        Método para obter os dados do Título de Capitalização por productId
 
         ### Dicionário de dados
 
@@ -81,8 +79,6 @@ paths:
           $ref: '#/components/responses/NotFound'
         '405':
           $ref: '#/components/responses/MethodNotAllowed'
-        '406':
-          $ref: '#/components/responses/NotAcceptable'
         '429':
           $ref: '#/components/responses/TooManyRequests'
         '500':
@@ -112,13 +108,13 @@ components:
       description: Conjunto de informações do Título de Capitalização
       required:
         - participantIdentification
-        - societyIdentification
+        - insuranceCompanyIdentification
         - product
       properties:
         participantIdentification:
           $ref: '#/components/schemas/CapitalizationBondsParticipantIdentification'
-        societyIdentification:
-          $ref: '#/components/schemas/CapitalizationBondsInsuranceCompanyIdentification'
+        insuranceCompanyIdentification:
+          $ref: '#/components/schemas/CapitalizationBondsSocietyIdentification'
         product:
           $ref: '#/components/schemas/CapitalizationBondsProduct'
       additionalProperties: false
@@ -127,7 +123,7 @@ components:
       description: Conjunto de informações relativas ao Título de Capitalização
       required:
         - brand
-        - participantName
+        - name
         - cnpjNumber
       properties:
         brand:
@@ -135,7 +131,7 @@ components:
           description: 'Nome da marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes.'
           maxLength: 120
           example: ''
-        participantName:
+        name:
           type: string
           description: |
             Nome da Instituição, pertencente à marca, responsável pela comercialização do produto/serviço.
@@ -148,7 +144,7 @@ components:
           maxLength: 14
           example: ''
       additionalProperties: false
-    CapitalizationBondsInsuranceCompanyIdentification:
+    CapitalizationBondsSocietyIdentification:
       type: object
       description: Conjunto de informações relativas ao Título de Capitalização
       required:
@@ -190,19 +186,26 @@ components:
         modality:
           $ref: '#/components/schemas/EnumCapitalizationBondsProductModality'
         paymentTerm:
-          type: string
-          description: |
-            Pagamento efetuado ao subscritor à sociedade de capitalização para aquisição do título de capitalização, podendo ser única, periódica ou mensal.
-            1. Pagamento Único
-            2. Pagamento Mensal
-            3. Pagamento Periódico
-          minLength: 15
-          maxLength: 19
-          enum:
-            - PAGAMENTO_UNICO
-            - PAGAMENTO_MENSAL
-            - PAGAMENTO_PERIODICO
-          example: PAGAMENTO_UNICO
+          $ref: '#/components/schemas/EnumCapitalizationBondsProductPaymentFrequency'
+      additionalProperties: false
+    CapitalizationBondsProductEarlyRedemption:
+      type: object
+      description: Conjunto de informações relativas ao Resgate Antecipado
+      required:
+        - tranche
+        - rate
+      properties:
+        tranche:
+          type: number
+          description: Parcela relativa ao Resgate Antecipado
+          maxLength: 3
+          example: 1
+        rate:
+          type: number
+          format: double
+          description: Taxa relativa ao Resgate Antecipado
+          maxLength: 9
+          example: 10.000001
       additionalProperties: false
     EnumCapitalizationBondsProductModality:
       type: string
@@ -226,13 +229,18 @@ components:
       example: TRADICIONAL
     EnumCapitalizationBondsProductPaymentFrequency:
       type: string
-      description: Descrição do campo
-      maxLength: 23
+      description: |
+        Pagamento efetuado ao subscritor à sociedade de capitalização para aquisição do título de capitalização, podendo ser única, periódica ou mensal.
+        1. Pagamento Único
+        2. Pagamento Mensal
+        3. Pagamento Periódico
+      minLength: 15
+      maxLength: 19
       enum:
-        - SINGLE_PAYMENT
-        - MONTHLY_PAYMENT
-        - PERIODIC_PAYMENT
-      example: SINGLE_PAYMENT
+        - PAGAMENTO_UNICO
+        - PAGAMENTO_MENSAL
+        - PAGAMENTO_PERIODICO
+      example: PAGAMENTO_UNICO
     ResponseCapitalizationBondsProductIdentification:
       type: object
       required:
@@ -241,375 +249,391 @@ components:
         - meta
       properties:
         data:
-          type: object
-          description: Conjunto de informações do Título de Capitalização
-          required:
-            - termsAndConditions
-            - quotas
-            - periodMonths
-            - capitalizationPeriod
-            - latePayment
-            - contributionPayment
-            - draws
-            - additionalInfo
-            - minimumRequirement
-            - targetAudience
-            - finalRedemptionRate
-          properties:
-            termsAndConditions:
-              type: object
-              description: Conjunto de informações relativas ao Título de Capitalização
-              required:
-                - susepNumber
-                - generalConditions
-              properties:
-                susepNumber:
-                  type: string
-                  description: 'Sequência numérica utilizada para consulta dos processos eletrônicos na SUSEP com caracteres especiais, conforme campo de consulta no site da SUSEP(15414.6XXXXX/AAAA-DV).'
-                  maxLength: 20
-                  example: 15414.622222/2222-22
-                generalConditions:
-                  type: string
-                  description: |
-                    Conjunto de cláusulas que regem um mesmo título de capitalização, estabelecendo obrigações e direitos, da sociedade de capitalização, do titular, e do subscritor. Campo aberto (possibilidade de incluir URL).
-                    Observação: As URLs são limitadas a 2048 caracteres mas, para o contexto do Open Insurance foi adotado a metade deste tamanho (1024 caracteres).
-                  maxLength: 1024
-                  example: 'https://ACME.exemplo/capitalizacao/tradicional/pdf/condicoes_gerais.pdf'
-              additionalProperties: false
-            quotas:
-              type: object
-              description: Conjunto de informações relativas ao Título de Capitalização
-              required:
-                - tranche
-                - capitalization
-                - drawing
-                - loadingRate
-              properties:
-                tranche:
-                  type: integer
-                  description: Número da parcela.
-                  maxLength: 3
-                  example: 999
-                capitalization:
-                  type: number
-                  format: double
-                  description: Percentual da contribuição destinado à constituição de capital referente ao direito de resgate. (Resolução CNSP 384/20) Em porcentagem(%).
-                  maxLength: 9
-                  example: 100000.04
-                drawing:
-                  type: number
-                  format: double
-                  description: 'Percentual da contribuição destinado a custear os sorteios, se previstos no plano. (Resolução CNSP 384/20) Em porcentagem(%).'
-                  maxLength: 9
-                  example: 100000.04
-                loadingRate:
-                  type: number
-                  format: double
-                  description: 'Percentual da contribuição destinado aos custos de despesas com corretagem, colocação e administração do título de capitalização, emissão, divulgação, lucro da sociedade de capitalização e eventuais despesas relativas ao custeio da contemplação obrigatória e da distribuição de bônus. (Resolução CNSP 384/20) Em porcentagem(%).'
-                  maxLength: 9
-                  example: 100000.04
-              additionalProperties: false
-            periodMonths:
-              type: number
-              description: Período entre a data de início e a data final para constituição do capital a ser pago ao(s) titular(es) do direito de resgate. Prazo de vigência do título de capitalização em meses (Resolução CNSP 384/20). Em meses.
-              maxLength: 3
-              example: 48
-            serieSize:
-              type: integer
-              description: 'Os títulos de capitalização que prevejam sorteio devem ser estruturados em séries, ou seja, em sequências ou em grupos de títulos submetidos às mesmas condições e características, à exceção do valor do pagamento.'
-              maxLength: 10
-              example: 5000000000
-            capitalizationPeriod:
-              type: object
-              description: Conjunto de informações relativas ao Título de Capitalização
-              required:
-                - interestRate
-                - adjustmentIndex
-                - contributionMinimum
-                - contributionAmountMaximum
-                - contributionAmountAllowed
-                - earlyRedemption
-                - finalRedemptionRate
-                - redemptionGraceMonths
-                - periodUpdateIndex
-              properties:
-                interestRate:
-                  type: number
-                  format: double
-                  description: 'Taxa que remunera a parte da mensalidade destinada a formar o Capital, ou seja, a Provisão Matemática de Resgate, também chamada de saldo de capitalização. Em porcentagem ao mês (% a.m.).'
-                  maxLength: 6
-                  example: 0.25123
-                adjustmentIndex:
-                  type: string
-                  maxLength: 33
-                  enum:
-                    - IGPM_FGV
-                    - INPC_IBGE
-                    - TR_BC
-                    - INDICE_DE_REMUNERACAO_DOS_DEPOSITOS_DE_POUPANCA
-                    - OUTROS
-                  example: IGPM_FGV
-                  description: |
-                    Índice utilizado na correção que remunera a provisão matemática para capitalização.
-                      1. IPCA (IBGE)
-                      2. IGP M (FGV)
-                      3. INPC (IBGE)
-                      4. TR (BC)
-                      5. Índice de remuneração dos depósitos de poupança
-                      6. Outros
-                adjustmentIndexOthers:
-                  type: string
-                  description: Lista string a ser preenchida pelas participantes quando houver ‘Outros’ no campo ‘Índice de atualização’.
-                  maxLength: 10
-                  example: ''
-                contributionMinimum:
-                  type: number
-                  description: |
-                    Corresponde ao pagamento efetuado pelo subscritor à sociedade de capitalização para a aquisição do título de capitalização, podendo ser única, periódica ou mensal (Resolução CNSP 384/20). Valores em reais (R$). Esclarecimentos adicionais SUSEP.
-                    Na modalidade Tradicional, informar a faixa de valor mínimo em R$ de contribuição ao plano. Para as demais modalidades, informar a lista com os valores permitidos de contribuição ao plano. Em todas as situações indicar para qual periodicidade de pagamento se aplicam os valores: pagamento mensal, pagamento único ou periódico.
-                  maxLength: 200
-                  example: 5000
-                contributionAmountMaximum:
-                  type: number
-                  description: |
-                    Corresponde ao pagamento efetuado pelo subscritor à sociedade de capitalização para a aquisição do título de capitalização, podendo ser única, periódica ou mensal (Resolução CNSP 384/20). Valores em reais (R$). Esclarecimentos adicionais SUSEP.
-                    Na modalidade Tradicional, informar a faixa de valor máximo em R$ de contribuição ao plano. Para as demais modalidades, informar a lista com os valores permitidos de contribuição ao plano. Em todas as situações indicar para qual periodicidade de pagamento se aplicam os valores: pagamento mensal, pagamento único ou periódico.
-                  maxLength: 200
-                  example: 5000
-                contributionAmountAllowed:
-                  type: number
-                  description: |
-                    Corresponde ao pagamento efetuado pelo subscritor à sociedade de capitalização para a aquisição do título de capitalização, podendo ser única, periódica ou mensal (Resolução CNSP 384/20). Valores em reais (R$). Esclarecimentos adicionais SUSEP.
-                    Na modalidade Tradicional, informar a faixa de valor mínimo e máximo em R$ de contribuição ao plano. Para as demais modalidades, informar a lista com os valores permitidos de contribuição ao plano. Em todas as situações indicar para qual periodicidade de pagamento se aplicam os valores: pagamento mensal, pagamento único ou periódico.
-                  maxLength: 200
-                  example: 5000
-                earlyRedemption:
-                  type: number
-                  description: 'Possibilidade de o titular efetuar o resgate do capital constituído antes do fim do prazo de vigência do título, podendo ocorrer por solicitação expressa do titular ou por contemplação em sorteio com liquidação antecipada (Resolução CNSP 384/20). Em percentuais a cada parcela (meses de vigência) - Obs No caso de garantia, não contempla a extinção antecipada do contrato.'
-                  maxLength: 2
-                  example: 99
-                finalRedemptionRate:
-                  type: number
-                  format: double
-                  description: 'Percentual mínimo da soma das contribuições efetuadas que poderá ser resgatado ao final da vigência, tendo como condição os pagamentos das parcelas nos respectivos vencimentos.'
-                  maxLength: 6
-                  example: 100.002
-                redemptionGraceMonths:
-                  type: number
-                  description: 'Intervalo de tempo mínimo entre contratação e resgate do direito, em meses.'
-                  maxLength: 3
-                  example: 999
-                periodUpdateIndex:
-                  type: string
-                  maxLength: 33
-                  enum:
-                    - IPCA_IBGE
-                    - IGPM_FGV
-                    - INPC_IBGE
-                    - TR_BC
-                    - SAVINGS_DEPOSITS_REMUNERATION_TAX
-                    - OTHER
-                  example: IPCA_IBGE
-                  description: |
-                    ...
-              additionalProperties: false
-            latePayment:
-              type: object
-              description: Conjunto de informações relativas aos Títulos de Capitalização
-              required:
-                - suspensionMonths
-                - periodExtensionOption
-              properties:
-                suspensionMonths:
-                  type: number
-                  description: 'Conforme manual SUSEP: Prazo máximo (contínuo ou intermitente) em dias em meses que o título fica suspenso por atraso de pagamento, antes de ser cancelado (não aplicável a pagamento único).'
-                  maxLength: 3
-                  example: 999
-                periodExtensionOption:
-                  type: string
-                  description: |
-                    Alteração do prazo de vigência original, pela suspensão (não aplicável a pagamento único). A considerar os seguintes domínios: 
-                      1. Sim
-                      2. Não
-                  maxLength: 3
-                  example: '999'
-              additionalProperties: false
-            contributionPayment:
-              type: object
-              description: Conjunto de informações relativas aos Títulos de Capitalização
-              required:
-                - paymentMethod
-                - othersPaymentMethod
-                - adjustmentIndexOthers
-              properties:
-                paymentMethod:
-                  type: string
-                  maxLength: 33
-                  enum:
-                    - CARTAO_DE_CREDITO
-                    - CARTAO_DE_DEBITO
-                    - DEBITO_EM_CONTA_CORRENTE
-                    - DEBITO_EM_CONTA_POUPANCA
-                    - BOLETO_BANCARIO
-                    - PIX
-                    - CONSIGNACAO_EM_FOLHA_DE_PAGAMENTO
-                    - PONTOS_DE_PROGRAMAS_DE_BENEFICIO
-                    - OUTROS
-                  example: CARTAO_DE_CREDITO
-                  description: |
-                    Meio de Pagamento utilizado para pagamento da contribuição. A considerar os domínios abaixo:
-                      1. Cartão de Crédito
-                      2. Cartão de Débito
-                      3. Débito em conta corrente
-                      4. Débito em conta poupança
-                      5. Boleto bancário
-                      6. PIX
-                      7. Consignação em Folha de Pagamento
-                      8. Pontos de Programas de Benefício
-                      9. Outros
-                adjustmentIndex:
-                  type: number
-                  description: Lista string a ser preenchida pelas participantes quando houver ‘Outros’ no campo ‘Meio de pagamento’.
-                  maxLength: 2
-                  example: 99
-                updateIndex:
-                  type: string
-                  maxLength: 33
-                  enum:
-                    - IPCA_IBGE
-                    - IGPM_FGV
-                    - INPC_IBGE
-                    - TR_BC
-                    - OUTROS
-                  example: IPCA_IBGE
-                  description: |
-                    Índice utilizado na atualização dos pagamentos mensais (para títulos com mais de 12 meses de vigência) (não aplicável a pagamento único). A considerar os domínios abaixo:
-                      1. IPCA (IBGE)
-                      2. IGP M (FGV)
-                      3. INPC (IBGE)
-                      4. TR (BC)
-                      5. Outros
-              additionalProperties: false
-            draws:
-              type: object
-              description: Conjunto de informações relativas aos Títulos de Capitalização
-              required:
-                - periodicity
-                - periodicityOthers
-                - quantity
-                - prizeMultiplier
-                - earlyRedemption
-                - mandatoryDraw
-                - additionalConditions
-                - minimumProbability
-              properties:
-                periodicity:
-                  type: string
-                  maxLength: 33
-                  enum:
-                    - UNICO
-                    - DIARIO
-                    - SEMANAL
-                    - QUINZENAL
-                    - MENSAL
-                    - BIMESTRAL
-                    - TRIMESTRAL
-                    - QUADRIMESTRAL
-                    - SEMESTRAL
-                    - ANUAL
-                    - OUTROS
-                  example: UNICO
-                  description: |
-                    Intervalo de tempo regular previsto entre os sorteios. Conforme os domínios:
-                      Único
-                      Diário
-                      Semanal
-                      Quinzenal
-                      Mensal
-                      Bimestral
-                      Trimestral
-                      QuadrimestraL
-                      Semestral
-                      Anual
-                      Outros
-                periodicityOthers:
-                  type: number
-                  description: Lista string a ser preenchida pelas participantes quando houver ‘Outros’ no campo‘Informações - Periodicidade’.
-                  maxLength: 5
-                  example: 99999
-                quantity:
-                  type: number
-                  description: Número da quantidade de sorteios previstos ao longo da vigência.
-                  maxLength: 5
-                  example: 99999
-                prizeMultiplier:
-                  type: number
-                  description: 'Valor dos sorteios representado por múltiplo do valor de contribuição. Por exemplo: 5 vezes valor da contribuição'
-                  maxLength: 6
-                  example: 999999
-                earlyRedemption:
-                  type: string
-                  description: |
-                    Modelo de sorteio que acarreta, ao título contemplado, o seu resgate total obrigatório (Resolução Normativa 384/20). Conforme os domínios:
-                      1. SIM 
-                      2. NAO
-                  maxLength: 3
-                  example: SIM
-                mandatoryDraw:
-                  type: string
-                  description: |
-                    Possibilidade de realização de sorteio com previsão de que o título sorteado seja
-                    obrigatoriamente um título comercializado, desde que atingidos os requisitos definidos nas
-                    condições gerais do plano. Conforme os domínios:
-                      1. SIM 
-                      2. NÃO
-                  maxLength: 3
-                  example: SIM
-                additionalConditions:
-                  type: string
-                  description: 'Campo aberto para complementar a regra dos sorteios do produto, a ser feita para cada participante.'
-                  maxLength: 200
-                  example: ''
-                minimumProbability:
-                  type: number
-                  format: double
-                  description: 'Número representativo da probabilidade mínima de contemplação nos sorteios, em porcentagem (%).'
-                  maxLength: 7
-                  example: 0.000001
-              additionalProperties: false
-            additionalInfo:
-              type: string
-              description: 'Campo aberto (possibilidade de incluir URL) Observação: As URLs são limitadas a 2048 caracteres mas, para o contexto do Open Insurance , foi adotado a metade deste tamanho (1024). tamanho p.ex.  ‘https://ACME.exemplo/capitalizacao/tradicional/pdf/condicoes_gerais.'
-              maxLength: 1024
-              example: 'https://ACME.exemplo/capitalizacao/tradicional/pdf/condicoes_gerais'
-            minimumRequirement:
-              type: string
-              description: |
-                Campo aberto (possibilidade de incluir URL).
-                Observação: As URLs são limitadas a 2048 caracteres mas, para o contexto do Open Insurance , foi adotado a metade deste tamanho (1024). 
-                tamanho. p.ex. ‘https://ACME.exemplo/capitalizacao/tradicional/pdf/condicoes_gerais.’
-              maxLength: 1024
-              example: 'https://ACME.exemplo/capitalizacao/tradicional/pdf/condicoes_gerais'
-            targetAudience:
-              type: string
-              maxLength: 15
-              enum:
-                - PESSOA_NATURAL
-                - PESSOA_JURIDICA
-              example: PESSOA_NATURAL
-              description: 'Público a quem se destina o produto, podendo ser Pessoa Natural ou Pessoa Jurídica.'
-            finalRedemptionRate:
-              type: number
-              format: double
-              description: Valor percentual (%) de resgate final permitido.
-              maxLength: 5
-              example: 151.23
-          additionalProperties: false
+          $ref: '#/components/schemas/CapitalizationBondsProductIdentificationData'
         links:
           $ref: '#/components/schemas/Links'
         meta:
           $ref: '#/components/schemas/Meta'
       additionalProperties: false
+    CapitalizationBondsProductIdentificationData:
+      type: object
+      description: Conjunto de informações do Título de Capitalização
+      required:
+        - product
+        - termsAndConditions
+        - quotas
+        - periodMonths
+        - capitalizationPeriod
+        - latePayment
+        - contributionPayment
+        - finalRedemptionRate
+        - draws
+        - additionalInfo
+        - minimumRequirement
+        - targetAudience
+      properties:
+        product:
+          $ref: '#/components/schemas/CapitalizationBondsProduct'
+        termsAndConditions:
+          $ref: '#/components/schemas/TermsAndConditions'
+        quotas:
+          type: array
+          description: Informações relativas às taxas da Quotas praticadas para cada Parcela
+          minItems: 0
+          items:
+            $ref: '#/components/schemas/CapitalizationBondsProductQuota'
+        periodMonths:
+          type: number
+          description: Período entre a data de início e a data final para constituição do capital a ser pago ao(s) titular(es) do direito de resgate. Prazo de vigência do título de capitalização em meses (Resolução CNSP 384/20). Em meses.
+          maxLength: 3
+          example: 999
+        serieSize:
+          type: integer
+          description: 'Os títulos de capitalização que prevejam sorteio devem ser estruturados em séries, ou seja, em sequências ou em grupos de títulos submetidos às mesmas condições e características, à exceção do valor do pagamento.'
+          maxLength: 10
+          example: 5000000000
+        capitalizationPeriod:
+          $ref: '#/components/schemas/CapitalizationPeriod'
+        latePayment:
+          $ref: '#/components/schemas/LatePayment'
+        contributionPayment:
+          $ref: '#/components/schemas/ContributionPayment'
+        finalRedemptionRate:
+          type: number
+          format: double
+          description: Valor percentual (%) de resgate final permitido.
+          maxLength: 5
+          example: 151.23
+        draws:
+          type: array
+          description: Informações relativas aos Sorteios
+          minItems: 0
+          items:
+            $ref: '#/components/schemas/PrizeDraw'
+        additionalInfo:
+          type: string
+          description: 'Campo aberto (possibilidade de incluir URL) Observação: As URLs são limitadas a 2048 caracteres mas, para o contexto do Open Insurance , foi adotado a metade deste tamanho (1024). tamanho p.ex.  ‘https://ACME.exemplo/capitalizacao/tradicional/pdf/condicoes_gerais.'
+          maxLength: 1024
+          example: 'https://ACME.exemplo/capitalizacao/tradicional/pdf/condicoes_gerais'
+        minimumRequirements:
+          type: string
+          description: |
+            Campo aberto (possibilidade de incluir URL).
+            Observação: As URLs são limitadas a 2048 caracteres mas, para o contexto do Open Insurance , foi adotado a metade deste tamanho (1024). 
+            tamanho. p.ex. ‘https://ACME.exemplo/capitalizacao/tradicional/pdf/condicoes_gerais.’
+          maxLength: 1024
+          example: 'https://ACME.exemplo/capitalizacao/tradicional/pdf/condicoes_gerais'
+        targetAudience:
+          type: array
+          description: 'Público a quem se destina o produto, podendo ser Pessoa Natural ou Pessoa Jurídica.'
+          minItems: 0
+          items:
+            $ref: '#/components/schemas/EnumTargetAudience'
+      additionalProperties: false
+    TermsAndConditions:
+      type: object
+      description: Conjunto de informações relativas ao Título de Capitalização
+      required:
+        - susepNumber
+        - generalConditions
+      properties:
+        susepNumber:
+          type: string
+          description: 'Sequência numérica utilizada para consulta dos processos eletrônicos na SUSEP com caracteres especiais, conforme campo de consulta no site da SUSEP(15414.6XXXXX/AAAA-DV).'
+          maxLength: 20
+          example: 15414.622222/2222-22
+        generalConditions:
+          type: string
+          description: |
+            Conjunto de cláusulas que regem um mesmo título de capitalização, estabelecendo obrigações e direitos, da sociedade de capitalização, do titular, e do subscritor. Campo aberto (possibilidade de incluir URL).
+            Observação: As URLs são limitadas a 2048 caracteres mas, para o contexto do Open Insurance foi adotado a metade deste tamanho (1024 caracteres).
+          maxLength: 1024
+          example: 'https://ACME.exemplo/capitalizacao/tradicional/pdf/condicoes_gerais.pdf'
+      additionalProperties: false
+    CapitalizationBondsProductQuota:
+      type: object
+      description: Conjunto de informações relativas ao Título de Capitalização
+      required:
+        - tranche
+        - capitalization
+        - drawing
+        - loadingRate
+      properties:
+        tranche:
+          type: integer
+          description: Número da parcela.
+          maxLength: 3
+          example: 999
+        capitalization:
+          type: number
+          format: double
+          description: Percentual da contribuição destinado à constituição de capital referente ao direito de resgate. (Resolução CNSP 384/20) Em porcentagem(%).
+          maxLength: 9
+          example: 10.000001
+        drawing:
+          type: number
+          format: double
+          description: 'Percentual da contribuição destinado a custear os sorteios, se previstos no plano. (Resolução CNSP 384/20) Em porcentagem(%).'
+          maxLength: 9
+          example: 10.000001
+        loadingRate:
+          type: number
+          format: double
+          description: 'Percentual da contribuição destinado aos custos de despesas com corretagem, colocação e administração do título de capitalização, emissão, divulgação, lucro da sociedade de capitalização e eventuais despesas relativas ao custeio da contemplação obrigatória e da distribuição de bônus. (Resolução CNSP 384/20) Em porcentagem(%).'
+          maxLength: 9
+          example: 10.000001
+      additionalProperties: false
+    CapitalizationPeriod:
+      type: object
+      description: Conjunto de informações relativas ao Título de Capitalização
+      required:
+        - interestRate
+        - adjustmentIndex
+        - contributionAmount
+        - earlyRedemption
+        - finalRedemptionRate
+        - redemptionGraceMonths
+      properties:
+        interestRate:
+          type: number
+          format: double
+          description: 'Taxa que remunera a parte da mensalidade destinada a formar o Capital, ou seja, a Provisão Matemática de Resgate, também chamada de saldo de capitalização. Em porcentagem ao mês (% a.m.).'
+          maxLength: 6
+          example: 0.25123
+        adjustmentIndex:
+          $ref: '#/components/schemas/ContributionPayment/properties/adjustmentIndex'
+        adjustmentIndexOthers:
+          type: string
+          description: Lista string a ser preenchida pelas participantes quando houver ‘Outros’ no campo ‘Índice de atualização’.
+          maxLength: 10
+          example: ''
+        contributionAmount:
+          type: object
+          description: |
+            Corresponde ao pagamento efetuado pelo subscritor à sociedade de capitalização para a aquisição do título de capitalização, podendo ser única, periódica ou mensal (Resolução CNSP 384/20).
+          required:
+            - periodicity
+          properties:
+            periodicity:
+              $ref: '#/components/schemas/EnumCapitalizationBondsFrequency'
+            periodicityOthers:
+              type: string
+              description: Lista string a ser preenchida pelas participantes quando houver ‘OUTROS’ no campo ‘periodicity’.
+              maxLength: 20
+              example: ''
+            minimum:
+              type: number
+              description: |
+                Corresponde ao pagamento efetuado pelo subscritor à sociedade de capitalização para a aquisição do título de capitalização, podendo ser única, periódica ou mensal (Resolução CNSP 384/20). Valores em reais (R$). Esclarecimentos adicionais SUSEP.
+                Na modalidade Tradicional, informar a faixa de valor mínimo em R$ de contribuição ao plano. Para as demais modalidades, informar a lista com os valores permitidos de contribuição ao plano. Em todas as situações indicar para qual periodicidade de pagamento se aplicam os valores: pagamento mensal, pagamento único ou periódico.
+              maxLength: 200
+              example: 500
+            maximum:
+              type: number
+              description: |
+                Corresponde ao pagamento efetuado pelo subscritor à sociedade de capitalização para a aquisição do título de capitalização, podendo ser única, periódica ou mensal (Resolução CNSP 384/20). Valores em reais (R$). Esclarecimentos adicionais SUSEP.
+                Na modalidade Tradicional, informar a faixa de valor máximo em R$ de contribuição ao plano. Para as demais modalidades, informar a lista com os valores permitidos de contribuição ao plano. Em todas as situações indicar para qual periodicidade de pagamento se aplicam os valores: pagamento mensal, pagamento único ou periódico.
+              maxLength: 200
+              example: 5000
+            allowed:
+              type: array
+              description: |
+                Corresponde ao pagamento efetuado pelo subscritor à sociedade de capitalização para a aquisição do título de capitalização, podendo ser única, periódica ou mensal (Resolução CNSP 384/20). Valores em reais (R$). Esclarecimentos adicionais SUSEP.
+                Na modalidade Tradicional, informar a faixa de valor mínimo e máximo em R$ de contribuição ao plano. Para as demais modalidades, informar a lista com os valores permitidos de contribuição ao plano. Em todas as situações indicar para qual periodicidade de pagamento se aplicam os valores: pagamento mensal, pagamento único ou periódico.
+              items:
+                type: number
+                example: 500
+          additionalProperties: false
+        earlyRedemptions:
+          type: array
+          description: |
+            Possibilidade de o titular efetuar o resgate do capital constituído antes do fim do prazo de vigência do título, 
+            podendo ocorrer por solicitação expressa do titular ou por contemplação em sorteio com liquidação antecipada (Resolução CNSP 384/20). 
+            Em percentuais a cada parcela (meses de vigência) Obs: No caso de garantia, não contempla a extinção antecipada do contrato.
+          minItems: 0
+          items:
+            $ref: '#/components/schemas/CapitalizationBondsProductEarlyRedemption'
+        finalRedemptionRate:
+          type: number
+          format: double
+          description: 'Percentual mínimo da soma das contribuições efetuadas que poderá ser resgatado ao final da vigência, tendo como condição os pagamentos das parcelas nos respectivos vencimentos.'
+          maxLength: 6
+          example: 100.002
+        redemptionGraceMonths:
+          type: number
+          description: 'Intervalo de tempo mínimo entre contratação e resgate do direito, em meses.'
+          maxLength: 3
+          example: 999
+      additionalProperties: false
+    LatePayment:
+      type: object
+      description: Conjunto de informações relativas aos Títulos de Capitalização
+      required:
+        - suspensionMonths
+        - periodExtensionOption
+      properties:
+        suspensionMonths:
+          type: number
+          description: 'Conforme manual SUSEP: Prazo máximo (contínuo ou intermitente) em dias em meses que o título fica suspenso por atraso de pagamento, antes de ser cancelado (não aplicável a pagamento único).'
+          maxLength: 3
+          example: 999
+        periodExtensionOption:
+          $ref: '#/components/schemas/EnumCapitalizationBondsProductYesOrNoOptions'
+      additionalProperties: false
+    ContributionPayment:
+      type: object
+      description: Conjunto de informações relativas aos Títulos de Capitalização
+      required:
+        - paymentMethod
+        - adjustmentIndex
+      properties:
+        paymentMethod:
+          $ref: '#/components/schemas/CapitalizationBondsProductPaymentMethod'
+        paymentMethodOthers:
+          type: string
+          description: Lista string a ser preenchida pelas participantes quando houver ‘OUTROS’ no campo ‘paymentMethod’.
+          maxLength: 20
+          example: ''
+        adjustmentIndex:
+          type: string
+          maxLength: 33
+          enum:
+            - IPCA_IBGE
+            - IGPM_FGV
+            - INPC_IBGE
+            - TR_BC
+            - INDICE_DE_REMUNERACAO_DOS_DEPOSITOS_DE_POUPANCA
+            - OUTROS
+          example: IPCA_IBGE
+          description: |
+            Índice utilizado na correção que remunera a provisão matemática para capitalização.
+              1. IPCA (IBGE)
+              2. IGP M (FGV)
+              3. INPC (IBGE)
+              4. TR (BC)
+              5. Índice de remuneração dos depósitos de poupança
+              6. Outros
+        adjustmentIndexOthers:
+          type: string
+          description: Lista string a ser preenchida pelas participantes quando houver ‘OUTROS’ no campo ‘adjustmentIndex’.
+          maxLength: 20
+          example: ''
+      additionalProperties: false
+    CapitalizationBondsProductPaymentMethod:
+      type: string
+      maxLength: 33
+      enum:
+        - CARTAO_DE_CREDITO
+        - CARTAO_DE_DEBITO
+        - DEBITO_EM_CONTA_CORRENTE
+        - DEBITO_EM_CONTA_POUPANCA
+        - BOLETO_BANCARIO
+        - PIX
+        - CONSIGNACAO_EM_FOLHA_DE_PAGAMENTO
+        - PONTOS_DE_PROGRAMAS_DE_BENEFICIO
+        - OUTROS
+      example: CARTAO_DE_CREDITO
+      description: |
+        Meio de Pagamento utilizado para pagamento da contribuição. A considerar os domínios abaixo:
+          1. Cartão de Crédito
+          2. Cartão de Débito
+          3. Débito em conta corrente
+          4. Débito em conta poupança
+          5. Boleto bancário
+          6. PIX
+          7. Consignação em Folha de Pagamento
+          8. Pontos de Programas de Benefício
+          9. Outros
+    EnumCapitalizationBondsProductYesOrNoOptions:
+      type: string
+      maxLength: 3
+      enum:
+        - SIM
+        - NAO
+      example: SIM
+      description: 'Alteração do prazo de vigência original, pela suspensão (não aplicável a pagamento único).'
+    PrizeDraw:
+      type: object
+      description: Conjunto de informações relativas aos Títulos de Capitalização
+      required:
+        - periodicity
+        - quantity
+        - prizeMultiplier
+        - earlyRedemption
+        - mandatoryDraw
+        - additionalConditions
+        - minimumProbability
+      properties:
+        periodicity:
+          $ref: '#/components/schemas/EnumCapitalizationBondsFrequency'
+        periodicityOthers:
+          type: string
+          description: Lista string a ser preenchida pelas participantes quando houver ‘OUTROS’ no campo ‘periodicity’.
+          maxLength: 20
+          example: ''
+        quantity:
+          type: number
+          description: Número da quantidade de sorteios previstos ao longo da vigência.
+          maxLength: 5
+          example: 99999
+        prizeMultiplier:
+          type: number
+          description: 'Valor dos sorteios representado por múltiplo do valor de contribuição. Por exemplo: 5 vezes valor da contribuição'
+          maxLength: 6
+          example: 999999
+        earlyRedemption:
+          $ref: '#/components/schemas/EnumCapitalizationBondsProductYesOrNoOptions'
+        mandatoryDraw:
+          $ref: '#/components/schemas/EnumCapitalizationBondsProductYesOrNoOptions'
+        additionalConditions:
+          type: string
+          description: 'Campo aberto para complementar a regra dos sorteios do produto, a ser feita para cada participante.'
+          maxLength: 200
+          example: Sorteio aos Sábados
+        minimumProbability:
+          type: number
+          format: double
+          description: 'Número representativo da probabilidade mínima de contemplação nos sorteios, em porcentagem (%).'
+          maxLength: 7
+          example: 0.000001
+      additionalProperties: false
+    EnumCapitalizationBondsFrequency:
+      type: string
+      maxLength: 33
+      enum:
+        - UNICO
+        - DIARIO
+        - SEMANAL
+        - QUINZENAL
+        - MENSAL
+        - BIMESTRAL
+        - TRIMESTRAL
+        - QUADRIMESTRAL
+        - SEMESTRAL
+        - ANUAL
+        - OUTROS
+      example: SEMANAL
+      description: |
+        Intervalo de tempo regular previsto entre os sorteios. Conforme os domínios:
+          Único
+          Diário
+          Semanal
+          Quinzenal
+          Mensal
+          Bimestral
+          Trimestral
+          QuadrimestraL
+          Semestral
+          Anual
+          Outros
+    EnumTargetAudience:
+      type: string
+      maxLength: 15
+      enum:
+        - PESSOA_NATURAL
+        - PESSOA_JURIDICA
+      example: PESSOA_NATURAL
+      description: 'Público a quem se destina o produto, podendo ser Pessoa Natural ou Pessoa Jurídica.'
     Links:
       type: object
       description: Referências para outros recusos da API requisitada.
@@ -742,13 +766,13 @@ components:
         maxLength: 100
   responses:
     OKResponseCapitalizationBondsProductsList:
-      description: Conjunto de informações das Contas de pagamento pós paga
+      description: Dados de título(s) de capitalização obtidos com sucesso.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ResponseCapitalizationBondsProductsList'
     OKResponseCapitalizationBondsProductIdentification:
-      description: Dados de identificação da conta identificada por creditCardAccountId obtidos com sucesso.
+      description: Dados de um produto de capitalização obtidos com sucesso.
       content:
         application/json:
           schema:
@@ -767,12 +791,6 @@ components:
             $ref: '#/components/schemas/ResponseError'
     MethodNotAllowed:
       description: O consumidor tentou acessar o recurso com um método não suportado
-      content:
-        application/json; charset=utf-8:
-          schema:
-            $ref: '#/components/schemas/ResponseError'
-    NotAcceptable:
-      description: A solicitação continha um cabeçalho Accept diferente dos tipos de mídia permitidos ou um conjunto de caracteres diferente de UTF-8
       content:
         application/json; charset=utf-8:
           schema:

@@ -1,27 +1,34 @@
 type: object
 description: Conjunto de informações do Título de Capitalização
 required:
+  - product
   - termsAndConditions
   - quotas
   - periodMonths
   - capitalizationPeriod
   - latePayment
   - contributionPayment
+  - finalRedemptionRate
   - draws
   - additionalInfo
   - minimumRequirement
-  - targetAudience
-  - finalRedemptionRate
+  - targetAudience  
 properties:
+  product:
+    $ref: ./CapitalizationBondsProduct.yaml
   termsAndConditions:
     $ref: ./CapitalizationBondsProductTermsAndConditions.yaml
   quotas:
-    $ref: ./CapitalizationBondsProductQuota.yaml
+    type: array
+    description: Informações relativas às taxas da Quotas praticadas para cada Parcela
+    minItems: 0
+    items:    
+      $ref: ./CapitalizationBondsProductQuota.yaml
   periodMonths:
     type: number
     description: Período entre a data de início e a data final para constituição do capital a ser pago ao(s) titular(es) do direito de resgate. Prazo de vigência do título de capitalização em meses (Resolução CNSP 384/20). Em meses.
     maxLength: 3
-    example: 48
+    example: 999
   serieSize:
     type: integer
     description: Os títulos de capitalização que prevejam sorteio devem ser estruturados em séries, ou seja, em sequências ou em grupos de títulos submetidos às mesmas condições e características, à exceção do valor do pagamento.
@@ -33,14 +40,24 @@ properties:
     $ref: ./CapitalizationBondsProductLatePayment.yaml
   contributionPayment:
     $ref: ./CapitalizationBondsProductContributionPayment.yaml
+  finalRedemptionRate:
+    type: number
+    format: double
+    description: Valor percentual (%) de resgate final permitido.
+    maxLength: 5
+    example: 151.23
   draws:
-    $ref: ./CapitalizationBondsProductPrizeDraw.yaml
+    type: array
+    description: Informações relativas aos Sorteios
+    minItems: 0
+    items:
+      $ref: ./CapitalizationBondsProductPrizeDraw.yaml
   additionalInfo:
     type: string
     description: 'Campo aberto (possibilidade de incluir URL) Observação: As URLs são limitadas a 2048 caracteres mas, para o contexto do Open Insurance , foi adotado a metade deste tamanho (1024). tamanho p.ex.  ‘https://ACME.exemplo/capitalizacao/tradicional/pdf/condicoes_gerais.'
     maxLength: 1024
     example: 'https://ACME.exemplo/capitalizacao/tradicional/pdf/condicoes_gerais'
-  minimumRequirement:
+  minimumRequirements:
     type: string
     description: |
       Campo aberto (possibilidade de incluir URL).
@@ -49,11 +66,9 @@ properties:
     maxLength: 1024
     example: 'https://ACME.exemplo/capitalizacao/tradicional/pdf/condicoes_gerais'
   targetAudience:
-    $ref: ../enum/CapitalizationBondsProductEnumTargetAudience.yaml
-  finalRedemptionRate:
-    type: number
-    format: double
-    description: Valor percentual (%) de resgate final permitido.
-    maxLength: 5
-    example: 151.23
+    type: array
+    description: Público a quem se destina o produto, podendo ser Pessoa Natural ou Pessoa Jurídica.
+    minItems: 0
+    items:
+      $ref: ../enum/CapitalizationBondsProductEnumTargetAudience.yaml
 additionalProperties: false
