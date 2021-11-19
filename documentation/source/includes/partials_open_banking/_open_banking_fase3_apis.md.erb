@@ -60,11 +60,20 @@ A iniciadora não deve usar comportamento idempotente do POST para pesquisar o s
 
 #### Conjunto inicial de regras propostas na aplicação da idempotencia:
 
-- A iniciadora/TPP não deve alterar o corpo da solicitação ao usar a mesma chave de idempotência. Se a iniciadora alterar o corpo da solicitação, a detentora/ASPSP não deve modificar o recurso final. A detentora pode tratar este caso como uma ação fraudulenta.
-- A detentora não deve criar um novo recurso para uma solicitação POST se estiver determinada como uma solicitação idempotente.
-- Na criação a detentora deve responder à solicitação com o status atual do recurso (ou um status que seja pelo menos tão atual quanto o que estiver disponível nos canais eletrônicos existentes) e um código de status HTTP 201 (CREATED).
-- A iniciadora não deve usar comportamento idempotente para pesquisar o status dos recursos.
-- A detentora pode usar a assinatura da mensagem, junto com a chave de idempotência, para garantir que o corpo da solicitação não seja alterado.
+- A iniciadora/TPP não deve alterar o corpo da solicitação ao usar a mesma chave de idempotência. Se a iniciadora alterar o corpo da solicitação, a detentora/ASPSP não deve modificar o recurso final. A detentora pode tratar este caso como uma ação fraudulenta;
+- A detentora não deve criar um novo recurso para uma solicitação POST se estiver determinada como uma solicitação idempotente;
+- Na criação a detentora deve responder à solicitação com o status atual do recurso (ou um status que seja pelo menos tão atual quanto o que estiver disponível nos canais eletrônicos existentes) e um código de status HTTP 201 (CREATED);
+- A iniciadora não deve usar comportamento idempotente para pesquisar o status dos recursos;
+- A detentora pode usar a assinatura da mensagem, junto com a chave de idempotência, para garantir que o corpo da solicitação não seja alterado;
+- Para a API de Iniciação de Pagamento, a chave de idempotência deverá ser armazenada para controle quando a requisição for processada com sucesso (HTTP Status 201) ou quando ocorrer um erro de negócio (HTTP Status 422);
+- Para a API Consentimento de Pagamento, a chave de idempotência deverá ser armazenada para controle quando a requisição for processada com sucesso (HTTP Status 201);
+- O comportamento idempotente deve ser mantido por 24 horas para uma mesma chave de idempotencia;
+- Toda nova requisição exige que a assinatura da mensagem seja refeita, contendo um novo jti e iat.
+
+#### Cenários de uso de idempotência
+1. Ao receber uma requisição com o mesmo x-idempotency-key e com a claim data do JWT com conteúdo idêntico ao da requisição original, a requisição deverá ser processada entregando o mesmo resultado obtido anteriormente. Isso significa que, caso a requisição inicial tenha criado um recurso, este mesmo recurso deverá ser retornado, com seu status atualizado.
+2. Ao receber uma requisição com o mesmo x-idempotency-key e com a claim data do JWT com conteúdo diferente do original a requisição deverá ser recusada com o HTTP Status 422 com código NAO_INFORMADO.
+3. Ao receber uma requisição com o mesmo x-idempotency-key e com a claim iss não pertencente a organização que possui o software cliente (clientId) a requisição deve ser recusada com o HTTP Status 403.
 
 ### Diagrama de Sequência
 ![Iniciacao_de_Pagamento](images/sequence-diagrams/iniciacao_de_pagamento.png)
@@ -134,11 +143,11 @@ A iniciadora não deve usar comportamento idempotente do POST para pesquisar o s
 
 #### Estabelece TLS
 Toda comunicação máquina-a-máquina (m2m) usará mTLS, conforme RFC rfc8705 e detalhado na especificação de segurança:
-  <a href="https://openbanking-brasil.github.io/specs-seguranca/open-banking-brasil-financial-api-1_ID1.html" target="_blank">Open Banking Brasil Financial-grade API Security Profile 1.0 Implementers Draft 1</a>.
+  <a href="https://openbanking-brasil.github.io/specs-seguranca/open-banking-brasil-financial-api-1_ID3.html" target="_blank">Open Banking Brasil Financial-grade API Security Profile 1.0 Implementers Draft 3</a>.
 
 #### POST /tokens - Pedido de access_token e scope: payments, openid
 Antes de começar o fluxo de iniciação de pagamento, a Instituição Iniciadora deverá ter se cadastrado como *client* na Instituição Detentora da Conta, em acordo com o especificado para o Registro Dinâmico de Clientes (Dynamic Client Registration). Os detalhes dessa etapa podem ser encontrados na especificação de segurança: 
-<a href="https://openbanking-brasil.github.io/specs-seguranca/open-banking-brasil-dynamic-client-registration-1_ID1.html" target="_blank">Open Banking Brasil Financial-grade API Dynamic Client Registration 1.0 Implementers Draft 1</a>.
+<a href="https://openbanking-brasil.github.io/specs-seguranca/open-banking-brasil-dynamic-client-registration-1_ID2.html" target="_blank">Open Banking Brasil Financial-grade API Dynamic Client Registration 1.0 Implementers Draft 2</a>.
 Uma vez cadastrada, a Instituição Iniciadora deverá obter o token de acesso (*access_token*) pelo fluxo de *client credentials*, conforme especificado pela RFC 6749 (rfc6749), com os escopos *payments* e *openid*.
 
 #### Valida certificado SSL e scopes
@@ -227,7 +236,7 @@ Para evitar vazamento de informação, a detentora deve validar que o pagamento 
 
 No contexto da API Payment Initiation, os payloads de mensagem de consentimento e de pagamento que trafegam tanto por parte da instituição iniciadora de transação de pagamento quanto por parte da instituição detentora de conta devem estar assinados. Abaixo temos as orientações para assinatura das mensagens JWS.
 
-Informações complementares de segurança podem ser consultadas em <a href="https://github.com/OpenBanking-Brasil/specs-seguranca/blob/main/open-banking-brasil-financial-api-1_ID2-ptbr.md" target="_blank"> https://github.com/OpenBanking-Brasil/specs-seguranca/blob/main/open-banking-brasil-financial-api-1_ID2-ptbr.md</a>.
+Informações complementares de segurança podem ser consultadas em <a href="https://github.com/OpenBanking-Brasil/specs-seguranca/blob/main/open-banking-brasil-financial-api-1_ID3-ptbr.md"> https://github.com/OpenBanking-Brasil/specs-seguranca/blob/main/open-banking-brasil-financial-api-1_ID3-ptbr.md</a>.
 
 - **Passo 1** - Identifique a chave privada e o certificado de assinatura correspondente a serem usados para assinatura:
 
@@ -262,7 +271,11 @@ O payload das mensagens (requisição e resposta _JWT_) assinadas devem incluir 
 |aud|string|true|(***requisição JWT***): o Provedor do Recurso (p. ex. a instituição Detentora da Conta) deverá validar se o valor do campo **aud** coincide com o endpoint sendo acionado.<br>(***resposta JWT***): o cliente da API (p. ex. instituição Iniciadora) deverá validar se o valor do campo **aud** coincide com o seu próprio `organisationId` listado no diretório.|
 |iss|string|true|(***requisição JWT*** e ***resposta JWT***): o receptor da mensagem deverá validar se o valor do campo **iss** coincide com o `organisationId` da outra parte listado no diretório.|
 |jti|string|true|(***requisição JWT*** e ***resposta JWT***): o valor do campo **jti** deverá ser preenchido com o UUID definido pela instituição de acordo com a <a href="https://datatracker.ietf.org/doc/html/rfc4122" target="_blank">RFC 4122</a> usando o versão 4.|
-|iat|string|true|(***requisição JWT*** e ***resposta JWT***): o valor do campo **iat** deverá ser preenchido com o horário da geração da mensagem e de acordo com o padrão estabelecido na <a href="https://datatracker.ietf.org/doc/html/rfc7519#section-2" target="_blank">RFC7519</a> para o formato _NumericDate_|
+|iat|string|true|(***requisição JWT*** e ***resposta JWT***): o valor do campo **iat** deverá ser preenchido com o horário da geração da mensagem e de acordo com o padrão estabelecido na <a href="https://datatracker.ietf.org/doc/html/rfc7519#section-2" target="_blank">RFC7519</a> para o formato _NumericDate_. A claim iat deverá ser gerada no Unix Time GMT +0 e sua verificação deverá possuir uma tolerância de +/- 60 segundos para cobrir pequenas diferenças nos relógios dos servidores dos participantes.|
+
+- **A claim do “jti” deve ser única para um clientId dentro de um intervalo de tempo de 86.400 segundos, não podendo ser reutilizada neste período. Em caso de reutilização, deverá ser retornado o código de erro HTTP 403.**
+
+- **As validações referentes as claims do JWT devem preceder a validação de idempotência (e.g. “jti”, “iat” e “iss”)**
 
 Cada elemento acima deve ser codificado utilizando o padrão Base64url [<a href="https://datatracker.ietf.org/doc/html/rfc4648#section-5" target="_blank">RFC4648</a>] e, feito isso, os elementos devem ser concatenados com “.” (método JWS Compact Serialization, conforme definido na [<a href="https://datatracker.ietf.org/doc/html/rfc7515#section-3.1" target="_blank">RFC7515</a>]).
 
@@ -275,9 +288,7 @@ Veja ao lado exemplo de mensagem JWS assinada e codificada e um exemplo de mensa
 > Exemplo de requisição - JWS assinada e codificada
 
 ```json
-  eyJhbGciOiJQUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlBXQWk1cnVRY0hmelB6cTJKRmRwWTduQVVoNkx6VFRRdERCVXBPTTM3SlEifQ.
-  eyJhdWQiOiJodHRwczovL2FwaS5iYW5jby5jb20uYnIvb3BlbmJhbmtpbmcvcGF5bWVudHMvdjEvY29uc2VudHMiLCJpc3MiOiI1NjQ3ZmU5MC1mNmJjLTExZWItOWEwMy0wMjQyYWMxMzAwMDMiLCJqdGkiOiI3OTYwNTc3Yy02NjJjLTQ1NmUtOGNmNS1lNjMwODI4YWY2MzUiLCJpYXQiOiIxNjI4MjU3NDg0IiwiZGF0YSI6eyJsb2dnZWRVc2VyIjp7ImRvY3VtZW50Ijp7ImlkZW50aWZpY2F0aW9uIjoiMTExMTExMTExMTEiLCJyZWwiOiJDUEYifX0sImJ1c2luZXNzRW50aXR5Ijp7ImRvY3VtZW50Ijp7ImlkZW50aWZpY2F0aW9uIjoiMTExMTExMTExMTExMTEiLCJyZWwiOiJDTlBKIn19LCJjcmVkaXRvciI6eyJwZXJzb25UeXBlIjoiUEVTU09BX05BVFVSQUwiLCJjcGZDbnBqIjoiNTg3NjQ3ODkwMDAxMzciLCJuYW1lIjoiTWFyY28gQW50b25pbyBkZSBCcml0byJ9LCJwYXltZW50Ijp7InR5cGUiOiJQSVgiLCJkYXRlIjoiMjAyMS0wMS0wMSIsImN1cnJlbmN5IjoiQlJMIiwiYW1vdW50IjoiMTAwMDAwLjEyIn0sImRlYnRvckFjY291bnQiOnsiaXNwYiI6IjEyMzQ1Njc4IiwiaXNzdWVyIjoiMTc3NCIsIm51bWJlciI6IjEyMzQ1Njc4OTAiLCJhY2NvdW50VHlwZSI6IkNBQ0MifX19.
-  QPeCCkH45tZ4kMRYwLNIFXnHGIe0smk5V1qVrM7Iw_YcNUbla45ThCFzU_NEeYx3FaPJko_PIGWzxC62c_yrh0R5yYpGJ_V4PZxGer27p_tZgyJ_x7MZbMkMaRqO8w9rcfa8FrNc9zBXbkdh2D0GmC_fDtAV5F-ndYhaztH2w-G5OGg7S57wifA4HVq11vQLmk5p3VjKFA530KALurU5kRmAfgK0mYA6_EaOtXiQTeP06_gu6g9JIenGLaDVeKLXKTtv8YhCZhoO_eHNBdAmmFJTQW_zPQrKnlj1Qo6XJIgRQ0sqigV9lOOOQNWjpFwZ2DYYcXbdHumCznlN_yb5yw
+  eyJhbGciOiJQUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlBXQWk1cnVRY0hmelB6cTJKRmRwWTduQVVoNkx6VFRRdERCVXBPTTM3SlEifQ.eyJhdWQiOiIzNDQ5YmYyMS0wYjA3LTQ4ZTYtYjZmYy0xM2ViMTYxYTk5MDEiLCJpc3MiOiJjYTFiOThlMS05N2EyLTQzZGItOTQ3Zi04YTA4MDU0YzM0MmUiLCJqdGkiOiJhMmZkMzkzYy0xMDdhLTRhZDQtYmUyMi0zY2ZlZWVhOTBlZmUiLCJpYXQiOiIxNjI4MjU3NzM3IiwiZGF0YSI6eyJjb25zZW50SWQiOiJ1cm46YmFuY29leDpDMUREMzMxMjMiLCJjcmVhdGlvbkRhdGVUaW1lIjoiMjAyMS0wNS0yMVQwODozMDowMFoiLCJleHBpcmF0aW9uRGF0ZVRpbWUiOiIyMDIxLTA1LTIxVDA4OjMwOjAwWiIsInN0YXR1c1VwZGF0ZURhdGVUaW1lIjoiMjAyMS0wNS0yMVQwODozMDowMFoiLCJzdGF0dXMiOiJBV0FJVElOR19BVVRIT1JJU0FUSU9OIiwibG9nZ2VkVXNlciI6eyJkb2N1bWVudCI6eyJpZGVudGlmaWNhdGlvbiI6IjExMTExMTExMTExIiwicmVsIjoiQ1BGIn19fSwiYnVzaW5lc3NFbnRpdHkiOnsiZG9jdW1lbnQiOnsiaWRlbnRpZmljYXRpb24iOiIxMTExMTExMTExMTExMSIsInJlbCI6IkNOUEoifX0sImNyZWRpdG9yIjp7InBlcnNvblR5cGUiOiJQRVNTT0FfTkFUVVJBTCIsImNwZkNucGoiOiI1ODc2NDc4OTAwMDEzNyIsIm5hbWUiOiJNYXJjbyBBbnRvbmlvIGRlIEJyaXRvIn0sInBheW1lbnQiOnsidHlwZSI6IlBJWCIsImRhdGUiOiIyMDIxLTAxLTAxIiwiY3VycmVuY3kiOiJCUkwiLCJhbW91bnQiOiIxMDAwMDAuMTIiLCJpYmdlVG93bkNvZGUiOiI1MzAwMTA4IiwiZGV0YWlscyI6eyJsb2NhbEluc3RydW1lbnQiOiJESUNUIiwicXJDb2RlIjoiMDAwMjAxMDQxNDEyMzQ1Njc4OTAxMjM0MjY2NjAwMTRCUi5HT1YuQkNCLlBJWDAxNDQ2Njc1NkM2MTZFNkYzMjMwMzEzOTQwNjU3ODYxNkQ3MDZDNjUyRTYzNkY2RDI3MzAwMDEyXG5CUi5DT00uT1VUUk8wMTEwMDEyMzQ1Njc4OTUyMDQwMDAwNTMwMzk4NjU0MDYxMjMuNDU1ODAyQlI1OTE1Tk9NRURPUkVDRUJFRE9SNjAwOEJSQVNJTElBNjEwODcwMDc0OTAwNjJcbjUzMDUxNVJQMTIzNDU2NzgtMjAxOTUwMzAwMDE3QlIuR09WLkJDQi5CUkNPREUwMTA1MS4wLjA4MDQ1MDAxNEJSLkdPVi5CQ0IuUElYMDEyM1BBRFJBTy5VUkwuUElYLzAxMjNBQlxuQ0Q4MTM5MDAxMkJSLkNPTS5PVVRSTzAxMTkwMTIzLkFCQ0QuMzQ1Ni5XWFlaNjMwNEVCNzZcbiIsInByb3h5IjoiMTIzNDU2Nzg5MDEiLCJjcmVkaXRvckFjY291bnQiOnsiaXNwYiI6IjEyMzQ1Njc4IiwiaXNzdWVyIjoiMTc3NCIsIm51bWJlciI6IjEyMzQ1Njc4OTAiLCJhY2NvdW50VHlwZSI6IkNBQ0MifX19LCJkZWJ0b3JBY2NvdW50Ijp7ImlzcGIiOiIxMjM0NTY3OCIsImlzc3VlciI6IjE3NzQiLCJudW1iZXIiOiIxMjM0NTY3ODkwIiwiYWNjb3VudFR5cGUiOiJDQUNDIn0sImxpbmtzIjp7InNlbGYiOiJodHRwczovL2FwaS5iYW5jby5jb20uYnIvb3Blbi1iYW5raW5nL3BheW1lbnRzL3YxL2NvbnNlbnRzIn0sIm1ldGEiOnsidG90YWxSZWNvcmRzIjoxLCJ0b3RhbFBhZ2VzIjoxLCJyZXF1ZXN0RGF0ZVRpbWUiOiIyMDIxLTA1LTIxVDA4OjMwOjAwWiJ9fQ.FH8722_85hWbYQS7g9C_b0_vjYvzaByq7ovFIVXWUsreEyb1KvhXFm1-GttBXIQORv9DpSsimmqo1MsLQE8Qc_J3fMkb-vNfMAd5D4JJUSJq33X8ydAvrXdOyCfjeEcUC-6g_O3nexT6clK6RkH0Umf6X3hev3JNaObk2IvjKeMdygQ3UXpGl2CTCCWvmcfcGeRA-sNdLheLQsVIPoopZ-FHBmr5MboLRod06SCO-BKkLdKg8eVAf6LrkiZrFLVlDMwNTFolUK7JlNnPZjPdSBmR7pPjPzT1blgd9fTWl7pbOh93mejgVFB0B3aKHz-2Y83KBCTH8C32rnnxK4YYmA
 ```
 
 > Exemplo de requisição - JWS decodificada
@@ -315,7 +326,19 @@ Veja ao lado exemplo de mensagem JWS assinada e codificada e um exemplo de mensa
       "type": "PIX",
       "date": "2021-01-01",
       "currency": "BRL",
-      "amount": "100000.12"
+      "amount": "100000.12",
+      "ibgeTownCode": "5300108",
+      "details": {
+        "localInstrument": "DICT",
+        "qrCode": "00020104141234567890123426660014BR.GOV.BCB.PIX014466756C616E6F32303139406578616D706C652E636F6D27300012\nBR.COM.OUTRO011001234567895204000053039865406123.455802BR5915NOMEDORECEBEDOR6008BRASILIA61087007490062\n530515RP12345678-201950300017BR.GOV.BCB.BRCODE01051.0.080450014BR.GOV.BCB.PIX0123PADRAO.URL.PIX/0123AB\nCD81390012BR.COM.OUTRO01190123.ABCD.3456.WXYZ6304EB76\n",
+        "proxy": "12345678901",
+        "creditorAccount": {
+          "ispb": "12345678",
+          "issuer": "1774",
+          "number": "1234567890",
+          "accountType": "CACC"
+        }
+      }
     },
     "debtorAccount": {
       "ispb": "12345678",
@@ -333,9 +356,7 @@ Veja ao lado exemplo de mensagem JWS assinada e codificada e um exemplo de mensa
  > Exemplo de resposta - JWS assinada e codificada
 
 ```json
-  eyJhbGciOiJQUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlBXQWk1cnVRY0hmelB6cTJKRmRwWTduQVVoNkx6VFRRdERCVXBPTTM3SlEifQ.
-  eyJhdWQiOiIzNDQ5YmYyMS0wYjA3LTQ4ZTYtYjZmYy0xM2ViMTYxYTk5MDEiLCJpc3MiOiJjYTFiOThlMS05N2EyLTQzZGItOTQ3Zi04YTA4MDU0YzM0MmUiLCJqdGkiOiJhMmZkMzkzYy0xMDdhLTRhZDQtYmUyMi0zY2ZlZWVhOTBlZmUiLCJpYXQiOiIxNjI4MjU3NzM3IiwiZGF0YSI6eyJjb25zZW50SWQiOiJ1cm46YmFuY29leDpDMUREMzMxMjMiLCJjcmVhdGlvbkRhdGVUaW1lIjoiMjAyMS0wNS0yMVQwODozMDowMFoiLCJleHBpcmF0aW9uRGF0ZVRpbWUiOiIyMDIxLTA1LTIxVDA4OjMwOjAwWiIsInN0YXR1c1VwZGF0ZURhdGVUaW1lIjoiMjAyMS0wNS0yMVQwODozMDowMFoiLCJzdGF0dXMiOiJBV0FJVElOR19BVVRIT1JJU0FUSU9OIiwibG9nZ2VkVXNlciI6eyJkb2N1bWVudCI6eyJpZGVudGlmaWNhdGlvbiI6IjExMTExMTExMTExIiwicmVsIjoiQ1BGIn19LCJidXNpbmVzc0VudGl0eSI6eyJkb2N1bWVudCI6eyJpZGVudGlmaWNhdGlvbiI6IjExMTExMTExMTExMTExIiwicmVsIjoiQ05QSiJ9fSwiY3JlZGl0b3IiOnsicGVyc29uVHlwZSI6IlBFU1NPQV9OQVRVUkFMIiwiY3BmQ25waiI6IjU4NzY0Nzg5MDAwMTM3IiwibmFtZSI6Ik1hcmNvIEFudG9uaW8gZGUgQnJpdG8ifSwicGF5bWVudCI6eyJ0eXBlIjoiUElYIiwiZGF0ZSI6IjIwMjEtMDEtMDEiLCJjdXJyZW5jeSI6IkJSTCIsImFtb3VudCI6IjEwMDAwMC4xMiJ9LCJkZWJ0b3JBY2NvdW50Ijp7ImlzcGIiOiIxMjM0NTY3OCIsImlzc3VlciI6IjE3NzQiLCJudW1iZXIiOiIxMjM0NTY3ODkwIiwiYWNjb3VudFR5cGUiOiJDQUNDIn19LCJsaW5rcyI6eyJzZWxmIjoiaHR0cHM6Ly9hcGkuYmFuY28uY29tLmJyL29wZW4tYmFua2luZy9hcGkvdjEvcmVzb3VyY2UifSwibWV0YSI6eyJ0b3RhbFJlY29yZHMiOjEsInRvdGFsUGFnZXMiOjEsInJlcXVlc3REYXRlVGltZSI6IjIwMjEtMDUtMjFUMDg6MzA6MDBaIn19.
-  08SM6dnS_-COzDmhlhJ-OfBAqyMpwPiaKCJPkggUKRgns7dFMvezsv2fWlX4tYkDw_Hc8NL-fsfw5eI13FoDTSQUPdKt8KRpPNZ5qXNsjyIIwtV13hmIepGSNsyaOlhX7JXVhxWceE5VfMcVp5no62tDqh1u84liOx8dOV5G31SlkBknPR5v-M-xNUFAo63WCFy6Zew-uuLbP3ruP4CSdY_h1BkOABJnraoa-yPhuByHg2zwbNY_ELYigf2FPyrFZsEH48hU_UZG1EOLt7cII9hzJxTYLtJX5SJiwH8kxegQtpbLpxZ3Se282Bc_OYyX1Fz4_lHjSDmuLwW3PzEbhQ
+  eyJhbGciOiJQUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlBXQWk1cnVRY0hmelB6cTJKRmRwWTduQVVoNkx6VFRRdERCVXBPTTM3SlEifQ.eyJhdWQiOiIzNDQ5YmYyMS0wYjA3LTQ4ZTYtYjZmYy0xM2ViMTYxYTk5MDEiLCJpc3MiOiJjYTFiOThlMS05N2EyLTQzZGItOTQ3Zi04YTA4MDU0YzM0MmUiLCJqdGkiOiJhMmZkMzkzYy0xMDdhLTRhZDQtYmUyMi0zY2ZlZWVhOTBlZmUiLCJpYXQiOiIxNjI4MjU3NzM3IiwiZGF0YSI6eyJjb25zZW50SWQiOiJ1cm46YmFuY29leDpDMUREMzMxMjMiLCJjcmVhdGlvbkRhdGVUaW1lIjoiMjAyMS0wNS0yMVQwODozMDowMFoiLCJleHBpcmF0aW9uRGF0ZVRpbWUiOiIyMDIxLTA1LTIxVDA4OjMwOjAwWiIsInN0YXR1c1VwZGF0ZURhdGVUaW1lIjoiMjAyMS0wNS0yMVQwODozMDowMFoiLCJzdGF0dXMiOiJBV0FJVElOR19BVVRIT1JJU0FUSU9OIiwibG9nZ2VkVXNlciI6eyJkb2N1bWVudCI6eyJpZGVudGlmaWNhdGlvbiI6IjExMTExMTExMTExIiwicmVsIjoiQ1BGIn19fSwiYnVzaW5lc3NFbnRpdHkiOnsiZG9jdW1lbnQiOnsiaWRlbnRpZmljYXRpb24iOiIxMTExMTExMTExMTExMSIsInJlbCI6IkNOUEoifX0sImNyZWRpdG9yIjp7InBlcnNvblR5cGUiOiJQRVNTT0FfTkFUVVJBTCIsImNwZkNucGoiOiI1ODc2NDc4OTAwMDEzNyIsIm5hbWUiOiJNYXJjbyBBbnRvbmlvIGRlIEJyaXRvIn0sInBheW1lbnQiOnsidHlwZSI6IlBJWCIsImRhdGUiOiIyMDIxLTAxLTAxIiwiY3VycmVuY3kiOiJCUkwiLCJhbW91bnQiOiIxMDAwMDAuMTIiLCJpYmdlVG93bkNvZGUiOiI1MzAwMTA4IiwiZGV0YWlscyI6eyJsb2NhbEluc3RydW1lbnQiOiJESUNUIiwicXJDb2RlIjoiMDAwMjAxMDQxNDEyMzQ1Njc4OTAxMjM0MjY2NjAwMTRCUi5HT1YuQkNCLlBJWDAxNDQ2Njc1NkM2MTZFNkYzMjMwMzEzOTQwNjU3ODYxNkQ3MDZDNjUyRTYzNkY2RDI3MzAwMDEyXG5CUi5DT00uT1VUUk8wMTEwMDEyMzQ1Njc4OTUyMDQwMDAwNTMwMzk4NjU0MDYxMjMuNDU1ODAyQlI1OTE1Tk9NRURPUkVDRUJFRE9SNjAwOEJSQVNJTElBNjEwODcwMDc0OTAwNjJcbjUzMDUxNVJQMTIzNDU2NzgtMjAxOTUwMzAwMDE3QlIuR09WLkJDQi5CUkNPREUwMTA1MS4wLjA4MDQ1MDAxNEJSLkdPVi5CQ0IuUElYMDEyM1BBRFJBTy5VUkwuUElYLzAxMjNBQlxuQ0Q4MTM5MDAxMkJSLkNPTS5PVVRSTzAxMTkwMTIzLkFCQ0QuMzQ1Ni5XWFlaNjMwNEVCNzZcbiIsInByb3h5IjoiMTIzNDU2Nzg5MDEiLCJjcmVkaXRvckFjY291bnQiOnsiaXNwYiI6IjEyMzQ1Njc4IiwiaXNzdWVyIjoiMTc3NCIsIm51bWJlciI6IjEyMzQ1Njc4OTAiLCJhY2NvdW50VHlwZSI6IkNBQ0MifX19LCJkZWJ0b3JBY2NvdW50Ijp7ImlzcGIiOiIxMjM0NTY3OCIsImlzc3VlciI6IjE3NzQiLCJudW1iZXIiOiIxMjM0NTY3ODkwIiwiYWNjb3VudFR5cGUiOiJDQUNDIn0sImxpbmtzIjp7InNlbGYiOiJodHRwczovL2FwaS5iYW5jby5jb20uYnIvb3Blbi1iYW5raW5nL3BheW1lbnRzL3YxL2NvbnNlbnRzIn0sIm1ldGEiOnsidG90YWxSZWNvcmRzIjoxLCJ0b3RhbFBhZ2VzIjoxLCJyZXF1ZXN0RGF0ZVRpbWUiOiIyMDIxLTA1LTIxVDA4OjMwOjAwWiJ9fQ.FH8722_85hWbYQS7g9C_b0_vjYvzaByq7ovFIVXWUsreEyb1KvhXFm1-GttBXIQORv9DpSsimmqo1MsLQE8Qc_J3fMkb-vNfMAd5D4JJUSJq33X8ydAvrXdOyCfjeEcUC-6g_O3nexT6clK6RkH0Umf6X3hev3JNaObk2IvjKeMdygQ3UXpGl2CTCCWvmcfcGeRA-sNdLheLQsVIPoopZ-FHBmr5MboLRod06SCO-BKkLdKg8eVAf6LrkiZrFLVlDMwNTFolUK7JlNnPZjPdSBmR7pPjPzT1blgd9fTWl7pbOh93mejgVFB0B3aKHz-2Y83KBCTH8C32rnnxK4YYmA
 ```
 
 > Exemplo de resposta - JWS decodificada
@@ -378,7 +399,19 @@ Veja ao lado exemplo de mensagem JWS assinada e codificada e um exemplo de mensa
       "type": "PIX",
       "date": "2021-01-01",
       "currency": "BRL",
-      "amount": "100000.12"
+      "amount": "100000.12",
+      "ibgeTownCode": "5300108",
+      "details": {
+        "localInstrument": "DICT",
+        "qrCode": "00020104141234567890123426660014BR.GOV.BCB.PIX014466756C616E6F32303139406578616D706C652E636F6D27300012\nBR.COM.OUTRO011001234567895204000053039865406123.455802BR5915NOMEDORECEBEDOR6008BRASILIA61087007490062\n530515RP12345678-201950300017BR.GOV.BCB.BRCODE01051.0.080450014BR.GOV.BCB.PIX0123PADRAO.URL.PIX/0123AB\nCD81390012BR.COM.OUTRO01190123.ABCD.3456.WXYZ6304EB76\n",
+        "proxy": "12345678901",
+        "creditorAccount": {
+          "ispb": "12345678",
+          "issuer": "1774",
+          "number": "1234567890",
+          "accountType": "CACC"
+        }
+      }
     },
     "debtorAccount": {
       "ispb": "12345678",
@@ -406,11 +439,17 @@ Veja ao lado exemplo de mensagem JWS assinada e codificada e um exemplo de mensa
 
 * Erros na validação da mensagem recebida pela aplicação cliente (p. ex. iniciador de pagamento) devem ser registrados e o `Provedor do Recurso` (p. ex. instituição detentora de conta) deve ser notificado.
 
+### Assinatura de Mensagem vs Idempotência
+
+O claim jti inserido dentro do JWT da assinatura da mensagem tem como objetivo evitar ataques de repetição e não é utilizado para o controle da idempotência. Desta forma ele deverá ser gerado a cada nova requisição realizada às APIs, independentemente desta ser a requisição para a criação de uma nova operação ou ser a requisição para confirmação de execução de uma operação anterior (idempotente).
+
+As validações referentes a assinatura de mensagens devem preceder as validações de idempotência.
+
 <h1 id="fase-3-apis-do-open-banking-brasil-api-pagamentos">API - Pagamentos</h1>
 
 |Versão|
 |:-----|
-|1.0.1-rc1.2|
+|1.0.1|
 
 #### Visão Geral
 
@@ -1336,10 +1375,19 @@ openid,consent:consentId,payments
 |Nome|Tipo|Obrigatório|Descrição|
 |---|---|---|---|---|
 |errors|[object]|true||
-|» code|[EnumErrorsCreateConsent](#schemaenumerrorscreateconsent)|true|Códigos de erros previstos na criação de consentimento para a iniciação de pagamentos:  <br>• FORMA_PGTO_INVALIDA: Forma de pagamento inválida.  <br>• DATA_PGTO_INVALIDA: Data de pagamento inválida.  <br>• DETALHE_PGTO_INVALIDO: Detalhe do pagamento inválido.  <br>• NAO_INFORMADO: Não informado.|
+|» code|string|true|Códigos de erros previstos na criação de consentimento para a iniciação de pagamentos:  <br>• FORMA_PGTO_INVALIDA: Forma de pagamento inválida.  <br>• DATA_PGTO_INVALIDA: Data de pagamento inválida.  <br>• DETALHE_PGTO_INVALIDO: Detalhe do pagamento inválido.  <br>• NAO_INFORMADO: Não informado.|
 |» title|string|true|Título específico do erro reportado, de acordo com o código enviado:  <br>• FORMA_PGTO_INVALIDA: Forma de pagamento inválida.  <br>• DATA_PGTO_INVALIDA: Data de pagamento inválida. <br>• DETALHE_PGTO_INVALIDO: Detalhe do pagamento inválido.<br>• NAO_INFORMADO: Não informado.|
 |» detail|string|true|Descrição específica do erro de acordo com o código reportado:  <br>• FORMA_PGTO_INVALIDA – Meio de pagamento inválido.  <br>• DATA_PGTO_INVALIDA – Data de pagamento inválida no contexto, por exemplo, data no passado. Para pagamentos únicos deve ser informada a data atual, do dia corrente.  <br>• DETALHE_PGTO_INVALIDO: O campo [nome_campo] não atende os requisitos de preenchimento.  <br>• NAO_INFORMADO – Não reportado/identificado pela instituição detentora de conta.|
 |meta|[Meta](#schemameta)|false|Meta informações referente à API requisitada.|
+
+#### Enumerated Values
+
+|Nome|Código|
+|---|---|
+|code|FORMA_PGTO_INVALIDA|
+|code|DATA_PGTO_INVALIDA|
+|code|DETALHE_PGTO_INVALIDO|
+|code|NAO_INFORMADO|
 
 <h2 id="tocS_422ResponseErrorCreatePixPayment">422ResponseErrorCreatePixPayment</h2>
 
@@ -1574,7 +1622,7 @@ Objeto contendo dados do pagamento e do recebedor (creditor).
 
 |Nome|Tipo|Obrigatório|Descrição|
 |---|---|---|---|---|
-|localInstrument|[EnumLocalInstrument](#schemaenumlocalinstrument)|true|Especifica a forma de iniciação do pagamento:<br>- MANU - Inserção manual de dados da conta transacional<br>- DICT - Inserção manual de chave Pix<br>- QRDN - QR code dinâmico<br>- QRES - QR code estático<br>- INIC - Indica que o recebedor (creditor) contratou o Iniciador de Pagamentos especificamente para realizar iniciações de pagamento em que o beneficiário é previamente conhecido.|
+|localInstrument|string|true|Especifica a forma de iniciação do pagamento:<br>- MANU - Inserção manual de dados da conta transacional<br>- DICT - Inserção manual de chave Pix<br>- QRDN - QR code dinâmico<br>- QRES - QR code estático<br>- INIC - Indica que o recebedor (creditor) contratou o Iniciador de Pagamentos especificamente para realizar iniciações de pagamento em que o beneficiário é previamente conhecido.|
 |payment|[PaymentPix](#schemapaymentpix)|true|Objeto contendo dados do pagameto como moeda e valor.|
 |creditorAccount|[CreditorAccount](#schemacreditoraccount)|true|Objeto que contém a identificação da conta de destino do beneficiário/recebedor.|
 |remittanceInformation|string|false|Deve ser preenchido sempre que o usuário pagador inserir alguma informação adicional em um pagamento, a ser enviada ao recebedor.|
@@ -1583,6 +1631,16 @@ Objeto contendo dados do pagamento e do recebedor (creditor).
 |cnpjInitiator|string|true|CNPJ do Iniciador de Pagamento devidamente habilitado para a prestação de Serviço de Iniciação no Pix.|
 |transactionIdentification|string|false|Trata-se de um identificador de transação que deve ser retransmitido intacto pelo PSP do pagador ao gerar a ordem de pagamento. Essa informação permitirá ao recebedor identificar e correlacionar a transferência, quando recebida, com a apresentação das instruções ao pagador.<br>Os caracteres permitidos no contexto do Pix para o campo txid (EMV 62-05) são:<br>- Letras minúsculas, de ‘a’ a ‘z’<br>- Letras maiúsculas, de ‘A’ a ‘z’<br>- Dígitos decimais, de ‘0’ a ‘9’<br><br>[Restrição] Se localInstrument for igual a INIC, o campo transactionIdentification deve ser preenchido obrigatoriamente.<br>Se localInstrument for igual a MANU ou DICT, o campo transactionIdentification não deve ser preenchido.<br>A detentora de conta deve validar se a condicionalidade do campo foi atendida pela iniciadora de pagamento.|
 |ibgeTownCode|string|false|Traz o código da cidade segundo o IBGE (Instituto Brasileiro de Geografia e Estatística).<br>Para o preenchimento deste campo, o Iniciador de Pagamentos deve seguir a orientação do arranjo da forma de pagamento.<br>O preenchimento do campo tanto em pix/payments quanto /consents deve ser igual. Caso haja divergência dos valores, a instituição deve retornar HTTP 422 com o código de erro PAGAMENTO_DIVERGENTE_DO_CONSENTIMENTO.<br>Este campo faz referência ao campo CodMun do arranjo Pix.|
+
+#### Enumerated Values
+
+|Nome|Código|
+|---|---|
+|localInstrument|MANU|
+|localInstrument|DICT|
+|localInstrument|QRDN|
+|localInstrument|QRES|
+|localInstrument|INIC|
 
 <h2 id="tocS_CreditorAccount">CreditorAccount</h2>
 
@@ -2491,11 +2549,11 @@ Objeto contendo dados do pagamento e da conta do recebedor (creditor).
 |consentId|string|true|Identificador único do consentimento criado para a iniciação de pagamento solicitada. Deverá ser um URN - Uniform Resource Name.<br>Um URN, conforme definido na [RFC8141](https://tools.ietf.org/html/rfc8141) é um Uniform Resource<br>Identifier - URI - que é atribuído sob o URI scheme "urn" e um namespace URN específico, com a intenção de que o URN<br>seja um identificador de recurso persistente e independente da localização.<br>Considerando a string urn:bancoex:C1DD33123 como exemplo para consentId temos:<br>- o namespace(urn)<br>- o identificador associado ao namespace da instituição transnmissora (bancoex)<br>- o identificador específico dentro do namespace (C1DD33123).<br>Informações mais detalhadas sobre a construção de namespaces devem ser consultadas na [RFC8141](https://tools.ietf.org/html/rfc8141).|
 |creationDateTime|string(date-time)|true|Data e hora em que o recurso foi criado.<br>Uma string com data e hora conforme especificação RFC-3339,<br>sempre com a utilização de timezone UTC(UTC time format).|
 |statusUpdateDateTime|string(date-time)|true|Data e hora da última atualização da iniciação de pagamento.<br>Uma string com data e hora conforme especificação RFC-3339,<br>sempre com a utilização de timezone UTC(UTC time format).|
-|proxy|string|false|Chave cadastrada no DICT pertencente ao recebedor. Os tipos de chaves podem ser: telefone, e-mail, cpf/cnpj ou chave aleatória.<br>No caso de telefone celular deve ser informado no padrão E.1641.<br>Para e-mail deve ter o formato xxxxxxxx@xxxxxxx.xxx(.xx) e no máximo 77 caracteres.<br>No caso de CPF deverá ser informado com 11 números, sem pontos ou traços.<br>Para o caso de CNPJ deverá ser informado com 14 números, sem pontos ou traços.<br>No caso de chave aleatória deve ser informado o UUID gerado pelo DICT, conforme formato especificado na RFC41223.<br>Se informado, a detentora da conta deve validar o proxy no DICT quando localInstrument for igual a DICT, QRDN ou QRES e validar o campo creditorAccount.<br>Esta validação é opcional caso o localInstrument for igual a INIC.<br>[Restrição] Se localInstrument for igual a MANU, o campo proxy não deve ser preenchido. Se localInstrument for igual INIC, DICT, QRDN ou QRES, o campo proxy deve ser sempre preenchido com a chave Pix.<br>[Restrição] Se localInstrument for igual a MANU, o campo proxy não deve ser preenchido. Se localInstrument for igual INIC, DICT, QRDN ou QRES, o campo proxy deve ser sempre preenchido com a chave Pix.|
+|proxy|string|false|Chave cadastrada no DICT pertencente ao recebedor. Os tipos de chaves podem ser: telefone, e-mail, cpf/cnpj ou chave aleatória.<br>No caso de telefone celular deve ser informado no padrão E.1641.<br>Para e-mail deve ter o formato xxxxxxxx@xxxxxxx.xxx(.xx) e no máximo 77 caracteres.<br>No caso de CPF deverá ser informado com 11 números, sem pontos ou traços.<br>Para o caso de CNPJ deverá ser informado com 14 números, sem pontos ou traços.<br>No caso de chave aleatória deve ser informado o UUID gerado pelo DICT, conforme formato especificado na RFC41223.<br>Se informado, a detentora da conta deve validar o proxy no DICT quando localInstrument for igual a DICT, QRDN ou QRES e validar o campo creditorAccount.<br>Esta validação é opcional caso o localInstrument for igual a INIC.<br>[Restrição] Se localInstrument for igual a MANU, o campo proxy não deve ser preenchido. Se localInstrument for igual INIC, DICT, QRDN ou QRES, o campo proxy deve ser sempre preenchido com a chave Pix.|
 |ibgeTownCode|string|false|Traz o código da cidade segundo o IBGE (Instituto Brasileiro de Geografia e Estatística).<br>Para o preenchimento deste campo, o Iniciador de Pagamentos deve seguir a orientação do arranjo da forma de pagamento.<br>O preenchimento do campo tanto em pix/payments quanto /consents deve ser igual. Caso haja divergência dos valores, a instituição deve retornar HTTP 422 com o código de erro PAGAMENTO_DIVERGENTE_DO_CONSENTIMENTO.<br>Este campo faz referência ao campo CodMun do arranjo Pix.|
 |status|[EnumPaymentStatusType](#schemaenumpaymentstatustype)|true|Estado atual da iniciação de pagamento. O estado evolui na seguinte ordem:  <br>1. PDNG (PENDING) - Iniciação de pagamento ou transação de pagamento está pendente. Checagens adicionais em realização.  <br>2. PART (PARTIALLY ACCEPTED) - Aguardando autorização múltipla alçada.  <br>3. ACSP (ACCEPTED_SETTLEMENT_IN_PROCESS) - Iniciação de pagamento aceita e processamento do pagamento foi iniciado.  <br>4. ACSC (ACCEPTED_SETTLEMENT_COMPLETED_DEBITOR_ACCOUNT) - Débito realizado na conta do pagador.  <br>5. ACCC (ACCEPTED_SETTLEMENT_COMPLETED) - Crédito realizado na instituição de destino.  <br>Em caso insucesso:  <br>RJCT (REJECTED) - Instrução de pagamento rejeitada.|
 |rejectionReason|[EnumRejectionReasonType](#schemaenumrejectionreasontype)|false|Motivo da rejeição do pagamento. Informações complementares sobre o motivo do status.  <br>ABORTED_SETTLEMENT_TIMEOUT - Liquidação da transação interrompida devido a timeout no SPI (AB03).<br>ERROR_CREDITOR_AGENT - Transação interrompida devido a erro no participante do usuário recebedor (AB09).<br>TIMEOUT_DEBTOR_AGENT - Timeout do participante emissor da ordem de pagamento (AB11).<br>INVALID_CREDITOR_ACCOUNT_NUMBER - Número da conta transacional do usuário recebedor inexistente ou inválido (AC03).<br>BLOCKED_ACCOUNT - Conta transacional do usuário recebedor encontra-se bloqueada (AC06).<br>CLOSED_CREDITOR_ACCOUNT_NUMBER - Número da conta transacional do usuário recebedor encerrada (AC07).<br>INVALID_CREDITOR_ACCOUNTTYPE - Tipo incorreto para a conta transacional do usuário recebedor (AC14).<br>TRANSACTION_NOT_SUPPORTED - Tipo de transação não é suportado/autorizado na conta transacional do usuário recebedor (AG03). Exemplo: transferência para conta salário.<br>NOT_ALLOWED_BOOK_TRANSFER - Não é permitida ordem de pagamento/devolução no SPI cujos recursos sejam transferidos de uma conta transacional para outra em uma mesma instituição participante ou entre participantes que utilizem o serviço de liquidação de um mesmo participante liquidante no SPI (booktransfer) (AG12).<br>FORBIDDEN_RETURN_PAYMENT - Não é permitido devolver a devolução de um pagamento instantâneo (AG13).<br>INCORRECT_AGENT - Participante direto não é liquidante do participante do usuário pagador / participante do usuário recebedor (AGNT).<br>ZERO_AMOUNT - Ordem de pagamento instantâneo com valor zero (AM01).<br>NOT_ALLOWED_AMOUNT - Ordem de pagamento/devolução em valor que faz superar o limite permitido para o tipo de conta transacional creditada (AM02).<br>INSUFFICIENT_FUNDS - Saldo insuficiente na conta PI do participante do usuário pagador (AM04).<br>WRONG_AMOUNT - Devolução de pagamento em valor que faz superar o valor da ordem de pagamento instantâneo correspondente (AM09).<br>INVALID_AMOUNT - Divergência entre a somatória dos valores do bloco ‘valorDoDinheiroOuCompra’ e o campo ‘valor’ (AM12).<br>INVALID_NUMBER_OF_TRANSACTIONS - Quantidade de transações inválida (AM18).<br>INCONSISTENT_WITH_END_CUSTOMER - CPF/CNPJ do usuário recebedor não é consistente com o titular da conta transacional especificada (BE01).<br>INVALID_IDENTIFICATION_CODE - Código de situação de pagamento ou de erro inválido (BE15).<br>INVALID_CREDITOR_IDENTIFICATION_CODE - QR Code rejeitado pelo participante do usuário recebedor (BE17).<br>CREDITOR_IDENTIFIER_INCORRECT - CPF/CNPJ do usuário recebedor incorreto (CH11).<br>ELEMENT_CONTENT_FORMALLY_INCORRECT - Elemento da mensagem incorreto (CH16).<br>ORDER_REJECTED - Ordem rejeitada pelo participante do usuário recebedor (DS04).<br>NOT_ALLOWED_PAYMENT - Participante que assinou a mensagem não é autorizado a realizar a operação na conta PI debitada. No caso em que o participante que assinou a mensagem não é o titular da conta PI debitada nem é o liquidante no SPI do participante do usuário pagador (DS0G).<br>NOT_ALLOWED_ACCOUNT - ISPB do participante que submeteu a resposta à ordem de pagamento/devolução diferente do ISPB do participante creditado pela ordem (DS0H).<br>USER_NOT_YET_ACTIVATED - Participante não se encontra cadastrado ou ainda não iniciou a operação no SPI (DS27).<br>INVALID_CREATION_DATE - Data e Hora do envio da mensagem inválida (DT02).<br>INVALID_CUT_OFF_DATE - Transação extrapola o prazo máximo para devolução de pagamento instantâneo regulamentado pelo Arranjo PIX (DT05).<br>SETTLEMENT_FAILED - Erro no processamento do pagamento instantâneo (ED05).<br>INVALID_PURPOSE - Inconsistência entre a finalidade da transação e o preenchimento do bloco elementos Structured (FF07).<br>INVALID_END_TO_END_ID - Identificador da operação mal formatado (FF08).<br>INVALID_DEBTOR_CLEARING_SYSTEM_MEMBER_IDENTIFIER - ISPB do participante do usuário pagador inválido ou inexistente (RC09).<br>INVALID_CREDITOR_CLEARING_SYSTEM_MEMBER_IDENTIFIER - ISPB do participante do usuário recebedor inválido ou inexistente (RC10).<br>REGULATORY_REASON - Ordem de pagamento em que o usuário pagador é sancionado por resolução do Conselho de Segurança das Nações Unidas (CSNU). Nos casos em que o usuário recebedor for o sancionado, a ordem de pagamento não deve ser rejeitada (RR4).<br>SPECIFIC_SERVICE_OFFERED_BY_CREDITOR_AGENT - A transação original não está relacionada ao serviço de Saque Pix (SL02).<br>INVALID_BILL - Validação de expiração, validação de vencimento, Status Válido (INDT).  <br>OPERATION_WINDOW - Requisição está fora da janela de funcionamento (IDEA).  <br>INCOMPATIBLE_DATE - Data do pagamento divergente da data consentida ou divergente da data atual do QR Code (TERM).  <br>MISMATCH_AMOUNT - O valor informado no consentimento não é o mesmo valor do informado no payload de pagamento (OB01).  <br>OVER_LIMIT - O valor (ou quantidade de transações) ultrapassa a faixa de limite parametrizada na detentora para permitir a realização de transações pelo cliente (OB02).   <br>INVALID_CONSENT - Consentimento inválido (status não é "authorised" ou está expirado) (OB03).  <br>DENIED_MULTIPLE_AUTHORISATIONS - Um (ou mais) aprovadores na detentora recusaram a operação (OB04).  <br>EXPIRED_MULTIPLE_AUTHORISATIONS - Um (ou mais) aprovadores na detentora não tomaram ação para aprovar a operação (OB05).  <br>EXPIRED_BILL - O QR Code não é mais válido (OB06).  <br>[Restrição] Esse motivo deverá ser enviado quando o campo /data/status for igual a RJCT (REJECTED).|
-|localInstrument|[EnumLocalInstrument](#schemaenumlocalinstrument)|true|Especifica a forma de iniciação do pagamento:<br>- MANU - Inserção manual de dados da conta transacional<br>- DICT - Inserção manual de chave Pix<br>- QRDN - QR code dinâmico<br>- QRES - QR code estático<br>- INIC - Indica que o recebedor (creditor) contratou o Iniciador de Pagamentos especificamente para realizar iniciações de pagamento em que o beneficiário é previamente conhecido.|
+|localInstrument|[CreatePixPaymentData/properties/localInstrument](#schemacreatepixpaymentdata/properties/localinstrument)|true|Especifica a forma de iniciação do pagamento:<br>- MANU - Inserção manual de dados da conta transacional<br>- DICT - Inserção manual de chave Pix<br>- QRDN - QR code dinâmico<br>- QRES - QR code estático<br>- INIC - Indica que o recebedor (creditor) contratou o Iniciador de Pagamentos especificamente para realizar iniciações de pagamento em que o beneficiário é previamente conhecido.|
 |cnpjInitiator|string|true|CNPJ do Iniciador de Pagamento devidamente habilitado para a prestação de Serviço de Iniciação no Pix.|
 |payment|[PaymentPix](#schemapaymentpix)|true|Objeto contendo dados do pagameto como moeda e valor.|
 |transactionIdentification|string|false|Trata-se de um identificador de transação que deve ser retransmitido intacto pelo PSP do pagador ao gerar a ordem de pagamento. Essa informação permitirá ao recebedor identificar e correlacionar a transferência, quando recebida, com a apresentação das instruções ao pagador.<br>Os caracteres permitidos no contexto do Pix para o campo txid (EMV 62-05) são:<br>- Letras minúsculas, de ‘a’ a ‘z’<br>- Letras maiúsculas, de ‘A’ a ‘z’<br>- Dígitos decimais, de ‘0’ a ‘9’<br><br>[Restrição] Se localInstrument for igual a INIC, o campo transactionIdentification deve ser preenchido obrigatoriamente.<br>Se localInstrument for igual a MANU ou DICT, o campo transactionIdentification não deve ser preenchido.<br>A detentora de conta deve validar se a condicionalidade do campo foi atendida pela iniciadora de pagamento.|

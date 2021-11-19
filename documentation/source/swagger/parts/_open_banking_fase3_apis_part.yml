@@ -60,11 +60,20 @@ info:
 
     #### Conjunto inicial de regras propostas na aplicação da idempotencia:
 
-    - A iniciadora/TPP não deve alterar o corpo da solicitação ao usar a mesma chave de idempotência. Se a iniciadora alterar o corpo da solicitação, a detentora/ASPSP não deve modificar o recurso final. A detentora pode tratar este caso como uma ação fraudulenta.
-    - A detentora não deve criar um novo recurso para uma solicitação POST se estiver determinada como uma solicitação idempotente.
-    - Na criação a detentora deve responder à solicitação com o status atual do recurso (ou um status que seja pelo menos tão atual quanto o que estiver disponível nos canais eletrônicos existentes) e um código de status HTTP 201 (CREATED).
-    - A iniciadora não deve usar comportamento idempotente para pesquisar o status dos recursos.
-    - A detentora pode usar a assinatura da mensagem, junto com a chave de idempotência, para garantir que o corpo da solicitação não seja alterado.
+    - A iniciadora/TPP não deve alterar o corpo da solicitação ao usar a mesma chave de idempotência. Se a iniciadora alterar o corpo da solicitação, a detentora/ASPSP não deve modificar o recurso final. A detentora pode tratar este caso como uma ação fraudulenta;
+    - A detentora não deve criar um novo recurso para uma solicitação POST se estiver determinada como uma solicitação idempotente;
+    - Na criação a detentora deve responder à solicitação com o status atual do recurso (ou um status que seja pelo menos tão atual quanto o que estiver disponível nos canais eletrônicos existentes) e um código de status HTTP 201 (CREATED);
+    - A iniciadora não deve usar comportamento idempotente para pesquisar o status dos recursos;
+    - A detentora pode usar a assinatura da mensagem, junto com a chave de idempotência, para garantir que o corpo da solicitação não seja alterado;
+    - Para a API de Iniciação de Pagamento, a chave de idempotência deverá ser armazenada para controle quando a requisição for processada com sucesso (HTTP Status 201) ou quando ocorrer um erro de negócio (HTTP Status 422);
+    - Para a API Consentimento de Pagamento, a chave de idempotência deverá ser armazenada para controle quando a requisição for processada com sucesso (HTTP Status 201);
+    - O comportamento idempotente deve ser mantido por 24 horas para uma mesma chave de idempotencia;
+    - Toda nova requisição exige que a assinatura da mensagem seja refeita, contendo um novo jti e iat.
+
+    #### Cenários de uso de idempotência
+    1. Ao receber uma requisição com o mesmo x-idempotency-key e com a claim data do JWT com conteúdo idêntico ao da requisição original, a requisição deverá ser processada entregando o mesmo resultado obtido anteriormente. Isso significa que, caso a requisição inicial tenha criado um recurso, este mesmo recurso deverá ser retornado, com seu status atualizado.
+    2. Ao receber uma requisição com o mesmo x-idempotency-key e com a claim data do JWT com conteúdo diferente do original a requisição deverá ser recusada com o HTTP Status 422 com código NAO_INFORMADO.
+    3. Ao receber uma requisição com o mesmo x-idempotency-key e com a claim iss não pertencente a organização que possui o software cliente (clientId) a requisição deve ser recusada com o HTTP Status 403.
 
     ### Diagrama de Sequência
     ![Iniciacao_de_Pagamento](images/sequence-diagrams/iniciacao_de_pagamento.png)
@@ -134,11 +143,11 @@ info:
 
     #### Estabelece TLS
     Toda comunicação máquina-a-máquina (m2m) usará mTLS, conforme RFC rfc8705 e detalhado na especificação de segurança:
-      <a href="https://openbanking-brasil.github.io/specs-seguranca/open-banking-brasil-financial-api-1_ID1.html" target="_blank">Open Banking Brasil Financial-grade API Security Profile 1.0 Implementers Draft 1</a>.
+      <a href="https://openbanking-brasil.github.io/specs-seguranca/open-banking-brasil-financial-api-1_ID3.html" target="_blank">Open Banking Brasil Financial-grade API Security Profile 1.0 Implementers Draft 3</a>.
 
     #### POST /tokens - Pedido de access_token e scope: payments, openid
     Antes de começar o fluxo de iniciação de pagamento, a Instituição Iniciadora deverá ter se cadastrado como *client* na Instituição Detentora da Conta, em acordo com o especificado para o Registro Dinâmico de Clientes (Dynamic Client Registration). Os detalhes dessa etapa podem ser encontrados na especificação de segurança: 
-    <a href="https://openbanking-brasil.github.io/specs-seguranca/open-banking-brasil-dynamic-client-registration-1_ID1.html" target="_blank">Open Banking Brasil Financial-grade API Dynamic Client Registration 1.0 Implementers Draft 1</a>.
+    <a href="https://openbanking-brasil.github.io/specs-seguranca/open-banking-brasil-dynamic-client-registration-1_ID2.html" target="_blank">Open Banking Brasil Financial-grade API Dynamic Client Registration 1.0 Implementers Draft 2</a>.
     Uma vez cadastrada, a Instituição Iniciadora deverá obter o token de acesso (*access_token*) pelo fluxo de *client credentials*, conforme especificado pela RFC 6749 (rfc6749), com os escopos *payments* e *openid*.
 
     #### Valida certificado SSL e scopes
@@ -227,7 +236,7 @@ info:
 
     No contexto da API Payment Initiation, os payloads de mensagem de consentimento e de pagamento que trafegam tanto por parte da instituição iniciadora de transação de pagamento quanto por parte da instituição detentora de conta devem estar assinados. Abaixo temos as orientações para assinatura das mensagens JWS.
 
-    Informações complementares de segurança podem ser consultadas em <a href="https://github.com/OpenBanking-Brasil/specs-seguranca/blob/main/open-banking-brasil-financial-api-1_ID2-ptbr.md" target="_blank"> https://github.com/OpenBanking-Brasil/specs-seguranca/blob/main/open-banking-brasil-financial-api-1_ID2-ptbr.md</a>.
+    Informações complementares de segurança podem ser consultadas em <a href="https://github.com/OpenBanking-Brasil/specs-seguranca/blob/main/open-banking-brasil-financial-api-1_ID3-ptbr.md"> https://github.com/OpenBanking-Brasil/specs-seguranca/blob/main/open-banking-brasil-financial-api-1_ID3-ptbr.md</a>.
 
     - **Passo 1** - Identifique a chave privada e o certificado de assinatura correspondente a serem usados para assinatura:
 
@@ -262,7 +271,11 @@ info:
     |aud|string|true|(***requisição JWT***): o Provedor do Recurso (p. ex. a instituição Detentora da Conta) deverá validar se o valor do campo **aud** coincide com o endpoint sendo acionado.<br>(***resposta JWT***): o cliente da API (p. ex. instituição Iniciadora) deverá validar se o valor do campo **aud** coincide com o seu próprio `organisationId` listado no diretório.|
     |iss|string|true|(***requisição JWT*** e ***resposta JWT***): o receptor da mensagem deverá validar se o valor do campo **iss** coincide com o `organisationId` da outra parte listado no diretório.|
     |jti|string|true|(***requisição JWT*** e ***resposta JWT***): o valor do campo **jti** deverá ser preenchido com o UUID definido pela instituição de acordo com a <a href="https://datatracker.ietf.org/doc/html/rfc4122" target="_blank">RFC 4122</a> usando o versão 4.|
-    |iat|string|true|(***requisição JWT*** e ***resposta JWT***): o valor do campo **iat** deverá ser preenchido com o horário da geração da mensagem e de acordo com o padrão estabelecido na <a href="https://datatracker.ietf.org/doc/html/rfc7519#section-2" target="_blank">RFC7519</a> para o formato _NumericDate_|
+    |iat|string|true|(***requisição JWT*** e ***resposta JWT***): o valor do campo **iat** deverá ser preenchido com o horário da geração da mensagem e de acordo com o padrão estabelecido na <a href="https://datatracker.ietf.org/doc/html/rfc7519#section-2" target="_blank">RFC7519</a> para o formato _NumericDate_. A claim iat deverá ser gerada no Unix Time GMT +0 e sua verificação deverá possuir uma tolerância de +/- 60 segundos para cobrir pequenas diferenças nos relógios dos servidores dos participantes.|
+
+    - **A claim do “jti” deve ser única para um clientId dentro de um intervalo de tempo de 86.400 segundos, não podendo ser reutilizada neste período. Em caso de reutilização, deverá ser retornado o código de erro HTTP 403.**
+
+    - **As validações referentes as claims do JWT devem preceder a validação de idempotência (e.g. “jti”, “iat” e “iss”)**
 
     Cada elemento acima deve ser codificado utilizando o padrão Base64url [<a href="https://datatracker.ietf.org/doc/html/rfc4648#section-5" target="_blank">RFC4648</a>] e, feito isso, os elementos devem ser concatenados com “.” (método JWS Compact Serialization, conforme definido na [<a href="https://datatracker.ietf.org/doc/html/rfc7515#section-3.1" target="_blank">RFC7515</a>]).
 
@@ -275,9 +288,7 @@ info:
     > Exemplo de requisição - JWS assinada e codificada
 
     ```json
-      eyJhbGciOiJQUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlBXQWk1cnVRY0hmelB6cTJKRmRwWTduQVVoNkx6VFRRdERCVXBPTTM3SlEifQ.
-      eyJhdWQiOiJodHRwczovL2FwaS5iYW5jby5jb20uYnIvb3BlbmJhbmtpbmcvcGF5bWVudHMvdjEvY29uc2VudHMiLCJpc3MiOiI1NjQ3ZmU5MC1mNmJjLTExZWItOWEwMy0wMjQyYWMxMzAwMDMiLCJqdGkiOiI3OTYwNTc3Yy02NjJjLTQ1NmUtOGNmNS1lNjMwODI4YWY2MzUiLCJpYXQiOiIxNjI4MjU3NDg0IiwiZGF0YSI6eyJsb2dnZWRVc2VyIjp7ImRvY3VtZW50Ijp7ImlkZW50aWZpY2F0aW9uIjoiMTExMTExMTExMTEiLCJyZWwiOiJDUEYifX0sImJ1c2luZXNzRW50aXR5Ijp7ImRvY3VtZW50Ijp7ImlkZW50aWZpY2F0aW9uIjoiMTExMTExMTExMTExMTEiLCJyZWwiOiJDTlBKIn19LCJjcmVkaXRvciI6eyJwZXJzb25UeXBlIjoiUEVTU09BX05BVFVSQUwiLCJjcGZDbnBqIjoiNTg3NjQ3ODkwMDAxMzciLCJuYW1lIjoiTWFyY28gQW50b25pbyBkZSBCcml0byJ9LCJwYXltZW50Ijp7InR5cGUiOiJQSVgiLCJkYXRlIjoiMjAyMS0wMS0wMSIsImN1cnJlbmN5IjoiQlJMIiwiYW1vdW50IjoiMTAwMDAwLjEyIn0sImRlYnRvckFjY291bnQiOnsiaXNwYiI6IjEyMzQ1Njc4IiwiaXNzdWVyIjoiMTc3NCIsIm51bWJlciI6IjEyMzQ1Njc4OTAiLCJhY2NvdW50VHlwZSI6IkNBQ0MifX19.
-      QPeCCkH45tZ4kMRYwLNIFXnHGIe0smk5V1qVrM7Iw_YcNUbla45ThCFzU_NEeYx3FaPJko_PIGWzxC62c_yrh0R5yYpGJ_V4PZxGer27p_tZgyJ_x7MZbMkMaRqO8w9rcfa8FrNc9zBXbkdh2D0GmC_fDtAV5F-ndYhaztH2w-G5OGg7S57wifA4HVq11vQLmk5p3VjKFA530KALurU5kRmAfgK0mYA6_EaOtXiQTeP06_gu6g9JIenGLaDVeKLXKTtv8YhCZhoO_eHNBdAmmFJTQW_zPQrKnlj1Qo6XJIgRQ0sqigV9lOOOQNWjpFwZ2DYYcXbdHumCznlN_yb5yw
+      eyJhbGciOiJQUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlBXQWk1cnVRY0hmelB6cTJKRmRwWTduQVVoNkx6VFRRdERCVXBPTTM3SlEifQ.eyJhdWQiOiIzNDQ5YmYyMS0wYjA3LTQ4ZTYtYjZmYy0xM2ViMTYxYTk5MDEiLCJpc3MiOiJjYTFiOThlMS05N2EyLTQzZGItOTQ3Zi04YTA4MDU0YzM0MmUiLCJqdGkiOiJhMmZkMzkzYy0xMDdhLTRhZDQtYmUyMi0zY2ZlZWVhOTBlZmUiLCJpYXQiOiIxNjI4MjU3NzM3IiwiZGF0YSI6eyJjb25zZW50SWQiOiJ1cm46YmFuY29leDpDMUREMzMxMjMiLCJjcmVhdGlvbkRhdGVUaW1lIjoiMjAyMS0wNS0yMVQwODozMDowMFoiLCJleHBpcmF0aW9uRGF0ZVRpbWUiOiIyMDIxLTA1LTIxVDA4OjMwOjAwWiIsInN0YXR1c1VwZGF0ZURhdGVUaW1lIjoiMjAyMS0wNS0yMVQwODozMDowMFoiLCJzdGF0dXMiOiJBV0FJVElOR19BVVRIT1JJU0FUSU9OIiwibG9nZ2VkVXNlciI6eyJkb2N1bWVudCI6eyJpZGVudGlmaWNhdGlvbiI6IjExMTExMTExMTExIiwicmVsIjoiQ1BGIn19fSwiYnVzaW5lc3NFbnRpdHkiOnsiZG9jdW1lbnQiOnsiaWRlbnRpZmljYXRpb24iOiIxMTExMTExMTExMTExMSIsInJlbCI6IkNOUEoifX0sImNyZWRpdG9yIjp7InBlcnNvblR5cGUiOiJQRVNTT0FfTkFUVVJBTCIsImNwZkNucGoiOiI1ODc2NDc4OTAwMDEzNyIsIm5hbWUiOiJNYXJjbyBBbnRvbmlvIGRlIEJyaXRvIn0sInBheW1lbnQiOnsidHlwZSI6IlBJWCIsImRhdGUiOiIyMDIxLTAxLTAxIiwiY3VycmVuY3kiOiJCUkwiLCJhbW91bnQiOiIxMDAwMDAuMTIiLCJpYmdlVG93bkNvZGUiOiI1MzAwMTA4IiwiZGV0YWlscyI6eyJsb2NhbEluc3RydW1lbnQiOiJESUNUIiwicXJDb2RlIjoiMDAwMjAxMDQxNDEyMzQ1Njc4OTAxMjM0MjY2NjAwMTRCUi5HT1YuQkNCLlBJWDAxNDQ2Njc1NkM2MTZFNkYzMjMwMzEzOTQwNjU3ODYxNkQ3MDZDNjUyRTYzNkY2RDI3MzAwMDEyXG5CUi5DT00uT1VUUk8wMTEwMDEyMzQ1Njc4OTUyMDQwMDAwNTMwMzk4NjU0MDYxMjMuNDU1ODAyQlI1OTE1Tk9NRURPUkVDRUJFRE9SNjAwOEJSQVNJTElBNjEwODcwMDc0OTAwNjJcbjUzMDUxNVJQMTIzNDU2NzgtMjAxOTUwMzAwMDE3QlIuR09WLkJDQi5CUkNPREUwMTA1MS4wLjA4MDQ1MDAxNEJSLkdPVi5CQ0IuUElYMDEyM1BBRFJBTy5VUkwuUElYLzAxMjNBQlxuQ0Q4MTM5MDAxMkJSLkNPTS5PVVRSTzAxMTkwMTIzLkFCQ0QuMzQ1Ni5XWFlaNjMwNEVCNzZcbiIsInByb3h5IjoiMTIzNDU2Nzg5MDEiLCJjcmVkaXRvckFjY291bnQiOnsiaXNwYiI6IjEyMzQ1Njc4IiwiaXNzdWVyIjoiMTc3NCIsIm51bWJlciI6IjEyMzQ1Njc4OTAiLCJhY2NvdW50VHlwZSI6IkNBQ0MifX19LCJkZWJ0b3JBY2NvdW50Ijp7ImlzcGIiOiIxMjM0NTY3OCIsImlzc3VlciI6IjE3NzQiLCJudW1iZXIiOiIxMjM0NTY3ODkwIiwiYWNjb3VudFR5cGUiOiJDQUNDIn0sImxpbmtzIjp7InNlbGYiOiJodHRwczovL2FwaS5iYW5jby5jb20uYnIvb3Blbi1iYW5raW5nL3BheW1lbnRzL3YxL2NvbnNlbnRzIn0sIm1ldGEiOnsidG90YWxSZWNvcmRzIjoxLCJ0b3RhbFBhZ2VzIjoxLCJyZXF1ZXN0RGF0ZVRpbWUiOiIyMDIxLTA1LTIxVDA4OjMwOjAwWiJ9fQ.FH8722_85hWbYQS7g9C_b0_vjYvzaByq7ovFIVXWUsreEyb1KvhXFm1-GttBXIQORv9DpSsimmqo1MsLQE8Qc_J3fMkb-vNfMAd5D4JJUSJq33X8ydAvrXdOyCfjeEcUC-6g_O3nexT6clK6RkH0Umf6X3hev3JNaObk2IvjKeMdygQ3UXpGl2CTCCWvmcfcGeRA-sNdLheLQsVIPoopZ-FHBmr5MboLRod06SCO-BKkLdKg8eVAf6LrkiZrFLVlDMwNTFolUK7JlNnPZjPdSBmR7pPjPzT1blgd9fTWl7pbOh93mejgVFB0B3aKHz-2Y83KBCTH8C32rnnxK4YYmA
     ```
 
     > Exemplo de requisição - JWS decodificada
@@ -315,7 +326,19 @@ info:
           "type": "PIX",
           "date": "2021-01-01",
           "currency": "BRL",
-          "amount": "100000.12"
+          "amount": "100000.12",
+          "ibgeTownCode": "5300108",
+          "details": {
+            "localInstrument": "DICT",
+            "qrCode": "00020104141234567890123426660014BR.GOV.BCB.PIX014466756C616E6F32303139406578616D706C652E636F6D27300012\nBR.COM.OUTRO011001234567895204000053039865406123.455802BR5915NOMEDORECEBEDOR6008BRASILIA61087007490062\n530515RP12345678-201950300017BR.GOV.BCB.BRCODE01051.0.080450014BR.GOV.BCB.PIX0123PADRAO.URL.PIX/0123AB\nCD81390012BR.COM.OUTRO01190123.ABCD.3456.WXYZ6304EB76\n",
+            "proxy": "12345678901",
+            "creditorAccount": {
+              "ispb": "12345678",
+              "issuer": "1774",
+              "number": "1234567890",
+              "accountType": "CACC"
+            }
+          }
         },
         "debtorAccount": {
           "ispb": "12345678",
@@ -333,9 +356,7 @@ info:
      > Exemplo de resposta - JWS assinada e codificada
 
     ```json
-      eyJhbGciOiJQUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlBXQWk1cnVRY0hmelB6cTJKRmRwWTduQVVoNkx6VFRRdERCVXBPTTM3SlEifQ.
-      eyJhdWQiOiIzNDQ5YmYyMS0wYjA3LTQ4ZTYtYjZmYy0xM2ViMTYxYTk5MDEiLCJpc3MiOiJjYTFiOThlMS05N2EyLTQzZGItOTQ3Zi04YTA4MDU0YzM0MmUiLCJqdGkiOiJhMmZkMzkzYy0xMDdhLTRhZDQtYmUyMi0zY2ZlZWVhOTBlZmUiLCJpYXQiOiIxNjI4MjU3NzM3IiwiZGF0YSI6eyJjb25zZW50SWQiOiJ1cm46YmFuY29leDpDMUREMzMxMjMiLCJjcmVhdGlvbkRhdGVUaW1lIjoiMjAyMS0wNS0yMVQwODozMDowMFoiLCJleHBpcmF0aW9uRGF0ZVRpbWUiOiIyMDIxLTA1LTIxVDA4OjMwOjAwWiIsInN0YXR1c1VwZGF0ZURhdGVUaW1lIjoiMjAyMS0wNS0yMVQwODozMDowMFoiLCJzdGF0dXMiOiJBV0FJVElOR19BVVRIT1JJU0FUSU9OIiwibG9nZ2VkVXNlciI6eyJkb2N1bWVudCI6eyJpZGVudGlmaWNhdGlvbiI6IjExMTExMTExMTExIiwicmVsIjoiQ1BGIn19LCJidXNpbmVzc0VudGl0eSI6eyJkb2N1bWVudCI6eyJpZGVudGlmaWNhdGlvbiI6IjExMTExMTExMTExMTExIiwicmVsIjoiQ05QSiJ9fSwiY3JlZGl0b3IiOnsicGVyc29uVHlwZSI6IlBFU1NPQV9OQVRVUkFMIiwiY3BmQ25waiI6IjU4NzY0Nzg5MDAwMTM3IiwibmFtZSI6Ik1hcmNvIEFudG9uaW8gZGUgQnJpdG8ifSwicGF5bWVudCI6eyJ0eXBlIjoiUElYIiwiZGF0ZSI6IjIwMjEtMDEtMDEiLCJjdXJyZW5jeSI6IkJSTCIsImFtb3VudCI6IjEwMDAwMC4xMiJ9LCJkZWJ0b3JBY2NvdW50Ijp7ImlzcGIiOiIxMjM0NTY3OCIsImlzc3VlciI6IjE3NzQiLCJudW1iZXIiOiIxMjM0NTY3ODkwIiwiYWNjb3VudFR5cGUiOiJDQUNDIn19LCJsaW5rcyI6eyJzZWxmIjoiaHR0cHM6Ly9hcGkuYmFuY28uY29tLmJyL29wZW4tYmFua2luZy9hcGkvdjEvcmVzb3VyY2UifSwibWV0YSI6eyJ0b3RhbFJlY29yZHMiOjEsInRvdGFsUGFnZXMiOjEsInJlcXVlc3REYXRlVGltZSI6IjIwMjEtMDUtMjFUMDg6MzA6MDBaIn19.
-      08SM6dnS_-COzDmhlhJ-OfBAqyMpwPiaKCJPkggUKRgns7dFMvezsv2fWlX4tYkDw_Hc8NL-fsfw5eI13FoDTSQUPdKt8KRpPNZ5qXNsjyIIwtV13hmIepGSNsyaOlhX7JXVhxWceE5VfMcVp5no62tDqh1u84liOx8dOV5G31SlkBknPR5v-M-xNUFAo63WCFy6Zew-uuLbP3ruP4CSdY_h1BkOABJnraoa-yPhuByHg2zwbNY_ELYigf2FPyrFZsEH48hU_UZG1EOLt7cII9hzJxTYLtJX5SJiwH8kxegQtpbLpxZ3Se282Bc_OYyX1Fz4_lHjSDmuLwW3PzEbhQ
+      eyJhbGciOiJQUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlBXQWk1cnVRY0hmelB6cTJKRmRwWTduQVVoNkx6VFRRdERCVXBPTTM3SlEifQ.eyJhdWQiOiIzNDQ5YmYyMS0wYjA3LTQ4ZTYtYjZmYy0xM2ViMTYxYTk5MDEiLCJpc3MiOiJjYTFiOThlMS05N2EyLTQzZGItOTQ3Zi04YTA4MDU0YzM0MmUiLCJqdGkiOiJhMmZkMzkzYy0xMDdhLTRhZDQtYmUyMi0zY2ZlZWVhOTBlZmUiLCJpYXQiOiIxNjI4MjU3NzM3IiwiZGF0YSI6eyJjb25zZW50SWQiOiJ1cm46YmFuY29leDpDMUREMzMxMjMiLCJjcmVhdGlvbkRhdGVUaW1lIjoiMjAyMS0wNS0yMVQwODozMDowMFoiLCJleHBpcmF0aW9uRGF0ZVRpbWUiOiIyMDIxLTA1LTIxVDA4OjMwOjAwWiIsInN0YXR1c1VwZGF0ZURhdGVUaW1lIjoiMjAyMS0wNS0yMVQwODozMDowMFoiLCJzdGF0dXMiOiJBV0FJVElOR19BVVRIT1JJU0FUSU9OIiwibG9nZ2VkVXNlciI6eyJkb2N1bWVudCI6eyJpZGVudGlmaWNhdGlvbiI6IjExMTExMTExMTExIiwicmVsIjoiQ1BGIn19fSwiYnVzaW5lc3NFbnRpdHkiOnsiZG9jdW1lbnQiOnsiaWRlbnRpZmljYXRpb24iOiIxMTExMTExMTExMTExMSIsInJlbCI6IkNOUEoifX0sImNyZWRpdG9yIjp7InBlcnNvblR5cGUiOiJQRVNTT0FfTkFUVVJBTCIsImNwZkNucGoiOiI1ODc2NDc4OTAwMDEzNyIsIm5hbWUiOiJNYXJjbyBBbnRvbmlvIGRlIEJyaXRvIn0sInBheW1lbnQiOnsidHlwZSI6IlBJWCIsImRhdGUiOiIyMDIxLTAxLTAxIiwiY3VycmVuY3kiOiJCUkwiLCJhbW91bnQiOiIxMDAwMDAuMTIiLCJpYmdlVG93bkNvZGUiOiI1MzAwMTA4IiwiZGV0YWlscyI6eyJsb2NhbEluc3RydW1lbnQiOiJESUNUIiwicXJDb2RlIjoiMDAwMjAxMDQxNDEyMzQ1Njc4OTAxMjM0MjY2NjAwMTRCUi5HT1YuQkNCLlBJWDAxNDQ2Njc1NkM2MTZFNkYzMjMwMzEzOTQwNjU3ODYxNkQ3MDZDNjUyRTYzNkY2RDI3MzAwMDEyXG5CUi5DT00uT1VUUk8wMTEwMDEyMzQ1Njc4OTUyMDQwMDAwNTMwMzk4NjU0MDYxMjMuNDU1ODAyQlI1OTE1Tk9NRURPUkVDRUJFRE9SNjAwOEJSQVNJTElBNjEwODcwMDc0OTAwNjJcbjUzMDUxNVJQMTIzNDU2NzgtMjAxOTUwMzAwMDE3QlIuR09WLkJDQi5CUkNPREUwMTA1MS4wLjA4MDQ1MDAxNEJSLkdPVi5CQ0IuUElYMDEyM1BBRFJBTy5VUkwuUElYLzAxMjNBQlxuQ0Q4MTM5MDAxMkJSLkNPTS5PVVRSTzAxMTkwMTIzLkFCQ0QuMzQ1Ni5XWFlaNjMwNEVCNzZcbiIsInByb3h5IjoiMTIzNDU2Nzg5MDEiLCJjcmVkaXRvckFjY291bnQiOnsiaXNwYiI6IjEyMzQ1Njc4IiwiaXNzdWVyIjoiMTc3NCIsIm51bWJlciI6IjEyMzQ1Njc4OTAiLCJhY2NvdW50VHlwZSI6IkNBQ0MifX19LCJkZWJ0b3JBY2NvdW50Ijp7ImlzcGIiOiIxMjM0NTY3OCIsImlzc3VlciI6IjE3NzQiLCJudW1iZXIiOiIxMjM0NTY3ODkwIiwiYWNjb3VudFR5cGUiOiJDQUNDIn0sImxpbmtzIjp7InNlbGYiOiJodHRwczovL2FwaS5iYW5jby5jb20uYnIvb3Blbi1iYW5raW5nL3BheW1lbnRzL3YxL2NvbnNlbnRzIn0sIm1ldGEiOnsidG90YWxSZWNvcmRzIjoxLCJ0b3RhbFBhZ2VzIjoxLCJyZXF1ZXN0RGF0ZVRpbWUiOiIyMDIxLTA1LTIxVDA4OjMwOjAwWiJ9fQ.FH8722_85hWbYQS7g9C_b0_vjYvzaByq7ovFIVXWUsreEyb1KvhXFm1-GttBXIQORv9DpSsimmqo1MsLQE8Qc_J3fMkb-vNfMAd5D4JJUSJq33X8ydAvrXdOyCfjeEcUC-6g_O3nexT6clK6RkH0Umf6X3hev3JNaObk2IvjKeMdygQ3UXpGl2CTCCWvmcfcGeRA-sNdLheLQsVIPoopZ-FHBmr5MboLRod06SCO-BKkLdKg8eVAf6LrkiZrFLVlDMwNTFolUK7JlNnPZjPdSBmR7pPjPzT1blgd9fTWl7pbOh93mejgVFB0B3aKHz-2Y83KBCTH8C32rnnxK4YYmA
     ```
 
     > Exemplo de resposta - JWS decodificada
@@ -378,7 +399,19 @@ info:
           "type": "PIX",
           "date": "2021-01-01",
           "currency": "BRL",
-          "amount": "100000.12"
+          "amount": "100000.12",
+          "ibgeTownCode": "5300108",
+          "details": {
+            "localInstrument": "DICT",
+            "qrCode": "00020104141234567890123426660014BR.GOV.BCB.PIX014466756C616E6F32303139406578616D706C652E636F6D27300012\nBR.COM.OUTRO011001234567895204000053039865406123.455802BR5915NOMEDORECEBEDOR6008BRASILIA61087007490062\n530515RP12345678-201950300017BR.GOV.BCB.BRCODE01051.0.080450014BR.GOV.BCB.PIX0123PADRAO.URL.PIX/0123AB\nCD81390012BR.COM.OUTRO01190123.ABCD.3456.WXYZ6304EB76\n",
+            "proxy": "12345678901",
+            "creditorAccount": {
+              "ispb": "12345678",
+              "issuer": "1774",
+              "number": "1234567890",
+              "accountType": "CACC"
+            }
+          }
         },
         "debtorAccount": {
           "ispb": "12345678",
@@ -407,13 +440,19 @@ info:
 
     * Erros na validação da mensagem recebida pela aplicação cliente (p. ex. iniciador de pagamento) devem ser registrados e o `Provedor do Recurso` (p. ex. instituição detentora de conta) deve ser notificado.
 
+    ### Assinatura de Mensagem vs Idempotência
+
+    O claim jti inserido dentro do JWT da assinatura da mensagem tem como objetivo evitar ataques de repetição e não é utilizado para o controle da idempotência. Desta forma ele deverá ser gerado a cada nova requisição realizada às APIs, independentemente desta ser a requisição para a criação de uma nova operação ou ser a requisição para confirmação de execução de uma operação anterior (idempotente).
+
+    As validações referentes a assinatura de mensagens devem preceder as validações de idempotência.
+
   version: 1.0.1-rc1.2
 tags:
   - name: API - Pagamentos
     description: |
       |Versão|
       |:-----|
-      |1.0.1-rc1.2|
+      |1.0.1|
 
       #### Visão Geral
 
@@ -444,12 +483,12 @@ paths:
         Consulte a seção **Convenções de payload** para obter mais informações sobre [Atributos Obrigatórios / Opcionais](#convencoes-de-propriedade-dos-atributos).
 
       parameters:
-        - $ref: '#/components/parameters/Authorization'
-        - $ref: '#/components/parameters/xFapiAuthDate'
-        - $ref: '#/components/parameters/xFapiCustomerIpAddress'
-        - $ref: '#/components/parameters/xFapiInteractionId'
-        - $ref: '#/components/parameters/xCustomerUserAgent'
-        - $ref: '#/components/parameters/XIdempotencyKey'
+        - $ref: "#/components/parameters/Authorization"
+        - $ref: "#/components/parameters/xFapiAuthDate"
+        - $ref: "#/components/parameters/xFapiCustomerIpAddress"
+        - $ref: "#/components/parameters/xFapiInteractionId"
+        - $ref: "#/components/parameters/xCustomerUserAgent"
+        - $ref: "#/components/parameters/XIdempotencyKey"
       requestBody:
         content:
           application/json:
@@ -458,33 +497,33 @@ paths:
         description: Payload para criação do consentimento para iniciação do pagamento Pix.
         required: true
       responses:
-        '201':
-          $ref: '#/components/responses/201PaymentsConsentsConsentCreated'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '405':
-          $ref: '#/components/responses/MethodNotAllowed'
-        '406':
-          $ref: '#/components/responses/NotAcceptable'
-        '415':
-          $ref: '#/components/responses/UnsupportedMediaType'
-        '422':
-          $ref: '#/components/responses/UnprocessableEntityConsents'
-        '429':
-          $ref: '#/components/responses/TooManyRequests'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+        "201":
+          $ref: "#/components/responses/201PaymentsConsentsConsentCreated"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowed"
+        "406":
+          $ref: "#/components/responses/NotAcceptable"
+        "415":
+          $ref: "#/components/responses/UnsupportedMediaType"
+        "422":
+          $ref: "#/components/responses/UnprocessableEntityConsents"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
       security:
         - OpenId:
             - openid
           OAuth2Security:
-            - 'consent:consentId'
+            - "consent:consentId"
             - payments
   /payments/v1/consents/{consentId}:
     get:
@@ -505,37 +544,37 @@ paths:
 
       parameters:
         - $ref: "#/components/parameters/consentId"
-        - $ref: '#/components/parameters/Authorization'
-        - $ref: '#/components/parameters/xFapiAuthDate'
-        - $ref: '#/components/parameters/xFapiCustomerIpAddress'
-        - $ref: '#/components/parameters/xFapiInteractionId'
-        - $ref: '#/components/parameters/xCustomerUserAgent'
+        - $ref: "#/components/parameters/Authorization"
+        - $ref: "#/components/parameters/xFapiAuthDate"
+        - $ref: "#/components/parameters/xFapiCustomerIpAddress"
+        - $ref: "#/components/parameters/xFapiInteractionId"
+        - $ref: "#/components/parameters/xCustomerUserAgent"
       responses:
-        '200':
-          $ref: '#/components/responses/200PaymentsConsentsConsentIdRead'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '405':
-          $ref: '#/components/responses/MethodNotAllowed'
-        '406':
-          $ref: '#/components/responses/NotAcceptable'
-        '415':
-          $ref: '#/components/responses/UnsupportedMediaType'
-        '429':
-          $ref: '#/components/responses/TooManyRequests'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+        "200":
+          $ref: "#/components/responses/200PaymentsConsentsConsentIdRead"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowed"
+        "406":
+          $ref: "#/components/responses/NotAcceptable"
+        "415":
+          $ref: "#/components/responses/UnsupportedMediaType"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
       security:
         - OpenId:
             - openid
           OAuth2Security:
-            - 'consent:consentId'
+            - "consent:consentId"
             - payments
   /payments/v1/pix/payments:
     post:
@@ -555,12 +594,12 @@ paths:
         Consulte a seção **Convenções de payload** para obter mais informações sobre [Atributos Obrigatórios / Opcionais](#convencoes-de-propriedade-dos-atributos).
 
       parameters:
-        - $ref: '#/components/parameters/Authorization'
-        - $ref: '#/components/parameters/xFapiAuthDate'
-        - $ref: '#/components/parameters/xFapiCustomerIpAddress'
-        - $ref: '#/components/parameters/xFapiInteractionId'
-        - $ref: '#/components/parameters/xCustomerUserAgent'
-        - $ref: '#/components/parameters/XIdempotencyKey'
+        - $ref: "#/components/parameters/Authorization"
+        - $ref: "#/components/parameters/xFapiAuthDate"
+        - $ref: "#/components/parameters/xFapiCustomerIpAddress"
+        - $ref: "#/components/parameters/xFapiInteractionId"
+        - $ref: "#/components/parameters/xCustomerUserAgent"
+        - $ref: "#/components/parameters/XIdempotencyKey"
       requestBody:
         content:
           application/json:
@@ -569,33 +608,33 @@ paths:
         description: Payload para criação da iniciação do pagamento Pix.
         required: true
       responses:
-        '201':
+        "201":
           $ref: "#/components/responses/201PaymentsInitiationPixPaymentCreated"
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '405':
-          $ref: '#/components/responses/MethodNotAllowed'
-        '406':
-          $ref: '#/components/responses/NotAcceptable'
-        '415':
-          $ref: '#/components/responses/UnsupportedMediaType'
-        '422':
-          $ref: '#/components/responses/UnprocessableEntityPixPayments'
-        '429':
-          $ref: '#/components/responses/TooManyRequests'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowed"
+        "406":
+          $ref: "#/components/responses/NotAcceptable"
+        "415":
+          $ref: "#/components/responses/UnsupportedMediaType"
+        "422":
+          $ref: "#/components/responses/UnprocessableEntityPixPayments"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
       security:
         - OpenId:
             - openid
           OAuth2Security:
-            - 'consent:consentId'
+            - "consent:consentId"
             - payments
   /payments/v1/pix/payments/{paymentId}:
     get:
@@ -616,37 +655,37 @@ paths:
 
       parameters:
         - $ref: "#/components/parameters/paymentId"
-        - $ref: '#/components/parameters/Authorization'
-        - $ref: '#/components/parameters/xFapiAuthDate'
-        - $ref: '#/components/parameters/xFapiCustomerIpAddress'
-        - $ref: '#/components/parameters/xFapiInteractionId'
-        - $ref: '#/components/parameters/xCustomerUserAgent'
+        - $ref: "#/components/parameters/Authorization"
+        - $ref: "#/components/parameters/xFapiAuthDate"
+        - $ref: "#/components/parameters/xFapiCustomerIpAddress"
+        - $ref: "#/components/parameters/xFapiInteractionId"
+        - $ref: "#/components/parameters/xCustomerUserAgent"
       responses:
-        '200':
+        "200":
           $ref: "#/components/responses/200PaymentsInitiationPixPaymentIdRead"
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '405':
-          $ref: '#/components/responses/MethodNotAllowed'
-        '406':
-          $ref: '#/components/responses/NotAcceptable'
-        '415':
-          $ref: '#/components/responses/UnsupportedMediaType'
-        '429':
-          $ref: '#/components/responses/TooManyRequests'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowed"
+        "406":
+          $ref: "#/components/responses/NotAcceptable"
+        "415":
+          $ref: "#/components/responses/UnsupportedMediaType"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
       security:
         - OpenId:
             - openid
           OAuth2Security:
-            - 'consent:consentId'
+            - "consent:consentId"
             - payments
 components:
   schemas:
@@ -761,7 +800,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ResponsePaymentConsent'
+            $ref: "#/components/schemas/ResponsePaymentConsent"
     200PaymentsConsentsConsentIdRead:
       description: Dados do consentimento de pagamento obtidos com sucesso.
       headers:
@@ -773,7 +812,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ResponsePaymentConsent'
+            $ref: "#/components/schemas/ResponsePaymentConsent"
     201PaymentsInitiationPixPaymentCreated:
       description: Iniciação de pagamento Pix criada com sucesso.
       headers:
@@ -785,7 +824,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ResponsePixPayment'
+            $ref: "#/components/schemas/ResponsePixPayment"
     200PaymentsInitiationPixPaymentIdRead:
       description: Dados de iniciação de pagamento Pix obtidos com sucesso.
       headers:
@@ -797,4 +836,4 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ResponsePixPayment'
+            $ref: "#/components/schemas/ResponsePixPayment"

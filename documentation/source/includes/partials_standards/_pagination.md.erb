@@ -28,36 +28,76 @@ O valor padrão será assumido sempre que o parâmetro não estiver preenchido o
 
 > Exemplo de paginação
 
+> Apenas uma página
+
 ```json
 {
-  "data": {
+    "data": {
+        "..."
+    },
+    "links": {
+        "self": "https://api.banco.com.br/open-banking/channels/v1/branches",
+    },
+    "meta": {
+        "totalRecords": 1,
+        "totalPages": 1
+    }
+}
+```
+> Primeira página
+
+```json
+{
+    "data": {
+        "..."
+    },
+    "links": {
+        "self": "https://api.banco.com.br/open-banking/channels/v1/branches?page=1&page-size=25",
+        "next": "https://api.banco.com.br/open-banking/channels/v1/branches?page=2&page-size=25",
+        "last": "https://api.banco.com.br/open-banking/channels/v1/branches?page=10&page-size=25"
+    },
+    "meta": {
+        "totalRecords": 250,
+        "totalPages": 10
+    }
+}
+```
+
+> Última Página
+
+```json
+{
+"data": {
     "..."
-  },
-  "links": {
-    "self": "https://api.banco.com.br/open-banking/products-services/v1/personal-invoice-financing",
-    "first": "https://api.banco.com.br/open-banking/products-services/v1/personal-invoice-financing",
-    "prev": null,
-    "next": null,
-    "last": "https://api.banco.com.br/open-banking/products-services/v1/personal-invoice-financing"
-  },
-  "meta": {
-    "totalRecords": 1,
-    "totalPages": 1
-  }
+},
+"links": {
+    "self": "https://api.banco.com.br/open-banking/channels/v1/branches?page=10&page-size=25",
+    "first": "https://api.banco.com.br/open-banking/channels/v1/branches?page=1&page-size=25",
+    "prev": "https://api.banco.com.br/open-banking/channels/v1/branches?page=9&page-size=25"
+},
+"meta": {
+    "totalRecords": 250,
+    "totalPages": 10
 }
 ```
 
 Além dos dados requisitados, as respostas paginadas também terão em sua estrutura dois objetos adicionais que incluirão parâmetros para facilitar a navegação das páginas:
 
 ### Links
-O objeto `links` passará por revisão subsequente de modo a atender as próximas Fases do Open Banking, em especial a partir da Fase 2. No objeto `links`, serão retornadas hypermedia (referências para os recursos relacionados) de paginação conforme parâmetros abaixo:
+O objeto `links` passará por revisão subsequente de modo a atender as próximas Fases do Open Banking, em especial a partir da Fase 2.
 
-| Parâmetro | Descrição                                                                  | Restrição                                             |
-|:--------- |:-------------------------------------------------------------------------- |:----------------------------------------------------- |
-| first     | A URI para requisitar a primeira página.                                   | Obrigatório se a resposta não for a primeira página.  |
-| last      | A URI para requisitar a última página.                                     | Obrigatório se a resposta não for a última página.    |
-| prev      | A URI para requisitar a página anterior.                                   | Obrigatório se a resposta não for a primeira página.  |
-| next      | A URI para requisitar a próxima página.                                    | Obrigatório se a resposta não for a última página.    |
+Os `links` devem sempre ser validados de acordo com o pattern publicado no swagger.
+  
+Quando preenchidos devem ter a mesma estrutura (schema, host, api, versão e recurso) do que esta sendo paginado.
+  
+No objeto `links`, serão retornadas hypermedia (referências para os recursos relacionados) de paginação conforme parâmetros abaixo: 
+
+| Parâmetro | Descrição                                                                  | Restrição                                                                                      |
+|:--------- |:-------------------------------------------------------------------------- |:---------------------------------------------------------------------------------------------- |
+| first     | A URI para requisitar a primeira página.                                   | Obrigatório se a resposta não for a primeira página.                                           |
+| last      | A URI para requisitar a última página.                                     | Obrigatório se a resposta não for a última página.                                             |
+| prev      | A URI para requisitar a página anterior.                                   | Obrigatório quando houver página anterior. Não deve ser enviado quando for a primeira página.  |
+| next      | A URI para requisitar a próxima página.                                    | Obrigatório quando houver página posterior. Não deve ser enviado quando for a última página.   |
 
 ### Meta
 No objeto `meta`, serão retornadas informações sobre o total de registros disponíveis
@@ -73,7 +113,9 @@ Para cada um desses atributos o tamanho da página especificado na requisição 
 
 ### Regras Adicionais
 
-* Não é esperado que os provedores implementem paginação com isolamento de transação. Os dados que serão retornados podem mudar entre requisições subsequentes. Isto pode causar situações onde um mesmo registro pode ser retornado em mais de uma página.
-* O tamanho máximo da página é `1000` registros para qualquer endpoint (a menos que na documentação desse esteja informando outros valores).
-* Se for requisitado uma quantidade de registros maior que o suportado, o retorno será o código HTTP *status code* `422 `
-` Unprocessable Entity`, indicando que o servidor entendeu a requisição, mas não é possível processá-la conforme foi solicitado.
+* O tamanho máximo da página (`page-size`) é `1000` registros para qualquer endpoint (a menos que na API esteja especificado outros valores).
+* A instituição transmissora/detentora pode definir um tamanho máximo da página (`page-size`) inferior ao tamanho máximo permitido pela API, caso entenda necessário diminuir o limite para atender o SLA de resposta.
+* Caso a instituição transmissora/detentora defina um tamanho máximo de página (`page-size`) inferior, se for requisitado uma quantidade de registros maior do que seu limite operacional, e desde que o valor esteja de acordo o tamanho máximo permitido pela API, esta deverá responder entregando os dados e utilizando o `page-size` do seu limite operacional definido.
+* A instituição transmissora/detentora deve realizar os ajustes de paginação antes de efetivar a consulta: 
+* Ex: Ao solicitar a segunda pagina `1000` registros, para uma instituição que trabalha com max size `800`, a transmissora deve retornar os itens de `801` a `1600`.
+* Se for requisitado uma quantidade de registros maior que o suportado pela API, o retorno será o código HTTP *status code* `422 ` ` Unprocessable Entity`, indicando que o servidor entendeu a requisição, mas não é possível processá-la conforme foi solicitado.
