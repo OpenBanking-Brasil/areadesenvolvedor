@@ -19,15 +19,28 @@ tags:
       #### Especificação em OAS 3.0
 
       <a href="swagger/swagger_capitalization_bonds_apis.yaml" target="_blank">Download da Especificação (OAS 3.0)</a>
+  - name: API - Câmbio e Credenciamento
+    description: |
+      |Versão|
+      |:-----|
+      |1.0.0-rc1.0|
+
+      #### Visão Geral
+
+      As instituições financeiras participantes podem consultar as informações de câmbio de outras instituições participantes
+
+      #### Especificação em OAS 3.0
+
+      <a href="swagger/swagger_exchange_and_acquiring_services_apis.yaml" target="_blank">Download da Especificação (OAS 3.0)</a>
 paths:
   /capitalization-bonds/v1/products:
     get:
       tags:
         - API - Títulos de Capitalização
-      summary: Conjunto de informações dos Títulos de Capitalização
+      summary: Lista de títulos de capitalização
       operationId: capitalizationBondsGetProducts
       description: |
-        Método para obter a lista de Títulos de Capitalização
+        Método para obter a lista de todos os títulos de Capitalização de uma instituição
 
         ### Dicionário de dados
 
@@ -52,27 +65,54 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  '/capitalization-bonds/v1/products/{productId}':
+  /exchange-and-acquiring-services/v1/exchange:
     get:
       tags:
-        - API - Títulos de Capitalização
-      summary: Obtém os dados do Título de Capitalização por productId
-      operationId: capitalizationBondsGetProductsProductId
+        - API - Câmbio e Credenciamento
+      summary: Conjunto de informações de Câmbio.
+      operationId: getExchange
       description: |
-        Método para obter os dados do Título de Capitalização por productId
+        Método para disponibilizar o valor VET.
 
-        ### Dicionário de dados
+         ### Dicionário de dados
 
-        Campos de resposta do endpoint de `/products/{productId}`
+         Campos de resposta do endpoint de `/exchange`
 
-        <a href='dictionary/capitalizationBondsGetProductsProductId_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
+         <a href='dictionary/exchangeAndAcquiringServicesGetExchange_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
 
-        Consulte a seção **Convenções de payload** para obter mais informações sobre [Atributos Obrigatórios / Opcionais](#convencoes-de-propriedade-dos-atributos).
-      parameters:
-        - $ref: '#/components/parameters/productId'
+         Consulte a seção **Convenções de payload** para obter mais informações sobre [Atributos Obrigatórios / Opcionais](#convencoes-de-propriedade-dos-atributos).
       responses:
         '200':
-          $ref: '#/components/responses/OKResponseCapitalizationBondsProductIdentification'
+          $ref: '#/components/responses/OKResponseExchangeAndAcquiringServicesExchangeData'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /exchange-and-acquiring-services/v1/acquiring-services:
+    get:
+      tags:
+        - API - Câmbio e Credenciamento
+      summary: Conjunto de informações de Credenciamento.
+      operationId: getAcquiringServices
+      description: |
+        Método para disponibilizar as taxas e tarifas por serviços.
+
+         ### Dicionário de dados
+
+         Campos de resposta do endpoint de `/acquiring-services`
+
+         <a href='dictionary/exchangeAndAcquiringServicesGetAcquiringServices_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
+
+         Consulte a seção **Convenções de payload** para obter mais informações sobre [Atributos Obrigatórios / Opcionais](#convencoes-de-propriedade-dos-atributos).
+      responses:
+        '200':
+          $ref: '#/components/responses/OKResponseExchangeAndAcquiringServicesAcquiringServicesData'
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
@@ -85,6 +125,261 @@ paths:
           $ref: '#/components/responses/InternalServerError'
 components:
   schemas:
+    OKResponseGetAcquiringServices:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          $ref: '#/components/schemas/AcquiringServicesContractData'
+        links:
+          $ref: '#/components/schemas/Links'
+      additionalProperties: false
+    AcquiringServicesContractData:
+      type: object
+      description: Conjunto de informações referentes às informações de credenciamento
+      required:
+        - name
+        - code
+        - chargingTriggerInfo
+      properties:
+        name:
+          $ref: '#/components/schemas/EnumAcquiringServicesName'
+        code:
+          $ref: '#/components/schemas/EnumAcquiringServicesCode'
+        price:
+          type: array
+          $ref: '#/components/schemas/Price'
+        chargingTriggerInfo:
+          type: string
+          pattern: '[\w\W\s]*'
+          maxLength: 200
+          example: NA
+          description: |
+            Recebimento através de transação de cartão.
+        minimum:
+          type: number
+        maximum:
+          type: number
+      additionalProperties: false
+    Price:
+      type: object
+      description: '4 Faixas de igual tamanho, com suas respectivas medianas e percentuais de clientes.'
+      required:
+        - interval
+        - value
+        - rate
+      properties:
+        interval:
+          $ref: '#/components/schemas/EnumAcquiringServicesInterval'
+        value:
+          type: number
+          example: 0.0203
+        rate:
+          type: number
+          example: 0.5
+      additionalProperties: false
+    EnumAcquiringServicesCode:
+      type: string
+      enum:
+        - MDR_CREDITO
+        - MDR_DEBITO
+      example: MDR_CREDITO
+      description: |
+        Sigla da Tarifa cobrada sobre o Serviço de Credenciamento informado.
+    EnumAcquiringServicesInterval:
+      type: string
+      enum:
+        - 1_FAIXA
+        - 2_FAIXA
+        - 3_FAIXA
+        - 4_FAIXA
+      example: 1_FAIXA
+      description: |
+        Identificação do intervalo a ser exibido.
+    EnumAcquiringServicesName:
+      type: string
+      enum:
+        - TAXA_DE_DESCONTO_NA_MODALIDADE_CREDITO
+        - TAXA_DE_DESCONTO_NA_MODALIDADE_DEBITO
+      example: TAXA_DE_DESCONTO_NA_MODALIDADE_CREDITO
+      description: |
+        Nome da tarifa cobrada sobre o serviço de credenciamento, para pessoa física/jurídica.
+        1. Taxa de Desconto na Modalidade Crédito
+        2. Taxa de Desconto na Modalidade Débito
+    OKResponseGetExchange:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          $ref: '#/components/schemas/ExchangeContractData'
+        links:
+          $ref: '#/components/schemas/Links'
+      additionalProperties: false
+    ExchangeContractData:
+      type: object
+      description: Conjunto de informações referentes às informações de câmbio
+      required:
+        - participantIdentification
+        - transactionType
+        - foreignCurrency
+      properties:
+        participantIdentification:
+          $ref: '#/components/schemas/ParticipantIdentification'
+        transactionType:
+          $ref: '#/components/schemas/EnumExchangeTransactionType'
+        foreignCurrency:
+          $ref: '#/components/schemas/EnumExchangeForeignCurrency'
+        transactionCategory:
+          $ref: '#/components/schemas/EnumExchangeTransactionCategory'
+        deliveryForeignCurrency:
+          $ref: '#/components/schemas/EnumExchangeDeliveryForeignCurrency'
+        rangeTransactionCategory:
+          $ref: '#/components/schemas/EnumExchangeRangeTransactionCategory'
+        targetAudience:
+          $ref: '#/components/schemas/EnumExchangeTargetAudience'
+        vetAmount:
+          type: number
+          example: 5.5023
+        onlineRate:
+          type: array
+          items:
+            $ref: '#/components/schemas/OnlineRate'
+      additionalProperties: false
+    ParticipantIdentification:
+      type: object
+      description: Objeto de identificação do participante OB.
+      required:
+        - brand
+        - name
+        - cnpjNumber
+      properties:
+        brand:
+          type: string
+          pattern: '[\w\W\s]*'
+          maxLength: 120
+          example: NA
+          description: |
+            Nome da Marca reportada pelo participante do Open Banking.  
+        name:
+          type: string
+          pattern: '[\w\W\s]*'
+          maxLength: 120
+          example: NA
+          description: |
+            Nome da Instituição, pertencente à Marca, responsável pela Dependência. 
+        cnpjNumber:
+          type: string
+          pattern: '[\d]*'
+          maxLength: 14
+          example: NA
+          description: |
+            Número completo do CNPJ da instituição responsável pela dependência o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. 
+      additionalProperties: false
+    OnlineRate:
+      type: object
+      description: Taxa disponibilizada (taxa online) pelas instituições no formato D+0/D+2 (valor U$100.000 operações câmbio pronto) separado por moeda dólar e euro compra e venda PF/PJ.
+      required:
+        - term
+        - foreignCurrency
+        - transactionType
+        - targetAudience
+        - value
+      properties:
+        term:
+          type: string
+          pattern: 'D+[0-9]*'
+          maxLength: 3
+          example: D+2
+          description: |
+            Formato da taxa online.  
+        foreignCurrency:
+          $ref: '#/components/schemas/EnumExchangeForeignCurrency'
+        transactionType:
+          $ref: '#/components/schemas/EnumExchangeTransactionType'
+        targetAudience:
+          $ref: '#/components/schemas/EnumExchangeTargetAudience'
+        value:
+          type: number
+          example: 5.5023
+      additionalProperties: false
+    EnumExchangeDeliveryForeignCurrency:
+      type: string
+      description: |
+        "A classificação do tipo de operação, conforme a circular BCB nº 3690 de 16/12/2013. (Vide Enum)
+        - ESPECIE_CARTAO_PRE_PAGO
+        - TELETRANSMISSAO_SWIFT
+      maxLength: 23
+      enum:
+        - ESPECIE_CARTAO_PRE_PAGO
+        - TELETRANSMISSAO_SWIFT
+      example: ESPECIE_CARTAO_PRE_PAGO
+    EnumExchangeForeignCurrency:
+      type: string
+      description: |
+        "É a moeda estrangeira, segundo modelo ISO 4217. (Vide Enum)
+        - USD
+        - EUR
+      maxLength: 3
+      enum:
+        - USD
+        - EUR
+      example: USD
+    EnumExchangeRangeTransactionCategory:
+      type: string
+      description: A classificação conforme a circular BCB nº 4015.
+      maxLength: 17
+      enum:
+        - '0,01_200'
+        - '200,01_500'
+        - '500,01_1.000'
+        - '1.000,01_3.000'
+        - '3.000,01_10.000'
+        - '10.000,01_30.000'
+        - '30.000,01_100.000'
+      example: '0,01_200'
+    EnumExchangeTargetAudience:
+      type: string
+      description: Média das operações PF/PJ.
+      maxLength: 5
+      enum:
+        - PF
+        - PJ
+        - PF_PJ
+      example: PF
+    EnumExchangeTransactionCategory:
+      type: string
+      description: 'A classificação do tipo de operação, conforme a circular BCB nº 3690 de 16/12/2013.'
+      maxLength: 68
+      enum:
+        - COMERCIO_EXTERIOR
+        - TRANSPORTE
+        - SEGUROS
+        - VIAGENS_INTERNACIONAIS
+        - TRANSFERENCIAS_UNILATERAIS
+        - SERVICOS_DIVERSOS
+        - RENDAS_DE_CAPITAIS
+        - CAPITAIS_BRASILEIROS
+        - CAPITAIS_ESTRANGEIROS
+        - PRESTACAO_DE_SERVICO_DE_PAGAMENTO_OU_TRANSFERENCIA_INTERNACIONAL_EFX
+      example: COMERCIO_EXTERIOR
+    EnumExchangeTransactionType:
+      type: string
+      description: |
+        "Determina se o Banco está comprando ou vendendo a moeda estrangeira nas operações
+        spot,  que se liquidam em até dois dias (não aplica-se a operações futuras. (Vide Enum)
+        - Compra
+        - Venda
+      maxLength: 6
+      enum:
+        - COMPRA
+        - VENDA
+      example: COMPRA
     ResponseCapitalizationBondsProductsList:
       type: object
       required:
@@ -96,73 +391,12 @@ components:
           type: array
           description: Conjunto de informações do Título de Capitalização
           items:
-            $ref: '#/components/schemas/CapitalizationBondsProductData'
+            $ref: '#/components/schemas/CapitalizationBondsProductIdentificationData'
           minItems: 0
         links:
           $ref: '#/components/schemas/Links'
         meta:
           $ref: '#/components/schemas/Meta'
-      additionalProperties: false
-    CapitalizationBondsProductData:
-      type: object
-      description: Conjunto de informações do Título de Capitalização
-      required:
-        - participantIdentification
-        - insuranceCompanyIdentification
-        - product
-      properties:
-        participantIdentification:
-          $ref: '#/components/schemas/CapitalizationBondsParticipantIdentification'
-        insuranceCompanyIdentification:
-          $ref: '#/components/schemas/CapitalizationBondsSocietyIdentification'
-        product:
-          $ref: '#/components/schemas/CapitalizationBondsProduct'
-      additionalProperties: false
-    CapitalizationBondsParticipantIdentification:
-      type: object
-      description: Conjunto de informações relativas ao Título de Capitalização
-      required:
-        - brand
-        - name
-        - cnpjNumber
-      properties:
-        brand:
-          type: string
-          description: 'Nome da marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes.'
-          maxLength: 120
-          example: ''
-        name:
-          type: string
-          description: |
-            Nome da Instituição, pertencente à marca, responsável pela comercialização do produto/serviço.
-            p.ex.'Empresa da Organização A'
-          maxLength: 120
-          example: ''
-        cnpjNumber:
-          type: string
-          description: 'Número completo do CNPJ da instituição. O CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. Deve-se ter apenas os números do CNPJ, sem máscara.'
-          maxLength: 14
-          example: ''
-      additionalProperties: false
-    CapitalizationBondsSocietyIdentification:
-      type: object
-      description: Conjunto de informações relativas ao Título de Capitalização
-      required:
-        - name
-        - cnpjNumber
-      properties:
-        name:
-          type: string
-          description: |
-            Nome da Sociedade Seguradora. 
-            p. ex. ‘Sociedade A'
-          maxLength: 80
-          example: ACME cap da ACME seguros
-        cnpjNumber:
-          type: string
-          description: 'Número completo do CNPJ da instituição. O CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. Deve-se ter apenas os números do CNPJ, sem máscara.'
-          maxLength: 14
-          example: '12345678901234'
       additionalProperties: false
     CapitalizationBondsProduct:
       type: object
@@ -241,20 +475,6 @@ components:
         - PAGAMENTO_MENSAL
         - PAGAMENTO_PERIODICO
       example: PAGAMENTO_UNICO
-    ResponseCapitalizationBondsProductIdentification:
-      type: object
-      required:
-        - data
-        - links
-        - meta
-      properties:
-        data:
-          $ref: '#/components/schemas/CapitalizationBondsProductIdentificationData'
-        links:
-          $ref: '#/components/schemas/Links'
-        meta:
-          $ref: '#/components/schemas/Meta'
-      additionalProperties: false
     CapitalizationBondsProductIdentificationData:
       type: object
       description: Conjunto de informações do Título de Capitalização
@@ -756,27 +976,25 @@ components:
         minimum: 1
         format: int32
         maximum: 1000
-    productId:
-      name: productId
-      in: path
-      description: Identifica de forma única um Título de Capitalização
-      required: true
-      schema:
-        type: string
-        maxLength: 100
   responses:
+    OKResponseExchangeAndAcquiringServicesAcquiringServicesData:
+      description: Taxas e tarifas por serviços obtidos com sucesso.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OKResponseGetAcquiringServices'
+    OKResponseExchangeAndAcquiringServicesExchangeData:
+      description: Dados de operações de câmbio da instituição obtidos com sucesso.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OKResponseGetExchange'
     OKResponseCapitalizationBondsProductsList:
       description: Dados de título(s) de capitalização obtidos com sucesso.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ResponseCapitalizationBondsProductsList'
-    OKResponseCapitalizationBondsProductIdentification:
-      description: Dados de um produto de capitalização obtidos com sucesso.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ResponseCapitalizationBondsProductIdentification'
     BadRequest:
       description: 'A requisição foi malformada, omitindo atributos obrigatórios, seja no payload ou através de atributos na URL.'
       content:

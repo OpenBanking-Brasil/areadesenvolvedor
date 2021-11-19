@@ -23,6 +23,7 @@ swagger-cli bundle source/swagger/parts/_payments_apis_part.yml --outfile source
 swagger-cli bundle source/swagger/parts/_open_banking_fase3_apis_part.yml --outfile source/swagger/swagger_open_banking_fase3_apis.yml --type=yaml
 
 # Open Banking Fase 4
+swagger-cli bundle source/swagger/parts/_exchange_and_acquiring_services_apis_part.yml --outfile source/swagger/swagger_exchange_and_acquiring_services_apis.yaml --type=yaml
 swagger-cli bundle source/swagger/parts/_capitalization_bonds_apis_part.yml --outfile source/swagger/swagger_capitalization_bonds_apis.yaml --type=yaml
 swagger-cli bundle source/swagger/parts/_open_banking_fase4_apis_part.yml --outfile source/swagger/swagger_open_banking_fase4_apis.yml --type=yaml
 
