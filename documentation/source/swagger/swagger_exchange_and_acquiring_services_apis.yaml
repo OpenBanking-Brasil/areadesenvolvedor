@@ -54,7 +54,6 @@ components:
       required:
         - data
         - links
-        - meta
       properties:
         data:
           type: object
@@ -186,14 +185,39 @@ components:
                     pattern: 'D+[0-9]*'
                     maxLength: 3
                     example: D+2
-                    description: |
-                      Formato da taxa online.  
+                    description: Formato da taxa online.
                   foreignCurrency:
-                    $ref: '#/paths/~1exchange/get/responses/200/content/application~1json/schema/properties/data/properties/foreignCurrency'
+                    type: string
+                    description: |
+                      "É a moeda estrangeira, segundo modelo ISO 4217. (Vide Enum)
+                      - USD
+                      - EUR
+                    maxLength: 3
+                    enum:
+                      - USD
+                      - EUR
+                    example: USD
                   transactionType:
-                    $ref: '#/paths/~1exchange/get/responses/200/content/application~1json/schema/properties/data/properties/transactionType'
+                    type: string
+                    description: |
+                      "Determina se o Banco está comprando ou vendendo a moeda estrangeira nas operações
+                      spot,  que se liquidam em até dois dias (não aplica-se a operações futuras. (Vide Enum)
+                      - Compra
+                      - Venda
+                    maxLength: 6
+                    enum:
+                      - COMPRA
+                      - VENDA
+                    example: COMPRA
                   targetAudience:
-                    $ref: '#/paths/~1exchange/get/responses/200/content/application~1json/schema/properties/data/properties/targetAudience'
+                    type: string
+                    description: Média das operações PF/PJ.
+                    maxLength: 5
+                    enum:
+                      - PF
+                      - PJ
+                      - PF_PJ
+                    example: PF
                   value:
                     type: number
                     example: 5.5023
@@ -247,7 +271,6 @@ components:
       required:
         - data
         - links
-        - meta
       properties:
         data:
           type: object
@@ -277,29 +300,31 @@ components:
                 Sigla da Tarifa cobrada sobre o Serviço de Credenciamento informado.
             price:
               type: array
-              description: '4 Faixas de igual tamanho, com suas respectivas medianas e percentuais de clientes.'
-              required:
-                - interval
-                - value
-                - rate
-              properties:
-                interval:
-                  type: string
-                  enum:
-                    - 1_FAIXA
-                    - 2_FAIXA
-                    - 3_FAIXA
-                    - 4_FAIXA
-                  example: 1_FAIXA
-                  description: |
-                    Identificação do intervalo a ser exibido.
-                value:
-                  type: number
-                  example: 0.0203
-                rate:
-                  type: number
-                  example: 0.5
-              additionalProperties: false
+              items:
+                type: object
+                description: '4 Faixas de igual tamanho, com suas respectivas medianas e percentuais de clientes.'
+                required:
+                  - interval
+                  - value
+                  - rate
+                properties:
+                  interval:
+                    type: string
+                    enum:
+                      - 1_FAIXA
+                      - 2_FAIXA
+                      - 3_FAIXA
+                      - 4_FAIXA
+                    example: 1_FAIXA
+                    description: |
+                      Identificação do intervalo a ser exibido.
+                  value:
+                    type: number
+                    example: 0.0203
+                  rate:
+                    type: number
+                    example: 0.5
+                additionalProperties: false
             chargingTriggerInfo:
               type: string
               pattern: '[\w\W\s]*'
