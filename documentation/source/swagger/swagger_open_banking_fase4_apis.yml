@@ -19,15 +19,28 @@ tags:
       #### Especificação em OAS 3.0
 
       <a href="swagger/swagger_capitalization_bonds_apis.yaml" target="_blank">Download da Especificação (OAS 3.0)</a>
+  - name: API - Câmbio e Credenciamento
+    description: |
+      |Versão|
+      |:-----|
+      |1.0.0-rc1.0|
+
+      #### Visão Geral
+
+      As instituições financeiras participantes podem consultar as informações de câmbio de outras instituições participantes
+
+      #### Especificação em OAS 3.0
+
+      <a href="swagger/swagger_exchange_and_acquiring_services_apis.yaml" target="_blank">Download da Especificação (OAS 3.0)</a>
 paths:
   /capitalization-bonds/v1/products:
     get:
       tags:
         - API - Títulos de Capitalização
-      summary: Conjunto de informações dos Títulos de Capitalização
+      summary: Lista de títulos de capitalização
       operationId: capitalizationBondsGetProducts
       description: |
-        Método para obter a lista de Títulos de Capitalização
+        Método para obter a lista de todos os títulos de Capitalização de uma instituição
 
         ### Dicionário de dados
 
@@ -52,27 +65,54 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  '/capitalization-bonds/v1/products/{productId}':
+  /exchange-and-acquiring-services/v1/exchange:
     get:
       tags:
-        - API - Títulos de Capitalização
-      summary: Obtém os dados do Título de Capitalização por productId
-      operationId: capitalizationBondsGetProductsProductId
+        - API - Câmbio e Credenciamento
+      summary: Conjunto de informações de Câmbio.
+      operationId: getExchange
       description: |
-        Método para obter os dados do Título de Capitalização por productId
+        Método para disponibilizar o valor VET.
 
-        ### Dicionário de dados
+         ### Dicionário de dados
 
-        Campos de resposta do endpoint de `/products/{productId}`
+         Campos de resposta do endpoint de `/exchange`
 
-        <a href='dictionary/capitalizationBondsGetProductsProductId_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
+         <a href='dictionary/exchangeAndAcquiringServicesGetExchange_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
 
-        Consulte a seção **Convenções de payload** para obter mais informações sobre [Atributos Obrigatórios / Opcionais](#convencoes-de-propriedade-dos-atributos).
-      parameters:
-        - $ref: '#/components/parameters/productId'
+         Consulte a seção **Convenções de payload** para obter mais informações sobre [Atributos Obrigatórios / Opcionais](#convencoes-de-propriedade-dos-atributos).
       responses:
         '200':
-          $ref: '#/components/responses/OKResponseCapitalizationBondsProductIdentification'
+          $ref: '#/components/responses/OKResponseExchangeAndAcquiringServicesExchangeData'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /exchange-and-acquiring-services/v1/acquiring-services:
+    get:
+      tags:
+        - API - Câmbio e Credenciamento
+      summary: Conjunto de informações de Credenciamento.
+      operationId: getAcquiringServices
+      description: |
+        Método para disponibilizar as taxas e tarifas por serviços.
+
+         ### Dicionário de dados
+
+         Campos de resposta do endpoint de `/acquiring-services`
+
+         <a href='dictionary/exchangeAndAcquiringServicesGetAcquiringServices_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
+
+         Consulte a seção **Convenções de payload** para obter mais informações sobre [Atributos Obrigatórios / Opcionais](#convencoes-de-propriedade-dos-atributos).
+      responses:
+        '200':
+          $ref: '#/components/responses/OKResponseExchangeAndAcquiringServicesAcquiringServicesData'
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
@@ -85,6 +125,285 @@ paths:
           $ref: '#/components/responses/InternalServerError'
 components:
   schemas:
+    OKResponseGetAcquiringServices:
+      type: object
+      required:
+        - data
+        - links
+      properties:
+        data:
+          $ref: '#/components/schemas/AcquiringServicesContractData'
+        links:
+          $ref: '#/components/schemas/Links'
+      additionalProperties: false
+    AcquiringServicesContractData:
+      type: object
+      description: Conjunto de informações referentes às informações de credenciamento
+      required:
+        - name
+        - code
+        - chargingTriggerInfo
+      properties:
+        name:
+          $ref: '#/components/schemas/EnumAcquiringServicesName'
+        code:
+          $ref: '#/components/schemas/EnumAcquiringServicesCode'
+        price:
+          type: array
+          items:
+            $ref: '#/components/schemas/Price'
+        chargingTriggerInfo:
+          type: string
+          pattern: '[\w\W\s]*'
+          maxLength: 200
+          example: NA
+          description: |
+            Recebimento através de transação de cartão.
+        minimum:
+          type: number
+        maximum:
+          type: number
+      additionalProperties: false
+    Price:
+      type: object
+      description: '4 Faixas de igual tamanho, com suas respectivas medianas e percentuais de clientes.'
+      required:
+        - interval
+        - value
+        - rate
+      properties:
+        interval:
+          $ref: '#/components/schemas/EnumAcquiringServicesInterval'
+        value:
+          type: number
+          example: 0.0203
+        rate:
+          type: number
+          example: 0.5
+      additionalProperties: false
+    EnumAcquiringServicesCode:
+      type: string
+      enum:
+        - MDR_CREDITO
+        - MDR_DEBITO
+      example: MDR_CREDITO
+      description: |
+        Sigla da Tarifa cobrada sobre o Serviço de Credenciamento informado.
+    EnumAcquiringServicesInterval:
+      type: string
+      enum:
+        - 1_FAIXA
+        - 2_FAIXA
+        - 3_FAIXA
+        - 4_FAIXA
+      example: 1_FAIXA
+      description: |
+        Identificação do intervalo a ser exibido.
+    EnumAcquiringServicesName:
+      type: string
+      enum:
+        - TAXA_DE_DESCONTO_NA_MODALIDADE_CREDITO
+        - TAXA_DE_DESCONTO_NA_MODALIDADE_DEBITO
+      example: TAXA_DE_DESCONTO_NA_MODALIDADE_CREDITO
+      description: |
+        Nome da tarifa cobrada sobre o serviço de credenciamento, para pessoa física/jurídica.
+        1. Taxa de Desconto na Modalidade Crédito
+        2. Taxa de Desconto na Modalidade Débito
+    OKResponseGetExchange:
+      type: object
+      required:
+        - data
+        - links
+      properties:
+        data:
+          $ref: '#/components/schemas/ExchangeContractData'
+        links:
+          $ref: '#/components/schemas/Links'
+      additionalProperties: false
+    ExchangeContractData:
+      type: object
+      description: Conjunto de informações referentes às informações de câmbio
+      required:
+        - participantIdentification
+        - transactionType
+        - foreignCurrency
+      properties:
+        participantIdentification:
+          $ref: '#/components/schemas/ParticipantIdentification'
+        transactionType:
+          $ref: '#/components/schemas/EnumExchangeTransactionType'
+        foreignCurrency:
+          $ref: '#/components/schemas/EnumExchangeForeignCurrency'
+        transactionCategory:
+          $ref: '#/components/schemas/EnumExchangeTransactionCategory'
+        deliveryForeignCurrency:
+          $ref: '#/components/schemas/EnumExchangeDeliveryForeignCurrency'
+        rangeTransactionCategory:
+          $ref: '#/components/schemas/EnumExchangeRangeTransactionCategory'
+        targetAudience:
+          $ref: '#/components/schemas/EnumExchangeTargetAudience'
+        vetAmount:
+          type: number
+          example: 5.5023
+        onlineRate:
+          type: array
+          items:
+            $ref: '#/components/schemas/OnlineRate'
+      additionalProperties: false
+    ParticipantIdentification:
+      type: object
+      description: Objeto de identificação do participante OB.
+      required:
+        - brand
+        - name
+        - cnpjNumber
+      properties:
+        brand:
+          type: string
+          pattern: '[\w\W\s]*'
+          maxLength: 120
+          example: NA
+          description: |
+            Nome da Marca reportada pelo participante do Open Banking.  
+        name:
+          type: string
+          pattern: '[\w\W\s]*'
+          maxLength: 120
+          example: NA
+          description: |
+            Nome da Instituição, pertencente à Marca, responsável pela Dependência. 
+        cnpjNumber:
+          type: string
+          pattern: '[\d]*'
+          maxLength: 14
+          example: NA
+          description: |
+            Número completo do CNPJ da instituição responsável pela dependência o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. 
+      additionalProperties: false
+    OnlineRate:
+      type: object
+      description: Taxa disponibilizada (taxa online) pelas instituições no formato D+0/D+2 (valor U$100.000 operações câmbio pronto) separado por moeda dólar e euro compra e venda PF/PJ.
+      required:
+        - term
+        - foreignCurrency
+        - transactionType
+        - targetAudience
+        - value
+      properties:
+        term:
+          type: string
+          pattern: 'D+[0-9]*'
+          maxLength: 3
+          example: D+2
+          description: Formato da taxa online.
+        foreignCurrency:
+          type: string
+          description: |
+            "É a moeda estrangeira, segundo modelo ISO 4217. (Vide Enum)
+            - USD
+            - EUR
+          maxLength: 3
+          enum:
+            - USD
+            - EUR
+          example: USD
+        transactionType:
+          type: string
+          description: |
+            "Determina se o Banco está comprando ou vendendo a moeda estrangeira nas operações
+            spot,  que se liquidam em até dois dias (não aplica-se a operações futuras. (Vide Enum)
+            - Compra
+            - Venda
+          maxLength: 6
+          enum:
+            - COMPRA
+            - VENDA
+          example: COMPRA
+        targetAudience:
+          type: string
+          description: Média das operações PF/PJ.
+          maxLength: 5
+          enum:
+            - PF
+            - PJ
+            - PF_PJ
+          example: PF
+        value:
+          type: number
+          example: 5.5023
+      additionalProperties: false
+    EnumExchangeDeliveryForeignCurrency:
+      type: string
+      description: |
+        "A classificação do tipo de operação, conforme a circular BCB nº 3690 de 16/12/2013. (Vide Enum)
+        - ESPECIE_CARTAO_PRE_PAGO
+        - TELETRANSMISSAO_SWIFT
+      maxLength: 23
+      enum:
+        - ESPECIE_CARTAO_PRE_PAGO
+        - TELETRANSMISSAO_SWIFT
+      example: ESPECIE_CARTAO_PRE_PAGO
+    EnumExchangeForeignCurrency:
+      type: string
+      description: |
+        "É a moeda estrangeira, segundo modelo ISO 4217. (Vide Enum)
+        - USD
+        - EUR
+      maxLength: 3
+      enum:
+        - USD
+        - EUR
+      example: USD
+    EnumExchangeRangeTransactionCategory:
+      type: string
+      description: A classificação conforme a circular BCB nº 4015.
+      maxLength: 17
+      enum:
+        - '0,01_200'
+        - '200,01_500'
+        - '500,01_1.000'
+        - '1.000,01_3.000'
+        - '3.000,01_10.000'
+        - '10.000,01_30.000'
+        - '30.000,01_100.000'
+      example: '0,01_200'
+    EnumExchangeTargetAudience:
+      type: string
+      description: Média das operações PF/PJ.
+      maxLength: 5
+      enum:
+        - PF
+        - PJ
+        - PF_PJ
+      example: PF
+    EnumExchangeTransactionCategory:
+      type: string
+      description: 'A classificação do tipo de operação, conforme a circular BCB nº 3690 de 16/12/2013.'
+      maxLength: 68
+      enum:
+        - COMERCIO_EXTERIOR
+        - TRANSPORTE
+        - SEGUROS
+        - VIAGENS_INTERNACIONAIS
+        - TRANSFERENCIAS_UNILATERAIS
+        - SERVICOS_DIVERSOS
+        - RENDAS_DE_CAPITAIS
+        - CAPITAIS_BRASILEIROS
+        - CAPITAIS_ESTRANGEIROS
+        - PRESTACAO_DE_SERVICO_DE_PAGAMENTO_OU_TRANSFERENCIA_INTERNACIONAL_EFX
+      example: COMERCIO_EXTERIOR
+    EnumExchangeTransactionType:
+      type: string
+      description: |
+        "Determina se o Banco está comprando ou vendendo a moeda estrangeira nas operações
+        spot,  que se liquidam em até dois dias (não aplica-se a operações futuras. (Vide Enum)
+        - Compra
+        - Venda
+      maxLength: 6
+      enum:
+        - COMPRA
+        - VENDA
+      example: COMPRA
     ResponseCapitalizationBondsProductsList:
       type: object
       required:
@@ -96,73 +415,12 @@ components:
           type: array
           description: Conjunto de informações do Título de Capitalização
           items:
-            $ref: '#/components/schemas/CapitalizationBondsProductData'
+            $ref: '#/components/schemas/CapitalizationBondsProductIdentificationData'
           minItems: 0
         links:
           $ref: '#/components/schemas/Links'
         meta:
           $ref: '#/components/schemas/Meta'
-      additionalProperties: false
-    CapitalizationBondsProductData:
-      type: object
-      description: Conjunto de informações do Título de Capitalização
-      required:
-        - participantIdentification
-        - insuranceCompanyIdentification
-        - product
-      properties:
-        participantIdentification:
-          $ref: '#/components/schemas/CapitalizationBondsParticipantIdentification'
-        insuranceCompanyIdentification:
-          $ref: '#/components/schemas/CapitalizationBondsSocietyIdentification'
-        product:
-          $ref: '#/components/schemas/CapitalizationBondsProduct'
-      additionalProperties: false
-    CapitalizationBondsParticipantIdentification:
-      type: object
-      description: Conjunto de informações relativas ao Título de Capitalização
-      required:
-        - brand
-        - name
-        - cnpjNumber
-      properties:
-        brand:
-          type: string
-          description: 'Nome da marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes.'
-          maxLength: 120
-          example: ''
-        name:
-          type: string
-          description: |
-            Nome da Instituição, pertencente à marca, responsável pela comercialização do produto/serviço.
-            p.ex.'Empresa da Organização A'
-          maxLength: 120
-          example: ''
-        cnpjNumber:
-          type: string
-          description: 'Número completo do CNPJ da instituição. O CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. Deve-se ter apenas os números do CNPJ, sem máscara.'
-          maxLength: 14
-          example: ''
-      additionalProperties: false
-    CapitalizationBondsSocietyIdentification:
-      type: object
-      description: Conjunto de informações relativas ao Título de Capitalização
-      required:
-        - name
-        - cnpjNumber
-      properties:
-        name:
-          type: string
-          description: |
-            Nome da Sociedade Seguradora. 
-            p. ex. ‘Sociedade A'
-          maxLength: 80
-          example: ACME cap da ACME seguros
-        cnpjNumber:
-          type: string
-          description: 'Número completo do CNPJ da instituição. O CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. Deve-se ter apenas os números do CNPJ, sem máscara.'
-          maxLength: 14
-          example: '12345678901234'
       additionalProperties: false
     CapitalizationBondsProduct:
       type: object
@@ -241,20 +499,6 @@ components:
         - PAGAMENTO_MENSAL
         - PAGAMENTO_PERIODICO
       example: PAGAMENTO_UNICO
-    ResponseCapitalizationBondsProductIdentification:
-      type: object
-      required:
-        - data
-        - links
-        - meta
-      properties:
-        data:
-          $ref: '#/components/schemas/CapitalizationBondsProductIdentificationData'
-        links:
-          $ref: '#/components/schemas/Links'
-        meta:
-          $ref: '#/components/schemas/Meta'
-      additionalProperties: false
     CapitalizationBondsProductIdentificationData:
       type: object
       description: Conjunto de informações do Título de Capitalização
@@ -279,7 +523,7 @@ components:
         quotas:
           type: array
           description: Informações relativas às taxas da Quotas praticadas para cada Parcela
-          minItems: 0
+          minItems: 1
           items:
             $ref: '#/components/schemas/CapitalizationBondsProductQuota'
         periodMonths:
@@ -307,7 +551,7 @@ components:
         draws:
           type: array
           description: Informações relativas aos Sorteios
-          minItems: 0
+          minItems: 1
           items:
             $ref: '#/components/schemas/PrizeDraw'
         additionalInfo:
@@ -319,14 +563,14 @@ components:
           type: string
           description: |
             Campo aberto (possibilidade de incluir URL).
-            Observação: As URLs são limitadas a 2048 caracteres mas, para o contexto do Open Insurance , foi adotado a metade deste tamanho (1024). 
+            Observação: As URLs são limitadas a 2048 caracteres mas, para o contexto do Open Insurance , foi adotado a metade deste tamanho (1024).
             tamanho. p.ex. ‘https://ACME.exemplo/capitalizacao/tradicional/pdf/condicoes_gerais.’
           maxLength: 1024
           example: 'https://ACME.exemplo/capitalizacao/tradicional/pdf/condicoes_gerais'
         targetAudience:
           type: array
           description: 'Público a quem se destina o produto, podendo ser Pessoa Natural ou Pessoa Jurídica.'
-          minItems: 0
+          minItems: 1
           items:
             $ref: '#/components/schemas/EnumTargetAudience'
       additionalProperties: false
@@ -360,7 +604,8 @@ components:
         - loadingRate
       properties:
         tranche:
-          type: integer
+          type: number
+          format: integer
           description: Número da parcela.
           maxLength: 3
           example: 999
@@ -390,7 +635,12 @@ components:
         - interestRate
         - adjustmentIndex
         - contributionAmount
-        - earlyRedemption
+        - minimum
+        - maximum
+        - allowed
+        - earlyRedemptions
+        - tranche
+        - rate
         - finalRedemptionRate
         - redemptionGraceMonths
       properties:
@@ -404,55 +654,66 @@ components:
           $ref: '#/components/schemas/ContributionPayment/properties/adjustmentIndex'
         adjustmentIndexOthers:
           type: string
-          description: Lista string a ser preenchida pelas participantes quando houver ‘Outros’ no campo ‘Índice de atualização’.
+          description: Preenchida pelas participantes quando houver ‘Outros’ no campo ‘Índice de atualização’.
           maxLength: 10
           example: ''
         contributionAmount:
-          type: object
+          type: number
+          format: double
           description: |
-            Corresponde ao pagamento efetuado pelo subscritor à sociedade de capitalização para a aquisição do título de capitalização, podendo ser única, periódica ou mensal (Resolução CNSP 384/20).
-          required:
-            - periodicity
-          properties:
-            periodicity:
-              $ref: '#/components/schemas/EnumCapitalizationBondsFrequency'
-            periodicityOthers:
-              type: string
-              description: Lista string a ser preenchida pelas participantes quando houver ‘OUTROS’ no campo ‘periodicity’.
-              maxLength: 20
-              example: ''
-            minimum:
-              type: number
-              description: |
-                Corresponde ao pagamento efetuado pelo subscritor à sociedade de capitalização para a aquisição do título de capitalização, podendo ser única, periódica ou mensal (Resolução CNSP 384/20). Valores em reais (R$). Esclarecimentos adicionais SUSEP.
-                Na modalidade Tradicional, informar a faixa de valor mínimo em R$ de contribuição ao plano. Para as demais modalidades, informar a lista com os valores permitidos de contribuição ao plano. Em todas as situações indicar para qual periodicidade de pagamento se aplicam os valores: pagamento mensal, pagamento único ou periódico.
-              maxLength: 200
-              example: 500
-            maximum:
-              type: number
-              description: |
-                Corresponde ao pagamento efetuado pelo subscritor à sociedade de capitalização para a aquisição do título de capitalização, podendo ser única, periódica ou mensal (Resolução CNSP 384/20). Valores em reais (R$). Esclarecimentos adicionais SUSEP.
-                Na modalidade Tradicional, informar a faixa de valor máximo em R$ de contribuição ao plano. Para as demais modalidades, informar a lista com os valores permitidos de contribuição ao plano. Em todas as situações indicar para qual periodicidade de pagamento se aplicam os valores: pagamento mensal, pagamento único ou periódico.
-              maxLength: 200
-              example: 5000
-            allowed:
-              type: array
-              description: |
-                Corresponde ao pagamento efetuado pelo subscritor à sociedade de capitalização para a aquisição do título de capitalização, podendo ser única, periódica ou mensal (Resolução CNSP 384/20). Valores em reais (R$). Esclarecimentos adicionais SUSEP.
-                Na modalidade Tradicional, informar a faixa de valor mínimo e máximo em R$ de contribuição ao plano. Para as demais modalidades, informar a lista com os valores permitidos de contribuição ao plano. Em todas as situações indicar para qual periodicidade de pagamento se aplicam os valores: pagamento mensal, pagamento único ou periódico.
-              items:
-                type: number
-                example: 500
-          additionalProperties: false
+            Corresponde ao pagamento efetuado pelo subscritor à sociedade de capitalização para a aquisição do título de capitalização, podendo ser única, periódica ou mensal (Resolução CNSP 384/20). Valores em reais (R$). Esclarecimentos adicionais SUSEP.
+            Na modalidade Tradicional, informar a faixa de valor mínimo e máximo em R$ de contribuição ao plano.
+            Para as demais modalidades, informar a lista com os valores permitidos de contribuição ao plano.
+            Em todas as situações indicar para qual periodicidade de pagamento se aplicam os valores: pagamento mensal, pagamento único ou periódico.
+          maxLength: 200
+          example: 5
+        periodicity:
+          $ref: '#/components/schemas/EnumCapitalizationBondsFrequency'
+        periodicityOthers:
+          type: string
+          description: Preenchida pelas participantes quando houver ‘OUTROS’ no campo ‘periodicity’.
+          maxLength: 20
+          example: ''
+        minimum:
+          type: number
+          format: double
+          description: |
+            Corresponde ao pagamento efetuado pelo subscritor à sociedade de capitalização para a aquisição do título de capitalização, podendo ser única, periódica ou mensal (Resolução CNSP 384/20). Valores em reais (R$). Esclarecimentos adicionais SUSEP.
+            Na modalidade Tradicional, informar a faixa de valor mínimo em R$ de contribuição ao plano. Para as demais modalidades, informar a lista com os valores permitidos de contribuição ao plano. Em todas as situações indicar para qual periodicidade de pagamento se aplicam os valores: pagamento mensal, pagamento único ou periódico.
+          maxLength: 200
+          example: 1
+        maximum:
+          type: number
+          format: double
+          description: |
+            Corresponde ao pagamento efetuado pelo subscritor à sociedade de capitalização para a aquisição do título de capitalização, podendo ser única, periódica ou mensal (Resolução CNSP 384/20). Valores em reais (R$). Esclarecimentos adicionais SUSEP.
+            Na modalidade Tradicional, informar a faixa de valor máximo em R$ de contribuição ao plano. Para as demais modalidades, informar a lista com os valores permitidos de contribuição ao plano. Em todas as situações indicar para qual periodicidade de pagamento se aplicam os valores: pagamento mensal, pagamento único ou periódico.
+          maxLength: 200
+          example: 1
+        allowed:
+          type: number
+          format: double
+          description: |
+            Corresponde ao pagamento efetuado pelo subscritor à sociedade de capitalização para a aquisição do título de capitalização, podendo ser única, periódica ou mensal (Resolução CNSP 384/20). Valores em reais (R$). Esclarecimentos adicionais SUSEP.
+            Na modalidade Tradicional, informar a faixa de valor máximo em R$ de contribuição ao plano. Para as demais modalidades, informar a lista com os valores permitidos de contribuição ao plano. Em todas as situações indicar para qual periodicidade de pagamento se aplicam os valores: pagamento mensal, pagamento único ou periódico.
+          maxLength: 200
+          example: 1
         earlyRedemptions:
-          type: array
-          description: |
-            Possibilidade de o titular efetuar o resgate do capital constituído antes do fim do prazo de vigência do título, 
-            podendo ocorrer por solicitação expressa do titular ou por contemplação em sorteio com liquidação antecipada (Resolução CNSP 384/20). 
-            Em percentuais a cada parcela (meses de vigência) Obs: No caso de garantia, não contempla a extinção antecipada do contrato.
-          minItems: 0
-          items:
-            $ref: '#/components/schemas/CapitalizationBondsProductEarlyRedemption'
+          type: string
+          description: 'Possibilidade de o titular efetuar o resgate do capital constituído antes do fim do prazo de vigência do título, podendo ocorrer por solicitação expressa do titular ou por contemplação em sorteio com liquidação antecipada (Resolução CNSP 384/20). Em percentuais a cada parcela (meses de vigência) Obs. No caso de garantia, não contempla a extinção antecipada do contrato.'
+          maxLength: 200
+          example: ''
+        tranche:
+          type: number
+          description: Parcela relativa ao Resgate Antecipado
+          maxLength: 3
+          example: 1
+        rate:
+          type: number
+          format: double
+          description: Parcela relativa ao Resgate Antecipado
+          maxLength: 3
+          example: 1
         finalRedemptionRate:
           type: number
           format: double
@@ -461,6 +722,7 @@ components:
           example: 100.002
         redemptionGraceMonths:
           type: number
+          format: integer
           description: 'Intervalo de tempo mínimo entre contratação e resgate do direito, em meses.'
           maxLength: 3
           example: 999
@@ -491,7 +753,7 @@ components:
           $ref: '#/components/schemas/CapitalizationBondsProductPaymentMethod'
         paymentMethodOthers:
           type: string
-          description: Lista string a ser preenchida pelas participantes quando houver ‘OUTROS’ no campo ‘paymentMethod’.
+          description: Preenchido pelas participantes quando houver ‘OUTROS’ no campo ‘paymentMethod’.
           maxLength: 20
           example: ''
         adjustmentIndex:
@@ -515,7 +777,7 @@ components:
               6. Outros
         adjustmentIndexOthers:
           type: string
-          description: Lista string a ser preenchida pelas participantes quando houver ‘OUTROS’ no campo ‘adjustmentIndex’.
+          description: Preenchido pelas participantes quando houver ‘OUTROS’ no campo ‘adjustmentIndex’.
           maxLength: 20
           example: ''
       additionalProperties: false
@@ -568,7 +830,7 @@ components:
           $ref: '#/components/schemas/EnumCapitalizationBondsFrequency'
         periodicityOthers:
           type: string
-          description: Lista string a ser preenchida pelas participantes quando houver ‘OUTROS’ no campo ‘periodicity’.
+          description: Preenchido pelas participantes quando houver ‘OUTROS’ no campo ‘periodicity’.
           maxLength: 20
           example: ''
         quantity:
@@ -756,27 +1018,25 @@ components:
         minimum: 1
         format: int32
         maximum: 1000
-    productId:
-      name: productId
-      in: path
-      description: Identifica de forma única um Título de Capitalização
-      required: true
-      schema:
-        type: string
-        maxLength: 100
   responses:
+    OKResponseExchangeAndAcquiringServicesAcquiringServicesData:
+      description: Taxas e tarifas por serviços obtidos com sucesso.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OKResponseGetAcquiringServices'
+    OKResponseExchangeAndAcquiringServicesExchangeData:
+      description: Dados de operações de câmbio da instituição obtidos com sucesso.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OKResponseGetExchange'
     OKResponseCapitalizationBondsProductsList:
       description: Dados de título(s) de capitalização obtidos com sucesso.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ResponseCapitalizationBondsProductsList'
-    OKResponseCapitalizationBondsProductIdentification:
-      description: Dados de um produto de capitalização obtidos com sucesso.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ResponseCapitalizationBondsProductIdentification'
     BadRequest:
       description: 'A requisição foi malformada, omitindo atributos obrigatórios, seja no payload ou através de atributos na URL.'
       content:
