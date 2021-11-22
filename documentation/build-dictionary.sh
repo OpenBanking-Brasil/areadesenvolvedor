@@ -17,6 +17,7 @@ APIS=(
   "accounts_apis"
   "payments_apis"
   "capitalization_bonds_apis"
+  "investments_apis"
   "exchange_and_acquiring_services_apis"
 )
 
