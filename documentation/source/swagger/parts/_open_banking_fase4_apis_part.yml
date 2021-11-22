@@ -89,6 +89,21 @@ tags:
       #### Especificação em OAS 3.0
 
       <a href="swagger/swagger_investments_apis.yaml" target="_blank">Download da Especificação (OAS 3.0)</a>
+
+  - name: API - Câmbio e Credenciamento
+      description: |
+        |Versão|
+        |:-----|
+        |1.0.0-rc1.0|
+
+        #### Visão Geral
+
+        As instituições financeiras participantes podem consultar as informações de câmbio de outras instituições participantes
+
+        #### Especificação em OAS 3.0
+
+        <a href="swagger/swagger_exchange_and_acquiring_services_apis.yaml" target="_blank">Download da Especificação (OAS 3.0)</a>
+
 paths:
   /capitalization-bonds/v1/products:
     get:
@@ -283,9 +298,100 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
+  /exchange-and-acquiring-services/v1/exchange:
+    get:
+      tags:
+        - API - Câmbio e Credenciamento
+      summary: Conjunto de informações de Câmbio.
+      operationId: getExchange
+      description: |
+        Método para disponibilizar o valor VET.
 
+         ### Dicionário de dados
+
+         Campos de resposta do endpoint de `/exchange`
+
+         <a href='dictionary/exchangeAndAcquiringServicesGetExchange_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
+
+         Consulte a seção **Convenções de payload** para obter mais informações sobre [Atributos Obrigatórios / Opcionais](#convencoes-de-propriedade-dos-atributos).
+
+      responses:
+        '200':
+          $ref: '#/components/responses/OKResponseExchangeAndAcquiringServicesExchangeData'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /exchange-and-acquiring-services/v1/acquiring-services:
+    get:
+      tags:
+        - API - Câmbio e Credenciamento
+      summary: Conjunto de informações de Credenciamento.
+      operationId: getAcquiringServices
+      description: |
+        Método para disponibilizar as taxas e tarifas por serviços.
+
+         ### Dicionário de dados
+
+         Campos de resposta do endpoint de `/acquiring-services`
+
+         <a href='dictionary/exchangeAndAcquiringServicesGetAcquiringServices_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
+
+         Consulte a seção **Convenções de payload** para obter mais informações sobre [Atributos Obrigatórios / Opcionais](#convencoes-de-propriedade-dos-atributos).
+
+      responses:
+        '200':
+          $ref: '#/components/responses/OKResponseExchangeAndAcquiringServicesAcquiringServicesData'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
 components:
   schemas:
+    OKResponseGetAcquiringServices:
+      $ref: ./schemas/exchange_and_acquiring_services_apis/OkResponseGetAcquiringServicesContract.yaml
+    AcquiringServicesContractData:
+      $ref: ./schemas/exchange_and_acquiring_services_apis/AcquiringServicesContractData.yaml
+    Price:
+      $ref: ./schemas/exchange_and_acquiring_services_apis/Price.yaml
+    EnumAcquiringServicesCode:
+      $ref: ./schemas/enum/EnumAcquiringServicesCode.yaml
+    EnumAcquiringServicesInterval:
+      $ref: ./schemas/enum/EnumAcquiringServicesInterval.yaml
+    EnumAcquiringServicesName:
+      $ref: ./schemas/enum/EnumAcquiringServicesName.yaml
+    OKResponseGetExchange:
+      $ref: ./schemas/exchange_and_acquiring_services_apis/OkResponseGetExchangeContract.yaml
+    ExchangeContractData:
+      $ref: ./schemas/exchange_and_acquiring_services_apis/ExchangeContractData.yaml
+    ParticipantIdentification:
+      $ref: ./schemas/exchange_and_acquiring_services_apis/ParticipantIdentification.yaml
+    OnlineRate:
+      $ref: ./schemas/exchange_and_acquiring_services_apis/OnlineRate.yaml
+    EnumExchangeDeliveryForeignCurrency:
+      $ref: ./schemas/enum/EnumExchangeDeliveryForeignCurrency.yaml
+    EnumExchangeForeignCurrency:
+      $ref: ./schemas/enum/EnumExchangeForeignCurrency.yaml
+    EnumExchangeRangeTransactionCategory:
+      $ref: ./schemas/enum/EnumExchangeRangeTransactionCategory.yaml
+    EnumExchangeTargetAudience:
+      $ref: ./schemas/enum/EnumExchangeTargetAudience.yaml
+    EnumExchangeTransactionCategory:
+      $ref: ./schemas/enum/EnumExchangeTransactionCategory.yaml
+    EnumExchangeTransactionType:
+      $ref: ./schemas/enum/EnumExchangeTransactionType.yaml
     ResponseCapitalizationBondsProductsList:
       $ref: ./schemas/capitalization_bonds_apis/ResponseCapitalizationBondsProductsList.yaml
     CapitalizationBondsProduct:
@@ -330,6 +436,18 @@ components:
     pageSize:
       $ref: ./parameters/PageSize.yaml
   responses:
+    OKResponseExchangeAndAcquiringServicesAcquiringServicesData:
+      description: Taxas e tarifas por serviços obtidos com sucesso.
+      content:
+        application/json:
+          schema:
+            $ref: ./schemas/exchange_and_acquiring_services_apis/OkResponseGetAcquiringServicesContract.yaml
+    OKResponseExchangeAndAcquiringServicesExchangeData:
+      description: Dados de operações de câmbio da instituição obtidos com sucesso.
+      content:
+        application/json:
+          schema:
+            $ref: ./schemas/exchange_and_acquiring_services_apis/OkResponseGetExchangeContract.yaml
     OKResponseCapitalizationBondsProductsList:
       description: Dados de título(s) de capitalização obtidos com sucesso.
       content:

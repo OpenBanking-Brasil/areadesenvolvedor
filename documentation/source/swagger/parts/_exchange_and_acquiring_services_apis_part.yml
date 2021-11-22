@@ -1,0 +1,116 @@
+openapi: 3.0.0
+info:
+  title: API Exchange and Acquiring Services - Open Banking Brasil
+  description: |
+    API de Câmbio e Credenciamento do Open Banking Brasil – Fase 4.
+    API que retorna informações de Câmbio e Credenciamento.
+  version: 1.0.0
+  license:
+    name: Apache 2.0
+    url: 'https://www.apache.org/licenses/LICENSE-2.0'
+  contact:
+    name: Governança do Open Banking Brasil – Especificações
+    email: gt-interfaces@openbankingbr.org
+    url: 'https://openbanking-brasil.github.io/areadesenvolvedor/'
+servers:
+  - url: 'https://api.banco.com.br/open-banking/exchange-and-acquiring-services/v1'
+    description: Servidor de Produção
+  - url: 'https://apih.banco.com.br/open-banking/exchange-and-acquiring-services/v1'
+    description: Servidor de Homologação
+tags:
+  - name: Exchange
+    description: Operações para obter as informações de Câmbio.
+  - name: AcquiringServices
+    description: Operações para obter as informações de Credenciamento.
+paths:
+  /exchange:
+    get:
+      tags:
+        - Exchange
+      summary: Conjunto de informações de Câmbio.
+      operationId: getExchange
+      description: Método para disponibilizar o valor VET.
+      responses:
+        '200':
+          $ref: '#/components/responses/OKResponseExchange'
+        default:
+          $ref: '#/components/responses/OKResponseExchange'
+  /acquiring-services:
+    get:
+      tags:
+        - AcquiringServices
+      summary: Conjunto de informações de Credenciamento.
+      operationId: getAcquiringServices
+      description: Método para disponibilizar as taxas e tarifas por serviços.
+      responses:
+        '200':
+          $ref: '#/components/responses/OKResponseAcquiringServices'
+        default:
+          $ref: '#/components/responses/OKResponseAcquiringServices'
+components:
+  schemas:
+    OKResponseExchange:
+      $ref: './schemas/exchange_and_acquiring_services_apis/OkResponseGetExchangeContract.yaml'
+    OKResponseAcquiringServices:
+      $ref: './schemas/exchange_and_acquiring_services_apis/OkResponseGetAcquiringServicesContract.yaml'
+  responses:
+    OKResponseAcquiringServices:
+      description: 'Taxas e tarifas por serviços obtidos com sucesso.'
+      content:
+        application/json:
+          schema: 
+            $ref: './schemas/exchange_and_acquiring_services_apis/OkResponseGetAcquiringServicesContract.yaml'
+    OKResponseExchange:
+      description: 'Dados de operações de câmbio da instituição obtidos com sucesso.'
+      content:
+        application/json:
+          schema: 
+            $ref: './schemas/exchange_and_acquiring_services_apis/OkResponseGetExchangeContract.yaml'
+    BadRequest:
+      description: 'A requisição foi malformada, omitindo atributos obrigatórios, seja no payload ou através de atributos na URL.'
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: ./schemas/ResponseError.yaml
+    Forbidden:
+      description: O token tem escopo incorreto ou uma política de segurança foi violada
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: ./schemas/ResponseError.yaml
+    InternalServerError:
+      description: Ocorreu um erro no gateway da API ou no microsserviço
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: ./schemas/ResponseError.yaml
+    MethodNotAllowed:
+      description: O consumidor tentou acessar o recurso com um método não suportado
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: ./schemas/ResponseError.yaml
+    NotAcceptable:
+      description: A solicitação continha um cabeçalho Accept diferente dos tipos de mídia permitidos ou um conjunto de caracteres diferente de UTF-8
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: ./schemas/ResponseError.yaml
+    NotFound:
+      description: O recurso solicitado não existe ou não foi implementado
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: ./schemas/ResponseError.yaml
+    TooManyRequests:
+      description: 'A operação foi recusada, pois muitas solicitações foram feitas dentro de um determinado período ou o limite global de requisições concorrentes foi atingido'
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: ./schemas/ResponseError.yaml
+    Unauthorized:
+      description: Cabeçalho de autenticação ausente/inválido ou token inválido
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: ./schemas/ResponseError.yaml
