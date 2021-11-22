@@ -53,6 +53,7 @@ swagger-cli validate source/swagger/swagger_open_banking_fase3_apis.yml
 
 # Open Banking Fase 4
 swagger-cli validate source/swagger/swagger_capitalization_bonds_apis.yaml
+swagger-cli validate source/swagger/swagger_investments_apis.yaml
 swagger-cli validate source/swagger/swagger_open_banking_fase4_apis.yml
 
 ###
