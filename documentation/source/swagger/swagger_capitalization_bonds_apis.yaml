@@ -89,7 +89,7 @@ components:
           maxLength: 10
           example: 5000000000
         capitalizationPeriod:
-          $ref: '#/components/schemas/CapitalizationPeriod'
+          $ref: '#/components/schemas/CapitalizationBondsProductCapitalizationPeriod'
         latePayment:
           $ref: '#/components/schemas/LatePayment'
         contributionPayment:
@@ -284,7 +284,7 @@ components:
           maxLength: 9
           example: 10.000001
       additionalProperties: false
-    CapitalizationPeriod:
+    CapitalizationBondsProductCapitalizationPeriod:
       type: object
       description: Conjunto de informações relativas ao Título de Capitalização
       required:
@@ -304,7 +304,7 @@ components:
           type: number
           format: double
           description: 'Taxa que remunera a parte da mensalidade destinada a formar o Capital, ou seja, a Provisão Matemática de Resgate, também chamada de saldo de capitalização. Em porcentagem ao mês (% a.m.).'
-          maxLength: 6
+          maxLength: 7
           example: 0.25123
         adjustmentIndex:
           $ref: '#/components/schemas/CapitalizationBondsProductAdjustmentIndex'
@@ -327,7 +327,7 @@ components:
           $ref: '#/components/schemas/EnumCapitalizationBondsFrequency'
         periodicityOthers:
           type: string
-          description: Preenchida pelas participantes quando houver ‘OUTROS’ no campo ‘periodicity’.
+          description: Campo a ser preenchido pelas participantes quando houver ‘OUTROS’ no campo ‘periodicity’.
           maxLength: 20
           example: ''
         minimum:
@@ -355,26 +355,16 @@ components:
           maxLength: 200
           example: 1
         earlyRedemptions:
-          type: string
-          description: 'Possibilidade de o titular efetuar o resgate do capital constituído antes do fim do prazo de vigência do título, podendo ocorrer por solicitação expressa do titular ou por contemplação em sorteio com liquidação antecipada (Resolução CNSP 384/20). Em percentuais a cada parcela (meses de vigência) Obs. No caso de garantia, não contempla a extinção antecipada do contrato.'
-          maxLength: 200
-          example: ''
-        tranche:
-          type: number
-          description: Parcela relativa ao Resgate Antecipado
-          maxLength: 3
-          example: 1
-        rate:
-          type: number
-          format: double
-          description: Parcela relativa ao Resgate Antecipado
-          maxLength: 3
-          example: 1
+          type: array
+          description: 'Possibilidade de o titular efetuar o resgate do capital constituído antes do fim do prazo de vigência do título, podendo ocorrer por solicitação expressa do titular ou por contemplação em sorteio com liquidação antecipada (Resolução CNSP 384/20). Em percentuais a cada parcela (meses de vigência) Obs: No caso de garantia, não contempla a extinção antecipada do contrato.'
+          items:
+            $ref: '#/components/schemas/CapitalizationPeriodEarlyRedemptionItem'
+          minItems: 1
         finalRedemptionRate:
           type: number
           format: double
           description: 'Percentual mínimo da soma das contribuições efetuadas que poderá ser resgatado ao final da vigência, tendo como condição os pagamentos das parcelas nos respectivos vencimentos.'
-          maxLength: 6
+          maxLength: 7
           example: 100.002
         redemptionGraceMonths:
           type: number
@@ -431,6 +421,25 @@ components:
           Semestral
           Anual
           Outros
+    CapitalizationPeriodEarlyRedemptionItem:
+      type: object
+      description: Conjunto de informações relativas ao Título de Capitalização
+      required:
+        - tranche
+        - rate
+      properties:
+        tranche:
+          type: number
+          description: Parcela relativa ao Resgate Antecipado
+          maxLength: 3
+          example: 1
+        rate:
+          type: number
+          format: double
+          description: Parcela relativa ao Resgate Antecipado
+          maxLength: 3
+          example: 1
+      additionalProperties: false
     LatePayment:
       type: object
       description: Conjunto de informações relativas aos Títulos de Capitalização
@@ -465,14 +474,14 @@ components:
           $ref: '#/components/schemas/CapitalizationBondsProductPaymentMethod'
         paymentMethodOthers:
           type: string
-          description: Preenchido pelas participantes quando houver ‘OUTROS’ no campo ‘paymentMethod’.
+          description: Campo a ser preenchido pelas participantes quando houver ‘Outros’ no campo ‘Meio de pagamento’.
           maxLength: 20
           example: ''
         adjustmentIndex:
           $ref: '#/components/schemas/CapitalizationBondsProductAdjustmentIndex'
         adjustmentIndexOthers:
           type: string
-          description: Preenchido pelas participantes quando houver ‘OUTROS’ no campo ‘adjustmentIndex’.
+          description: Campo a ser preenchido pelas participantes quando houver ‘Outros’ no campo ‘Índice de atualização’.
           maxLength: 20
           example: ''
       additionalProperties: false
@@ -508,7 +517,7 @@ components:
         - periodicity
         - quantity
         - prizeMultiplier
-        - earlyRedemption
+        - liquidityEarlyRedemption
         - mandatoryDraw
         - additionalConditions
         - minimumProbability
@@ -530,7 +539,7 @@ components:
           description: 'Valor dos sorteios representado por múltiplo do valor de contribuição. Por exemplo: 5 vezes valor da contribuição'
           maxLength: 6
           example: 999999
-        earlyRedemption:
+        liquidityEarlyRedemption:
           $ref: '#/components/schemas/EnumCapitalizationBondsProductYesOrNoOptions'
         mandatoryDraw:
           $ref: '#/components/schemas/EnumCapitalizationBondsProductYesOrNoOptions'
@@ -543,7 +552,7 @@ components:
           type: number
           format: double
           description: 'Número representativo da probabilidade mínima de contemplação nos sorteios, em porcentagem (%).'
-          maxLength: 7
+          maxLength: 8
           example: 0.000001
       additionalProperties: false
     EnumTargetAudience:

@@ -29,7 +29,7 @@ swagger-cli bundle source/swagger/parts/_investments_apis_part.yml --outfile sou
 swagger-cli bundle source/swagger/parts/_open_banking_fase4_apis_part.yml --outfile source/swagger/swagger_open_banking_fase4_apis.yml --type=yaml
 
 # Generate dictionary
-sh ./build-dictionary.sh
+bash ./build-dictionary.sh
 
 sed -i '1s/^\(\xef\xbb\xbf\)\?/\xef\xbb\xbf/' source/swagger/swagger_*
 
