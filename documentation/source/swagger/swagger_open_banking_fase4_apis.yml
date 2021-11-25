@@ -219,7 +219,7 @@ paths:
 
         Campos de resposta do endpoint de `/treasure`
 
-        <a href='dictionary/investmentsGeTreasure_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
+        <a href='dictionary/investmentsGetTreasure_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
 
           Consulte a seção **Convenções de payload** para obter mais informações sobre [Atributos Obrigatórios / Opcionais](#convencoes-de-propriedade-dos-atributos).
       parameters:
@@ -596,7 +596,7 @@ components:
           description: Conjunto de informações do Título de Capitalização
           items:
             $ref: '#/components/schemas/CapitalizationBondsProductIdentificationData'
-          minItems: 0
+          minItems: 1
         links:
           $ref: '#/components/schemas/Links'
         meta:
@@ -604,7 +604,6 @@ components:
       additionalProperties: false
     CapitalizationBondsProduct:
       type: object
-      description: Conjunto de informações relativas aos Títulos de Capitalização
       required:
         - name
         - productId
@@ -628,7 +627,6 @@ components:
       additionalProperties: false
     CapitalizationBondsProductEarlyRedemption:
       type: object
-      description: Conjunto de informações relativas ao Resgate Antecipado
       required:
         - tranche
         - rate
@@ -662,8 +660,7 @@ components:
         - COMPRA_PROGRAMADA
         - POPULAR
         - INCENTIVO
-        - FILANTROPIA
-        - PREMIAVEL
+        - FILANTROPIA PREMIAVEL
       example: TRADICIONAL
     EnumCapitalizationBondsProductPaymentFrequency:
       type: string
@@ -681,7 +678,6 @@ components:
       example: PAGAMENTO_UNICO
     CapitalizationBondsProductIdentificationData:
       type: object
-      description: Conjunto de informações do Título de Capitalização
       required:
         - participantIdentification
         - insuranceCompanyIdentification
@@ -700,11 +696,10 @@ components:
       properties:
         participantIdentification:
           type: object
-          description: Conjunto de informações relativas aos Títulos de Capitalização
           required:
             - brand
             - name
-            - document
+            - cnpjNumber
           properties:
             brand:
               type: string
@@ -718,15 +713,15 @@ components:
                 p.ex. 'Empresa da Organização A'
               maxLength: 120
               example: ''
-            document:
+            cnpjNumber:
               type: string
               description: 'Número completo do CNPJ da instituição. O CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. Deve-se ter apenas os números do CNPJ, sem máscara.'
+              pattern: '^\d{14}$'
               maxLength: 14
-              example: '12345678901234'
+              example: '50685362000135'
           additionalProperties: false
         insuranceCompanyIdentification:
           type: object
-          description: Conjunto de informações relativas ao Título de Capitalização
           required:
             - name
             - cnpjNumber
@@ -774,7 +769,7 @@ components:
           type: number
           format: double
           description: Valor percentual (%) de resgate final permitido.
-          maxLength: 6
+          maxLength: 7
           example: 151.23
         draws:
           type: array
@@ -804,7 +799,6 @@ components:
       additionalProperties: false
     TermsAndConditions:
       type: object
-      description: Conjunto de informações relativas ao Título de Capitalização
       required:
         - susepNumber
         - generalConditions
@@ -824,7 +818,6 @@ components:
       additionalProperties: false
     CapitalizationBondsProductQuota:
       type: object
-      description: Conjunto de informações relativas ao Título de Capitalização
       required:
         - tranche
         - capitalization
@@ -858,7 +851,6 @@ components:
       additionalProperties: false
     CapitalizationPeriod:
       type: object
-      description: Conjunto de informações relativas ao Título de Capitalização
       required:
         - interestRate
         - adjustmentIndex
@@ -882,7 +874,7 @@ components:
           $ref: '#/components/schemas/ContributionPayment/properties/adjustmentIndex'
         adjustmentIndexOthers:
           type: string
-          description: Preenchida pelas participantes quando houver ‘Outros’ no campo ‘Índice de atualização’.
+          description: Campo a ser preenchido pelas participantes quando houver ‘Outros’ no campo ‘Índice de atualização’.
           maxLength: 10
           example: ''
         contributionAmount:
@@ -931,7 +923,6 @@ components:
           description: 'Possibilidade de o titular efetuar o resgate do capital constituído antes do fim do prazo de vigência do título, podendo ocorrer por solicitação expressa do titular ou por contemplação em sorteio com liquidação antecipada (Resolução CNSP 384/20). Em percentuais a cada parcela (meses de vigência) Obs: No caso de garantia, não contempla a extinção antecipada do contrato.'
           items:
             type: object
-            description: Conjunto de informações relativas ao Título de Capitalização
             required:
               - tranche
               - rate
@@ -964,7 +955,6 @@ components:
       additionalProperties: false
     LatePayment:
       type: object
-      description: Conjunto de informações relativas aos Títulos de Capitalização
       required:
         - suspensionMonths
         - periodExtensionOption
@@ -979,7 +969,6 @@ components:
       additionalProperties: false
     ContributionPayment:
       type: object
-      description: Conjunto de informações relativas aos Títulos de Capitalização
       required:
         - paymentMethod
         - adjustmentIndex
@@ -1051,7 +1040,6 @@ components:
       description: 'Alteração do prazo de vigência original, pela suspensão (não aplicável a pagamento único).'
     PrizeDraw:
       type: object
-      description: Conjunto de informações relativas aos Títulos de Capitalização
       required:
         - periodicity
         - quantity
@@ -1140,10 +1128,8 @@ components:
       properties:
         data:
           type: array
-          description: Conjunto de informações do Fundo de Investimento
           items:
             $ref: '#/components/schemas/InvestmentsFund'
-          minItems: 0
         links:
           $ref: '#/components/schemas/Links'
         meta:
@@ -1158,10 +1144,8 @@ components:
       properties:
         data:
           type: array
-          description: Conjunto de informações do produto de Renda Fixa Bancária
           items:
             $ref: '#/components/schemas/InvestmentsFixedIncomeBank'
-          minItems: 0
         links:
           $ref: '#/components/schemas/Links'
         meta:
@@ -1176,10 +1160,8 @@ components:
       properties:
         data:
           type: array
-          description: Conjunto de informações do produto de Renda Fixa Crédito
           items:
             $ref: '#/components/schemas/InvestmentsFixedIncomeCredit'
-          minItems: 0
         links:
           $ref: '#/components/schemas/Links'
         meta:
@@ -1194,10 +1176,8 @@ components:
       properties:
         data:
           type: array
-          description: Conjunto de informações do produto de Renda Variável
           items:
             $ref: '#/components/schemas/InvestmentsVariableIncome'
-          minItems: 0
         links:
           $ref: '#/components/schemas/Links'
         meta:
@@ -1212,10 +1192,8 @@ components:
       properties:
         data:
           type: array
-          description: Conjunto de informações de Título do Tesouro Direto
           items:
             $ref: '#/components/schemas/InvestmentsTreasure'
-          minItems: 0
         links:
           $ref: '#/components/schemas/Links'
         meta:
@@ -1223,7 +1201,6 @@ components:
       additionalProperties: false
     InvestmentsFixedIncomeBank:
       type: object
-      description: Conjunto de informações do produto de Renda Fixa Bancária
       required:
         - productIdentification
         - index
@@ -1240,16 +1217,15 @@ components:
       additionalProperties: false
     InvestmentsFixedIncomeBankIndex:
       type: object
-      description: 'Informações sobre taxas, indexadores e remuneração do produto de Renda Fixa Bancária'
       required:
         - indexer
         - issueRemunerationRate
       properties:
         indexer:
           $ref: '#/components/schemas/EnumInvestmentsFixedIncomeBankIndexer'
-        indexerAdditionalInfo:
+        indexerOthers:
           type: string
-          description: 'Informação adicional, caso o indexador seja preenchido com a opção outros.'
+          description: Campo a ser preenchido pelas participantes quando houver ‘Outros’ no campo ‘Indexador’.
           maxLength: 50
           example: Dólar
         issueRemunerationRate:
@@ -1262,7 +1238,6 @@ components:
       additionalProperties: false
     InvestmentsFixedIncomeBankInvestmentConditions:
       type: object
-      description: Informações sobre condições de investimento e resgate do produto de Renda Fixa Bancária
       required:
         - minimumAmount
         - redemptionTerm
@@ -1307,7 +1282,6 @@ components:
       additionalProperties: false
     InvestmentsFixedIncomeBankProductIdentification:
       type: object
-      description: Informações de identificação do produto de Renda Fixa Bancária
       required:
         - issuerInstitutionCNPJ
         - productType
@@ -1323,7 +1297,6 @@ components:
       additionalProperties: false
     InvestmentsFixedIncomeCredit:
       type: object
-      description: Conjunto de informações do produto de Renda Fixa Crédito
       required:
         - fees
       properties:
@@ -1334,7 +1307,6 @@ components:
       additionalProperties: false
     InvestmentsFixedIncomeCreditFees:
       type: object
-      description: 'Informações sobre taxas, indexadores e remuneração do produto de Renda Fixa Crédito'
       required:
         - investmentType
         - custodyFee
@@ -1359,7 +1331,6 @@ components:
       additionalProperties: false
     InvestmentsFund:
       type: object
-      description: Conjunto de informações do Fundo de Investimento
       required:
         - participantIdentification
         - product
@@ -1380,7 +1351,6 @@ components:
       additionalProperties: false
     InvestmentsFundFees:
       type: object
-      description: Informações sobre as taxas do Fundo de Investimento
       properties:
         maxAdminFee:
           type: string
@@ -1400,9 +1370,9 @@ components:
           $ref: '#/components/schemas/EnumInvestmentsFundFeesPerformanceFeeMethod'
         performanceFeeBenchmark:
           $ref: '#/components/schemas/EnumInvestmentsFundFeesPerformanceFeeBenchmark'
-        performanceFeeBenchmarkAdditionalInfo:
+        performanceFeeBenchmarkOthers:
           type: string
-          description: 'Informação adicional, caso o benchmark seja preenchido com a opção outros.'
+          description: Campo a ser preenchido pelas participantes quando houver ‘Outros’ no campo ‘Taxa de Performance - Benchmark’.
         performanceFeeAmount:
           type: string
           description: Taxa cobrada do fundo em função de resultado conforme regras dispostas no regulamento do fundo.
@@ -1420,7 +1390,6 @@ components:
       additionalProperties: false
     InvestmentsFundGeneralConditions:
       type: object
-      description: Informações sobre as condições de investimento e resgate do Fundo de Investimento
       required:
         - minimumAmount
         - currency
@@ -1479,10 +1448,9 @@ components:
       additionalProperties: false
     InvestmentsFundProduct:
       type: object
-      description: Informações sobre o Fundo de Investimento
       required:
-        - fundName
-        - fundCnpjNumber
+        - name
+        - cnpjNumber
         - isinCode
         - admin
         - adminCnpjNumber
@@ -1490,12 +1458,12 @@ components:
         - fundManagerCnpjNumber
         - anbimaCategory
       properties:
-        fundName:
+        name:
           type: string
           description: Nome oficial do fundo de investimento.
           maxLength: 250
           example: FUNDO DE INVESTIMENTO EM COTAS DE FUNDOS DE INVESTIMENTO
-        fundCnpjNumber:
+        cnpjNumber:
           type: string
           description: CNPJ do fundo de investimento.
           maxLength: 14
@@ -1503,7 +1471,7 @@ components:
           example: '64108803000191'
         isinCode:
           type: string
-          description: 'Código universal que identifica cada valor mobiliário ou instrumento financeiro, conforme Norma ISO 6166.'
+          description: 'Código universal que identifica cada valor mobiliário ou instrumento financeiro, conforme Norma ISO 6166.<br><br>DEFINIÇÃO&#58;O ISIN (International Securities Identification Number) é um código que identifica um valor mobiliário, conforme a norma ISO 6166.<br>ESTRUTURA<br>O ISIN é um código alfanumérico que possui 12 caracteres com a seguinte estrutura&#58;<ul><li>um prefixo, composto de 2 caracteres alfa, que identifica o código do país (Norma ISO 3166);</li><li>o número básico, composto de 9 caracteres alfabéticos ou numéricos em sua extensão;</li><li>um dígito numérico de controle.</li></ul>'
           maxLength: 12
           pattern: '^[A-Z]{2}([A-Z0-9]){9}\d{1}$'
           example: BRAAAAAAA000
@@ -1534,7 +1502,6 @@ components:
       additionalProperties: false
     InvestmentsTreasure:
       type: object
-      description: Conjunto de informações de Título do Tesouro Direto
       required:
         - fees
       properties:
@@ -1545,7 +1512,6 @@ components:
       additionalProperties: false
     InvestmentsTreasureFees:
       type: object
-      description: 'Informações sobre taxas, indexadores e remuneração de Títulos do Tesouro Direto'
       required:
         - investmentType
         - custodyFee
@@ -1570,7 +1536,6 @@ components:
       additionalProperties: false
     InvestmentsVariableIncome:
       type: object
-      description: Conjunto de informações do produto de Renda Variável
       required:
         - fees
       properties:
@@ -1581,7 +1546,6 @@ components:
       additionalProperties: false
     InvestmentsVariableIncomeFees:
       type: object
-      description: 'Informações sobre taxas, indexadores e remuneração do produto de Renda Variável'
       required:
         - investmentType
         - custodyFee
