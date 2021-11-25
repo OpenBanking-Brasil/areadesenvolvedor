@@ -635,7 +635,7 @@ components:
         - COMPRA_PROGRAMADA
         - POPULAR
         - INCENTIVO
-        - FILANTROPIA PREMIAVEL
+        - FILANTROPIA_PREMIAVEL
       example: TRADICIONAL
     EnumCapitalizationBondsProductPaymentFrequency:
       type: string
@@ -711,8 +711,9 @@ components:
             cnpjNumber:
               type: string
               description: 'Número completo do CNPJ da instituição. O CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. Deve-se ter apenas os números do CNPJ, sem máscara.'
+              pattern: '^\d{14}$'
               maxLength: 14
-              example: '12345678901234'
+              example: '50685362000135'
           additionalProperties: false
         product:
           $ref: '#/components/schemas/CapitalizationBondsProduct'
@@ -782,6 +783,7 @@ components:
           type: string
           description: 'Sequência numérica utilizada para consulta dos processos eletrônicos na SUSEP com caracteres especiais, conforme campo de consulta no site da SUSEP(15414.6XXXXX/AAAA-DV).'
           maxLength: 20
+          pattern: '(\d{5}\.\d{6}\/\d{4}-\d{2})'
           example: 15414.622222/2222-22
         generalConditions:
           type: string
@@ -850,54 +852,60 @@ components:
         adjustmentIndexOthers:
           type: string
           description: Campo a ser preenchido pelas participantes quando houver ‘Outros’ no campo ‘Índice de atualização’.
-          maxLength: 10
+          maxLength: 200
           example: ''
         contributionAmount:
-          type: number
-          format: double
-          description: |
-            Corresponde ao pagamento efetuado pelo subscritor à sociedade de capitalização para a aquisição do título de capitalização, podendo ser única, periódica ou mensal (Resolução CNSP 384/20). Valores em reais (R$). Esclarecimentos adicionais SUSEP.
-            Na modalidade Tradicional, informar a faixa de valor mínimo e máximo em R$ de contribuição ao plano.
-            Para as demais modalidades, informar a lista com os valores permitidos de contribuição ao plano.
-            Em todas as situações indicar para qual periodicidade de pagamento se aplicam os valores: pagamento mensal, pagamento único ou periódico.
-          maxLength: 200
-          example: 5
-        periodicity:
-          $ref: '#/components/schemas/EnumCapitalizationBondsFrequency'
-        periodicityOthers:
-          type: string
-          description: Campo a ser preenchido pelas participantes quando houver ‘OUTROS’ no campo ‘periodicity’.
-          maxLength: 20
-          example: ''
-        minimum:
-          type: number
-          format: double
-          description: |
-            Corresponde ao pagamento efetuado pelo subscritor à sociedade de capitalização para a aquisição do título de capitalização, podendo ser única, periódica ou mensal (Resolução CNSP 384/20). Valores em reais (R$). Esclarecimentos adicionais SUSEP.
-            Na modalidade Tradicional, informar a faixa de valor mínimo em R$ de contribuição ao plano. Para as demais modalidades, informar a lista com os valores permitidos de contribuição ao plano. Em todas as situações indicar para qual periodicidade de pagamento se aplicam os valores: pagamento mensal, pagamento único ou periódico.
-          maxLength: 200
-          example: 1
-        maximum:
-          type: number
-          format: double
-          description: |
-            Corresponde ao pagamento efetuado pelo subscritor à sociedade de capitalização para a aquisição do título de capitalização, podendo ser única, periódica ou mensal (Resolução CNSP 384/20). Valores em reais (R$). Esclarecimentos adicionais SUSEP.
-            Na modalidade Tradicional, informar a faixa de valor máximo em R$ de contribuição ao plano. Para as demais modalidades, informar a lista com os valores permitidos de contribuição ao plano. Em todas as situações indicar para qual periodicidade de pagamento se aplicam os valores: pagamento mensal, pagamento único ou periódico.
-          maxLength: 200
-          example: 1
-        allowed:
-          type: number
-          format: double
-          description: |
-            Corresponde ao pagamento efetuado pelo subscritor à sociedade de capitalização para a aquisição do título de capitalização, podendo ser única, periódica ou mensal (Resolução CNSP 384/20). Valores em reais (R$). Esclarecimentos adicionais SUSEP.
-            Na modalidade Tradicional, informar a faixa de valor máximo em R$ de contribuição ao plano. Para as demais modalidades, informar a lista com os valores permitidos de contribuição ao plano. Em todas as situações indicar para qual periodicidade de pagamento se aplicam os valores: pagamento mensal, pagamento único ou periódico.
-          maxLength: 200
-          example: 1
-        earlyRedemptions:
           type: array
-          description: 'Possibilidade de o titular efetuar o resgate do capital constituído antes do fim do prazo de vigência do título, podendo ocorrer por solicitação expressa do titular ou por contemplação em sorteio com liquidação antecipada (Resolução CNSP 384/20). Em percentuais a cada parcela (meses de vigência) Obs: No caso de garantia, não contempla a extinção antecipada do contrato.'
           items:
             type: object
+            description: |
+              Corresponde ao pagamento efetuado pelo subscritor à sociedade de capitalização para a aquisição do título de capitalização, podendo ser única, periódica ou mensal (Resolução CNSP 384/20). Valores em reais (R$). Esclarecimentos adicionais SUSEP.
+              Na modalidade Tradicional, informar a faixa de valor mínimo e máximo em R$ de contribuição ao plano.
+              Para as demais modalidades, informar a lista com os valores permitidos de contribuição ao plano.
+              Em todas as situações indicar para qual periodicidade de pagamento se aplicam os valores: pagamento mensal, pagamento único ou periódico.
+            required:
+              - minimum
+              - maximum
+              - allowed
+            properties:
+              periodicity:
+                $ref: '#/components/schemas/EnumCapitalizationBondsFrequency'
+              periodicityOthers:
+                type: string
+                description: Campo a ser preenchido pelas participantes quando houver ‘OUTROS’ no campo ‘periodicity’.
+                maxLength: 200
+                example: ''
+              minimum:
+                type: number
+                format: double
+                description: |
+                  Condicional: Quando modalidade for igual 'TRADICIONAL'
+                  Valor mínimo correspondente ao pagamento efetuado pelo subscritor à sociedade de capitalização.
+                maxLength: 8
+                example: 1000
+              maximum:
+                type: number
+                format: double
+                description: |
+                  Condicional: Quando modalidade for igual 'TRADICIONAL'
+                  Valor máximo correspondente ao pagamento efetuado pelo subscritor à sociedade de capitalização.
+                maxLength: 8
+                example: 5000
+              allowed:
+                type: number
+                format: double
+                description: |
+                  Condicional: Quando modalidade for diferente de 'TRADICIONAL'
+                  Lista com os valores permitidos de contribuição ao plano.
+                maxLength: 8
+                example: 5000
+            additionalProperties: false
+          minItems: 1
+        earlyRedemptions:
+          type: array
+          items:
+            type: object
+            description: 'Possibilidade de o titular efetuar o resgate do capital constituído antes do fim do prazo de vigência do título, podendo ocorrer por solicitação expressa do titular ou por contemplação em sorteio com liquidação antecipada (Resolução CNSP 384/20). Em percentuais a cada parcela (meses de vigência) Obs: No caso de garantia, não contempla a extinção antecipada do contrato.'
             required:
               - tranche
               - rate
@@ -940,7 +948,16 @@ components:
           maxLength: 3
           example: 999
         periodExtensionOption:
-          $ref: '#/components/schemas/EnumCapitalizationBondsProductYesOrNoOptions'
+          type: string
+          description: |
+            Alteração do prazo de vigência original, pela suspensão (não aplicável a pagamento único). A considerar os seguintes domínios:
+              1. Sim
+              2. Não
+          maxLength: 3
+          enum:
+            - SIM
+            - NAO
+          example: SIM
       additionalProperties: false
     ContributionPayment:
       type: object
@@ -953,31 +970,29 @@ components:
         paymentMethodOthers:
           type: string
           description: Campo a ser preenchido pelas participantes quando houver ‘Outros’ no campo ‘Meio de pagamento’.
-          maxLength: 20
+          maxLength: 200
           example: ''
         adjustmentIndex:
           type: string
-          maxLength: 47
+          maxLength: 9
           enum:
             - IPCA_IBGE
             - IGPM_FGV
             - INPC_IBGE
             - TR_BC
-            - INDICE_DE_REMUNERACAO_DOS_DEPOSITOS_DE_POUPANCA
             - OUTROS
           example: IPCA_IBGE
           description: |
-            Índice utilizado na correção que remunera a provisão matemática para capitalização.
+            Índice utilizado na atualização dos pagamentos mensais (para títulos com mais de 12 meses de vigência) (não aplicável a pagamento único). A considerar os domínios abaixo:
               1. IPCA (IBGE)
               2. IGP M (FGV)
               3. INPC (IBGE)
               4. TR (BC)
-              5. Índice de remuneração dos depósitos de poupança
-              6. Outros
+              5. Outros
         adjustmentIndexOthers:
           type: string
           description: Campo a ser preenchido pelas participantes quando houver ‘Outros’ no campo ‘Índice de atualização’.
-          maxLength: 20
+          maxLength: 200
           example: ''
       additionalProperties: false
     CapitalizationBondsProductPaymentMethod:
@@ -1007,12 +1022,15 @@ components:
           9. Outros
     EnumCapitalizationBondsProductYesOrNoOptions:
       type: string
+      description: |
+        Modelo de sorteio que acarreta, ao título contemplado, o seu resgate total obrigatório (Resolução Normativa 384/20). Conforme os domínios:
+          1. SIM
+          2. NÃO
       maxLength: 3
       enum:
         - SIM
         - NAO
       example: SIM
-      description: 'Alteração do prazo de vigência original, pela suspensão (não aplicável a pagamento único).'
     PrizeDraw:
       type: object
       required:
@@ -1021,15 +1039,41 @@ components:
         - prizeMultiplier
         - liquidityEarlyRedemption
         - mandatoryDraw
-        - additionalConditions
         - minimumProbability
       properties:
         periodicity:
-          $ref: '#/components/schemas/EnumCapitalizationBondsFrequency'
+          type: string
+          description: |
+            Intervalo de tempo regular previsto entre os sorteios. Conforme os domínios:
+              - UNICO
+              - DIÁRIO
+              - SEMANAL
+              - QUINZENAL
+              - MENSAL
+              - BIMESTRAL
+              - TRIMESTRAL
+              - QUADRIMESTRAL
+              - SEMESTRAL
+              - ANUAL
+              - OUTROS
+          maxLength: 13
+          enum:
+            - UNICO
+            - DIÁRIO
+            - SEMANAL
+            - QUINZENAL
+            - MENSAL
+            - BIMESTRAL
+            - TRIMESTRAL
+            - QUADRIMESTRAL
+            - SEMESTRAL
+            - ANUAL
+            - OUTROS
+          example: UNICO
         periodicityOthers:
           type: string
           description: Preenchido pelas participantes quando houver ‘OUTROS’ no campo ‘periodicity’.
-          maxLength: 20
+          maxLength: 200
           example: ''
         quantity:
           type: number
@@ -1044,7 +1088,17 @@ components:
         liquidityEarlyRedemption:
           $ref: '#/components/schemas/EnumCapitalizationBondsProductYesOrNoOptions'
         mandatoryDraw:
-          $ref: '#/components/schemas/EnumCapitalizationBondsProductYesOrNoOptions'
+          type: string
+          description: |
+            Possibilidade de realização de sorteio com previsão de que o título sorteado seja obrigatoriamente um título comercializado,
+            desde que atingidos os requisitos definidos nas condições gerais do plano. Conforme os domínios:
+              1. SIM
+              2. NÃO
+          maxLength: 3
+          enum:
+            - SIM
+            - NAO
+          example: SIM
         additionalConditions:
           type: string
           description: 'Campo aberto para complementar a regra dos sorteios do produto, a ser feita para cada participante.'
@@ -1059,33 +1113,18 @@ components:
       additionalProperties: false
     EnumCapitalizationBondsFrequency:
       type: string
-      maxLength: 33
-      enum:
-        - UNICO
-        - DIARIO
-        - SEMANAL
-        - QUINZENAL
-        - MENSAL
-        - BIMESTRAL
-        - TRIMESTRAL
-        - QUADRIMESTRAL
-        - SEMESTRAL
-        - ANUAL
-        - OUTROS
-      example: SEMANAL
       description: |
-        Intervalo de tempo regular previsto entre os sorteios. Conforme os domínios:
-          Único
-          Diário
-          Semanal
-          Quinzenal
-          Mensal
-          Bimestral
-          Trimestral
-          QuadrimestraL
-          Semestral
-          Anual
-          Outros
+        Campo condicional a ser preenchido quando quando a modalidade for diferente de tradicional.
+        Em todas as situações indicar para qual periodicidade de pagamento se aplicam os valores:
+          1 - Pagamento mensal
+          2 - Pagamento único
+          3 - Periódico
+      maxLength: 16
+      enum:
+        - PAGAMENTO_MENSAL
+        - PAGAMENTO_UNICO
+        - PERIODICO
+      example: PAGAMENTO_MENSAL
     EnumTargetAudience:
       type: string
       maxLength: 15
@@ -1641,6 +1680,7 @@ components:
     EnumInvestmentsFundGeneralConditionsTermType:
       type: string
       description: Período em dias corridos ou dias úteis do prazo de cotização de resgate.<br><br><ol><li>Dias corridos</li><li>Dias úteis</li></ol>
+      maxLength: 13
       enum:
         - DIAS_CORRIDOS
         - DIAS_UTEIS
