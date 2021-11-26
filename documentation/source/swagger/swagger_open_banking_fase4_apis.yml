@@ -327,6 +327,13 @@ components:
           $ref: '#/components/schemas/ParticipantIdentification'
         feesAndRatesForService:
           type: object
+          required:
+            - feeName
+            - code
+            - price
+            - chargingTriggerInfo
+            - minimum
+            - maximum
           properties:
             feeName:
               $ref: '#/components/schemas/EnumAcquiringServicesName'
@@ -343,13 +350,19 @@ components:
               description: |
                 Recebimento através de transação de cartão.
             minimum:
+              type: string
               minLength: 1
               maxLength: 999999
-              type: number
+              pattern: '^\d{1}\.\d{1,4}$'
+              description: Valor mínimo
+              example: '20'
             maximum:
+              type: string
               minLength: 1
               maxLength: 999999
-              type: number
+              pattern: '^\d{1}\.\d{1,4}$'
+              description: Valor máximo
+              example: '50'
       additionalProperties: false
     Price:
       type: object
@@ -362,42 +375,47 @@ components:
         interval:
           $ref: '#/components/schemas/EnumAcquiringServicesInterval'
         value:
-          type: number
-          maxLength: 999999
-          example: 0.0203
+          type: string
+          example: '0.0203'
+          maxLength: 6
+          pattern: '^\d{1}\.\d{1,4}$'
+          description: Valor a ser exibido.
         rate:
-          type: number
-          maxLength: 999999
-          example: 0.5
+          type: string
+          example: '0.5000'
+          maxLength: 6
+          pattern: '^\d{1}\.\d{1,4}$'
+          description: Taxa a ser exibida.
       additionalProperties: false
     EnumAcquiringServicesCode:
       type: string
+      description: Sigla da Tarifa cobrada sobre o Serviço de Credenciamento informado.
+      maxLength: 11
       enum:
         - MDR_CREDITO
         - MDR_DEBITO
       example: MDR_CREDITO
-      description: |
-        Sigla da Tarifa cobrada sobre o Serviço de Credenciamento informado.
     EnumAcquiringServicesInterval:
       type: string
+      description: Identificação do intervalo a ser exibido.
+      maxLength: 7
       enum:
         - 1_FAIXA
         - 2_FAIXA
         - 3_FAIXA
         - 4_FAIXA
       example: 1_FAIXA
-      description: |
-        Identificação do intervalo a ser exibido.
     EnumAcquiringServicesName:
       type: string
+      description: |
+        Nome da tarifa cobrada sobre o serviço de credenciamento, para pessoa física/jurídica.
+          1. Taxa de Desconto na Modalidade Crédito
+          2. Taxa de Desconto na Modalidade Débito
+      maxLength: 38
       enum:
         - TAXA_DE_DESCONTO_NA_MODALIDADE_CREDITO
         - TAXA_DE_DESCONTO_NA_MODALIDADE_DEBITO
       example: TAXA_DE_DESCONTO_NA_MODALIDADE_CREDITO
-      description: |
-        Nome da tarifa cobrada sobre o serviço de credenciamento, para pessoa física/jurídica.
-        1. Taxa de Desconto na Modalidade Crédito
-        2. Taxa de Desconto na Modalidade Débito
     ParticipantIdentification:
       type: object
       description: Conjunto de informações relativas ao participante do produto de open banking
@@ -446,6 +464,12 @@ components:
         - participantIdentification
         - transactionType
         - foreignCurrency
+        - transactionCategory
+        - deliveryForeignCurrency
+        - rangeTransactionCategory
+        - targetAudience
+        - vetAmount
+        - onlineRate
       properties:
         participantIdentification:
           $ref: '#/components/schemas/ParticipantIdentification'
@@ -462,9 +486,11 @@ components:
         targetAudience:
           $ref: '#/components/schemas/EnumExchangeTargetAudience'
         vetAmount:
-          type: number
+          type: string
           description: Média simples do VET das operações PF/PJ para cada intervalo conforme a circular 4015 BCB.
-          example: 5.5023
+          maxLength: 7
+          pattern: '^\d{1}\.\d{1,5}$'
+          example: '5.5023'
         onlineRate:
           type: array
           items:
@@ -493,13 +519,16 @@ components:
         targetAudience:
           $ref: '#/components/schemas/EnumExchangeTargetAudience'
         value:
-          type: number
-          example: 5.5023
+          type: string
+          maxLength: 7
+          pattern: '^\d{1}\.\d{1,5}$'
+          example: '5.5023'
+          description: Valor da operação.
       additionalProperties: false
     EnumExchangeDeliveryForeignCurrency:
       type: string
       description: |
-        "A classificação do tipo de operação, conforme a circular BCB nº 3690 de 16/12/2013. (Vide Enum)
+        A classificação do tipo de operação, conforme a circular BCB nº 3690 de 16/12/2013. (Vide Enum)
         - ESPECIE_CARTAO_PRE_PAGO
         - TELETRANSMISSAO_SWIFT
       maxLength: 23
@@ -510,7 +539,7 @@ components:
     EnumExchangeForeignCurrency:
       type: string
       description: |
-        "É a moeda estrangeira, segundo modelo ISO 4217. (Vide Enum)
+        É a moeda estrangeira, segundo modelo ISO 4217. (Vide Enum)
         - USD
         - EUR
       maxLength: 3
@@ -559,7 +588,7 @@ components:
     EnumExchangeTransactionType:
       type: string
       description: |
-        "Determina se o Banco está comprando ou vendendo a moeda estrangeira nas operações
+        Determina se o Banco está comprando ou vendendo a moeda estrangeira nas operações
         spot,  que se liquidam em até dois dias (não aplica-se a operações futuras. (Vide Enum)
         - Compra
         - Venda
@@ -858,9 +887,9 @@ components:
           example: 0.25123
         adjustmentIndex:
           $ref: '#/components/schemas/ContributionPayment/properties/adjustmentIndex'
-        adjustmentIndexOthers:
+        adjustmentIndexAdditionalInfo:
           type: string
-          description: Campo a ser preenchido pelas participantes quando houver ‘Outros’ no campo ‘Índice de atualização’.
+          description: 'Restrição: Campo obrigatório para complementar a informação quando selecionada a opção ''OUTROS'''
           maxLength: 200
           example: ''
         contributionAmount:
@@ -879,9 +908,9 @@ components:
             properties:
               periodicity:
                 $ref: '#/components/schemas/EnumCapitalizationBondsFrequency'
-              periodicityOthers:
+              periodicityAdditionalInfo:
                 type: string
-                description: Campo a ser preenchido pelas participantes quando houver ‘OUTROS’ no campo ‘periodicity’.
+                description: 'Restrição: Campo obrigatório para complementar a informação quando selecionada a opção ''OUTROS'''
                 maxLength: 200
                 example: ''
               minimum:
@@ -976,9 +1005,9 @@ components:
       properties:
         paymentMethod:
           $ref: '#/components/schemas/CapitalizationBondsProductPaymentMethod'
-        paymentMethodOthers:
+        paymentMethodAdditionalInfo:
           type: string
-          description: Campo a ser preenchido pelas participantes quando houver ‘Outros’ no campo ‘Meio de pagamento’.
+          description: 'Restrição: Campo obrigatório para complementar a informação quando selecionada a opção ''OUTROS'''
           maxLength: 200
           example: ''
         adjustmentIndex:
@@ -998,9 +1027,9 @@ components:
               3. INPC (IBGE)
               4. TR (BC)
               5. Outros
-        adjustmentIndexOthers:
+        adjustmentIndexAdditionalInfo:
           type: string
-          description: Campo a ser preenchido pelas participantes quando houver ‘Outros’ no campo ‘Índice de atualização’.
+          description: 'Restrição: Campo obrigatório para complementar a informação quando selecionada a opção ''OUTROS'''
           maxLength: 200
           example: ''
       additionalProperties: false
@@ -1079,9 +1108,9 @@ components:
             - ANUAL
             - OUTROS
           example: UNICO
-        periodicityOthers:
+        periodicityAdditionalInfo:
           type: string
-          description: Preenchido pelas participantes quando houver ‘OUTROS’ no campo ‘periodicity’.
+          description: 'Restrição: Campo obrigatório para complementar a informação quando selecionada a opção ''OUTROS'''
           maxLength: 200
           example: ''
         quantity:
