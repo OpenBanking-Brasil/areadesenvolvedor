@@ -32,7 +32,7 @@ tags:
       #### Especificação em OAS 3.0
 
       <a href="swagger/swagger_investments_apis.yaml" target="_blank">Download da Especificação (OAS 3.0)</a>
-  - name: API - Câmbio e Credenciamento
+  - name: API - Câmbio
     description: |
       |Versão|
       |:-----|
@@ -44,7 +44,20 @@ tags:
 
       #### Especificação em OAS 3.0
 
-      <a href="swagger/swagger_exchange_and_acquiring_services_apis.yaml" target="_blank">Download da Especificação (OAS 3.0)</a>
+      <a href="swagger/swagger_exchange_apis.yaml" target="_blank">Download da Especificação (OAS 3.0)</a>
+  - name: API - Credenciamento
+    description: |
+      |Versão|
+      |:-----|
+      |1.0.0-rc1.0|
+
+      #### Visão Geral
+
+      As instituições financeiras participantes podem consultar as informações de credenciamento de outras instituições participantes
+
+      #### Especificação em OAS 3.0
+
+      <a href="swagger/swagger_acquiring_services_apis.yaml" target="_blank">Download da Especificação (OAS 3.0)</a>
 paths:
   /capitalization-bonds/v1/products:
     get:
@@ -238,25 +251,25 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /exchange-and-acquiring-services/v1/exchange:
+  /exchange/v1/products:
     get:
       tags:
-        - API - Câmbio e Credenciamento
+        - API - Câmbio
       summary: Conjunto de informações de Câmbio.
-      operationId: getExchange
+      operationId: getExchangeProducts
       description: |
         Método para disponibilizar o valor VET.
 
         ### Dicionário de dados
 
-        Campos de resposta do endpoint de `/exchange`
+        Campos de resposta do endpoint de `/products`
 
-        <a href='dictionary/getExchange_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
+        <a href='dictionary/getExchangeProducts_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
 
         Consulte a seção **Convenções de payload** para obter mais informações sobre [Atributos Obrigatórios / Opcionais](#convencoes-de-propriedade-dos-atributos).
       responses:
         '200':
-          $ref: '#/components/responses/OKResponseExchangeAndAcquiringServicesExchangeData'
+          $ref: '#/components/responses/OKResponseExchangeProductsData'
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
@@ -267,25 +280,25 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /exchange-and-acquiring-services/v1/acquiring-services:
+  /acquiring-services/v1/products:
     get:
       tags:
-        - API - Câmbio e Credenciamento
+        - API - Credenciamento
       summary: Conjunto de informações de Credenciamento.
-      operationId: getAcquiringServices
+      operationId: getAcquiringServicesProducts
       description: |
         Método para disponibilizar as taxas e tarifas por serviços.
 
         ### Dicionário de dados
 
-        Campos de resposta do endpoint de `/acquiring-services`
+        Campos de resposta do endpoint de `/products`
 
-        <a href='dictionary/getAcquiringServices_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
+        <a href='dictionary/getAcquiringServicesProducts_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
 
         Consulte a seção **Convenções de payload** para obter mais informações sobre [Atributos Obrigatórios / Opcionais](#convencoes-de-propriedade-dos-atributos).
       responses:
         '200':
-          $ref: '#/components/responses/OKResponseExchangeAndAcquiringServicesAcquiringServicesData'
+          $ref: '#/components/responses/OKResponseAcquiringServicesProductsData'
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
@@ -326,44 +339,46 @@ components:
         participantIdentification:
           $ref: '#/components/schemas/ParticipantIdentification'
         feesAndRatesForService:
-          type: object
-          required:
-            - feeName
-            - code
-            - price
-            - chargingTriggerInfo
-            - minimum
-            - maximum
-          properties:
-            feeName:
-              $ref: '#/components/schemas/EnumAcquiringServicesName'
-            code:
-              $ref: '#/components/schemas/EnumAcquiringServicesCode'
-            price:
-              type: array
-              items:
-                $ref: '#/components/schemas/Price'
-            chargingTriggerInfo:
-              type: string
-              maxLength: 200
-              example: NA
-              description: |
-                Recebimento através de transação de cartão.
-            minimum:
-              type: string
-              minLength: 1
-              maxLength: 999999
-              pattern: '^\d{1}\.\d{1,4}$'
-              description: Valor mínimo
-              example: '2.0'
-            maximum:
-              type: string
-              minLength: 1
-              maxLength: 999999
-              pattern: '^\d{1}\.\d{1,4}$'
-              description: Valor máximo
-              example: '5.0'
+          $ref: '#/components/schemas/AcquiringServicesFeesAndRatesForService'
       additionalProperties: false
+    AcquiringServicesFeesAndRatesForService:
+      type: object
+      required:
+        - feeName
+        - code
+        - price
+        - chargingTriggerInfo
+        - minimum
+        - maximum
+      properties:
+        feeName:
+          $ref: '#/components/schemas/EnumAcquiringServicesFeeName'
+        code:
+          $ref: '#/components/schemas/EnumAcquiringServicesCode'
+        price:
+          type: array
+          items:
+            $ref: '#/components/schemas/Price'
+        chargingTriggerInfo:
+          type: string
+          maxLength: 200
+          example: NA
+          description: |
+            Recebimento através de transação de cartão.
+        minimum:
+          type: string
+          minLength: 1
+          maxLength: 999999
+          pattern: '^\d{1}\.\d{1,4}$'
+          description: Valor mínimo
+          example: '2.0'
+        maximum:
+          type: string
+          minLength: 1
+          maxLength: 999999
+          pattern: '^\d{1}\.\d{1,4}$'
+          description: Valor máximo
+          example: '5.0'
     Price:
       type: object
       description: '4 Faixas de igual tamanho, com suas respectivas medianas e percentuais de clientes.'
@@ -405,7 +420,7 @@ components:
         - 3_FAIXA
         - 4_FAIXA
       example: 1_FAIXA
-    EnumAcquiringServicesName:
+    EnumAcquiringServicesFeeName:
       type: string
       description: |
         Nome da tarifa cobrada sobre o serviço de credenciamento, para pessoa física/jurídica.
@@ -1883,13 +1898,13 @@ components:
         format: int32
         maximum: 1000
   responses:
-    OKResponseExchangeAndAcquiringServicesAcquiringServicesData:
+    OKResponseAcquiringServicesProductsData:
       description: Taxas e tarifas por serviços obtidos com sucesso.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/OKResponseGetAcquiringServices'
-    OKResponseExchangeAndAcquiringServicesExchangeData:
+    OKResponseExchangeProductsData:
       description: Dados de operações de câmbio da instituição obtidos com sucesso.
       content:
         application/json:

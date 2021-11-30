@@ -18,7 +18,8 @@ APIS=(
   "payments_apis"
   "capitalization_bonds_apis"
   "investments_apis"
-  "exchange_and_acquiring_services_apis"
+  "exchange_apis"
+  "acquiring_services_apis"
 )
 
 APIS_CONDITIONAL=(
