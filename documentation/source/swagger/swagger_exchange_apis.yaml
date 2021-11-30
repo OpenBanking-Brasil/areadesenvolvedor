@@ -1,0 +1,364 @@
+﻿openapi: 3.0.0
+info:
+  title: API Exchange - Open Banking Brasil
+  description: |
+    API de Câmbio do Open Banking Brasil – Fase 4.
+    API que retorna informações de Câmbio.
+  version: 1.0.0
+  license:
+    name: Apache 2.0
+    url: 'https://www.apache.org/licenses/LICENSE-2.0'
+  contact:
+    name: Governança do Open Banking Brasil – Especificações
+    email: gt-interfaces@openbankingbr.org
+    url: 'https://openbanking-brasil.github.io/areadesenvolvedor/'
+servers:
+  - url: 'https://api.banco.com.br/open-banking/exchange/v1'
+    description: Servidor de Produção
+  - url: 'https://apih.banco.com.br/open-banking/exchange/v1'
+    description: Servidor de Homologação
+tags:
+  - name: Exchange
+    description: Operações para obter as informações de Câmbio.
+paths:
+  /products:
+    get:
+      tags:
+        - Exchange
+      summary: Conjunto de informações de Câmbio.
+      operationId: getExchangeProducts
+      description: Método para disponibilizar o valor VET.
+      responses:
+        '200':
+          $ref: '#/components/responses/OKResponseExchange'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+components:
+  schemas:
+    OKResponseExchange:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExchangeContractData'
+        links:
+          $ref: '#/components/schemas/Links'
+        meta:
+          $ref: '#/components/schemas/Meta'
+      additionalProperties: false
+    Links:
+      type: object
+      description: Referências para outros recusos da API requisitada.
+      required:
+        - self
+      properties:
+        self:
+          type: string
+          format: uri
+          maxLength: 2000
+          description: URI completo que gerou a resposta atual.
+          example: 'https://api.banco.com.br/open-banking/api/v1/resource'
+          pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
+        first:
+          type: string
+          format: uri
+          maxLength: 2000
+          description: URI da primeira página que originou essa lista de resultados. Restrição - Obrigatório quando não for a primeira página da resposta
+          example: 'https://api.banco.com.br/open-banking/api/v1/resource'
+          pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
+        prev:
+          type: string
+          format: uri
+          maxLength: 2000
+          description: "URI da página anterior dessa lista de resultados. Restrição - \tObrigatório quando não for a primeira página da resposta"
+          example: 'https://api.banco.com.br/open-banking/api/v1/resource'
+          pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
+        next:
+          type: string
+          format: uri
+          maxLength: 2000
+          description: URI da próxima página dessa lista de resultados. Restrição - Obrigatório quando não for a última página da resposta
+          example: 'https://api.banco.com.br/open-banking/api/v1/resource'
+          pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
+        last:
+          type: string
+          format: uri
+          maxLength: 2000
+          description: URI da última página dessa lista de resultados. Restrição - Obrigatório quando não for a última página da resposta
+          example: 'https://api.banco.com.br/open-banking/api/v1/resource'
+          pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
+      additionalProperties: false
+    Meta:
+      type: object
+      description: Meta informações referente à API requisitada.
+      required:
+        - totalRecords
+        - totalPages
+        - requestDateTime
+      properties:
+        totalRecords:
+          type: integer
+          format: int32
+          description: Número total de registros no resultado
+          example: 1
+        totalPages:
+          type: integer
+          format: int32
+          description: Número total de páginas no resultado
+          example: 1
+        requestDateTime:
+          description: 'Data e hora da consulta, conforme especificação RFC-3339, formato UTC.'
+          type: string
+          maxLength: 20
+          format: date-time
+          example: '2021-05-21T08:30:00Z'
+      additionalProperties: false
+    ParticipantIdentification:
+      type: object
+      description: Conjunto de informações relativas ao participante do produto de open banking
+      required:
+        - brand
+        - name
+        - cnpjNumber
+      properties:
+        brand:
+          type: string
+          description: 'Nome da marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes.'
+          maxLength: 120
+          example: Organização A
+        name:
+          type: string
+          description: 'Nome da Instituição, pertencente à marca, responsável pela comercialização do produto/serviço. p.ex.''Empresa da Organização A'''
+          maxLength: 120
+          example: Empresa A1
+        cnpjNumber:
+          type: string
+          description: 'Número completo do CNPJ da instituição. O CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. Deve-se ter apenas os números do CNPJ, sem máscara.'
+          maxLength: 14
+          pattern: '^\d{14}$'
+          example: '45086338000178'
+      additionalProperties: false
+    EnumExchangeForeignCurrency:
+      type: string
+      description: |
+        É a moeda estrangeira, segundo modelo ISO 4217. (Vide Enum)
+        - USD
+        - EUR
+      maxLength: 3
+      enum:
+        - USD
+        - EUR
+      example: USD
+    EnumExchangeTransactionType:
+      type: string
+      description: |
+        Determina se o Banco está comprando ou vendendo a moeda estrangeira nas operações
+        spot,  que se liquidam em até dois dias (não aplica-se a operações futuras. (Vide Enum)
+        - Compra
+        - Venda
+      maxLength: 6
+      enum:
+        - COMPRA
+        - VENDA
+      example: COMPRA
+    EnumExchangeTargetAudience:
+      type: string
+      description: Média das operações PF/PJ.
+      maxLength: 5
+      enum:
+        - PF
+        - PJ
+        - PF_PJ
+      example: PF
+    EnumExchangeTransactionCategory:
+      type: string
+      description: 'A classificação do tipo de operação, conforme a circular BCB nº 3690 de 16/12/2013.'
+      maxLength: 68
+      enum:
+        - COMERCIO_EXTERIOR
+        - TRANSPORTE
+        - SEGUROS
+        - VIAGENS_INTERNACIONAIS
+        - TRANSFERENCIAS_UNILATERAIS
+        - SERVICOS_DIVERSOS
+        - RENDAS_DE_CAPITAIS
+        - CAPITAIS_BRASILEIROS
+        - CAPITAIS_ESTRANGEIROS
+        - PRESTACAO_DE_SERVICO_DE_PAGAMENTO_OU_TRANSFERENCIA_INTERNACIONAL_EFX
+      example: COMERCIO_EXTERIOR
+    EnumExchangeDeliveryForeignCurrency:
+      type: string
+      description: |
+        A classificação do tipo de operação, conforme a circular BCB nº 3690 de 16/12/2013. (Vide Enum)
+        - ESPECIE_CARTAO_PRE_PAGO
+        - TELETRANSMISSAO_SWIFT
+      maxLength: 23
+      enum:
+        - ESPECIE_CARTAO_PRE_PAGO
+        - TELETRANSMISSAO_SWIFT
+      example: ESPECIE_CARTAO_PRE_PAGO
+    EnumExchangeRangeTransactionCategory:
+      type: string
+      description: A classificação conforme a circular BCB nº 4015.
+      maxLength: 17
+      enum:
+        - '0,01_200'
+        - '200,01_500'
+        - '500,01_1.000'
+        - '1.000,01_3.000'
+        - '3.000,01_10.000'
+        - '10.000,01_30.000'
+        - '30.000,01_100.000'
+      example: '0,01_200'
+    OnlineRate:
+      type: object
+      description: Taxa disponibilizada (taxa online) pelas instituições no formato D+0/D+2 (valor U$100.000 operações câmbio pronto) separado por moeda dólar e euro compra e venda PF/PJ.
+      required:
+        - term
+        - foreignCurrency
+        - transactionType
+        - targetAudience
+        - value
+      properties:
+        term:
+          type: string
+          pattern: D\+(0|2)$
+          maxLength: 8
+          example: D+2
+          description: Formato da taxa online.
+        foreignCurrency:
+          $ref: '#/components/schemas/EnumExchangeForeignCurrency'
+        transactionType:
+          $ref: '#/components/schemas/EnumExchangeTransactionType'
+        targetAudience:
+          $ref: '#/components/schemas/EnumExchangeTargetAudience'
+        value:
+          type: string
+          maxLength: 7
+          pattern: '^\d{1}\.\d{1,5}$'
+          example: '5.5023'
+          description: Valor da operação.
+      additionalProperties: false
+    ExchangeContractData:
+      type: object
+      description: Conjunto de informações referentes às informações de câmbio
+      required:
+        - participantIdentification
+        - transactionType
+        - foreignCurrency
+        - transactionCategory
+        - deliveryForeignCurrency
+        - rangeTransactionCategory
+        - targetAudience
+        - vetAmount
+        - onlineRate
+      properties:
+        participantIdentification:
+          $ref: '#/components/schemas/ParticipantIdentification'
+        transactionType:
+          $ref: '#/components/schemas/EnumExchangeTransactionType'
+        foreignCurrency:
+          $ref: '#/components/schemas/EnumExchangeForeignCurrency'
+        transactionCategory:
+          $ref: '#/components/schemas/EnumExchangeTransactionCategory'
+        deliveryForeignCurrency:
+          $ref: '#/components/schemas/EnumExchangeDeliveryForeignCurrency'
+        rangeTransactionCategory:
+          $ref: '#/components/schemas/EnumExchangeRangeTransactionCategory'
+        targetAudience:
+          $ref: '#/components/schemas/EnumExchangeTargetAudience'
+        vetAmount:
+          type: string
+          description: Média simples do VET das operações PF/PJ para cada intervalo conforme a circular 4015 BCB.
+          maxLength: 7
+          pattern: '^\d{1}\.\d{1,5}$'
+          example: '5.5023'
+        onlineRate:
+          type: array
+          items:
+            $ref: '#/components/schemas/OnlineRate'
+          description: "Taxa disponibilizada (taxa online) pelas instituições no formato D+0/D+2 (valor\_ U$ 100.000-operações cambio pronto) separado por moeda dólar e euro\_ compra e venda PF/PJ.\_\_\n- Não entra operações de cambio futuro, ACC/ACE, futuros, trava.\_\_\n- Deve ser adicionado um timestamp no momento da consulta no formato\_ hh:mm:ss\_\n- Adicionar disclaimer informando que a taxa apresentada é somente\_ informativa, para a contratação de uma operação, deverá ser consultado o\_ canal correspondente de cada instituição.\n"
+      additionalProperties: false
+  responses:
+    OKResponseExchange:
+      description: Dados de operações de câmbio da instituição obtidos com sucesso.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OKResponseExchange'
+    BadRequest:
+      description: 'A requisição foi malformada, omitindo atributos obrigatórios, seja no payload ou através de atributos na URL.'
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/responses/NotFound/content/application~1json%3B%20charset%3Dutf-8/schema'
+    NotFound:
+      description: O recurso solicitado não existe ou não foi implementado
+      content:
+        application/json; charset=utf-8:
+          schema:
+            type: object
+            required:
+              - errors
+            properties:
+              errors:
+                type: array
+                minItems: 1
+                maxItems: 13
+                items:
+                  type: object
+                  required:
+                    - code
+                    - title
+                    - detail
+                  properties:
+                    code:
+                      description: Código de erro específico do endpoint
+                      type: string
+                      pattern: '[\w\W\s]*'
+                      maxLength: 255
+                    title:
+                      description: Título legível por humanos deste erro específico
+                      type: string
+                      pattern: '[\w\W\s]*'
+                      maxLength: 255
+                    detail:
+                      description: Descrição legível por humanos deste erro específico
+                      type: string
+                      pattern: '[\w\W\s]*'
+                      maxLength: 2048
+                  additionalProperties: false
+              meta:
+                $ref: '#/components/schemas/Meta'
+            additionalProperties: false
+    MethodNotAllowed:
+      description: O consumidor tentou acessar o recurso com um método não suportado
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/responses/NotFound/content/application~1json%3B%20charset%3Dutf-8/schema'
+    TooManyRequests:
+      description: 'A operação foi recusada, pois muitas solicitações foram feitas dentro de um determinado período ou o limite global de requisições concorrentes foi atingido'
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/responses/NotFound/content/application~1json%3B%20charset%3Dutf-8/schema'
+    InternalServerError:
+      description: Ocorreu um erro no gateway da API ou no microsserviço
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/responses/NotFound/content/application~1json%3B%20charset%3Dutf-8/schema'

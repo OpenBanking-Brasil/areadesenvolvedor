@@ -1,9 +1,9 @@
 ﻿openapi: 3.0.0
 info:
-  title: API Exchange and Acquiring Services - Open Banking Brasil
+  title: API Acquiring Services - Open Banking Brasil
   description: |
-    API de Câmbio e Credenciamento do Open Banking Brasil – Fase 4.
-    API que retorna informações de Câmbio e Credenciamento.
+    API de Credenciamento do Open Banking Brasil – Fase 4.
+    API que retorna informações de Credenciamento.
   version: 1.0.0
   license:
     name: Apache 2.0
@@ -13,42 +13,20 @@ info:
     email: gt-interfaces@openbankingbr.org
     url: 'https://openbanking-brasil.github.io/areadesenvolvedor/'
 servers:
-  - url: 'https://api.banco.com.br/open-banking/exchange-and-acquiring-services/v1'
+  - url: 'https://api.banco.com.br/open-banking/acquiring-services/v1'
     description: Servidor de Produção
-  - url: 'https://apih.banco.com.br/open-banking/exchange-and-acquiring-services/v1'
+  - url: 'https://apih.banco.com.br/open-banking/acquiring-services/v1'
     description: Servidor de Homologação
 tags:
-  - name: Exchange
-    description: Operações para obter as informações de Câmbio.
   - name: AcquiringServices
     description: Operações para obter as informações de Credenciamento.
 paths:
-  /exchange:
-    get:
-      tags:
-        - Exchange
-      summary: Conjunto de informações de Câmbio.
-      operationId: getExchange
-      description: Método para disponibilizar o valor VET.
-      responses:
-        '200':
-          $ref: '#/components/responses/OKResponseExchange'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '405':
-          $ref: '#/components/responses/MethodNotAllowed'
-        '429':
-          $ref: '#/components/responses/TooManyRequests'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-  /acquiring-services:
+  /products:
     get:
       tags:
         - AcquiringServices
       summary: Conjunto de informações de Credenciamento.
-      operationId: getAcquiringServices
+      operationId: getAcquiringServicesProducts
       description: Método para disponibilizar as taxas e tarifas por serviços.
       responses:
         '200':
@@ -65,22 +43,6 @@ paths:
           $ref: '#/components/responses/InternalServerError'
 components:
   schemas:
-    OKResponseExchange:
-      type: object
-      required:
-        - data
-        - links
-        - meta
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExchangeContractData'
-        links:
-          $ref: '#/components/schemas/Links'
-        meta:
-          $ref: '#/components/schemas/Meta'
-      additionalProperties: false
     OKResponseAcquiringServices:
       type: object
       required:
@@ -189,107 +151,6 @@ components:
           pattern: '^\d{14}$'
           example: '45086338000178'
       additionalProperties: false
-    EnumExchangeForeignCurrency:
-      type: string
-      description: |
-        É a moeda estrangeira, segundo modelo ISO 4217. (Vide Enum)
-        - USD
-        - EUR
-      maxLength: 3
-      enum:
-        - USD
-        - EUR
-      example: USD
-    EnumExchangeTransactionType:
-      type: string
-      description: |
-        Determina se o Banco está comprando ou vendendo a moeda estrangeira nas operações
-        spot,  que se liquidam em até dois dias (não aplica-se a operações futuras. (Vide Enum)
-        - Compra
-        - Venda
-      maxLength: 6
-      enum:
-        - COMPRA
-        - VENDA
-      example: COMPRA
-    EnumExchangeTargetAudience:
-      type: string
-      description: Média das operações PF/PJ.
-      maxLength: 5
-      enum:
-        - PF
-        - PJ
-        - PF_PJ
-      example: PF
-    EnumExchangeTransactionCategory:
-      type: string
-      description: 'A classificação do tipo de operação, conforme a circular BCB nº 3690 de 16/12/2013.'
-      maxLength: 68
-      enum:
-        - COMERCIO_EXTERIOR
-        - TRANSPORTE
-        - SEGUROS
-        - VIAGENS_INTERNACIONAIS
-        - TRANSFERENCIAS_UNILATERAIS
-        - SERVICOS_DIVERSOS
-        - RENDAS_DE_CAPITAIS
-        - CAPITAIS_BRASILEIROS
-        - CAPITAIS_ESTRANGEIROS
-        - PRESTACAO_DE_SERVICO_DE_PAGAMENTO_OU_TRANSFERENCIA_INTERNACIONAL_EFX
-      example: COMERCIO_EXTERIOR
-    EnumExchangeDeliveryForeignCurrency:
-      type: string
-      description: |
-        A classificação do tipo de operação, conforme a circular BCB nº 3690 de 16/12/2013. (Vide Enum)
-        - ESPECIE_CARTAO_PRE_PAGO
-        - TELETRANSMISSAO_SWIFT
-      maxLength: 23
-      enum:
-        - ESPECIE_CARTAO_PRE_PAGO
-        - TELETRANSMISSAO_SWIFT
-      example: ESPECIE_CARTAO_PRE_PAGO
-    EnumExchangeRangeTransactionCategory:
-      type: string
-      description: A classificação conforme a circular BCB nº 4015.
-      maxLength: 17
-      enum:
-        - '0,01_200'
-        - '200,01_500'
-        - '500,01_1.000'
-        - '1.000,01_3.000'
-        - '3.000,01_10.000'
-        - '10.000,01_30.000'
-        - '30.000,01_100.000'
-      example: '0,01_200'
-    OnlineRate:
-      type: object
-      description: Taxa disponibilizada (taxa online) pelas instituições no formato D+0/D+2 (valor U$100.000 operações câmbio pronto) separado por moeda dólar e euro compra e venda PF/PJ.
-      required:
-        - term
-        - foreignCurrency
-        - transactionType
-        - targetAudience
-        - value
-      properties:
-        term:
-          type: string
-          pattern: D\+(0|2)$
-          maxLength: 8
-          example: D+2
-          description: Formato da taxa online.
-        foreignCurrency:
-          $ref: '#/components/schemas/EnumExchangeForeignCurrency'
-        transactionType:
-          $ref: '#/components/schemas/EnumExchangeTransactionType'
-        targetAudience:
-          $ref: '#/components/schemas/EnumExchangeTargetAudience'
-        value:
-          type: string
-          maxLength: 7
-          pattern: '^\d{1}\.\d{1,5}$'
-          example: '5.5023'
-          description: Valor da operação.
-      additionalProperties: false
     FeesAndRatesForService:
       type: object
       required:
@@ -380,46 +241,6 @@ components:
           pattern: '^\d{1}\.\d{1,4}$'
           description: Taxa a ser exibida.
       additionalProperties: false
-    ExchangeContractData:
-      type: object
-      description: Conjunto de informações referentes às informações de câmbio
-      required:
-        - participantIdentification
-        - transactionType
-        - foreignCurrency
-        - transactionCategory
-        - deliveryForeignCurrency
-        - rangeTransactionCategory
-        - targetAudience
-        - vetAmount
-        - onlineRate
-      properties:
-        participantIdentification:
-          $ref: '#/components/schemas/ParticipantIdentification'
-        transactionType:
-          $ref: '#/components/schemas/EnumExchangeTransactionType'
-        foreignCurrency:
-          $ref: '#/components/schemas/EnumExchangeForeignCurrency'
-        transactionCategory:
-          $ref: '#/components/schemas/EnumExchangeTransactionCategory'
-        deliveryForeignCurrency:
-          $ref: '#/components/schemas/EnumExchangeDeliveryForeignCurrency'
-        rangeTransactionCategory:
-          $ref: '#/components/schemas/EnumExchangeRangeTransactionCategory'
-        targetAudience:
-          $ref: '#/components/schemas/EnumExchangeTargetAudience'
-        vetAmount:
-          type: string
-          description: Média simples do VET das operações PF/PJ para cada intervalo conforme a circular 4015 BCB.
-          maxLength: 7
-          pattern: '^\d{1}\.\d{1,5}$'
-          example: '5.5023'
-        onlineRate:
-          type: array
-          items:
-            $ref: '#/components/schemas/OnlineRate'
-          description: "Taxa disponibilizada (taxa online) pelas instituições no formato D+0/D+2 (valor\_ U$ 100.000-operações cambio pronto) separado por moeda dólar e euro\_ compra e venda PF/PJ.\_\_\n- Não entra operações de cambio futuro, ACC/ACE, futuros, trava.\_\_\n- Deve ser adicionado um timestamp no momento da consulta no formato\_ hh:mm:ss\_\n- Adicionar disclaimer informando que a taxa apresentada é somente\_ informativa, para a contratação de uma operação, deverá ser consultado o\_ canal correspondente de cada instituição.\n"
-      additionalProperties: false
     AcquiringServicesContractData:
       type: object
       description: Conjunto de informações referentes às informações de credenciamento
@@ -441,12 +262,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/OKResponseAcquiringServices'
-    OKResponseExchange:
-      description: Dados de operações de câmbio da instituição obtidos com sucesso.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OKResponseExchange'
     BadRequest:
       description: 'A requisição foi malformada, omitindo atributos obrigatórios, seja no payload ou através de atributos na URL.'
       content:

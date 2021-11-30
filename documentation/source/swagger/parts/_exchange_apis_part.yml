@@ -1,0 +1,106 @@
+openapi: 3.0.0
+info:
+  title: API Exchange - Open Banking Brasil
+  description: |
+    API de Câmbio do Open Banking Brasil – Fase 4.
+    API que retorna informações de Câmbio.
+  version: 1.0.0
+  license:
+    name: Apache 2.0
+    url: 'https://www.apache.org/licenses/LICENSE-2.0'
+  contact:
+    name: Governança do Open Banking Brasil – Especificações
+    email: gt-interfaces@openbankingbr.org
+    url: 'https://openbanking-brasil.github.io/areadesenvolvedor/'
+servers:
+  - url: 'https://api.banco.com.br/open-banking/exchange/v1'
+    description: Servidor de Produção
+  - url: 'https://apih.banco.com.br/open-banking/exchange/v1'
+    description: Servidor de Homologação
+tags:
+  - name: Exchange
+    description: Operações para obter as informações de Câmbio.
+paths:
+  /products:
+    get:
+      tags:
+        - Exchange
+      summary: Conjunto de informações de Câmbio.
+      operationId: getExchangeProducts
+      description: Método para disponibilizar o valor VET.
+      responses:
+        '200':
+          $ref: '#/components/responses/OKResponseExchange'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'   
+        '500':
+          $ref: '#/components/responses/InternalServerError'     
+components:
+  schemas:
+    OKResponseExchange:
+      $ref: './schemas/exchange_apis/OkResponseGetExchangeContract.yaml'
+    Links:
+      $ref: './schemas/Links.yaml'
+    Meta:
+      $ref: './schemas/Meta.yaml'
+    ParticipantIdentification:
+      $ref: ./schemas/business_commons/ParticipantIdentification.yaml
+    EnumExchangeForeignCurrency:
+      $ref: ./schemas/enum/EnumExchangeForeignCurrency.yaml
+    EnumExchangeTransactionType:
+      $ref: ./schemas/enum/EnumExchangeTransactionType.yaml
+    EnumExchangeTargetAudience:
+      $ref: ./schemas/enum/EnumExchangeTargetAudience.yaml
+    EnumExchangeTransactionCategory:
+      $ref: ./schemas/enum/EnumExchangeTransactionCategory.yaml
+    EnumExchangeDeliveryForeignCurrency:
+      $ref: ./schemas/enum/EnumExchangeDeliveryForeignCurrency.yaml
+    EnumExchangeRangeTransactionCategory:
+      $ref: ./schemas/enum/EnumExchangeRangeTransactionCategory.yaml
+    OnlineRate:
+      $ref: ./schemas/exchange_apis/OnlineRate.yaml
+    ExchangeContractData:
+      $ref: ./schemas/exchange_apis/ExchangeContractData.yaml
+  responses:
+    OKResponseExchange:
+      description: 'Dados de operações de câmbio da instituição obtidos com sucesso.'
+      content:
+        application/json:
+          schema: 
+            $ref: './schemas/exchange_apis/OkResponseGetExchangeContract.yaml'
+    BadRequest:
+      description: 'A requisição foi malformada, omitindo atributos obrigatórios, seja no payload ou através de atributos na URL.'
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: ./schemas/ResponseError.yaml
+    NotFound:
+      description: O recurso solicitado não existe ou não foi implementado
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: ./schemas/ResponseError.yaml
+    MethodNotAllowed:
+      description: O consumidor tentou acessar o recurso com um método não suportado
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: ./schemas/ResponseError.yaml
+    TooManyRequests:
+      description: 'A operação foi recusada, pois muitas solicitações foram feitas dentro de um determinado período ou o limite global de requisições concorrentes foi atingido'
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: ./schemas/ResponseError.yaml
+    InternalServerError:
+      description: Ocorreu um erro no gateway da API ou no microsserviço
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: ./schemas/ResponseError.yaml
