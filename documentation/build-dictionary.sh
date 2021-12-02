@@ -20,6 +20,7 @@ APIS=(
   "investments_apis"
   "exchange_apis"
   "acquiring_services_apis"
+  "pension_apis"
 )
 
 APIS_CONDITIONAL=(
