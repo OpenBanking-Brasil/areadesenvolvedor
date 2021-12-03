@@ -72,7 +72,7 @@ tags:
 
       <a href="swagger/swagger_pension_apis.yaml" target="_blank">Download da Especificação (OAS 3.0)</a>
 paths:
-  /capitalization-bonds/v1/products:
+  /open-data/capitalization-bonds/v1/products:
     get:
       tags:
         - API - Títulos de Capitalização
@@ -104,7 +104,7 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /investments/v1/funds:
+  /open-data/investments/v1/funds:
     get:
       tags:
         - API - Investimentos
@@ -136,7 +136,7 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /investments/v1/fixed-income-bank:
+  /open-data/investments/v1/fixed-income-bank:
     get:
       tags:
         - API - Investimentos
@@ -168,7 +168,7 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /investments/v1/fixed-income-credit:
+  /open-data/investments/v1/fixed-income-credit:
     get:
       tags:
         - API - Investimentos
@@ -200,7 +200,7 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /investments/v1/variable-income:
+  /open-data/investments/v1/variable-income:
     get:
       tags:
         - API - Investimentos
@@ -232,7 +232,7 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /investments/v1/treasure:
+  /open-data/investments/v1/treasure:
     get:
       tags:
         - API - Investimentos
@@ -264,7 +264,7 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /exchange/v1/products:
+  /open-data/exchange/v1/products:
     get:
       tags:
         - API - Câmbio
@@ -293,7 +293,7 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /acquiring-services/v1/products:
+  /open-data/acquiring-services/v1/products:
     get:
       tags:
         - API - Credenciamento
@@ -335,12 +335,12 @@ paths:
 
         Campos de resposta do endpoint de `/risk-coverages`
 
-        <a href='dictionary/getPensionRiskCoverages.csv' target="_blank">Fazer download do dicionário de dados</a>
+        <a href='dictionary/getPensionRiskCoverages_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
 
         Consulte a seção **Convenções de payload** para obter mais informações sobre [Atributos Obrigatórios / Opcionais](#convencoes-de-propriedade-dos-atributos).
       responses:
         '200':
-          $ref: '#/components/responses/OKResponseAcquiringServicesProductsData'
+          $ref: '#/components/responses/OkGetRiskPensionContractData'
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
@@ -383,6 +383,451 @@ components:
         feesAndRatesForService:
           $ref: '#/components/schemas/AcquiringServicesFeesAndRatesForService'
       additionalProperties: false
+    OkResponseGetRiskPension:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/GetRiskPensionContractData'
+        links:
+          $ref: '#/components/schemas/Links'
+        meta:
+          $ref: '#/components/schemas/Meta'
+      additionalProperties: false
+    GetRiskPensionContractData:
+      type: object
+      required:
+        - participantIdentification
+      properties:
+        participantIdentification:
+          $ref: '#/components/schemas/ParticipantIdentification'
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/Product'
+    Product:
+      type: object
+      required:
+        - name
+        - code
+        - coverages
+        - additionals
+        - assistanceType
+        - termsAndConditions
+        - contributionPayment
+      properties:
+        name:
+          type: string
+          maxLength: 80
+          description: |
+            Nome comercial do produto, pelo qual é identificado nos canais de distribuição e atendimento da sociedade.
+          example: Produto A
+        code:
+          type: string
+          maxLength: 80
+          description: |
+            Código único a ser definido pela sociedade.
+          example: '0001'
+        modality:
+          type: string
+          description: |
+            Se Prev. Cob. Risco:
+
+            1. Contribuição Variável;
+            2. Benefício Definido.
+          maxLength: 200
+          enum:
+            - CONTRIBUICAO_VARIAVEL
+            - BENEFICIO_DEFINIDO
+          example: BENEFICIO_DEFINIDO
+        coverages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Coverage'
+        additionals:
+          type: array
+          items:
+            type: string
+          example:
+            - Sorteio (gratuito)
+            - Outros
+        additionalsOthers:
+          type: array
+          items:
+            type: string
+          example:
+            - NA
+        assistanceType:
+          type: array
+          items:
+            type: string
+          example:
+            - Assistência PET
+            - Funeral
+        assistanceTypeOthers:
+          type: array
+          items:
+            type: string
+          example:
+            - NA
+        termsAndConditions:
+          $ref: '#/components/schemas/TermsAndConditions'
+        update:
+          type: object
+          description: Atualização / Remuneração da PMBaC e Remuneração da PMBaC
+          properties:
+            award:
+              $ref: '#/components/schemas/UpdateAward'
+            pmbac:
+              $ref: '#/components/schemas/UpdatePMBaC'
+        ageReframing:
+          $ref: '#/components/schemas/AgeReframing'
+        financialRegimeContractType:
+          type: string
+          description: |
+            Listagem de regime financeiro para cada combinação de modalidade/cobertura do produto indicando:
+            1. Repartição simples;
+            2. Repartição Capitais Cobertura;
+            3. Capitalização.
+          maxLength: 50
+          enum:
+            - REPARTICAO_SIMPLES
+            - REPARTICAO_CAPITAIS_COBERTURA
+            - CAPITALIZACAO
+          example: REPARTICAO_SIMPLES
+        reclaim:
+          $ref: '#/components/schemas/Reclaim'
+        otherGuaranteedValues:
+          type: array
+          description: |
+            1. Saldamento;
+            2. Benefício Prolongado.
+            3. Não se aplica
+          items:
+            type: string
+          example:
+            - Benefício Prolongado
+            - Não se aplica
+            - Saldamento
+        profitModality:
+          type: string
+          description: |
+            Listagem da forma de pagamento para cada benefício do produto indicando, conforme Resolução CNSP nº 201/2008:
+            1. Pagamento único;
+            2. Sob forma de renda.
+          maxLength: 30
+          enum:
+            - PAGAMENTO_UNICO
+            - SOB_FORMA_DE_RENDA
+          example: SOB_FORMA_DE_RENDA
+        contributionPayment:
+          $ref: '#/components/schemas/ContributionPayment'
+    Coverage:
+      type: object
+      required:
+        - types
+        - attributes
+      properties:
+        types:
+          type: array
+          items:
+            type: string
+          example:
+            - Morte
+            - Invalidez
+        attributes:
+          $ref: '#/components/schemas/CoverageAttributes'
+        period:
+          type: string
+          description: |
+            1. Vitalícia;
+            2. Temporária.
+          maxLength: 50
+          enum:
+            - VITALICIA
+            - TEMPORARIA
+          example: TEMPORARIA
+    CoverageAttributes:
+      type: object
+      description: Atributos da cobertura
+      required:
+        - minValue
+        - maxValue
+        - currency
+        - gracePeriod
+      properties:
+        indenizationPaymentMethod:
+          $ref: '#/components/schemas/Product/properties/profitModality'
+        minValue:
+          type: number
+          example: 1500
+          description: |
+            Listagem do valor mínimo de cobertura (Capital Segurado), diária ou parcela aceito pela sociedade para cada combinação de modalidade/cobertura do produto.
+            Conforme moeda.
+          maximum: 999999999999999
+        maxValue:
+          type: number
+          example: 5000
+          description: |
+            Listagem do valor máximo de cobertura (Capital Segurado), diária ou parcela aceito pela sociedade para cada combinação de modalidade/cobertura do produto.
+            Conforme moeda.
+          maximum: 999999999999999
+        indemnifiable:
+          type: array
+          items:
+            type: string
+          description: |
+            Listagem de período indenizável para cada combinação de modalidade/cobertura do produto indicando:
+            1. Quantidade determinada de parcelas;
+            2. Até o fim de ciclo determinado.
+          example:
+            - Até o fim do ciclo determinado
+            - Quantidade determinada de parcelas
+        currency:
+          type: array
+          items:
+            type: string
+          description: |
+            Moeda sobre a qual a cobertura se refere.
+            De acordo com ISO-4217.
+          example:
+            - BRL
+        gracePeriod:
+          $ref: '#/components/schemas/GracePeriod'
+        excludedRisk:
+          type: array
+          description: 'Listagem para indicar quais serão o(s) risco(s) excluído(s) aplicável(is) à(s) cobertura(s) [Vide Tabela 1.1.3]'
+          items:
+            type: object
+            required:
+              - url
+            properties:
+              type:
+                type: string
+                example: NA
+              url:
+                description: |
+                  Campo aberto (possibilidade de incluir URL) Comentários: As URLs são limitadas a 2048 caracteres mas, para o contexto do Open Insurance, foi adotado a metade deste tamanho (1024). tamanho. p.ex.
+                  https://openinsurance.com.br/aaa
+                type: string
+                example: 'https://openinsurance.com.br/aaa'
+                maxLength: 1024
+    CoverageAttributesMaxValue:
+      $ref: '#/components/schemas/CoverageAttributes'
+    GracePeriod:
+      type: object
+      required:
+        - amount
+        - unit
+      properties:
+        amount:
+          type: number
+          description: Informar o prazo de carência
+          example: 90
+          maximum: 9999999999
+        unit:
+          type: string
+          description: |
+            Informar o critério de carência para a cobertura
+            1. Dias
+            2. Meses
+            3. Não se aplica
+          maxLength: 15
+          enum:
+            - DIAS
+            - MESES
+            - NAO_APLICA
+          example: MESES
+    TermsAndConditions:
+      type: object
+      description: Termos e Condições Contratuais
+      required:
+        - susepProcessNumber
+        - definition
+      properties:
+        susepProcessNumber:
+          type: string
+          maxLength: 20
+          description: |
+            Sequência numérica utilizada para consulta dos processos eletrônicos na SUSEP, com caracteres especiais, conforme campo de consulta no site da SUSEP (XXXXX.XXXXXX/XXXX-XX)
+            Observação: Mascaras da SUSEP – Serão permitidos todas as máscaras de Produtos. Limitar pelos códigos das Máscaras.
+          example: XXXXX.XXXXXX/XXXX-XX
+        definition:
+          type: string
+          maxLength: 1024
+          example: 'https://openinsurance.com.br/aaa'
+          description: |
+            Representam as Condições Gerais, Condições Especiais e Condições ou Cláusulas Particulares de um mesmo seguro. (Circular SUSEP 321/06). Campo aberto (possibilidade de incluir URL). Comentários: As URLs são limitadas a 2048 caracteres mas, para o contexto do Open Insurance, foi adotado a metade deste tamanho (1024). tamanho. p.ex. 'https://openinsurance.com.br/aaa’.
+    UpdatePMBaC:
+      type: object
+      properties:
+        index:
+          type: string
+          maxLength: 12
+          description: |
+            Índice utilizado na atualização do prêmio e do capital segurado, caso critério de atualização por meio de índice:
+            1. IPCA (IBGE);
+            2. IGP-M (FGV);
+            3. INPC (IBGE).
+          enum:
+            - IPCA_IBGE
+            - IGP-M_FGV
+            - INPC_IBGE
+          example: IPCA_IBGE
+        interestRate:
+          type: number
+          maximum: 99999
+          example: 14.252
+          description: Taxa de juros garantida que remunera o plano durante a fase de diferimento/acumulação.
+    UpdateAward:
+      type: object
+      properties:
+        index:
+          $ref: '#/components/schemas/UpdatePMBaC/properties/index'
+    AgeReframing:
+      type: object
+      description: Reenquadramento etário
+      properties:
+        criterion:
+          type: string
+          maxLength: 40
+          description: |
+            Critério escolhido para reenquadramento etário
+            1. Após período em anos;
+            2. A cada período em anos;
+            3. Por mudança de faixa etária;
+            4. Não aplicável.
+          enum:
+            - APOS_PERIODO_ANOS
+            - A_CADA_PERIODO_ANOS
+            - POR_MUDANCA_FAIXA_ETARIA
+            - NAO_APLICAVEL
+          example: APOS_PERIODO_ANOS
+        periodicity:
+          type: number
+          maximum: 999
+          description: |
+            Período em anos, caso critério de reenquadramento após ou a cada período em anos.
+          example: 10
+    Reclaim:
+      type: object
+      description: Resgate
+      properties:
+        table:
+          $ref: '#/components/schemas/ReclaimTable'
+        differentiatedPercentage:
+          type: string
+          maxLength: 1024
+          description: |
+            Campo aberto (possibilidade de incluir URL)
+            Comentários: As URLs são limitadas a 2048 caracteres mas, para o contexto do Open Insurance, foi adotado a metade deste tamanho (1024). tamanho. p.ex.
+            'https://openinsurance.com.br/aaa’
+          example: |
+            https://openinsurance.com.br/aaa’
+            Obs.: Exceção de cobertura ou critério definido acima será descrito aqui na URL
+            Exemplo: Cobertura X: a partir de 25 meses = 100%
+        gracePeriod:
+          $ref: '#/components/schemas/GracePeriod'
+    ReclaimTable:
+      type: object
+      properties:
+        initialMonthRange:
+          type: number
+          maximum: 12
+          example: 1
+          description: NA
+        finalMonthRange:
+          type: number
+          maximum: 12
+          example: 1
+          description: NA
+        percentage:
+          type: number
+          maximum: 1
+          example: 0.85
+          description: |
+            Tabela com % variáveis por mês de vigência.
+            Esse campo será traduzido para dois campos, sendo um com o descritivo dos anos e outro com os %.
+    ContributionPayment:
+      type: object
+      description: 'Pagamento de Prêmio (da Contribuição, no caso de Previdência)'
+      required:
+        - method
+        - periodicity
+        - minimumRequirements
+      properties:
+        method:
+          type: array
+          items:
+            type: string
+          description: |
+            Meio de pagamento escolhido pelo segurado. A considerar os domínios abaixo:
+            1. Cartão de Crédito
+            2. Cartão de Débito
+            3. Débito em conta corrente;
+            4. Débito em conta poupança;
+            5. Boleto bancário;
+            6. PIX;
+            7. Consignação em Folha de
+            Pagamento
+            8. Pontos de Programas de
+            Benefício;
+            9. Outros
+          example:
+            - CARTÃO DE CRÉDITO
+        periodicity:
+          type: array
+          items:
+            type: string
+          description: |
+            Periodicidade de pagamento do prêmio 
+            1. Diária;
+            2. Mensal;
+            3. Única;
+            4. Anual;
+            5. Trimestral;
+            6. Semestral;
+            7. Fracionado.
+            8. Outra
+          example:
+            - Diária
+            - Anual
+            - Semestral
+        contributionTax:
+          type: string
+          maxLength: 500
+          description: |
+            Distribuição de frequência relativa aos valores referentes às taxas cobradas, nos termos do Anexo III.
+          example: NA
+        minimumRequirements:
+          $ref: '#/components/schemas/MinimumRequirements'
+    MinimumRequirements:
+      type: object
+      properties:
+        contractType:
+          type: array
+          items:
+            type: string
+          description: |
+            O tipo de serviço contratado. A considerar os domínios abaixo:
+            1. Coletivo Averbado;
+            2. Coletivo Instituído;
+            3. Individual.
+          example:
+            - Individual
+        contract:
+          type: string
+          description: |
+            Campo aberto contendo todos os requisitos mínimos para contratação (possibilidade de incluir URL). Comentários: As URLs são limitadas a 2048 caracteres mas, para o  contexto do Open Insurance, foi adotado a metade deste tamanho (1024). tamanho. p.ex. https://openinsurance.com.br/aaa
+          example: 'https://openinsurance.com.br/aaa'
+          maxLength: 1024
+        targetAudience:
+          $ref: '#/components/schemas/EnumTargetAudience'
     AcquiringServicesFeesAndRatesForService:
       type: object
       required:
@@ -814,7 +1259,7 @@ components:
         product:
           $ref: '#/components/schemas/CapitalizationBondsProduct'
         termsAndConditions:
-          $ref: '#/components/schemas/TermsAndConditions'
+          $ref: '#/components/schemas/CapitalizationBondsProductTermsAndConditions'
         quotas:
           type: array
           description: Informações relativas às taxas da Quotas praticadas para cada Parcela
@@ -836,7 +1281,7 @@ components:
         latePayment:
           $ref: '#/components/schemas/LatePayment'
         contributionPayment:
-          $ref: '#/components/schemas/ContributionPayment'
+          $ref: '#/components/schemas/CapitalizationBondsProductContributionPayment'
         finalRedemptionRate:
           type: number
           format: double
@@ -869,7 +1314,7 @@ components:
           items:
             $ref: '#/components/schemas/CapitalizationBondsProductEnumTargetAudience'
       additionalProperties: false
-    TermsAndConditions:
+    CapitalizationBondsProductTermsAndConditions:
       type: object
       required:
         - susepNumber
@@ -944,7 +1389,22 @@ components:
           maxLength: 7
           example: 0.25123
         adjustmentIndex:
-          $ref: '#/components/schemas/ContributionPayment/properties/adjustmentIndex'
+          type: string
+          maxLength: 9
+          enum:
+            - IPCA_IBGE
+            - IGPM_FGV
+            - INPC_IBGE
+            - TR_BC
+            - OUTROS
+          example: IPCA_IBGE
+          description: |
+            Índice utilizado na atualização dos pagamentos mensais (para títulos com mais de 12 meses de vigência) (não aplicável a pagamento único). A considerar os domínios abaixo:
+              1. IPCA (IBGE)
+              2. IGP M (FGV)
+              3. INPC (IBGE)
+              4. TR (BC)
+              5. Outros
         adjustmentIndexAdditionalInfo:
           type: string
           description: 'Restrição: Campo obrigatório para complementar a informação quando selecionada a opção ''OUTROS'''
@@ -1055,7 +1515,7 @@ components:
             - NAO
           example: SIM
       additionalProperties: false
-    ContributionPayment:
+    CapitalizationBondsProductContributionPayment:
       type: object
       required:
         - paymentMethod
@@ -1069,22 +1529,7 @@ components:
           maxLength: 200
           example: ''
         adjustmentIndex:
-          type: string
-          maxLength: 9
-          enum:
-            - IPCA_IBGE
-            - IGPM_FGV
-            - INPC_IBGE
-            - TR_BC
-            - OUTROS
-          example: IPCA_IBGE
-          description: |
-            Índice utilizado na atualização dos pagamentos mensais (para títulos com mais de 12 meses de vigência) (não aplicável a pagamento único). A considerar os domínios abaixo:
-              1. IPCA (IBGE)
-              2. IGP M (FGV)
-              3. INPC (IBGE)
-              4. TR (BC)
-              5. Outros
+          $ref: '#/components/schemas/CapitalizationPeriod/properties/adjustmentIndex'
         adjustmentIndexAdditionalInfo:
           type: string
           description: 'Restrição: Campo obrigatório para complementar a informação quando selecionada a opção ''OUTROS'''
@@ -1952,6 +2397,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/OKResponseGetExchange'
+    OkGetRiskPensionContractData:
+      description: Dados de operações de previdência da instituição obtidos com sucesso.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OkResponseGetRiskPension'
     OKResponseCapitalizationBondsProductsList:
       description: Dados de título(s) de capitalização obtidos com sucesso.
       content:
