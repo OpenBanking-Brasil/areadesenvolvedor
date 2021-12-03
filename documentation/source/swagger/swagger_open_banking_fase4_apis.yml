@@ -410,6 +410,53 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Product'
+    RiskPensionUpdate:
+      type: object
+      description: Atualização / Remuneração da PMBaC e Remuneração da PMBaC
+      properties:
+        award:
+          $ref: '#/components/schemas/UpdateAward'
+        pmbac:
+          $ref: '#/components/schemas/UpdatePMBaC'
+    ExcludedRisk:
+      type: object
+      required:
+        - url
+      properties:
+        type:
+          type: string
+          example: NA
+        url:
+          description: |
+            Campo aberto (possibilidade de incluir URL) Comentários: As URLs são limitadas a 2048 caracteres mas, para o contexto do Open Insurance, foi adotado a metade deste tamanho (1024). tamanho. p.ex.
+            https://openinsurance.com.br/aaa
+          type: string
+          example: 'https://openinsurance.com.br/aaa'
+          maxLength: 1024
+    EnumRiskPensionPaymentModality:
+      type: string
+      description: |
+        Listagem da forma de pagamento para cada benefício do produto indicando, conforme Resolução CNSP nº 201/2008:
+        1. Pagamento único;
+        2. Sob forma de renda.
+      maxLength: 30
+      enum:
+        - PAGAMENTO_UNICO
+        - SOB_FORMA_DE_RENDA
+      example: SOB_FORMA_DE_RENDA
+    UpdateIndex:
+      type: string
+      maxLength: 12
+      description: |
+        Índice utilizado na atualização do prêmio e do capital segurado, caso critério de atualização por meio de índice:
+        1. IPCA (IBGE);
+        2. IGP-M (FGV);
+        3. INPC (IBGE).
+      enum:
+        - IPCA_IBGE
+        - IGP-M_FGV
+        - INPC_IBGE
+      example: IPCA_IBGE
     Product:
       type: object
       required:
@@ -478,13 +525,7 @@ components:
         termsAndConditions:
           $ref: '#/components/schemas/TermsAndConditions'
         update:
-          type: object
-          description: Atualização / Remuneração da PMBaC e Remuneração da PMBaC
-          properties:
-            award:
-              $ref: '#/components/schemas/UpdateAward'
-            pmbac:
-              $ref: '#/components/schemas/UpdatePMBaC'
+          $ref: '#/components/schemas/RiskPensionUpdate'
         ageReframing:
           $ref: '#/components/schemas/AgeReframing'
         financialRegimeContractType:
@@ -515,16 +556,7 @@ components:
             - Não se aplica
             - Saldamento
         profitModality:
-          type: string
-          description: |
-            Listagem da forma de pagamento para cada benefício do produto indicando, conforme Resolução CNSP nº 201/2008:
-            1. Pagamento único;
-            2. Sob forma de renda.
-          maxLength: 30
-          enum:
-            - PAGAMENTO_UNICO
-            - SOB_FORMA_DE_RENDA
-          example: SOB_FORMA_DE_RENDA
+          $ref: '#/components/schemas/EnumRiskPensionPaymentModality'
         contributionPayment:
           $ref: '#/components/schemas/ContributionPayment'
     Coverage:
@@ -562,7 +594,7 @@ components:
         - gracePeriod
       properties:
         indenizationPaymentMethod:
-          $ref: '#/components/schemas/Product/properties/profitModality'
+          $ref: '#/components/schemas/EnumRiskPensionPaymentModality'
         minValue:
           type: number
           example: 1500
@@ -603,20 +635,7 @@ components:
           type: array
           description: 'Listagem para indicar quais serão o(s) risco(s) excluído(s) aplicável(is) à(s) cobertura(s) [Vide Tabela 1.1.3]'
           items:
-            type: object
-            required:
-              - url
-            properties:
-              type:
-                type: string
-                example: NA
-              url:
-                description: |
-                  Campo aberto (possibilidade de incluir URL) Comentários: As URLs são limitadas a 2048 caracteres mas, para o contexto do Open Insurance, foi adotado a metade deste tamanho (1024). tamanho. p.ex.
-                  https://openinsurance.com.br/aaa
-                type: string
-                example: 'https://openinsurance.com.br/aaa'
-                maxLength: 1024
+            $ref: '#/components/schemas/ExcludedRisk'
     CoverageAttributesMaxValue:
       $ref: '#/components/schemas/CoverageAttributes'
     GracePeriod:
@@ -667,18 +686,7 @@ components:
       type: object
       properties:
         index:
-          type: string
-          maxLength: 12
-          description: |
-            Índice utilizado na atualização do prêmio e do capital segurado, caso critério de atualização por meio de índice:
-            1. IPCA (IBGE);
-            2. IGP-M (FGV);
-            3. INPC (IBGE).
-          enum:
-            - IPCA_IBGE
-            - IGP-M_FGV
-            - INPC_IBGE
-          example: IPCA_IBGE
+          $ref: '#/components/schemas/UpdateIndex'
         interestRate:
           type: number
           maximum: 99999
@@ -688,7 +696,7 @@ components:
       type: object
       properties:
         index:
-          $ref: '#/components/schemas/UpdatePMBaC/properties/index'
+          $ref: '#/components/schemas/UpdateIndex'
     AgeReframing:
       type: object
       description: Reenquadramento etário
