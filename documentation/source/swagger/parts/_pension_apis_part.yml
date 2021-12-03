@@ -20,6 +20,8 @@ servers:
 tags:
   - name: Risk Coverages
     description: Operações relacionadas à Previdência com Coberturas de Risco.
+  - name: Survival Coverages
+    description: Operações relacionadas à Previdência com Coberturas de Sobrevivência.
 paths:
   /risk-coverages:
     get:
@@ -27,7 +29,7 @@ paths:
         - Risk Coverages
       summary: Informações de Previdência com Cobertura de Riscos.
       operationId: getPensionRiskCoverages
-      description: Método para disponibilizar o valor VET.
+      description: Método para obter informações de Previdência de Cobertura de Riscos.
       responses:
         '200':
           $ref: '#/components/responses/OKResponseRiskCoveragePension'
@@ -40,21 +42,47 @@ paths:
         '429':
           $ref: '#/components/responses/TooManyRequests'   
         '500':
-          $ref: '#/components/responses/InternalServerError'     
+          $ref: '#/components/responses/InternalServerError' 
+  /survival-coverages:
+    get:
+      tags:
+        - Survival Coverages
+      summary: Informações de Previdência com Cobertura de Sobrevivência.
+      operationId: getPensionSurvivalCoverages
+      description: Método para obter informações de Previdência de Cobertura de Sobrevivência.
+      responses:
+        '200':
+          $ref: '#/components/responses/OKResponseRiskCoveragePension'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'   
+        '500':
+          $ref: '#/components/responses/InternalServerError'
 components:
   schemas:
     OKResponseRiskCoveragePension:
       $ref: './schemas/pension_apis/OkResponseGetRiskPensionContract.yaml'
     GetRiskPensionContractData:
       $ref: './schemas/pension_apis/GetRiskPensionContractData.yaml'
+    OKResponseSurvivalCoveragePension:
+      $ref: './schemas/pension_apis/OkResponseGetSurvivalPensionContract.yaml'
+    GetSurvivalPensionContractData:
+      $ref: './schemas/pension_apis/GetSurvivalPensionContractData.yaml'
     Links:
       $ref: './schemas/Links.yaml'
     Meta:
       $ref: './schemas/Meta.yaml'
     ParticipantIdentification:
       $ref: ./schemas/business_commons/ParticipantIdentification.yaml
-    Product:
-      $ref: ./schemas/pension_apis/Product.yaml
+    RiskPensionProduct:
+      $ref: ./schemas/pension_apis/RiskPensionProduct.yaml
+    SurvivalPensionProduct:
+      $ref: ./schemas/pension_apis/SurvivalPensionProduct.yaml
     RiskPensionUpdate:
       $ref: ./schemas/pension_apis/RiskPensionUpdate.yaml
     ExcludedRisk:
@@ -70,11 +98,11 @@ components:
     GracePeriod:
       $ref: ./schemas/pension_apis/RiskPensionGracePeriod.yaml
     TermsAndConditions:
-      $ref: ./schemas/pension_apis/RiskPensionTermsAndConditions.yaml
+      $ref: ./schemas/insurance_apis/TermsAndConditionsItem.yaml
     UpdatePMBaC:
       $ref: ./schemas/pension_apis/RiskPensionUpdatePMBaC.yaml
     UpdateIndex:
-      $ref: ./schemas/enum/EnumRiskPensionUpdateIndex.yaml
+      $ref: ./schemas/enum/EnumPensionUpdateIndex.yaml
     UpdateAward:
       $ref: ./schemas/pension_apis/RiskPensionUpdateAward.yaml
     AgeReframing:
@@ -89,11 +117,17 @@ components:
       $ref: ./schemas/pension_apis/RiskPensionMinimumRequirements.yaml
   responses:
     OKResponseRiskCoveragePension:
-      description: 'Dados de operações de câmbio da instituição obtidos com sucesso.'
+      description: 'Dados de previdência de risco obtidos com sucesso da instituição obtidos com sucesso.'
       content:
         application/json:
           schema: 
             $ref: './schemas/pension_apis/OkResponseGetRiskPensionContract.yaml'
+    OKResponseSurvivorCoveragePension:
+      description: 'Dados de previdência de sobrevivência obtidos com sucesso da instituição obtidos com sucesso.'
+      content:
+        application/json:
+          schema: 
+            $ref: './schemas/pension_apis/OkResponseGetSurvivalPensionContract.yaml'
     BadRequest:
       description: 'A requisição foi malformada, omitindo atributos obrigatórios, seja no payload ou através de atributos na URL.'
       content:
