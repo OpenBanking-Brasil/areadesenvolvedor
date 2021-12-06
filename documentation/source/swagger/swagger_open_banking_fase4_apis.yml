@@ -841,7 +841,7 @@ components:
       required:
         - feeName
         - code
-        - price
+        - prices
         - chargingTriggerInfo
         - minimum
         - maximum
@@ -850,10 +850,25 @@ components:
           $ref: '#/components/schemas/EnumAcquiringServicesFeeName'
         code:
           $ref: '#/components/schemas/EnumAcquiringServicesCode'
-        price:
+        prices:
           type: array
+          minItems: 4
+          maxItems: 4
           items:
             $ref: '#/components/schemas/Price'
+          example:
+            - interval: 1_FAIXA
+              value: '0.0203'
+              rate: '0.5000'
+            - interval: 2_FAIXA
+              value: '0.0306'
+              rate: '0.1000'
+            - interval: 3_FAIXA
+              value: '0.0343'
+              rate: '0.3000'
+            - interval: 4_FAIXA
+              value: '0.2468'
+              rate: '0.1000'
         chargingTriggerInfo:
           type: string
           maxLength: 200
@@ -993,7 +1008,6 @@ components:
         - transactionCategory
         - deliveryForeignCurrency
         - rangeTransactionCategory
-        - targetAudience
         - vetAmount
         - onlineRate
       properties:
@@ -1018,29 +1032,52 @@ components:
           pattern: '^\d{1}\.\d{1,5}$'
           example: '5.5023'
         onlineRate:
-          type: array
-          items:
-            $ref: '#/components/schemas/OnlineRate'
-          description: "Taxa disponibilizada (taxa online) pelas instituições no formato D+0/D+2 (valor\_ U$ 100.000-operações cambio pronto) separado por moeda dólar e euro\_ compra e venda PF/PJ.\_\_\n- Não entra operações de cambio futuro, ACC/ACE, futuros, trava.\_\_\n- Deve ser adicionado um timestamp no momento da consulta no formato\_ hh:mm:ss\_\n- Adicionar disclaimer informando que a taxa apresentada é somente\_ informativa, para a contratação de uma operação, deverá ser consultado o\_ canal correspondente de cada instituição.\n"
+          type: object
+          description: "Taxa disponibilizada (taxa online) pelas instituições no formato D+2 (valor\_ U$ 100.000-operações cambio pronto) separado por moeda dólar e euro\_ compra e venda PF/PJ.\_\_\n- Não entra operações de cambio futuro, ACC/ACE, futuros, trava.\_\_\n- Deve ser adicionado um timestamp no momento da consulta no formato\_ hh:mm:ss\_\n- Adicionar disclaimer informando que a taxa apresentada é somente\_ informativa, para a contratação de uma operação, deverá ser consultado o\_ canal correspondente de cada instituição.\n"
+          required:
+            - values
+            - timestamp
+            - disclaimer
+          properties:
+            values:
+              type: array
+              items:
+                $ref: '#/components/schemas/OnlineRate'
+              example:
+                - foreignCurrency: USD
+                  deliveryForeignCurrency: ESPECIE
+                  transactionType: COMPRA
+                  targetAudience: PF
+                  value: '5.5023'
+                - foreignCurrency: EUR
+                  deliveryForeignCurrency: CARTAO_PRE_PAGO
+                  transactionType: VENDA
+                  targetAudience: PJ
+                  value: '2.7045'
+            timestamp:
+              type: string
+              format: date-time
+              description: Timestamp do momento da consulta
+              example: '2017-07-21T17:32:28Z'
+            disclaimer:
+              type: string
+              description: 'Disclaimer informando que a taxa apresentada é somente informativa, para a contratação de uma operação, deverá ser consultado o canal correspondente de cada instituição.'
+              example: <INSERIR TEXTO DO DISCLAIMER AQUI>
       additionalProperties: false
     OnlineRate:
       type: object
       description: Taxa disponibilizada (taxa online) pelas instituições no formato D+0/D+2 (valor U$100.000 operações câmbio pronto) separado por moeda dólar e euro compra e venda PF/PJ.
       required:
-        - term
         - foreignCurrency
+        - deliveryForeignCurrency
         - transactionType
         - targetAudience
         - value
       properties:
-        term:
-          type: string
-          pattern: D\+(0|2)$
-          maxLength: 8
-          example: D+2
-          description: Formato da taxa online.
         foreignCurrency:
           $ref: '#/components/schemas/EnumExchangeForeignCurrency'
+        deliveryForeignCurrency:
+          $ref: '#/components/schemas/EnumExchangeDeliveryForeignCurrency'
         transactionType:
           $ref: '#/components/schemas/EnumExchangeTransactionType'
         targetAudience:
@@ -1054,15 +1091,13 @@ components:
       additionalProperties: false
     EnumExchangeDeliveryForeignCurrency:
       type: string
-      description: |
-        A classificação do tipo de operação, conforme a circular BCB nº 3690 de 16/12/2013. (Vide Enum)
-        - ESPECIE_CARTAO_PRE_PAGO
-        - TELETRANSMISSAO_SWIFT
-      maxLength: 23
+      description: 'A classificação do tipo de operação, conforme a circular BCB nº 3690 de 16/12/2013. (Vide Enum)<br><ul><li>ESPECIE</li><li>CARTAO_PRE_PAGO</li><li>TELETRANSMISSAO_SWIFT</li></ul>'
+      maxLength: 21
       enum:
-        - ESPECIE_CARTAO_PRE_PAGO
+        - ESPECIE
+        - CARTAO_PRE_PAGO
         - TELETRANSMISSAO_SWIFT
-      example: ESPECIE_CARTAO_PRE_PAGO
+      example: CARTAO_PRE_PAGO
     EnumExchangeForeignCurrency:
       type: string
       description: |
@@ -2006,7 +2041,6 @@ components:
       required:
         - name
         - cnpjNumber
-        - isinCode
         - admin
         - adminCnpjNumber
         - fundManager
