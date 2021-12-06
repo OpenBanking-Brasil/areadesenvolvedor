@@ -28,6 +28,7 @@ swagger-cli bundle source/swagger/parts/_acquiring_services_apis_part.yml --outf
 swagger-cli bundle source/swagger/parts/_capitalization_bonds_apis_part.yml --outfile source/swagger/swagger_capitalization_bonds_apis.yaml --type=yaml
 swagger-cli bundle source/swagger/parts/_investments_apis_part.yml --outfile source/swagger/swagger_investments_apis.yaml --type=yaml
 swagger-cli bundle source/swagger/parts/_pension_apis_part.yml --outfile source/swagger/swagger_pension_apis.yaml --type=yaml
+swagger-cli bundle source/swagger/parts/_insurance_apis_part.yml --outfile source/swagger/swagger_insurance_apis.yaml --type=yaml
 swagger-cli bundle source/swagger/parts/_open_banking_fase4_apis_part.yml --outfile source/swagger/swagger_open_banking_fase4_apis.yml --type=yaml
 
 # Generate dictionary
@@ -57,6 +58,7 @@ swagger-cli validate source/swagger/swagger_open_banking_fase3_apis.yml
 # Open Banking Fase 4
 swagger-cli validate source/swagger/swagger_capitalization_bonds_apis.yaml
 swagger-cli validate source/swagger/swagger_investments_apis.yaml
+swagger-cli validate source/swagger/swagger_insurance_apis.yaml
 swagger-cli validate source/swagger/swagger_open_banking_fase4_apis.yml
 
 ###
