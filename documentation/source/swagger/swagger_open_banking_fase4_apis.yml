@@ -409,7 +409,97 @@ components:
         products:
           type: array
           items:
-            $ref: '#/components/schemas/Product'
+            type: object
+            required:
+              - name
+              - code
+              - coverages
+              - additionals
+              - assistanceType
+              - termsAndConditions
+              - contributionPayment
+            properties:
+              name:
+                type: string
+                maxLength: 80
+                description: |
+                  Nome comercial do produto, pelo qual é identificado nos canais de distribuição e atendimento da sociedade.
+                example: Produto A
+              code:
+                type: string
+                maxLength: 80
+                description: |
+                  Código único a ser definido pela sociedade.
+                example: '0001'
+              modality:
+                $ref: '#/components/schemas/Product/properties/modality'
+              coverages:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Coverage'
+              additionals:
+                type: array
+                items:
+                  type: string
+                example:
+                  - Sorteio (gratuito)
+                  - Outros
+              additionalsOthers:
+                type: array
+                items:
+                  type: string
+                example:
+                  - NA
+              assistanceType:
+                type: array
+                items:
+                  type: string
+                example:
+                  - Assistência PET
+                  - Funeral
+              assistanceTypeOthers:
+                type: array
+                items:
+                  type: string
+                example:
+                  - NA
+              termsAndConditions:
+                $ref: '#/components/schemas/TermsAndConditions'
+              update:
+                $ref: '#/components/schemas/RiskPensionUpdate'
+              ageReframing:
+                $ref: '#/components/schemas/AgeReframing'
+              financialRegimeContractType:
+                type: string
+                description: |
+                  Listagem de regime financeiro para cada combinação de modalidade/cobertura do produto indicando:
+                  1. Repartição simples;
+                  2. Repartição Capitais Cobertura;
+                  3. Capitalização.
+                maxLength: 50
+                enum:
+                  - REPARTICAO_SIMPLES
+                  - REPARTICAO_CAPITAIS_COBERTURA
+                  - CAPITALIZACAO
+                example: REPARTICAO_SIMPLES
+              reclaim:
+                $ref: '#/components/schemas/Reclaim'
+              otherGuaranteedValues:
+                type: array
+                description: |
+                  1. Saldamento;
+                  2. Benefício Prolongado.
+                  3. Não se aplica
+                items:
+                  type: string
+                example:
+                  - Benefício Prolongado
+                  - Não se aplica
+                  - Saldamento
+              profitModality:
+                $ref: '#/components/schemas/EnumRiskPensionPaymentModality'
+              contributionPayment:
+                $ref: '#/components/schemas/ContributionPayment'
     RiskPensionUpdate:
       type: object
       description: Atualização / Remuneração da PMBaC e Remuneração da PMBaC
@@ -462,11 +552,8 @@ components:
       required:
         - name
         - code
-        - coverages
-        - additionals
-        - assistanceType
-        - termsAndConditions
-        - contributionPayment
+        - segment
+        - details
       properties:
         name:
           type: string
@@ -480,6 +567,247 @@ components:
           description: |
             Código único a ser definido pela sociedade.
           example: '0001'
+        details:
+          type: array
+          items:
+            type: object
+            required:
+              - susepProcessNumber
+              - type
+              - termsAndConditions
+            properties:
+              susepProcessNumber:
+                $ref: '#/components/schemas/TermsAndConditions/properties/susepProcessNumber'
+              type:
+                type: string
+                description: |
+                  1.  PGBL
+                  2.  PRGP
+                  3.  PAGP
+                  4.  PRSA
+                  5.  PRI
+                  6.  PDR
+                  7.  VGBL
+                  8.  VRGP
+                  9.  VAGP
+                  10. VRSA
+                  11. VRI
+                  12. VDR
+                  13. Demais produtos de Previdência.
+                maxLength: 20
+                enum:
+                  - PGBL
+                  - PRGP
+                  - PAGP
+                  - PRSA
+                  - PRI
+                  - PDR
+                  - VGBL
+                  - VRGP
+                  - VAGP
+                  - VRSA
+                  - VRI
+                  - VDR
+                  - DEMAIS_PROD_DE_PREV
+              termsAndConditions:
+                $ref: '#/components/schemas/TermsAndConditions'
+              defferalPeriod:
+                type: object
+                description: Período de Diferimento
+                required:
+                  - premiumPaymentMethod
+                properties:
+                  interestRate:
+                    type: number
+                    description: Taxa de juros garantida que remunera o plano durante a fase de diferimento/acumulação.
+                    example: 0.25123
+                  updateIndex:
+                    $ref: '#/components/schemas/UpdateIndex'
+                  otherMinimumPerformanceGarantees:
+                    type: string
+                    description: 'Para produtos do tipo PDR e VDR, indicação do índice de ampla divulgação utilizados como garantia mínima de desempenho.'
+                    example: SELIC
+                    maxLength: 12
+                  minimumPremiumAmount:
+                    type: object
+                    description: Valor mínimo de prêmio/contribuição
+                    properties:
+                      value:
+                        type: number
+                        description: Valor mínimo em R$ de prêmio/ contribuição aceita pela sociedade ao plano (identificar valor mensal e/ou aporte único).
+                        example: 250
+                      description:
+                        type: string
+                        description: Descrição do Valor mínimo de prêmio/contribuição.
+                        example: VALOR MENSAL
+                  premiumPaymentMethod:
+                    type: array
+                    items:
+                      type: string
+                    example:
+                      - CARTÃO DE CRÉDITO
+                      - DÉBITO EM CONTA
+                      - BOLETO BANCÁRIO
+                  permission:
+                    type: object
+                    description: Permissão para aportes extraordinários
+                    properties:
+                      extraordinaryContributions:
+                        description: |
+                          Se ficam permitidos aportes extraordinários. A considerar os seguintes domínios:
+                          1. Sim; (true)
+                          2. Não (false).
+                        type: boolean
+                        example: true
+                      scheduledFinancialPayments:
+                        description: |
+                          Se ficam permitidos pagamentos financeiros programados. A considerar os seguintes domínios:
+                          1. Sim; (true)
+                          2. Não (false).
+                        type: boolean
+                        example: true
+                  gracePeriod:
+                    type: object
+                    description: Prazo de carência
+                    required:
+                      - redemption
+                      - betweenRedemptionRequests
+                      - portability
+                      - betweenPortabilityRequests
+                    properties:
+                      redemption:
+                        type: number
+                        description: |
+                          Prazo em dias de carência para resgate Para Coletivos: Valor máximo da carência.
+                        example: 100
+                        maximum: 9999
+                      betweenRedemptionRequests:
+                        type: number
+                        description: |
+                          Prazo em dias de carência entre pedidos de resgate Para Coletivos: Valor máximo da carência
+                        example: 30
+                        maximum: 9999
+                      portability:
+                        type: number
+                        description: Prazo em dias de carência para portabilidade.
+                        example: 12
+                        maximum: 9999
+                      betweenPortabilityRequests:
+                        type: number
+                        description: Prazo em dias de carência entre pedidos de portabilidade.
+                        example: 15
+                        maximum: 9999
+                  reversalResultsFinancial:
+                    type: number
+                    description: Percentual de reversão de excedente financeiro na concessão. Em %.
+                    example: 13.252
+                  investmentFunds:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SurvivalPensionInvestimentFund'
+              grantPeriodBenefit:
+                type: object
+                description: Período de concessão do benefício
+                required:
+                  - incomeModality
+                  - biometricTable
+                properties:
+                  incomeModality:
+                    type: array
+                    items:
+                      type: string
+                    example:
+                      - RENDA TEMPORÁRIA
+                    description: |
+                      Modalidades de renda disponíveis para contratação.
+                        A considerar os seguintes domínios:
+                        1. Pagamento Único
+                        2. Renda por Prazo Certo;
+                        3. Renda Temporária;
+                        4. Renda Temporária Reversível;
+                        5. Renda Temporária com mínimo garantido;
+                        6. Renda Temporária Reversível com Mínimo Garantido;
+                        7. Renda Vitalícia;
+                        8. Renda Vitalícia Reversível ao Beneficiário Indicado
+                        9. Renda Vitalícia Reversível ao Cônjuge com Continuidade de Menores
+                        10. Renda Vitalícia com o Mínimo Garantido;
+                        11. Renda Vitalícia com Prazo mínimo garantido.
+                  biometricTable:
+                    description: |
+                      Tábua biométrica utilizada como parâmetro para conversão em renda atuarial que deve observar a relação discriminada de coberturas, conforme Tabela II.2 do Anexo II.
+                      Deverá ser informada a tábua biométrica aplicável à modalidade de renda padrão do plano.
+                    type: array
+                    items:
+                      type: string
+                    example:
+                      - AT - 2000 – Male/Female - Suavizada 15%
+                  interestRate:
+                    type: number
+                    description: Taxa de juros garantida utilizada para conversão em renda. Em %
+                    example: 3.225
+                    maximum: 5
+                  updateIndex:
+                    $ref: '#/components/schemas/UpdateIndex'
+                  reversalResultsFinancial:
+                    type: number
+                    description: Percentual de reversão de excedente financeiro na concessão. Em %.
+                    example: 13.252
+                  investmentFunds:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SurvivalPensionInvestimentFund'
+              costs:
+                type: object
+                description: Custos
+                required:
+                  - loadingAntecipated
+                  - loadingLate
+                properties:
+                  loadingAntecipated:
+                    type: object
+                    description: Carregamento antecipado.
+                    required:
+                      - minValue
+                      - maxValue
+                    properties:
+                      minValue:
+                        type: number
+                        description: Percentual mínimo de carregamento cobrada quando do pagamento do prêmio/ contribuição. Em %.
+                        maximum: 99999
+                        example: 0
+                      maxValue:
+                        type: number
+                        description: Percentual máximo de carregamento cobrada quando do pagamento do prêmio/ contribuição. Em %.
+                        maximum: 99999
+                        example: 10
+                  loadingLate:
+                    type: object
+                    description: Carregamento postecipado.
+                    required:
+                      - minValue
+                      - maxValue
+                    properties:
+                      minValue:
+                        type: number
+                        description: Percentual mínimo de taxa de carregamento cobrado quando da efetivação de resgate ou portabilidade.
+                        maximum: 99999
+                        example: 0
+                      maxValue:
+                        type: number
+                        description: Percentual máximo de taxa de carregamento cobrado quando da efetivação de resgate ou portabilidade.
+                        maximum: 99999
+                        example: 10
+        segment:
+          type: string
+          description: |
+            Segmento do qual se trata o produto contratado
+            1. Seguro de Pessoas
+            2. Previdência
+          maxLength: 20
+          enum:
+            - SEGURO_DE_PESSOAS
+            - PREVIDENCIA
+          example: PREVIDENCIA
         modality:
           type: string
           description: |
@@ -492,73 +820,14 @@ components:
             - CONTRIBUICAO_VARIAVEL
             - BENEFICIO_DEFINIDO
           example: BENEFICIO_DEFINIDO
-        coverages:
-          type: array
-          items:
-            $ref: '#/components/schemas/Coverage'
-        additionals:
-          type: array
-          items:
-            type: string
-          example:
-            - Sorteio (gratuito)
-            - Outros
-        additionalsOthers:
-          type: array
-          items:
-            type: string
-          example:
-            - NA
-        assistanceType:
-          type: array
-          items:
-            type: string
-          example:
-            - Assistência PET
-            - Funeral
-        assistanceTypeOthers:
-          type: array
-          items:
-            type: string
-          example:
-            - NA
-        termsAndConditions:
-          $ref: '#/components/schemas/TermsAndConditions'
-        update:
-          $ref: '#/components/schemas/RiskPensionUpdate'
-        ageReframing:
-          $ref: '#/components/schemas/AgeReframing'
-        financialRegimeContractType:
+        optionalCoverage:
           type: string
           description: |
-            Listagem de regime financeiro para cada combinação de modalidade/cobertura do produto indicando:
-            1. Repartição simples;
-            2. Repartição Capitais Cobertura;
-            3. Capitalização.
-          maxLength: 50
-          enum:
-            - REPARTICAO_SIMPLES
-            - REPARTICAO_CAPITAIS_COBERTURA
-            - CAPITALIZACAO
-          example: REPARTICAO_SIMPLES
-        reclaim:
-          $ref: '#/components/schemas/Reclaim'
-        otherGuaranteedValues:
-          type: array
-          description: |
-            1. Saldamento;
-            2. Benefício Prolongado.
-            3. Não se aplica
-          items:
-            type: string
-          example:
-            - Benefício Prolongado
-            - Não se aplica
-            - Saldamento
-        profitModality:
-          $ref: '#/components/schemas/EnumRiskPensionPaymentModality'
-        contributionPayment:
-          $ref: '#/components/schemas/ContributionPayment'
+            Campo aberto (possibilidade de incluir URL) para a descrição das coberturas de risco (previdência) comercializadas facultativamente à cobertura de sobrevivência.
+            Comentários: As URLs são limitadas a 2048 caracteres, mas, para o contexto do Open Insurance, foi adotado a metade deste tamanho (1024). tamanho. p.ex. 'https://openinsurance.com.br/
+            aaa’.
+          example: 'https://openinsurance.com.br/aaa'
+          maxLength: 1024
     Coverage:
       type: object
       required:
@@ -664,24 +933,24 @@ components:
           example: MESES
     TermsAndConditions:
       type: object
-      description: Termos e Condições Contratuais
       required:
         - susepProcessNumber
         - definition
       properties:
         susepProcessNumber:
           type: string
-          maxLength: 20
           description: |
             Sequência numérica utilizada para consulta dos processos eletrônicos na SUSEP, com caracteres especiais, conforme campo de consulta no site da SUSEP (XXXXX.XXXXXX/XXXX-XX)
             Observação: Mascaras da SUSEP – Serão permitidos todas as máscaras de Produtos. Limitar pelos códigos das Máscaras.
-          example: XXXXX.XXXXXX/XXXX-XX
+          maxLength: 80
+          example: 15414.622222/2222-22
         definition:
           type: string
-          maxLength: 1024
-          example: 'https://openinsurance.com.br/aaa'
           description: |
-            Representam as Condições Gerais, Condições Especiais e Condições ou Cláusulas Particulares de um mesmo seguro. (Circular SUSEP 321/06). Campo aberto (possibilidade de incluir URL). Comentários: As URLs são limitadas a 2048 caracteres mas, para o contexto do Open Insurance, foi adotado a metade deste tamanho (1024). tamanho. p.ex. 'https://openinsurance.com.br/aaa’.
+            Representam as Condições Gerais, Condições Especiais e Condições ou Cláusulas Particulares de um mesmo seguro. (Circular SUSEP 321/06). Campo aberto (possibilidade de incluir URL). Comentários: As URLs são limitadas a 2048 caracteres mas, para o contexto do Open Insurance, foi adotado a metade deste tamanho (1024). tamanho. p.ex. 'https://openinsurance.com.br/aaa’
+          maxLength: 80
+          example: wwww.seguradora.com.br/termos
+      additionalProperties: false
     UpdatePMBaC:
       type: object
       properties:
@@ -2398,6 +2667,59 @@ components:
         meta:
           $ref: '#/components/schemas/Meta'
       additionalProperties: false
+    SurvivalPensionInvestimentFund:
+      type: object
+      description: Fundos de Investimento (por fundo).
+      properties:
+        cnpjNumber:
+          type: string
+          description: CNPJ
+          pattern: '\d{14}$'
+          example: '13456789000112'
+        companyName:
+          type: string
+          description: Nome Fantasia
+          maxLength: 80
+          example: EMPRESAAPREV
+        maximumAdministrationFee:
+          type: number
+          description: Taxa Máxima de Administração - em %
+          example: 20.1
+          maximum: 99999
+        typePerformanceFee:
+          type: array
+          items:
+            type: string
+          example:
+            - Diretamente
+            - Indiretamente
+            - Não se aplica
+          description: Tipo de Taxa de Performance
+        maximumPerformanceFee:
+          type: number
+          description: Taxa Máxima de Performance
+          maximum: 9999
+          example: 20
+        eligibilityRule:
+          type: string
+          description: |
+            Regra de Elegibilidade:
+              - SIM
+              - Não se aplica
+          enum:
+            - SIM
+            - NAO_SE_APLICA
+          example: NAO_SE_APLICA
+        minimumContributionAmount:
+          type: number
+          description: Valor Mínimo de Contribuição
+          maximum: 10000000000000000
+          example: 1000
+        minimumMathematicalProvisionAmount:
+          type: number
+          description: Valor Mínimo do Saldo Provisão Matemática
+          maximum: 10000000000000000
+          example: 1000
   parameters:
     page:
       name: page
