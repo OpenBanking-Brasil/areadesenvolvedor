@@ -3045,24 +3045,28 @@ components:
       properties:
         assistanceServicesPackage:
           type: array
-          description: ''
           minItems: 1
           items:
             $ref: '#/components/schemas/EnumAssistanceServicesPackageType'
         assistanceServicesDetail:
           type: string
-          description: ''
-          maxLength: 80
+          description: Campo livre para descrição dos serviços ofertados por cada sociedade participante (incluindo indicação se o serviço é Gratuito ou Pago)
+          maxLength: 1000
           example: Perda Parcial - Colisão
         chargeTypeSignaling:
           type: array
-          description: ''
+          description: |
+            Sinalização em campo exclusivo se o pacote de Assistência é gratuita ou contratada/paga. A considerar os domínios abaixo:
+              1. Gratuita
+              2. Pago
           minItems: 1
           items:
             $ref: '#/components/schemas/EnumChargeTypeSignalingType'
       additionalProperties: false
     CoverageItemAttributesLMI:
       type: object
+      description: |
+        No caso de contratação de várias coberturas numa mesma apólice, é comum o contrato estabelecer, para cada uma delas, um distinto limite máximo de responsabilidade por parte da seguradora. Cada um deles é denominado o Limite Máximo de Indenização (ou a Importância Segurada (IS), de cada cobertura contratada. Ressalte-se que estes limites são independentes, não se somando nem se comunicando. (Circular SUSEP 291/05); Lista com valor mínimo de LMI/IS aceito pela sociedade para cada cobertura. Em reais (R$) Importante: Campo de valor numérico relacionado à cobertura que possui o campo. Quando não houver o campo, enviar o valor zerado.
       required:
         - amount
         - unit
@@ -3100,7 +3104,11 @@ components:
       properties:
         contractingType:
           type: string
-          description: ''
+          description: |
+            A considerar os domínios abaixo:
+              1. Coletivo;
+              2. Individual
+              3. Ambas (Coletivo e Individual)
           maxLength: 10
           enum:
             - COLETIVO
@@ -3108,9 +3116,10 @@ components:
           example: INDIVIDUAL
         contractingMinRequirement:
           type: string
-          description: ''
-          maxLength: 80
-          example: ''
+          description: |
+            Campo aberto contendo todos os requisitos mínimos para contratação (possibilidade de incluir URL). Comentários: As URLs são limitadas a 2048 caracteres mas, para o  contexto do Open Insurance, foi adotado a metade deste tamanho (1024). tamanho. p.ex. https://openinsurance.com.br/aaa
+          maxLength: 1024
+          example: 'https://openinsurance.com.br/aaa'
       additionalProperties: false
     PremiumPayment:
       type: object
@@ -3121,39 +3130,41 @@ components:
       properties:
         paymentMethod:
           type: array
-          description: ''
+          description: |
+            Meio de pagamento escolhido pelo segurado. A considerar os domínios abaixo:
+            1. Cartão de Crédito
+            2. Cartão de Débito
+            3. Débito em conta corrente;
+            4. Débito em conta poupança;
+            5. Boleto bancário;
+            6. PIX;
+            7. Consignação em Folha de
+            Pagamento
+            8. Pontos de Programas de
+            Benefício;
+            9. Outros
           minItems: 1
           items:
             $ref: '#/components/schemas/EnumPremiumPaymentMethodType'
         paymentType:
           type: array
-          description: ''
+          description: |
+            A considerar os domínios abaixo:
+              1. Pagamento Único;
+              2. Parcelado;
+              3. Ambos (Pagamento único e
+              Parcelado)
           minItems: 1
           items:
             $ref: '#/components/schemas/EnumPremiumPaymentType'
         paymentDetail:
           type: string
-          description: ''
-          maxLength: 80
-          example: ''
+          description: Campo aberto para detalhamento do campo ‘Outros’ por cada participante.
+          maxLength: 100
+          example: Descritivo
       additionalProperties: false
     TermsAndConditionsItem:
-      type: object
-      required:
-        - susepProcessNumber
-        - definition
-      properties:
-        susepProcessNumber:
-          type: string
-          description: ''
-          maxLength: 80
-          example: 15414.622222/2222-22
-        definition:
-          type: string
-          description: ''
-          maxLength: 80
-          example: wwww.seguradora.com.br/termos
-      additionalProperties: false
+      $ref: '#/components/schemas/TermsAndConditions'
     OKResponseCarInsuranceList:
       type: object
       required:
@@ -3182,7 +3193,7 @@ components:
           $ref: '#/components/schemas/ParticipantIdentification'
         products:
           type: array
-          description: ''
+          description: Produto
           items:
             $ref: '#/components/schemas/CarInsuranceProduct'
           minItems: 1
@@ -3208,47 +3219,47 @@ components:
       properties:
         name:
           type: string
-          description: ''
+          description: 'Nome comercial do produto, pelo qual é identificado nos canais de distribuição e atendimento da sociedade.'
           maxLength: 80
           example: Produto A
         code:
-          type: integer
-          description: ''
+          type: string
+          description: Código único a ser definido pela sociedade.
           maxLength: 80
-          example: 1
+          example: '0001'
         coverages:
           type: array
-          description: ''
+          description: Coberturas
           items:
             $ref: '#/components/schemas/CarCoverageItem'
           minItems: 1
         carParts:
           type: array
-          description: ''
+          description: Tipo de peça utilizada para reparação – Nova ou Usada.
           items:
             $ref: '#/components/schemas/CarPartsItem'
           minItems: 1
         carModels:
           type: array
-          description: ''
+          description: Modelos do Veículo
           items:
             $ref: '#/components/schemas/CarModelsItem'
           minItems: 1
         vehicleOvernightZipCode:
-          type: string
-          description: ''
-          maxLength: 7
-          example: '1311000'
+          type: number
+          description: CEP de Pernoite do Veículo (Entrada de Dados).
+          maximum: 99999999
+          example: 1311000
         autoInsuranceAdditional:
           $ref: '#/components/schemas/EnumInsuranceAdditionalType'
         autoInsuranceAdditionalInfo:
           type: string
-          description: ''
-          maxLength: 80
-          example: ''
+          description: Campo aberto para descrição de cada participante ao selecionar o domínio ‘Outros’ no campo acima ‘Adicionais’ diferenciais do produto em questão.
+          maxLength: 100
+          example: 'Detalhar os serviços, benefícios e outros'
         assistanceServices:
           type: array
-          description: ''
+          description: Serviços de Assistência
           items:
             $ref: '#/components/schemas/AssistanceServicesItem'
           minItems: 1
@@ -3256,13 +3267,13 @@ components:
           type: array
           description: ''
           items:
-            $ref: '#/components/schemas/TermsAndConditionsItem'
+            $ref: '#/components/schemas/TermsAndConditions'
           minItems: 1
         term:
           $ref: '#/components/schemas/EnumInsuranceTermType'
         customerService:
           type: array
-          description: ''
+          description: Rede de Atendimento
           minItems: 1
           items:
             $ref: '#/components/schemas/EnumCustomerServiceType'
@@ -3271,7 +3282,7 @@ components:
         minimumRequirement:
           $ref: '#/components/schemas/MinimumRequirement'
         targetAudiences:
-          $ref: '#/components/schemas/EnumTargetAudiencesType'
+          $ref: '#/components/schemas/ExchangeEnumTargetAudience'
       additionalProperties: false
     CarCoverageItem:
       type: object
@@ -3283,18 +3294,22 @@ components:
       properties:
         coverage:
           type: array
-          description: ''
+          description: |
+            É o conjunto dos riscos cobertos elencados na apólice. (RESOLUÇÃO CNSP Nº 341/2016). Listagem de coberturas incluídas no produto que deve observar a relação discriminada de coberturas, conforme Tabela Tipo de Cobertura. 
           minItems: 1
           items:
             $ref: '#/components/schemas/EnumCarCoverageType'
         coverageAdditionalInfo:
           type: string
-          description: ''
-          maxLength: 80
-          example: '0001'
+          description: 'Campo aberto para detalhamento de cada uma das coberturas possíveis dos produtos a ser feito por cada participante, conforme domínios da lista padronizada de coberturas (macro).'
+          maxLength: 1000
+          example: NA
         coveragePermissionSeparteAcquisition:
           type: boolean
-          description: ''
+          description: |
+            Indicação se a cobertura permite contratação separada (por cobertura selecionada) conforme domínios abaixo:
+             1. Sim (True)
+             2. Não (False)
           example: true
         coverageAttributes:
           $ref: '#/components/schemas/CarCoverageItemAttributes'
@@ -3391,49 +3406,65 @@ components:
           $ref: '#/components/schemas/CoverageItemAttributesLMI'
         contractBase:
           type: array
-          description: ''
+          description: Base de contratação
           items:
             $ref: '#/components/schemas/ContractBase'
           minItems: 1
         newCarMaximumCalculatingPeriod:
           type: integer
-          description: ''
-          maxLength: 2
+          description: Prazo máximo para veículo zero quilômetro em meses
+          maximum: 999
           example: 12
         fullIndemnityPercentage:
           $ref: '#/components/schemas/CoverageItemFullIndemnityPercentage'
         deductibleType:
           type: array
-          description: ''
-          minItems: 1
           items:
             $ref: '#/components/schemas/EnumCoverageItemDeductibleType'
         fullIndemnityDeductible:
           type: boolean
-          description: ''
+          description: |
+            (Circular 269/2004). A considerar os domínios abaixo:
+            1. Sim (True) 
+            2. Não (False) 
           example: true
         deductiblePaymentByCoverage:
           type: boolean
-          description: ''
+          description: |
+            Mudança do campo com a sinalização para cada cobertura se a seguradora exige pagamento de franquia.
+             1. Sim (True) 
+             2. Não (False) 
           example: true
         deductiblePercentage:
           $ref: '#/components/schemas/CoverageItemDeductiblePercentage'
         mandatoryParticipation:
           type: string
-          description: ''
-          maxLength: 80
+          description: |
+            Participação Obrigatória é o valor ou percentual definido na apólice referente à responsabilidade do Segurado nos prejuízos indenizáveis decorrentes de sinistros cobertos.
+            (Circular SUSEP 347/07). Listagem de percentual de Franquia/Percentual Participação Obrigatória do Segurado estabelecida pela sociedade para cada tipo de cobertura do  produto.
+            Criação do campo POS em substituição ao campo abaixo ‘Valor Máximo de Franquia’ Importante: A POS deve ser aplicada apenas às coberturas elegíveis e não se restringe a um caso apenas.
+          maxLength: 300
           example: '0001'
         geographicScopeCoverage:
           type: array
-          description: ''
+          description: |
+            Listagem de abrangência geográfica do produto para fins de cada cobertura:
+              1. Nacional
+              2. Regional
+              3. Internacional
+              4. Apenas outros países
+              Observação: o campo permite a seleção de mais de um item (multivalorado)
           minItems: 1
           items:
             $ref: '#/components/schemas/EnumCoverageItemGeographicScopeType'
         geographicScopeCoverageAdditionalInfo:
           type: string
-          description: ''
-          maxLength: 80
-          example: '0001'
+          description: Detalhamento das regiões e países de abrangência.
+          example: |
+            Brasil, Argentina,
+            Uruguai, Paraguai,
+            Chile, Bolívia e
+            Venezuela
       additionalProperties: false
     ContractBase:
       type: object
@@ -3444,7 +3475,11 @@ components:
       properties:
         contractBaseType:
           type: array
-          description: ''
+          description: |
+            Incidência ao capital segurado da cobertura de casco. A considerar os seguintes domínios abaixo:
+             1. Valor determinado;
+             2. Valor de Mercado (Tabela FIPE);
+             3. Valor Determinado e/ou Valor de Mercado
           minItems: 1
           items:
             $ref: '#/components/schemas/EnumCarContractBaseType'
@@ -3455,7 +3490,11 @@ components:
       additionalProperties: false
     EnumCarContractBaseType:
       type: string
-      description: ''
+      description: |
+        Incidência ao capital segurado da cobertura de casco. A considerar os seguintes domínios abaixo:
+          1. Valor determinado;
+          2. Valor de Mercado (Tabela FIPE);
+          3. Valor Determinado e/ou Valor de Mercado
       maxLength: 17
       enum:
         - VALOR_DETERMINADO
@@ -3499,17 +3538,23 @@ components:
         - unit
       properties:
         amount:
-          type: string
-          description: ''
-          maxLength: 80
-          example: '0001'
+          type: number
+          description: 'Será caracterizada a indenização integral quando os prejuízos resultantes de um mesmo sinistro, atingirem ou ultrapassarem a quantia apurada a partir da aplicação de percentual previamente determinado sobre o valor contratado. (Circular 269/2004).'
+          maximum: 99999
+          example: 10.2
         unit:
           $ref: '#/components/schemas/CoverageItemAttributeUnit'
       additionalProperties: false
     EnumCoverageItemDeductibleType:
       type: string
-      description: ''
-      maxLength: 8
+      description: |
+        Listagem de tipo de franquia para cada tipo de cobertura do produto, a considerar os domínios abaixo:
+          1. Normal;
+          2. Reduzida.
+          3. Isenta
+          4. Majorada
+          5. Flexível
+      maxLength: 10
       enum:
         - NORMAL
         - REDUZIDA
@@ -3525,8 +3570,11 @@ components:
       properties:
         amount:
           type: string
-          description: ''
-          maxLength: 80
+          description: |
+            Participação Obrigatória é o valor ou percentual definido na apólice referente à responsabilidade do Segurado nos prejuízos indenizáveis decorrentes de sinistros cobertos.
+            (Circular SUSEP 347/07). Listagem de percentual de Franquia/Percentual Participação Obrigatória do Segurado estabelecida pela sociedade para cada tipo de cobertura do  produto.
+            Criação do campo POS em substituição ao campo abaixo ‘Valor Máximo de Franquia’ Importante: A POS deve ser aplicada apenas às coberturas elegíveis e não se restringe a um caso apenas.
+          maxLength: 300
           example: '0001'
         unit:
           $ref: '#/components/schemas/CoverageItemAttributeUnit'
@@ -3549,19 +3597,30 @@ components:
       properties:
         carPartCondition:
           type: string
-          description: ''
-          maxLength: 80
-          example: '0001'
+          description: |
+            Novas ou usada. A considerar os domínios abaixo:
+              1. Novas
+              2. Usadas
+              3. Novas e/ou Usadas
+          example: 1. Novas
         carPartType:
           type: array
-          description: ''
+          description: |
+            Originais e Compatíveis. A considerar os domínios abaixo:
+              1. Originais
+              2. Compatíveis
+              3. Originais e/ou Compatíveis
           minItems: 1
           items:
             $ref: '#/components/schemas/EnumCarPartType'
       additionalProperties: false
     EnumCarPartType:
       type: string
-      description: ''
+      description: |
+        Originais e Compatíveis. A considerar os domínios abaixo:
+          1. Originais
+          2. Compatíveis
+          3. Originais e/ou Compatíveis
       maxLength: 11
       enum:
         - ORIGINAIS
@@ -3578,23 +3637,23 @@ components:
       properties:
         manufacturer:
           type: string
-          description: ''
-          maxLength: 80
-          example: Ford
+          description: Chamada via código FIPE – retorna os veículos (Marca/Modelo/Ano) que são cobertos no produto
+          maxLength: 20
+          example: FORD
         model:
           type: string
-          description: ''
-          maxLength: 80
-          example: Corcel II L
+          description: Chamada via código FIPE – retorna os veículos (Marca/Modelo/Ano) que são cobertos no produto
+          maxLength: 20
+          example: KA
         year:
           type: integer
-          description: ''
-          maxLength: 4
+          description: Chamada via código FIPE – retorna os veículos (Marca/Modelo/Ano) que são cobertos no produto
+          maximum: 9999
           example: 1985
         fipeCode:
           type: string
-          description: ''
-          maxLength: 80
+          description: Chamada via código FIPE – retorna os veículos (Marca/Modelo/Ano) que são cobertos no produto
+          maxLength: 20
           example: 003128-3
       additionalProperties: false
     EnumInsuranceAdditionalType:
@@ -3611,7 +3670,11 @@ components:
       example: SORTEIO_GRATUITO
     EnumAssistanceServicesPackageType:
       type: string
-      description: ''
+      description: |
+        1- Até 10 serviços
+        2- Até 20 serviços
+        3- Acima de 20 serviços
+        4- Customizável
       maxLength: 17
       enum:
         - ATE_10_SERVICOS
@@ -3621,7 +3684,10 @@ components:
       example: ATE_10_SERVICOS
     EnumChargeTypeSignalingType:
       type: string
-      description: ''
+      description: |
+        Sinalização em campo exclusivo se o pacote de Assistência é gratuita ou contratada/paga. A considerar os domínios abaixo:
+          1. Gratuita
+          2. Pago
       maxLength: 8
       enum:
         - GRATUITA
@@ -3629,7 +3695,17 @@ components:
       example: GRATUITA
     EnumInsuranceTermType:
       type: string
-      description: ''
+      description: |
+        1. anual
+        2. anual intermitente
+        3. plurianual
+        4. plurianual intermitente
+        5. semestral
+        6.semestral intermitente
+        7. mensal
+        8. mensal intermitente
+        9. diário
+        10. diário intermitente.
       maxLength: 23
       enum:
         - ANUAL
@@ -3644,7 +3720,7 @@ components:
       example: ANUAL
     EnumCustomerServiceType:
       type: string
-      description: ''
+      description: Rede de Atendimento
       maxLength: 31
       enum:
         - REDE_REFERENCIADA
@@ -3653,7 +3729,19 @@ components:
       example: REDE_REFERENCIADA
     EnumPremiumPaymentMethodType:
       type: string
-      description: ''
+      description: |
+        Meio de pagamento escolhido pelo segurado. A considerar os domínios abaixo:
+        1. Cartão de Crédito
+        2. Cartão de Débito
+        3. Débito em conta corrente;
+        4. Débito em conta poupança;
+        5. Boleto bancário;
+        6. PIX;
+        7. Consignação em Folha de
+        Pagamento
+        8. Pontos de Programas de
+        Benefício;
+        9. Outros
       maxLength: 14
       enum:
         - CARTAO_CREDITO
@@ -3661,7 +3749,12 @@ components:
       example: CARTAO_CREDITO
     EnumPremiumPaymentType:
       type: string
-      description: ''
+      description: |
+        A considerar os domínios abaixo:
+          1. Pagamento Único;
+          2. Parcelado;
+          3. Ambos (Pagamento único e
+          Parcelado)
       maxLength: 15
       enum:
         - PAGAMENTO_UNICO
@@ -3769,7 +3862,7 @@ components:
         termsAndConditions:
           type: array
           items:
-            $ref: '#/components/schemas/TermsAndConditionsItem'
+            $ref: '#/components/schemas/TermsAndConditions'
           minItems: 1
         validity:
           type: array
@@ -4024,7 +4117,7 @@ components:
         termsAndConditions:
           type: array
           items:
-            $ref: '#/components/schemas/TermsAndConditionsItem'
+            $ref: '#/components/schemas/TermsAndConditions'
           minItems: 1
         globalCapital:
           type: boolean
