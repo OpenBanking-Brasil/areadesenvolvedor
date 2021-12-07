@@ -18,6 +18,7 @@ APIS=(
   "payments_apis"
   "capitalization_bonds_apis"
   "investments_apis"
+  "insurances_apis"
   "exchange_apis"
   "acquiring_services_apis"
   "pension_apis"
