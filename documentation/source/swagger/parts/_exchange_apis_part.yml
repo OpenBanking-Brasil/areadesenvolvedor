@@ -13,27 +13,27 @@ info:
     email: gt-interfaces@openbankingbr.org
     url: 'https://openbanking-brasil.github.io/areadesenvolvedor/'
 servers:
-  - url: 'https://api.banco.com.br/open-banking/open-data/exchange/v1'
+  - url: 'https://api.banco.com.br/open-banking/opendata-exchange/v1'
     description: Servidor de Produção
-  - url: 'https://apih.banco.com.br/open-banking/open-data/exchange/v1'
+  - url: 'https://apih.banco.com.br/open-banking/opendata-exchange/v1'
     description: Servidor de Homologação
 tags:
-  - name: Personal Exchange
-    description: Operações para obter as informações de Câmbio para Pessoa Física.
-  - name: Business Exchange
-    description: Operações para obter as informações de Câmbio para Pessoa Jurídica.
+  - name: Exchange Online Rate
+    description: Operações para obter as informações de Câmbio para taxa online.
+  - name: Exchange VET Value
+    description: Operações para obter as informações de Câmbio para valor do VET.
 
 paths:
-  /personal-exchange:
+  /online-rate:
     get:
       tags:
-        - Personal Exchange
-      summary: Conjunto de informações de Câmbio para Pessoa Física.
-      operationId: getPersonalExchange
-      description: Método para disponibilizar o valor VET.
+        - Exchange Online Rate
+      summary: Conjunto de informações de Câmbio para taxa online.
+      operationId: exchangeGetOnlineRate
+      description: Método para disponibilizar a taxa online.
       responses:
         '200':
-          $ref: '#/components/responses/OKResponseExchange'
+          $ref: '#/components/responses/OKResponseExchangeOnlineRate'
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
@@ -44,16 +44,16 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /business-exchange:
+  /vet-value:
     get:
       tags:
-        - Business Exchange
-      summary: Conjunto de informações de Câmbio para Pessoa Jurídica.
-      operationId: getBusinessExchange
+        - Exchange VET Value
+      summary: Conjunto de informações de Câmbio para valor do VET.
+      operationId: exchangeGetVetValue
       description: Método para disponibilizar o valor VET.
       responses:
         '200':
-          $ref: '#/components/responses/OKResponseExchange'
+          $ref: '#/components/responses/OKResponseExchangeVetValue'
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
@@ -66,37 +66,49 @@ paths:
           $ref: '#/components/responses/InternalServerError'
 components:
   schemas:
-    OKResponseExchange:
-      $ref: './schemas/exchange_apis/OkResponseGetExchangeContract.yaml'
     Links:
-      $ref: './schemas/Links.yaml'
+      $ref: ./schemas/Links.yaml
     Meta:
-      $ref: './schemas/Meta.yaml'
-    ParticipantIdentification:
-      $ref: ./schemas/business_commons/ParticipantIdentification.yaml
-    EnumExchangeForeignCurrency:
-      $ref: ./schemas/enum/EnumExchangeForeignCurrency.yaml
-    EnumExchangeTransactionType:
-      $ref: ./schemas/enum/EnumExchangeTransactionType.yaml
-    EnumTargetAudience:
-      $ref: ./schemas/business_commons/EnumTargetAudience.yaml
-    EnumExchangeTransactionCategory:
-      $ref: ./schemas/enum/EnumExchangeTransactionCategory.yaml
-    EnumExchangeDeliveryForeignCurrency:
-      $ref: ./schemas/enum/EnumExchangeDeliveryForeignCurrency.yaml
-    EnumExchangeRangeTransactionCategory:
-      $ref: ./schemas/enum/EnumExchangeRangeTransactionCategory.yaml
+      $ref: ./schemas/Meta.yaml
+    OKResponseExchangeOnlineRate:
+      $ref: ./schemas/exchange_apis/ResponseExchangeOnlineRate.yaml
+    OKResponseExchangeVetValue:
+      $ref: ./schemas/exchange_apis/ResponseExchangeVetValue.yaml
+    ExchangeOnlineRate:
+      $ref: ./schemas/exchange_apis/ExchangeOnlineRate.yaml
+    ExchangeVetValue:
+      $ref: ./schemas/exchange_apis/ExchangeVetValue.yaml
     OnlineRate:
       $ref: ./schemas/exchange_apis/OnlineRate.yaml
-    ExchangeContractData:
-      $ref: ./schemas/exchange_apis/ExchangeContractData.yaml
+    EnumExchangeDeliveryForeignCurrency:
+      $ref: ./schemas/enum/EnumExchangeDeliveryForeignCurrency.yaml
+    EnumExchangeForeignCurrency:
+      $ref: ./schemas/enum/EnumExchangeForeignCurrency.yaml
+    EnumExchangeRangeTransactionCategory:
+      $ref: ./schemas/enum/EnumExchangeRangeTransactionCategory.yaml
+    EnumExchangeTransactionCategory:
+      $ref: ./schemas/enum/EnumExchangeTransactionCategory.yaml
+    EnumExchangeTransactionType:
+      $ref: ./schemas/enum/EnumExchangeTransactionType.yaml
+    ExchangeParticipantIdentification:
+      $ref: ./schemas/business_commons/ParticipantIdentification.yaml
+    ExchangeEnumDistinctTargetAudience:
+      $ref: ./schemas/business_commons/EnumDistinctTargetAudience.yaml
+    ExchangeEnumTargetAudience:
+      $ref: ./schemas/business_commons/EnumTargetAudience.yaml
   responses:
-    OKResponseExchange:
+    OKResponseExchangeOnlineRate:
       description: 'Dados de operações de câmbio da instituição obtidos com sucesso.'
       content:
         application/json:
           schema:
-            $ref: './schemas/exchange_apis/OkResponseGetExchangeContract.yaml'
+            $ref: './schemas/exchange_apis/ResponseExchangeOnlineRate.yaml'
+    OKResponseExchangeVetValue:
+      description: 'Dados de operações de câmbio da instituição obtidos com sucesso.'
+      content:
+        application/json:
+          schema:
+            $ref: './schemas/exchange_apis/ResponseExchangeVetValue.yaml'
     BadRequest:
       description: 'A requisição foi malformada, omitindo atributos obrigatórios, seja no payload ou através de atributos na URL.'
       content:

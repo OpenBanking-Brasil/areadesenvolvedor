@@ -13,26 +13,26 @@ info:
     email: gt-interfaces@openbankingbr.org
     url: 'https://openbanking-brasil.github.io/areadesenvolvedor/'
 servers:
-  - url: 'https://api.banco.com.br/open-banking/open-data/exchange/v1'
+  - url: 'https://api.banco.com.br/open-banking/opendata-exchange/v1'
     description: Servidor de Produção
-  - url: 'https://apih.banco.com.br/open-banking/open-data/exchange/v1'
+  - url: 'https://apih.banco.com.br/open-banking/opendata-exchange/v1'
     description: Servidor de Homologação
 tags:
-  - name: Personal Exchange
-    description: Operações para obter as informações de Câmbio para Pessoa Física.
-  - name: Business Exchange
-    description: Operações para obter as informações de Câmbio para Pessoa Jurídica.
+  - name: Exchange Online Rate
+    description: Operações para obter as informações de Câmbio para taxa online.
+  - name: Exchange VET Value
+    description: Operações para obter as informações de Câmbio para valor do VET.
 paths:
-  /personal-exchange:
+  /online-rate:
     get:
       tags:
-        - Personal Exchange
-      summary: Conjunto de informações de Câmbio para Pessoa Física.
-      operationId: getPersonalExchange
-      description: Método para disponibilizar o valor VET.
+        - Exchange Online Rate
+      summary: Conjunto de informações de Câmbio para taxa online.
+      operationId: exchangeGetOnlineRate
+      description: Método para disponibilizar a taxa online.
       responses:
         '200':
-          $ref: '#/components/responses/OKResponseExchange'
+          $ref: '#/components/responses/OKResponseExchangeOnlineRate'
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
@@ -43,16 +43,16 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /business-exchange:
+  /vet-value:
     get:
       tags:
-        - Business Exchange
-      summary: Conjunto de informações de Câmbio para Pessoa Jurídica.
-      operationId: getBusinessExchange
+        - Exchange VET Value
+      summary: Conjunto de informações de Câmbio para valor do VET.
+      operationId: exchangeGetVetValue
       description: Método para disponibilizar o valor VET.
       responses:
         '200':
-          $ref: '#/components/responses/OKResponseExchange'
+          $ref: '#/components/responses/OKResponseExchangeVetValue'
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
@@ -65,22 +65,6 @@ paths:
           $ref: '#/components/responses/InternalServerError'
 components:
   schemas:
-    OKResponseExchange:
-      type: object
-      required:
-        - data
-        - links
-        - meta
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExchangeContractData'
-        links:
-          $ref: '#/components/schemas/Links'
-        meta:
-          $ref: '#/components/schemas/Meta'
-      additionalProperties: false
     Links:
       type: object
       description: Referências para outros recusos da API requisitada.
@@ -148,7 +132,200 @@ components:
           format: date-time
           example: '2021-05-21T08:30:00Z'
       additionalProperties: false
-    ParticipantIdentification:
+    OKResponseExchangeOnlineRate:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExchangeOnlineRate'
+        links:
+          $ref: '#/components/schemas/Links'
+        meta:
+          $ref: '#/components/schemas/Meta'
+      additionalProperties: false
+    OKResponseExchangeVetValue:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExchangeVetValue'
+        links:
+          $ref: '#/components/schemas/Links'
+        meta:
+          $ref: '#/components/schemas/Meta'
+      additionalProperties: false
+    ExchangeOnlineRate:
+      type: object
+      description: Conjunto de informações referentes às informações de câmbio
+      required:
+        - participantIdentification
+        - onlineRate
+      properties:
+        participantIdentification:
+          $ref: '#/components/schemas/ExchangeParticipantIdentification'
+        onlineRate:
+          type: object
+          description: 'Taxa disponibilizada (taxa online) pelas instituições no formato D+2 (valor U$ 100.000-operações cambio pronto) separado por moeda dólar e euro compra e venda PF/PJ.<br><ul><li>Não entra operações de cambio futuro, ACC/ACE, futuros, trava</li><li>Deve ser adicionado um timestamp no momento da consulta no formato hh:mm:ss</li><li>Adicionar disclaimer informando que a taxa apresentada é somente informativa, para a contratação de uma operação, deverá ser consultado o canal correspondente de cada instituição</li></ul>'
+          required:
+            - values
+            - timestamp
+            - disclaimer
+          properties:
+            values:
+              type: array
+              items:
+                $ref: '#/components/schemas/OnlineRate'
+              example:
+                - foreignCurrency: USD
+                  deliveryForeignCurrency: ESPECIE
+                  transactionType: COMPRA
+                  targetAudience: PF
+                  value: '5.5023'
+                - foreignCurrency: EUR
+                  deliveryForeignCurrency: CARTAO_PRE_PAGO
+                  transactionType: VENDA
+                  targetAudience: PJ
+                  value: '2.7045'
+            timestamp:
+              type: string
+              format: date-time
+              description: Timestamp do momento da consulta
+              example: '2017-07-21T17:32:28Z'
+            disclaimer:
+              type: string
+              description: 'Disclaimer informando que a taxa apresentada é somente informativa, para a contratação de uma operação, deverá ser consultado o canal correspondente de cada instituição.'
+              example: <INSERIR TEXTO DO DISCLAIMER AQUI>
+      additionalProperties: false
+    ExchangeVetValue:
+      type: object
+      description: Conjunto de informações referentes às informações de câmbio
+      required:
+        - participantIdentification
+        - transactionType
+        - foreignCurrency
+        - transactionCategory
+        - deliveryForeignCurrency
+        - rangeTransactionCategory
+        - vetAmount
+      properties:
+        participantIdentification:
+          $ref: '#/components/schemas/ExchangeParticipantIdentification'
+        transactionType:
+          $ref: '#/components/schemas/EnumExchangeTransactionType'
+        foreignCurrency:
+          $ref: '#/components/schemas/EnumExchangeForeignCurrency'
+        transactionCategory:
+          $ref: '#/components/schemas/EnumExchangeTransactionCategory'
+        deliveryForeignCurrency:
+          $ref: '#/components/schemas/EnumExchangeDeliveryForeignCurrency'
+        rangeTransactionCategory:
+          $ref: '#/components/schemas/EnumExchangeRangeTransactionCategory'
+        targetAudience:
+          $ref: '#/components/schemas/ExchangeEnumTargetAudience'
+        vetAmount:
+          type: string
+          description: Média simples do VET das operações PF/PJ para cada intervalo conforme a circular 4015 BCB.
+          maxLength: 7
+          pattern: '^\d{1}\.\d{1,5}$'
+          example: '5.5023'
+      additionalProperties: false
+    OnlineRate:
+      type: object
+      description: Taxa disponibilizada (taxa online) pelas instituições no formato D+0/D+2 (valor U$100.000 operações câmbio pronto) separado por moeda dólar e euro compra e venda PF/PJ.
+      required:
+        - foreignCurrency
+        - deliveryForeignCurrency
+        - transactionType
+        - targetAudience
+        - value
+      properties:
+        foreignCurrency:
+          $ref: '#/components/schemas/EnumExchangeForeignCurrency'
+        deliveryForeignCurrency:
+          $ref: '#/components/schemas/EnumExchangeDeliveryForeignCurrency'
+        transactionType:
+          $ref: '#/components/schemas/EnumExchangeTransactionType'
+        targetAudience:
+          $ref: '#/components/schemas/ExchangeEnumDistinctTargetAudience'
+        value:
+          type: string
+          maxLength: 7
+          pattern: '^\d{1}\.\d{1,5}$'
+          example: '5.5023'
+          description: Valor da operação.
+      additionalProperties: false
+    EnumExchangeDeliveryForeignCurrency:
+      type: string
+      description: 'A classificação do tipo de operação, conforme a circular BCB nº 3690 de 16/12/2013. (Vide Enum)<br><ul><li>ESPECIE</li><li>CARTAO_PRE_PAGO</li><li>TELETRANSMISSAO_SWIFT</li></ul>'
+      maxLength: 21
+      enum:
+        - ESPECIE
+        - CARTAO_PRE_PAGO
+        - TELETRANSMISSAO_SWIFT
+      example: CARTAO_PRE_PAGO
+    EnumExchangeForeignCurrency:
+      type: string
+      description: |
+        É a moeda estrangeira, segundo modelo ISO 4217. (Vide Enum)
+        - USD
+        - EUR
+      maxLength: 3
+      enum:
+        - USD
+        - EUR
+      example: USD
+    EnumExchangeRangeTransactionCategory:
+      type: string
+      description: A classificação conforme a circular BCB nº 4015.
+      maxLength: 17
+      enum:
+        - '0,01_200'
+        - '200,01_500'
+        - '500,01_1.000'
+        - '1.000,01_3.000'
+        - '3.000,01_10.000'
+        - '10.000,01_30.000'
+        - '30.000,01_100.000'
+      example: '0,01_200'
+    EnumExchangeTransactionCategory:
+      type: string
+      description: 'A classificação do tipo de operação, conforme a circular BCB nº 3690 de 16/12/2013.'
+      maxLength: 68
+      enum:
+        - COMERCIO_EXTERIOR
+        - TRANSPORTE
+        - SEGUROS
+        - VIAGENS_INTERNACIONAIS
+        - TRANSFERENCIAS_UNILATERAIS
+        - SERVICOS_DIVERSOS
+        - RENDAS_DE_CAPITAIS
+        - CAPITAIS_BRASILEIROS
+        - CAPITAIS_ESTRANGEIROS
+        - PRESTACAO_DE_SERVICO_DE_PAGAMENTO_OU_TRANSFERENCIA_INTERNACIONAL_EFX
+      example: COMERCIO_EXTERIOR
+    EnumExchangeTransactionType:
+      type: string
+      description: |
+        Determina se o Banco está comprando ou vendendo a moeda estrangeira nas operações
+        spot,  que se liquidam em até dois dias (não aplica-se a operações futuras. (Vide Enum)
+        - Compra
+        - Venda
+      maxLength: 6
+      enum:
+        - COMPRA
+        - VENDA
+      example: COMPRA
+    ExchangeParticipantIdentification:
       type: object
       description: Conjunto de informações relativas ao participante do produto de open banking
       required:
@@ -189,30 +366,15 @@ components:
                     pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
                     example: 'https://empresaa1.com/branches-banking'
       additionalProperties: false
-    EnumExchangeForeignCurrency:
+    ExchangeEnumDistinctTargetAudience:
       type: string
-      description: |
-        É a moeda estrangeira, segundo modelo ISO 4217. (Vide Enum)
-        - USD
-        - EUR
-      maxLength: 3
+      description: Público alvo (ou PF ou PJ).
+      maxLength: 2
       enum:
-        - USD
-        - EUR
-      example: USD
-    EnumExchangeTransactionType:
-      type: string
-      description: |
-        Determina se o Banco está comprando ou vendendo a moeda estrangeira nas operações
-        spot,  que se liquidam em até dois dias (não aplica-se a operações futuras. (Vide Enum)
-        - Compra
-        - Venda
-      maxLength: 6
-      enum:
-        - COMPRA
-        - VENDA
-      example: COMPRA
-    EnumTargetAudience:
+        - PF
+        - PJ
+      example: PF
+    ExchangeEnumTargetAudience:
       type: string
       description: Média das operações PF/PJ.
       maxLength: 5
@@ -221,142 +383,19 @@ components:
         - PJ
         - PF_PJ
       example: PF
-    EnumExchangeTransactionCategory:
-      type: string
-      description: 'A classificação do tipo de operação, conforme a circular BCB nº 3690 de 16/12/2013.'
-      maxLength: 68
-      enum:
-        - COMERCIO_EXTERIOR
-        - TRANSPORTE
-        - SEGUROS
-        - VIAGENS_INTERNACIONAIS
-        - TRANSFERENCIAS_UNILATERAIS
-        - SERVICOS_DIVERSOS
-        - RENDAS_DE_CAPITAIS
-        - CAPITAIS_BRASILEIROS
-        - CAPITAIS_ESTRANGEIROS
-        - PRESTACAO_DE_SERVICO_DE_PAGAMENTO_OU_TRANSFERENCIA_INTERNACIONAL_EFX
-      example: COMERCIO_EXTERIOR
-    EnumExchangeDeliveryForeignCurrency:
-      type: string
-      description: 'A classificação do tipo de operação, conforme a circular BCB nº 3690 de 16/12/2013. (Vide Enum)<br><ul><li>ESPECIE</li><li>CARTAO_PRE_PAGO</li><li>TELETRANSMISSAO_SWIFT</li></ul>'
-      maxLength: 21
-      enum:
-        - ESPECIE
-        - CARTAO_PRE_PAGO
-        - TELETRANSMISSAO_SWIFT
-      example: CARTAO_PRE_PAGO
-    EnumExchangeRangeTransactionCategory:
-      type: string
-      description: A classificação conforme a circular BCB nº 4015.
-      maxLength: 17
-      enum:
-        - '0,01_200'
-        - '200,01_500'
-        - '500,01_1.000'
-        - '1.000,01_3.000'
-        - '3.000,01_10.000'
-        - '10.000,01_30.000'
-        - '30.000,01_100.000'
-      example: '0,01_200'
-    OnlineRate:
-      type: object
-      description: Taxa disponibilizada (taxa online) pelas instituições no formato D+0/D+2 (valor U$100.000 operações câmbio pronto) separado por moeda dólar e euro compra e venda PF/PJ.
-      required:
-        - foreignCurrency
-        - deliveryForeignCurrency
-        - transactionType
-        - targetAudience
-        - value
-      properties:
-        foreignCurrency:
-          $ref: '#/components/schemas/EnumExchangeForeignCurrency'
-        deliveryForeignCurrency:
-          $ref: '#/components/schemas/EnumExchangeDeliveryForeignCurrency'
-        transactionType:
-          $ref: '#/components/schemas/EnumExchangeTransactionType'
-        targetAudience:
-          $ref: '#/components/schemas/EnumTargetAudience'
-        value:
-          type: string
-          maxLength: 7
-          pattern: '^\d{1}\.\d{1,5}$'
-          example: '5.5023'
-          description: Valor da operação.
-      additionalProperties: false
-    ExchangeContractData:
-      type: object
-      description: Conjunto de informações referentes às informações de câmbio
-      required:
-        - participantIdentification
-        - transactionType
-        - foreignCurrency
-        - transactionCategory
-        - deliveryForeignCurrency
-        - rangeTransactionCategory
-        - vetAmount
-        - onlineRate
-      properties:
-        participantIdentification:
-          $ref: '#/components/schemas/ParticipantIdentification'
-        transactionType:
-          $ref: '#/components/schemas/EnumExchangeTransactionType'
-        foreignCurrency:
-          $ref: '#/components/schemas/EnumExchangeForeignCurrency'
-        transactionCategory:
-          $ref: '#/components/schemas/EnumExchangeTransactionCategory'
-        deliveryForeignCurrency:
-          $ref: '#/components/schemas/EnumExchangeDeliveryForeignCurrency'
-        rangeTransactionCategory:
-          $ref: '#/components/schemas/EnumExchangeRangeTransactionCategory'
-        targetAudience:
-          $ref: '#/components/schemas/EnumTargetAudience'
-        vetAmount:
-          type: string
-          description: Média simples do VET das operações PF/PJ para cada intervalo conforme a circular 4015 BCB.
-          maxLength: 7
-          pattern: '^\d{1}\.\d{1,5}$'
-          example: '5.5023'
-        onlineRate:
-          type: object
-          description: "Taxa disponibilizada (taxa online) pelas instituições no formato D+2 (valor\_ U$ 100.000-operações cambio pronto) separado por moeda dólar e euro\_ compra e venda PF/PJ.\_\_\n- Não entra operações de cambio futuro, ACC/ACE, futuros, trava.\_\_\n- Deve ser adicionado um timestamp no momento da consulta no formato\_ hh:mm:ss\_\n- Adicionar disclaimer informando que a taxa apresentada é somente\_ informativa, para a contratação de uma operação, deverá ser consultado o\_ canal correspondente de cada instituição.\n"
-          required:
-            - values
-            - timestamp
-            - disclaimer
-          properties:
-            values:
-              type: array
-              items:
-                $ref: '#/components/schemas/OnlineRate'
-              example:
-                - foreignCurrency: USD
-                  deliveryForeignCurrency: ESPECIE
-                  transactionType: COMPRA
-                  targetAudience: PF
-                  value: '5.5023'
-                - foreignCurrency: EUR
-                  deliveryForeignCurrency: CARTAO_PRE_PAGO
-                  transactionType: VENDA
-                  targetAudience: PJ
-                  value: '2.7045'
-            timestamp:
-              type: string
-              format: date-time
-              description: Timestamp do momento da consulta
-              example: '2017-07-21T17:32:28Z'
-            disclaimer:
-              type: string
-              description: 'Disclaimer informando que a taxa apresentada é somente informativa, para a contratação de uma operação, deverá ser consultado o canal correspondente de cada instituição.'
-              example: <INSERIR TEXTO DO DISCLAIMER AQUI>
-      additionalProperties: false
   responses:
-    OKResponseExchange:
+    OKResponseExchangeOnlineRate:
       description: Dados de operações de câmbio da instituição obtidos com sucesso.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/OKResponseExchange'
+            $ref: '#/components/schemas/OKResponseExchangeOnlineRate'
+    OKResponseExchangeVetValue:
+      description: Dados de operações de câmbio da instituição obtidos com sucesso.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OKResponseExchangeVetValue'
     BadRequest:
       description: 'A requisição foi malformada, omitindo atributos obrigatórios, seja no payload ou através de atributos na URL.'
       content:
