@@ -237,7 +237,7 @@ paths:
       tags:
         - API - Investimentos
       summary: Lista de informações sobre títulos do tesouro direto
-      operationId: investmentsGeTreasure
+      operationId: investmentsGetTreasure
       description: |
         Método para obter a lista de todas as informações sobre títulos do tesouro direto de uma instituição
 
@@ -264,25 +264,25 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /opendata-exchange/v1/personal-exchange:
+  /opendata-exchange/v1/online-rate:
     get:
       tags:
         - API - Câmbio
-      summary: Conjunto de informações de Câmbio para Pessoa Física.
-      operationId: getPersonalExchange
+      summary: Conjunto de informações de Câmbio para taxa online.
+      operationId: exchangeGetOnlineRate
       description: |
-        Método para disponibilizar o valor VET.
+        Método para disponibilizar a taxa online.
 
         ### Dicionário de dados
 
-        Campos de resposta do endpoint de `/personal-exchange`
+        Campos de resposta do endpoint de `/online-rate`
 
-        <a href='dictionary/getPersonalExchange_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
+        <a href='dictionary/exchangeGetOnlineRate_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
 
         Consulte a seção **Convenções de payload** para obter mais informações sobre [Atributos Obrigatórios / Opcionais](#convencoes-de-propriedade-dos-atributos).
       responses:
         '200':
-          $ref: '#/components/responses/OKResponseExchangeProductsData'
+          $ref: '#/components/responses/OKResponseExchangeOnlineRate'
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
@@ -293,25 +293,25 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /opendata-exchange/v1/business-exchange:
+  /opendata-exchange/v1/vet-value:
     get:
       tags:
         - API - Câmbio
-      summary: Conjunto de informações de Câmbio para Pessoa Jurídica.
-      operationId: getBusinessExchange
+      summary: Conjunto de informações de Câmbio para valor VET.
+      operationId: exchangeGetVetValue
       description: |
         Método para disponibilizar o valor VET.
 
         ### Dicionário de dados
 
-        Campos de resposta do endpoint de `/business-exchange`
+        Campos de resposta do endpoint de `/vet-value`
 
-        <a href='dictionary/getBusinessExchange_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
+        <a href='dictionary/exchangeGetVetValue_v1.csv' target="_blank">Fazer download do dicionário de dados</a>
 
         Consulte a seção **Convenções de payload** para obter mais informações sobre [Atributos Obrigatórios / Opcionais](#convencoes-de-propriedade-dos-atributos).
       responses:
         '200':
-          $ref: '#/components/responses/OKResponseExchangeProductsData'
+          $ref: '#/components/responses/OKResponseExchangeVetValue'
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
@@ -960,7 +960,7 @@ components:
           example: 'https://openinsurance.com.br/aaa'
           maxLength: 1024
         targetAudience:
-          $ref: '#/components/schemas/EnumTargetAudience'
+          $ref: '#/components/schemas/ExchangeEnumTargetAudience'
     AcquiringServicesFeesAndRatesForService:
       type: object
       required:
@@ -1107,7 +1107,7 @@ components:
                     pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
                     example: 'https://empresaa1.com/branches-banking'
       additionalProperties: false
-    OKResponseGetExchange:
+    OKResponseExchangeOnlineRate:
       type: object
       required:
         - data
@@ -1117,48 +1117,40 @@ components:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/ExchangeContractData'
+            $ref: '#/components/schemas/ExchangeOnlineRate'
         links:
           $ref: '#/components/schemas/Links'
         meta:
           $ref: '#/components/schemas/Meta'
       additionalProperties: false
-    ExchangeContractData:
+    OKResponseExchangeVetValue:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExchangeVetValue'
+        links:
+          $ref: '#/components/schemas/Links'
+        meta:
+          $ref: '#/components/schemas/Meta'
+      additionalProperties: false
+    ExchangeOnlineRate:
       type: object
       description: Conjunto de informações referentes às informações de câmbio
       required:
         - participantIdentification
-        - transactionType
-        - foreignCurrency
-        - transactionCategory
-        - deliveryForeignCurrency
-        - rangeTransactionCategory
-        - vetAmount
         - onlineRate
       properties:
         participantIdentification:
           $ref: '#/components/schemas/ParticipantIdentification'
-        transactionType:
-          $ref: '#/components/schemas/EnumExchangeTransactionType'
-        foreignCurrency:
-          $ref: '#/components/schemas/EnumExchangeForeignCurrency'
-        transactionCategory:
-          $ref: '#/components/schemas/EnumExchangeTransactionCategory'
-        deliveryForeignCurrency:
-          $ref: '#/components/schemas/EnumExchangeDeliveryForeignCurrency'
-        rangeTransactionCategory:
-          $ref: '#/components/schemas/EnumExchangeRangeTransactionCategory'
-        targetAudience:
-          $ref: '#/components/schemas/EnumTargetAudience'
-        vetAmount:
-          type: string
-          description: Média simples do VET das operações PF/PJ para cada intervalo conforme a circular 4015 BCB.
-          maxLength: 7
-          pattern: '^\d{1}\.\d{1,5}$'
-          example: '5.5023'
         onlineRate:
           type: object
-          description: "Taxa disponibilizada (taxa online) pelas instituições no formato D+2 (valor\_ U$ 100.000-operações cambio pronto) separado por moeda dólar e euro\_ compra e venda PF/PJ.\_\_\n- Não entra operações de cambio futuro, ACC/ACE, futuros, trava.\_\_\n- Deve ser adicionado um timestamp no momento da consulta no formato\_ hh:mm:ss\_\n- Adicionar disclaimer informando que a taxa apresentada é somente\_ informativa, para a contratação de uma operação, deverá ser consultado o\_ canal correspondente de cada instituição.\n"
+          description: 'Taxa disponibilizada (taxa online) pelas instituições no formato D+2 (valor U$ 100.000-operações cambio pronto) separado por moeda dólar e euro compra e venda PF/PJ.<br><ul><li>Não entra operações de cambio futuro, ACC/ACE, futuros, trava</li><li>Deve ser adicionado um timestamp no momento da consulta no formato hh:mm:ss</li><li>Adicionar disclaimer informando que a taxa apresentada é somente informativa, para a contratação de uma operação, deverá ser consultado o canal correspondente de cada instituição</li></ul>'
           required:
             - values
             - timestamp
@@ -1189,6 +1181,39 @@ components:
               description: 'Disclaimer informando que a taxa apresentada é somente informativa, para a contratação de uma operação, deverá ser consultado o canal correspondente de cada instituição.'
               example: <INSERIR TEXTO DO DISCLAIMER AQUI>
       additionalProperties: false
+    ExchangeVetValue:
+      type: object
+      description: Conjunto de informações referentes às informações de câmbio
+      required:
+        - participantIdentification
+        - transactionType
+        - foreignCurrency
+        - transactionCategory
+        - deliveryForeignCurrency
+        - rangeTransactionCategory
+        - vetAmount
+      properties:
+        participantIdentification:
+          $ref: '#/components/schemas/ParticipantIdentification'
+        transactionType:
+          $ref: '#/components/schemas/EnumExchangeTransactionType'
+        foreignCurrency:
+          $ref: '#/components/schemas/EnumExchangeForeignCurrency'
+        transactionCategory:
+          $ref: '#/components/schemas/EnumExchangeTransactionCategory'
+        deliveryForeignCurrency:
+          $ref: '#/components/schemas/EnumExchangeDeliveryForeignCurrency'
+        rangeTransactionCategory:
+          $ref: '#/components/schemas/EnumExchangeRangeTransactionCategory'
+        targetAudience:
+          $ref: '#/components/schemas/ExchangeEnumTargetAudience'
+        vetAmount:
+          type: string
+          description: Média simples do VET das operações PF/PJ para cada intervalo conforme a circular 4015 BCB.
+          maxLength: 7
+          pattern: '^\d{1}\.\d{1,5}$'
+          example: '5.5023'
+      additionalProperties: false
     OnlineRate:
       type: object
       description: Taxa disponibilizada (taxa online) pelas instituições no formato D+0/D+2 (valor U$100.000 operações câmbio pronto) separado por moeda dólar e euro compra e venda PF/PJ.
@@ -1206,7 +1231,7 @@ components:
         transactionType:
           $ref: '#/components/schemas/EnumExchangeTransactionType'
         targetAudience:
-          $ref: '#/components/schemas/EnumTargetAudience'
+          $ref: '#/components/schemas/ExchangeEnumDistinctTargetAudience'
         value:
           type: string
           maxLength: 7
@@ -1247,15 +1272,6 @@ components:
         - '10.000,01_30.000'
         - '30.000,01_100.000'
       example: '0,01_200'
-    EnumTargetAudience:
-      type: string
-      description: Média das operações PF/PJ.
-      maxLength: 5
-      enum:
-        - PF
-        - PJ
-        - PF_PJ
-      example: PF
     EnumExchangeTransactionCategory:
       type: string
       description: 'A classificação do tipo de operação, conforme a circular BCB nº 3690 de 16/12/2013.'
@@ -1284,6 +1300,25 @@ components:
         - COMPRA
         - VENDA
       example: COMPRA
+    ExchangeEnumDistinctTargetAudience:
+      type: string
+      description: Público alvo (ou PF ou PJ).
+      maxLength: 2
+      enum:
+        - PF
+        - PJ
+      example: PF
+    ExchangeEnumTargetAudience:
+      type: string
+      description: Média das operações PF/PJ.
+      maxLength: 5
+      enum:
+        - PF
+        - PJ
+        - PF_PJ
+      example: PF
+    ExchangeParticipantIdentification:
+      $ref: '#/components/schemas/ParticipantIdentification'
     ResponseCapitalizationBondsProductsList:
       type: object
       required:
@@ -2553,7 +2588,7 @@ components:
         minimumRequirements:
           $ref: '#/components/schemas/SurvivalPensionMinimumRequirements'
         targetAudience:
-          $ref: '#/components/schemas/EnumTargetAudience'
+          $ref: '#/components/schemas/ExchangeEnumTargetAudience'
     SurvivalPensionInvestimentFund:
       type: object
       description: Fundos de Investimento (por fundo).
@@ -2925,12 +2960,18 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/OKResponseGetAcquiringServices'
-    OKResponseExchangeProductsData:
+    OKResponseExchangeOnlineRate:
       description: Dados de operações de câmbio da instituição obtidos com sucesso.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/OKResponseGetExchange'
+            $ref: '#/components/schemas/OKResponseExchangeOnlineRate'
+    OKResponseExchangeVetValue:
+      description: Dados de operações de câmbio da instituição obtidos com sucesso.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OKResponseExchangeVetValue'
     OkGetRiskPensionContractData:
       description: Dados de operações de previdência da instituição obtidos com sucesso.
       content:
