@@ -1679,10 +1679,10 @@ Consulte a seção **Convenções de payload** para obter mais informações sob
                 "indenizationPaymentMethod": "SOB_FORMA_DE_RENDA",
                 "minValue": 1500,
                 "maxValue": 5000,
-                "indemnifiable": [
-                  "Até o fim do ciclo determinado",
-                  "Quantidade determinada de parcelas"
-                ],
+                "indemnifiable": {
+                  "period": "PRAZO",
+                  "deadline": 48
+                },
                 "currency": [
                   "BRL"
                 ],
@@ -2850,10 +2850,10 @@ Conjunto de informações referentes às informações de credenciamento
                 "indenizationPaymentMethod": "SOB_FORMA_DE_RENDA",
                 "minValue": 1500,
                 "maxValue": 5000,
-                "indemnifiable": [
-                  "Até o fim do ciclo determinado",
-                  "Quantidade determinada de parcelas"
-                ],
+                "indemnifiable": {
+                  "period": "PRAZO",
+                  "deadline": 48
+                },
                 "currency": [
                   "BRL"
                 ],
@@ -3003,10 +3003,10 @@ Conjunto de informações referentes às informações de credenciamento
             "indenizationPaymentMethod": "SOB_FORMA_DE_RENDA",
             "minValue": 1500,
             "maxValue": 5000,
-            "indemnifiable": [
-              "Até o fim do ciclo determinado",
-              "Quantidade determinada de parcelas"
-            ],
+            "indemnifiable": {
+              "period": "PRAZO",
+              "deadline": 48
+            },
             "currency": [
               "BRL"
             ],
@@ -3103,31 +3103,7 @@ Conjunto de informações referentes às informações de credenciamento
 |Nome|Tipo|Obrigatório|Descrição|
 |---|---|---|---|---|
 |participantIdentification|[ParticipantIdentification](#schemaparticipantidentification)|true|Conjunto de informações relativas ao participante do produto de open banking|
-|products|[object]|false||
-|» name|string|true|Nome comercial do produto, pelo qual é identificado nos canais de distribuição e atendimento da sociedade.|
-|» code|string|true|Código único a ser definido pela sociedade.|
-|» modality|[Product/properties/modality](#schemaproduct/properties/modality)|false|Se Prev. Cob. Risco:<br><br>1. Contribuição Variável;<br>2. Benefício Definido.|
-|» coverages|[[Coverage](#schemacoverage)]|true||
-|» additionals|[string]|true||
-|» additionalsOthers|[string]|false||
-|» assistanceType|[string]|true||
-|» assistanceTypeOthers|[string]|false||
-|» termsAndConditions|[TermsAndConditions](#schematermsandconditions)|true||
-|» update|[RiskPensionUpdate](#schemariskpensionupdate)|false|Atualização / Remuneração da PMBaC e Remuneração da PMBaC|
-|» ageReframing|[AgeReframing](#schemaagereframing)|false|Reenquadramento etário|
-|» financialRegimeContractType|string|false|Listagem de regime financeiro para cada combinação de modalidade/cobertura do produto indicando:<br>1. Repartição simples;<br>2. Repartição Capitais Cobertura;<br>3. Capitalização.|
-|» reclaim|[Reclaim](#schemareclaim)|false|Resgate|
-|» otherGuaranteedValues|[string]|false|1. Saldamento;<br>2. Benefício Prolongado.<br>3. Não se aplica|
-|» profitModality|[EnumRiskPensionPaymentModality](#schemaenumriskpensionpaymentmodality)|false|Listagem da forma de pagamento para cada benefício do produto indicando, conforme Resolução CNSP nº 201/2008:<br>1. Pagamento único;<br>2. Sob forma de renda.|
-|» contributionPayment|[ContributionPayment](#schemacontributionpayment)|true|Pagamento de Prêmio (da Contribuição, no caso de Previdência)|
-
-#### Enumerated Values
-
-|Nome|Código|
-|---|---|
-|financialRegimeContractType|REPARTICAO_SIMPLES|
-|financialRegimeContractType|REPARTICAO_CAPITAIS_COBERTURA|
-|financialRegimeContractType|CAPITALIZACAO|
+|products|[[RiskPensionProduct](#schemariskpensionproduct)]|false||
 
 <h2 id="tocS_RiskPensionUpdate">RiskPensionUpdate</h2>
 
@@ -3179,6 +3155,233 @@ Atualização / Remuneração da PMBaC e Remuneração da PMBaC
 |---|---|---|---|---|
 |type|string|false||
 |url|string|true|Campo aberto (possibilidade de incluir URL) Comentários: As URLs são limitadas a 2048 caracteres mas, para o contexto do Open Insurance, foi adotado a metade deste tamanho (1024). tamanho. p.ex.<br>https://openinsurance.com.br/aaa|
+
+<h2 id="tocS_RiskPensionIndemnfiable">RiskPensionIndemnfiable</h2>
+
+<a id="schemariskpensionindemnfiable"></a>
+<a id="schema_RiskPensionIndemnfiable"></a>
+<a id="tocSriskpensionindemnfiable"></a>
+<a id="tocsriskpensionindemnfiable"></a>
+
+```json
+{
+  "period": "PRAZO",
+  "deadline": 48
+}
+
+```
+
+Indenizável
+
+### Propriedades
+
+|Nome|Tipo|Obrigatório|Descrição|
+|---|---|---|---|---|
+|period|[EnumRiskPensionIndenfiablePeriod](#schemaenumriskpensionindenfiableperiod)|false|Listagem do pagamento para cada benefício:<br>  1. Prazo;<br>  2. Até o fim de ciclo determinado.|
+|deadline|number|false|Caso o período de pagamento seja relacionado a Prazo, listagem de número máximo de parcelas do benefício. Em meses.|
+
+<h2 id="tocS_RiskPensionProduct">RiskPensionProduct</h2>
+
+<a id="schemariskpensionproduct"></a>
+<a id="schema_RiskPensionProduct"></a>
+<a id="tocSriskpensionproduct"></a>
+<a id="tocsriskpensionproduct"></a>
+
+```json
+{
+  "name": "Produto A",
+  "code": "0001",
+  "modality": "BENEFICIO_DEFINIDO",
+  "coverages": [
+    {
+      "types": [
+        "Morte",
+        "Invalidez"
+      ],
+      "attributes": {
+        "indenizationPaymentMethod": "SOB_FORMA_DE_RENDA",
+        "minValue": 1500,
+        "maxValue": 5000,
+        "indemnifiable": {
+          "period": "PRAZO",
+          "deadline": 48
+        },
+        "currency": [
+          "BRL"
+        ],
+        "gracePeriod": {
+          "amount": 90,
+          "unit": "MESES"
+        },
+        "excludedRisk": [
+          {
+            "type": "NA",
+            "url": "https://openinsurance.com.br/aaa"
+          }
+        ]
+      },
+      "period": "TEMPORARIA"
+    }
+  ],
+  "additionals": [
+    "Sorteio (gratuito)",
+    "Outros"
+  ],
+  "additionalsOthers": [
+    "NA"
+  ],
+  "assistanceType": [
+    "Assistência PET",
+    "Funeral"
+  ],
+  "assistanceTypeOthers": [
+    "NA"
+  ],
+  "termsAndConditions": {
+    "susepProcessNumber": "15414.622222/2222-22",
+    "definition": "https://openinsurance.com.br/aaa"
+  },
+  "update": {
+    "award": {
+      "index": "IPCA_IBGE"
+    },
+    "pmbac": {
+      "index": "IPCA_IBGE",
+      "interestRate": 14.252
+    }
+  },
+  "ageReframing": {
+    "criterion": "APOS_PERIODO_ANOS",
+    "periodicity": 10
+  },
+  "financialRegimeContractType": "REPARTICAO_SIMPLES",
+  "reclaim": {
+    "table": {
+      "initialMonthRange": 1,
+      "finalMonthRange": 1,
+      "percentage": 0.85
+    },
+    "differentiatedPercentage": "https://openinsurance.com.br/aaa’\nObs.: Exceção de cobertura ou critério definido acima será descrito aqui na URL\nExemplo: Cobertura X: a partir de 25 meses = 100%\n",
+    "gracePeriod": {
+      "amount": 90,
+      "unit": "MESES"
+    }
+  },
+  "otherGuaranteedValues": [
+    "Benefício Prolongado",
+    "Não se aplica",
+    "Saldamento"
+  ],
+  "profitModality": "SOB_FORMA_DE_RENDA",
+  "contributionPayment": {
+    "method": [
+      "CARTÃO DE CRÉDITO"
+    ],
+    "periodicity": [
+      "Diária",
+      "Anual",
+      "Semestral"
+    ],
+    "contributionTax": "NA",
+    "minimumRequirements": {
+      "contractType": [
+        "Individual"
+      ],
+      "contract": "https://openinsurance.com.br/aaa",
+      "targetAudience": "PF"
+    }
+  }
+}
+
+```
+
+### Propriedades
+
+|Nome|Tipo|Obrigatório|Descrição|
+|---|---|---|---|---|
+|name|string|true|Nome comercial do produto, pelo qual é identificado nos canais de distribuição e atendimento da sociedade.|
+|code|string|true|Código único a ser definido pela sociedade.|
+|modality|[EnumPensionModality](#schemaenumpensionmodality)|false|Se Prev. Cob. Risco:<br><br>1. Contribuição Variável;<br>2. Benefício Definido.|
+|coverages|[[Coverage](#schemacoverage)]|true||
+|additionals|[string]|true||
+|additionalsOthers|[string]|false||
+|assistanceType|[string]|true||
+|assistanceTypeOthers|[string]|false||
+|termsAndConditions|[TermsAndConditions](#schematermsandconditions)|true||
+|update|[RiskPensionUpdate](#schemariskpensionupdate)|false|Atualização / Remuneração da PMBaC e Remuneração da PMBaC|
+|ageReframing|[AgeReframing](#schemaagereframing)|false|Reenquadramento etário|
+|financialRegimeContractType|string|false|Listagem de regime financeiro para cada combinação de modalidade/cobertura do produto indicando:<br>1. Repartição simples;<br>2. Repartição Capitais Cobertura;<br>3. Capitalização.|
+|reclaim|[Reclaim](#schemareclaim)|false|Resgate|
+|otherGuaranteedValues|[string]|false|1. Saldamento;<br>2. Benefício Prolongado.<br>3. Não se aplica|
+|profitModality|[EnumRiskPensionPaymentModality](#schemaenumriskpensionpaymentmodality)|false|Listagem da forma de pagamento para cada benefício do produto indicando, conforme Resolução CNSP nº 201/2008:<br>1. Pagamento único;<br>2. Sob forma de renda.|
+|contributionPayment|[ContributionPayment](#schemacontributionpayment)|true|Pagamento de Prêmio (da Contribuição, no caso de Previdência)|
+
+#### Enumerated Values
+
+|Nome|Código|
+|---|---|
+|financialRegimeContractType|REPARTICAO_SIMPLES|
+|financialRegimeContractType|REPARTICAO_CAPITAIS_COBERTURA|
+|financialRegimeContractType|CAPITALIZACAO|
+
+<h2 id="tocS_EnumRiskPensionIndenfiablePeriod">EnumRiskPensionIndenfiablePeriod</h2>
+
+<a id="schemaenumriskpensionindenfiableperiod"></a>
+<a id="schema_EnumRiskPensionIndenfiablePeriod"></a>
+<a id="tocSenumriskpensionindenfiableperiod"></a>
+<a id="tocsenumriskpensionindenfiableperiod"></a>
+
+```json
+"PRAZO"
+
+```
+
+Listagem do pagamento para cada benefício:
+  1. Prazo;
+  2. Até o fim de ciclo determinado.
+
+### Propriedades
+
+|Nome|Tipo|Obrigatório|Descrição|
+|---|---|---|---|---|
+|**|string|false|Listagem do pagamento para cada benefício:<br>  1. Prazo;<br>  2. Até o fim de ciclo determinado.|
+
+#### Enumerated Values
+
+|Nome|Código|
+|---|---|
+|**|PRAZO|
+|**|ATE_FIM_CICLO_DETERMINADO|
+
+<h2 id="tocS_EnumPensionModality">EnumPensionModality</h2>
+
+<a id="schemaenumpensionmodality"></a>
+<a id="schema_EnumPensionModality"></a>
+<a id="tocSenumpensionmodality"></a>
+<a id="tocsenumpensionmodality"></a>
+
+```json
+"BENEFICIO_DEFINIDO"
+
+```
+
+Se Prev. Cob. Risco:
+
+1. Contribuição Variável;
+2. Benefício Definido.
+
+### Propriedades
+
+|Nome|Tipo|Obrigatório|Descrição|
+|---|---|---|---|---|
+|**|string|false|Se Prev. Cob. Risco:<br><br>1. Contribuição Variável;<br>2. Benefício Definido.|
+
+#### Enumerated Values
+
+|Nome|Código|
+|---|---|
+|**|CONTRIBUICAO_VARIAVEL|
+|**|BENEFICIO_DEFINIDO|
 
 <h2 id="tocS_EnumRiskPensionPaymentModality">EnumRiskPensionPaymentModality</h2>
 
@@ -3354,7 +3557,7 @@ Listagem da forma de pagamento para cada benefício do produto indicando, confor
 |code|string|true|Código único a ser definido pela sociedade.|
 |details|[[SurvivalPensionDetail](#schemasurvivalpensiondetail)]|true||
 |segment|string|true|Segmento do qual se trata o produto contratado<br>1. Seguro de Pessoas<br>2. Previdência|
-|modality|string|false|Se Prev. Cob. Risco:<br><br>1. Contribuição Variável;<br>2. Benefício Definido.|
+|modality|[EnumPensionModality](#schemaenumpensionmodality)|false|Se Prev. Cob. Risco:<br><br>1. Contribuição Variável;<br>2. Benefício Definido.|
 |optionalCoverage|string|false|Campo aberto (possibilidade de incluir URL) para a descrição das coberturas de risco (previdência) comercializadas facultativamente à cobertura de sobrevivência.<br>Comentários: As URLs são limitadas a 2048 caracteres, mas, para o contexto do Open Insurance, foi adotado a metade deste tamanho (1024). tamanho. p.ex. 'https://openinsurance.com.br/<br>aaa’.|
 
 #### Enumerated Values
@@ -3363,8 +3566,6 @@ Listagem da forma de pagamento para cada benefício do produto indicando, confor
 |---|---|
 |segment|SEGURO_DE_PESSOAS|
 |segment|PREVIDENCIA|
-|modality|CONTRIBUICAO_VARIAVEL|
-|modality|BENEFICIO_DEFINIDO|
 
 <h2 id="tocS_Coverage">Coverage</h2>
 
@@ -3383,10 +3584,10 @@ Listagem da forma de pagamento para cada benefício do produto indicando, confor
     "indenizationPaymentMethod": "SOB_FORMA_DE_RENDA",
     "minValue": 1500,
     "maxValue": 5000,
-    "indemnifiable": [
-      "Até o fim do ciclo determinado",
-      "Quantidade determinada de parcelas"
-    ],
+    "indemnifiable": {
+      "period": "PRAZO",
+      "deadline": 48
+    },
     "currency": [
       "BRL"
     ],
@@ -3433,10 +3634,10 @@ Listagem da forma de pagamento para cada benefício do produto indicando, confor
   "indenizationPaymentMethod": "SOB_FORMA_DE_RENDA",
   "minValue": 1500,
   "maxValue": 5000,
-  "indemnifiable": [
-    "Até o fim do ciclo determinado",
-    "Quantidade determinada de parcelas"
-  ],
+  "indemnifiable": {
+    "period": "PRAZO",
+    "deadline": 48
+  },
   "currency": [
     "BRL"
   ],
@@ -3463,7 +3664,7 @@ Atributos da cobertura
 |indenizationPaymentMethod|[EnumRiskPensionPaymentModality](#schemaenumriskpensionpaymentmodality)|false|Listagem da forma de pagamento para cada benefício do produto indicando, conforme Resolução CNSP nº 201/2008:<br>1. Pagamento único;<br>2. Sob forma de renda.|
 |minValue|number|true|Listagem do valor mínimo de cobertura (Capital Segurado), diária ou parcela aceito pela sociedade para cada combinação de modalidade/cobertura do produto.<br>Conforme moeda.|
 |maxValue|number|true|Listagem do valor máximo de cobertura (Capital Segurado), diária ou parcela aceito pela sociedade para cada combinação de modalidade/cobertura do produto.<br>Conforme moeda.|
-|indemnifiable|[string]|false|Listagem de período indenizável para cada combinação de modalidade/cobertura do produto indicando:<br>1. Quantidade determinada de parcelas;<br>2. Até o fim de ciclo determinado.|
+|indemnifiable|[RiskPensionIndemnfiable](#schemariskpensionindemnfiable)|false|Indenizável|
 |currency|[string]|true|Moeda sobre a qual a cobertura se refere.<br>De acordo com ISO-4217.|
 |gracePeriod|[GracePeriod](#schemagraceperiod)|true||
 |excludedRisk|[[ExcludedRisk](#schemaexcludedrisk)]|false|Listagem para indicar quais serão o(s) risco(s) excluído(s) aplicável(is) à(s) cobertura(s) [Vide Tabela 1.1.3]|
@@ -3480,10 +3681,10 @@ Atributos da cobertura
   "indenizationPaymentMethod": "SOB_FORMA_DE_RENDA",
   "minValue": 1500,
   "maxValue": 5000,
-  "indemnifiable": [
-    "Até o fim do ciclo determinado",
-    "Quantidade determinada de parcelas"
-  ],
+  "indemnifiable": {
+    "period": "PRAZO",
+    "deadline": 48
+  },
   "currency": [
     "BRL"
   ],
