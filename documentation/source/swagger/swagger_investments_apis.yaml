@@ -226,6 +226,83 @@ components:
         meta:
           $ref: '#/components/schemas/Meta'
       additionalProperties: false
+    FrequencyDistribution:
+      type: object
+      description: Distribuição por frequência.
+      required:
+        - name
+        - code
+        - chargingTriggerInfo
+        - prices
+        - minimum
+        - maximum
+      properties:
+        name:
+          type: string
+          description: Nome do serviço
+          maxLength: 200
+          example: NA
+        code:
+          type: string
+          description: Código de identificação do serviço.
+          maxLength: 200
+          example: NA
+        chargingTriggerInfo:
+          type: string
+          description: Fatos geradores de cobrança.
+          maxLength: 200
+          example: NA
+        prices:
+          type: array
+          description: Distribuição dos preços.
+          items:
+            type: object
+            required:
+              - interval
+              - value
+              - customerRate
+            properties:
+              interval:
+                $ref: '#/components/schemas/EnumInterval'
+              value:
+                type: string
+                description: Mediana.
+                example: '0.020300'
+                maxLength: 8
+                pattern: '^\d{1}\.\d{1,6}$'
+              customerRate:
+                type: string
+                description: Percentual de clientes.
+                example: '0.500000'
+                maxLength: 8
+                pattern: '^\d{1}\.\d{1,6}$'
+          minItems: 4
+          maxItems: 4
+          example:
+            - interval: 1_FAIXA
+              value: '0.020300'
+              customerRate: '0.500000'
+            - interval: 2_FAIXA
+              value: '0.030600'
+              customerRate: '0.100000'
+            - interval: 3_FAIXA
+              value: '0.034300'
+              customerRate: '0.300000'
+            - interval: 4_FAIXA
+              value: '0.246800'
+              customerRate: '0.100000'
+        minimum:
+          type: string
+          description: Valor mínimo.
+          maxLength: 8
+          pattern: '^\d{1}\.\d{1,6}$'
+          example: '0.010000'
+        maximum:
+          type: string
+          description: Valor máximo.
+          maxLength: 8
+          pattern: '^\d{1}\.\d{1,6}$'
+          example: '0.300000'
     InvestmentsFixedIncomeBank:
       type: object
       required:
@@ -256,12 +333,7 @@ components:
           maxLength: 50
           example: Dólar
         issueRemunerationRate:
-          type: string
-          description: 'Taxa efetiva percebida no momento da emissão do título.<br><br>Distribuição de Frequência, conforme proposta em anexo, segmentadas por grupo de produto, indexador e modalidade de cálculo da taxa.'
-          minLength: 3
-          maxLength: 8
-          pattern: '^\d{1}\.\d{1,6}$'
-          example: '0.040000'
+          $ref: '#/components/schemas/FrequencyDistribution'
       additionalProperties: false
     InvestmentsFixedIncomeBankInvestmentConditions:
       type: object
@@ -342,19 +414,9 @@ components:
         investmentType:
           $ref: '#/components/schemas/EnumInvestmentsFixedIncomeCreditInvestmentType'
         custodyFee:
-          type: string
-          description: Taxa de custódia total cobrada pela instituição credenciada para prestação de serviço de custódia de títulos e valores mobiliários.
-          minLength: 1
-          maxLength: 6
-          pattern: '^\d{1,6}$'
-          example: '70000'
+          $ref: '#/components/schemas/FrequencyDistribution'
         loadingRate:
-          type: string
-          description: 'Taxa de corretagem total cobrada pela instituição credenciada que incide no momento da compra e da venda, e é livremente pactuada entre o investidor e o seu intermediário.'
-          minLength: 1
-          maxLength: 6
-          pattern: '^\d{1,6}$'
-          example: '60000'
+          $ref: '#/components/schemas/FrequencyDistribution'
       additionalProperties: false
     InvestmentsFund:
       type: object
@@ -546,19 +608,9 @@ components:
         investmentType:
           $ref: '#/components/schemas/EnumInvestmentsTreasureInvestmentType'
         custodyFee:
-          type: string
-          description: Taxa de custódia total cobrada pela instituição credenciada para prestação de serviço de custódia de títulos e valores mobiliários.
-          minLength: 1
-          maxLength: 6
-          pattern: '^\d{1,6}$'
-          example: '70000'
+          $ref: '#/components/schemas/FrequencyDistribution'
         loadingRate:
-          type: string
-          description: 'Taxa de corretagem total cobrada pela instituição credenciada que incide no momento da compra e da venda, e é livremente pactuada entre o investidor e o seu intermediário.'
-          minLength: 1
-          maxLength: 6
-          pattern: '^\d{1,6}$'
-          example: '60000'
+          $ref: '#/components/schemas/FrequencyDistribution'
       additionalProperties: false
     InvestmentsVariableIncome:
       type: object
@@ -580,19 +632,9 @@ components:
         investmentType:
           $ref: '#/components/schemas/EnumInvestmentsVariableIncomeInvestmentType'
         custodyFee:
-          type: string
-          description: Taxa de custódia total cobrada pela instituição credenciada para prestação de serviço de custódia de títulos e valores mobiliários.
-          minLength: 1
-          maxLength: 6
-          pattern: '^\d{1,6}$'
-          example: '70000'
+          $ref: '#/components/schemas/FrequencyDistribution'
         loadingRate:
-          type: string
-          description: 'Taxa de corretagem total cobrada pela instituição credenciada que incide no momento da compra e da venda, e é livremente pactuada entre o investidor e o seu intermediário.'
-          minLength: 1
-          maxLength: 6
-          pattern: '^\d{1,6}$'
-          example: '60000'
+          $ref: '#/components/schemas/FrequencyDistribution'
       additionalProperties: false
     EnumInvestmentsFixedIncomeBankIndexer:
       type: string
@@ -772,6 +814,16 @@ components:
                     pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
                     example: 'https://empresaa1.com/branches-banking'
       additionalProperties: false
+    EnumInterval:
+      type: string
+      description: Faixas de frequência
+      maxLength: 7
+      enum:
+        - 1_FAIXA
+        - 2_FAIXA
+        - 3_FAIXA
+        - 4_FAIXA
+      example: 1_FAIXA
     Links:
       type: object
       description: Referências para outros recusos da API requisitada.
