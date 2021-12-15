@@ -192,7 +192,7 @@ components:
         - name
         - productId
         - modality
-        - paymentTerm
+        - costType
       properties:
         name:
           type: string
@@ -206,8 +206,8 @@ components:
           example: 01234589_cap
         modality:
           $ref: '#/components/schemas/EnumCapitalizationBondsProductModality'
-        paymentTerm:
-          $ref: '#/components/schemas/EnumCapitalizationBondsProductPaymentTerm'
+        costType:
+          $ref: '#/components/schemas/EnumCapitalizationBondsProductCostType'
       additionalProperties: false
     EnumCapitalizationBondsProductModality:
       type: string
@@ -228,7 +228,7 @@ components:
         - INCENTIVO
         - FILANTROPIA_PREMIAVEL
       example: TRADICIONAL
-    EnumCapitalizationBondsProductPaymentTerm:
+    EnumCapitalizationBondsProductCostType:
       type: string
       description: |
         Pagamento efetuado ao subscritor à sociedade de capitalização para aquisição do título de capitalização, podendo ser única, periódica ou mensal.
@@ -245,16 +245,17 @@ components:
     CapitalizationBondsProductTermsAndConditions:
       type: object
       required:
-        - susepNumber
-        - generalConditions
+        - susepProcessNumber
+        - termsRegulations
       properties:
-        susepNumber:
+        susepProcessNumber:
           type: string
-          description: 'Sequência numérica utilizada para consulta dos processos eletrônicos na SUSEP com caracteres especiais, conforme campo de consulta no site da SUSEP(15414.6XXXXX/AAAA-DV).'
+          description: |
+            Sequência numérica utilizada para consulta dos processos eletrônicos na SUSEP, com caracteres especiais, conforme campo de consulta no site da SUSEP (XXXXX.XXXXXX/XXXX-XX)
+            Observação: Mascaras da SUSEP – Serão permitidos todas as máscaras de Produtos. Limitar pelos códigos das Máscaras.
           maxLength: 20
-          pattern: '(\d{5}\.\d{6}\/\d{4}-\d{2})'
           example: 15414.622222/2222-22
-        generalConditions:
+        termsRegulations:
           type: string
           description: |
             Conjunto de cláusulas que regem um mesmo título de capitalização, estabelecendo obrigações e direitos, da sociedade de capitalização, do titular, e do subscritor. Campo aberto (possibilidade de incluir URL).
@@ -266,7 +267,7 @@ components:
       type: object
       required:
         - tranche
-        - capitalization
+        - capitalizationQuota
         - drawing
         - loadingRate
       properties:
@@ -275,13 +276,13 @@ components:
           format: integer
           description: Número da parcela.
           maxLength: 3
-          example: 999
-        capitalization:
-          type: number
-          format: double
+          example: 10
+        capitalizationQuota:
+          type: string
+          format: '^[0-1]\.\d{6}$'
+          maxLength: 8
           description: Percentual da contribuição destinado à constituição de capital referente ao direito de resgate. (Resolução CNSP 384/20) Em porcentagem(%).
-          maxLength: 9
-          example: 10.000001
+          example: '10.00001'
         drawing:
           type: number
           format: double
@@ -428,9 +429,10 @@ components:
       properties:
         tranche:
           type: number
+          format: integer
           description: Parcela relativa ao Resgate Antecipado
           maxLength: 3
-          example: 1
+          example: 10
         rate:
           type: number
           format: double
