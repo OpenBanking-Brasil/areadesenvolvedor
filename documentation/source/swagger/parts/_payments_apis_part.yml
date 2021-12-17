@@ -240,6 +240,61 @@ paths:
             - payments
         - OAuth2ClientCredentials:
             - payments
+  /payments/v1/consents/{consentId}:
+    patch:
+      tags:
+        - Pagamentos
+      summary: ""
+      operationId: paymentsPatchPixPayments
+      description: Método para revogação do consentimento.
+      parameters:
+        - $ref: "#/components/parameters/consentId"
+        - $ref: "#/components/parameters/Authorization"
+        - $ref: "#/components/parameters/xFapiAuthDate"
+        - $ref: "#/components/parameters/xFapiCustomerIpAddress"
+        - $ref: "#/components/parameters/xFapiInteractionId"
+        - $ref: "#/components/parameters/xCustomerUserAgent"
+        - $ref: "#/components/parameters/XIdempotencyKey"
+      requestBody:
+        content:
+          application/jwt:
+            schema:
+              $ref: "#/components/schemas/PatchPaymentsConsent"
+        description: Payload para revogação do consentimento.
+        required: true
+      responses:
+        "200":
+          $ref: "#/components/responses/200PatchPaymentsConsent"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowed"
+        "406":
+          $ref: "#/components/responses/NotAcceptable"
+        "415":
+          $ref: "#/components/responses/UnsupportedMediaType"
+        "422":
+          $ref: "#/components/responses/UnprocessableEntityPixPayments"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        default:
+          description: Erro inesperado.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
+      security:
+        - OAuth2AuthorizationCode:
+            - "consent:consentId"
+            - payments
 components:
   schemas:
     422ResponseErrorCreateConsent:
@@ -288,6 +343,8 @@ components:
       $ref: ./schemas/Meta.yaml
     PaymentConsent:
       $ref: ./schemas/payments_apis/PaymentConsent.yaml
+    PatchPaymentsConsent:
+      $ref: ./schemas/payments_apis/PatchPaymentsConsent.yaml
     PaymentPix:
       $ref: ./schemas/payments_apis/PaymentPix.yaml
     ResponseError:
@@ -375,6 +432,18 @@ components:
             $ref: "#/components/schemas/ResponsePaymentConsent"
     200PaymentsConsentsConsentIdRead:
       description: Dados do consentimento de pagamento obtidos com sucesso.
+      headers:
+        x-fapi-interaction-id:
+          description: |
+            Um UUID RFC4122 usado como um ID de correlação. O transmissor deve usar o mesmo valor recebido na requisição para o cabeçalho de resposta recebido na requisição, caso não tenha sido fornecido, deve se usar um UUID RFC4122.
+          schema:
+            $ref: "#/components/schemas/XFapiInteractionId"
+      content:
+        application/jwt:
+          schema:
+            $ref: "#/components/schemas/ResponsePaymentConsent"
+    200PatchPaymentsConsent:
+      description: Revogação do Consentimento informado com sucesso.
       headers:
         x-fapi-interaction-id:
           description: |

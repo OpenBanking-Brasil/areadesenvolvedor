@@ -837,7 +837,7 @@ Consulte a seção **Convenções de payload** para obter mais informações sob
 
 |Nome|Origem|Tipo|Obrigatório|Descrição|
 |---|---|---|---|---|
-|consentId|path|string|true|O consentId é o identificador único do consentimento e deverá ser um URN - Uniform Resource Name.  |
+|consentId|path|string|true|O consentId é o identificador único do consentimento a ser revogado e deverá ser um URN - Uniform Resource Name.|
 |Authorization|header|string|true|Cabeçalho HTTP padrão. Permite que as credenciais sejam fornecidas dependendo do tipo de recurso solicitado|
 |x-fapi-auth-date|header|string|false|Data em que o usuário logou pela última vez com o receptor. Representada de acordo com a [RFC7231](https://tools.ietf.org/html/rfc7231).Exemplo: Sun, 10 Sep 2017 19:43:31 UTC|
 |x-fapi-customer-ip-address|header|string|false|O endereço IP do usuário se estiver atualmente logado com o receptor.|
@@ -846,15 +846,7 @@ Consulte a seção **Convenções de payload** para obter mais informações sob
 
 #### Detailed descriptions
 
-**consentId**: O consentId é o identificador único do consentimento e deverá ser um URN - Uniform Resource Name.  
-Um URN, conforme definido na [RFC8141](https://tools.ietf.org/html/rfc8141) é um Uniform Resource 
-Identifier - URI - que é atribuído sob o URI scheme "urn" e um namespace URN específico, com a intenção de que o URN 
-seja um identificador de recurso persistente e independente da localização.  
-Considerando a string urn:bancoex:C1DD33123 como exemplo para consentId temos:
-- o namespace(urn)
-- o identificador associado ao namespace da instituição transnmissora (bancoex) 
-- o identificador específico dentro do namespace (C1DD33123).  
-Informações mais detalhadas sobre a construção de namespaces devem ser consultadas na [RFC8141](https://tools.ietf.org/html/rfc8141).
+**consentId**: O consentId é o identificador único do consentimento a ser revogado e deverá ser um URN - Uniform Resource Name.
 
 > O comando acima retorna uma estrutura json como essa:
 
@@ -1811,20 +1803,22 @@ TRAN - TransactingAccount - Conta de Pagamento pré-paga.
 ```
 
 Retorna o estado do consentimento, o qual no momento de sua criação será AWAITING_AUTHORISATION.
-Este estado será alterado depois da autorização do consentimento na detentora da conta do pagador (Debtor) para AUTHORISED ou REJECTED. 
+Este estado será alterado depois da autorização do consentimento na detentora da conta do pagador (Debtor) para AUTHORISED, REJECTED ou REVOKED. 
 O consentimento fica no estado CONSUMED após ocorrer a iniciação do pagamento referente ao consentimento.  
 Em caso de consentimento expirado a detentora deverá retornar o status REJECTED.  
+Em caso de revogação do consentimento a detentora deverá retornar o status REVOKED.  
 Estados possíveis:  
 AWAITING_AUTHORISATION - Aguardando autorização  
 AUTHORISED - Autorizado   
 REJECTED - Rejeitado  
-CONSUMED - Consumido 
+CONSUMED - Consumido   
+REVOKED - Revogado
 
 ### Propriedades
 
 |Nome|Tipo|Obrigatório|Descrição|
 |---|---|---|---|---|
-|**|string|false|Retorna o estado do consentimento, o qual no momento de sua criação será AWAITING_AUTHORISATION.<br>Este estado será alterado depois da autorização do consentimento na detentora da conta do pagador (Debtor) para AUTHORISED ou REJECTED. <br>O consentimento fica no estado CONSUMED após ocorrer a iniciação do pagamento referente ao consentimento.  <br>Em caso de consentimento expirado a detentora deverá retornar o status REJECTED.  <br>Estados possíveis:  <br>AWAITING_AUTHORISATION - Aguardando autorização  <br>AUTHORISED - Autorizado   <br>REJECTED - Rejeitado  <br>CONSUMED - Consumido|
+|**|string|false|Retorna o estado do consentimento, o qual no momento de sua criação será AWAITING_AUTHORISATION.<br>Este estado será alterado depois da autorização do consentimento na detentora da conta do pagador (Debtor) para AUTHORISED, REJECTED ou REVOKED. <br>O consentimento fica no estado CONSUMED após ocorrer a iniciação do pagamento referente ao consentimento.  <br>Em caso de consentimento expirado a detentora deverá retornar o status REJECTED.  <br>Em caso de revogação do consentimento a detentora deverá retornar o status REVOKED.  <br>Estados possíveis:  <br>AWAITING_AUTHORISATION - Aguardando autorização  <br>AUTHORISED - Autorizado   <br>REJECTED - Rejeitado  <br>CONSUMED - Consumido   <br>REVOKED - Revogado|
 
 #### Enumerated Values
 
@@ -1834,6 +1828,7 @@ CONSUMED - Consumido
 |**|AUTHORISED|
 |**|REJECTED|
 |**|CONSUMED|
+|**|REVOKED|
 
 <h2 id="tocS_EnumErrorsCreateConsent">EnumErrorsCreateConsent</h2>
 
@@ -2232,7 +2227,7 @@ Usuário (pessoa natural) que encontra-se logado na instituição Iniciadora de 
 
 |Nome|Tipo|Obrigatório|Descrição|
 |---|---|---|---|---|
-|document|object|true||
+|document|object|true|Objeto que contém os dados de identificação do usuário.|
 |» identification|string|true|Número do documento de identificação oficial do usuário.|
 |» rel|string|true|Tipo do documento de identificação oficial do usuário.|
 
@@ -2441,7 +2436,7 @@ Objeto contendo dados do pagameto como moeda e valor.
 |» creationDateTime|string(date-time)|true|Data e hora em que o consentimento foi criado. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).|
 |» expirationDateTime|string(date-time)|true|Data e hora em que o consentimento da iniciação de pagamento expira, devendo ser sempre o creationDateTime mais 5 minutos. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC (UTC time format).<br>O consentimento é criado com o status AWAITING_AUTHORISATION, e deve assumir o status AUTHORIZED ou REJECTED antes do tempo de expiração - 5 minutos. Caso o tempo seja expirado, o status deve assumir REJECTED.<br>Para o cenário em que o status assumiu AUTHORISED, o tempo máximo do expirationDateTime do consentimento deve assumir "now + 60 minutos". Este é o tempo para consumir o consentimento autorizado, mudando seu status para CONSUMED. Não é possível prorrogar este tempo e a criação de um novo consentimento será necessária para os cenários de insucesso.<br>O tempo do expirationDateTime é garantido com os 15 minutos do access token, sendo possível utilizar mais três refresh tokens até totalizar 60 minutos.|
 |» statusUpdateDateTime|string(date-time)|true|Data e hora em que o recurso foi atualizado. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).|
-|» status|[EnumAuthorisationStatusType](#schemaenumauthorisationstatustype)|true|Retorna o estado do consentimento, o qual no momento de sua criação será AWAITING_AUTHORISATION.<br>Este estado será alterado depois da autorização do consentimento na detentora da conta do pagador (Debtor) para AUTHORISED ou REJECTED. <br>O consentimento fica no estado CONSUMED após ocorrer a iniciação do pagamento referente ao consentimento.  <br>Em caso de consentimento expirado a detentora deverá retornar o status REJECTED.  <br>Estados possíveis:  <br>AWAITING_AUTHORISATION - Aguardando autorização  <br>AUTHORISED - Autorizado   <br>REJECTED - Rejeitado  <br>CONSUMED - Consumido|
+|» status|[EnumAuthorisationStatusType](#schemaenumauthorisationstatustype)|true|Retorna o estado do consentimento, o qual no momento de sua criação será AWAITING_AUTHORISATION.<br>Este estado será alterado depois da autorização do consentimento na detentora da conta do pagador (Debtor) para AUTHORISED, REJECTED ou REVOKED. <br>O consentimento fica no estado CONSUMED após ocorrer a iniciação do pagamento referente ao consentimento.  <br>Em caso de consentimento expirado a detentora deverá retornar o status REJECTED.  <br>Em caso de revogação do consentimento a detentora deverá retornar o status REVOKED.  <br>Estados possíveis:  <br>AWAITING_AUTHORISATION - Aguardando autorização  <br>AUTHORISED - Autorizado   <br>REJECTED - Rejeitado  <br>CONSUMED - Consumido   <br>REVOKED - Revogado|
 |» loggedUser|[LoggedUser](#schemaloggeduser)|true|Usuário (pessoa natural) que encontra-se logado na instituição Iniciadora de Pagamento.|
 |» businessEntity|[BusinessEntity](#schemabusinessentity)|false|Usuário (pessoa jurídica) que encontra-se logado na instituição Iniciadora de Pagamento. [Restrição] Preenchimento obrigatório se usuário logado na instituição Iniciadora de Pagamento for um CNPJ (pessoa jurídica).|
 |» creditor|[Identification](#schemaidentification)|true|Objeto contendo os dados do recebedor (creditor).|
