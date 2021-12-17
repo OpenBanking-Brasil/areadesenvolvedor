@@ -352,21 +352,17 @@ components:
       additionalProperties: false
     CapitalizationBondsProductAdjustmentIndex:
       type: string
-      maxLength: 9
+      maxLength: 37
       enum:
-        - IPCA_IBGE
-        - IGPM_FGV
-        - INPC_IBGE
-        - TR_BC
+        - IPCA
+        - IGPM
+        - INPC
+        - TR
+        - INDICE_REMUNERACAO_DEPOSITOS_POUPANCA
         - OUTROS
-      example: IPCA_IBGE
+      example: IPCA
       description: |
-        Índice utilizado na atualização dos pagamentos mensais (para títulos com mais de 12 meses de vigência) (não aplicável a pagamento único). A considerar os domínios abaixo:
-          1. IPCA (IBGE)
-          2. IGP M (FGV)
-          3. INPC (IBGE)
-          4. TR (BC)
-          5. Outros
+        Índice utilizado na atualização dos pagamentos mensais (para títulos com mais de 12 meses de vigência) (não aplicável a pagamento único). 
     CapitalizationPeriodContributionAmount:
       type: object
       description: |
@@ -464,16 +460,16 @@ components:
       additionalProperties: false
     CapitalizationBondsProductPaymentMethod:
       type: string
-      maxLength: 33
+      maxLength: 27
       enum:
         - CARTAO_DE_CREDITO
         - CARTAO_DE_DEBITO
-        - DEBITO_EM_CONTA_CORRENTE
-        - DEBITO_EM_CONTA_POUPANCA
+        - DEBITO_CONTA_CORRENTE
+        - DEBITO_CONTA_POUPANCA
         - BOLETO_BANCARIO
         - PIX
-        - CONSIGNACAO_EM_FOLHA_DE_PAGAMENTO
-        - PONTOS_DE_PROGRAMAS_DE_BENEFICIO
+        - CONSIGNACAO_FOLHA_PAGAMENTO
+        - PAGAMENTO_COM_PONTOS
         - OUTROS
       example: CARTAO_DE_CREDITO
       description: |
@@ -490,15 +486,42 @@ components:
     CapitalizationBondsProductPrizeDraw:
       type: object
       required:
-        - periodicity
+        - timeInterval
         - quantity
         - prizeMultiplier
-        - liquidityEarlyRedemption
+        - earlySettlementRaffle
         - mandatoryDraw
         - minimumProbability
       properties:
-        periodicity:
-          $ref: '#/components/schemas/EnumPrizeDrawPeriodicity'
+        timeInterval:
+          type: string
+          description: |
+            Intervalo de tempo regular previsto entre os sorteios. Conforme os domínios:
+              - UNICO
+              - DIÁRIO
+              - SEMANAL
+              - QUINZENAL
+              - MENSAL
+              - BIMESTRAL
+              - TRIMESTRAL
+              - QUADRIMESTRAL
+              - SEMESTRAL
+              - ANUAL
+              - OUTROS
+          maxLength: 13
+          enum:
+            - UNICO
+            - DIÁRIO
+            - SEMANAL
+            - QUINZENAL
+            - MENSAL
+            - BIMESTRAL
+            - TRIMESTRAL
+            - QUADRIMESTRAL
+            - SEMESTRAL
+            - ANUAL
+            - OUTROS
+          example: UNICO
         periodicityAdditionalInfo:
           type: string
           description: 'Restrição: Campo obrigatório para complementar a informação quando selecionada a opção ''OUTROS'''
@@ -506,18 +529,31 @@ components:
           example: ''
         quantity:
           type: number
+          format: integer
           description: Número da quantidade de sorteios previstos ao longo da vigência.
           maxLength: 5
-          example: 99999
+          example: 10000
         prizeMultiplier:
           type: number
+          format: integer
           description: 'Valor dos sorteios representado por múltiplo do valor de contribuição. Por exemplo: 5 vezes valor da contribuição'
           maxLength: 6
           example: 999999
-        liquidityEarlyRedemption:
-          $ref: '#/components/schemas/EnumPrizeDrawLiquidityEarlyRedemption'
-        mandatoryDraw:
-          $ref: '#/components/schemas/EnumPrizeDrawMandatoryDraw'
+        earlySettlementRaffle:
+          description: |
+            Modelo de sorteio que acarreta, ao título contemplado, o seu resgate total obrigatório (Resolução Normativa 384/20). Conforme os domínios:
+             1. SIM (true)
+             2. NÃO (false)
+          type: boolean
+          example: true
+        mandatoryContemplation:
+          type: boolean
+          description: |
+            Possibilidade de realização de sorteio com previsão de que o título sorteado seja obrigatoriamente um título comercializado,
+            desde que atingidos os requisitos definidos nas condições gerais do plano. Conforme os domínios:
+              1. SIM (true)
+              2. NÃO (false)
+          example: true
         additionalConditions:
           type: string
           description: 'Campo aberto para complementar a regra dos sorteios do produto, a ser feita para cada participante.'
@@ -530,58 +566,6 @@ components:
           maxLength: 8
           example: 0.000001
       additionalProperties: false
-    EnumPrizeDrawPeriodicity:
-      type: string
-      description: |
-        Intervalo de tempo regular previsto entre os sorteios. Conforme os domínios:
-          - UNICO
-          - DIÁRIO
-          - SEMANAL
-          - QUINZENAL
-          - MENSAL
-          - BIMESTRAL
-          - TRIMESTRAL
-          - QUADRIMESTRAL
-          - SEMESTRAL
-          - ANUAL
-          - OUTROS
-      maxLength: 13
-      enum:
-        - UNICO
-        - DIÁRIO
-        - SEMANAL
-        - QUINZENAL
-        - MENSAL
-        - BIMESTRAL
-        - TRIMESTRAL
-        - QUADRIMESTRAL
-        - SEMESTRAL
-        - ANUAL
-        - OUTROS
-      example: UNICO
-    EnumPrizeDrawLiquidityEarlyRedemption:
-      type: string
-      description: |
-        Modelo de sorteio que acarreta, ao título contemplado, o seu resgate total obrigatório (Resolução Normativa 384/20). Conforme os domínios:
-          1. SIM
-          2. NÃO
-      maxLength: 3
-      enum:
-        - SIM
-        - NAO
-      example: SIM
-    EnumPrizeDrawMandatoryDraw:
-      type: string
-      description: |
-        Possibilidade de realização de sorteio com previsão de que o título sorteado seja obrigatoriamente um título comercializado,
-        desde que atingidos os requisitos definidos nas condições gerais do plano. Conforme os domínios:
-          1. SIM
-          2. NÃO
-      maxLength: 3
-      enum:
-        - SIM
-        - NAO
-      example: SIM
     CapitalizationBondsProductEnumTargetAudience:
       type: string
       maxLength: 15
