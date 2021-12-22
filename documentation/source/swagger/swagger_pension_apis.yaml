@@ -119,40 +119,41 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SurvivalPensionProduct'
-        minimumRequirements:
-          $ref: '#/components/schemas/SurvivalPensionMinimumRequirements'
-        targetAudience:
-          $ref: '#/components/schemas/MinimumRequirements/properties/targetAudience'
     SurvivalPensionInvestimentFund:
       type: object
       description: Fundos de Investimento (por fundo).
       properties:
         cnpjNumber:
           $ref: '#/components/schemas/ParticipantIdentification/properties/cnpjNumber'
-        companyName:
+        name:
           type: string
-          description: Nome Fantasia
+          description: |
+            Lista com as informações do(s) Fundo(s) de Investimento(s) disponíveis para o período de diferimento/acumulação, contemplando:
+            - Nome Fantasia
           maxLength: 80
           example: EMPRESAAPREV
         maximumAdministrationFee:
-          type: number
-          description: Taxa Máxima de Administração - em %
-          example: 20.1
-          maximum: 99999
+          type: string
+          pattern: '^[0-1]\.\d{6}$'
+          description: |
+            Lista com as informações do(s) Fundo(s) de Investimento(s) disponíveis para o período de diferimento/acumulação, contemplando:
+              - Taxa Máxima de Administração - em %
+          example: '0.201000'
+          maxLength: 10
         typePerformanceFee:
-          type: array
-          items:
-            type: string
-          example:
-            - Diretamente
-            - Indiretamente
-            - Não se aplica
+          type: string
+          enum:
+            - DIRETAMENTE
+            - INDIRETAMENTE
+            - NAO_APLICA
           description: Tipo de Taxa de Performance
+          example: DIRETAMENTE
         maximumPerformanceFee:
-          type: number
+          type: string
+          pattern: '^[0-1]\.\d{6}$'
           description: Taxa Máxima de Performance
-          maximum: 9999
-          example: 20
+          maxLength: 10
+          example: '0.201000'
         eligibilityRule:
           type: boolean
           description: |
@@ -161,22 +162,24 @@ components:
             - false (Não se aplica)
           example: true
         minimumContributionAmount:
-          type: number
+          type: string
           description: Valor Mínimo de Contribuição
-          maximum: 10000000000000000
-          example: 1000
+          pattern: '^\d{1,16}\.\d{2,4}$'
+          example: '1000.00'
         minimumMathematicalProvisionAmount:
-          type: number
+          type: string
           description: Valor Mínimo do Saldo Provisão Matemática
-          maximum: 10000000000000000
-          example: 1000
+          pattern: '^\d{1,16}\.\d{2,4}$'
+          example: '1000.00'
+        currency:
+          $ref: '#/components/schemas/CoverageAttributes/properties/currency'
     SurvivalPensionProduct:
       type: object
       required:
         - name
         - code
         - segment
-        - details
+        - type
       properties:
         name:
           type: string
@@ -190,10 +193,10 @@ components:
           description: |
             Código único a ser definido pela sociedade.
           example: '0001'
-        details:
+        type:
           type: array
           items:
-            $ref: '#/components/schemas/SurvivalPensionDetail'
+            $ref: '#/components/schemas/SurvivalPensionType'
         segment:
           type: string
           description: |
@@ -207,7 +210,7 @@ components:
           example: PREVIDENCIA
         modality:
           $ref: '#/components/schemas/EnumPensionModality'
-        optionalCoverage:
+        adittionalInfo:
           type: string
           description: |
             Campo aberto (possibilidade de incluir URL) para a descrição das coberturas de risco (previdência) comercializadas facultativamente à cobertura de sobrevivência.
@@ -215,6 +218,20 @@ components:
             aaa’.
           example: 'https://openinsurance.com.br/aaa'
           maxLength: 1024
+        minimumRequirements:
+          $ref: '#/components/schemas/SurvivalPensionMinimumRequirements'
+        targetAudience:
+          $ref: '#/components/schemas/MinimumRequirements/properties/targetAudience'
+        termsAndConditions:
+          type: array
+          items:
+            $ref: '#/components/schemas/TermsAndConditions'
+        defferalPeriod:
+          $ref: '#/components/schemas/SurvivalPensionDefferalPeriod'
+        grantPeriodBenefit:
+          $ref: '#/components/schemas/SurvivalPensionGrantPeriodBenefit'
+        costs:
+          $ref: '#/components/schemas/SurvivalPensionCosts'
     SurvivalPensionMinimumRequirements:
       type: object
       required:
@@ -222,16 +239,18 @@ components:
         - participantQualified
       properties:
         contractType:
-          type: array
-          items:
-            type: string
+          type: string
+          maxLength: 27
+          enum:
+            - COLETIVO
+            - INDIVIDUAL
+            - AMBAS
           description: |
             O tipo de serviço contratado. A considerar os domínios abaixo:
             1. Coletivo Averbado;
-            2. Coletivo Instituído;
-            3. Individual.
-          example:
-            - Individual
+            2. Individual.
+            3. Ambas
+          example: COLETIVO
         participantQualified:
           type: boolean
           description: |
@@ -239,29 +258,12 @@ components:
             1. true (Sim).
             2. false (Não).
           example: true
-        minRequirementsHiring:
+        contractingMinRequirement:
           type: string
           maxLength: 1024
           description: |
             Campo aberto contendo todos os requisitos mínimos para contratação (possibilidade de incluir URL). Comentários: As URLs são limitadas a 2048 caracteres mas, para o  contexto do Open Insurance, foi adotado a metade deste tamanho (1024). tamanho. p.ex. https://openinsurance.com.br/aaa
           example: 'https://openinsurance.com.br/aaa'
-    SurvivalPensionDetail:
-      type: object
-      required:
-        - susepProcessNumber
-        - type
-        - termsAndConditions
-      properties:
-        type:
-          $ref: '#/components/schemas/SurvivalPensionType'
-        termsAndConditions:
-          $ref: '#/components/schemas/TermsAndConditions'
-        defferalPeriod:
-          $ref: '#/components/schemas/SurvivalPensionDefferalPeriod'
-        grantPeriodBenefit:
-          $ref: '#/components/schemas/SurvivalPensionGrantPeriodBenefit'
-        costs:
-          $ref: '#/components/schemas/SurvivalPensionCosts'
     SusepProcessNumber:
       type: string
       pattern: '^\d{5}\.\d{6}/\d{4}-\d{2}$'
@@ -274,12 +276,13 @@ components:
       type: object
       description: Período de Diferimento
       required:
-        - premiumPaymentMethod
+        - premiumPaymentMethods
       properties:
         interestRate:
-          type: number
+          type: string
+          pattern: '^[0-1]\.\d{6}$'
           description: Taxa de juros garantida que remunera o plano durante a fase de diferimento/acumulação.
-          example: 0.25123
+          example: '0.251231'
         updateIndex:
           $ref: '#/components/schemas/UpdateIndex'
         otherMinimumPerformanceGarantees:
@@ -287,24 +290,47 @@ components:
           description: 'Para produtos do tipo PDR e VDR, indicação do índice de ampla divulgação utilizados como garantia mínima de desempenho.'
           example: SELIC
           maxLength: 12
-        minimumPremiumAmount:
-          $ref: '#/components/schemas/SurvivalPensionMinimumPremiumAmount'
-        premiumPaymentMethod:
+        minimumPremium:
+          $ref: '#/components/schemas/SurvivalPensionMinimumPremium'
+        premiumPaymentMethods:
           type: array
           items:
             type: string
-          example:
-            - CARTÃO DE CRÉDITO
-            - DÉBITO EM CONTA
-            - BOLETO BANCÁRIO
-        permission:
-          $ref: '#/components/schemas/SurvivalPensionPermission'
+            maxLength: 27
+            enum:
+              - CARTAO_CREDITO
+              - DEBITO_CONTA
+              - DEBITO_CONTA_POUPANCA
+              - BOLETO_BANCARIO
+              - PIX
+              - CARTAO_DEBITO
+              - REGRA_PARCEIRO
+              - CONSIGNACAO_FOLHA_PAGAMENTO
+              - PONTOS_PROGRAMA_BENEFICIO
+              - TED_DOC
+              - OUTROS
+            example: CARTAO_CREDITO
+        permissionExtraordinaryContributions:
+          description: |
+            Se ficam permitidos aportes extraordinários. A considerar os seguintes domínios:
+            1. Sim; (true)
+            2. Não (false).
+          type: boolean
+          example: true
+        permissionScheduledFinancialPayments:
+          description: |
+            Se ficam permitidos pagamentos financeiros programados. A considerar os seguintes domínios:
+            1. Sim; (true)
+            2. Não (false).
+          type: boolean
+          example: true
         gracePeriod:
           $ref: '#/components/schemas/SurvivalPensionGracePeriod'
         reversalFinancialResults:
-          type: number
+          type: string
+          pattern: '^[0-1]\.\d{6}$'
           description: Percentual de reversão de excedente financeiro na concessão. Em %.
-          example: 13.252
+          example: '0.051230'
         investmentFunds:
           type: array
           items:
@@ -330,7 +356,7 @@ components:
         11. VRI
         12. VDR
         13. Demais produtos de Previdência.
-      maxLength: 20
+      maxLength: 27
       enum:
         - PGBL
         - PRGP
@@ -344,7 +370,7 @@ components:
         - VRSA
         - VRI
         - VDR
-        - DEMAIS_PROD_DE_PREV
+        - DEMAIS_PRODUTOS_PREVIDENCIA
     SurvivalPensionGracePeriod:
       type: object
       description: Prazo de carência
@@ -395,15 +421,15 @@ components:
         - maxValue
       properties:
         minValue:
-          type: number
+          type: string
+          pattern: '^[0-1]\.\d{6}$'
           description: Percentual mínimo de carregamento cobrada quando do pagamento do prêmio/ contribuição. Em %.
-          maximum: 99999
-          example: 0
+          example: '0.000000'
         maxValue:
-          type: number
+          type: string
+          pattern: '^[0-1]\.\d{6}$'
           description: Percentual máximo de carregamento cobrada quando do pagamento do prêmio/ contribuição. Em %.
-          maximum: 99999
-          example: 10
+          example: '0.100000'
     SurvivalPensionLoadingLate:
       type: object
       description: Carregamento postecipado.
@@ -412,45 +438,38 @@ components:
         - maxValue
       properties:
         minValue:
-          type: number
+          type: string
+          pattern: '^[0-1]\.\d{6}$'
           description: Percentual mínimo de taxa de carregamento cobrado quando da efetivação de resgate ou portabilidade.
-          maximum: 99999
-          example: 0
+          example: '0.000000'
         maxValue:
-          type: number
+          type: string
+          pattern: '^[0-1]\.\d{6}$'
           description: Percentual máximo de taxa de carregamento cobrado quando da efetivação de resgate ou portabilidade.
-          maximum: 99999
-          example: 10
-    SurvivalPensionMinimumPremiumAmount:
+          example: '0.100000'
+    SurvivalPensionMinimumPremium:
       type: object
       description: Valor mínimo de prêmio/contribuição
       properties:
-        value:
-          type: number
-          description: Valor mínimo em R$ de prêmio/ contribuição aceita pela sociedade ao plano (identificar valor mensal e/ou aporte único).
-          example: 250
-        description:
+        currency:
+          $ref: '#/components/schemas/CoverageAttributes/properties/currency'
+        periodicity:
           type: string
-          description: Descrição do Valor mínimo de prêmio/contribuição.
-          example: VALOR MENSAL
-    SurvivalPensionPermission:
-      type: object
-      description: Permissão para aportes extraordinários
-      properties:
-        extraordinaryContributions:
-          description: |
-            Se ficam permitidos aportes extraordinários. A considerar os seguintes domínios:
-            1. Sim; (true)
-            2. Não (false).
-          type: boolean
-          example: true
-        scheduledFinancialPayments:
-          description: |
-            Se ficam permitidos pagamentos financeiros programados. A considerar os seguintes domínios:
-            1. Sim; (true)
-            2. Não (false).
-          type: boolean
-          example: true
+          maxLength: 10
+          enum:
+            - DIÁRIO
+            - SEMANAL
+            - QUINZENAL
+            - MENSAL
+            - BIMESTRAL
+            - TRIMESTRAL
+            - SEMESTRAL
+            - ANUAL
+        amount:
+          type: string
+          pattern: '^\d{1,16}\.\d{2,4}$'
+          description: Valor mínimo em R$ de prêmio/ contribuição aceita pela sociedade ao plano (identificar valor mensal e/ou aporte único).
+          example: '250.00'
     SurvivalPensionGrantPeriodBenefit:
       type: object
       description: Período de concessão do benefício
@@ -459,11 +478,7 @@ components:
         - biometricTable
       properties:
         incomeModality:
-          type: array
-          items:
-            type: string
-          example:
-            - RENDA TEMPORÁRIA
+          type: string
           description: |
             Modalidades de renda disponíveis para contratação.
               A considerar os seguintes domínios:
@@ -478,26 +493,54 @@ components:
               9. Renda Vitalícia Reversível ao Cônjuge com Continuidade de Menores
               10. Renda Vitalícia com o Mínimo Garantido;
               11. Renda Vitalícia com Prazo mínimo garantido.
+          enum:
+            - PAGAMENTO_UNICO
+            - RENDA_PRAZO_CERTO
+            - RENDA_TEMPORARIA
+            - RENDA_TEMPORARIA_REVERSIVEL
+            - RENDA_TEMPORARIA_MINMO_GARANTIDO
+            - RENDA_TEMPORARIA_REVERSIVEL_MININO_GARANTIDO
+            - RENDA_VITALICIA
+            - RENDA_VITALICIA_REVERSIVEL_BENEFICIARIO_INDICADO
+            - RENDA_VITALICIA_CONJUGE_CONTINUIDADE_MENORES
+            - RENDA_VITALICIA_MINIMO_GARANTIDO
+            - RENDA_VITALICIA_PRAZO_MINIMO_GRANTIDO
+          example: PAGAMENTO_UNICO
         biometricTable:
+          type: string
+          maxLength: 32
           description: |
             Tábua biométrica utilizada como parâmetro para conversão em renda atuarial que deve observar a relação discriminada de coberturas, conforme Tabela II.2 do Anexo II.
             Deverá ser informada a tábua biométrica aplicável à modalidade de renda padrão do plano.
-          type: array
-          items:
-            type: string
-          example:
-            - AT - 2000 – Male/Female - Suavizada 15%
+          enum:
+            - AT_2000_MALE
+            - AT_2000_FEMALE
+            - AT_2000_MALE_FEMALE
+            - AT_2000_MALE_SUAVIZADA_10
+            - AT_2000_FEMALE_SUAVIZADA_10
+            - AT_2000_MALE_FEMALE_SUAVIZADA_10
+            - AT_2000_MALE_SUAVIZADA_15
+            - AT_2000_FEMALE_SUAVIZADA_15
+            - AT_2000_MALE_FEMALE_SUAVIZADA_15
+            - AT_83_MALE
+            - AT_83_FEMALE
+            - AT_83_MALE_FEMALE
+            - BR_EMSSB_MALE
+            - BR_EMSSB_FEMALE
+            - BR_EMSSB_MALE_FEMALE
+          example: AT_2000_MALE
         interestRate:
-          type: number
+          type: string
+          pattern: '^[0-1]\.\d{6}$'
           description: Taxa de juros garantida utilizada para conversão em renda. Em %
-          example: 3.225
-          maximum: 5
+          example: '0.225222'
         updateIndex:
           $ref: '#/components/schemas/UpdateIndex'
         reversalFinancialResults:
-          type: number
+          type: string
+          pattern: '^[0-1]\.\d{6}$'
           description: Percentual de reversão de excedente financeiro na concessão. Em %.
-          example: 13.252
+          example: '1.252111'
         investmentFunds:
           type: array
           items:
@@ -757,7 +800,7 @@ components:
 
         1. Contribuição Variável;
         2. Benefício Definido.
-      maxLength: 200
+      maxLength: 21
       enum:
         - CONTRIBUICAO_VARIAVEL
         - BENEFICIO_DEFINIDO
@@ -885,17 +928,17 @@ components:
           description: Taxa de juros para capitalização da PMBaC.
     UpdateIndex:
       type: string
-      maxLength: 9
+      maxLength: 4
       description: |
         Índice utilizado na atualização do prêmio e do capital segurado, caso critério de atualização por meio de índice:
         1. IPCA (IBGE);
         2. IGP-M (FGV);
         3. INPC (IBGE).
       enum:
-        - IPCA_IBGE
-        - IGP-M_FGV
-        - INPC_IBGE
-      example: IPCA_IBGE
+        - IPCA
+        - IGP_M
+        - INPC
+      example: IPCA
     UpdateAward:
       type: object
       properties:
