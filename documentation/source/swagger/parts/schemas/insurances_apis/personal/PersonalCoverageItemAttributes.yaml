@@ -1,7 +1,7 @@
 type: object
 required:
-  - indemnityPaymentMethod
-  - indemnityPaymentFrequency
+  - indemnityPaymentMethods
+  - indemnityPaymentFrequencies
   - indemnifiablePeriod
   - maximumQtyIndemnifiableInstallments
   - currency
@@ -11,31 +11,33 @@ required:
   - differentiatedDeductibleBRL
   - excludedRisks
   - excludedRisksURL
+  - assistanceTypes
 properties:
-  indemnityPaymentMethod:
-    $ref: ../../enum/EnumPersonalIndemnityPaymentMethodType.yaml
-  indemnityPaymentFrequency:
-    $ref: ../../enum/EnumPersonalIndemnityPaymentFrequencyType.yaml
+  indemnityPaymentMethods:
+    type: array
+    items:
+      $ref: ../../enum/EnumPersonalIdemnityPaymentMethod.yaml
+  indemnityPaymentFrequencies:
+    type: array
+    items:
+      $ref: ../../enum/EnumPersonalIndemnityPaymentFrequencyType.yaml
   minValue:
     $ref: ../CoverageItemAttributesMinLMI.yaml
   maxValue:
     $ref: ../CoverageItemAttributesMaxLMI.yaml
-  indemnifiablePeriod:
-    $ref: ../../enum/EnumPersonalIndemnifiablePeriodType.yaml
+  indemnifiablePeriods:
+    type: array
+    items:
+      $ref: ../../enum/EnumPersonalIndemnifiablePeriodType.yaml
   maximumQtyIndemnifiableInstallments:
     type: integer
     description: 'Caso o período indenizável seja relacionado a parcelas, listagem de número máximo de parcelas indenizáveis para cada combinação de modalidade/ cobertura do produto.'
     maxLength: 10
     example: 10
-  currency:
-    $ref: ../../enum/EnumCurrencyType.yaml
   gracePeriod:
     $ref: ./PersonalInsuranceGracePeriod.yaml
   differentiatedGracePeriod:
-    type: integer
-    description: 'Informar o prazo de carência'
-    maxLength: 10
-    example: 3
+    $ref: ./PersonalInsuranceGracePeriod.yaml
   deductibleDays:
     type: integer
     description: 'Listagem de franquia em dias para cada combinação de modalidade/cobertura do produto.'
@@ -46,31 +48,31 @@ properties:
     description: 'Detalhamento da franquia em dias diferentes para cada cobertura que exista alguma especificidade. Caso a seguradora não tenha essa diferenciação, não retornará nada no campo.'
     maxLength: 10
     example: 15
-  deductibleBRL:
+  deductible:
     type: string
+    pattern: '^\d{1,16}\.\d{2,4}$'
     description: 'Listagem de franquia em reais para cada combinação de modalidade/cobertura do produto.'
-    maxLength: 5
+    maxLength: 21
     example: '10.00'
-  differentiatedDeductibleBRL:
+  differentiatedDeductible:
     type: string
+    pattern: '^\d{1,16}\.\d{2,4}$'
     description: 'Listagem de franquia em reais para cada combinação de modalidade/cobertura do produto.'
-    maxLength: 10
+    maxLength: 21
     example: '10.00'
   excludedRisks:
-    $ref: ../../enum/EnumPersonalExcludedRisksType.yaml
+    type: array
+    items:
+      $ref: ../../enum/EnumPersonalExcludedRisksType.yaml
   excludedRisksURL:
     type: string
     description: 'Campo aberto (possibilidade de incluir URL) Comentários As URLs são limitadas a 2048 caracteres mas, para o contexto do Open Insurance, foi adotado a metade deste tamanho (1024). tamanho. p.ex.https://openinsurance.com.br/aaa'
     maxLength: 1024
     example: 'https://openinsurance.com.br/aaa'
-  minCoverageGroupRequired:
-    type: string
-    description: ''
-    maxLength: 1024
-    example: 'XPTO'
-  minCoverageGroupRequiredOthers:
-    type: string
-    description: ''
-    maxLength: 1024
-    example: 'XPTO'
+  allowApartPurchase:
+    type: boolean
+    description: | 
+      Indicar se a cobertura pode ser contratada isoladamente ou não:
+        1. Sim (true)
+        2. Não (false)
 additionalProperties: false
