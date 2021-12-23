@@ -239,60 +239,60 @@ paths:
             - payments
         - OAuth2ClientCredentials:
             - payments
-  "/payments/v1/consents/{consentId}":
+  '/payments/v1/consents/{consentId}':
     patch:
       tags:
         - Pagamentos
-      summary: ""
+      summary: ''
       operationId: paymentsPatchPixPayments
       description: Método para revogação do consentimento.
       parameters:
-        - $ref: "#/components/parameters/consentId"
-        - $ref: "#/components/parameters/Authorization"
-        - $ref: "#/components/parameters/xFapiAuthDate"
-        - $ref: "#/components/parameters/xFapiCustomerIpAddress"
-        - $ref: "#/components/parameters/xFapiInteractionId"
-        - $ref: "#/components/parameters/xCustomerUserAgent"
-        - $ref: "#/components/parameters/XIdempotencyKey"
+        - $ref: '#/components/parameters/consentId'
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/xFapiAuthDate'
+        - $ref: '#/components/parameters/xFapiCustomerIpAddress'
+        - $ref: '#/components/parameters/xFapiInteractionId'
+        - $ref: '#/components/parameters/xCustomerUserAgent'
+        - $ref: '#/components/parameters/XIdempotencyKey'
       requestBody:
         content:
           application/jwt:
             schema:
-              $ref: "#/components/schemas/PatchPaymentsConsent"
+              $ref: '#/components/schemas/PatchPaymentsConsent'
         description: Payload para revogação do consentimento.
         required: true
       responses:
-        "200":
-          $ref: "#/components/responses/200PatchPaymentsConsent"
-        "400":
-          $ref: "#/components/responses/BadRequest"
-        "401":
-          $ref: "#/components/responses/Unauthorized"
-        "403":
-          $ref: "#/components/responses/Forbidden"
-        "404":
-          $ref: "#/components/responses/NotFound"
-        "405":
-          $ref: "#/components/responses/MethodNotAllowed"
-        "406":
-          $ref: "#/components/responses/NotAcceptable"
-        "415":
-          $ref: "#/components/responses/UnsupportedMediaType"
-        "422":
-          $ref: "#/components/responses/UnprocessableEntityPixPayments"
-        "429":
-          $ref: "#/components/responses/TooManyRequests"
-        "500":
-          $ref: "#/components/responses/InternalServerError"
+        '200':
+          $ref: '#/components/responses/200PatchPaymentsConsent'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntityPixPayments'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
         default:
           description: Erro inesperado.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseError"
+                $ref: '#/components/schemas/ResponseError'
       security:
         - OAuth2AuthorizationCode:
-            - "consent:consentId"
+            - 'consent:consentId'
             - payments
 components:
   schemas:
@@ -1039,7 +1039,7 @@ components:
         - details
       properties:
         type:
-          $ref: "#/components/schemas/EnumPaymentType"
+          $ref: '#/components/schemas/EnumPaymentType'
         schedule:
           type: object
           description: Define o agendamento do pagamento. Utilizado somente na funcionalidade de agendamento de pagamentos.
@@ -1058,7 +1058,7 @@ components:
                   format: date
                   maxLength: 10
                   pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
-                  example: "2021-01-01"
+                  example: '2021-01-01'
                   description: |
                     Define a data alvo da liquidação do pagamento. O fuso horário de Brasilia deve ser utilizado para criação e racionalização sobre os dados deste campo.  
                     OBS:Esse campo deverá sempre ser no mínimo D+1 corrido, ou seja, a data imediatamente posterior em relação a data do consentimento considerando o fuso horário de Brasília e deverá ser no máximo um ano corrido a partir da data do consentimento considerando o fuso horário de Brasília.
@@ -1123,6 +1123,58 @@ components:
               properties:
                 loggedUser:
                   $ref: "#/components/schemas/LoggedUser"
+                revoked_by:
+                  type: string
+                  maxLength: 140
+                  pattern: '[\w\W\s]*'
+                  example: USER
+                  description: "Define qual das partes envolvidas na transação está realizando a revogação. Valores possíveis:\_USER\_(Revogado pelo usuário),\_ASPSP\_(Provedor de serviços de pagamento para serviços de conta - Detentora de conta),\_TPP\_(Instituições Provedoras - iniciadora de pagamentos).\nOs motivos de revogação do consentimento:\_FRAUD\_e\_ACCOUNT_CLOSURE\_só podem ser usados caso o campo:\_data.revocation.revoked_by\_tenha o valor\_TPP\_ou\_ASPSP, ou seja, somente no caso de revogação unilateral pela iniciadora ou detentora.\n"
+                reason:
+                  type: object
+                  description: Define a razão pela qual o consentimento foi revogado.
+                  required:
+                    - code
+                  properties:
+                    code:
+                      type: string
+                      maxLength: 22
+                      enum:
+                        - FRAUD
+                        - ACCOUNT_CLOSURE
+                        - OTHER
+                      example: OTHER
+                      description: "Define o código da razão pela qual o consentimento foi revogado. \nValores possíveis:\_\nFRAUD\_- Indica suspeita de fraude\_\nACCOUNT_CLOSURE - Indica que a conta do usuário foi encerrada\_\nOTHER\_- Indica que motivo do cancelamento está fora dos motivos pré-estabelecidos.\n"
+                    additionalInformation:
+                      type: string
+                      maxLength: 140
+                      pattern: '[\w\W\s]*'
+                      example: Não quero mais o serviço
+                      description: "Contém informações adicionais definidas pelo requisitante da revogação.\nO campo\_additionalInformation\_é obrigatório quando a revogação for feita pela iniciadora ou pela detentora unilateralmente, ou seja, o campo revoked_by igual a\_TPP\_ou\_ASPSP\_e o motivo de revogação for\_OTHER.\n"
+      additionalProperties: false
+    PatchPaymentsConsent:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: object
+          description: Objeto contendo dados do pagamento e do recebedor (creditor).
+          required:
+            - status
+            - revocation
+          properties:
+            status:
+              $ref: '#/components/schemas/EnumAuthorisationStatusType'
+            revocation:
+              type: object
+              description: "Objeto que contém as informações das circunstância da revogação.\nO campo\_loggedUser\_deve ser preenchidos quando a revogação for feita pelo usuário final, ou seja, se o campo\_data.revocation.revoked_by\_estiver com o valor\_USER.\n"
+              required:
+                - loggedUser
+                - revoked_by
+                - reason
+              properties:
+                loggedUser:
+                  $ref: '#/components/schemas/LoggedUser'
                 revoked_by:
                   type: string
                   maxLength: 140
