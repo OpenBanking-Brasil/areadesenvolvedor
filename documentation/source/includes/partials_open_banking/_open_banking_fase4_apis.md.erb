@@ -1797,6 +1797,10 @@ Consulte a seção **Convenções de payload** para obter mais informações sob
         "cnpjNumber": "13456789000112",
         "urlComplementaryList": "https://empresaa1.com/companies"
       },
+      "society": {
+        "name": "Society A1",
+        "cnpjNumber": "13456789000112"
+      },
       "products": [
         {
           "name": "Produto A",
@@ -2020,7 +2024,7 @@ Consulte a seção **Convenções de payload** para obter mais informações sob
               "type": "ROUBO_TOTAL_OU_PARCIAL",
               "detail": "NA",
               "permissionSeparateAcquisition": true,
-              "coverageAttributes": {
+              "attributes": {
                 "minLMI": {
                   "amount": "0.01",
                   "currency": "BRL"
@@ -2034,14 +2038,13 @@ Consulte a seção **Convenções de payload** para obter mais informações sob
                 "deductibleType": "NORMAL",
                 "fullIndemnityDeductible": true,
                 "deductiblePaymentByCoverage": true,
-                "deductiblePercentage": {
+                "mandatoryParticipation": {
                   "amount": "0001",
                   "unit": {
                     "code": "0001",
                     "description": "0001"
                   }
                 },
-                "mandatoryParticipation": "Casco: R$ 0,00 RCF-V Danos Materiais: X%",
                 "geographicScope": [
                   {
                     "coverage": "NACIONAL",
@@ -2049,25 +2052,23 @@ Consulte a seção **Convenções de payload** para obter mais informações sob
                   }
                 ]
               },
-              "contractBase": [
+              "contractBases": [
                 {
-                  "type": "VALOR_DETERMINADO",
-                  "minValue": {
-                    "amount": "50.000",
-                    "currency": "BRL"
+                  "determinedValue": {
+                    "min": {},
+                    "max": {}
                   },
-                  "maxValue": {
-                    "amount": "50.000",
-                    "currency": "BRL"
+                  "marketValuePercentage": {
+                    "min": "0.20",
+                    "max": "1.00"
                   }
                 }
               ],
               "newCar": {
-                "contractBase": [
+                "contractBases": [
                   {
-                    "type": "VALOR_DETERMINADO",
-                    "minValue": {},
-                    "maxValue": {}
+                    "determinedValue": {},
+                    "marketValuePercentage": {}
                   }
                 ]
               }
@@ -2086,9 +2087,7 @@ Consulte a seção **Convenções de payload** para obter mais informações sob
             "fipeCode": "003128-3"
           },
           "vehicleOvernightPostalCode": 1311000,
-          "additional": [
-            "SORTEIO_GRATUITO"
-          ],
+          "additional": "SORTEIO_GRATUITO",
           "additionalInfo": "Detalhar os serviços, benefícios e outros",
           "assistanceServices": [
             {
@@ -2241,7 +2240,7 @@ Consulte a seção **Convenções de payload** para obter mais informações sob
               ],
               "detail": "string",
               "permissionSeparateAcquisition": true,
-              "coverageAttributes": {
+              "attributes": {
                 "minLMI": {
                   "amount": "0.01",
                   "currency": "BRL"
@@ -2431,8 +2430,8 @@ Consulte a seção **Convenções de payload** para obter mais informações sob
           "coverages": [
             {
               "type": "INVALIDEZ_PERMANENTE_TOTAL_PARCIAL",
-              "additionalInfo": "Detalhar os serviços, benefícios e outros",
-              "coverageAttributes": {
+              "typeAdditionalInfo": "Detalhar os serviços, benefícios e outros",
+              "attributes": {
                 "indemnityPaymentMethods": [
                   "PAGAMENTO_CAPITAL_SEGURADO_VALOR_MONETARIO"
                 ],
@@ -2447,26 +2446,32 @@ Consulte a seção **Convenções de payload** para obter mais informações sob
                   "amount": "1000000.01",
                   "currency": "BRL"
                 },
-                "indemnifiablePeriods": [
+                "indemnfiablePeriods": [
                   "QUANTIDADE_DETERMINADA_PARCELAS"
                 ],
                 "maximumQtyIndemnifiableInstallments": 10,
                 "gracePeriod": {
-                  "amount": 180,
                   "units": [
                     "DIAS"
-                  ]
+                  ],
+                  "quantity": 180
                 },
                 "differentiatedGracePeriod": {
-                  "amount": 180,
                   "units": [
                     "DIAS"
-                  ]
+                  ],
+                  "quantity": 180
                 },
                 "deductibleDays": 10,
                 "differentiatedDeductibleDays": 15,
-                "deductible": "10.00",
-                "differentiatedDeductible": "10.00",
+                "deductible": {
+                  "amount": "50.000",
+                  "currency": "BRL"
+                },
+                "differentiatedDeductible": {
+                  "amount": "50.000",
+                  "currency": "BRL"
+                },
                 "excludedRisks": [
                   "ATO_RECONHECIMENTO_PERIGOSO"
                 ],
@@ -2525,10 +2530,10 @@ Consulte a seção **Convenções de payload** para obter mais informações sob
               }
             ],
             "gracePeriod": {
-              "amount": 180,
               "units": [
                 "DIAS"
-              ]
+              ],
+              "quantity": 180
             },
             "differenciatedPercentage": "https://openinsurance.com.br/aaa’\nObs.: Exceção de cobertura ou critério definido acima será descrito aqui na URL\nExemplo: Cobertura X: a partir de 25 meses = 100%\n"
           },
@@ -2537,10 +2542,10 @@ Consulte a seção **Convenções de payload** para obter mais informações sob
           ],
           "allowPortability": true,
           "portabilityGraceTime": {
-            "amount": 180,
             "units": [
               "DIAS"
-            ]
+            ],
+            "quantity": 180
           },
           "indemnityPaymentMethods": [
             "UNICO"
@@ -4985,7 +4990,7 @@ Pagamento efetuado ao subscritor à sociedade de capitalização para aquisiçã
 |Nome|Tipo|Obrigatório|Descrição|
 |---|---|---|---|---|
 |suspensionMonths|number|true|Conforme manual SUSEP: Prazo máximo (contínuo ou intermitente) em meses que o título fica suspenso por atraso de pagamento, antes de ser cancelado (não aplicável a pagamento único).|
-|periodExtensionOption|boolean|true|Alteração do prazo de vigência original, pela suspensão (não aplicável a pagamento único). A considerar os seguintes domínios:<br>1. Sim (true)<br>2. Não (false)|
+|periodExtensionOption|boolean|true|Alteração do prazo de vigência original, pela suspensão (não aplicável a pagamento único). A considerar os seguintes domínios:<br>1. true<br>2. false|
 
 <h2 id="tocS_CapitalizationBondsProductContributionPayment">CapitalizationBondsProductContributionPayment</h2>
 
@@ -5085,8 +5090,8 @@ Meio de Pagamento utilizado para pagamento da contribuição. A considerar os do
 |periodicityAdditionalInfo|string|false|Restrição: Campo obrigatório para complementar a informação quando selecionada a opção 'OUTROS'|
 |quantity|number(integer)|true|Número da quantidade de sorteios previstos ao longo da vigência.|
 |prizeMultiplier|number(integer)|true|Valor dos sorteios representado por múltiplo do valor de contribuição. Por exemplo: 5 vezes valor da contribuição|
-|earlySettlementRaffle|boolean|true|Modelo de sorteio que acarreta, ao título contemplado, o seu resgate total obrigatório (Resolução Normativa 384/20). Conforme os domínios:<br> 1. SIM (true)<br> 2. NÃO (false)|
-|mandatoryContemplation|boolean|false|Possibilidade de realização de sorteio com previsão de que o título sorteado seja obrigatoriamente um título comercializado,<br>desde que atingidos os requisitos definidos nas condições gerais do plano. Conforme os domínios:<br>  1. SIM (true)<br>  2. NÃO (false)|
+|earlySettlementRaffle|boolean|true|Modelo de sorteio que acarreta, ao título contemplado, o seu resgate total obrigatório (Resolução Normativa 384/20). Conforme os domínios:<br> 1. true<br> 2. false|
+|mandatoryContemplation|boolean|false|Possibilidade de realização de sorteio com previsão de que o título sorteado seja obrigatoriamente um título comercializado,<br>desde que atingidos os requisitos definidos nas condições gerais do plano. Conforme os domínios:<br>  1. true<br>  2. false|
 |ruleDescription|string|false|Campo aberto para complementar a regra dos sorteios do produto, a ser feita para cada participante.|
 |minimumContemplationProbability|string|true|Número representativo da probabilidade mínima de contemplação nos sorteios, em porcentagem (%).|
 
@@ -7063,6 +7068,10 @@ Meta informações referente à API requisitada.
         "cnpjNumber": "13456789000112",
         "urlComplementaryList": "https://empresaa1.com/companies"
       },
+      "society": {
+        "name": "Society A1",
+        "cnpjNumber": "13456789000112"
+      },
       "products": [
         {
           "name": "Produto A",
@@ -7194,6 +7203,10 @@ Meta informações referente à API requisitada.
     "cnpjNumber": "13456789000112",
     "urlComplementaryList": "https://empresaa1.com/companies"
   },
+  "society": {
+    "name": "Society A1",
+    "cnpjNumber": "13456789000112"
+  },
   "products": [
     {
       "name": "Produto A",
@@ -7293,6 +7306,7 @@ Meta informações referente à API requisitada.
 |Nome|Tipo|Obrigatório|Descrição|
 |---|---|---|---|---|
 |participantIdentification|[ParticipantIdentification](#schemaparticipantidentification)|true|Conjunto de informações relativas ao participante do produto de open banking|
+|society|[SocietyIdentification](#schemasocietyidentification)|false|Conjunto de informações relativas à seguradora do produto de open insurance|
 |products|[[Product](#schemaproduct)]|false||
 
 <h2 id="tocS_SurvivalPensionInvestimentFund">SurvivalPensionInvestimentFund</h2>
@@ -7328,7 +7342,7 @@ Fundos de Investimento (por fundo).
 |maximumAdministrationFee|string|false|Lista com as informações do(s) Fundo(s) de Investimento(s) disponíveis para o período de diferimento/acumulação, contemplando:<br>  - Taxa Máxima de Administração - em %|
 |typePerformanceFee|string|false|Tipo de Taxa de Performance|
 |maximumPerformanceFee|string|false|Taxa Máxima de Performance|
-|eligibilityRule|boolean|false|Regra de Elegibilidade:<br>- true (SIM)<br>- false (Não se aplica)|
+|eligibilityRule|boolean|false|Regra de Elegibilidade:<br>- true<br>- false|
 |minimumContributionAmount|string|false|Valor Mínimo de Contribuição|
 |minimumMathematicalProvisionAmount|string|false|Valor Mínimo do Saldo Provisão Matemática|
 |currency|[CurrencyCode](#schemacurrencycode)|false|Moeda referente ao valor da transação, segundo modelo ISO-4217. p.ex. 'BRL' <br>Todos os saldos informados estão representados com a moeda vigente do Brasil|
@@ -7465,7 +7479,7 @@ Fundos de Investimento (por fundo).
 |Nome|Tipo|Obrigatório|Descrição|
 |---|---|---|---|---|
 |contractType|string|true|O tipo de serviço contratado. A considerar os domínios abaixo:<br>1. Coletivo Averbado;<br>2. Individual.<br>3. Ambas|
-|participantQualified|boolean|true|Indicação se o plano é destinado para participante qualificado. A considerar os domínios abaixo:<br>1. true (Sim).<br>2. false (Não).|
+|participantQualified|boolean|true|Indicação se o plano é destinado para participante qualificado. A considerar os domínios abaixo:<br>1. true<br>2. false|
 |contractingMinRequirement|string|false|Campo aberto contendo todos os requisitos mínimos para contratação (possibilidade de incluir URL). Comentários: As URLs são limitadas a 2048 caracteres mas, para o  contexto do Open Insurance, foi adotado a metade deste tamanho (1024). tamanho. p.ex. https://openinsurance.com.br/aaa|
 
 #### Enumerated Values
@@ -7555,8 +7569,8 @@ Período de Diferimento
 |otherMinimumPerformanceGarantees|string|false|Para produtos do tipo PDR e VDR, indicação do índice de ampla divulgação utilizados como garantia mínima de desempenho.|
 |minimumPremium|[SurvivalPensionMinimumPremium](#schemasurvivalpensionminimumpremium)|false|Valor mínimo de prêmio/contribuição|
 |premiumPaymentMethods|[string]|true||
-|permissionExtraordinaryContributions|boolean|false|Se ficam permitidos aportes extraordinários. A considerar os seguintes domínios:<br>1. Sim; (true)<br>2. Não (false).|
-|permissionScheduledFinancialPayments|boolean|false|Se ficam permitidos pagamentos financeiros programados. A considerar os seguintes domínios:<br>1. Sim; (true)<br>2. Não (false).|
+|permissionExtraordinaryContributions|boolean|false|Se ficam permitidos aportes extraordinários. A considerar os seguintes domínios:<br>1. true<br>2. false|
+|permissionScheduledFinancialPayments|boolean|false|Se ficam permitidos pagamentos financeiros programados. A considerar os seguintes domínios:<br>1. true<br>2. false|
 |gracePeriod|[SurvivalPensionGracePeriod](#schemasurvivalpensiongraceperiod)|false|Prazo de carência|
 |reversalFinancialResults|string|false|Percentual de reversão de excedente financeiro na concessão. Em %.|
 |investmentFunds|[[SurvivalPensionInvestimentFund](#schemasurvivalpensioninvestimentfund)]|false|[Fundos de Investimento (por fundo).]|
@@ -7852,7 +7866,7 @@ Período de concessão do benefício
 
 |Nome|Tipo|Obrigatório|Descrição|
 |---|---|---|---|---|
-|package|[EnumAssistanceServicesPackageType](#schemaenumassistanceservicespackagetype)|false|1- Até 10 serviços<br>2- Até 20 serviços<br>3- Acima de 20 serviços<br>4- Customizável|
+|package|[EnumAssistanceServicesPackageType](#schemaenumassistanceservicespackagetype)|false|1. Até 10 serviços<br>2. Até 20 serviços<br>3. Acima de 20 serviços<br>4. Customizável|
 |detail|string|false|Campo livre para descrição dos serviços ofertados por cada sociedade participante (incluindo indicação se o serviço é Gratuito ou Pago)|
 |chargeType|[EnumChargeTypeSignalingType](#schemaenumchargetypesignalingtype)|false|Sinalização em campo exclusivo se o pacote de Assistência é gratuita ou contratada/paga. A considerar os domínios abaixo:<br>  1. Gratuita<br>  2. Pago|
 
@@ -7877,7 +7891,7 @@ No caso de contratação de várias coberturas numa mesma apólice, é comum o c
 
 |Nome|Tipo|Obrigatório|Descrição|
 |---|---|---|---|---|
-|amount|string|true||
+|amount|string|true|Listagem do valor mínimo de cobertura (Capital Segurado), diária ou parcela aceito pela sociedade para cada combinação de modalidade/cobertura do produto. Conforme moeda.|
 |currency|[CurrencyCode](#schemacurrencycode)|true|Moeda referente ao valor da transação, segundo modelo ISO-4217. p.ex. 'BRL' <br>Todos os saldos informados estão representados com a moeda vigente do Brasil|
 
 <h2 id="tocS_CoverageItemAttributesMaxLMI">CoverageItemAttributesMaxLMI</h2>
@@ -8051,7 +8065,7 @@ O CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. De
               "type": "ROUBO_TOTAL_OU_PARCIAL",
               "detail": "NA",
               "permissionSeparateAcquisition": true,
-              "coverageAttributes": {
+              "attributes": {
                 "minLMI": {
                   "amount": "0.01",
                   "currency": "BRL"
@@ -8065,14 +8079,13 @@ O CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. De
                 "deductibleType": "NORMAL",
                 "fullIndemnityDeductible": true,
                 "deductiblePaymentByCoverage": true,
-                "deductiblePercentage": {
+                "mandatoryParticipation": {
                   "amount": "0001",
                   "unit": {
                     "code": "0001",
                     "description": "0001"
                   }
                 },
-                "mandatoryParticipation": "Casco: R$ 0,00 RCF-V Danos Materiais: X%",
                 "geographicScope": [
                   {
                     "coverage": "NACIONAL",
@@ -8080,25 +8093,23 @@ O CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. De
                   }
                 ]
               },
-              "contractBase": [
+              "contractBases": [
                 {
-                  "type": "VALOR_DETERMINADO",
-                  "minValue": {
-                    "amount": "50.000",
-                    "currency": "BRL"
+                  "determinedValue": {
+                    "min": {},
+                    "max": {}
                   },
-                  "maxValue": {
-                    "amount": "50.000",
-                    "currency": "BRL"
+                  "marketValuePercentage": {
+                    "min": "0.20",
+                    "max": "1.00"
                   }
                 }
               ],
               "newCar": {
-                "contractBase": [
+                "contractBases": [
                   {
-                    "type": "VALOR_DETERMINADO",
-                    "minValue": {},
-                    "maxValue": {}
+                    "determinedValue": {},
+                    "marketValuePercentage": {}
                   }
                 ]
               }
@@ -8117,9 +8128,7 @@ O CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. De
             "fipeCode": "003128-3"
           },
           "vehicleOvernightPostalCode": 1311000,
-          "additional": [
-            "SORTEIO_GRATUITO"
-          ],
+          "additional": "SORTEIO_GRATUITO",
           "additionalInfo": "Detalhar os serviços, benefícios e outros",
           "assistanceServices": [
             {
@@ -8227,7 +8236,7 @@ O CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. De
           "type": "ROUBO_TOTAL_OU_PARCIAL",
           "detail": "NA",
           "permissionSeparateAcquisition": true,
-          "coverageAttributes": {
+          "attributes": {
             "minLMI": {
               "amount": "0.01",
               "currency": "BRL"
@@ -8241,14 +8250,13 @@ O CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. De
             "deductibleType": "NORMAL",
             "fullIndemnityDeductible": true,
             "deductiblePaymentByCoverage": true,
-            "deductiblePercentage": {
+            "mandatoryParticipation": {
               "amount": "0001",
               "unit": {
                 "code": "0001",
                 "description": "0001"
               }
             },
-            "mandatoryParticipation": "Casco: R$ 0,00 RCF-V Danos Materiais: X%",
             "geographicScope": [
               {
                 "coverage": "NACIONAL",
@@ -8256,30 +8264,40 @@ O CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. De
               }
             ]
           },
-          "contractBase": [
+          "contractBases": [
             {
-              "type": "VALOR_DETERMINADO",
-              "minValue": {
-                "amount": "50.000",
-                "currency": "BRL"
+              "determinedValue": {
+                "min": {
+                  "amount": "50.000",
+                  "currency": "BRL"
+                },
+                "max": {
+                  "amount": "50.000",
+                  "currency": "BRL"
+                }
               },
-              "maxValue": {
-                "amount": "50.000",
-                "currency": "BRL"
+              "marketValuePercentage": {
+                "min": "0.20",
+                "max": "1.00"
               }
             }
           ],
           "newCar": {
-            "contractBase": [
+            "contractBases": [
               {
-                "type": "VALOR_DETERMINADO",
-                "minValue": {
-                  "amount": "50.000",
-                  "currency": "BRL"
+                "determinedValue": {
+                  "min": {
+                    "amount": "50.000",
+                    "currency": "BRL"
+                  },
+                  "max": {
+                    "amount": "50.000",
+                    "currency": "BRL"
+                  }
                 },
-                "maxValue": {
-                  "amount": "50.000",
-                  "currency": "BRL"
+                "marketValuePercentage": {
+                  "min": "0.20",
+                  "max": "1.00"
                 }
               }
             ]
@@ -8299,9 +8317,7 @@ O CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. De
         "fipeCode": "003128-3"
       },
       "vehicleOvernightPostalCode": 1311000,
-      "additional": [
-        "SORTEIO_GRATUITO"
-      ],
+      "additional": "SORTEIO_GRATUITO",
       "additionalInfo": "Detalhar os serviços, benefícios e outros",
       "assistanceServices": [
         {
@@ -8342,7 +8358,7 @@ O CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. De
 |Nome|Tipo|Obrigatório|Descrição|
 |---|---|---|---|---|
 |participant|[ParticipantIdentification](#schemaparticipantidentification)|true|Conjunto de informações relativas ao participante do produto de open banking|
-|society|[InsuranceSocietyIdentification](#schemainsurancesocietyidentification)|true|Conjunto de informações relativas à seguradora do produto de open insurance|
+|society|[SocietyIdentification](#schemasocietyidentification)|true|Conjunto de informações relativas à seguradora do produto de open insurance|
 |products|[[CarInsuranceProduct](#schemacarinsuranceproduct)]|true||
 
 <h2 id="tocS_CarInsuranceProduct">CarInsuranceProduct</h2>
@@ -8361,7 +8377,7 @@ O CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. De
       "type": "ROUBO_TOTAL_OU_PARCIAL",
       "detail": "NA",
       "permissionSeparateAcquisition": true,
-      "coverageAttributes": {
+      "attributes": {
         "minLMI": {
           "amount": "0.01",
           "currency": "BRL"
@@ -8375,14 +8391,13 @@ O CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. De
         "deductibleType": "NORMAL",
         "fullIndemnityDeductible": true,
         "deductiblePaymentByCoverage": true,
-        "deductiblePercentage": {
+        "mandatoryParticipation": {
           "amount": "0001",
           "unit": {
             "code": "0001",
             "description": "0001"
           }
         },
-        "mandatoryParticipation": "Casco: R$ 0,00 RCF-V Danos Materiais: X%",
         "geographicScope": [
           {
             "coverage": "NACIONAL",
@@ -8390,30 +8405,40 @@ O CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. De
           }
         ]
       },
-      "contractBase": [
+      "contractBases": [
         {
-          "type": "VALOR_DETERMINADO",
-          "minValue": {
-            "amount": "50.000",
-            "currency": "BRL"
+          "determinedValue": {
+            "min": {
+              "amount": "50.000",
+              "currency": "BRL"
+            },
+            "max": {
+              "amount": "50.000",
+              "currency": "BRL"
+            }
           },
-          "maxValue": {
-            "amount": "50.000",
-            "currency": "BRL"
+          "marketValuePercentage": {
+            "min": "0.20",
+            "max": "1.00"
           }
         }
       ],
       "newCar": {
-        "contractBase": [
+        "contractBases": [
           {
-            "type": "VALOR_DETERMINADO",
-            "minValue": {
-              "amount": "50.000",
-              "currency": "BRL"
+            "determinedValue": {
+              "min": {
+                "amount": "50.000",
+                "currency": "BRL"
+              },
+              "max": {
+                "amount": "50.000",
+                "currency": "BRL"
+              }
             },
-            "maxValue": {
-              "amount": "50.000",
-              "currency": "BRL"
+            "marketValuePercentage": {
+              "min": "0.20",
+              "max": "1.00"
             }
           }
         ]
@@ -8433,9 +8458,7 @@ O CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. De
     "fipeCode": "003128-3"
   },
   "vehicleOvernightPostalCode": 1311000,
-  "additional": [
-    "SORTEIO_GRATUITO"
-  ],
+  "additional": "SORTEIO_GRATUITO",
   "additionalInfo": "Detalhar os serviços, benefícios e outros",
   "assistanceServices": [
     {
@@ -8479,7 +8502,7 @@ O CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. De
 |carParts|[[CarPartsItem](#schemacarpartsitem)]|false|Tipo de peça utilizada para reparação – Nova ou Usada.|
 |carModel|[CarModel](#schemacarmodel)|false||
 |vehicleOvernightPostalCode|number|false|O conjunto de dados de Produtos que vai retornar está condicionado ao input do valor de CEP (Filtro). Nesse contexto será necessário que o CEP de consulta seja inserido. Código de Endereçamento Postal: Composto por um conjunto numérico de oito dígitos, o objetivo principal do CEP é orientar e acelerar o encaminhamento, o tratamento e a entrega de objetos postados nos Correios, por meio da sua atribuição a localidades, logradouros, unidades dos Correios, serviços, órgãos públicos, empresas e edifícios. p.ex. '01311000'|
-|additional|[[EnumInsuranceAdditionalType](#schemaenuminsuranceadditionaltype)]|false|[A considerar os seguintes domínios abaixo:<br>  1. Sorteio Gratuito<br>  2. Clube de Benefícios<br>  3. Cashback<br>  4. Descontos<br>  5. Outros<br>]|
+|additional|[EnumInsuranceAdditionalType](#schemaenuminsuranceadditionaltype)|false|A considerar os seguintes domínios abaixo:<br>  1. Sorteio Gratuito<br>  2. Clube de Benefícios<br>  3. Cashback<br>  4. Descontos<br>  5. Outros|
 |additionalInfo|string|false|Campo aberto para descrição de cada participante ao selecionar o domínio ‘Outros’ no campo acima ‘Adicionais’ diferenciais do produto em questão.|
 |assistanceServices|[[AssistanceServicesItem](#schemaassistanceservicesitem)]|true|Serviços de Assistência|
 |termsAndConditions|[[TermsAndConditions](#schematermsandconditions)]|true||
@@ -8502,7 +8525,7 @@ O CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. De
   "type": "ROUBO_TOTAL_OU_PARCIAL",
   "detail": "NA",
   "permissionSeparateAcquisition": true,
-  "coverageAttributes": {
+  "attributes": {
     "minLMI": {
       "amount": "0.01",
       "currency": "BRL"
@@ -8516,14 +8539,13 @@ O CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. De
     "deductibleType": "NORMAL",
     "fullIndemnityDeductible": true,
     "deductiblePaymentByCoverage": true,
-    "deductiblePercentage": {
+    "mandatoryParticipation": {
       "amount": "0001",
       "unit": {
         "code": "0001",
         "description": "0001"
       }
     },
-    "mandatoryParticipation": "Casco: R$ 0,00 RCF-V Danos Materiais: X%",
     "geographicScope": [
       {
         "coverage": "NACIONAL",
@@ -8531,30 +8553,40 @@ O CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. De
       }
     ]
   },
-  "contractBase": [
+  "contractBases": [
     {
-      "type": "VALOR_DETERMINADO",
-      "minValue": {
-        "amount": "50.000",
-        "currency": "BRL"
+      "determinedValue": {
+        "min": {
+          "amount": "50.000",
+          "currency": "BRL"
+        },
+        "max": {
+          "amount": "50.000",
+          "currency": "BRL"
+        }
       },
-      "maxValue": {
-        "amount": "50.000",
-        "currency": "BRL"
+      "marketValuePercentage": {
+        "min": "0.20",
+        "max": "1.00"
       }
     }
   ],
   "newCar": {
-    "contractBase": [
+    "contractBases": [
       {
-        "type": "VALOR_DETERMINADO",
-        "minValue": {
-          "amount": "50.000",
-          "currency": "BRL"
+        "determinedValue": {
+          "min": {
+            "amount": "50.000",
+            "currency": "BRL"
+          },
+          "max": {
+            "amount": "50.000",
+            "currency": "BRL"
+          }
         },
-        "maxValue": {
-          "amount": "50.000",
-          "currency": "BRL"
+        "marketValuePercentage": {
+          "min": "0.20",
+          "max": "1.00"
         }
       }
     ]
@@ -8569,9 +8601,9 @@ O CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. De
 |---|---|---|---|---|
 |type|[EnumCarCoverageType](#schemaenumcarcoveragetype)|true|É o conjunto dos riscos cobertos elencados na apólice. (RESOLUÇÃO CNSP Nº 341/2016). Listagem de coberturas incluídas no produto que deve observar a relação discriminada de coberturas, conforme Tabela Tipo de Cobertura|
 |detail|string|false|Campo aberto para detalhamento de cada uma das coberturas possíveis dos produtos a ser feito por cada participante, conforme domínios da lista padronizada de coberturas (macro).|
-|permissionSeparateAcquisition|boolean|false|Indicação se a cobertura permite contratação separada (por cobertura selecionada) conforme domínios abaixo:<br> 1. Sim (True)<br> 2. Não (False)|
-|coverageAttributes|[CarCoverageItemAttributes](#schemacarcoverageitemattributes)|true|Atributos da cobertura|
-|contractBase|[[ContractBase](#schemacontractbase)]|false|Base de contratação|
+|permissionSeparateAcquisition|boolean|false|Indicação se a cobertura permite contratação separada (por cobertura selecionada) conforme domínios abaixo:<br> 1. true<br> 2. false|
+|attributes|[CarCoverageItemAttributes](#schemacarcoverageitemattributes)|true|Atributos da cobertura|
+|contractBases|[[ContractBase](#schemacontractbase)]|false|Bases de contratação|
 |newCar|[NewCar](#schemanewcar)|false||
 
 <h2 id="tocS_EnumCarCoverageType">EnumCarCoverageType</h2>
@@ -8685,14 +8717,13 @@ O CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. De
   "deductibleType": "NORMAL",
   "fullIndemnityDeductible": true,
   "deductiblePaymentByCoverage": true,
-  "deductiblePercentage": {
+  "mandatoryParticipation": {
     "amount": "0001",
     "unit": {
       "code": "0001",
       "description": "0001"
     }
   },
-  "mandatoryParticipation": "Casco: R$ 0,00 RCF-V Danos Materiais: X%",
   "geographicScope": [
     {
       "coverage": "NACIONAL",
@@ -8714,10 +8745,9 @@ Atributos da cobertura
 |newCarMaximumCalculatingPeriod|integer|false|Prazo máximo para veículo zero quilômetro em meses|
 |fullIndemnityPercentage|string|false|Será caracterizada a indenização integral quando os prejuízos resultantes de um mesmo sinistro, atingirem ou ultrapassarem a quantia apurada a partir da aplicação de percentual previamente determinado sobre o valor contratado. (Circular 269/2004).|
 |deductibleType|[EnumCoverageItemDeductibleType](#schemaenumcoverageitemdeductibletype)|true|Listagem de tipo de franquia para cada tipo de cobertura do produto, a considerar os domínios abaixo:<br>  1. Normal;<br>  2. Reduzida.<br>  3. Isenta<br>  4. Majorada<br>  5. Flexível|
-|fullIndemnityDeductible|boolean|true|(Circular 269/2004). A considerar os domínios abaixo:<br>1. Sim (True)<br>2. Não (False)|
-|deductiblePaymentByCoverage|boolean|false|Mudança do campo com a sinalização para cada cobertura se a seguradora exige pagamento de franquia.<br> 1. Sim (True)<br> 2. Não (False)|
-|deductiblePercentage|[CoverageItemDeductiblePercentage](#schemacoverageitemdeductiblepercentage)|false||
-|mandatoryParticipation|string|false|Participação Obrigatória é o valor ou percentual definido na apólice referente à responsabilidade do Segurado nos prejuízos indenizáveis decorrentes de sinistros cobertos.<br>(Circular SUSEP 347/07). Listagem de percentual de Franquia/Percentual Participação Obrigatória do Segurado estabelecida pela sociedade para cada tipo de cobertura do  produto.<br>Criação do campo POS em substituição ao campo abaixo ‘Valor Máximo de Franquia’ Importante: A POS deve ser aplicada apenas às coberturas elegíveis e não se restringe a um caso apenas.|
+|fullIndemnityDeductible|boolean|true|(Circular 269/2004). A considerar os domínios abaixo:<br>1. true<br>2. false|
+|deductiblePaymentByCoverage|boolean|false|Mudança do campo com a sinalização para cada cobertura se a seguradora exige pagamento de franquia.<br> 1. true<br> 2. false|
+|mandatoryParticipation|[CoverageItemMandatoryParticipation](#schemacoverageitemmandatoryparticipation)|false||
 |geographicScope|[[CarGeoGraphicScope](#schemacargeographicscope)]|true||
 
 <h2 id="tocS_ContractBase">ContractBase</h2>
@@ -8729,14 +8759,19 @@ Atributos da cobertura
 
 ```json
 {
-  "type": "VALOR_DETERMINADO",
-  "minValue": {
-    "amount": "50.000",
-    "currency": "BRL"
+  "determinedValue": {
+    "min": {
+      "amount": "50.000",
+      "currency": "BRL"
+    },
+    "max": {
+      "amount": "50.000",
+      "currency": "BRL"
+    }
   },
-  "maxValue": {
-    "amount": "50.000",
-    "currency": "BRL"
+  "marketValuePercentage": {
+    "min": "0.20",
+    "max": "1.00"
   }
 }
 
@@ -8746,9 +8781,12 @@ Atributos da cobertura
 
 |Nome|Tipo|Obrigatório|Descrição|
 |---|---|---|---|---|
-|type|[EnumCarContractBaseType](#schemaenumcarcontractbasetype)|false|Incidência ao capital segurado da cobertura de casco. A considerar os seguintes domínios abaixo:<br>  1. Valor determinado;<br>  2. Valor de Mercado (Tabela FIPE);<br>  3. Valor Determinado e/ou Valor de Mercado|
-|minValue|[ContractBaseValue](#schemacontractbasevalue)|false||
-|maxValue|[ContractBaseValue](#schemacontractbasevalue)|false||
+|determinedValue|object|false||
+|» min|[ContractBaseDeterminedValue](#schemacontractbasedeterminedvalue)|true||
+|» max|[ContractBaseDeterminedValue](#schemacontractbasedeterminedvalue)|true||
+|marketValuePercentage|object|false||
+|» min|string|true||
+|» max|string|true||
 
 <h2 id="tocS_NewCar">NewCar</h2>
 
@@ -8759,16 +8797,21 @@ Atributos da cobertura
 
 ```json
 {
-  "contractBase": [
+  "contractBases": [
     {
-      "type": "VALOR_DETERMINADO",
-      "minValue": {
-        "amount": "50.000",
-        "currency": "BRL"
+      "determinedValue": {
+        "min": {
+          "amount": "50.000",
+          "currency": "BRL"
+        },
+        "max": {
+          "amount": "50.000",
+          "currency": "BRL"
+        }
       },
-      "maxValue": {
-        "amount": "50.000",
-        "currency": "BRL"
+      "marketValuePercentage": {
+        "min": "0.20",
+        "max": "1.00"
       }
     }
   ]
@@ -8780,7 +8823,7 @@ Atributos da cobertura
 
 |Nome|Tipo|Obrigatório|Descrição|
 |---|---|---|---|---|
-|contractBase|[[ContractBase](#schemacontractbase)]|false|Base de contratação|
+|contractBases|[[ContractBase](#schemacontractbase)]|false|Bases de contratação|
 
 <h2 id="tocS_EnumCarContractBaseType">EnumCarContractBaseType</h2>
 
@@ -8797,13 +8840,12 @@ Atributos da cobertura
 Incidência ao capital segurado da cobertura de casco. A considerar os seguintes domínios abaixo:
   1. Valor determinado;
   2. Valor de Mercado (Tabela FIPE);
-  3. Valor Determinado e/ou Valor de Mercado
 
 ### Propriedades
 
 |Nome|Tipo|Obrigatório|Descrição|
 |---|---|---|---|---|
-|**|string|false|Incidência ao capital segurado da cobertura de casco. A considerar os seguintes domínios abaixo:<br>  1. Valor determinado;<br>  2. Valor de Mercado (Tabela FIPE);<br>  3. Valor Determinado e/ou Valor de Mercado|
+|**|string|false|Incidência ao capital segurado da cobertura de casco. A considerar os seguintes domínios abaixo:<br>  1. Valor determinado;<br>  2. Valor de Mercado (Tabela FIPE);|
 
 #### Enumerated Values
 
@@ -8811,14 +8853,13 @@ Incidência ao capital segurado da cobertura de casco. A considerar os seguintes
 |---|---|
 |**|VALOR_DETERMINADO|
 |**|VALOR_MERCADO|
-|**|AMBOS|
 
-<h2 id="tocS_ContractBaseValue">ContractBaseValue</h2>
+<h2 id="tocS_ContractBaseDeterminedValue">ContractBaseDeterminedValue</h2>
 
-<a id="schemacontractbasevalue"></a>
-<a id="schema_ContractBaseValue"></a>
-<a id="tocScontractbasevalue"></a>
-<a id="tocscontractbasevalue"></a>
+<a id="schemacontractbasedeterminedvalue"></a>
+<a id="schema_ContractBaseDeterminedValue"></a>
+<a id="tocScontractbasedeterminedvalue"></a>
+<a id="tocscontractbasedeterminedvalue"></a>
 
 ```json
 {
@@ -8835,12 +8876,12 @@ Incidência ao capital segurado da cobertura de casco. A considerar os seguintes
 |amount|string|true|Valor Determinado - Valor Mínimo (R$).Observação: Campo condicional quando houver a seleção do domínio ‘Valor Determinado’ no campo ‘Base de Contratação’|
 |currency|[CurrencyCode](#schemacurrencycode)|false|Moeda referente ao valor da transação, segundo modelo ISO-4217. p.ex. 'BRL' <br>Todos os saldos informados estão representados com a moeda vigente do Brasil|
 
-<h2 id="tocS_InsuranceSocietyIdentification">InsuranceSocietyIdentification</h2>
+<h2 id="tocS_SocietyIdentification">SocietyIdentification</h2>
 
-<a id="schemainsurancesocietyidentification"></a>
-<a id="schema_InsuranceSocietyIdentification"></a>
-<a id="tocSinsurancesocietyidentification"></a>
-<a id="tocsinsurancesocietyidentification"></a>
+<a id="schemasocietyidentification"></a>
+<a id="schema_SocietyIdentification"></a>
+<a id="tocSsocietyidentification"></a>
+<a id="tocssocietyidentification"></a>
 
 ```json
 {
@@ -8894,12 +8935,12 @@ Listagem de tipo de franquia para cada tipo de cobertura do produto, a considera
 |**|MAJORADA|
 |**|FLEXIVEL|
 
-<h2 id="tocS_CoverageItemDeductiblePercentage">CoverageItemDeductiblePercentage</h2>
+<h2 id="tocS_CoverageItemMandatoryParticipation">CoverageItemMandatoryParticipation</h2>
 
-<a id="schemacoverageitemdeductiblepercentage"></a>
-<a id="schema_CoverageItemDeductiblePercentage"></a>
-<a id="tocScoverageitemdeductiblepercentage"></a>
-<a id="tocscoverageitemdeductiblepercentage"></a>
+<a id="schemacoverageitemmandatoryparticipation"></a>
+<a id="schema_CoverageItemMandatoryParticipation"></a>
+<a id="tocScoverageitemmandatoryparticipation"></a>
+<a id="tocscoverageitemmandatoryparticipation"></a>
 
 ```json
 {
@@ -8973,7 +9014,7 @@ Listagem de abrangência geográfica do produto para fins de cada cobertura:
 |Nome|Tipo|Obrigatório|Descrição|
 |---|---|---|---|---|
 |condition|string|false|Novas ou usada. A considerar os domínios abaixo:<br>  1. Novas<br>  2. Usadas<br>  3. Ambas|
-|type|[EnumCarPartType](#schemaenumcarparttype)|false|Originais e Compatíveis. A considerar os domínios abaixo:<br>  1. Originais<br>  2. Compatíveis<br>  3. Originais e/ou Compatíveis|
+|type|[EnumCarPartType](#schemaenumcarparttype)|false|Originais e Compatíveis. A considerar os domínios abaixo:<br>  1. Originais<br>  2. Compatíveis<br>  3. Ambas|
 
 #### Enumerated Values
 
@@ -8998,13 +9039,13 @@ Listagem de abrangência geográfica do produto para fins de cada cobertura:
 Originais e Compatíveis. A considerar os domínios abaixo:
   1. Originais
   2. Compatíveis
-  3. Originais e/ou Compatíveis
+  3. Ambas
 
 ### Propriedades
 
 |Nome|Tipo|Obrigatório|Descrição|
 |---|---|---|---|---|
-|**|string|false|Originais e Compatíveis. A considerar os domínios abaixo:<br>  1. Originais<br>  2. Compatíveis<br>  3. Originais e/ou Compatíveis|
+|**|string|false|Originais e Compatíveis. A considerar os domínios abaixo:<br>  1. Originais<br>  2. Compatíveis<br>  3. Ambas|
 
 #### Enumerated Values
 
@@ -9087,16 +9128,16 @@ A considerar os seguintes domínios abaixo:
 
 ```
 
-1- Até 10 serviços
-2- Até 20 serviços
-3- Acima de 20 serviços
-4- Customizável
+1. Até 10 serviços
+2. Até 20 serviços
+3. Acima de 20 serviços
+4. Customizável
 
 ### Propriedades
 
 |Nome|Tipo|Obrigatório|Descrição|
 |---|---|---|---|---|
-|**|string|false|1- Até 10 serviços<br>2- Até 20 serviços<br>3- Acima de 20 serviços<br>4- Customizável|
+|**|string|false|1. Até 10 serviços<br>2. Até 20 serviços<br>3. Acima de 20 serviços<br>4. Customizável|
 
 #### Enumerated Values
 
@@ -9351,7 +9392,7 @@ A considerar os domínios abaixo:
               ],
               "detail": "string",
               "permissionSeparateAcquisition": true,
-              "coverageAttributes": {
+              "attributes": {
                 "minLMI": {
                   "amount": "0.01",
                   "currency": "BRL"
@@ -9478,7 +9519,7 @@ A considerar os domínios abaixo:
           ],
           "detail": "string",
           "permissionSeparateAcquisition": true,
-          "coverageAttributes": {
+          "attributes": {
             "minLMI": {
               "amount": "0.01",
               "currency": "BRL"
@@ -9558,7 +9599,7 @@ A considerar os domínios abaixo:
 |Nome|Tipo|Obrigatório|Descrição|
 |---|---|---|---|---|
 |participant|[ParticipantIdentification](#schemaparticipantidentification)|true|Conjunto de informações relativas ao participante do produto de open banking|
-|society|[InsuranceSocietyIdentification](#schemainsurancesocietyidentification)|true|Conjunto de informações relativas à seguradora do produto de open insurance|
+|society|[SocietyIdentification](#schemasocietyidentification)|true|Conjunto de informações relativas à seguradora do produto de open insurance|
 |products|[[HomeInsuranceProduct](#schemahomeinsuranceproduct)]|true||
 
 <h2 id="tocS_HomeInsuranceProduct">HomeInsuranceProduct</h2>
@@ -9579,7 +9620,7 @@ A considerar os domínios abaixo:
       ],
       "detail": "string",
       "permissionSeparateAcquisition": true,
-      "coverageAttributes": {
+      "attributes": {
         "minLMI": {
           "amount": "0.01",
           "currency": "BRL"
@@ -9661,7 +9702,7 @@ A considerar os domínios abaixo:
 |coverages|[[HomeCoverageItem](#schemahomecoverageitem)]|true||
 |propertyCharacteristics|[[HomePropertyCharacteristics](#schemahomepropertycharacteristics)]|true||
 |postalCode|string|false|O conjunto de dados de Produtos que vai retornar está condicionado ao input do valor de CEP (Filtro). Nesse contexto será necessário que o CEP de consulta seja inserido. Código de Endereçamento Postal: Composto por um conjunto numérico de oito dígitos, o objetivo principal do CEP é orientar e acelerar o encaminhamento, o tratamento e a entrega de objetos postados nos Correios, por meio da sua atribuição a localidades, logradouros, unidades dos Correios, serviços, órgãos públicos, empresas e edifícios. p.ex. '01311000'|
-|protective|boolean|false|Indicativo de exigência de itens protecionais (por exemplo, alarmes) a considerar os seguintes domínios abaixo:<br>  1. Sim (true)<br>  2. Não (false)|
+|protective|boolean|false|Indicativo de exigência de itens protecionais (por exemplo, alarmes) a considerar os seguintes domínios abaixo:<br>  1. true<br>  2. false|
 |additional|[[EnumInsuranceAdditionalType](#schemaenuminsuranceadditionaltype)]|false|[A considerar os seguintes domínios abaixo:<br>  1. Sorteio Gratuito<br>  2. Clube de Benefícios<br>  3. Cashback<br>  4. Descontos<br>  5. Outros<br>]|
 |additionalInfo|string|false|Texto livre para complementar informação relativa ao additional, quando for selecionada a opção 'Outros'|
 |assistanceServices|[[AssistanceServicesItem](#schemaassistanceservicesitem)]|true||
@@ -9686,7 +9727,7 @@ A considerar os domínios abaixo:
   ],
   "detail": "string",
   "permissionSeparateAcquisition": true,
-  "coverageAttributes": {
+  "attributes": {
     "minLMI": {
       "amount": "0.01",
       "currency": "BRL"
@@ -9711,8 +9752,8 @@ A considerar os domínios abaixo:
 |---|---|---|---|---|
 |type|[[EnumHomeCoverageType](#schemaenumhomecoveragetype)]|true|[É o conjunto dos riscos cobertos elencados na apólice. (RESOLUÇÃO CNSP Nº 341/2016). Listagem de coberturas incluídas no produto que deve observar a relação discriminada de coberturas, conforme Tabela Tipo de Cobertura]|
 |detail|string|false|Campo aberto para detalhamento de cada uma das coberturas possíveis dos produtos a ser feito por cada participante, conforme domínios da lista padronizada de coberturas (macro).|
-|permissionSeparateAcquisition|boolean|false|Indicação se a cobertura permite contratação separada (por cobertura selecionada) conforme domínios abaixo:<br>  1. Sim (true)<br>  2. Não (false)|
-|coverageAttributes|[HomeCoverageItemAttributes](#schemahomecoverageitemattributes)|true||
+|permissionSeparateAcquisition|boolean|false|Indicação se a cobertura permite contratação separada (por cobertura selecionada) conforme domínios abaixo:<br>  1. true<br>  2. false|
+|attributes|[HomeCoverageItemAttributes](#schemahomecoverageitemattributes)|true||
 
 <h2 id="tocS_EnumHomeCoverageType">EnumHomeCoverageType</h2>
 
@@ -10016,8 +10057,8 @@ A considerar os seguintes domínios abaixo:
           "coverages": [
             {
               "type": "INVALIDEZ_PERMANENTE_TOTAL_PARCIAL",
-              "additionalInfo": "Detalhar os serviços, benefícios e outros",
-              "coverageAttributes": {
+              "typeAdditionalInfo": "Detalhar os serviços, benefícios e outros",
+              "attributes": {
                 "indemnityPaymentMethods": [
                   "PAGAMENTO_CAPITAL_SEGURADO_VALOR_MONETARIO"
                 ],
@@ -10032,26 +10073,32 @@ A considerar os seguintes domínios abaixo:
                   "amount": "1000000.01",
                   "currency": "BRL"
                 },
-                "indemnifiablePeriods": [
+                "indemnfiablePeriods": [
                   "QUANTIDADE_DETERMINADA_PARCELAS"
                 ],
                 "maximumQtyIndemnifiableInstallments": 10,
                 "gracePeriod": {
-                  "amount": 180,
                   "units": [
                     "DIAS"
-                  ]
+                  ],
+                  "quantity": 180
                 },
                 "differentiatedGracePeriod": {
-                  "amount": 180,
                   "units": [
                     "DIAS"
-                  ]
+                  ],
+                  "quantity": 180
                 },
                 "deductibleDays": 10,
                 "differentiatedDeductibleDays": 15,
-                "deductible": "10.00",
-                "differentiatedDeductible": "10.00",
+                "deductible": {
+                  "amount": "50.000",
+                  "currency": "BRL"
+                },
+                "differentiatedDeductible": {
+                  "amount": "50.000",
+                  "currency": "BRL"
+                },
                 "excludedRisks": [
                   "ATO_RECONHECIMENTO_PERIGOSO"
                 ],
@@ -10110,10 +10157,10 @@ A considerar os seguintes domínios abaixo:
               }
             ],
             "gracePeriod": {
-              "amount": 180,
               "units": [
                 "DIAS"
-              ]
+              ],
+              "quantity": 180
             },
             "differenciatedPercentage": "https://openinsurance.com.br/aaa’\nObs.: Exceção de cobertura ou critério definido acima será descrito aqui na URL\nExemplo: Cobertura X: a partir de 25 meses = 100%\n"
           },
@@ -10122,10 +10169,10 @@ A considerar os seguintes domínios abaixo:
           ],
           "allowPortability": true,
           "portabilityGraceTime": {
-            "amount": 180,
             "units": [
               "DIAS"
-            ]
+            ],
+            "quantity": 180
           },
           "indemnityPaymentMethods": [
             "UNICO"
@@ -10202,8 +10249,8 @@ A considerar os seguintes domínios abaixo:
       "coverages": [
         {
           "type": "INVALIDEZ_PERMANENTE_TOTAL_PARCIAL",
-          "additionalInfo": "Detalhar os serviços, benefícios e outros",
-          "coverageAttributes": {
+          "typeAdditionalInfo": "Detalhar os serviços, benefícios e outros",
+          "attributes": {
             "indemnityPaymentMethods": [
               "PAGAMENTO_CAPITAL_SEGURADO_VALOR_MONETARIO"
             ],
@@ -10218,26 +10265,32 @@ A considerar os seguintes domínios abaixo:
               "amount": "1000000.01",
               "currency": "BRL"
             },
-            "indemnifiablePeriods": [
+            "indemnfiablePeriods": [
               "QUANTIDADE_DETERMINADA_PARCELAS"
             ],
             "maximumQtyIndemnifiableInstallments": 10,
             "gracePeriod": {
-              "amount": 180,
               "units": [
                 "DIAS"
-              ]
+              ],
+              "quantity": 180
             },
             "differentiatedGracePeriod": {
-              "amount": 180,
               "units": [
                 "DIAS"
-              ]
+              ],
+              "quantity": 180
             },
             "deductibleDays": 10,
             "differentiatedDeductibleDays": 15,
-            "deductible": "10.00",
-            "differentiatedDeductible": "10.00",
+            "deductible": {
+              "amount": "50.000",
+              "currency": "BRL"
+            },
+            "differentiatedDeductible": {
+              "amount": "50.000",
+              "currency": "BRL"
+            },
             "excludedRisks": [
               "ATO_RECONHECIMENTO_PERIGOSO"
             ],
@@ -10296,10 +10349,10 @@ A considerar os seguintes domínios abaixo:
           }
         ],
         "gracePeriod": {
-          "amount": 180,
           "units": [
             "DIAS"
-          ]
+          ],
+          "quantity": 180
         },
         "differenciatedPercentage": "https://openinsurance.com.br/aaa’\nObs.: Exceção de cobertura ou critério definido acima será descrito aqui na URL\nExemplo: Cobertura X: a partir de 25 meses = 100%\n"
       },
@@ -10308,10 +10361,10 @@ A considerar os seguintes domínios abaixo:
       ],
       "allowPortability": true,
       "portabilityGraceTime": {
-        "amount": 180,
         "units": [
           "DIAS"
-        ]
+        ],
+        "quantity": 180
       },
       "indemnityPaymentMethods": [
         "UNICO"
@@ -10343,7 +10396,7 @@ A considerar os seguintes domínios abaixo:
 |Nome|Tipo|Obrigatório|Descrição|
 |---|---|---|---|---|
 |participant|[ParticipantIdentification](#schemaparticipantidentification)|true|Conjunto de informações relativas ao participante do produto de open banking|
-|society|[InsuranceSocietyIdentification](#schemainsurancesocietyidentification)|false|Conjunto de informações relativas à seguradora do produto de open insurance|
+|society|[SocietyIdentification](#schemasocietyidentification)|false|Conjunto de informações relativas à seguradora do produto de open insurance|
 |products|[[PersonalInsuranceProduct](#schemapersonalinsuranceproduct)]|true||
 
 <h2 id="tocS_PersonalInsuranceProduct">PersonalInsuranceProduct</h2>
@@ -10362,8 +10415,8 @@ A considerar os seguintes domínios abaixo:
   "coverages": [
     {
       "type": "INVALIDEZ_PERMANENTE_TOTAL_PARCIAL",
-      "additionalInfo": "Detalhar os serviços, benefícios e outros",
-      "coverageAttributes": {
+      "typeAdditionalInfo": "Detalhar os serviços, benefícios e outros",
+      "attributes": {
         "indemnityPaymentMethods": [
           "PAGAMENTO_CAPITAL_SEGURADO_VALOR_MONETARIO"
         ],
@@ -10378,26 +10431,32 @@ A considerar os seguintes domínios abaixo:
           "amount": "1000000.01",
           "currency": "BRL"
         },
-        "indemnifiablePeriods": [
+        "indemnfiablePeriods": [
           "QUANTIDADE_DETERMINADA_PARCELAS"
         ],
         "maximumQtyIndemnifiableInstallments": 10,
         "gracePeriod": {
-          "amount": 180,
           "units": [
             "DIAS"
-          ]
+          ],
+          "quantity": 180
         },
         "differentiatedGracePeriod": {
-          "amount": 180,
           "units": [
             "DIAS"
-          ]
+          ],
+          "quantity": 180
         },
         "deductibleDays": 10,
         "differentiatedDeductibleDays": 15,
-        "deductible": "10.00",
-        "differentiatedDeductible": "10.00",
+        "deductible": {
+          "amount": "50.000",
+          "currency": "BRL"
+        },
+        "differentiatedDeductible": {
+          "amount": "50.000",
+          "currency": "BRL"
+        },
         "excludedRisks": [
           "ATO_RECONHECIMENTO_PERIGOSO"
         ],
@@ -10456,10 +10515,10 @@ A considerar os seguintes domínios abaixo:
       }
     ],
     "gracePeriod": {
-      "amount": 180,
       "units": [
         "DIAS"
-      ]
+      ],
+      "quantity": 180
     },
     "differenciatedPercentage": "https://openinsurance.com.br/aaa’\nObs.: Exceção de cobertura ou critério definido acima será descrito aqui na URL\nExemplo: Cobertura X: a partir de 25 meses = 100%\n"
   },
@@ -10468,10 +10527,10 @@ A considerar os seguintes domínios abaixo:
   ],
   "allowPortability": true,
   "portabilityGraceTime": {
-    "amount": 180,
     "units": [
       "DIAS"
-    ]
+    ],
+    "quantity": 180
   },
   "indemnityPaymentMethods": [
     "UNICO"
@@ -10509,7 +10568,7 @@ A considerar os seguintes domínios abaixo:
 |assistanceAdittionalInfos|[string]|false||
 |additionals|[string]|true||
 |termsAndConditions|[[TermsAndConditions](#schematermsandconditions)]|true||
-|globalCapital|boolean|true|A considerar os seguintes domínios:<br>  1. Sim (true)<br>  2. Não (false)|
+|globalCapital|boolean|true|A considerar os seguintes domínios:<br>  1. true<br>  2. false|
 |terms|[string]|true||
 |pmbacRemuneration|[PersonalInsurancePmbacRemuneration](#schemapersonalinsurancepmbacremuneration)|true||
 |benefitRecalculation|[PersonalInsuranceBenefitRecalculation](#schemapersonalinsurancebenefitrecalculation)|true||
@@ -10517,7 +10576,7 @@ A considerar os seguintes domínios abaixo:
 |financialRegimes|[string]|true||
 |reclaim|[PersonalInsuranceReclaim](#schemapersonalinsurancereclaim)|true||
 |otherGuaranteedValues|[[EnumPersonalInsuranceOtherGuaranteedValues](#schemaenumpersonalinsuranceotherguaranteedvalues)]|true|[1. Saldamento<br>2. Benefício Prolongado<br>3. Não se aplica<br>]|
-|allowPortability|boolean|false|1. Sim (true)<br>2. Não (false)|
+|allowPortability|boolean|false|1. true<br>2. false|
 |portabilityGraceTime|[PersonalInsuranceGracePeriod](#schemapersonalinsurancegraceperiod)|true||
 |indemnityPaymentMethods|[[EnumPersonalInsuranceIndemnityPaymentMethod](#schemaenumpersonalinsuranceindemnitypaymentmethod)]|false|[Modalidade de pagamento da indenização, a considerar os domínios abaixo:<br>  1. Único<br>  2. Sob a forma de renda<br>]|
 |indemnityPaymentIncomes|[[EnumPersonalInsuranceIndemnityPaymentIncome](#schemaenumpersonalinsuranceindemnitypaymentincome)]|false|[Tipo de renda ou pensão, caso modalidade de pagamento de indenização seja sob a forma de renda:<br>  1. Certa<br>  2. Temporária<br>  3. Temporária reversível<br>  4. Temporário com mínimo garantido<br>  5. Temporária reversível com mínimo garantido<br>  6. Vitalícia<br>  7. Vitalícia reversível<br>  8. Vitalícia com o mínimo garantido<br>  9. Vitalícia reversível como mínimo garantido<br>]|
@@ -10592,8 +10651,6 @@ Se segmento seguro de pessoas (coletivo e individual):
 |**|PENSAO_MENORES_24|
 |**|PENSAO_CONJUGE_VITALICIA|
 |**|PENSAO_CONJUGE_TEMPORARIA|
-|**|CONTRIBUICAO_VARIAVEL|
-|**|BENEFICIO_DEFINIDO|
 
 <h2 id="tocS_PersonalCoverageItem">PersonalCoverageItem</h2>
 
@@ -10605,8 +10662,8 @@ Se segmento seguro de pessoas (coletivo e individual):
 ```json
 {
   "type": "INVALIDEZ_PERMANENTE_TOTAL_PARCIAL",
-  "additionalInfo": "Detalhar os serviços, benefícios e outros",
-  "coverageAttributes": {
+  "typeAdditionalInfo": "Detalhar os serviços, benefícios e outros",
+  "attributes": {
     "indemnityPaymentMethods": [
       "PAGAMENTO_CAPITAL_SEGURADO_VALOR_MONETARIO"
     ],
@@ -10621,26 +10678,32 @@ Se segmento seguro de pessoas (coletivo e individual):
       "amount": "1000000.01",
       "currency": "BRL"
     },
-    "indemnifiablePeriods": [
+    "indemnfiablePeriods": [
       "QUANTIDADE_DETERMINADA_PARCELAS"
     ],
     "maximumQtyIndemnifiableInstallments": 10,
     "gracePeriod": {
-      "amount": 180,
       "units": [
         "DIAS"
-      ]
+      ],
+      "quantity": 180
     },
     "differentiatedGracePeriod": {
-      "amount": 180,
       "units": [
         "DIAS"
-      ]
+      ],
+      "quantity": 180
     },
     "deductibleDays": 10,
     "differentiatedDeductibleDays": 15,
-    "deductible": "10.00",
-    "differentiatedDeductible": "10.00",
+    "deductible": {
+      "amount": "50.000",
+      "currency": "BRL"
+    },
+    "differentiatedDeductible": {
+      "amount": "50.000",
+      "currency": "BRL"
+    },
     "excludedRisks": [
       "ATO_RECONHECIMENTO_PERIGOSO"
     ],
@@ -10656,8 +10719,8 @@ Se segmento seguro de pessoas (coletivo e individual):
 |Nome|Tipo|Obrigatório|Descrição|
 |---|---|---|---|---|
 |type|string|true|É o conjunto dos riscos cobertos elencados na apólice. (RESOLUÇÃO CNSP Nº 341/2016). Listagem de coberturas incluídas no produto que deve observar a relação discriminada de coberturas, conforme Tabela Tipo de Cobertura|
-|additionalInfo|string|false|Campo aberto para descrição de cada participante ao selecionar o domínio ‘Outros’ no campo acima ´Tipo’ diferenciais do produto em questão.|
-|coverageAttributes|[PersonalCoverageItemAttributes](#schemapersonalcoverageitemattributes)|true||
+|typeAdditionalInfo|string|false|Texto livre para complementar informação relativa ao campo type, quando for selecionada a opção 'OUTROS'.<br>Restrição: Campo de preenchimento obrigatório se 'type' estiver preenchida a opção 'OUTROS'|
+|attributes|[PersonalCoverageItemAttributes](#schemapersonalcoverageitemattributes)|true||
 
 #### Enumerated Values
 
@@ -10734,26 +10797,32 @@ Se segmento seguro de pessoas (coletivo e individual):
     "amount": "1000000.01",
     "currency": "BRL"
   },
-  "indemnifiablePeriods": [
+  "indemnfiablePeriods": [
     "QUANTIDADE_DETERMINADA_PARCELAS"
   ],
   "maximumQtyIndemnifiableInstallments": 10,
   "gracePeriod": {
-    "amount": 180,
     "units": [
       "DIAS"
-    ]
+    ],
+    "quantity": 180
   },
   "differentiatedGracePeriod": {
-    "amount": 180,
     "units": [
       "DIAS"
-    ]
+    ],
+    "quantity": 180
   },
   "deductibleDays": 10,
   "differentiatedDeductibleDays": 15,
-  "deductible": "10.00",
-  "differentiatedDeductible": "10.00",
+  "deductible": {
+    "amount": "50.000",
+    "currency": "BRL"
+  },
+  "differentiatedDeductible": {
+    "amount": "50.000",
+    "currency": "BRL"
+  },
   "excludedRisks": [
     "ATO_RECONHECIMENTO_PERIGOSO"
   ],
@@ -10767,21 +10836,25 @@ Se segmento seguro de pessoas (coletivo e individual):
 
 |Nome|Tipo|Obrigatório|Descrição|
 |---|---|---|---|---|
-|indemnityPaymentMethods|[[EnumIdemnityPaymentMethod](#schemaenumidemnitypaymentmethod)]|true||
-|indemnityPaymentFrequencies|[[EnumPersonalIndemnityPaymentFrequencyType](#schemaenumpersonalindemnitypaymentfrequencytype)]|true||
+|indemnityPaymentMethods|[[EnumIdemnityPaymentMethod](#schemaenumidemnitypaymentmethod)]|true|Listagem da forma de pagamento da indenização para cada combinação de modalidade/cobertura do produto.|
+|indemnityPaymentFrequencies|[[EnumPersonalIndemnityPaymentFrequencyType](#schemaenumpersonalindemnitypaymentfrequencytype)]|true|Listagem de tipos de frequência de pagamento de indenização para cada combinação de modalidade/cobertura do produto.|
 |minValue|[CoverageItemAttributesMinLMI](#schemacoverageitemattributesminlmi)|false|No caso de contratação de várias coberturas numa mesma apólice, é comum o contrato estabelecer, para cada uma delas, um distinto limite máximo de responsabilidade por parte da seguradora. Cada um deles é denominado o Limite Máximo de Indenização (ou a Importância Segurada (IS), de cada cobertura contratada. Ressalte-se que estes limites são independentes, não se somando nem se comunicando. (Circular SUSEP 291/05); Lista com valor mínimo de LMI/IS aceito pela sociedade para cada cobertura. Em reais (R$) Importante: Campo de valor financeiro relacionado à cobertura que possui o campo. Quando não houver o campo, enviar o valor zerado.|
 |maxValue|[CoverageItemAttributesMaxLMI](#schemacoverageitemattributesmaxlmi)|false|Lista com valor máximo de LMI/IS aceito pela sociedade para cada cobertura. Em reais (R$) Importante: Campo de valor numérico relacionado à cobertura que possui o campo. Quando não houver o campo, enviar o valor zerado.|
-|indemnifiablePeriods|[[EnumPersonalIndemnifiablePeriodType](#schemaenumpersonalindemnifiableperiodtype)]|false|[Listagem do pagamento para cada benefício:<br>  1. Quantidade determinada de parcelas;<br>  2. Até o fim de ciclo determinado.<br>Se for pagamento único, esse campo não se aplica (retorna vazio).<br>]|
+|indemnfiablePeriods|[[EnumPersonalIndemnfiablePeriodType](#schemaenumpersonalindemnfiableperiodtype)]|false|[Listagem do pagamento para cada benefício:<br>  1. Quantidade determinada de parcelas;<br>  2. Até o fim de ciclo determinado.<br>Se for pagamento único, esse campo não se aplica (retorna vazio).<br>]|
 |maximumQtyIndemnifiableInstallments|integer|true|Caso o período indenizável seja relacionado a parcelas, listagem de número máximo de parcelas indenizáveis para cada combinação de modalidade/ cobertura do produto.|
 |gracePeriod|[PersonalInsuranceGracePeriod](#schemapersonalinsurancegraceperiod)|true||
 |differentiatedGracePeriod|[PersonalInsuranceGracePeriod](#schemapersonalinsurancegraceperiod)|false||
 |deductibleDays|integer|true|Listagem de franquia em dias para cada combinação de modalidade/cobertura do produto.|
 |differentiatedDeductibleDays|integer|false|Detalhamento da franquia em dias diferentes para cada cobertura que exista alguma especificidade. Caso a seguradora não tenha essa diferenciação, não retornará nada no campo.|
-|deductible|string|false|Listagem de franquia em reais para cada combinação de modalidade/cobertura do produto.|
-|differentiatedDeductible|string|false|Listagem de franquia em reais para cada combinação de modalidade/cobertura do produto.|
+|deductible|object|false||
+|» amount|string|true|Valor da franquia em reais para cada combinação de modalidade/cobertura do produto.|
+|» currency|[CurrencyCode](#schemacurrencycode)|false|Moeda referente ao valor da transação, segundo modelo ISO-4217. p.ex. 'BRL' <br>Todos os saldos informados estão representados com a moeda vigente do Brasil|
+|differentiatedDeductible|object|false||
+|» amount|string|true|Detalhamento da franquia em reais diferentes para cada cobertura que exista alguma especificidade. Caso a seguradora não tenha essa diferenciação, não retornará nada no campo.|
+|» currency|[CurrencyCode](#schemacurrencycode)|false|Moeda referente ao valor da transação, segundo modelo ISO-4217. p.ex. 'BRL' <br>Todos os saldos informados estão representados com a moeda vigente do Brasil|
 |excludedRisks|[[EnumPersonalExcludedRisksType](#schemaenumpersonalexcludedriskstype)]|true|[Listagem para indicar quais serão o(s) risco(s) excluído(s) aplicável(is) à(s) cobertura(s).]|
-|excludedRisksURL|string|true|Campo aberto (possibilidade de incluir URL) Comentários As URLs são limitadas a 2048 caracteres mas, para o contexto do Open Insurance, foi adotado a metade deste tamanho (1024). tamanho. p.ex.https://openinsurance.com.br/aaa|
-|allowApartPurchase|boolean|false|Indicar se a cobertura pode ser contratada isoladamente ou não:<br>  1. Sim (true)<br>  2. Não (false)|
+|excludedRisksURL|string|true|Campo aberto (possibilidade de incluir URL).|
+|allowApartPurchase|boolean|false|Indicar se a cobertura pode ser contratada isoladamente ou não:<br>  1. true<br>  2. false|
 
 <h2 id="tocS_PersonalInsuranceReclaim">PersonalInsuranceReclaim</h2>
 
@@ -10800,10 +10873,10 @@ Se segmento seguro de pessoas (coletivo e individual):
     }
   ],
   "gracePeriod": {
-    "amount": 180,
     "units": [
       "DIAS"
-    ]
+    ],
+    "quantity": 180
   },
   "differenciatedPercentage": "https://openinsurance.com.br/aaa’\nObs.: Exceção de cobertura ou critério definido acima será descrito aqui na URL\nExemplo: Cobertura X: a partir de 25 meses = 100%\n"
 }
@@ -10893,12 +10966,12 @@ Se segmento seguro de pessoas (coletivo e individual):
 |**|INDENIZACAO_UNICA|
 |**|DIARIA_OU_PARCELA|
 
-<h2 id="tocS_EnumPersonalIndemnifiablePeriodType">EnumPersonalIndemnifiablePeriodType</h2>
+<h2 id="tocS_EnumPersonalIndemnfiablePeriodType">EnumPersonalIndemnfiablePeriodType</h2>
 
-<a id="schemaenumpersonalindemnifiableperiodtype"></a>
-<a id="schema_EnumPersonalIndemnifiablePeriodType"></a>
-<a id="tocSenumpersonalindemnifiableperiodtype"></a>
-<a id="tocsenumpersonalindemnifiableperiodtype"></a>
+<a id="schemaenumpersonalindemnfiableperiodtype"></a>
+<a id="schema_EnumPersonalIndemnfiablePeriodType"></a>
+<a id="tocSenumpersonalindemnfiableperiodtype"></a>
+<a id="tocsenumpersonalindemnfiableperiodtype"></a>
 
 ```json
 "QUANTIDADE_DETERMINADA_PARCELAS"
@@ -11138,10 +11211,10 @@ Moeda sobre a qual a cobertura se refere. De acordo com ISO-4217.
 
 ```json
 {
-  "amount": 180,
   "units": [
     "DIAS"
-  ]
+  ],
+  "quantity": 180
 }
 
 ```
@@ -11150,8 +11223,8 @@ Moeda sobre a qual a cobertura se refere. De acordo com ISO-4217.
 
 |Nome|Tipo|Obrigatório|Descrição|
 |---|---|---|---|---|
-|amount|integer|true|Informar a quantidade de dias ou meses|
 |units|[string]|true||
+|quantity|integer|true|Informar a quantidade de dias ou meses|
 
 <h2 id="tocS_EnumPersonalExcludedRisksType">EnumPersonalExcludedRisksType</h2>
 
