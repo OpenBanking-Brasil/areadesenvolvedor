@@ -88,6 +88,20 @@ components:
       properties:
         participantIdentification:
           $ref: '#/components/schemas/ParticipantIdentification'
+        society:
+          type: object
+          description: Conjunto de informações relativas à seguradora do produto de open insurance
+          required:
+            - name
+            - cnpjNumber
+          properties:
+            name:
+              type: string
+              description: Nome da seguradora.
+              maxLength: 80
+              example: Society A1
+            cnpjNumber:
+              $ref: '#/components/schemas/ParticipantIdentification/properties/cnpjNumber'
         products:
           type: array
           items:
@@ -116,19 +130,7 @@ components:
         participantIdentification:
           $ref: '#/components/schemas/ParticipantIdentification'
         society:
-          type: object
-          description: Conjunto de informações relativas à seguradora do produto de open insurance
-          required:
-            - name
-            - cnpjNumber
-          properties:
-            name:
-              type: string
-              description: Nome da seguradora.
-              maxLength: 80
-              example: Society A1
-            cnpjNumber:
-              $ref: '#/components/schemas/ParticipantIdentification/properties/cnpjNumber'
+          $ref: '#/components/schemas/GetRiskPensionContractData/properties/society'
         products:
           type: array
           items:
@@ -208,9 +210,7 @@ components:
             Código único a ser definido pela sociedade.
           example: '0001'
         type:
-          type: array
-          items:
-            $ref: '#/components/schemas/SurvivalPensionType'
+          $ref: '#/components/schemas/SurvivalPensionType'
         segment:
           type: string
           description: |
@@ -226,16 +226,13 @@ components:
           $ref: '#/components/schemas/EnumPensionModality'
         adittionalInfo:
           type: string
-          description: |
-            Campo aberto (possibilidade de incluir URL) para a descrição das coberturas de risco (previdência) comercializadas facultativamente à cobertura de sobrevivência.
-            Comentários: As URLs são limitadas a 2048 caracteres, mas, para o contexto do Open Insurance, foi adotado a metade deste tamanho (1024). tamanho. p.ex. 'https://openinsurance.com.br/
-            aaa’.
+          description: Campo aberto (possibilidade de incluir URL)
           example: 'https://openinsurance.com.br/aaa'
           maxLength: 1024
         minimumRequirements:
           $ref: '#/components/schemas/SurvivalPensionMinimumRequirements'
         targetAudience:
-          $ref: '#/components/schemas/MinimumRequirements/properties/targetAudience'
+          $ref: '#/components/schemas/EnumTargetAudience'
         termsAndConditions:
           type: array
           items:
@@ -275,8 +272,7 @@ components:
         contractingMinRequirement:
           type: string
           maxLength: 1024
-          description: |
-            Campo aberto contendo todos os requisitos mínimos para contratação (possibilidade de incluir URL). Comentários: As URLs são limitadas a 2048 caracteres mas, para o  contexto do Open Insurance, foi adotado a metade deste tamanho (1024). tamanho. p.ex. https://openinsurance.com.br/aaa
+          description: Campo aberto (possibilidade de incluir URL)
           example: 'https://openinsurance.com.br/aaa'
     SusepProcessNumber:
       type: string
@@ -294,8 +290,9 @@ components:
       properties:
         interestRate:
           type: string
+          maxLength: 10
           pattern: '^[0-1]\.\d{6}$'
-          description: Taxa de juros garantida que remunera o plano durante a fase de diferimento/acumulação.
+          description: Taxa de juros mensal garantida que remunera o plano durante a fase de diferimento/acumulação.
           example: '0.251231'
         updateIndex:
           $ref: '#/components/schemas/UpdateIndex'
@@ -342,6 +339,7 @@ components:
           $ref: '#/components/schemas/SurvivalPensionGracePeriod'
         reversalFinancialResults:
           type: string
+          maxLength: 8
           pattern: '^[0-1]\.\d{6}$'
           description: Percentual de reversão de excedente financeiro na concessão. Em %.
           example: '0.051230'
@@ -408,12 +406,12 @@ components:
           maximum: 9999
         portability:
           type: number
-          description: Prazo em dias de carência para portabilidade.
+          description: Prazo em dias de carência para portabilidade (entre empresas diferentes).
           example: 12
           maximum: 9999
         betweenPortabilityRequests:
           type: number
-          description: Prazo em dias de carência entre pedidos de portabilidade.
+          description: Prazo em dias de carência entre pedidos de portabilidade (entre empresas diferentes).
           example: 15
           maximum: 9999
     SurvivalPensionCosts:
@@ -470,6 +468,7 @@ components:
         periodicity:
           type: string
           maxLength: 10
+          example: MENSAL
           enum:
             - DIÁRIO
             - SEMANAL
@@ -481,6 +480,7 @@ components:
             - ANUAL
         amount:
           type: string
+          maxLength: 21
           pattern: '^\d{1,16}\.\d{2,4}$'
           description: Valor mínimo em R$ de prêmio/ contribuição aceita pela sociedade ao plano (identificar valor mensal e/ou aporte único).
           example: '250.00'
@@ -545,6 +545,7 @@ components:
           example: AT_2000_MALE
         interestRate:
           type: string
+          maxLength: 10
           pattern: '^[0-1]\.\d{6}$'
           description: Taxa de juros garantida utilizada para conversão em renda. Em %
           example: '0.225222'
@@ -552,6 +553,7 @@ components:
           $ref: '#/components/schemas/UpdateIndex'
         reversalFinancialResults:
           type: string
+          maxLength: 8
           pattern: '^[0-1]\.\d{6}$'
           description: Percentual de reversão de excedente financeiro na concessão. Em %.
           example: '1.252111'
@@ -705,7 +707,7 @@ components:
           example:
             - Assistência PET
             - Funeral
-        assistanceTypeAdditionalInfos:
+        assistanceTypeAdditionalInfo:
           description: |
             Texto livre para complementar informação relativa ao campo assistanceType, quando no campo 'assistanceType' estiver preenchida a opção 'Outros'.Restrição: Campo de preenchimento obrigatório se 'assistanceType' estiver preenchida a opção 'OUTROS'.
           type: array
@@ -783,6 +785,19 @@ components:
         - ATE_FIM_CICLO_DETERMINADO
       maxLength: 200
       example: PRAZO
+    EnumTargetAudience:
+      type: string
+      description: |
+        A considerar os domínios abaixo:
+          1. Pessoa Física;
+          2. Pessoa Jurídica.
+          3. Ambas (Pessoa Física e Jurídica)
+      maxLength: 5
+      enum:
+        - PF
+        - PJ
+        - PF_PJ
+      example: PF
     ExcludedRisk:
       type: object
       required:
@@ -793,9 +808,7 @@ components:
           type: string
           example: NA
         url:
-          description: |
-            Campo aberto (possibilidade de incluir URL) Comentários: As URLs são limitadas a 2048 caracteres mas, para o contexto do Open Insurance, foi adotado a metade deste tamanho (1024). tamanho. p.ex.
-            https://openinsurance.com.br/aaa
+          description: Campo aberto (possibilidade de incluir URL)
           type: string
           example: 'https://openinsurance.com.br/aaa'
           maxLength: 1024
@@ -813,8 +826,6 @@ components:
     EnumPensionModality:
       type: string
       description: |
-        Se Prev. Cob. Risco:
-
         1. Contribuição Variável;
         2. Benefício Definido.
       maxLength: 21
@@ -927,8 +938,7 @@ components:
           $ref: '#/components/schemas/SusepProcessNumber'
         detail:
           type: string
-          description: |
-            Representam as Condições Gerais, Condições Especiais e Condições ou Cláusulas Particulares de um mesmo seguro. (Circular SUSEP 321/06). Campo aberto (possibilidade de incluir URL). Comentários: As URLs são limitadas a 2048 caracteres mas, para o contexto do Open Insurance, foi adotado a metade deste tamanho (1024). tamanho. p.ex. 'https://openinsurance.com.br/aaa’
+          description: Campo aberto (possibilidade de incluir URL)
           maxLength: 1024
           example: 'https://openinsurance.com.br/aaa'
       additionalProperties: false
@@ -997,10 +1007,7 @@ components:
         differentiatedPercentage:
           type: string
           maxLength: 1024
-          description: |
-            Campo aberto (possibilidade de incluir URL)
-            Comentários: As URLs são limitadas a 2048 caracteres mas, para o contexto do Open Insurance, foi adotado a metade deste tamanho (1024). tamanho. p.ex.
-            'https://openinsurance.com.br/aaa’
+          description: Campo aberto (possibilidade de incluir URL)
           example: |
             https://openinsurance.com.br/aaa’
             Obs.: Exceção de cobertura ou critério definido acima será descrito aqui na URL
@@ -1097,19 +1104,11 @@ components:
             - Individual
         contract:
           type: string
-          description: |
-            Campo aberto contendo todos os requisitos mínimos para contratação (possibilidade de incluir URL). Comentários: As URLs são limitadas a 2048 caracteres mas, para o  contexto do Open Insurance, foi adotado a metade deste tamanho (1024). tamanho. p.ex. https://openinsurance.com.br/aaa
+          description: Campo aberto (possibilidade de incluir URL)
           example: 'https://openinsurance.com.br/aaa'
           maxLength: 1024
         targetAudience:
-          type: string
-          description: Média das operações PF/PJ.
-          maxLength: 5
-          enum:
-            - PF
-            - PJ
-            - PF_PJ
-          example: PF
+          $ref: '#/components/schemas/EnumTargetAudience'
   responses:
     OKResponseRiskCoveragePension:
       description: Dados de previdência de risco obtidos com sucesso da instituição.
