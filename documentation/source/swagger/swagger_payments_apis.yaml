@@ -239,11 +239,11 @@ paths:
             - payments
         - OAuth2ClientCredentials:
             - payments
-  '/payments/v1/consents/{consentId}':
+  '/consents/revocation/{consentId}':
     patch:
       tags:
         - Pagamentos
-      summary: ''
+      summary: Revogar consentimento de pagamento.
       operationId: paymentsPatchPixPayments
       description: Método para revogação do consentimento.
       parameters:
@@ -975,6 +975,43 @@ components:
             Em caso de pessoa natural deve ser informado o nome completo do titular da conta do recebedor.
             Em caso de pessoa jurídica deve ser informada a razão social ou o nome fantasia da conta do recebedor.
       additionalProperties: false
+    Revocation:
+      type: object
+      description: "Objeto que contém as informações das circunstância da revogação.\nO campo\_loggedUser\_deve ser preenchidos quando a revogação for feita pelo usuário final, ou seja, se o campo\_data.revocation.revoked_by\_estiver com o valor\_USER.\n"
+      required:
+        - loggedUser
+        - revoked_by
+        - reason
+      properties:
+        loggedUser:
+          $ref: '#/components/schemas/LoggedUser'
+        revoked_by:
+          type: string
+          maxLength: 140
+          pattern: '[\w\W\s]*'
+          example: USER
+          description: "Define qual das partes envolvidas na transação está realizando a revogação. Valores possíveis:\_USER\_(Revogado pelo usuário),\_ASPSP\_(Provedor de serviços de pagamento para serviços de conta - Detentora de conta),\_TPP\_(Instituições Provedoras - iniciadora de pagamentos).\nOs motivos de revogação do consentimento:\_FRAUD\_e\_ACCOUNT_CLOSURE\_só podem ser usados caso o campo:\_data.revocation.revoked_by\_tenha o valor\_TPP\_ou\_ASPSP, ou seja, somente no caso de revogação unilateral pela iniciadora ou detentora.\n"
+        reason:
+          type: object
+          description: Define a razão pela qual o consentimento foi revogado.
+          required:
+            - code
+          properties:
+            code:
+              type: string
+              maxLength: 22
+              enum:
+                - FRAUD
+                - ACCOUNT_CLOSURE
+                - OTHER
+              example: OTHER
+              description: "Define o código da razão pela qual o consentimento foi revogado. \nValores possíveis:\_\nFRAUD\_- Indica suspeita de fraude\_\nACCOUNT_CLOSURE - Indica que a conta do usuário foi encerrada\_\nOTHER\_- Indica que motivo do cancelamento está fora dos motivos pré-estabelecidos.\n"
+            additionalInformation:
+              type: string
+              maxLength: 140
+              pattern: '[\w\W\s]*'
+              example: Não quero mais o serviço
+              description: "Contém informações adicionais definidas pelo requisitante da revogação.\nO campo\_additionalInformation\_é obrigatório quando a revogação for feita pela iniciadora ou pela detentora unilateralmente, ou seja, o campo revoked_by igual a\_TPP\_ou\_ASPSP\_e o motivo de revogação for\_OTHER.\n"
     LoggedUser:
       type: object
       description: Usuário (pessoa natural) que encontra-se logado na instituição Iniciadora de Pagamento.
@@ -1114,42 +1151,7 @@ components:
             status:
               $ref: '#/components/schemas/EnumAuthorisationStatusType'
             revocation:
-              type: object
-              description: "Objeto que contém as informações das circunstância da revogação.\nO campo\_loggedUser\_deve ser preenchidos quando a revogação for feita pelo usuário final, ou seja, se o campo\_data.revocation.revoked_by\_estiver com o valor\_USER.\n"
-              required:
-                - loggedUser
-                - revoked_by
-                - reason
-              properties:
-                loggedUser:
-                  $ref: '#/components/schemas/LoggedUser'
-                revoked_by:
-                  type: string
-                  maxLength: 140
-                  pattern: '[\w\W\s]*'
-                  example: USER
-                  description: "Define qual das partes envolvidas na transação está realizando a revogação. Valores possíveis:\_USER\_(Revogado pelo usuário),\_ASPSP\_(Provedor de serviços de pagamento para serviços de conta - Detentora de conta),\_TPP\_(Instituições Provedoras - iniciadora de pagamentos).\nOs motivos de revogação do consentimento:\_FRAUD\_e\_ACCOUNT_CLOSURE\_só podem ser usados caso o campo:\_data.revocation.revoked_by\_tenha o valor\_TPP\_ou\_ASPSP, ou seja, somente no caso de revogação unilateral pela iniciadora ou detentora.\n"
-                reason:
-                  type: object
-                  description: Define a razão pela qual o consentimento foi revogado.
-                  required:
-                    - code
-                  properties:
-                    code:
-                      type: string
-                      maxLength: 22
-                      enum:
-                        - FRAUD
-                        - ACCOUNT_CLOSURE
-                        - OTHER
-                      example: OTHER
-                      description: "Define o código da razão pela qual o consentimento foi revogado. \nValores possíveis:\_\nFRAUD\_- Indica suspeita de fraude\_\nACCOUNT_CLOSURE - Indica que a conta do usuário foi encerrada\_\nOTHER\_- Indica que motivo do cancelamento está fora dos motivos pré-estabelecidos.\n"
-                    additionalInformation:
-                      type: string
-                      maxLength: 140
-                      pattern: '[\w\W\s]*'
-                      example: Não quero mais o serviço
-                      description: "Contém informações adicionais definidas pelo requisitante da revogação.\nO campo\_additionalInformation\_é obrigatório quando a revogação for feita pela iniciadora ou pela detentora unilateralmente, ou seja, o campo revoked_by igual a\_TPP\_ou\_ASPSP\_e o motivo de revogação for\_OTHER.\n"
+              $ref: '#/components/schemas/Revocation'
       additionalProperties: false
     PaymentPix:
       type: object
@@ -1273,6 +1275,8 @@ components:
                 Data e hora em que o recurso foi atualizado. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).
             status:
               $ref: '#/components/schemas/EnumAuthorisationStatusType'
+            revocation:
+              $ref: '#/components/schemas/Revocation'
             loggedUser:
               $ref: '#/components/schemas/LoggedUser'
             businessEntity:

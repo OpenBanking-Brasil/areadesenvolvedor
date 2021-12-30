@@ -208,8 +208,8 @@ REJECTED - Rejeitado
 CONSUMED - Consumido
 REVOKED - Revogado
 
-![Maquina de Estados](images/sequence-diagrams/state-machine_phase3_v02.png)
-<a href="images/sequence-diagrams/state-machine_phase3_v02.png" target="_blank">Download da Máquina de Estados</a>
+![Maquina de Estados](images/sequence-diagrams/state-machine_phase3_v03.png)
+<a href="images/sequence-diagrams/state-machine_phase3_v03.png" target="_blank">Download da Máquina de Estados</a>
 
 Algumas definições são importantes para tratar a transição dos estados do consentimento em diferentes momentos do fluxo:
 
@@ -712,6 +712,19 @@ Consulte a seção **Convenções de payload** para obter mais informações sob
     "expirationDateTime": "2021-05-21T08:30:00Z",
     "statusUpdateDateTime": "2021-05-21T08:30:00Z",
     "status": "AWAITING_AUTHORISATION",
+    "revocation": {
+      "loggedUser": {
+        "document": {
+          "identification": "11111111111",
+          "rel": "CPF"
+        }
+      },
+      "revoked_by": "USER",
+      "reason": {
+        "code": "OTHER",
+        "additionalInformation": "Não quero mais o serviço"
+      }
+    },
     "loggedUser": {
       "document": {
         "identification": "11111111111",
@@ -912,6 +925,19 @@ Consulte a seção **Convenções de payload** para obter mais informações sob
     "expirationDateTime": "2021-05-21T08:30:00Z",
     "statusUpdateDateTime": "2021-05-21T08:30:00Z",
     "status": "AWAITING_AUTHORISATION",
+    "revocation": {
+      "loggedUser": {
+        "document": {
+          "identification": "11111111111",
+          "rel": "CPF"
+        }
+      },
+      "revoked_by": "USER",
+      "reason": {
+        "code": "OTHER",
+        "additionalInformation": "Não quero mais o serviço"
+      }
+    },
     "loggedUser": {
       "document": {
         "identification": "11111111111",
@@ -1393,6 +1419,165 @@ Consulte a seção **Convenções de payload** para obter mais informações sob
 Para realizar esta operação, você deve estar autenticado e autorizado com os seguintes escopos: 
 
 openid,consent:consentId,payments
+</aside>
+
+## Revogar consentimento de pagamento.
+
+<a id="opIdpaymentsPatchPixPayments"></a>
+
+> Exemplo de código
+
+```javascript
+const data = "{\"data\":{\"status\":\"AWAITING_AUTHORISATION\",\"revocation\":{\"loggedUser\":{\"document\":{\"identification\":\"11111111111\",\"rel\":\"CPF\"}},\"revoked_by\":\"USER\",\"reason\":{\"code\":\"OTHER\",\"additionalInformation\":\"Não quero mais o serviço\"}}}}";
+
+const xhr = new XMLHttpRequest();
+xhr.withCredentials = true;
+
+xhr.addEventListener("readystatechange", function () {
+  if (this.readyState === this.DONE) {
+    console.log(this.responseText);
+  }
+});
+
+xhr.open("PATCH", "https://example.com/payments/v1/consents/revocation/string");
+xhr.setRequestHeader("Content-Type", "application/jwt");
+xhr.setRequestHeader("Accept", "application/jwt");
+xhr.setRequestHeader("Authorization", "string");
+xhr.setRequestHeader("x-fapi-auth-date", "stringstringstringstringstrin");
+xhr.setRequestHeader("x-fapi-customer-ip-address", "string");
+xhr.setRequestHeader("x-fapi-interaction-id", "string");
+xhr.setRequestHeader("x-customer-user-agent", "string");
+xhr.setRequestHeader("x-idempotency-key", "string");
+
+xhr.send(data);
+```
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("example.com")
+
+payload = "{\"data\":{\"status\":\"AWAITING_AUTHORISATION\",\"revocation\":{\"loggedUser\":{\"document\":{\"identification\":\"11111111111\",\"rel\":\"CPF\"}},\"revoked_by\":\"USER\",\"reason\":{\"code\":\"OTHER\",\"additionalInformation\":\"Não quero mais o serviço\"}}}}"
+
+headers = {
+    'Content-Type': "application/jwt",
+    'Accept': "application/jwt",
+    'Authorization': "string",
+    'x-fapi-auth-date': "stringstringstringstringstrin",
+    'x-fapi-customer-ip-address': "string",
+    'x-fapi-interaction-id': "string",
+    'x-customer-user-agent': "string",
+    'x-idempotency-key': "string"
+    }
+
+conn.request("PATCH", "/payments/v1/consents/revocation/string", payload, headers)
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
+```
+
+```java
+HttpResponse<String> response = Unirest.patch("https://example.com/payments/v1/consents/revocation/string")
+  .header("Content-Type", "application/jwt")
+  .header("Accept", "application/jwt")
+  .header("Authorization", "string")
+  .header("x-fapi-auth-date", "stringstringstringstringstrin")
+  .header("x-fapi-customer-ip-address", "string")
+  .header("x-fapi-interaction-id", "string")
+  .header("x-customer-user-agent", "string")
+  .header("x-idempotency-key", "string")
+  .body("{\"data\":{\"status\":\"AWAITING_AUTHORISATION\",\"revocation\":{\"loggedUser\":{\"document\":{\"identification\":\"11111111111\",\"rel\":\"CPF\"}},\"revoked_by\":\"USER\",\"reason\":{\"code\":\"OTHER\",\"additionalInformation\":\"Não quero mais o serviço\"}}}}")
+  .asString();
+```
+
+`PATCH /payments/v1/consents/revocation/{consentId}`
+
+Método para revogação do consentimento.
+
+> Body parameter
+
+<h3 id="revogar-consentimento-de-pagamento.-parameters">Parâmetros</h3>
+
+|Nome|Origem|Tipo|Obrigatório|Descrição|
+|---|---|---|---|---|
+|consentId|path|string|true|O consentId é o identificador único do consentimento a ser revogado e deverá ser um URN - Uniform Resource Name.|
+|Authorization|header|string|true|Cabeçalho HTTP padrão. Permite que as credenciais sejam fornecidas dependendo do tipo de recurso solicitado|
+|x-fapi-auth-date|header|string|false|Data em que o usuário logou pela última vez com o receptor. Representada de acordo com a [RFC7231](https://tools.ietf.org/html/rfc7231).Exemplo: Sun, 10 Sep 2017 19:43:31 UTC|
+|x-fapi-customer-ip-address|header|string|false|O endereço IP do usuário se estiver atualmente logado com o receptor.|
+|x-fapi-interaction-id|header|string|false|Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.|
+|x-customer-user-agent|header|string|false|Indica o user-agent que o usuário utiliza.|
+|x-idempotency-key|header|string|true|Cabeçalho HTTP personalizado. Identificador de solicitação exclusivo para suportar a idempotência.|
+|body|body|[PatchPaymentsConsent](#schemapatchpaymentsconsent)|true|Payload para revogação do consentimento.|
+
+#### Detailed descriptions
+
+**consentId**: O consentId é o identificador único do consentimento a ser revogado e deverá ser um URN - Uniform Resource Name.
+
+> O comando acima retorna uma estrutura json como essa:
+
+> 200 Response
+
+> 400 Response
+
+```json
+{
+  "errors": [
+    {
+      "code": "string",
+      "title": "string",
+      "detail": "string"
+    }
+  ],
+  "meta": {
+    "totalRecords": 1,
+    "totalPages": 1,
+    "requestDateTime": "2021-05-21T08:30:00Z"
+  }
+}
+```
+
+> A solicitação foi bem formada, mas não pôde ser processada devido à lógica de negócios específica da solicitação.
+
+<h3 id="revogar-consentimento-de-pagamento.-responses">Resposta</h3>
+
+|Status|Significado|Descrição|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|Revogação do Consentimento informado com sucesso.|[ResponsePaymentConsent](#schemaresponsepaymentconsent)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|A requisição foi malformada, omitindo atributos obrigatórios, seja no payload ou através de atributos na URL.|[ResponseError](#schemaresponseerror)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Cabeçalho de autenticação ausente/inválido ou token inválido|[ResponseError](#schemaresponseerror)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|O token tem escopo incorreto ou uma política de segurança foi violada|[ResponseError](#schemaresponseerror)|
+|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|O recurso solicitado não existe ou não foi implementado|[ResponseError](#schemaresponseerror)|
+|405|[Method Not Allowed](https://tools.ietf.org/html/rfc7231#section-6.5.5)|O consumidor tentou acessar o recurso com um método não suportado|[ResponseError](#schemaresponseerror)|
+|406|[Not Acceptable](https://tools.ietf.org/html/rfc7231#section-6.5.6)|A solicitação continha um cabeçalho Accept diferente dos tipos de mídia permitidos ou um conjunto de caracteres diferente de UTF-8|[ResponseError](#schemaresponseerror)|
+|415|[Unsupported Media Type](https://tools.ietf.org/html/rfc7231#section-6.5.13)|O formato do payload não é um formato suportado.|[ResponseError](#schemaresponseerror)|
+|422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|A solicitação foi bem formada, mas não pôde ser processada devido à lógica de negócios específica da solicitação.|[422ResponseErrorCreatePixPayment](#schema422responseerrorcreatepixpayment)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|A operação foi recusada, pois muitas solicitações foram feitas dentro de um determinado período ou o limite global de requisições concorrentes foi atingido|[ResponseError](#schemaresponseerror)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Ocorreu um erro no gateway da API ou no microsserviço|[ResponseError](#schemaresponseerror)|
+|default|Default|Erro inesperado.|[ResponseError](#schemaresponseerror)|
+
+### Response Headers
+
+|Status|Header|Type| |
+|---|---|---|---|---|
+|200|x-fapi-interaction-id|string|<a href='#x-fapi-interaction-id'>Consultar Padrões</a>|
+|400|x-fapi-interaction-id|string|<a href='#x-fapi-interaction-id'>Consultar Padrões</a>|
+|401|x-fapi-interaction-id|string|<a href='#x-fapi-interaction-id'>Consultar Padrões</a>|
+|403|x-fapi-interaction-id|string|<a href='#x-fapi-interaction-id'>Consultar Padrões</a>|
+|404|x-fapi-interaction-id|string|<a href='#x-fapi-interaction-id'>Consultar Padrões</a>|
+|405|x-fapi-interaction-id|string|<a href='#x-fapi-interaction-id'>Consultar Padrões</a>|
+|406|x-fapi-interaction-id|string|<a href='#x-fapi-interaction-id'>Consultar Padrões</a>|
+|415|x-fapi-interaction-id|string|<a href='#x-fapi-interaction-id'>Consultar Padrões</a>|
+|422|x-fapi-interaction-id|string|<a href='#x-fapi-interaction-id'>Consultar Padrões</a>|
+|429|x-fapi-interaction-id|string|<a href='#x-fapi-interaction-id'>Consultar Padrões</a>|
+|429|Retry-After|integer|<a href='#Retry-After'>Consultar Padrões</a>|
+|500|x-fapi-interaction-id|string|<a href='#x-fapi-interaction-id'>Consultar Padrões</a>|
+
+<aside class="warning">
+Para realizar esta operação, você deve estar autenticado e autorizado com os seguintes escopos: 
+
+consent:consentId,payments
 </aside>
 
 <h1 id="fase-3-apis-do-open-banking-brasil-schemas">Schemas</h1>
@@ -2374,6 +2559,43 @@ Objeto contendo dados de pagamento para consentimento.
 |ibgeTownCode|string|false|Traz o código da cidade segundo o IBGE (Instituto Brasileiro de Geografia e Estatística).<br>Para o preenchimento deste campo, o Iniciador de Pagamentos deve seguir a orientação do arranjo da forma de pagamento.<br>O preenchimento do campo tanto em pix/payments quanto /consents deve ser igual. Caso haja divergência dos valores, a instituição deve retornar HTTP 422 com o código de erro PAGAMENTO_DIVERGENTE_DO_CONSENTIMENTO.<br>Este campo faz referência ao campo CodMun do arranjo Pix.|
 |details|[Details](#schemadetails)|true|Objeto contendo os detalhes do pagamento.|
 
+<h2 id="tocS_PatchPaymentsConsent">PatchPaymentsConsent</h2>
+
+<a id="schemapatchpaymentsconsent"></a>
+<a id="schema_PatchPaymentsConsent"></a>
+<a id="tocSpatchpaymentsconsent"></a>
+<a id="tocspatchpaymentsconsent"></a>
+
+```json
+{
+  "data": {
+    "status": "AWAITING_AUTHORISATION",
+    "revocation": {
+      "loggedUser": {
+        "document": {
+          "identification": "11111111111",
+          "rel": "CPF"
+        }
+      },
+      "revoked_by": "USER",
+      "reason": {
+        "code": "OTHER",
+        "additionalInformation": "Não quero mais o serviço"
+      }
+    }
+  }
+}
+
+```
+
+### Propriedades
+
+|Nome|Tipo|Obrigatório|Descrição|
+|---|---|---|---|---|
+|data|object|true|Objeto contendo dados do pagamento e do recebedor (creditor).|
+|» status|[EnumAuthorisationStatusType](#schemaenumauthorisationstatustype)|true|Retorna o estado do consentimento, o qual no momento de sua criação será AWAITING_AUTHORISATION.<br>Este estado será alterado depois da autorização do consentimento na detentora da conta do pagador (Debtor) para AUTHORISED, REJECTED ou REVOKED. <br>O consentimento fica no estado CONSUMED após ocorrer a iniciação do pagamento referente ao consentimento.  <br>Em caso de consentimento expirado a detentora deverá retornar o status REJECTED.  <br>Em caso de revogação do consentimento a detentora deverá retornar o status REVOKED.  <br>Estados possíveis:  <br>AWAITING_AUTHORISATION - Aguardando autorização  <br>AUTHORISED - Autorizado   <br>REJECTED - Rejeitado  <br>CONSUMED - Consumido   <br>REVOKED - Revogado|
+|» revocation|[Revocation](#schemarevocation)|true|Objeto que contém as informações das circunstância da revogação.<br>O campo loggedUser deve ser preenchidos quando a revogação for feita pelo usuário final, ou seja, se o campo data.revocation.revoked_by estiver com o valor USER.|
+
 <h2 id="tocS_PaymentPix">PaymentPix</h2>
 
 <a id="schemapaymentpix"></a>
@@ -2448,6 +2670,19 @@ Objeto contendo dados do pagameto como moeda e valor.
     "expirationDateTime": "2021-05-21T08:30:00Z",
     "statusUpdateDateTime": "2021-05-21T08:30:00Z",
     "status": "AWAITING_AUTHORISATION",
+    "revocation": {
+      "loggedUser": {
+        "document": {
+          "identification": "11111111111",
+          "rel": "CPF"
+        }
+      },
+      "revoked_by": "USER",
+      "reason": {
+        "code": "OTHER",
+        "additionalInformation": "Não quero mais o serviço"
+      }
+    },
     "loggedUser": {
       "document": {
         "identification": "11111111111",
@@ -2511,19 +2746,104 @@ Objeto contendo dados do pagameto como moeda e valor.
 
 |Nome|Tipo|Obrigatório|Descrição|
 |---|---|---|---|---|
-|data|object|true|Objeto contendo as informações de resposta do consentimento para a iniciação de pagamento individual.|
-|» consentId|string|true|Identificador único do consentimento criado para a iniciação de pagamento solicitada. Deverá ser um URN - Uniform Resource Name.<br>Um URN, conforme definido na [RFC8141](https://tools.ietf.org/html/rfc8141) é um Uniform Resource<br>Identifier - URI - que é atribuído sob o URI scheme "urn" e um namespace URN específico, com a intenção de que o URN<br>seja um identificador de recurso persistente e independente da localização.<br>Considerando a string urn:bancoex:C1DD33123 como exemplo para consentId temos:<br>- o namespace(urn)<br>- o identificador associado ao namespace da instituição transnmissora (bancoex)<br>- o identificador específico dentro do namespace (C1DD33123).<br>Informações mais detalhadas sobre a construção de namespaces devem ser consultadas na [RFC8141](https://tools.ietf.org/html/rfc8141).|
-|» creationDateTime|string(date-time)|true|Data e hora em que o consentimento foi criado. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).|
-|» expirationDateTime|string(date-time)|true|Data e hora em que o consentimento da iniciação de pagamento expira, devendo ser sempre o creationDateTime mais 5 minutos. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC (UTC time format).<br>O consentimento é criado com o status AWAITING_AUTHORISATION, e deve assumir o status AUTHORIZED ou REJECTED antes do tempo de expiração - 5 minutos. Caso o tempo seja expirado, o status deve assumir REJECTED.<br>Para o cenário em que o status assumiu AUTHORISED, o tempo máximo do expirationDateTime do consentimento deve assumir "now + 60 minutos". Este é o tempo para consumir o consentimento autorizado, mudando seu status para CONSUMED. Não é possível prorrogar este tempo e a criação de um novo consentimento será necessária para os cenários de insucesso.<br>O tempo do expirationDateTime é garantido com os 15 minutos do access token, sendo possível utilizar mais três refresh tokens até totalizar 60 minutos.|
-|» statusUpdateDateTime|string(date-time)|true|Data e hora em que o recurso foi atualizado. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).|
-|» status|[EnumAuthorisationStatusType](#schemaenumauthorisationstatustype)|true|Retorna o estado do consentimento, o qual no momento de sua criação será AWAITING_AUTHORISATION.<br>Este estado será alterado depois da autorização do consentimento na detentora da conta do pagador (Debtor) para AUTHORISED, REJECTED ou REVOKED. <br>O consentimento fica no estado CONSUMED após ocorrer a iniciação do pagamento referente ao consentimento.  <br>Em caso de consentimento expirado a detentora deverá retornar o status REJECTED.  <br>Em caso de revogação do consentimento a detentora deverá retornar o status REVOKED.  <br>Estados possíveis:  <br>AWAITING_AUTHORISATION - Aguardando autorização  <br>AUTHORISED - Autorizado   <br>REJECTED - Rejeitado  <br>CONSUMED - Consumido   <br>REVOKED - Revogado|
-|» loggedUser|[LoggedUser](#schemaloggeduser)|true|Usuário (pessoa natural) que encontra-se logado na instituição Iniciadora de Pagamento.|
-|» businessEntity|[BusinessEntity](#schemabusinessentity)|false|Usuário (pessoa jurídica) que encontra-se logado na instituição Iniciadora de Pagamento. [Restrição] Preenchimento obrigatório se usuário logado na instituição Iniciadora de Pagamento for um CNPJ (pessoa jurídica).|
-|» creditor|[Identification](#schemaidentification)|true|Objeto contendo os dados do recebedor (creditor).|
-|» payment|[PaymentConsent](#schemapaymentconsent)|true|Objeto contendo dados de pagamento para consentimento.|
-|» debtorAccount|[DebtorAccount](#schemadebtoraccount)|false|Objeto que contém a identificação da conta de origem do pagador.  <br>As informações quanto à conta de origem do pagador poderão ser trazidas no consentimento para a detentora, caso a iniciadora tenha coletado essas informações do cliente. Do contrário, será coletada na detentora e trazida para a iniciadora como resposta à criação do pagamento.|
+|data|[ResponsePaymentConsentData](#schemaresponsepaymentconsentdata)|true|Objeto contendo as informações de resposta do consentimento para a iniciação de pagamento individual.|
 |links|[ResponsePixPayment/properties/links](#schemaresponsepixpayment/properties/links)|true|Referências para outros recusos da API requisitada.|
 |meta|[Meta](#schemameta)|true|Meta informações referente à API requisitada.|
+
+<h2 id="tocS_ResponsePaymentConsentData">ResponsePaymentConsentData</h2>
+
+<a id="schemaresponsepaymentconsentdata"></a>
+<a id="schema_ResponsePaymentConsentData"></a>
+<a id="tocSresponsepaymentconsentdata"></a>
+<a id="tocsresponsepaymentconsentdata"></a>
+
+```json
+{
+  "consentId": "urn:bancoex:C1DD33123",
+  "creationDateTime": "2021-05-21T08:30:00Z",
+  "expirationDateTime": "2021-05-21T08:30:00Z",
+  "statusUpdateDateTime": "2021-05-21T08:30:00Z",
+  "status": "AWAITING_AUTHORISATION",
+  "revocation": {
+    "loggedUser": {
+      "document": {
+        "identification": "11111111111",
+        "rel": "CPF"
+      }
+    },
+    "revoked_by": "USER",
+    "reason": {
+      "code": "OTHER",
+      "additionalInformation": "Não quero mais o serviço"
+    }
+  },
+  "loggedUser": {
+    "document": {
+      "identification": "11111111111",
+      "rel": "CPF"
+    }
+  },
+  "businessEntity": {
+    "document": {
+      "identification": "11111111111111",
+      "rel": "CNPJ"
+    }
+  },
+  "creditor": {
+    "personType": "PESSOA_NATURAL",
+    "cpfCnpj": "58764789000137",
+    "name": "Marco Antonio de Brito"
+  },
+  "payment": {
+    "type": "PIX",
+    "schedule": {
+      "single": {
+        "date": "2021-01-01"
+      }
+    },
+    "date": "2021-01-01",
+    "currency": "BRL",
+    "amount": "100000.12",
+    "ibgeTownCode": "5300108",
+    "details": {
+      "localInstrument": "DICT",
+      "qrCode": "00020104141234567890123426660014BR.GOV.BCB.PIX014466756C616E6F32303139406578616D706C652E636F6D27300012\nBR.COM.OUTRO011001234567895204000053039865406123.455802BR5915NOMEDORECEBEDOR6008BRASILIA61087007490062\n530515RP12345678-201950300017BR.GOV.BCB.BRCODE01051.0.080450014BR.GOV.BCB.PIX0123PADRAO.URL.PIX/0123AB\nCD81390012BR.COM.OUTRO01190123.ABCD.3456.WXYZ6304EB76\n",
+      "proxy": "12345678901",
+      "creditorAccount": {
+        "ispb": "12345678",
+        "issuer": "1774",
+        "number": "1234567890",
+        "accountType": "CACC"
+      }
+    }
+  },
+  "debtorAccount": {
+    "ispb": "12345678",
+    "issuer": "1774",
+    "number": "1234567890",
+    "accountType": "CACC"
+  }
+}
+
+```
+
+Objeto contendo as informações de resposta do consentimento para a iniciação de pagamento individual.
+
+### Propriedades
+
+|Nome|Tipo|Obrigatório|Descrição|
+|---|---|---|---|---|
+|consentId|string|true|Identificador único do consentimento criado para a iniciação de pagamento solicitada. Deverá ser um URN - Uniform Resource Name.<br>Um URN, conforme definido na [RFC8141](https://tools.ietf.org/html/rfc8141) é um Uniform Resource<br>Identifier - URI - que é atribuído sob o URI scheme "urn" e um namespace URN específico, com a intenção de que o URN<br>seja um identificador de recurso persistente e independente da localização.<br>Considerando a string urn:bancoex:C1DD33123 como exemplo para consentId temos:<br>- o namespace(urn)<br>- o identificador associado ao namespace da instituição transnmissora (bancoex)<br>- o identificador específico dentro do namespace (C1DD33123).<br>Informações mais detalhadas sobre a construção de namespaces devem ser consultadas na [RFC8141](https://tools.ietf.org/html/rfc8141).|
+|creationDateTime|string(date-time)|true|Data e hora em que o consentimento foi criado. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).|
+|expirationDateTime|string(date-time)|true|Data e hora em que o consentimento da iniciação de pagamento expira, devendo ser sempre o creationDateTime mais 5 minutos. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC (UTC time format).<br>O consentimento é criado com o status AWAITING_AUTHORISATION, e deve assumir o status AUTHORIZED ou REJECTED antes do tempo de expiração - 5 minutos. Caso o tempo seja expirado, o status deve assumir REJECTED.<br>Para o cenário em que o status assumiu AUTHORISED, o tempo máximo do expirationDateTime do consentimento deve assumir "now + 60 minutos". Este é o tempo para consumir o consentimento autorizado, mudando seu status para CONSUMED. Não é possível prorrogar este tempo e a criação de um novo consentimento será necessária para os cenários de insucesso.<br>O tempo do expirationDateTime é garantido com os 15 minutos do access token, sendo possível utilizar mais três refresh tokens até totalizar 60 minutos.|
+|statusUpdateDateTime|string(date-time)|true|Data e hora em que o recurso foi atualizado. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).|
+|status|[EnumAuthorisationStatusType](#schemaenumauthorisationstatustype)|true|Retorna o estado do consentimento, o qual no momento de sua criação será AWAITING_AUTHORISATION.<br>Este estado será alterado depois da autorização do consentimento na detentora da conta do pagador (Debtor) para AUTHORISED, REJECTED ou REVOKED. <br>O consentimento fica no estado CONSUMED após ocorrer a iniciação do pagamento referente ao consentimento.  <br>Em caso de consentimento expirado a detentora deverá retornar o status REJECTED.  <br>Em caso de revogação do consentimento a detentora deverá retornar o status REVOKED.  <br>Estados possíveis:  <br>AWAITING_AUTHORISATION - Aguardando autorização  <br>AUTHORISED - Autorizado   <br>REJECTED - Rejeitado  <br>CONSUMED - Consumido   <br>REVOKED - Revogado|
+|revocation|[Revocation](#schemarevocation)|false|Objeto que contém as informações das circunstância da revogação.<br>O campo loggedUser deve ser preenchidos quando a revogação for feita pelo usuário final, ou seja, se o campo data.revocation.revoked_by estiver com o valor USER.|
+|loggedUser|[LoggedUser](#schemaloggeduser)|true|Usuário (pessoa natural) que encontra-se logado na instituição Iniciadora de Pagamento.|
+|businessEntity|[BusinessEntity](#schemabusinessentity)|false|Usuário (pessoa jurídica) que encontra-se logado na instituição Iniciadora de Pagamento. [Restrição] Preenchimento obrigatório se usuário logado na instituição Iniciadora de Pagamento for um CNPJ (pessoa jurídica).|
+|creditor|[Identification](#schemaidentification)|true|Objeto contendo os dados do recebedor (creditor).|
+|payment|[PaymentConsent](#schemapaymentconsent)|true|Objeto contendo dados de pagamento para consentimento.|
+|debtorAccount|[DebtorAccount](#schemadebtoraccount)|false|Objeto que contém a identificação da conta de origem do pagador.  <br>As informações quanto à conta de origem do pagador poderão ser trazidas no consentimento para a detentora, caso a iniciadora tenha coletado essas informações do cliente. Do contrário, será coletada na detentora e trazida para a iniciadora como resposta à criação do pagamento.|
 
 <h2 id="tocS_ResponsePixPayment">ResponsePixPayment</h2>
 
@@ -2579,6 +2899,73 @@ Objeto contendo dados do pagameto como moeda e valor.
 |links|object|true|Referências para outros recusos da API requisitada.|
 |» self|string(uri)|true|URI completo que gerou a resposta atual.|
 |meta|[Meta](#schemameta)|true|Meta informações referente à API requisitada.|
+
+<h2 id="tocS_Revocation">Revocation</h2>
+
+<a id="schemarevocation"></a>
+<a id="schema_Revocation"></a>
+<a id="tocSrevocation"></a>
+<a id="tocsrevocation"></a>
+
+```json
+{
+  "loggedUser": {
+    "document": {
+      "identification": "11111111111",
+      "rel": "CPF"
+    }
+  },
+  "revoked_by": "USER",
+  "reason": {
+    "code": "OTHER",
+    "additionalInformation": "Não quero mais o serviço"
+  }
+}
+
+```
+
+Objeto que contém as informações das circunstância da revogação.
+O campo loggedUser deve ser preenchidos quando a revogação for feita pelo usuário final, ou seja, se o campo data.revocation.revoked_by estiver com o valor USER.
+
+### Propriedades
+
+|Nome|Tipo|Obrigatório|Descrição|
+|---|---|---|---|---|
+|loggedUser|[LoggedUser](#schemaloggeduser)|true|Usuário (pessoa natural) que encontra-se logado na instituição Iniciadora de Pagamento.|
+|revoked_by|string|true|Define qual das partes envolvidas na transação está realizando a revogação. Valores possíveis: USER (Revogado pelo usuário), ASPSP (Provedor de serviços de pagamento para serviços de conta - Detentora de conta), TPP (Instituições Provedoras - iniciadora de pagamentos).<br>Os motivos de revogação do consentimento: FRAUD e ACCOUNT_CLOSURE só podem ser usados caso o campo: data.revocation.revoked_by tenha o valor TPP ou ASPSP, ou seja, somente no caso de revogação unilateral pela iniciadora ou detentora.|
+|reason|[Reason](#schemareason)|true|Define a razão pela qual o consentimento foi revogado.|
+
+<h2 id="tocS_Reason">Reason</h2>
+
+<a id="schemareason"></a>
+<a id="schema_Reason"></a>
+<a id="tocSreason"></a>
+<a id="tocsreason"></a>
+
+```json
+{
+  "code": "OTHER",
+  "additionalInformation": "Não quero mais o serviço"
+}
+
+```
+
+Define a razão pela qual o consentimento foi revogado.
+
+### Propriedades
+
+|Nome|Tipo|Obrigatório|Descrição|
+|---|---|---|---|---|
+|code|string|true|Define o código da razão pela qual o consentimento foi revogado. <br>Valores possíveis: <br>FRAUD - Indica suspeita de fraude <br>ACCOUNT_CLOSURE - Indica que a conta do usuário foi encerrada <br>OTHER - Indica que motivo do cancelamento está fora dos motivos pré-estabelecidos.|
+|additionalInformation|string|false|Contém informações adicionais definidas pelo requisitante da revogação.<br>O campo additionalInformation é obrigatório quando a revogação for feita pela iniciadora ou pela detentora unilateralmente, ou seja, o campo revoked_by igual a TPP ou ASPSP e o motivo de revogação for OTHER.|
+
+#### Enumerated Values
+
+|Nome|Código|
+|---|---|
+|code|FRAUD|
+|code|ACCOUNT_CLOSURE|
+|code|OTHER|
 
 <h2 id="tocS_ResponsePixPaymentData">ResponsePixPaymentData</h2>
 
