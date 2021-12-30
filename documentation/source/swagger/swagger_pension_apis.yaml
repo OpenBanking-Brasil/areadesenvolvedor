@@ -737,7 +737,6 @@ components:
           items:
             $ref: '#/components/schemas/Coverage'
         assistanceType:
-          description: 'Lista padronizada de tipo de assistências ofertadas vinculadas ao produto. Por exemplo, Funeral, Bicicleta, Assistência PET – Tabela padrão a ser consolidada com retorno das empresas com a relação de assistências, permitindo um campo ‘Outros’ para assistências não contempladas na Tabela padronizada.'
           type: array
           items:
             $ref: '#/components/schemas/EnumAssistanceType'
@@ -776,7 +775,7 @@ components:
           type: array
           items:
             type: string
-            description: Listagem de regime financeiro para cada combinação de modalidade/cobertura do produto indicando&#58;<br><ol><il>Repartição simples</il><il>Repartição Capitais Cobertura</il><il>Capitalização</il></ol>
+            description: Listagem de regime financeiro para cada combinação de modalidade/cobertura do produto indicando&#58;<br><ol><li>Repartição simples</li><li>Repartição Capitais Cobertura</li><li>Capitalização</li></ol>
             maxLength: 29
             enum:
               - REPARTICAO_SIMPLES
@@ -918,20 +917,16 @@ components:
           properties:
             contractType:
               type: string
-              description: |
-                A considerar os domínios abaixo:
-                  1. Coletivo;
-                  2. Individual
-                  3. Ambas (Coletivo e Individual)
-              maxLength: 10
+              description: O tipo de serviço contratado. A considerar os domínios abaixo&#58;<br><ol><li>Coletivo Averbado</li><li>Coletivo Instituído</li><li>Individual</li></ol>
+              maxLength: 19
               enum:
-                - COLETIVO
+                - COLETIVO_AVERBADO
+                - COLETIVO_INSTITUIDO
                 - INDIVIDUAL
-                - AMBAS
-              example: COLETIVO
+              example: COLETIVO_AVERBADO
             contractingMinRequirement:
               type: string
-              description: Campo aberto (possibilidade de incluir URL)
+              description: Campo aberto contendo todos os requisitos mínimos para contratação (possibilidade de incluir URL).
               maxLength: 1024
               example: 'https://openinsurance.com.br/aaa'
           additionalProperties: false
@@ -1039,7 +1034,7 @@ components:
           example: TEMPORARIA
     EnumRiskPensionCoverageType:
       type: string
-      description: Se Prev. Cob. Risco<br><br><ol><li>Morte</li><li>Invalidez</li></ol>
+      description: 'É o conjunto dos riscos cobertos elencados na apólice. (RESOLUÇÃO CNSP Nº 341/2016). Listagem de coberturas incluídas no produto que deve observar a relação discriminada de coberturas, conforme Tabela Tipo de Cobertura.'
       maxLength: 9
       enum:
         - MORTE
@@ -1053,6 +1048,25 @@ components:
         - maxValue
         - gracePeriod
       properties:
+        indemnityPaymentMethods:
+          type: array
+          items:
+            type: string
+            enum:
+              - PAGAMENTO_CAPITAL_SEGURADO_VALOR_MONETARIO
+              - REEMBOLSO_DESPESAS
+              - PRESTACAO_SERVICOS
+            maxLength: 42
+        indemnityPaymentFrequencies:
+          type: array
+          items:
+            type: string
+            description: ''
+            maxLength: 17
+            enum:
+              - INDENIZACAO_UNICA
+              - DIARIA_OU_PARCELA
+            example: INDENIZACAO_UNICA
         indemnifiableDeadline:
           type: integer
           format: int32
@@ -1060,9 +1074,17 @@ components:
           maximum: 9999
           example: 48
         minValue:
-          $ref: '#/components/schemas/CurrencyValue'
+          type: object
+          description: 'Listagem do valor mínimo de cobertura (Capital Segurado), diária ou parcela aceito pela sociedade para cada combinação de modalidade/cobertura do produto.<br>Conforme moeda.'
+          properties:
+            currencyValue:
+              $ref: '#/components/schemas/CurrencyValue'
         maxValue:
-          $ref: '#/components/schemas/CurrencyValue'
+          type: object
+          description: 'Listagem do valor máximo de cobertura (Capital Segurado), diária ou parcela aceito pela sociedade para cada combinação de modalidade/cobertura do produto.<br>Conforme moeda.'
+          properties:
+            currencyValue:
+              $ref: '#/components/schemas/CurrencyValue'
         IndemnifiablePeriod:
           type: array
           items:
@@ -1090,9 +1112,17 @@ components:
           maximum: 9999999999
           example: 15
         deductible:
-          $ref: '#/components/schemas/CurrencyValue'
+          type: object
+          description: Listagem de franquia em reais para cada combinação de modalidade/cobertura do produto.
+          properties:
+            currencyValue:
+              $ref: '#/components/schemas/CurrencyValue'
         differentiatedDeductible:
-          $ref: '#/components/schemas/CurrencyValue'
+          type: object
+          description: 'Detalhamento da franquia em reais diferentes para cada cobertura que exista alguma especificidade.<br>Caso a seguradora não tenha essa diferenciação, não retornará nada no campo.'
+          properties:
+            currencyValue:
+              $ref: '#/components/schemas/CurrencyValue'
         excludedRisks:
           $ref: '#/components/schemas/EnumExcludedRisks'
         excludedRisksURL:
@@ -1389,7 +1419,7 @@ components:
       example: SORTEIO
     EnumTerm:
       type: string
-      description: Define o prazo do plano contratado<br><ol><il>Vitalícia</il><il>Temporária - prazo fixo</il><il>Temporária – intermitente</il></ol>
+      description: Define o prazo do plano contratado<br><ol><li>Vitalícia</li><li>Temporária - prazo fixo</li><li>Temporária – intermitente</li></ol>
       maxLength: 23
       enum:
         - VITALICIA
