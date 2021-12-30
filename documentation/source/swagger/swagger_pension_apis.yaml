@@ -107,7 +107,7 @@ components:
               maxLength: 80
               example: Society A1
             cnpjNumber:
-              $ref: '#/components/schemas/ParticipantIdentification/properties/cnpjNumber'
+              $ref: '#/components/schemas/CnpjNumber'
           additionalProperties: false
         products:
           type: array
@@ -147,7 +147,7 @@ components:
       description: Fundos de Investimento (por fundo).
       properties:
         cnpjNumber:
-          $ref: '#/components/schemas/ParticipantIdentification/properties/cnpjNumber'
+          $ref: '#/components/schemas/CnpjNumber'
         name:
           type: string
           description: |
@@ -179,14 +179,14 @@ components:
           pattern: '^[0-1]\.\d{6}$'
           description: |
             Lista com as informações do(s) Fundo(s) de Investimento(s) disponíveis para o período de diferimento/acumulação, contemplando: 
-              - Taxa Máxima de Performance - em %”
+              - Taxa Máxima de Performance - em %
           maxLength: 10
           example: '0.201000'
         eligibilityRule:
           type: boolean
           description: |
             Lista com as informações do(s) Fundo(s) de Investimento(s) disponíveis para o período de diferimento/acumulação, contemplando:
-              - Regra de Elegibilidade:
+              - Regra de Elegibilidade
           example: true
         minimumContributionAmount:
           type: string
@@ -303,6 +303,11 @@ components:
       maxLength: 20
       pattern: '^\d{5}\.\d{6}/\d{4}-\d{2}$'
       example: 15414.622222/2222-22
+    CnpjNumber:
+      type: string
+      description: 'O CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. Deve-se ter apenas os números do CNPJ, sem máscara.'
+      pattern: '\d{14}$'
+      example: '13456789000112'
     SurvivalPensionDefferalPeriod:
       type: object
       description: Período de Diferimento
@@ -364,6 +369,11 @@ components:
           pattern: '^[0-1]\.\d{6}$'
           description: Percentual de reversão de excedente financeiro na concessão. Em %.
           example: '0.051230'
+        redemptionPaymentTerm:
+          type: integer
+          description: Prazo em dias para pagamento do resgate
+          maximum: 9999
+          example: 10
         investmentFunds:
           type: array
           items:
@@ -678,10 +688,7 @@ components:
           maxLength: 80
           example: Organização A1
         cnpjNumber:
-          type: string
-          description: 'O CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. Deve-se ter apenas os números do CNPJ, sem máscara.'
-          pattern: '\d{14}$'
-          example: '13456789000112'
+          $ref: '#/components/schemas/CnpjNumber'
         urlComplementaryList:
           type: string
           maxLength: 1024
@@ -730,7 +737,6 @@ components:
           items:
             $ref: '#/components/schemas/Coverage'
         assistanceType:
-          description: 'Lista padronizada de tipo de assistências ofertadas vinculadas ao produto. Por exemplo, Funeral, Bicicleta, Assistência PET – Tabela padrão a ser consolidada com retorno das empresas com a relação de assistências, permitindo um campo ‘Outros’ para assistências não contempladas na Tabela padronizada.'
           type: array
           items:
             $ref: '#/components/schemas/EnumAssistanceType'
@@ -911,20 +917,16 @@ components:
           properties:
             contractType:
               type: string
-              description: |
-                A considerar os domínios abaixo:
-                  1. Coletivo;
-                  2. Individual
-                  3. Ambas (Coletivo e Individual)
-              maxLength: 10
+              description: O tipo de serviço contratado. A considerar os domínios abaixo&#58;<br><ol><li>Coletivo Averbado</li><li>Coletivo Instituído</li><li>Individual</li></ol>
+              maxLength: 19
               enum:
-                - COLETIVO
+                - COLETIVO_AVERBADO
+                - COLETIVO_INSTITUIDO
                 - INDIVIDUAL
-                - AMBAS
-              example: COLETIVO
+              example: COLETIVO_AVERBADO
             contractingMinRequirement:
               type: string
-              description: Campo aberto (possibilidade de incluir URL)
+              description: Campo aberto contendo todos os requisitos mínimos para contratação (possibilidade de incluir URL).
               maxLength: 1024
               example: 'https://openinsurance.com.br/aaa'
           additionalProperties: false
@@ -1031,7 +1033,7 @@ components:
           example: TEMPORARIA
     EnumRiskPensionCoverageType:
       type: string
-      description: Se Prev. Cob. Risco<br><br><ol><li>Morte</li><li>Invalidez</li></ol>
+      description: 'É o conjunto dos riscos cobertos elencados na apólice. (RESOLUÇÃO CNSP Nº 341/2016). Listagem de coberturas incluídas no produto que deve observar a relação discriminada de coberturas, conforme Tabela Tipo de Cobertura.'
       maxLength: 9
       enum:
         - MORTE
@@ -1045,6 +1047,25 @@ components:
         - maxValue
         - gracePeriod
       properties:
+        indemnityPaymentMethods:
+          type: array
+          items:
+            type: string
+            enum:
+              - PAGAMENTO_CAPITAL_SEGURADO_VALOR_MONETARIO
+              - REEMBOLSO_DESPESAS
+              - PRESTACAO_SERVICOS
+            maxLength: 42
+        indemnityPaymentFrequencies:
+          type: array
+          items:
+            type: string
+            description: ''
+            maxLength: 17
+            enum:
+              - INDENIZACAO_UNICA
+              - DIARIA_OU_PARCELA
+            example: INDENIZACAO_UNICA
         indemnifiableDeadline:
           type: integer
           format: int32
@@ -1052,9 +1073,17 @@ components:
           maximum: 9999
           example: 48
         minValue:
-          $ref: '#/components/schemas/CurrencyValue'
+          type: object
+          description: 'Listagem do valor mínimo de cobertura (Capital Segurado), diária ou parcela aceito pela sociedade para cada combinação de modalidade/cobertura do produto.<br>Conforme moeda.'
+          properties:
+            currencyValue:
+              $ref: '#/components/schemas/CurrencyValue'
         maxValue:
-          $ref: '#/components/schemas/CurrencyValue'
+          type: object
+          description: 'Listagem do valor máximo de cobertura (Capital Segurado), diária ou parcela aceito pela sociedade para cada combinação de modalidade/cobertura do produto.<br>Conforme moeda.'
+          properties:
+            currencyValue:
+              $ref: '#/components/schemas/CurrencyValue'
         IndemnifiablePeriod:
           type: array
           items:
@@ -1082,9 +1111,17 @@ components:
           maximum: 9999999999
           example: 15
         deductible:
-          $ref: '#/components/schemas/CurrencyValue'
+          type: object
+          description: Listagem de franquia em reais para cada combinação de modalidade/cobertura do produto.
+          properties:
+            currencyValue:
+              $ref: '#/components/schemas/CurrencyValue'
         differentiatedDeductible:
-          $ref: '#/components/schemas/CurrencyValue'
+          type: object
+          description: 'Detalhamento da franquia em reais diferentes para cada cobertura que exista alguma especificidade.<br>Caso a seguradora não tenha essa diferenciação, não retornará nada no campo.'
+          properties:
+            currencyValue:
+              $ref: '#/components/schemas/CurrencyValue'
         excludedRisks:
           $ref: '#/components/schemas/EnumExcludedRisks'
         excludedRisksURL:
