@@ -3,39 +3,56 @@ description: Atributos da cobertura
 required:
   - minValue
   - maxValue
-  - currency
   - gracePeriod
 properties:
-  indenizationPaymentMethod:
-    $ref: ../../enum/EnumRiskPensionPaymentModality.yaml
+  indemnifiableDeadline:
+    type: integer
+    format: int32
+    description: Caso o período de pagamento seja relacionado a Prazo, listagem de número máximo de parcelas do benefício. Em meses.
+    maximum: 9999
+    example: 48
   minValue:
-    type: number
-    example: 1500
-    description: |
-      Listagem do valor mínimo de cobertura (Capital Segurado), diária ou parcela aceito pela sociedade para cada combinação de modalidade/cobertura do produto.
-      Conforme moeda.
-    maximum: 999999999999999
-  maxValue: 
-    type: number
-    example: 5000
-    description: |
-      Listagem do valor máximo de cobertura (Capital Segurado), diária ou parcela aceito pela sociedade para cada combinação de modalidade/cobertura do produto.
-      Conforme moeda.
-    maximum: 999999999999999
-  indemnifiable:
-    $ref: ./RiskPensionIndemnfiable.yaml
+    $ref: ../../business_commons/CurrencyValue.yaml
+  maxValue:
+    $ref: ../../business_commons/CurrencyValue.yaml
+  IndemnifiablePeriod:
+    type: array
+    items:
+      $ref: ../../enum/EnumRiskPensionIndemnifiablePeriod.yaml
+  maximumQtyIndemnifiableInstallments:
+    type: integer
+    format: int64
+    description: Caso o período indenizável seja relacionado a parcelas, listagem de número máximo de parcelas indenizáveis para cada combinação de modalidade/ cobertura do produto.
+    maximum: 9999999999
+    example: 10
+  gracePeriod:
+    $ref: ./RiskPensionGracePeriod.yaml
+  differentiatedGracePeriod:
+    $ref: ./RiskPensionGracePeriod.yaml
   deductibleDays:
-    type: number
+    type: integer
+    format: int64
     description: Listagem de franquia em dias para cada combinação de modalidade/cobertura do produto.
     maximum: 9999999999
     example: 10
-  currency:
-    $ref: ../../business_commons/CurrencyCode.yaml
-  gracePeriod:
-    $ref: ./RiskPensionGracePeriod.yaml
-  excludedRisk:
-    type: array
-    description: Listagem para indicar quais serão o(s) risco(s) excluído(s) aplicável(is) à(s) cobertura(s).
-    items:
-      $ref: ./RiskPensionExcludedRisk.yaml
-    
+  differentiatedDeductibleDays:
+    type: integer
+    format: int64
+    description: Detalhamento da franquia em dias diferentes para cada cobertura que exista alguma especificidade.<br>Caso a seguradora não tenha essa diferenciação, não retornará nada no campo.
+    maximum: 9999999999
+    example: 15
+  deductible:
+    $ref: ../../business_commons/CurrencyValue.yaml
+  differentiatedDeductible:
+    $ref: ../../business_commons/CurrencyValue.yaml
+  excludedRisks:
+    $ref: ../../business_commons/EnumExcludedRisks.yaml
+  excludedRisksURL:
+    type: string
+    maxLength: 1024
+    description: Campo aberto (possibilidade de incluir URL).
+    example: 'https://openinsurance.com.br/aaa'
+  allowApartPurchase:
+    type: boolean
+    description: Indicar se a cobertura pode ser contratada isoladamente ou não.
+    example: true
