@@ -3,10 +3,12 @@ required:
   - name
   - code
   - coverages
-  - additionals
   - assistanceType
+  - additional
   - termsAndConditions
-  - contributionPayment
+  - benefitRecalculation
+  - premiumPayment
+  - targetAudience
 properties:
   name:
     type: string
@@ -28,52 +30,71 @@ properties:
     type: array
     items:
       $ref: ./RiskPensionCoverage.yaml
-  additionals:
-    type: array
-    items:
-      type: string
-    example: ['Sorteio (gratuito)', 'Outros']
-  additionalsOthers:
-    type: array
-    items:
-      type: string
-    example: ['NA']
   assistanceType:
     description: Lista padronizada de tipo de assistências ofertadas vinculadas ao produto. Por exemplo, Funeral, Bicicleta, Assistência PET – Tabela padrão a ser consolidada com retorno das empresas com a relação de assistências, permitindo um campo ‘Outros’ para assistências não contempladas na Tabela padronizada.
     type: array
     items:
-      type: string
-    example: ['Assistência PET', 'Funeral']
-  assistanceTypeAdditionalInfo:
-    description: |
-      Texto livre para complementar informação relativa ao campo assistanceType, quando no campo 'assistanceType' estiver preenchida a opção 'Outros'.Restrição: Campo de preenchimento obrigatório se 'assistanceType' estiver preenchida a opção 'OUTROS'.
+      $ref: ../../business_commons/EnumAssistanceType.yaml
+    example: [ PET, FUNERAL ]
+  assistanceAdditionalInfos:
     type: array
     items:
       type: string
-    example: ['NA']
+    description: Lista a ser preenchida pelas participantes quando houver 'Outros' no campo 'Tipo de Assistência'.
+  additional:
+    type: array
+    items:
+      $ref: ../../business_commons/EnumAdditional.yaml
+    example: [ SORTEIO, OUTROS]
   termsAndConditions:
     $ref: ../../business_commons/TermsAndConditionsItem.yaml
-  update:
-    $ref: ./RiskPensionUpdate.yaml
-  ageReframing:
-    $ref: ./RiskPensionAgeReframing.yaml
+  globalCapital:
+    type: boolean
+    description: A considerar os seguintes domínios&#58;<br><ol><li>true</li><li>false</li></ol>
+    example: true
+  term:
+    type: array
+    items:
+      $ref: ../../business_commons/EnumTerm.yaml
+  pmbacRemuneration:
+    $ref: RiskPensionPmbacRemuneration.yaml
+  benefitRecalculation:
+    $ref: RiskPensionBenefitRecalculation.yaml
+  ageAdjustment:
+    $ref: RiskPensionAgeAdjustment.yaml
   financialRegimeContractType:
-    $ref: ../../enum/EnumRiskPensionFinancialRegimeContractType.yaml
+    type: array
+    items:
+      $ref: ../../enum/EnumRiskPensionFinancialRegimeContractType.yaml
   reclaim:
-    $ref: ./RiskPensionReclaim.yaml
+    $ref: RiskPensionReclaim.yaml
   otherGuaranteedValues:
     type: array
-    description: |
-      1. Saldamento;
-      2. Benefício Prolongado.
-      3. Não se aplica
     items:
-      type: string
-    example: ['Benefício Prolongado','Não se aplica','Saldamento']
+      $ref: ../../enum/EnumPersonalInsuranceOtherGuaranteedValues.yaml
   profitModality:
-     $ref: ../../enum/EnumRiskPensionPaymentModality.yaml
-  contributionPayment:
-    $ref: ./RiskPensionContributionPayment.yaml
-
-
-
+    $ref: ../../enum/EnumRiskPensionPaymentModality.yaml
+  allowPortability:
+    type: boolean
+    description: <ol><li>true</li><li>false</li></ol>
+  portabilityGraceTime:
+    $ref: RiskPensionReclaimGracePeriod.yaml
+  indemnityPaymentMethod:
+    type: array
+    items:
+      $ref: ../../enum/EnumPersonalInsuranceIndemnityPaymentMethod.yaml
+  indemnityPaymentIncome:
+    type: array
+    items:
+      $ref: ../../enum/EnumPersonalInsuranceIndemnityPaymentIncome.yaml
+  premiumPayment:
+    $ref: ../../insurances_apis/personal/PersonalInsurancePremiumPayment.yaml
+  contributionTax:
+    type: string
+    maxLength: 500
+    description: Distribuição de frequência relativa aos valores referentes às taxas cobradas, nos termos do Anexo III.
+  minimumRequirement:
+    $ref: ../../insurances_apis/MinimumRequirement.yaml
+  targetAudience:
+    $ref: ../../enum/EnumTargetAudiencesType.yaml
+additionalProperties: false
