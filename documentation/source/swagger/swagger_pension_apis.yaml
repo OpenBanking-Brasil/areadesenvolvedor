@@ -113,6 +113,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/RiskPensionProduct'
+      additionalProperties: false
     OKResponseSurvivalCoveragePension:
       type: object
       required:
@@ -711,25 +712,21 @@ components:
         name:
           type: string
           maxLength: 80
-          description: |
-            Nome comercial do produto, pelo qual é identificado nos canais de distribuição e atendimento da sociedade.
+          description: 'Nome comercial do produto, pelo qual é identificado nos canais de distribuição e atendimento da sociedade.'
           example: Produto A
         code:
           type: string
           maxLength: 80
-          description: |
-            Código único a ser definido pela sociedade.
+          description: Código único a ser definido pela sociedade.
           example: '0001'
         category:
           type: string
-          description: |
-            Indicar a categoria do Produto:
-              1. Tradicional
-              2. Microsseguro
+          description: Indicar a categoria do Produto&#58;<br><ol><li>Tradicional</li><li>Microsseguro</li></ol>
           maxLength: 12
           enum:
             - TRADICIONAL
             - MICROSSEGURO
+          example: TRADICIONAL
         modality:
           $ref: '#/components/schemas/EnumProductModality'
         coverages:
@@ -804,7 +801,7 @@ components:
           type: boolean
           description: <ol><li>true</li><li>false</li></ol>
         portabilityGraceTime:
-          $ref: '#/components/schemas/ReclaimGracePeriod'
+          $ref: '#/components/schemas/GracePeriod'
         indemnityPaymentMethod:
           type: array
           items:
@@ -968,24 +965,7 @@ components:
       example: SOB_FORMA_DE_RENDA
     EnumProductModality:
       type: string
-      description: |
-        1. Funeral;
-        2. Prestamista (exceto Habitacional e Rural);
-        3. Viagem;
-        4. Educacional;
-        5. Dotal (Misto e Puro);
-        6. Acidentes Pessoais;
-        7. Vida;
-        8. Perda do Certificado de Habilitação de Voo – PCHV;
-        9. Doenças Graves ou Doença Terminal;
-        10. Desemprego/ Perda de Renda;
-        11. Eventos Aleatórios
-        12. Pecúlio
-        13. Pensão prazo certo
-        14. Pensão menores 21 anos.
-        15. Pensão menores 24 anos.
-        16. Pensão cônjuge vitalícia
-        17. Pensão cônjuge temporária
+      description: <ol><li>Funeral</li><li>Prestamista (exceto Habitacional e Rural)</li><li>Viagem</li><li>Educacional</li><li>Dotal (Misto e Puro)</li><li>Acidentes Pessoais</li><li>Vida</li><li>Perda do Certificado de Habilitação de Voo – PCHV</li><li>Doenças Graves ou Doença Terminal</li><li>Desemprego/ Perda de Renda</li><li>Eventos Aleatórios</li><li>Pecúlio</li><li>Pensão prazo certo</li><li>Pensão menores 21 anos</li><li>Pensão menores 24 anos</li><li>Pensão cônjuge vitalícia</li><li>Pensão cônjuge temporária</li></ol>
       maxLength: 33
       enum:
         - FUNERAL
@@ -1031,6 +1011,7 @@ components:
             - VITALICIA
             - TEMPORARIA
           example: TEMPORARIA
+      additionalProperties: false
     EnumRiskPensionCoverageType:
       type: string
       description: 'É o conjunto dos riscos cobertos elencados na apólice. (RESOLUÇÃO CNSP Nº 341/2016). Listagem de coberturas incluídas no produto que deve observar a relação discriminada de coberturas, conforme Tabela Tipo de Cobertura.'
@@ -1135,6 +1116,7 @@ components:
           type: boolean
           description: Indicar se a cobertura pode ser contratada isoladamente ou não.
           example: true
+      additionalProperties: false
     GracePeriod:
       type: object
       required:
@@ -1148,30 +1130,8 @@ components:
           example: 90
           maximum: 9999999999
         unit:
-          type: string
-          description: Informar o critério de carência para a cobertura&#58;<br><ol><li>Dias</li><li>Meses</li><li>Não se aplica</li></ol>
-          maxLength: 10
-          enum:
-            - DIAS
-            - MESES
-            - NAO_APLICA
-          example: MESES
-    ReclaimGracePeriod:
-      type: object
-      required:
-        - amount
-        - unit
-      properties:
-        amount:
-          type: integer
-          format: int64
-          description: Informar a quantidade de dias ou meses.
-          example: 180
-          maximum: 9999999999
-        unit:
-          type: array
-          items:
-            $ref: '#/components/schemas/GracePeriod/properties/unit'
+          $ref: '#/components/schemas/EnumGracePeriodUnit'
+      additionalProperties: false
     TermsAndConditions:
       type: object
       required:
@@ -1214,7 +1174,8 @@ components:
             Obs.: Exceção de cobertura ou critério definido acima será descrito aqui na URL
             Exemplo: Cobertura X: a partir de 25 meses = 100%
         gracePeriod:
-          $ref: '#/components/schemas/ReclaimGracePeriod'
+          $ref: '#/components/schemas/GracePeriod'
+      additionalProperties: false
     ReclaimTable:
       type: object
       properties:
@@ -1235,6 +1196,7 @@ components:
           pattern: '^[0-1]\.\d{4}$'
           example: '0.5000'
           description: Percentual de faixa de resgate
+      additionalProperties: false
     PmbacRemuneration:
       type: object
       properties:
@@ -1311,14 +1273,12 @@ components:
       additionalProperties: false
     CurrencyValue:
       type: object
-      description: 'Representa um valor fracionário, com precisão, de uma moeda válida.'
       required:
         - amount
         - currency
       properties:
         amount:
           type: string
-          description: Valor numérico fracionário
           maxLength: 21
           pattern: '^\d{1,16}\.\d{2,4}$'
           example: '0.01'
@@ -1418,6 +1378,15 @@ components:
         - OUTROS
         - NAO_HA
       example: SORTEIO
+    EnumGracePeriodUnit:
+      type: string
+      description: Informar o critério de carência para a cobertura&#58;<br><ol><li>Dias</li><li>Meses</li><li>Não se aplica</li></ol>
+      maxLength: 10
+      enum:
+        - DIAS
+        - MESES
+        - NAO_APLICA
+      example: MESES
     EnumTerm:
       type: string
       description: Define o prazo do plano contratado<br><ol><li>Vitalícia</li><li>Temporária - prazo fixo</li><li>Temporária – intermitente</li></ol>
