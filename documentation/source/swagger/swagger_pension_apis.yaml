@@ -88,7 +88,17 @@ components:
     GetRiskPensionContractData:
       type: object
       required:
-        - participantIdentification
+        - participant
+        - society
+        - name
+        - code
+        - coverages
+        - assistanceType
+        - additional
+        - termsAndConditions
+        - benefitRecalculation
+        - premiumPayment
+        - targetAudience
       properties:
         participant:
           $ref: '#/components/schemas/ParticipantIdentification'
@@ -107,10 +117,226 @@ components:
             cnpjNumber:
               $ref: '#/components/schemas/CnpjNumber'
           additionalProperties: false
-        products:
+        name:
+          type: string
+          maxLength: 80
+          description: 'Nome comercial do produto, pelo qual é identificado nos canais de distribuição e atendimento da sociedade.'
+          example: Produto A
+        code:
+          type: string
+          maxLength: 80
+          description: Código único a ser definido pela sociedade.
+          example: '0001'
+        category:
+          type: string
+          description: Indicar a categoria do Produto&#58;<br><ol><li>Tradicional</li><li>Microsseguro</li></ol>
+          maxLength: 12
+          enum:
+            - TRADICIONAL
+            - MICROSSEGURO
+          example: TRADICIONAL
+        modality:
+          $ref: '#/components/schemas/EnumProductModality'
+        coverages:
           type: array
           items:
-            $ref: '#/components/schemas/RiskPensionProduct'
+            $ref: '#/components/schemas/Coverage'
+        assistanceTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/EnumAssistanceType'
+          example:
+            - PET
+            - FUNERAL
+        assistanceAdditionalInfos:
+          type: array
+          items:
+            type: string
+          description: Lista a ser preenchida pelas participantes quando houver 'Outros' no campo 'Tipo de Assistência'.
+        additionals:
+          type: array
+          items:
+            $ref: '#/components/schemas/EnumAdditional'
+          example:
+            - SORTEIO
+            - OUTROS
+        termsAndConditions:
+          $ref: '#/components/schemas/TermsAndConditions'
+        globalCapital:
+          type: boolean
+          description: A considerar os seguintes domínios&#58;<br><ol><li>true</li><li>false</li></ol>
+          example: true
+        term:
+          type: array
+          items:
+            $ref: '#/components/schemas/EnumTerm'
+        pmbacRemuneration:
+          $ref: '#/components/schemas/PmbacRemuneration'
+        benefitRecalculation:
+          $ref: '#/components/schemas/BenefitRecalculation'
+        ageAdjustment:
+          $ref: '#/components/schemas/AgeAdjustment'
+        financialRegimeContractType:
+          type: array
+          items:
+            type: string
+            description: Listagem de regime financeiro para cada combinação de modalidade/cobertura do produto indicando&#58;<br><ol><li>Repartição simples</li><li>Repartição Capitais</li><li>Capitalização</li></ol>
+            maxLength: 29
+            enum:
+              - REPARTICAO_SIMPLES
+              - REPARTICAO_CAPITAIS
+              - CAPITALIZACAO
+            example: REPARTICAO_SIMPLES
+        reclaim:
+          $ref: '#/components/schemas/Reclaim'
+        otherGuaranteedValues:
+          type: array
+          items:
+            type: string
+            description: |
+              1. Saldamento
+              2. Benefício Prolongado
+              3. Não se aplica
+            maxLength: 20
+            enum:
+              - SALDAMENTO
+              - BENEFICIO_PROLONGADO
+              - NAO_APLICA
+            example: SALDAMENTO
+        profitModality:
+          $ref: '#/components/schemas/EnumRiskPensionPaymentModality'
+        allowPortability:
+          type: boolean
+          description: <ol><li>true</li><li>false</li></ol>
+        portabilityGraceTime:
+          $ref: '#/components/schemas/GracePeriod'
+        indemnityPaymentMethod:
+          type: array
+          items:
+            type: string
+            description: |
+              Modalidade de pagamento da indenização, a considerar os domínios abaixo:
+                1. Único
+                2. Sob a forma de renda
+            maxLength: 18
+            enum:
+              - UNICO
+              - SOB_FORMA_DE_RENDA
+            example: UNICO
+        indemnityPaymentIncome:
+          type: array
+          items:
+            type: string
+            description: |
+              Tipo de renda ou pensão, caso modalidade de pagamento de indenização seja sob a forma de renda:
+                1. Certa
+                2. Temporária
+                3. Temporária reversível
+                4. Temporário com mínimo garantido
+                5. Temporária reversível com mínimo garantido
+                6. Vitalícia
+                7. Vitalícia reversível
+                8. Vitalícia com o mínimo garantido
+                9. Vitalícia reversível como mínimo garantido
+            maxLength: 38
+            enum:
+              - CERTA
+              - TEMPORARIA
+              - TEMPORARIA_REVERSIVEL
+              - TEMPORARIO_MINIMO_GARANTIDO
+              - TEMPORARIA_REVERSIVEL_MINIMO_GARANTIDO
+              - VITALICIA
+              - VITALICIA_REVERSIVEL
+              - VITALICIA_MINIMO_GARANTIDO
+              - VITALICIA_REVERSIVEL_MINIMO_GARANTIDO
+            example: CERTA
+        premiumPayment:
+          type: object
+          required:
+            - paymentMethods
+            - frequencies
+          properties:
+            paymentMethods:
+              type: array
+              minItems: 1
+              items:
+                type: string
+                description: |
+                  Meio de pagamento escolhido pelo segurado. A considerar os domínios abaixo:
+                    1. Cartão de Crédito
+                    2. Cartão de Débito
+                    3. Débito em conta corrente
+                    4. Débito em conta poupança
+                    5. Boleto bancário
+                    6. PIX
+                    7. Consignação em Folha de Pagamento
+                    8. Pontos de Programa de Benefício
+                    9. Outros
+                maxLength: 27
+                enum:
+                  - CARTAO_CREDITO
+                  - CARTAO_DEBITO
+                  - DEBITO_CONTA_CORRENTE
+                  - DEBITO_CONTA_POUPANCA
+                  - BOLETO_BANCARIO
+                  - PIX
+                  - CONSIGNACAO_FOLHA_PAGAMENTO
+                  - PONTOS_PROGRAMA_BENEFÍCIO
+                  - OUTROS
+                example: CARTAO_CREDITO
+            frequencies:
+              type: array
+              minItems: 1
+              items:
+                type: string
+                description: |
+                  Periodicidade de pagamento do prêmio:
+                    1. Diária
+                    2. Mensal
+                    3. Única
+                    4. Anual
+                    5. Trimestral
+                    6. Semestral
+                    7. Fracionado
+                    8. Outra
+                maxLength: 10
+                enum:
+                  - DIARIA
+                  - MENSAL
+                  - UNICA
+                  - ANUAL
+                  - TRIMESTRAL
+                  - SEMESTRAL
+                  - FRACIONADO
+                  - OUTRA
+                example: DIARIA
+          additionalProperties: false
+        contributionTax:
+          type: string
+          maxLength: 500
+          description: 'Distribuição de frequência relativa aos valores referentes às taxas cobradas, nos termos do Anexo III.'
+        minimumRequirement:
+          type: object
+          required:
+            - contractType
+          properties:
+            contractType:
+              type: string
+              description: O tipo de serviço contratado. A considerar os domínios abaixo&#58;<br><ol><li>Coletivo Averbado</li><li>Coletivo Instituído</li><li>Individual</li></ol>
+              maxLength: 19
+              enum:
+                - COLETIVO_AVERBADO
+                - COLETIVO_INSTITUIDO
+                - INDIVIDUAL
+              example: COLETIVO_AVERBADO
+            contractingMinRequirement:
+              type: string
+              description: Campo aberto contendo todos os requisitos mínimos para contratação (possibilidade de incluir URL).
+              maxLength: 1024
+              example: 'https://openinsurance.com.br/aaa'
+          additionalProperties: false
+        targetAudience:
+          $ref: '#/components/schemas/EnumTargetAudience'
       additionalProperties: false
     OKResponseSurvivalCoveragePension:
       type: object
@@ -691,240 +917,6 @@ components:
           maxLength: 1024
           pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
           example: 'https://empresaa1.com/companies'
-      additionalProperties: false
-    RiskPensionProduct:
-      type: object
-      required:
-        - name
-        - code
-        - coverages
-        - assistanceType
-        - additional
-        - termsAndConditions
-        - benefitRecalculation
-        - premiumPayment
-        - targetAudience
-      properties:
-        name:
-          type: string
-          maxLength: 80
-          description: 'Nome comercial do produto, pelo qual é identificado nos canais de distribuição e atendimento da sociedade.'
-          example: Produto A
-        code:
-          type: string
-          maxLength: 80
-          description: Código único a ser definido pela sociedade.
-          example: '0001'
-        category:
-          type: string
-          description: Indicar a categoria do Produto&#58;<br><ol><li>Tradicional</li><li>Microsseguro</li></ol>
-          maxLength: 12
-          enum:
-            - TRADICIONAL
-            - MICROSSEGURO
-          example: TRADICIONAL
-        modality:
-          $ref: '#/components/schemas/EnumProductModality'
-        coverages:
-          type: array
-          items:
-            $ref: '#/components/schemas/Coverage'
-        assistanceType:
-          type: array
-          items:
-            $ref: '#/components/schemas/EnumAssistanceType'
-          example:
-            - PET
-            - FUNERAL
-        assistanceAdditionalInfos:
-          type: array
-          items:
-            type: string
-          description: Lista a ser preenchida pelas participantes quando houver 'Outros' no campo 'Tipo de Assistência'.
-        additional:
-          type: array
-          items:
-            $ref: '#/components/schemas/EnumAdditional'
-          example:
-            - SORTEIO
-            - OUTROS
-        termsAndConditions:
-          $ref: '#/components/schemas/TermsAndConditions'
-        globalCapital:
-          type: boolean
-          description: A considerar os seguintes domínios&#58;<br><ol><li>true</li><li>false</li></ol>
-          example: true
-        term:
-          type: array
-          items:
-            $ref: '#/components/schemas/EnumTerm'
-        pmbacRemuneration:
-          $ref: '#/components/schemas/PmbacRemuneration'
-        benefitRecalculation:
-          $ref: '#/components/schemas/BenefitRecalculation'
-        ageAdjustment:
-          $ref: '#/components/schemas/AgeAdjustment'
-        financialRegimeContractType:
-          type: array
-          items:
-            type: string
-            description: Listagem de regime financeiro para cada combinação de modalidade/cobertura do produto indicando&#58;<br><ol><li>Repartição simples</li><li>Repartição Capitais</li><li>Capitalização</li></ol>
-            maxLength: 29
-            enum:
-              - REPARTICAO_SIMPLES
-              - REPARTICAO_CAPITAIS
-              - CAPITALIZACAO
-            example: REPARTICAO_SIMPLES
-        reclaim:
-          $ref: '#/components/schemas/Reclaim'
-        otherGuaranteedValues:
-          type: array
-          items:
-            type: string
-            description: |
-              1. Saldamento
-              2. Benefício Prolongado
-              3. Não se aplica
-            maxLength: 20
-            enum:
-              - SALDAMENTO
-              - BENEFICIO_PROLONGADO
-              - NAO_APLICA
-            example: SALDAMENTO
-        profitModality:
-          $ref: '#/components/schemas/EnumRiskPensionPaymentModality'
-        allowPortability:
-          type: boolean
-          description: <ol><li>true</li><li>false</li></ol>
-        portabilityGraceTime:
-          $ref: '#/components/schemas/GracePeriod'
-        indemnityPaymentMethod:
-          type: array
-          items:
-            type: string
-            description: |
-              Modalidade de pagamento da indenização, a considerar os domínios abaixo:
-                1. Único
-                2. Sob a forma de renda
-            maxLength: 18
-            enum:
-              - UNICO
-              - SOB_FORMA_DE_RENDA
-            example: UNICO
-        indemnityPaymentIncome:
-          type: array
-          items:
-            type: string
-            description: |
-              Tipo de renda ou pensão, caso modalidade de pagamento de indenização seja sob a forma de renda:
-                1. Certa
-                2. Temporária
-                3. Temporária reversível
-                4. Temporário com mínimo garantido
-                5. Temporária reversível com mínimo garantido
-                6. Vitalícia
-                7. Vitalícia reversível
-                8. Vitalícia com o mínimo garantido
-                9. Vitalícia reversível como mínimo garantido
-            maxLength: 38
-            enum:
-              - CERTA
-              - TEMPORARIA
-              - TEMPORARIA_REVERSIVEL
-              - TEMPORARIO_MINIMO_GARANTIDO
-              - TEMPORARIA_REVERSIVEL_MINIMO_GARANTIDO
-              - VITALICIA
-              - VITALICIA_REVERSIVEL
-              - VITALICIA_MINIMO_GARANTIDO
-              - VITALICIA_REVERSIVEL_MINIMO_GARANTIDO
-            example: CERTA
-        premiumPayment:
-          type: object
-          required:
-            - paymentMethods
-            - frequencies
-          properties:
-            paymentMethods:
-              type: array
-              minItems: 1
-              items:
-                type: string
-                description: |
-                  Meio de pagamento escolhido pelo segurado. A considerar os domínios abaixo:
-                    1. Cartão de Crédito
-                    2. Cartão de Débito
-                    3. Débito em conta corrente
-                    4. Débito em conta poupança
-                    5. Boleto bancário
-                    6. PIX
-                    7. Consignação em Folha de Pagamento
-                    8. Pontos de Programa de Benefício
-                    9. Outros
-                maxLength: 27
-                enum:
-                  - CARTAO_CREDITO
-                  - CARTAO_DEBITO
-                  - DEBITO_CONTA_CORRENTE
-                  - DEBITO_CONTA_POUPANCA
-                  - BOLETO_BANCARIO
-                  - PIX
-                  - CONSIGNACAO_FOLHA_PAGAMENTO
-                  - PONTOS_PROGRAMA_BENEFÍCIO
-                  - OUTROS
-                example: CARTAO_CREDITO
-            frequencies:
-              type: array
-              minItems: 1
-              items:
-                type: string
-                description: |
-                  Periodicidade de pagamento do prêmio:
-                    1. Diária
-                    2. Mensal
-                    3. Única
-                    4. Anual
-                    5. Trimestral
-                    6. Semestral
-                    7. Fracionado
-                    8. Outra
-                maxLength: 10
-                enum:
-                  - DIARIA
-                  - MENSAL
-                  - UNICA
-                  - ANUAL
-                  - TRIMESTRAL
-                  - SEMESTRAL
-                  - FRACIONADO
-                  - OUTRA
-                example: DIARIA
-          additionalProperties: false
-        contributionTax:
-          type: string
-          maxLength: 500
-          description: 'Distribuição de frequência relativa aos valores referentes às taxas cobradas, nos termos do Anexo III.'
-        minimumRequirement:
-          type: object
-          required:
-            - contractType
-          properties:
-            contractType:
-              type: string
-              description: O tipo de serviço contratado. A considerar os domínios abaixo&#58;<br><ol><li>Coletivo Averbado</li><li>Coletivo Instituído</li><li>Individual</li></ol>
-              maxLength: 19
-              enum:
-                - COLETIVO_AVERBADO
-                - COLETIVO_INSTITUIDO
-                - INDIVIDUAL
-              example: COLETIVO_AVERBADO
-            contractingMinRequirement:
-              type: string
-              description: Campo aberto contendo todos os requisitos mínimos para contratação (possibilidade de incluir URL).
-              maxLength: 1024
-              example: 'https://openinsurance.com.br/aaa'
-          additionalProperties: false
-        targetAudience:
-          $ref: '#/components/schemas/EnumTargetAudience'
       additionalProperties: false
     EnumRiskPensionIndemnifiablePeriod:
       type: string
