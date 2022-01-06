@@ -355,16 +355,70 @@ components:
     GetSurvivalPensionContractData:
       type: object
       required:
-        - participantIdentification
+        - participant
+        - name
+        - code
+        - segment
+        - type
       properties:
-        participantIdentification:
+        participant:
           $ref: '#/components/schemas/ParticipantIdentification'
         society:
           $ref: '#/components/schemas/GetRiskPensionContractData/properties/society'
-        products:
+        name:
+          type: string
+          maxLength: 80
+          description: |
+            Nome comercial do produto, pelo qual é identificado nos canais de distribuição e atendimento da sociedade.
+          example: Produto A
+        code:
+          type: string
+          maxLength: 80
+          description: |
+            Código único a ser definido pela sociedade.
+          example: '0001'
+        segment:
+          type: string
+          description: |
+            Segmento do qual se trata o produto contratado
+            1. Seguro de Pessoas
+            2. Previdência
+          maxLength: 20
+          enum:
+            - SEGURO_DE_PESSOAS
+            - PREVIDENCIA
+          example: PREVIDENCIA
+        modality:
+          type: string
+          description: |
+            1. Contribuição Variável;
+            2. Benefício Definido.
+          maxLength: 21
+          enum:
+            - CONTRIBUICAO_VARIAVEL
+            - BENEFICIO_DEFINIDO
+          example: BENEFICIO_DEFINIDO
+        adittionalInfo:
+          type: string
+          description: Campo aberto (possibilidade de incluir URL)
+          example: 'https://openinsurance.com.br/aaa'
+          maxLength: 1024
+        termsAndConditions:
           type: array
           items:
-            $ref: '#/components/schemas/SurvivalPensionProduct'
+            $ref: '#/components/schemas/TermsAndConditions'
+        type:
+          $ref: '#/components/schemas/SurvivalPensionType'
+        defferalPeriod:
+          $ref: '#/components/schemas/SurvivalPensionDefferalPeriod'
+        grantPeriodBenefit:
+          $ref: '#/components/schemas/SurvivalPensionGrantPeriodBenefit'
+        costs:
+          $ref: '#/components/schemas/SurvivalPensionCosts'
+        minimumRequirements:
+          $ref: '#/components/schemas/SurvivalPensionMinimumRequirements'
+        targetAudience:
+          $ref: '#/components/schemas/EnumTargetAudience'
     SurvivalPensionInvestimentFund:
       type: object
       description: Fundos de Investimento (por fundo).
@@ -427,68 +481,6 @@ components:
           example: '1000.00'
         currency:
           $ref: '#/components/schemas/CurrencyCode'
-    SurvivalPensionProduct:
-      type: object
-      required:
-        - name
-        - code
-        - segment
-        - type
-      properties:
-        name:
-          type: string
-          maxLength: 80
-          description: |
-            Nome comercial do produto, pelo qual é identificado nos canais de distribuição e atendimento da sociedade.
-          example: Produto A
-        code:
-          type: string
-          maxLength: 80
-          description: |
-            Código único a ser definido pela sociedade.
-          example: '0001'
-        type:
-          $ref: '#/components/schemas/SurvivalPensionType'
-        segment:
-          type: string
-          description: |
-            Segmento do qual se trata o produto contratado
-            1. Seguro de Pessoas
-            2. Previdência
-          maxLength: 20
-          enum:
-            - SEGURO_DE_PESSOAS
-            - PREVIDENCIA
-          example: PREVIDENCIA
-        modality:
-          type: string
-          description: |
-            1. Contribuição Variável;
-            2. Benefício Definido.
-          maxLength: 21
-          enum:
-            - CONTRIBUICAO_VARIAVEL
-            - BENEFICIO_DEFINIDO
-          example: BENEFICIO_DEFINIDO
-        adittionalInfo:
-          type: string
-          description: Campo aberto (possibilidade de incluir URL)
-          example: 'https://openinsurance.com.br/aaa'
-          maxLength: 1024
-        minimumRequirements:
-          $ref: '#/components/schemas/SurvivalPensionMinimumRequirements'
-        targetAudience:
-          $ref: '#/components/schemas/EnumTargetAudience'
-        termsAndConditions:
-          type: array
-          items:
-            $ref: '#/components/schemas/TermsAndConditions'
-        defferalPeriod:
-          $ref: '#/components/schemas/SurvivalPensionDefferalPeriod'
-        grantPeriodBenefit:
-          $ref: '#/components/schemas/SurvivalPensionGrantPeriodBenefit'
-        costs:
-          $ref: '#/components/schemas/SurvivalPensionCosts'
     SurvivalPensionMinimumRequirements:
       type: object
       required:
@@ -550,6 +542,12 @@ components:
           description: 'Para produtos do tipo PDR e VDR, indicação do índice de ampla divulgação utilizados como garantia mínima de desempenho.'
           example: SELIC
           maxLength: 12
+        reversalFinancialResults:
+          type: string
+          maxLength: 8
+          pattern: '^[0-1]\.\d{6}$'
+          description: Percentual de reversão de excedente financeiro na concessão. Em %.
+          example: '0.051230'
         minimumPremium:
           $ref: '#/components/schemas/SurvivalPensionMinimumPremium'
         premiumPaymentMethods:
@@ -586,26 +584,20 @@ components:
           example: true
         gracePeriod:
           $ref: '#/components/schemas/SurvivalPensionGracePeriod'
-        reversalFinancialResults:
-          type: string
-          maxLength: 8
-          pattern: '^[0-1]\.\d{6}$'
-          description: Percentual de reversão de excedente financeiro na concessão. Em %.
-          example: '0.051230'
         redemptionPaymentTerm:
           type: integer
           description: Prazo em dias para pagamento do resgate
           maximum: 9999
           example: 10
-        investmentFunds:
-          type: array
-          items:
-            $ref: '#/components/schemas/SurvivalPensionInvestimentFund'
         portabilityPaymentTerm:
           type: number
           description: Prazo em dias para pagamento da portabilidade (entre empresas diferentes).
           example: 20
           maximum: 9999
+        investmentFunds:
+          type: array
+          items:
+            $ref: '#/components/schemas/SurvivalPensionInvestimentFund'
     SurvivalPensionType:
       type: string
       description: |
@@ -746,10 +738,10 @@ components:
       type: object
       description: Período de concessão do benefício
       required:
-        - incomeModality
+        - incomeModalities
         - biometricTable
       properties:
-        incomeModality:
+        incomeModalities:
           type: array
           minItems: 1
           items:
