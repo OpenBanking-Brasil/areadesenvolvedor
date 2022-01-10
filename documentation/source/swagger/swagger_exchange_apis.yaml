@@ -23,7 +23,7 @@ tags:
   - name: Exchange VET Value
     description: Operações para obter as informações de Câmbio para valor do VET.
 paths:
-  /online-rate:
+  /online-rates:
     get:
       tags:
         - Exchange Online Rate
@@ -46,7 +46,7 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /vet-value:
+  /vet-values:
     get:
       tags:
         - Exchange VET Value
@@ -174,43 +174,37 @@ components:
       type: object
       description: Conjunto de informações referentes às informações de câmbio
       required:
-        - participantIdentification
-        - onlineRate
+        - participant
+        - values
+        - timestamp
+        - disclaimer
       properties:
-        participantIdentification:
+        participant:
           $ref: '#/components/schemas/ExchangeParticipantIdentification'
-        onlineRate:
-          type: object
-          description: 'Taxa disponibilizada (taxa online) pelas instituições no formato D+2 (valor U$ 100.000-operações cambio pronto) separado por moeda dólar e euro compra e venda PF/PJ.<br><ul><li>Não entra operações de cambio futuro, ACC/ACE, futuros, trava</li><li>Deve ser adicionado um timestamp no momento da consulta no formato hh:mm:ss</li><li>Adicionar disclaimer informando que a taxa apresentada é somente informativa, para a contratação de uma operação, deverá ser consultado o canal correspondente de cada instituição</li></ul>'
-          required:
-            - values
-            - timestamp
-            - disclaimer
-          properties:
-            values:
-              type: array
-              items:
-                $ref: '#/components/schemas/OnlineRate'
-              example:
-                - foreignCurrency: USD
-                  deliveryForeignCurrency: ESPECIE
-                  transactionType: COMPRA
-                  targetAudience: PF
-                  value: '5.5023'
-                - foreignCurrency: EUR
-                  deliveryForeignCurrency: CARTAO_PRE_PAGO
-                  transactionType: VENDA
-                  targetAudience: PJ
-                  value: '2.7045'
-            timestamp:
-              type: string
-              format: date-time
-              description: Timestamp do momento da consulta
-              example: '2017-07-21T17:32:28Z'
-            disclaimer:
-              type: string
-              description: 'Disclaimer informando que a taxa apresentada é somente informativa, para a contratação de uma operação, deverá ser consultado o canal correspondente de cada instituição.'
-              example: 'Informamos que esta taxa é estimada e exclusiva para fins de Open Finance,  não sendo válida para a contratação de operações de câmbio. Para obter a taxa para fechamento do câmbio, pedimos consultar os canais disponíveis para contratação.'
+        values:
+          type: array
+          items:
+            $ref: '#/components/schemas/OnlineRate'
+          example:
+            - foreignCurrency: USD
+              deliveryForeignCurrency: ESPECIE
+              transactionType: COMPRA
+              targetAudience: PF
+              value: '5.5023'
+            - foreignCurrency: EUR
+              deliveryForeignCurrency: CARTAO_PRE_PAGO
+              transactionType: VENDA
+              targetAudience: PJ
+              value: '2.7045'
+        timestamp:
+          type: string
+          format: date-time
+          description: Timestamp do momento da consulta
+          example: '2017-07-21T17:32:28Z'
+        disclaimer:
+          type: string
+          description: 'Disclaimer informando que a taxa apresentada é somente informativa, para a contratação de uma operação, deverá ser consultado o canal correspondente de cada instituição.'
+          example: 'Informamos que esta taxa é estimada e exclusiva para fins de Open Finance,  não sendo válida para a contratação de operações de câmbio. Para obter a taxa para fechamento do câmbio, pedimos consultar os canais disponíveis para contratação.'
       additionalProperties: false
     ExchangeVetValue:
       type: object

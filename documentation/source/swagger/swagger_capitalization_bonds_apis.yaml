@@ -60,11 +60,12 @@ components:
         - capitalizationPeriod
         - latePayment
         - contributionPayment
+        - finalRedemptionRate
         - redemptionPercentageEndTerm
         - draws
         - additionalInfo
         - minimumRequirementDetails
-        - targetAudiences
+        - targetAudience
       properties:
         participant:
           $ref: '#/components/schemas/CapitalizationBondsParticipantIdentification'
@@ -124,9 +125,15 @@ components:
           $ref: '#/components/schemas/ContributionPayment'
         redemptionPercentageEndTerm:
           type: string
-          description: Valor percentual (%) de resgate final permitido.
+          description: 'Percentual mínimo da soma das contribuições efetuadas que poderá ser resgatado ao final da vigência, tendo como condição os pagamentos das parcelas nos respectivos vencimentos.'
           maxLength: 4
           pattern: '^[0-9]\.\d{2}$'
+          example: '1.51'
+        finalRedemptionRate:
+          type: string
+          description: Valor percentual (%) de resgate final permitido.
+          pattern: '^[0-9]\.\d{2}$'
+          maxLength: 4
           example: '1.51'
         draws:
           type: array
@@ -147,12 +154,20 @@ components:
             tamanho. p.ex. ‘https://ACME.exemplo/capitalizacao/tradicional/pdf/condicoes_gerais.’
           maxLength: 1024
           example: 'https://ACME.exemplo/capitalizacao/tradicional/pdf/condicoes_gerais'
-        targetAudiences:
-          type: array
-          description: 'Público a quem se destina o produto, podendo ser Pessoa Natural ou Pessoa Jurídica.'
-          minItems: 1
-          items:
-            $ref: '#/components/schemas/CapitalizationBondsProductEnumTargetAudience'
+        targetAudience:
+          type: string
+          description: |
+            A considerar os domínios abaixo:
+
+              1. Pessoa Natural
+              2. Pessoa Jurídica
+              3. Ambas (Pessoa Natural e Jurídica)
+          maxLength: 23
+          enum:
+            - PESSOA_NATURAL
+            - PESSOA_JURIDICA
+            - PESSOA_NATURAL_JURIDICA
+          example: PESSOA_NATURAL
       additionalProperties: false
     CapitalizationBondsParticipantIdentification:
       type: object
@@ -496,7 +511,7 @@ components:
             - ANUAL
             - OUTROS
           example: UNICO
-        periodicityAdditionalInfo:
+        timeIntervalAdditionalInfo:
           type: string
           description: 'Restrição: Campo obrigatório para complementar a informação quando selecionada a opção ''OUTROS'''
           maxLength: 200
@@ -512,7 +527,7 @@ components:
           format: integer
           description: 'Valor dos sorteios representado por múltiplo do valor de contribuição. Por exemplo: 5 vezes valor da contribuição'
           maxLength: 6
-          example: 999999
+          example: 5
         earlySettlementRaffle:
           description: |
             Modelo de sorteio que acarreta, ao título contemplado, o seu resgate total obrigatório (Resolução Normativa 384/20). Conforme os domínios:
@@ -540,14 +555,6 @@ components:
           maxLength: 8
           example: '1.000002'
       additionalProperties: false
-    CapitalizationBondsProductEnumTargetAudience:
-      type: string
-      maxLength: 15
-      enum:
-        - PESSOA_NATURAL
-        - PESSOA_JURIDICA
-      example: PESSOA_NATURAL
-      description: 'Público a quem se destina o produto, podendo ser Pessoa Natural ou Pessoa Jurídica.'
     Links:
       type: object
       description: Referências para outros recusos da API requisitada.
