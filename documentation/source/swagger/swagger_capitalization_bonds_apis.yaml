@@ -12,15 +12,15 @@ info:
     email: gt-interfaces@openbankingbr.org
     url: 'https://openbanking-brasil.github.io/areadesenvolvedor/'
 servers:
-  - url: 'https://api.banco.com.br/open-banking/opendata-capitalization-bonds/v1'
+  - url: 'https://api.banco.com.br/open-banking/opendata-capitalization/v1'
     description: Servidor de Produção
-  - url: 'https://apih.banco.com.br/open-banking/opendata-capitalization-bonds/v1'
+  - url: 'https://apih.banco.com.br/open-banking/opendata-capitalization/v1'
     description: Servidor de Homologação
 tags:
   - name: Capitalization Bonds
     description: Operações para consulta das informações de Titulos de Capitalização
 paths:
-  /products:
+  /bonds:
     get:
       tags:
         - Capitalization Bonds
@@ -48,9 +48,12 @@ components:
     CapitalizationBondsProductIdentificationData:
       type: object
       required:
-        - participantIdentification
-        - insuranceCompanyIdentification
-        - product
+        - participant
+        - society
+        - name
+        - code
+        - modality
+        - costType
         - termsAndConditions
         - quotas
         - validity
@@ -63,12 +66,37 @@ components:
         - minimumRequirementDetails
         - targetAudiences
       properties:
-        participantIdentification:
+        participant:
           $ref: '#/components/schemas/CapitalizationBondsParticipantIdentification'
-        insuranceCompanyIdentification:
-          $ref: '#/components/schemas/CapitalizationBondsInsuranceCompanyIdentification'
-        product:
-          $ref: '#/components/schemas/CapitalizationBondsProduct'
+        society:
+          type: object
+          description: Conjunto de informações relativas à seguradora do produto de open insurance
+          required:
+            - name
+            - cnpjNumber
+          properties:
+            name:
+              type: string
+              description: Nome da Sociedade Seguradora.
+              maxLength: 80
+              example: Society A1
+            cnpjNumber:
+              $ref: '#/components/schemas/CapitalizationBondsParticipantIdentification/properties/cnpjNumber'
+          additionalProperties: false
+        name:
+          type: string
+          description: 'Nome comercial do produto, pelo qual é identificado nos canais de distribuição e atendimento da sociedade.'
+          maxLength: 80
+          example: ACMEcap
+        code:
+          type: string
+          description: Código único a ser definido pela sociedade.
+          maxLength: 100
+          example: 01234589_cap
+        modality:
+          $ref: '#/components/schemas/EnumCapitalizationBondsProductModality'
+        costType:
+          $ref: '#/components/schemas/EnumCapitalizationBondsProductCostType'
         termsAndConditions:
           $ref: '#/components/schemas/CapitalizationBondsProductTermsAndConditions'
         quotas:
@@ -154,49 +182,6 @@ components:
           maxLength: 1024
           pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
           example: 'https://empresaa1.com/companies'
-      additionalProperties: false
-    CapitalizationBondsInsuranceCompanyIdentification:
-      type: object
-      required:
-        - name
-        - cnpjNumber
-      properties:
-        name:
-          type: string
-          description: |
-            Nome da Sociedade Seguradora.
-            p. ex. ‘Sociedade A'
-          maxLength: 80
-          example: ACME cap da ACME seguros
-        cnpjNumber:
-          type: string
-          description: 'Número completo do CNPJ da instituição. O CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. Deve-se ter apenas os números do CNPJ, sem máscara.'
-          pattern: '^\d{14}$'
-          maxLength: 14
-          example: '50685362000135'
-      additionalProperties: false
-    CapitalizationBondsProduct:
-      type: object
-      required:
-        - name
-        - code
-        - modality
-        - costType
-      properties:
-        name:
-          type: string
-          description: 'Nome comercial do produto, pelo qual é identificado nos canais de distribuição e atendimento da sociedade.'
-          maxLength: 80
-          example: ACMEcap
-        code:
-          type: string
-          description: Código único a ser definido pela sociedade.
-          maxLength: 100
-          example: 01234589_cap
-        modality:
-          $ref: '#/components/schemas/EnumCapitalizationBondsProductModality'
-        costType:
-          $ref: '#/components/schemas/EnumCapitalizationBondsProductCostType'
       additionalProperties: false
     EnumCapitalizationBondsProductModality:
       type: string

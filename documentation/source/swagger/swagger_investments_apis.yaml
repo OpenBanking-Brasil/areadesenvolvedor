@@ -20,13 +20,13 @@ servers:
 tags:
   - name: Funds
     description: Método para obter a lista de Fundos de Investimentos
-  - name: Fixed Income Bank
+  - name: Bank Fixed Incomes
     description: 'Método para obter a lista de produtos de Renda Fixa Bancária (CDB, RDB, LCI e LCA)'
-  - name: Fixed Income Credit
+  - name: Credit Fixed Incomes
     description: 'Método para obter a lista de produtos de Renda Fixa Crédito (Debênture, CRI e CRA)'
-  - name: Variable Income
+  - name: Variable Incomes
     description: Método para obter a lista de informações de produtos de Renda Variável (Ações e Fundos de Índices)
-  - name: Treasure
+  - name: Treasure Titles
     description: Método para obter informações de Títulos do Tesouro Direto
 paths:
   /funds:
@@ -52,10 +52,10 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /fixed-income-bank:
+  /bank-fixed-incomes:
     get:
       tags:
-        - Fixed Income Bank
+        - Bank Fixed Incomes
       summary: 'Conjunto de informações de produtos de Renda Fixa Bancária (CDB, RDB, LCI e LCA)'
       operationId: investmentsGetFixedIncomeBank
       description: 'Método para obter a lista de produtos de Renda Fixa Bancária (CDB, RDB, LCI e LCA)'
@@ -75,10 +75,10 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /fixed-income-credit:
+  /credit-fixed-incomes:
     get:
       tags:
-        - Fixed Income Credit
+        - Credit Fixed Incomes
       summary: 'Conjunto de informações de produtos de Renda Fixa Crédito (Debênture, CRI e CRA)'
       operationId: investmentsGetFixedIncomeCredit
       description: 'Método para obter a lista de produtos de Renda Fixa Crédito (Debênture, CRI e CRA)'
@@ -98,10 +98,10 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /variable-income:
+  /variable-incomes:
     get:
       tags:
-        - Variable Income
+        - Variable Incomes
       summary: Conjunto de informações de produtos de Renda Variável (Ações e Fundos de Índices)
       operationId: investmentsGetVariableIncome
       description: Método para obter a lista de informações de produtos de Renda Variável (Ações e Fundos de Índices)
@@ -121,10 +121,10 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /treasure:
+  /treasure-titles:
     get:
       tags:
-        - Treasure
+        - Treasure Titles
       summary: Conjunto de informações de Títulos do Tesouro Direto
       operationId: investmentsGetTreasure
       description: Método para obter informações de Títulos do Tesouro Direto
@@ -306,14 +306,22 @@ components:
     InvestmentsFixedIncomeBank:
       type: object
       required:
-        - productIdentification
+        - participant
+        - issuerInstitutionCNPJ
+        - investimentType
         - index
         - investmentConditions
       properties:
-        participantIdentification:
+        participant:
           $ref: '#/components/schemas/InvestmentsParticipantIdentification'
-        productIdentification:
-          $ref: '#/components/schemas/InvestmentsFixedIncomeBankProductIdentification'
+        issuerInstitutionCNPJ:
+          type: string
+          description: CNPJ da instituição emissora.
+          maxLength: 14
+          pattern: '^\d{14}$'
+          example: '45086338000178'
+        investimentType:
+          $ref: '#/components/schemas/EnumInvestmentsFixedIncomeBankProductType'
         index:
           $ref: '#/components/schemas/InvestmentsFixedIncomeBankIndex'
         investmentConditions:
@@ -379,38 +387,15 @@ components:
           minimum: 0
           example: 180
       additionalProperties: false
-    InvestmentsFixedIncomeBankProductIdentification:
-      type: object
-      required:
-        - issuerInstitutionCNPJ
-        - productType
-      properties:
-        issuerInstitutionCNPJ:
-          type: string
-          description: CNPJ da instituição emissora.
-          maxLength: 14
-          pattern: '^\d{14}$'
-          example: '45086338000178'
-        productType:
-          $ref: '#/components/schemas/EnumInvestmentsFixedIncomeBankProductType'
-      additionalProperties: false
     InvestmentsFixedIncomeCredit:
-      type: object
-      required:
-        - fees
-      properties:
-        participantIdentification:
-          $ref: '#/components/schemas/InvestmentsParticipantIdentification'
-        fees:
-          $ref: '#/components/schemas/InvestmentsFixedIncomeCreditFees'
-      additionalProperties: false
-    InvestmentsFixedIncomeCreditFees:
       type: object
       required:
         - investmentType
         - custodyFee
         - loadingRate
       properties:
+        participant:
+          $ref: '#/components/schemas/InvestmentsParticipantIdentification'
         investmentType:
           $ref: '#/components/schemas/EnumInvestmentsFixedIncomeCreditInvestmentType'
         custodyFee:
@@ -421,16 +406,69 @@ components:
     InvestmentsFund:
       type: object
       required:
-        - participantIdentification
-        - product
+        - participant
+        - name
+        - cnpjNumber
+        - admin
+        - fundManager
+        - anbimaCategory
         - fees
         - generalConditions
         - taxation
       properties:
-        participantIdentification:
+        participant:
           $ref: '#/components/schemas/InvestmentsParticipantIdentification'
-        product:
-          $ref: '#/components/schemas/InvestmentsFundProduct'
+        name:
+          type: string
+          description: Nome oficial do fundo de investimento.
+          maxLength: 250
+          example: FUNDO DE INVESTIMENTO EM COTAS DE FUNDOS DE INVESTIMENTO
+        cnpjNumber:
+          type: string
+          description: CNPJ do fundo de investimento.
+          maxLength: 14
+          pattern: '^\d{14}$'
+          example: '64108803000191'
+        isinCode:
+          type: string
+          description: 'Código universal que identifica cada valor mobiliário ou instrumento financeiro, conforme Norma ISO 6166.<br><br>DEFINIÇÃO&#58;O ISIN (International Securities Identification Number) é um código que identifica um valor mobiliário, conforme a norma ISO 6166.<br>ESTRUTURA<br>O ISIN é um código alfanumérico que possui 12 caracteres com a seguinte estrutura&#58;<ul><li>um prefixo, composto de 2 caracteres alfa, que identifica o código do país (Norma ISO 3166);</li><li>o número básico, composto de 9 caracteres alfabéticos ou numéricos em sua extensão;</li><li>um dígito numérico de controle.</li></ul>'
+          maxLength: 12
+          pattern: '^[A-Z]{2}([A-Z0-9]){9}\d{1}$'
+          example: BRAAAAAAA000
+        admin:
+          required:
+            - name
+            - cnpjNumber
+          properties:
+            name:
+              type: string
+              description: Razão social da pessoa jurídica autorizada pela CVM para o exercício de administrador de carteiras de valores mobiliários e responsável pela administração do fundo.
+              maxLength: 100
+              example: ADM OPEN BANKING DTVM S.A.
+            cnpjNumber:
+              type: string
+              description: CNPJ do administrador.
+              maxLength: 14
+              pattern: '^\d{14}$'
+              example: '14511732000150'
+        fundManager:
+          required:
+            - name
+            - cnpjNumber
+          properties:
+            name:
+              type: string
+              description: Pessoa natural ou jurídica responsável pela gestão profissional dos ativos da carteira de valores mobiliários autorizado pela CVM.
+              maxLength: 100
+              example: GESTOR OPEN BANKING DTVM S.A.
+            cnpjNumber:
+              type: string
+              description: CNPJ do gestor do fundo de investimento.
+              maxLength: 14
+              pattern: '^\d{14}$'
+              example: '16332711000101'
+        anbimaCategory:
+          $ref: '#/components/schemas/EnumInvestmentsFundProductAnbimaCategory'
         fees:
           $ref: '#/components/schemas/InvestmentsFundFees'
         generalConditions:
@@ -455,20 +493,23 @@ components:
           maxLength: 8
           pattern: '^\d{1}\.\d{1,6}$'
           example: '0.010000'
-        performanceFeeMethod:
-          $ref: '#/components/schemas/EnumInvestmentsFundFeesPerformanceFeeMethod'
-        performanceFeeBenchmark:
-          $ref: '#/components/schemas/EnumInvestmentsFundFeesPerformanceFeeBenchmark'
-        performanceFeeBenchmarkAdditionalInfo:
-          type: string
-          description: Campo a ser preenchido pelas participantes quando houver ‘Outros’ no campo ‘Taxa de Performance - Benchmark’.
-        performanceFeeAmount:
-          type: string
-          description: Taxa cobrada do fundo em função de resultado conforme regras dispostas no regulamento do fundo.
-          minLength: 3
-          maxLength: 8
-          pattern: '^\d{1}\.\d{1,6}$'
-          example: '0.050000'
+        performanceFee:
+          type: object
+          properties:
+            method:
+              $ref: '#/components/schemas/EnumInvestmentsFundFeesPerformanceFeeMethod'
+            benchmark:
+              $ref: '#/components/schemas/EnumInvestmentsFundFeesPerformanceFeeBenchmark'
+            benchmarkAdditionalInfo:
+              type: string
+              description: Campo a ser preenchido pelas participantes quando houver ‘Outros’ no campo ‘Taxa de Performance - Benchmark’.
+            amount:
+              type: string
+              description: Taxa cobrada do fundo em função de resultado conforme regras dispostas no regulamento do fundo.
+              minLength: 3
+              maxLength: 8
+              pattern: '^\d{1}\.\d{1,6}$'
+              example: '0.050000'
         exitFee:
           type: string
           description: Taxa paga pelo cotista ao resgatar recursos de um fundo.
@@ -482,12 +523,7 @@ components:
       required:
         - minimumAmount
         - currency
-        - redemptionQuotationDays
-        - redemptionQuotationTerm
-        - redemptionPaymentTerm
-        - redemptionGraceDays
-        - applicationQuotationTerm
-        - applicationQuotationPeriod
+        - redemption
         - fundQuotaType
       properties:
         minimumAmount:
@@ -499,112 +535,65 @@ components:
           example: '100000.12'
         currency:
           type: string
-          description: 'Moeda referente ao valor mínimo de aplicação, segundo modelo ISO-4217. p.ex.''BRL''.'
-          maxLength: 3
+          pattern: '^[A-Z]{3}$'
+          description: 'Moeda referente ao valor da transação, segundo modelo ISO-4217. p.ex. ''BRL''<br>Todos os saldos informados estão representados com a moeda vigente do Brasil'
           example: BRL
-        redemptionQuotationDays:
-          type: integer
-          format: int32
-          description: Prazo em dias indicada no regulamento do fundo para a conversão das cotas em dinheiro.
-          minimum: 0
-          example: 3
-        redemptionQuotationTerm:
-          $ref: '#/components/schemas/EnumInvestmentsFundGeneralConditionsTermType'
-        redemptionPaymentTerm:
-          type: integer
-          format: int32
-          description: 'Prazo em dias do efetivo pagamento, pelo fundo, do valor líquido devido ao cotista que efetuou pedido de resgate.'
-          minimum: 0
-          example: 3
-        redemptionGraceDays:
-          $ref: '#/components/schemas/EnumInvestmentsFundGeneralConditionsTermType'
-        applicationQuotationDays:
-          type: integer
-          format: int32
-          description: 'Indica se o fundo estabelece um período em que o investidor não pode resgatar os recursos aplicados no fundo. Caso ocorra resgate antes do período, o investidor perderá a rentabilidade do período.'
-          minimum: 0
-          example: 60
-        applicationQuotationTerm:
-          type: integer
-          format: int32
-          description: Prazo em dias de cotização da aplicação.
-          minimum: 0
-          example: 3
-        applicationQuotationPeriod:
-          $ref: '#/components/schemas/EnumInvestmentsFundGeneralConditionsTermType'
+        redemption:
+          type: object
+          required:
+            - quotationDays
+            - quotationTerm
+            - paymentTerm
+            - graceDays
+          properties:
+            quotationDays:
+              type: integer
+              format: int32
+              description: Prazo em dias indicada no regulamento do fundo para a conversão das cotas em dinheiro.
+              minimum: 0
+              example: 3
+            quotationTerm:
+              $ref: '#/components/schemas/EnumInvestmentsFundGeneralConditionsTermType'
+            paymentTerm:
+              type: integer
+              format: int32
+              description: 'Prazo em dias do efetivo pagamento, pelo fundo, do valor líquido devido ao cotista que efetuou pedido de resgate.'
+              minimum: 0
+              example: 3
+            graceDays:
+              $ref: '#/components/schemas/EnumInvestmentsFundGeneralConditionsTermType'
+        application:
+          type: object
+          required:
+            - quotationTerm
+            - quotationPeriod
+          properties:
+            quotationDays:
+              type: integer
+              format: int32
+              description: 'Indica se o fundo estabelece um período em que o investidor não pode resgatar os recursos aplicados no fundo. Caso ocorra resgate antes do período, o investidor perderá a rentabilidade do período.'
+              minimum: 0
+              example: 60
+            quotationTerm:
+              type: integer
+              format: int32
+              description: Prazo em dias de cotização da aplicação.
+              minimum: 0
+              example: 3
+            quotationPeriod:
+              $ref: '#/components/schemas/EnumInvestmentsFundGeneralConditionsTermType'
         fundQuotaType:
           $ref: '#/components/schemas/EnumInvestmentsFundGeneralConditionsFundQuotaType'
       additionalProperties: false
-    InvestmentsFundProduct:
-      type: object
-      required:
-        - name
-        - cnpjNumber
-        - admin
-        - adminCnpjNumber
-        - fundManager
-        - fundManagerCnpjNumber
-        - anbimaCategory
-      properties:
-        name:
-          type: string
-          description: Nome oficial do fundo de investimento.
-          maxLength: 250
-          example: FUNDO DE INVESTIMENTO EM COTAS DE FUNDOS DE INVESTIMENTO
-        cnpjNumber:
-          type: string
-          description: CNPJ do fundo de investimento.
-          maxLength: 14
-          pattern: '^\d{14}$'
-          example: '64108803000191'
-        isinCode:
-          type: string
-          description: 'Código universal que identifica cada valor mobiliário ou instrumento financeiro, conforme Norma ISO 6166.<br><br>DEFINIÇÃO&#58;O ISIN (International Securities Identification Number) é um código que identifica um valor mobiliário, conforme a norma ISO 6166.<br>ESTRUTURA<br>O ISIN é um código alfanumérico que possui 12 caracteres com a seguinte estrutura&#58;<ul><li>um prefixo, composto de 2 caracteres alfa, que identifica o código do país (Norma ISO 3166);</li><li>o número básico, composto de 9 caracteres alfabéticos ou numéricos em sua extensão;</li><li>um dígito numérico de controle.</li></ul>'
-          maxLength: 12
-          pattern: '^[A-Z]{2}([A-Z0-9]){9}\d{1}$'
-          example: BRAAAAAAA000
-        admin:
-          type: string
-          description: Razão social da pessoa jurídica autorizada pela CVM para o exercício de administrador de carteiras de valores mobiliários e responsável pela administração do fundo.
-          maxLength: 100
-          example: ADM OPEN BANKING DTVM S.A.
-        adminCnpjNumber:
-          type: string
-          description: CNPJ do administrador.
-          maxLength: 14
-          pattern: '^\d{14}$'
-          example: '14511732000150'
-        fundManager:
-          type: string
-          description: Pessoa natural ou jurídica responsável pela gestão profissional dos ativos da carteira de valores mobiliários autorizado pela CVM.
-          maxLength: 100
-          example: GESTOR OPEN BANKING DTVM S.A.
-        fundManagerCnpjNumber:
-          type: string
-          description: CNPJ do gestor do fundo de investimento.
-          maxLength: 14
-          pattern: '^\d{14}$'
-          example: '16332711000101'
-        anbimaCategory:
-          $ref: '#/components/schemas/EnumInvestmentsFundProductAnbimaCategory'
-      additionalProperties: false
     InvestmentsTreasure:
-      type: object
-      required:
-        - fees
-      properties:
-        participantIdentification:
-          $ref: '#/components/schemas/InvestmentsParticipantIdentification'
-        fees:
-          $ref: '#/components/schemas/InvestmentsTreasureFees'
-      additionalProperties: false
-    InvestmentsTreasureFees:
       type: object
       required:
         - investmentType
         - custodyFee
         - loadingRate
       properties:
+        participant:
+          $ref: '#/components/schemas/InvestmentsParticipantIdentification'
         investmentType:
           $ref: '#/components/schemas/EnumInvestmentsTreasureInvestmentType'
         custodyFee:
@@ -615,20 +604,12 @@ components:
     InvestmentsVariableIncome:
       type: object
       required:
-        - fees
-      properties:
-        participantIdentification:
-          $ref: '#/components/schemas/InvestmentsParticipantIdentification'
-        fees:
-          $ref: '#/components/schemas/InvestmentsVariableIncomeFees'
-      additionalProperties: false
-    InvestmentsVariableIncomeFees:
-      type: object
-      required:
         - investmentType
         - custodyFee
         - loadingRate
       properties:
+        participant:
+          $ref: '#/components/schemas/InvestmentsParticipantIdentification'
         investmentType:
           $ref: '#/components/schemas/EnumInvestmentsVariableIncomeInvestmentType'
         custodyFee:

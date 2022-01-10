@@ -30,6 +30,9 @@ paths:
       summary: Conjunto de informações de Credenciamento para Pessoa Física.
       operationId: getPersonalAcquiringServices
       description: Método para disponibilizar as taxas e tarifas por serviços.
+      parameters:
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
       responses:
         '200':
           $ref: '#/components/responses/OKResponseAcquiringServices'
@@ -50,6 +53,9 @@ paths:
       summary: Conjunto de informações de Credenciamento para Pessoa Jurídica.
       operationId: getBusinessAcquiringServices
       description: Método para disponibilizar as taxas e tarifas por serviços.
+      parameters:
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
       responses:
         '200':
           $ref: '#/components/responses/OKResponseAcquiringServices'
@@ -175,59 +181,6 @@ components:
           pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
           example: 'https://empresaa1.com/companies'
       additionalProperties: false
-    FeesAndRatesForService:
-      type: object
-      required:
-        - feeName
-        - code
-        - prices
-        - chargingTriggerInfo
-        - minimum
-        - maximum
-      properties:
-        feeName:
-          $ref: '#/components/schemas/EnumAcquiringServicesFeeName'
-        code:
-          $ref: '#/components/schemas/EnumAcquiringServicesCode'
-        prices:
-          type: array
-          minItems: 4
-          maxItems: 4
-          items:
-            $ref: '#/components/schemas/Price'
-          example:
-            - interval: 1_FAIXA
-              value: '0.0203'
-              customerRate: '0.5000'
-            - interval: 2_FAIXA
-              value: '0.0306'
-              customerRate: '0.1000'
-            - interval: 3_FAIXA
-              value: '0.0343'
-              customerRate: '0.3000'
-            - interval: 4_FAIXA
-              value: '0.2468'
-              customerRate: '0.1000'
-        chargingTriggerInfo:
-          type: string
-          maxLength: 200
-          example: NA
-          description: |
-            Recebimento através de transação de cartão.
-        minimum:
-          type: string
-          minLength: 1
-          maxLength: 999999
-          pattern: '^\d{1}\.\d{1,4}$'
-          description: Valor mínimo
-          example: '2.0'
-        maximum:
-          type: string
-          minLength: 1
-          maxLength: 999999
-          pattern: '^\d{1}\.\d{1,4}$'
-          description: Valor máximo
-          example: '5.0'
     EnumAcquiringServicesFeeName:
       type: string
       description: |
@@ -284,18 +237,80 @@ components:
       type: object
       description: Conjunto de informações referentes às informações de credenciamento
       required:
-        - participantIdentification
-        - name
+        - participant
+        - feeName
         - code
+        - prices
         - chargingTriggerInfo
+        - minimum
+        - maximum
       properties:
-        participantIdentification:
+        participant:
           $ref: '#/components/schemas/AcquiringServicesParticipantIdentification'
-        feesAndRatesForService:
+        feeName:
+          $ref: '#/components/schemas/EnumAcquiringServicesFeeName'
+        code:
+          $ref: '#/components/schemas/EnumAcquiringServicesCode'
+        prices:
           type: array
+          minItems: 4
+          maxItems: 4
           items:
-            $ref: '#/components/schemas/FeesAndRatesForService'
+            $ref: '#/components/schemas/Price'
+          example:
+            - interval: 1_FAIXA
+              value: '0.0203'
+              customerRate: '0.5000'
+            - interval: 2_FAIXA
+              value: '0.0306'
+              customerRate: '0.1000'
+            - interval: 3_FAIXA
+              value: '0.0343'
+              customerRate: '0.3000'
+            - interval: 4_FAIXA
+              value: '0.2468'
+              customerRate: '0.1000'
+        chargingTriggerInfo:
+          type: string
+          maxLength: 200
+          example: NA
+          description: |
+            Recebimento através de transação de cartão.
+        minimum:
+          type: string
+          minLength: 1
+          maxLength: 999999
+          pattern: '^\d{1}\.\d{1,4}$'
+          description: Valor mínimo
+          example: '2.0'
+        maximum:
+          type: string
+          minLength: 1
+          maxLength: 999999
+          pattern: '^\d{1}\.\d{1,4}$'
+          description: Valor máximo
+          example: '5.0'
       additionalProperties: false
+  parameters:
+    page:
+      name: page
+      in: query
+      description: Número da página que está sendo requisitada (o valor da primeira página é 1).
+      schema:
+        type: integer
+        default: 1
+        minimum: 1
+        format: int32
+    pageSize:
+      name: page-size
+      in: query
+      description: Quantidade total de registros por páginas.
+      schema:
+        type: integer
+        default: 25
+        minimum: 1
+        format: int32
+        maximum: 1000
   responses:
     OKResponseAcquiringServices:
       description: Dados de operações de credenciamento obtidos com sucesso.
