@@ -131,13 +131,7 @@ components:
           description: Código único a ser definido pela sociedade.
           example: '0001'
         category:
-          type: string
-          description: Indicar a categoria do Produto&#58;<br><ol><li>Tradicional</li><li>Microsseguro</li></ol>
-          maxLength: 12
-          enum:
-            - TRADICIONAL
-            - MICROSSEGURO
-          example: TRADICIONAL
+          $ref: '#/components/schemas/EnumInsurancePensionCategory'
         modality:
           $ref: '#/components/schemas/EnumProductModality'
         coverages:
@@ -319,25 +313,7 @@ components:
           maxLength: 500
           description: 'Distribuição de frequência relativa aos valores referentes às taxas cobradas, nos termos do Anexo III.'
         minimumRequirement:
-          type: object
-          required:
-            - contractType
-          properties:
-            contractType:
-              type: string
-              description: O tipo de serviço contratado. A considerar os domínios abaixo&#58;<br><ol><li>Coletivo Averbado</li><li>Coletivo Instituído</li><li>Individual</li></ol>
-              maxLength: 19
-              enum:
-                - COLETIVO_AVERBADO
-                - COLETIVO_INSTITUIDO
-                - INDIVIDUAL
-              example: COLETIVO_AVERBADO
-            contractingMinRequirement:
-              type: string
-              description: Campo aberto contendo todos os requisitos mínimos para contratação (possibilidade de incluir URL).
-              maxLength: 1024
-              example: 'https://openinsurance.com.br/aaa'
-          additionalProperties: false
+          $ref: '#/components/schemas/RiskPensionMinimumRequirement'
         targetAudience:
           $ref: '#/components/schemas/EnumTargetAudience'
       additionalProperties: false
@@ -1042,17 +1018,9 @@ components:
           maximum: 9999
           example: 48
         minValue:
-          type: object
-          description: 'Listagem do valor mínimo de cobertura (Capital Segurado), diária ou parcela aceito pela sociedade para cada combinação de modalidade/cobertura do produto.<br>Conforme moeda.'
-          properties:
-            currencyValue:
-              $ref: '#/components/schemas/CurrencyValue'
+          $ref: '#/components/schemas/InsurancePensionMinValue'
         maxValue:
-          type: object
-          description: 'Listagem do valor máximo de cobertura (Capital Segurado), diária ou parcela aceito pela sociedade para cada combinação de modalidade/cobertura do produto.<br>Conforme moeda.'
-          properties:
-            currencyValue:
-              $ref: '#/components/schemas/CurrencyValue'
+          $ref: '#/components/schemas/InsurancePensionMaxValue'
         indemnifiablePeriods:
           type: array
           items:
@@ -1080,17 +1048,9 @@ components:
           maximum: 9999999999
           example: 15
         deductible:
-          type: object
-          description: Listagem de franquia em reais para cada combinação de modalidade/cobertura do produto.
-          properties:
-            currencyValue:
-              $ref: '#/components/schemas/CurrencyValue'
+          $ref: '#/components/schemas/InsurancePensionCoverageDeductible'
         differentiatedDeductible:
-          type: object
-          description: 'Detalhamento da franquia em reais diferentes para cada cobertura que exista alguma especificidade.<br>Caso a seguradora não tenha essa diferenciação, não retornará nada no campo.'
-          properties:
-            currencyValue:
-              $ref: '#/components/schemas/CurrencyValue'
+          $ref: '#/components/schemas/InsurancePensionCoverageDifferentiatedDeductible'
         excludedRisks:
           $ref: '#/components/schemas/EnumExcludedRisks'
         excludedRisksURL:
@@ -1162,6 +1122,58 @@ components:
         gracePeriod:
           $ref: '#/components/schemas/GracePeriod'
       additionalProperties: false
+    InsurancePensionMinValue:
+      type: object
+      description: 'Listagem do valor mínimo de cobertura (Capital Segurado), diária ou parcela aceito pela sociedade para cada combinação de modalidade/cobertura do produto.<br>Conforme moeda.'
+      properties:
+        currencyValue:
+          $ref: '#/components/schemas/CurrencyValue'
+    InsurancePensionMaxValue:
+      type: object
+      description: 'Listagem do valor máximo de cobertura (Capital Segurado), diária ou parcela aceito pela sociedade para cada combinação de modalidade/cobertura do produto.<br>Conforme moeda.'
+      properties:
+        currencyValue:
+          $ref: '#/components/schemas/CurrencyValue'
+    InsurancePensionCoverageDeductible:
+      type: object
+      description: Listagem de franquia em reais para cada combinação de modalidade/cobertura do produto.
+      properties:
+        currencyValue:
+          $ref: '#/components/schemas/CurrencyValue'
+    InsurancePensionCoverageDifferentiatedDeductible:
+      type: object
+      description: 'Detalhamento da franquia em reais diferentes para cada cobertura que exista alguma especificidade.<br>Caso a seguradora não tenha essa diferenciação, não retornará nada no campo.'
+      properties:
+        currencyValue:
+          $ref: '#/components/schemas/CurrencyValue'
+    RiskPensionMinimumRequirement:
+      type: object
+      required:
+        - contractType
+      properties:
+        contractType:
+          type: string
+          description: O tipo de serviço contratado. A considerar os domínios abaixo&#58;<br><ol><li>Coletivo Averbado</li><li>Coletivo Instituído</li><li>Individual</li></ol>
+          maxLength: 19
+          enum:
+            - COLETIVO_AVERBADO
+            - COLETIVO_INSTITUIDO
+            - INDIVIDUAL
+          example: COLETIVO_AVERBADO
+        contractingMinRequirement:
+          type: string
+          description: Campo aberto contendo todos os requisitos mínimos para contratação (possibilidade de incluir URL).
+          maxLength: 1024
+          example: 'https://openinsurance.com.br/aaa'
+      additionalProperties: false
+    EnumInsurancePensionCategory:
+      type: string
+      description: Indicar a categoria do Produto&#58;<br><ol><li>Tradicional</li><li>Microsseguro</li></ol>
+      maxLength: 12
+      enum:
+        - TRADICIONAL
+        - MICROSSEGURO
+      example: TRADICIONAL
     ReclaimTable:
       type: object
       properties:

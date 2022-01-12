@@ -118,7 +118,7 @@ components:
           maxLength: 10
           example: 5000000
         capitalizationPeriod:
-          $ref: '#/components/schemas/CapitalizationBondsProductCapitalizationPeriod'
+          $ref: '#/components/schemas/CapitalizationPeriod'
         latePayment:
           $ref: '#/components/schemas/LatePayment'
         contributionPayment:
@@ -197,6 +197,62 @@ components:
           maxLength: 1024
           pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
           example: 'https://empresaa1.com/companies'
+      additionalProperties: false
+    CapitalizationPeriod:
+      type: object
+      required:
+        - interestRate
+        - updateIndexes
+        - contributionAmount
+        - minimum
+        - maximum
+        - allowed
+        - earlyRedemptions
+        - quota
+        - rate
+        - redemptionPercentageEndTerm
+        - gracePeriodRedemption
+      properties:
+        interestRate:
+          type: string
+          pattern: '^[0-1]\.[\d]{6}$'
+          description: 'Taxa que remunera a parte da mensalidade destinada a formar o Capital, ou seja, a Provisão Matemática de Resgate, também chamada de saldo de capitalização. Em porcentagem ao mês (% a.m.).'
+          maxLength: 8
+          example: '0.251123'
+        updateIndexes:
+          type: array
+          items:
+            $ref: '#/components/schemas/CapitalizationBondsProductUpdateIndex'
+        updateIndexesAdditionalInfo:
+          type: string
+          description: 'Restrição: Campo obrigatório para complementar a informação quando selecionada a opção ''OUTROS'''
+          maxLength: 200
+          example: ''
+        contributionAmount:
+          type: array
+          items:
+            $ref: '#/components/schemas/CapitalizationPeriodContributionAmount'
+          minItems: 1
+        earlyRedemptions:
+          type: string
+          pattern: '^[0-1]\.\d{8}$'
+          example: '1.55000000'
+          description: |
+            Possibilidade de o titular efetuar o resgate do capital constituído antes do fim do prazo de vigência do título, podendo ocorrer por solicitação expressa do titular ou por contemplação em sorteio com liquidação antecipada (Resolução CNSP 384/20). 
+            Obs: No caso de garantia, não contempla a extinção antecipada do contrato.
+          maxLength: 10
+        redemptionPercentageEndTerm:
+          type: string
+          description: 'Percentual mínimo da soma das contribuições efetuadas que poderá ser resgatado ao final da vigência, tendo como condição os pagamentos das parcelas nos respectivos vencimentos.'
+          maxLength: 4
+          pattern: '^[0-9]\.\d{2}$'
+          example: '1.51'
+        gracePeriodRedemption:
+          type: number
+          format: integer
+          description: 'Intervalo de tempo mínimo entre contratação e resgate do direito, em meses.'
+          maxLength: 3
+          example: 999
       additionalProperties: false
     EnumCapitalizationBondsProductModality:
       type: string
@@ -283,62 +339,8 @@ components:
           example: '0.000010'
       additionalProperties: false
     CapitalizationBondsProductCapitalizationPeriod:
-      type: object
-      required:
-        - interestRate
-        - updateIndexes
-        - contributionAmount
-        - minimum
-        - maximum
-        - allowed
-        - earlyRedemptions
-        - quota
-        - rate
-        - redemptionPercentageEndTerm
-        - gracePeriodRedemption
-      properties:
-        interestRate:
-          type: string
-          pattern: '^[0-1]\.[\d]{6}$'
-          description: 'Taxa que remunera a parte da mensalidade destinada a formar o Capital, ou seja, a Provisão Matemática de Resgate, também chamada de saldo de capitalização. Em porcentagem ao mês (% a.m.).'
-          maxLength: 8
-          example: '0.251123'
-        updateIndexes:
-          type: array
-          items:
-            $ref: '#/components/schemas/CapitalizationBondsProductAdjustmentIndex'
-        updateIndexesAdditionalInfo:
-          type: string
-          description: 'Restrição: Campo obrigatório para complementar a informação quando selecionada a opção ''OUTROS'''
-          maxLength: 200
-          example: ''
-        contributionAmount:
-          type: array
-          items:
-            $ref: '#/components/schemas/CapitalizationPeriodContributionAmount'
-          minItems: 1
-        earlyRedemptions:
-          type: string
-          pattern: '^[0-1]\.\d{8}$'
-          example: '1.55000000'
-          description: |
-            Possibilidade de o titular efetuar o resgate do capital constituído antes do fim do prazo de vigência do título, podendo ocorrer por solicitação expressa do titular ou por contemplação em sorteio com liquidação antecipada (Resolução CNSP 384/20). 
-            Obs: No caso de garantia, não contempla a extinção antecipada do contrato.
-          maxLength: 10
-        redemptionPercentageEndTerm:
-          type: string
-          description: 'Percentual mínimo da soma das contribuições efetuadas que poderá ser resgatado ao final da vigência, tendo como condição os pagamentos das parcelas nos respectivos vencimentos.'
-          maxLength: 4
-          pattern: '^[0-9]\.\d{2}$'
-          example: '1.51'
-        gracePeriodRedemption:
-          type: number
-          format: integer
-          description: 'Intervalo de tempo mínimo entre contratação e resgate do direito, em meses.'
-          maxLength: 3
-          example: 999
-      additionalProperties: false
-    CapitalizationBondsProductAdjustmentIndex:
+      $ref: '#/components/schemas/CapitalizationPeriod'
+    CapitalizationBondsProductUpdateIndex:
       type: string
       maxLength: 37
       enum:
@@ -457,7 +459,7 @@ components:
         updateIndexes:
           type: array
           items:
-            $ref: '#/components/schemas/CapitalizationBondsProductAdjustmentIndex'
+            $ref: '#/components/schemas/CapitalizationBondsProductUpdateIndex'
         updateIndexesAdditionalInfo:
           type: string
           description: 'Restrição: Campo obrigatório para complementar a informação quando selecionada a opção ''OUTROS'''
