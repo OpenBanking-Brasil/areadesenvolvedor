@@ -345,6 +345,21 @@ components:
         issueRemunerationRate:
           $ref: '#/components/schemas/InvestimentsFrequencyDistribution'
       additionalProperties: false
+    InvestimentFundMinimumAmount:
+      type: object
+      properties:
+        value:
+          type: string
+          description: Valor mínimo do primeiro aporte.
+          minLength: 4
+          maxLength: 19
+          pattern: '^\d{1,16}\.\d{2}$'
+          example: '100000.12'
+        currency:
+          type: string
+          pattern: '^[A-Z]{3}$'
+          description: 'Moeda referente ao valor da transação, segundo modelo ISO-4217. p.ex. ''BRL''<br>Todos os saldos informados estão representados com a moeda vigente do Brasil'
+          example: BRL
     InvestmentsFixedIncomeBankInvestmentConditions:
       type: object
       required:
@@ -414,7 +429,6 @@ components:
         - admin
         - fundManager
         - anbimaCategory
-        - fees
         - generalConditions
         - taxation
       properties:
@@ -532,7 +546,6 @@ components:
         - quotationDays
         - quotationTerm
         - paymentTerm
-        - graceDays
       properties:
         quotationDays:
           type: integer
@@ -542,13 +555,13 @@ components:
           example: 3
         quotationTerm:
           $ref: '#/components/schemas/EnumInvestmentsFundGeneralConditionsTermType'
-        paymentTerm:
+        paymentDays:
           type: integer
           format: int32
           description: 'Prazo em dias do efetivo pagamento, pelo fundo, do valor líquido devido ao cotista que efetuou pedido de resgate.'
-          minimum: 0
           example: 3
-        graceDays:
+          minimum: 0
+        paymentTerm:
           $ref: '#/components/schemas/EnumInvestmentsFundGeneralConditionsTermType'
     InvestmentsFundGeneralConditionsApplication:
       type: object
@@ -563,12 +576,6 @@ components:
           minimum: 0
           example: 60
         quotationTerm:
-          type: integer
-          format: int32
-          description: Prazo em dias de cotização da aplicação.
-          minimum: 0
-          example: 3
-        quotationPeriod:
           $ref: '#/components/schemas/EnumInvestmentsFundGeneralConditionsTermType'
     InvestmentsFundGeneralConditions:
       type: object
@@ -576,22 +583,16 @@ components:
         - minimumAmount
         - currency
         - redemption
+        - graceDays
+        - application
         - fundQuotaType
       properties:
         minimumAmount:
-          type: string
-          description: Valor mínimo do primeiro aporte.
-          minLength: 4
-          maxLength: 19
-          pattern: '^\d{1,16}\.\d{2}$'
-          example: '100000.12'
-        currency:
-          type: string
-          pattern: '^[A-Z]{3}$'
-          description: 'Moeda referente ao valor da transação, segundo modelo ISO-4217. p.ex. ''BRL''<br>Todos os saldos informados estão representados com a moeda vigente do Brasil'
-          example: BRL
+          $ref: '#/components/schemas/InvestimentFundMinimumAmount'
         redemption:
           $ref: '#/components/schemas/InvestmentsFundGeneralConditionsRedemption'
+        graceDays:
+          $ref: '#/components/schemas/EnumInvestmentsFundGeneralConditionsTermType'
         application:
           $ref: '#/components/schemas/InvestmentsFundGeneralConditionsApplication'
         fundQuotaType:
@@ -708,13 +709,12 @@ components:
       example: CDI
     EnumInvestmentsFundFeesPerformanceFeeMethod:
       type: string
-      description: Metodologia do campo para taxa de performance.<br><ol><li>Passivo</li><li>Ativo</li><li>Ajuste</li><li>Outros</li></ol>
+      description: Metodologia do campo para taxa de performance.<br><ol><li>Passivo</li><li>Ativo</li><li>Ajuste</li></ol>
       maxLength: 7
       enum:
         - PASSIVO
         - ATIVO
         - AJUSTE
-        - OUTROS
       example: PASSIVO
     EnumInvestmentsFundGeneralConditionsFundQuotaType:
       type: string
@@ -726,7 +726,7 @@ components:
       example: COTA_DE_ABERTURA
     EnumInvestmentsFundGeneralConditionsTermType:
       type: string
-      description: Período em dias corridos ou dias úteis do prazo de cotização de resgate.<br><br><ol><li>Dias corridos</li><li>Dias úteis</li></ol>
+      description: Período em dias corridos ou dias úteis do prazo de cotização.<br><br><ol><li>Dias corridos</li><li>Dias úteis</li></ol>
       maxLength: 13
       enum:
         - DIAS_CORRIDOS
