@@ -68,7 +68,7 @@ components:
         - targetAudience
       properties:
         participant:
-          $ref: '#/components/schemas/CapitalizationBondsParticipantIdentification'
+          $ref: '#/components/schemas/Participant'
         society:
           type: object
           description: Conjunto de informações relativas à seguradora do produto de open insurance
@@ -82,7 +82,7 @@ components:
               maxLength: 80
               example: Society A1
             cnpjNumber:
-              $ref: '#/components/schemas/CapitalizationBondsParticipantIdentification/properties/cnpjNumber'
+              $ref: '#/components/schemas/Participant/properties/cnpjNumber'
           additionalProperties: false
         name:
           type: string
@@ -99,7 +99,7 @@ components:
         costType:
           $ref: '#/components/schemas/EnumCapitalizationBondsProductCostType'
         termsAndConditions:
-          $ref: '#/components/schemas/CapitalizationBondsProductTermsAndConditions'
+          $ref: '#/components/schemas/TermsAndConditions'
         quotas:
           type: array
           description: Informações relativas às taxas da Quotas praticadas para cada Parcela
@@ -111,12 +111,12 @@ components:
           format: int32
           description: Período entre a data de início e a data final para constituição do capital a ser pago ao(s) titular(es) do direito de resgate. Prazo de vigência do título de capitalização em meses (Resolução CNSP 384/20). Em meses.
           maxLength: 3
-          example: 999
+          example: 48
         serieSize:
           type: integer
           description: 'Os títulos de capitalização que prevejam sorteio devem ser estruturados em séries, ou seja, em sequências ou em grupos de títulos submetidos às mesmas condições e características, à exceção do valor do pagamento.'
           maxLength: 10
-          example: 5000000000
+          example: 5000000
         capitalizationPeriod:
           $ref: '#/components/schemas/CapitalizationBondsProductCapitalizationPeriod'
         latePayment:
@@ -169,7 +169,7 @@ components:
             - PESSOA_NATURAL_JURIDICA
           example: PESSOA_NATURAL
       additionalProperties: false
-    CapitalizationBondsParticipantIdentification:
+    Participant:
       type: object
       description: Conjunto de informações relativas ao participante do produto de open banking
       required:
@@ -231,11 +231,11 @@ components:
         - PAGAMENTO_MENSAL
         - PAGAMENTO_PERIODICO
       example: PAGAMENTO_UNICO
-    CapitalizationBondsProductTermsAndConditions:
+    TermsAndConditions:
       type: object
       required:
         - susepProcessNumber
-        - termsRegulations
+        - detail
       properties:
         susepProcessNumber:
           type: string
@@ -243,23 +243,21 @@ components:
           maxLength: 20
           pattern: '^\d{5}\.\d{6}/\d{4}-\d{2}$'
           example: 15414.622222/2222-22
-        termsRegulations:
+        detail:
           type: string
-          description: |
-            Conjunto de cláusulas que regem um mesmo título de capitalização, estabelecendo obrigações e direitos, da sociedade de capitalização, do titular, e do subscritor. Campo aberto (possibilidade de incluir URL).
-            Observação: As URLs são limitadas a 2048 caracteres mas, para o contexto do Open Insurance foi adotado a metade deste tamanho (1024 caracteres).
+          description: 'Representam as Condições Gerais, Condições Especiais e Condições ou Cláusulas Particulares de um mesmo produto. (Circular SUSEP 321/06). Campo aberto (possibilidade de incluir URL)'
           maxLength: 1024
-          example: 'https://ACME.exemplo/capitalizacao/tradicional/pdf/condicoes_gerais.pdf'
+          example: 'https://openinsurance.com.br/aaa'
       additionalProperties: false
     CapitalizationBondsProductQuota:
       type: object
       required:
-        - tranche
+        - quota
         - capitalizationQuota
         - raffleQuota
         - chargingQuota
       properties:
-        tranche:
+        quota:
           type: number
           format: integer
           description: Número da parcela.
@@ -288,26 +286,28 @@ components:
       type: object
       required:
         - interestRate
-        - adjustmentIndex
+        - updateIndexes
         - contributionAmount
         - minimum
         - maximum
         - allowed
         - earlyRedemptions
-        - tranche
+        - quota
         - rate
         - redemptionPercentageEndTerm
         - gracePeriodRedemption
       properties:
         interestRate:
           type: string
-          pattern: '^\d{1}.\d{5}$'
+          pattern: '^[0-1]\.[\d]{6}$'
           description: 'Taxa que remunera a parte da mensalidade destinada a formar o Capital, ou seja, a Provisão Matemática de Resgate, também chamada de saldo de capitalização. Em porcentagem ao mês (% a.m.).'
-          maxLength: 7
-          example: '0.25123'
-        adjustmentIndex:
-          $ref: '#/components/schemas/CapitalizationBondsProductAdjustmentIndex'
-        adjustmentIndexAdditionalInfo:
+          maxLength: 8
+          example: '0.251123'
+        updateIndexes:
+          type: array
+          items:
+            $ref: '#/components/schemas/CapitalizationBondsProductAdjustmentIndex'
+        updateIndexesAdditionalInfo:
           type: string
           description: 'Restrição: Campo obrigatório para complementar a informação quando selecionada a opção ''OUTROS'''
           maxLength: 200
@@ -363,38 +363,48 @@ components:
         - maximum
         - allowed
       properties:
-        timeInterval:
+        periodicity:
           type: string
           description: |
-            Campo condicional a ser preenchido quando quando a modalidade for diferente de tradicional.
-            Em todas as situações indicar para qual periodicidade de pagamento se aplicam os valores:
-              1 - Pagamento mensal
-              2 - Pagamento único
-              3 - Periódico
-          maxLength: 16
+            Intervalo de tempo regular previsto entre os sorteios. Conforme os domínios:
+              1. Único
+              2. Diário
+              3. Semanal
+              4. Quinzenal
+              5. Mensal
+              6. Bimestral
+              7. Trimestral
+              8. Quadrimestral
+              9. Semestral
+              10. Anual
+              11. Outros
+          maxLength: 13
           enum:
-            - PAGAMENTO_MENSAL
-            - PAGAMENTO_UNICO
-            - PERIODICO
-          example: PAGAMENTO_MENSAL
+            - UNICO
+            - DIARIO
+            - SEMANAL
+            - QUINZENAL
+            - MENSAL
+            - BIMESTRAL
+            - TRIMESTRAL
+            - QUADRIMESTRAL
+            - SEMESTRAL
+            - ANUAL
+            - OUTROS
+          example: UNICO
         periodicityAdditionalInfo:
           type: string
           description: 'Restrição: Campo obrigatório para complementar a informação quando selecionada a opção ''OUTROS'''
           maxLength: 200
           example: ''
         minimum:
-          type: number
-          format: double
+          type: string
+          pattern: '^\d{1,16}\.\d{2,4}$'
           description: |
             Condicional: Quando modalidade for igual 'TRADICIONAL'
             Valor mínimo correspondente ao pagamento efetuado pelo subscritor à sociedade de capitalização.
-<<<<<<< HEAD
-          maxLength: 8
-          example: 1000
-=======
           maxLength: 21
           example: '1.2222'
->>>>>>> 1bb5d2ce... fix: Remover objetos nao utilizados e ajustar exemplos.
         maximum:
           type: string
           pattern: '^\d{1,16}\.\d{2,4}$'
@@ -435,7 +445,7 @@ components:
       type: object
       required:
         - paymentMethod
-        - adjustmentIndex
+        - updateIndexes
       properties:
         paymentMethod:
           $ref: '#/components/schemas/CapitalizationBondsProductPaymentMethod'
@@ -444,9 +454,11 @@ components:
           description: 'Restrição: Campo obrigatório para complementar a informação quando selecionada a opção ''OUTROS'''
           maxLength: 200
           example: ''
-        adjustmentIndex:
-          $ref: '#/components/schemas/CapitalizationBondsProductAdjustmentIndex'
-        adjustmentIndexAdditionalInfo:
+        updateIndexes:
+          type: array
+          items:
+            $ref: '#/components/schemas/CapitalizationBondsProductAdjustmentIndex'
+        updateIndexesAdditionalInfo:
           type: string
           description: 'Restrição: Campo obrigatório para complementar a informação quando selecionada a opção ''OUTROS'''
           maxLength: 200
