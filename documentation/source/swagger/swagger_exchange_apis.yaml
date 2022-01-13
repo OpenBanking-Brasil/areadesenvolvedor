@@ -52,7 +52,7 @@ paths:
         - Exchange VET Value
       summary: Conjunto de informações de Câmbio para valor do VET.
       operationId: exchangeGetVetValue
-      description: Método para disponibilizar o valor VET.
+      description: 'Método para disponibilizar o valor VET.<br>O retorno, embora não especificado, deve abranger a classificação do tipo de operação, conforme a circular BCB n&#186; 3690 de 16/12/2013 com os seguintes items&#58;<br><ol><li>Comércio exterior</li><li>Transporte</li><li>Seguros</li><li>Viagens internacionais</li><li>Transferências unilaterais</li><li>Serviços diversos</li><li>Rendas de capitais</li><li>Capitais brasileiros</li><li>Capitais estrangeiros</li><li>Prestação de serviço de pagamento ou transferência internacional - EFX</li></ol>'
       parameters:
         - $ref: '#/components/parameters/page'
         - $ref: '#/components/parameters/pageSize'
@@ -189,11 +189,13 @@ components:
             - foreignCurrency: USD
               deliveryForeignCurrency: ESPECIE
               transactionType: COMPRA
+              transactionCategory: COMERCIO_EXTERIOR
               targetAudience: PF
               value: '5.5023'
             - foreignCurrency: EUR
               deliveryForeignCurrency: CARTAO_PRE_PAGO
               transactionType: VENDA
+              transactionCategory: TRANSPORTE
               targetAudience: PJ
               value: '2.7045'
         timestamp:
@@ -213,7 +215,6 @@ components:
         - participant
         - transactionType
         - foreignCurrency
-        - transactionCategory
         - deliveryForeignCurrency
         - rangeTransactionCategory
         - vetAmount
@@ -224,8 +225,6 @@ components:
           $ref: '#/components/schemas/EnumExchangeTransactionType'
         foreignCurrency:
           $ref: '#/components/schemas/OnlineRate/properties/foreignCurrency'
-        transactionCategory:
-          $ref: '#/components/schemas/EnumExchangeTransactionCategory'
         deliveryForeignCurrency:
           $ref: '#/components/schemas/EnumExchangeDeliveryForeignCurrency'
         rangeTransactionCategory:
@@ -233,19 +232,16 @@ components:
         targetAudience:
           $ref: '#/components/schemas/ExchangeEnumTargetAudience'
         vetAmount:
-          type: string
-          description: Média simples do VET das operações PF/PJ para cada intervalo conforme a circular 4015 BCB.
-          maxLength: 7
-          pattern: '^\d{1}\.\d{1,5}$'
-          example: '5.5023'
+          $ref: '#/components/schemas/VetValueFrequencyDistribution'
       additionalProperties: false
     OnlineRate:
       type: object
-      description: Taxa disponibilizada (taxa online) pelas instituições no formato D+0/D+2 (valor U$100.000 operações câmbio pronto) separado por moeda dólar e euro compra e venda PF/PJ.
+      description: Taxa disponibilizada (taxa online) pelas instituições no formato D+0/D+2 (valor U$500 operações câmbio pronto) separado por moeda dólar e euro compra e venda PF/PJ.
       required:
         - foreignCurrency
         - deliveryForeignCurrency
         - transactionType
+        - transactionCategory
         - value
       properties:
         foreignCurrency:
@@ -257,6 +253,8 @@ components:
           $ref: '#/components/schemas/EnumExchangeDeliveryForeignCurrency'
         transactionType:
           $ref: '#/components/schemas/EnumExchangeTransactionType'
+        transactionCategory:
+          $ref: '#/components/schemas/EnumExchangeTransactionCategory'
         targetAudience:
           $ref: '#/components/schemas/ExchangeEnumDistinctTargetAudience'
         value:
@@ -266,9 +264,96 @@ components:
           example: '5.5023'
           description: Valor da operação.
       additionalProperties: false
+    VetValueFrequencyDistribution:
+      type: object
+      description: Distribuição por frequência.
+      required:
+        - name
+        - code
+        - chargingTriggerInfo
+        - prices
+        - minimum
+        - maximum
+      properties:
+        name:
+          type: string
+          description: Nome do serviço
+          maxLength: 200
+          example: NA
+        code:
+          type: string
+          description: Código de identificação do serviço.
+          maxLength: 200
+          example: NA
+        chargingTriggerInfo:
+          type: string
+          description: Fatos geradores de cobrança.
+          maxLength: 200
+          example: NA
+        prices:
+          type: array
+          description: Distribuição dos preços.
+          items:
+            $ref: '#/components/schemas/VetValueFrequencyDistributionPrice'
+          minItems: 4
+          maxItems: 4
+          example:
+            - interval: 1_FAIXA
+              value: '0.020300'
+              customerRate: '0.500000'
+            - interval: 2_FAIXA
+              value: '0.030600'
+              customerRate: '0.100000'
+            - interval: 3_FAIXA
+              value: '0.034300'
+              customerRate: '0.300000'
+            - interval: 4_FAIXA
+              value: '0.246800'
+              customerRate: '0.100000'
+        minimum:
+          type: string
+          description: Valor mínimo.
+          maxLength: 8
+          pattern: '^\d{1}\.\d{1,6}$'
+          example: '0.010000'
+        maximum:
+          type: string
+          description: Valor máximo.
+          maxLength: 8
+          pattern: '^\d{1}\.\d{1,6}$'
+          example: '0.300000'
+    VetValueFrequencyDistributionPrice:
+      type: object
+      required:
+        - interval
+        - value
+        - customerRate
+      properties:
+        interval:
+          type: string
+          description: Faixas de frequência
+          maxLength: 7
+          enum:
+            - 1_FAIXA
+            - 2_FAIXA
+            - 3_FAIXA
+            - 4_FAIXA
+          example: 1_FAIXA
+        value:
+          type: string
+          description: Mediana.
+          example: '0.020300'
+          maxLength: 8
+          pattern: '^\d{1}\.\d{1,6}$'
+        customerRate:
+          type: string
+          description: Percentual de clientes.
+          example: '0.500000'
+          maxLength: 8
+          pattern: '^\d{1}\.\d{1,6}$'
     EnumExchangeDeliveryForeignCurrency:
       type: string
-      description: 'A classificação do tipo de operação, conforme a circular BCB nº 3690 de 16/12/2013. (Vide Enum)<br><ul><li>ESPECIE</li><li>CARTAO_PRE_PAGO</li><li>TELETRANSMISSAO_SWIFT</li></ul>'
+      description: 'A classificação da forma de operação, conforme a circular BCB nº 3690 de 16/12/2013. (Vide Enum)<br><ul><li>ESPECIE</li><li>CARTAO_PRE_PAGO</li><li>TELETRANSMISSAO_SWIFT</li></ul>'
       maxLength: 21
       enum:
         - ESPECIE
