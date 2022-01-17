@@ -56,7 +56,6 @@ components:
         - costType
         - termsAndConditions
         - quotas
-        - validity
         - capitalizationPeriod
         - latePayment
         - contributionPayment
@@ -64,7 +63,6 @@ components:
         - redemptionPercentageEndTerm
         - draws
         - additionalInfo
-        - minimumRequirementDetails
         - targetAudience
       properties:
         participant:
@@ -126,9 +124,9 @@ components:
         redemptionPercentageEndTerm:
           type: string
           description: 'Percentual mínimo da soma das contribuições efetuadas que poderá ser resgatado ao final da vigência, tendo como condição os pagamentos das parcelas nos respectivos vencimentos.'
-          maxLength: 4
-          pattern: '^[0-9]\.\d{2}$'
-          example: '1.51'
+          maxLength: 7
+          pattern: '^[0-1]\.\d{5}$'
+          example: '1.00002'
         finalRedemptionRate:
           type: string
           description: Valor percentual (%) de resgate final permitido.
@@ -286,14 +284,9 @@ components:
       type: object
       required:
         - interestRate
-        - updateIndexes
+        - updateIndex
         - contributionAmount
-        - minimum
-        - maximum
-        - allowed
         - earlyRedemptions
-        - quota
-        - rate
         - redemptionPercentageEndTerm
         - gracePeriodRedemption
       properties:
@@ -302,12 +295,10 @@ components:
           pattern: '^[0-1]\.[\d]{6}$'
           description: 'Taxa que remunera a parte da mensalidade destinada a formar o Capital, ou seja, a Provisão Matemática de Resgate, também chamada de saldo de capitalização. Em porcentagem ao mês (% a.m.).'
           maxLength: 8
-          example: '0.251123'
-        updateIndexes:
-          type: array
-          items:
-            $ref: '#/components/schemas/CapitalizationBondsProductUpdateIndex'
-        updateIndexesAdditionalInfo:
+          example: '0.251231'
+        updateIndex:
+          $ref: '#/components/schemas/CapitalizationBondsProductUpdateIndex'
+        updateIndexAdditionalInfo:
           type: string
           description: 'Restrição: Campo obrigatório para complementar a informação quando selecionada a opção ''OUTROS'''
           maxLength: 200
@@ -318,25 +309,39 @@ components:
             $ref: '#/components/schemas/CapitalizationPeriodContributionAmount'
           minItems: 1
         earlyRedemptions:
-          type: string
-          pattern: '^[0-1]\.\d{8}$'
-          example: '1.55000000'
-          description: |
-            Possibilidade de o titular efetuar o resgate do capital constituído antes do fim do prazo de vigência do título, podendo ocorrer por solicitação expressa do titular ou por contemplação em sorteio com liquidação antecipada (Resolução CNSP 384/20). 
-            Obs: No caso de garantia, não contempla a extinção antecipada do contrato.
-          maxLength: 10
+          minItems: 1
+          type: array
+          items:
+            type: object
+            required:
+              - quota
+              - rate
+            properties:
+              quota:
+                type: number
+                format: integer
+                description: Parcela relativa ao Resgate Antecipado
+                maxLength: 3
+                example: 10
+              rate:
+                type: number
+                format: double
+                description: Taxa relativa ao Resgate Antecipado
+                maxLength: 9
+                example: 10.000001
+            additionalProperties: false
         redemptionPercentageEndTerm:
           type: string
           description: 'Percentual mínimo da soma das contribuições efetuadas que poderá ser resgatado ao final da vigência, tendo como condição os pagamentos das parcelas nos respectivos vencimentos.'
-          maxLength: 4
-          pattern: '^[0-9]\.\d{2}$'
-          example: '1.51'
+          maxLength: 7
+          pattern: '^[0-1]\.\d{5}$'
+          example: '1.00002'
         gracePeriodRedemption:
           type: number
           format: integer
           description: 'Intervalo de tempo mínimo entre contratação e resgate do direito, em meses.'
           maxLength: 3
-          example: 999
+          example: 48
       additionalProperties: false
     CapitalizationBondsProductUpdateIndex:
       type: string
@@ -359,9 +364,10 @@ components:
         Para as demais modalidades, informar a lista com os valores permitidos de contribuição ao plano.
         Em todas as situações indicar para qual periodicidade de pagamento se aplicam os valores: pagamento mensal, pagamento único ou periódico.
       required:
+        - periodicity
         - minimum
         - maximum
-        - allowed
+        - allowedValue
       properties:
         periodicity:
           type: string
@@ -413,7 +419,7 @@ components:
             Valor máximo correspondente ao pagamento efetuado pelo subscritor à sociedade de capitalização.
           maxLength: 21
           example: '1.2222'
-        allowed:
+        allowedValue:
           type: number
           format: double
           description: |
@@ -432,7 +438,7 @@ components:
           type: number
           description: 'Conforme manual SUSEP: Prazo máximo (contínuo ou intermitente) em meses que o título fica suspenso por atraso de pagamento, antes de ser cancelado (não aplicável a pagamento único).'
           maxLength: 3
-          example: 999
+          example: 10
         periodExtensionOption:
           type: boolean
           description: |
@@ -445,7 +451,7 @@ components:
       type: object
       required:
         - paymentMethod
-        - updateIndexes
+        - updateIndex
       properties:
         paymentMethod:
           $ref: '#/components/schemas/CapitalizationBondsProductPaymentMethod'
@@ -454,11 +460,9 @@ components:
           description: 'Restrição: Campo obrigatório para complementar a informação quando selecionada a opção ''OUTROS'''
           maxLength: 200
           example: ''
-        updateIndexes:
-          type: array
-          items:
-            $ref: '#/components/schemas/CapitalizationBondsProductUpdateIndex'
-        updateIndexesAdditionalInfo:
+        updateIndex:
+          $ref: '#/components/schemas/CapitalizationBondsProductUpdateIndex'
+        updateIndexAdditionalInfo:
           type: string
           description: 'Restrição: Campo obrigatório para complementar a informação quando selecionada a opção ''OUTROS'''
           maxLength: 200
@@ -564,13 +568,13 @@ components:
           type: string
           description: 'Campo aberto para complementar a regra dos sorteios do produto, a ser feita para cada participante.'
           maxLength: 200
-          example: Sorteio aos Sábados
+          example: Sorteios próprios às terças-feiras Toda quarta-feira sorteios através da loteria federal.
         minimumContemplationProbability:
           type: string
           pattern: '^[0-1]\.\d{6}$'
           description: 'Número representativo da probabilidade mínima de contemplação nos sorteios, em porcentagem (%).'
           maxLength: 8
-          example: '1.000002'
+          example: '0.000002'
       additionalProperties: false
     Links:
       type: object
