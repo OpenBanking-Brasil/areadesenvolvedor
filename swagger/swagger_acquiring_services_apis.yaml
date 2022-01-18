@@ -1,0 +1,401 @@
+﻿openapi: 3.0.0
+info:
+  title: API Acquiring Services - Open Banking Brasil
+  description: |
+    API de Credenciamento do Open Banking Brasil – Fase 4.
+    API que retorna informações de Credenciamento.
+  version: 1.0.0
+  license:
+    name: Apache 2.0
+    url: 'https://www.apache.org/licenses/LICENSE-2.0'
+  contact:
+    name: Governança do Open Banking Brasil – Especificações
+    email: gt-interfaces@openbankingbr.org
+    url: 'https://openbanking-brasil.github.io/areadesenvolvedor/'
+servers:
+  - url: 'https://api.banco.com.br/open-banking/opendata-acquiring-services/v1'
+    description: Servidor de Produção
+  - url: 'https://apih.banco.com.br/open-banking/opendata-acquiring-services/v1'
+    description: Servidor de Homologação
+tags:
+  - name: PersonalAcquiringServices
+    description: Operações para obter as informações de Credenciamento para Pessoa Física.
+  - name: BusinessAcquiringServices
+    description: Operações para obter as informações de Credenciamento para Pessoa Jurídica.
+paths:
+  /personals:
+    get:
+      tags:
+        - PersonalAcquiringServices
+      summary: Conjunto de informações de Credenciamento para Pessoa Física.
+      operationId: getPersonalAcquiringServices
+      description: Método para disponibilizar as taxas e tarifas por serviços.
+      parameters:
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+      responses:
+        '200':
+          $ref: '#/components/responses/OKResponseAcquiringServices'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /businesses:
+    get:
+      tags:
+        - BusinessAcquiringServices
+      summary: Conjunto de informações de Credenciamento para Pessoa Jurídica.
+      operationId: getBusinessAcquiringServices
+      description: Método para disponibilizar as taxas e tarifas por serviços.
+      parameters:
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+      responses:
+        '200':
+          $ref: '#/components/responses/OKResponseAcquiringServices'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+components:
+  schemas:
+    OKResponseAcquiringServices:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/AcquiringServicesContractData'
+        links:
+          $ref: '#/components/schemas/Links'
+        meta:
+          $ref: '#/components/schemas/Phase4Meta'
+      additionalProperties: false
+    Links:
+      type: object
+      description: Referências para outros recusos da API requisitada.
+      required:
+        - self
+      properties:
+        self:
+          type: string
+          format: uri
+          maxLength: 2000
+          description: URI completo que gerou a resposta atual.
+          example: 'https://api.banco.com.br/open-banking/api/v1/resource'
+          pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
+        first:
+          type: string
+          format: uri
+          maxLength: 2000
+          description: URI da primeira página que originou essa lista de resultados. Restrição - Obrigatório quando não for a primeira página da resposta
+          example: 'https://api.banco.com.br/open-banking/api/v1/resource'
+          pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
+        prev:
+          type: string
+          format: uri
+          maxLength: 2000
+          description: "URI da página anterior dessa lista de resultados. Restrição - \tObrigatório quando não for a primeira página da resposta"
+          example: 'https://api.banco.com.br/open-banking/api/v1/resource'
+          pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
+        next:
+          type: string
+          format: uri
+          maxLength: 2000
+          description: URI da próxima página dessa lista de resultados. Restrição - Obrigatório quando não for a última página da resposta
+          example: 'https://api.banco.com.br/open-banking/api/v1/resource'
+          pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
+        last:
+          type: string
+          format: uri
+          maxLength: 2000
+          description: URI da última página dessa lista de resultados. Restrição - Obrigatório quando não for a última página da resposta
+          example: 'https://api.banco.com.br/open-banking/api/v1/resource'
+          pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
+      additionalProperties: false
+    Phase4Meta:
+      type: object
+      description: Meta informações referente à API requisitada.
+      required:
+        - totalRecords
+        - totalPages
+      properties:
+        totalRecords:
+          type: integer
+          format: int32
+          description: Número total de registros no resultado
+          example: 1
+        totalPages:
+          type: integer
+          format: int32
+          description: Número total de páginas no resultado
+          example: 1
+      additionalProperties: false
+    Participant:
+      type: object
+      description: Conjunto de informações relativas ao participante do produto de open banking
+      required:
+        - brand
+        - name
+        - cnpjNumber
+      properties:
+        brand:
+          type: string
+          description: 'Nome da marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes.'
+          maxLength: 80
+          example: Organização
+        name:
+          type: string
+          description: Nome do participante do Open Banking.
+          maxLength: 80
+          example: Organização A1
+        cnpjNumber:
+          type: string
+          description: 'O CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. Deve-se ter apenas os números do CNPJ, sem máscara.'
+          pattern: '\d{14}$'
+          example: '13456789000112'
+        urlComplementaryList:
+          type: string
+          maxLength: 1024
+          pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
+          example: 'https://empresaa1.com/companies'
+      additionalProperties: false
+    EnumAcquiringServicesFeeName:
+      type: string
+      description: |
+        Nome da tarifa cobrada sobre o serviço de credenciamento, para pessoa física/jurídica.
+          1. Taxa de Desconto na Modalidade Crédito
+          2. Taxa de Desconto na Modalidade Débito
+      maxLength: 38
+      enum:
+        - TAXA_DESCONTO_MODALIDADE_CREDITO
+        - TAXA_DESCONTO_MODALIDADE_DEBITO
+      example: TAXA_DESCONTO_MODALIDADE_CREDITO
+    EnumAcquiringServicesCode:
+      type: string
+      description: Sigla da Tarifa cobrada sobre o Serviço de Credenciamento informado.
+      maxLength: 11
+      enum:
+        - MDR_CREDITO
+        - MDR_DEBITO
+      example: MDR_CREDITO
+    EnumAcquiringServicesInterval:
+      type: string
+      description: Identificação do intervalo a ser exibido.
+      maxLength: 7
+      enum:
+        - 1_FAIXA
+        - 2_FAIXA
+        - 3_FAIXA
+        - 4_FAIXA
+      example: 1_FAIXA
+    Price:
+      type: object
+      description: '4 Faixas de igual tamanho, com suas respectivas medianas e percentuais de clientes.'
+      required:
+        - interval
+        - value
+        - customerRate
+      properties:
+        interval:
+          $ref: '#/components/schemas/EnumAcquiringServicesInterval'
+        value:
+          type: string
+          example: '0.0203'
+          maxLength: 6
+          pattern: '^\d{1}\.\d{1,4}$'
+          description: Mediana referente a cada intervalo.
+        customerRate:
+          type: string
+          example: '0.5000'
+          maxLength: 6
+          pattern: '^\d{1}\.\d{1,4}$'
+          description: Percentual de cliente em cada intervalo.
+      additionalProperties: false
+    AcquiringServicesContractData:
+      type: object
+      description: Conjunto de informações referentes às informações de credenciamento
+      required:
+        - participant
+        - feeName
+        - code
+        - prices
+        - chargingTriggerInfo
+        - minimum
+        - maximum
+      properties:
+        participant:
+          $ref: '#/components/schemas/Participant'
+        feeName:
+          $ref: '#/components/schemas/EnumAcquiringServicesFeeName'
+        code:
+          $ref: '#/components/schemas/EnumAcquiringServicesCode'
+        prices:
+          type: array
+          minItems: 4
+          maxItems: 4
+          items:
+            $ref: '#/components/schemas/Price'
+          example:
+            - interval: 1_FAIXA
+              value: '0.0203'
+              customerRate: '0.5000'
+            - interval: 2_FAIXA
+              value: '0.0306'
+              customerRate: '0.1000'
+            - interval: 3_FAIXA
+              value: '0.0343'
+              customerRate: '0.3000'
+            - interval: 4_FAIXA
+              value: '0.2468'
+              customerRate: '0.1000'
+        chargingTriggerInfo:
+          type: string
+          maxLength: 200
+          example: NA
+          description: |
+            Recebimento através de transação de cartão.
+        minimum:
+          type: string
+          minLength: 1
+          maxLength: 999999
+          pattern: '^\d{1}\.\d{1,4}$'
+          description: Valor mínimo
+          example: '2.0'
+        maximum:
+          type: string
+          minLength: 1
+          maxLength: 999999
+          pattern: '^\d{1}\.\d{1,4}$'
+          description: Valor máximo
+          example: '5.0'
+      additionalProperties: false
+  parameters:
+    page:
+      name: page
+      in: query
+      description: Número da página que está sendo requisitada (o valor da primeira página é 1).
+      schema:
+        type: integer
+        default: 1
+        minimum: 1
+        format: int32
+    pageSize:
+      name: page-size
+      in: query
+      description: Quantidade total de registros por páginas.
+      schema:
+        type: integer
+        default: 25
+        minimum: 1
+        format: int32
+        maximum: 1000
+  responses:
+    OKResponseAcquiringServices:
+      description: Dados de operações de credenciamento obtidos com sucesso.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OKResponseAcquiringServices'
+    BadRequest:
+      description: 'A requisição foi malformada, omitindo atributos obrigatórios, seja no payload ou através de atributos na URL.'
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/responses/NotFound/content/application~1json%3B%20charset%3Dutf-8/schema'
+    NotFound:
+      description: O recurso solicitado não existe ou não foi implementado
+      content:
+        application/json; charset=utf-8:
+          schema:
+            type: object
+            required:
+              - errors
+            properties:
+              errors:
+                type: array
+                minItems: 1
+                maxItems: 13
+                items:
+                  type: object
+                  required:
+                    - code
+                    - title
+                    - detail
+                  properties:
+                    code:
+                      description: Código de erro específico do endpoint
+                      type: string
+                      pattern: '[\w\W\s]*'
+                      maxLength: 255
+                    title:
+                      description: Título legível por humanos deste erro específico
+                      type: string
+                      pattern: '[\w\W\s]*'
+                      maxLength: 255
+                    detail:
+                      description: Descrição legível por humanos deste erro específico
+                      type: string
+                      pattern: '[\w\W\s]*'
+                      maxLength: 2048
+                  additionalProperties: false
+              meta:
+                type: object
+                description: Meta informações referente a API requisitada.
+                required:
+                  - totalRecords
+                  - totalPages
+                  - requestDateTime
+                properties:
+                  totalRecords:
+                    type: integer
+                    format: int32
+                    description: Número total de registros no resultado
+                    example: 1
+                  totalPages:
+                    type: integer
+                    format: int32
+                    description: Número total de páginas no resultado
+                    example: 1
+                  requestDateTime:
+                    description: 'Data e hora da consulta, conforme especificação RFC-3339, formato UTC.'
+                    type: string
+                    maxLength: 20
+                    format: date-time
+                    example: '2021-05-21T08:30:00Z'
+                additionalProperties: false
+            additionalProperties: false
+    MethodNotAllowed:
+      description: O consumidor tentou acessar o recurso com um método não suportado
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/responses/NotFound/content/application~1json%3B%20charset%3Dutf-8/schema'
+    TooManyRequests:
+      description: 'A operação foi recusada, pois muitas solicitações foram feitas dentro de um determinado período ou o limite global de requisições concorrentes foi atingido'
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/responses/NotFound/content/application~1json%3B%20charset%3Dutf-8/schema'
+    InternalServerError:
+      description: Ocorreu um erro no gateway da API ou no microsserviço
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/responses/NotFound/content/application~1json%3B%20charset%3Dutf-8/schema'
