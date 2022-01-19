@@ -145,7 +145,7 @@ components:
           example:
             - PET
             - FUNERAL
-        assistanceAdditionalInfos:
+        assistanceTypesAdditionalInfos:
           type: array
           items:
             type: string
@@ -168,24 +168,17 @@ components:
           items:
             $ref: '#/components/schemas/EnumTerm'
         pmbacRemuneration:
-          $ref: '#/components/schemas/PmbacRemuneration'
+          $ref: '#/components/schemas/InsurancePensionEnumPmbacRemuneration'
         benefitRecalculation:
-          $ref: '#/components/schemas/BenefitRecalculation'
+          $ref: '#/components/schemas/InsurancePensionBenefitRecalculation'
         ageAdjustment:
           $ref: '#/components/schemas/AgeAdjustment'
         financialRegimeContractTypes:
           type: array
           items:
-            type: string
-            description: Listagem de regime financeiro para cada combinação de modalidade/cobertura do produto indicando&#58;<br><ol><li>Repartição simples</li><li>Repartição Capitais</li><li>Capitalização</li></ol>
-            maxLength: 29
-            enum:
-              - REPARTICAO_SIMPLES
-              - REPARTICAO_CAPITAIS
-              - CAPITALIZACAO
-            example: REPARTICAO_SIMPLES
+            $ref: '#/components/schemas/InsurancePensionEnumFinancialRegime'
         reclaim:
-          $ref: '#/components/schemas/Reclaim'
+          $ref: '#/components/schemas/InsurancePensionReclaim'
         otherGuaranteedValues:
           type: array
           items:
@@ -422,7 +415,7 @@ components:
             Lista com as informações do(s) Fundo(s) de Investimento(s) disponíveis para o período de diferimento/acumulação, contemplando:
               - Taxa Máxima de Administração - em %
           example: '0.201000'
-          maxLength: 10
+          maxLength: 8
         typePerformanceFee:
           type: string
           enum:
@@ -440,7 +433,7 @@ components:
           description: |
             Lista com as informações do(s) Fundo(s) de Investimento(s) disponíveis para o período de diferimento/acumulação, contemplando: 
               - Taxa Máxima de Performance - em %
-          maxLength: 10
+          maxLength: 8
           example: '0.201000'
         eligibilityRule:
           type: boolean
@@ -455,6 +448,7 @@ components:
               - Valor Mínimo de Contribuição
           pattern: '^\d{1,16}\.\d{2,4}$'
           example: '1000.00'
+          maxLength: 21
         minimumMathematicalProvisionAmount:
           type: string
           description: |
@@ -462,6 +456,7 @@ components:
               - Valor Mínimo do Saldo Provisão matemática
           pattern: '^\d{1,16}\.\d{2,4}$'
           example: '1000.00'
+          maxLength: 21
         currency:
           $ref: '#/components/schemas/CurrencyCode'
       additionalProperties: false
@@ -516,7 +511,7 @@ components:
       properties:
         interestRate:
           type: string
-          maxLength: 10
+          maxLength: 8
           pattern: '^[0-1]\.\d{6}$'
           description: Taxa de juros mensal garantida que remunera o plano durante a fase de diferimento/acumulação.
           example: '0.251231'
@@ -792,7 +787,7 @@ components:
             example: AT_2000_MALE
         interestRate:
           type: string
-          maxLength: 10
+          maxLength: 8
           pattern: '^[0-1]\.\d{6}$'
           description: Taxa de juros garantida utilizada para conversão em renda. Em %
           example: '0.225222'
@@ -1133,47 +1128,84 @@ components:
         - IGP_M
         - INPC
       example: IPCA
-    Reclaim:
+    InsurancePensionReclaim:
       type: object
-      description: Resgate
       properties:
         table:
-          $ref: '#/components/schemas/ReclaimTable'
-        differentiatedPercentage:
-          type: string
-          maxLength: 1024
-          description: Campo aberto (possibilidade de incluir URL).
+          type: array
+          items:
+            $ref: '#/components/schemas/InsurancePensionReclaimTableItem'
+          minItems: 1
+        gracePeriod:
+          $ref: '#/components/schemas/GracePeriod'
+        differenciatedPercentage:
+          description: Campo aberto (possibilidade de incluir URL)
           example: |
             https://openinsurance.com.br/aaa’
             Obs.: Exceção de cobertura ou critério definido acima será descrito aqui na URL
             Exemplo: Cobertura X: a partir de 25 meses = 100%
-        gracePeriod:
-          $ref: '#/components/schemas/GracePeriod'
+          maxLength: 1024
       additionalProperties: false
     InsurancePensionMinValue:
       type: object
+      required:
+        - amount
+        - currency
       description: 'Listagem do valor mínimo de cobertura (Capital Segurado), diária ou parcela aceito pela sociedade para cada combinação de modalidade/cobertura do produto.<br>Conforme moeda.'
       properties:
-        currencyValue:
-          $ref: '#/components/schemas/CurrencyValue'
+        amount:
+          type: string
+          maxLength: 21
+          pattern: '^\d{1,16}\.\d{2,4}$'
+          example: '0.01'
+        currency:
+          $ref: '#/components/schemas/CurrencyCode'
+      additionalProperties: false
     InsurancePensionMaxValue:
       type: object
+      required:
+        - amount
+        - currency
       description: 'Listagem do valor máximo de cobertura (Capital Segurado), diária ou parcela aceito pela sociedade para cada combinação de modalidade/cobertura do produto.<br>Conforme moeda.'
       properties:
-        currencyValue:
-          $ref: '#/components/schemas/CurrencyValue'
+        amount:
+          type: string
+          maxLength: 21
+          pattern: '^\d{1,16}\.\d{2,4}$'
+          example: '0.01'
+        currency:
+          $ref: '#/components/schemas/CurrencyCode'
+      additionalProperties: false
     InsurancePensionCoverageDeductible:
       type: object
+      required:
+        - amount
+        - currency
       description: Listagem de franquia em reais para cada combinação de modalidade/cobertura do produto.
       properties:
-        currencyValue:
-          $ref: '#/components/schemas/CurrencyValue'
+        amount:
+          type: string
+          maxLength: 21
+          pattern: '^\d{1,16}\.\d{2,4}$'
+          example: '0.01'
+        currency:
+          $ref: '#/components/schemas/CurrencyCode'
+      additionalProperties: false
     InsurancePensionCoverageDifferentiatedDeductible:
       type: object
+      required:
+        - amount
+        - currency
       description: 'Detalhamento da franquia em reais diferentes para cada cobertura que exista alguma especificidade.<br>Caso a seguradora não tenha essa diferenciação, não retornará nada no campo.'
       properties:
-        currencyValue:
-          $ref: '#/components/schemas/CurrencyValue'
+        amount:
+          type: string
+          maxLength: 21
+          pattern: '^\d{1,16}\.\d{2,4}$'
+          example: '0.01'
+        currency:
+          $ref: '#/components/schemas/CurrencyCode'
+      additionalProperties: false
     RiskPensionMinimumRequirement:
       type: object
       required:
@@ -1202,28 +1234,25 @@ components:
         - TRADICIONAL
         - MICROSSEGURO
       example: TRADICIONAL
-    ReclaimTable:
+    InsurancePensionReclaimTableItem:
       type: object
       properties:
         initialMonthRange:
           type: integer
-          format: int32
-          minimum: 1
-          maximum: 12
+          maxLength: 2
           example: 1
         finalMonthRange:
           type: integer
-          format: int32
-          minimum: 1
-          maximum: 12
-          example: 1
+          maxLength: 2
+          example: 12
         percentage:
           type: string
-          pattern: '^[0-1]\.\d{4}$'
+          pattern: '^\d\.\d{4}$'
+          description: Percentual de faixa de resgate.
+          maxLength: 6
           example: '0.5000'
-          description: Percentual de faixa de resgate
       additionalProperties: false
-    PmbacRemuneration:
+    InsurancePensionEnumPmbacRemuneration:
       type: object
       properties:
         interestRate:
@@ -1231,6 +1260,26 @@ components:
           pattern: '^\d{1,16}\.\d{4}$'
           description: Taxa de juros para capitalização da PMBaC
           example: '14.2521'
+        updateIndexes:
+          type: array
+          items:
+            $ref: '#/components/schemas/InsurancePensionBenefitRecalculation/properties/updateIndexes/items'
+      additionalProperties: false
+    InsurancePensionBenefitRecalculation:
+      type: object
+      required:
+        - criterias
+        - updateIndexes
+      properties:
+        criterias:
+          type: array
+          items:
+            type: string
+            enum:
+              - INDICE
+              - VINCULADO_SALDO_DEVEDOR
+              - VARIAVEL_ACORDO_CRITERIO_ESPECIFICO
+            maxLength: 35
         updateIndexes:
           type: array
           items:
@@ -1247,30 +1296,10 @@ components:
               - INPC
             example: IPCA
       additionalProperties: false
-    BenefitRecalculation:
-      type: object
-      required:
-        - criteria
-        - updateIndexes
-      properties:
-        criterias:
-          type: array
-          items:
-            type: string
-            enum:
-              - INDICE
-              - VINCULADO_SALDO_DEVEDOR
-              - VARIAVEL_ACORDO_CRITERIO_ESPECIFICO
-            maxLength: 35
-        updateIndexes:
-          type: array
-          items:
-            $ref: '#/components/schemas/PmbacRemuneration/properties/updateIndexes/items'
-      additionalProperties: false
     AgeAdjustment:
       type: object
       required:
-        - criteria
+        - criterias
         - frequency
       properties:
         criterias:
@@ -1292,24 +1321,9 @@ components:
               - NAO_APLICAVEL
         frequency:
           type: integer
-          format: int32
           description: 'Período em anos, caso critério de reenquadramento após ou a cada período em anos.'
           maxLength: 3
           example: 10
-      additionalProperties: false
-    CurrencyValue:
-      type: object
-      required:
-        - amount
-        - currency
-      properties:
-        amount:
-          type: string
-          maxLength: 21
-          pattern: '^\d{1,16}\.\d{2,4}$'
-          example: '0.01'
-        currency:
-          $ref: '#/components/schemas/CurrencyCode'
       additionalProperties: false
     CurrencyCode:
       type: string
@@ -1422,6 +1436,19 @@ components:
         - TEMPORARIA_PRAZO_FIXO
         - TEMPORARIA_INTERMITENTE
       example: VITALICIA
+    InsurancePensionEnumFinancialRegime:
+      type: string
+      description: |
+        Listagem de regime financeiro para cada combinação de modalidade/cobertura do produto indicando:
+          1. Repartição simples
+          2. Repartição Capitais Cobertura
+          3. Capitalização
+      maxLength: 19
+      example: REPARTICAO_SIMPLES
+      enum:
+        - REPARTICAO_SIMPLES
+        - REPARTICAO_CAPITAIS
+        - CAPITALIZACAO
   parameters:
     page:
       name: page
