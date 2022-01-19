@@ -390,7 +390,7 @@ components:
           $ref: '#/components/schemas/SurvivalPensionGrantPeriodBenefit'
         costs:
           $ref: '#/components/schemas/SurvivalPensionCosts'
-        minimumRequirements:
+        minimumRequirement:
           $ref: '#/components/schemas/SurvivalPensionMinimumRequirements'
         targetAudience:
           $ref: '#/components/schemas/EnumTargetAudience'
@@ -915,13 +915,17 @@ components:
           pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
           example: 'https://empresaa1.com/companies'
       additionalProperties: false
-    EnumRiskPensionIndemnifiablePeriod:
+    InsurancePensionEnumIndemnfiablePeriodType:
       type: string
-      description: Listagem do pagamento para cada benefício&#58;<br><ol><li>Quantidade determinada por parcelas</li><li>Até o fim de ciclo determinado</li></ol>
+      description: |
+        Listagem do pagamento para cada benefício:
+          1. Quantidade determinada de parcelas;
+          2. Até o fim de ciclo determinado.
+        Se for pagamento único, esse campo não se aplica (retorna vazio).
+      maxLength: 31
       enum:
         - QUANTIDADE_DETERMINADA_PARCELAS
-        - ATE_FIM_CICLO_DETERMINADO
-      maxLength: 31
+        - FIM_CICLO_DETERMINADO
       example: QUANTIDADE_DETERMINADA_PARCELAS
     EnumTargetAudience:
       type: string
@@ -1044,10 +1048,10 @@ components:
           $ref: '#/components/schemas/InsurancePensionMinValue'
         maxValue:
           $ref: '#/components/schemas/InsurancePensionMaxValue'
-        indemnifiablePeriods:
+        indemnfiablePeriods:
           type: array
           items:
-            $ref: '#/components/schemas/EnumRiskPensionIndemnifiablePeriod'
+            $ref: '#/components/schemas/InsurancePensionEnumIndemnfiablePeriodType'
         maximumQtyIndemnifiableInstallments:
           type: integer
           format: int64
@@ -1075,7 +1079,9 @@ components:
         differentiatedDeductible:
           $ref: '#/components/schemas/InsurancePensionCoverageDifferentiatedDeductible'
         excludedRisks:
-          $ref: '#/components/schemas/EnumExcludedRisks'
+          type: array
+          items:
+            $ref: '#/components/schemas/EnumExcludedRisks'
         excludedRisksURL:
           type: string
           maxLength: 1024
