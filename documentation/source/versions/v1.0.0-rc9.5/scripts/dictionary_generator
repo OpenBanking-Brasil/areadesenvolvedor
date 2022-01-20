@@ -1,0 +1,198 @@
+#!/usr/bin/env ruby
+require 'yaml'
+require 'pp'
+require 'csv'
+require 'pathname'
+require 'uri'
+require 'optparse'
+
+options = {}
+cli = OptionParser.new do |parser|
+  parser.banner = 'Usage: dictionary_generator [-c] -f swagger_file.yaml -o generated/'
+  parser.on('-c', '--conditional', 'Enable conditional value on mandatory column')
+  parser.on('-f', '--filename FILENAME', 'Yaml Swagger filename') do |f| Pathname.new f end
+  parser.on('-o', '--output OUTPUT', 'Output directory') do |o| Pathname.new o end
+end
+cli.parse!(into: options)
+
+oas = YAML.load_file(options[:filename])
+output_path = options[:output].realpath.to_s + '/'
+
+headers = {
+  'COLUMN_1'  => 'Xpath',
+  'COLUMN_2'  => 'Nome',
+  'COLUMN_3'  => 'Definição',
+  'COLUMN_4'  => 'Tipo de Dado',
+  'COLUMN_5'  => 'Tamanho',
+  'COLUMN_6'  => 'Mandatoriedade',
+  'COLUMN_7'  => 'Formato',
+  'COLUMN_8'  => 'Domínio',
+  'COLUMN_9'  => 'Mínimo de Ocorrências',
+  'COLUMN_10' => 'Máximo de Ocorrências',
+  'COLUMN_11' => 'Restrições',
+  'COLUMN_12' => 'Nulidade',
+  'COLUMN_13' => 'Tipo de Dado Json',
+  'COLUMN_14' => 'Exemplo'
+}
+
+def format_type(type)
+  return '' if !type
+  types = {
+    'array'         => 'Lista',
+    'double'        => 'Número',
+    'integer'       => 'Inteiro',
+    'string'        => 'Texto',
+    'number'        => 'Número',
+    'object'        => 'Objeto',
+    'boolean'       => 'Booleano',
+    'enum'          => 'Texto',
+    'date'          => 'Data',
+    'date-time'     => 'Date Hora'
+  }
+  return types[type.downcase] ? types[type.downcase] : 'Não Identificado!'
+end
+
+# Extract fields from Schema Object recursivily
+def extract_fields(schema, path = '', fields = [], ignore = ['links', 'meta'])
+  if ['array', 'object'].include? schema['type']
+    index = 'properties'
+
+    if schema['type'] == 'array' and !['array', 'object'].include? schema['items']['type']
+      items = schema['items']
+      items['isRequired'] = schema['isRequired']
+      items['maxItems'] = schema['maxItems']
+      items['minItems'] = schema['minItems']
+      items['description'] = schema['description']
+      items['name'] = schema['name']
+      items['type'] = schema['type'] + "-" + items['type'];
+
+      fields.concat extract_fields(items, path)
+      return fields
+    elsif path != ''
+      parent = schema.clone
+      parent['path'] = path
+      fields.push parent
+    end
+
+    schema = schema['items'] if schema['type'] == 'array'
+
+    schema[index].select{|key, _| !ignore.include? key}.each_with_index do |(name, spec)|
+      spec['name'] = name
+      spec['isRequired'] = true if schema['required'] and schema['required'].include? name
+
+      fields.concat extract_fields(spec, path + '/' + name)
+    end
+    return fields
+  else
+    schema['path'] = path
+    fields.push schema
+    return fields
+  end
+end
+
+# Write headers and rows on given filename
+def generate_csv(filename, headers, rows)
+  CSV.open(filename,'w', {:col_sep => ";"}) do |file|
+    file << headers.values
+    rows.each do |row|
+      file << row.values
+    end
+  end
+end
+
+def format_enum(enum)
+  return enum.join(" \n") if enum != nil
+end
+
+def format_restriction(text)
+  return '' if !text
+  return text.partition('[Restrição]').last
+end
+
+def format_definition(text)
+  return '' if !text
+  return text.match(/[^\[]*/)[0].strip.delete('\\\"')
+end
+
+# Analyse
+puts "> Starting analyse on " + options[:filename].to_s
+oas['paths'].each_with_index do |(path, methods)|
+  methods.each_with_index do |(op, spec)|
+    rows = []
+    puts '─ ' + op.upcase + ' ' + path
+
+    puts '  ├── Extracting fields from responses...'
+    spec['responses'].select {|status, _| (200..299).member? status.to_i }.each_with_index do |(status, response)|
+
+      if response['content'] == nil
+        puts '    └── INFO: No content was found!'
+        return
+      end
+
+      applicationData = response['content'];
+
+      if response['content']['application/json'] != nil
+        applicationData = response['content']['application/json'];
+      elsif response['content']['application/jwt'] != nil
+        applicationData = response['content']['application/jwt'];
+      end
+      
+      extract_fields(applicationData['schema'], '', []).each do |field|
+        min_items = field['minItems']
+        max_items = field['maxItems']
+        data_type = field['type']
+        restriction = format_restriction(field['description'])
+        mandatory = field['isRequired'] ? "Obrigatório" : "Opcional"
+
+        if ['date', 'date-time'].include? field['format']
+          data_type = field['format']
+        end
+
+        if field['type'] && field['type'].match(/array/)
+          data_type = 'array'
+          field['type'] = 'array'
+        end
+
+        if field['minItems'] == nil
+          min_items = field['isRequired'] ? 1 : 0
+          max_items = 1
+        end
+
+        if field['type'] == 'array' and field['maxItems'] == nil
+          max_items = 'N'
+        end
+
+        if restriction != '' && options[:conditional]
+          mandatory = 'Condicional'
+        end
+
+        row = {
+          headers['COLUMN_1']   => field['path'],
+          headers['COLUMN_2']   => field['name'],
+          headers['COLUMN_3']   => format_definition(field['description']),
+          headers['COLUMN_4']   => format_type(data_type),
+          headers['COLUMN_5']   => field['maxLength'],
+          headers['COLUMN_6']   => mandatory,
+          headers['COLUMN_7']   => field['pattern'],
+          headers['COLUMN_8']   => format_enum(field['enum']),
+          headers['COLUMN_9']   => min_items,
+          headers['COLUMN_10']  => max_items,
+          headers['COLUMN_11']  => restriction,
+          headers['COLUMN_12']  => field['nullable'] ? "Permitido" : "Não permitido",
+          headers['COLUMN_13']  => field['type'],
+          headers['COLUMN_14']  => field['example']
+        }
+        rows.push row
+      end
+    end
+
+    version = "v" + oas['info']['version'].split(/\./, 3).first
+    filename = output_path + spec['operationId'] + "_" + version + '.csv'
+    puts '  ├── Writing file ' + filename
+    generate_csv(filename, headers, rows)
+    puts "  └── Finished! \n\n"
+  end
+end
+
+puts '> Files generated!'
+exit 0
