@@ -1,0 +1,121 @@
+openapi: 3.0.0
+info:
+  title: API Capitalization-bonds - Open Banking Brasil
+  description: |
+    As APIs descritas neste documento é referente a API de Capitalização da fase OpenInsurance do Open Banking Brasil.
+  version: 1.0.0-rc1.0
+  license:
+    name: Apache 2.0
+    url: 'https://www.apache.org/licenses/LICENSE-2.0'
+  contact:
+    name: Governança do Open Banking Brasil – Especificações
+    email: gt-interfaces@openbankingbr.org
+    url: 'https://openbanking-brasil.github.io/areadesenvolvedor/'
+servers:
+  - url: 'https://api.banco.com.br/open-banking/opendata-capitalization/v1'
+    description: Servidor de Produção
+  - url: 'https://apih.banco.com.br/open-banking/opendata-capitalization/v1'
+    description: Servidor de Homologação
+tags:
+  - name: Capitalization Bonds
+    description: Operações para consulta das informações de Titulos de Capitalização
+paths:
+  /bonds:
+    get:
+      tags:
+        - Capitalization Bonds
+      summary: Conjunto de informações dos Títulos de Capitalização de uma instituição
+      operationId: capitalizationBondsGetProducts
+      description: Método para obter a lista de todos os títulos de Capitalização de uma instituição
+      parameters:
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+      responses:
+        '200':
+          $ref: '#/components/responses/OKResponseCapitalizationBondsProductsList'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+components:
+  schemas:
+    CapitalizationBondsProductIdentificationData:
+      $ref: ./schemas/capitalization_bonds_apis/CapitalizationBondsProductIdentificationData.yaml
+    Participant:
+      $ref: ./schemas/business_commons/Participant.yaml
+    EnumCapitalizationBondsProductModality:
+      $ref: ./schemas/enum/EnumCapitalizationBondsProductModality.yaml
+    EnumCapitalizationBondsProductCostType:
+      $ref: ./schemas/enum/EnumCapitalizationBondsProductCostType.yaml
+    TermsAndConditions:
+      $ref: ./schemas/business_commons/TermsAndConditionsItem.yaml
+    CapitalizationBondsProductQuota:
+      $ref: ./schemas/capitalization_bonds_apis/CapitalizationBondsProductQuota.yaml
+    CapitalizationBondsProductCapitalizationPeriod:
+      $ref: ./schemas/capitalization_bonds_apis/CapitalizationBondsProductCapitalizationPeriod.yaml
+    CapitalizationBondsProductUpdateIndex:
+      $ref: ./schemas/enum/CapitalizationBondsProductUpdateIndex.yaml
+    CapitalizationPeriodContributionAmount:
+      $ref: ./schemas/capitalization_bonds_apis/CapitalizationPeriodContributionAmount.yaml
+    LatePayment:
+      $ref: ./schemas/capitalization_bonds_apis/CapitalizationBondsProductLatePayment.yaml
+    ContributionPayment:
+      $ref: ./schemas/capitalization_bonds_apis/CapitalizationBondsProductContributionPayment.yaml
+    CapitalizationBondsProductPaymentMethod:
+      $ref: ./schemas/enum/CapitalizationBondsProductPaymentMethod.yaml
+    CapitalizationBondsProductPrizeDraw:
+      $ref: ./schemas/capitalization_bonds_apis/CapitalizationBondsProductPrizeDraw.yaml
+    Links:
+      $ref: ./schemas/Links.yaml
+    Meta:
+      $ref: ./schemas/Meta.yaml
+    Phase4Meta:
+      $ref: ./schemas/Phase4Meta.yaml
+  parameters:
+    page:
+      $ref: ./parameters/Page.yaml
+    pageSize:
+      $ref: ./parameters/PageSize.yaml
+  responses:
+    OKResponseCapitalizationBondsProductsList:
+      description: Dados de título(s) de capitalização obtidos com sucesso.
+      content:
+        application/json:
+          schema:
+            $ref: ./schemas/capitalization_bonds_apis/ResponseCapitalizationBondsProductsList.yaml
+    BadRequest:
+      description: 'A requisição foi malformada, omitindo atributos obrigatórios, seja no payload ou através de atributos na URL.'
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: ./schemas/ResponseError.yaml
+    InternalServerError:
+      description: Ocorreu um erro no gateway da API ou no microsserviço
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: ./schemas/ResponseError.yaml
+    MethodNotAllowed:
+      description: O consumidor tentou acessar o recurso com um método não suportado
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: ./schemas/ResponseError.yaml
+    NotFound:
+      description: O recurso solicitado não existe ou não foi implementado
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: ./schemas/ResponseError.yaml
+    TooManyRequests:
+      description: 'A operação foi recusada, pois muitas solicitações foram feitas dentro de um determinado período ou o limite global de requisições concorrentes foi atingido'
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: ./schemas/ResponseError.yaml
