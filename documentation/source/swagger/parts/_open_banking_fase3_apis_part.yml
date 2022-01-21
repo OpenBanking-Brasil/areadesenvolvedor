@@ -285,57 +285,6 @@ info:
 
     ### Como assinar o payload
 
-    No contexto da API Payment Initiation, os payloads de mensagem de consentimento e de pagamento que trafegam tanto por parte da instituição iniciadora de transação de pagamento quanto por parte da instituição detentora de conta devem estar assinados. Abaixo temos as orientações para assinatura das mensagens JWS.
-
-    Informações complementares de segurança podem ser consultadas em <a href="https://github.com/OpenBanking-Brasil/specs-seguranca/blob/main/open-banking-brasil-financial-api-1_ID3-ptbr.md"> https://github.com/OpenBanking-Brasil/specs-seguranca/blob/main/open-banking-brasil-financial-api-1_ID3-ptbr.md</a>.
-
-    - **Passo 1** - Identifique a chave privada e o certificado de assinatura correspondente a serem usados para assinatura:
-
-    As assinaturas devem ser realizadas com uso do certificado digital de assinatura especificado no <a href="https://github.com/OpenBanking-Brasil/specs-seguranca/blob/main/open-banking-brasil-certificate-standards-1_ID1-ptbr.md#certificado-de-assinatura-certificadoassinatura" target="_blank">Padrão de Certificados Open Banking Brasil</a>.
-
-    O certificado de assinatura deve ser válido no momento da criação do JWS.
-
-    - **Passo 2** - Geração do JOSE Header
-
-    O JOSE Header deve conter os seguintes campos:
-
-    |Nome|Tipo|Obrigatório|Descrição|
-    |---|---|---|---|---|
-    |alg|string|true|O algoritmo que será usado para assinar o JWS. Deve ser preenchido com o valor `PS256`.|
-    |kid|string|true|Deve ser obrigatoriamente preenchido com o valor do identificador da chave utilizado para a assinatura.|
-    |typ|string|true|É o tipo de conteúdo usado para trafegar mensagens na API. Deve ser preenchido com o valor `JWT`.|
-
-    - **Passo 3** - Montando a mensagem JWS
-
-    Para garantir a integridade e o não-repúdio das informações tramitadas em *API´s sensíveis e que indicam essa necessidade na sua documentação*, deve ser adotado a estrutura no padrão JWS definida na [<a href="https://datatracker.ietf.org/doc/html/rfc7515" target="_blank">RFC7515</a>] e que inclui:
-
-    **Cabeçalho** (_JSON Object Signing and Encryption – JOSE Header_), onde se define o algoritmo utilizado e inclui informações sobre a chave pública ou certificado que podem ser utilizadas para validar a assinatura;
-
-    **Payload** (_JWS Payload_): conteúdo propriamente dito e detalhado na especificação da API além de informações sobre `claims` JWT ;
-
-    **Assinatura digital** (_JWS Signature_): assinatura digital, realizada conforme parâmetros do cabeçalho.
-
-    O payload das mensagens (requisição e resposta _JWT_) assinadas devem incluir as seguintes `claims` presentes na [<a href="https://datatracker.ietf.org/doc/html/rfc7519#section-4.1" target="_blank">RFC7519</a>] (JWT):
-
-    |Nome|Tipo|Obrigatório|Descrição|
-    |---|---|---|---|---|
-    |aud|string|true|(***requisição JWT***): o Provedor do Recurso (p. ex. a instituição Detentora da Conta) deverá validar se o valor do campo **aud** coincide com o endpoint sendo acionado.<br>(***resposta JWT***): o cliente da API (p. ex. instituição Iniciadora) deverá validar se o valor do campo **aud** coincide com o seu próprio `organisationId` listado no diretório.|
-    |iss|string|true|(***requisição JWT*** e ***resposta JWT***): o receptor da mensagem deverá validar se o valor do campo **iss** coincide com o `organisationId` da outra parte listado no diretório.|
-    |jti|string|true|(***requisição JWT*** e ***resposta JWT***): o valor do campo **jti** deverá ser preenchido com o UUID definido pela instituição de acordo com a <a href="https://datatracker.ietf.org/doc/html/rfc4122" target="_blank">RFC 4122</a> usando o versão 4.|
-    |iat|NumericDate|true|(***requisição JWT*** e ***resposta JWT***): o valor do campo **iat** deverá ser preenchido com o horário da geração da mensagem e de acordo com o padrão estabelecido na <a href="https://datatracker.ietf.org/doc/html/rfc7519#section-2" target="_blank">RFC7519</a> para o formato _NumericDate_. A claim iat deverá ser gerada no Unix Time GMT +0 e sua verificação deverá possuir uma tolerância de +/- 60 segundos para cobrir pequenas diferenças nos relógios dos servidores dos participantes.|
-
-    - **A claim do “jti” deve ser única para um clientId dentro de um intervalo de tempo de 86.400 segundos, não podendo ser reutilizada neste período. Em caso de reutilização, deverá ser retornado o código de erro HTTP 403.**
-
-    - **As validações referentes as claims do JWT devem preceder a validação de idempotência (e.g. “jti”, “iat” e “iss”)**
-
-    Cada elemento acima deve ser codificado utilizando o padrão Base64url [<a href="https://datatracker.ietf.org/doc/html/rfc4648#section-5" target="_blank">RFC4648</a>] e, feito isso, os elementos devem ser concatenados com “.” (método JWS Compact Serialization, conforme definido na [<a href="https://datatracker.ietf.org/doc/html/rfc7515#section-3.1" target="_blank">RFC7515</a>]).
-
-    Formato da mensagem JWS:
-
-    <span style="background: #e9e8e8; padding: 3px;">**payload** = Base64url(**JOSEHeader**)  +  "." + Base64url(**payload JWT**)  +  "."  +  Base64url(**digital signature**)</span>
-
-    Veja ao lado exemplo de mensagem JWS assinada e codificada e um exemplo de mensagem JWS decodificada.
-
     > Exemplo de requisição - JWS assinada e codificada
 
     ```json
@@ -484,6 +433,56 @@ info:
     * "Assinatura omitida por questões de brevidade"
     ```
 
+    No contexto da API Payment Initiation, os payloads de mensagem de consentimento e de pagamento que trafegam tanto por parte da instituição iniciadora de transação de pagamento quanto por parte da instituição detentora de conta devem estar assinados. Abaixo temos as orientações para assinatura das mensagens JWS.
+
+    Informações complementares de segurança podem ser consultadas em <a href="https://github.com/OpenBanking-Brasil/specs-seguranca/blob/main/open-banking-brasil-financial-api-1_ID3-ptbr.md"> https://github.com/OpenBanking-Brasil/specs-seguranca/blob/main/open-banking-brasil-financial-api-1_ID3-ptbr.md</a>.
+
+    - **Passo 1** - Identifique a chave privada e o certificado de assinatura correspondente a serem usados para assinatura:
+
+    As assinaturas devem ser realizadas com uso do certificado digital de assinatura especificado no <a href="https://github.com/OpenBanking-Brasil/specs-seguranca/blob/main/open-banking-brasil-certificate-standards-1_ID1-ptbr.md#certificado-de-assinatura-certificadoassinatura" target="_blank">Padrão de Certificados Open Banking Brasil</a>.
+
+    O certificado de assinatura deve ser válido no momento da criação do JWS.
+
+    - **Passo 2** - Geração do JOSE Header
+
+    O JOSE Header deve conter os seguintes campos:
+
+    |Nome|Tipo|Obrigatório|Descrição|
+    |---|---|---|---|---|
+    |alg|string|true|O algoritmo que será usado para assinar o JWS. Deve ser preenchido com o valor `PS256`.|
+    |kid|string|true|Deve ser obrigatoriamente preenchido com o valor do identificador da chave utilizado para a assinatura.|
+    |typ|string|true|É o tipo de conteúdo usado para trafegar mensagens na API. Deve ser preenchido com o valor `JWT`.|
+
+    - **Passo 3** - Montando a mensagem JWS
+
+    Para garantir a integridade e o não-repúdio das informações tramitadas em *API´s sensíveis e que indicam essa necessidade na sua documentação*, deve ser adotado a estrutura no padrão JWS definida na [<a href="https://datatracker.ietf.org/doc/html/rfc7515" target="_blank">RFC7515</a>] e que inclui:
+
+    **Cabeçalho** (_JSON Object Signing and Encryption – JOSE Header_), onde se define o algoritmo utilizado e inclui informações sobre a chave pública ou certificado que podem ser utilizadas para validar a assinatura;
+
+    **Payload** (_JWS Payload_): conteúdo propriamente dito e detalhado na especificação da API além de informações sobre `claims` JWT ;
+
+    **Assinatura digital** (_JWS Signature_): assinatura digital, realizada conforme parâmetros do cabeçalho.
+
+    O payload das mensagens (requisição e resposta _JWT_) assinadas devem incluir as seguintes `claims` presentes na [<a href="https://datatracker.ietf.org/doc/html/rfc7519#section-4.1" target="_blank">RFC7519</a>] (JWT):
+
+    |Nome|Tipo|Obrigatório|Descrição|
+    |---|---|---|---|---|
+    |aud|string|true|(***requisição JWT***): o Provedor do Recurso (p. ex. a instituição Detentora da Conta) deverá validar se o valor do campo **aud** coincide com o endpoint sendo acionado.<br>(***resposta JWT***): o cliente da API (p. ex. instituição Iniciadora) deverá validar se o valor do campo **aud** coincide com o seu próprio `organisationId` listado no diretório.|
+    |iss|string|true|(***requisição JWT*** e ***resposta JWT***): o receptor da mensagem deverá validar se o valor do campo **iss** coincide com o `organisationId` da outra parte listado no diretório.|
+    |jti|string|true|(***requisição JWT*** e ***resposta JWT***): o valor do campo **jti** deverá ser preenchido com o UUID definido pela instituição de acordo com a <a href="https://datatracker.ietf.org/doc/html/rfc4122" target="_blank">RFC 4122</a> usando o versão 4.|
+    |iat|NumericDate|true|(***requisição JWT*** e ***resposta JWT***): o valor do campo **iat** deverá ser preenchido com o horário da geração da mensagem e de acordo com o padrão estabelecido na <a href="https://datatracker.ietf.org/doc/html/rfc7519#section-2" target="_blank">RFC7519</a> para o formato _NumericDate_. A claim iat deverá ser gerada no Unix Time GMT +0 e sua verificação deverá possuir uma tolerância de +/- 60 segundos para cobrir pequenas diferenças nos relógios dos servidores dos participantes.|
+
+    - **A claim do “jti” deve ser única para um clientId dentro de um intervalo de tempo de 86.400 segundos, não podendo ser reutilizada neste período. Em caso de reutilização, deverá ser retornado o código de erro HTTP 403.**
+
+    - **As validações referentes as claims do JWT devem preceder a validação de idempotência (e.g. “jti”, “iat” e “iss”)**
+
+    Cada elemento acima deve ser codificado utilizando o padrão Base64url [<a href="https://datatracker.ietf.org/doc/html/rfc4648#section-5" target="_blank">RFC4648</a>] e, feito isso, os elementos devem ser concatenados com “.” (método JWS Compact Serialization, conforme definido na [<a href="https://datatracker.ietf.org/doc/html/rfc7515#section-3.1" target="_blank">RFC7515</a>]).
+
+    Formato da mensagem JWS:
+
+    <span style="background: #e9e8e8; padding: 3px;">**payload** = Base64url(**JOSEHeader**)  +  "." + Base64url(**payload JWT**)  +  "."  +  Base64url(**digital signature**)</span>
+
+    Veja ao lado exemplo de mensagem JWS assinada e codificada e um exemplo de mensagem JWS decodificada.
 
     **Em caso de erro**
 
@@ -503,20 +502,20 @@ info:
 
     - **Mecanismo de retentativas de liquidação de pagamentos agendados**
 
-    No momento de liquidação de pagamento agendado é possível ter falhas sistêmicas ou violações de regras de negócio. Como por exemplo, ausência de saldo na conta do pagador para realizar a liquidação. Neste contexto é interessante às detentoras de conta a adoção de políticas de retentativas de liquidação.
+    No momento de liquidação de pagamento agendado é possível ter falhas sistêmicas ou violações de regras de negócio. Como por exemplo, ausência de saldo na conta do pagador para realizar a liquidação. Neste contexto é interessante às detentoras de conta a adoção de políticas de retentativas de liquidação.   
 
     O arranjo PIX não define nada a respeito deste tema, por consequência, o Open Banking deixa livre para cada detentora adote a política de retentativa que mais fizer sentido para ela.
 
     - **Revogação do consentimento**
 
-    Com a inclusão da funcionalidade de agendamento do pagamento é interessante facultar às partes envolvidas na transação a possibilidade de cancelamento do mesmo, desde que até um dia antes da sua liquidação. Esse mecanismo será oferecido a partir da revogação de consentimentos para pagamentos agendados.
+    Com a inclusão da funcionalidade de agendamento do pagamento é interessante facultar às partes envolvidas na transação a possibilidade de cancelamento do mesmo, desde que até um dia antes da sua liquidação. Esse mecanismo será oferecido a partir da revogação de consentimentos para pagamentos agendados. 
 
     Considerando a diretriz do controle do agendamento pela detentora de conta e as necessidades dos envolvidos na transação é possível os seguintes cenários de jornadas de revogação:
 
-        1. **Revogação pelo usuário na iniciadora** através da área de gestão de pagamentos do open banking (Consulte o guia de UX do Open Banking para maiores detalhes);
-        2. **Revogação pelo usuário na detentora** através da área de gestão de pagamentos do open banking (Consulte o guia de UX do Open Banking para maiores detalhes);
-        3. **Revogação pelo usuário na detentora** através da área de gestão do PIX (Consulte o guia de UX do arranjo PIX para maiores detalhes);
-        4. **Revogação pela iniciadora** sem a presença do usuário;
+        1. **Revogação pelo usuário na iniciadora** através da área de gestão de pagamentos do open banking (Consulte o guia de UX do Open Banking para maiores detalhes);   
+        2. **Revogação pelo usuário na detentora** através da área de gestão de pagamentos do open banking (Consulte o guia de UX do Open Banking para maiores detalhes);   
+        3. **Revogação pelo usuário na detentora** através da área de gestão do PIX (Consulte o guia de UX do arranjo PIX para maiores detalhes);   
+        4. **Revogação pela iniciadora** sem a presença do usuário;   
         5. **Revogação pela detentora** sem a presença do usuário.
 
     - **Regras funcionais**
@@ -524,6 +523,160 @@ info:
     |Código|Descrição                                                                                                                                                                                                                          |Endpoint                                                                |
     |------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------|
     |RN001 |Ao revogar um consentimento o pagamento associado deverá ir para o status **RJCT** e campo **rejectionReason** deverá ter o valor **CONSENT_REVOKED**. Schema: <a href="#tocS_EnumRejectionReasonType">EnumRejectionReasonType</a> |<a href="#revogar-consentimento-de-pagamento">Revogar consentimento</a> |
+
+    **Post/Consents**
+
+    - **Exemplo -  PIX normal**
+
+    {   
+      "alg": "PS256",   
+      "typ": "JWT",   
+      "kid": "PWAi5ruQcHfzPzq2JFdpY7nAUh6LzTTQtDBUpOM37JQ"   
+    }   
+    {   
+      "aud": "3449bf21-0b07-48e6-b6fc-13eb161a9901",   
+      "iss": "ca1b98e1-97a2-43db-947f-8a08054c342e",   
+      "jti": "a2fd393c-107a-4ad4-be22-3cfeeea90efe",   
+      "iat": 1628257737",   
+      "data": {   
+        "consentId": "urn:bancoex:C1DD33123",   
+        "creationDateTime": "2021-05-21T08:30:00Z",   
+        "expirationDateTime": "2021-05-21T08:30:00Z",   
+        "statusUpdateDateTime": "2021-05-21T08:30:00Z",   
+        "status": "AWAITING_AUTHORISATION",   
+        "loggedUser": {   
+          "document": {   
+            "identification": "11111111111",   
+            "rel": "CPF"   
+          }   
+        },   
+        "businessEntity": {,   
+          "document": {   
+            "identification": "11111111111111",   
+            "rel": "CNPJ",   
+          }   
+        },   
+        "creditor": {   
+          "personType": "PESSOA_NATURAL",   
+          "cpfCnpj": "58764789000137",   
+          "name": "Marco Antonio de Brito"   
+        },   
+        "payment": {   
+          "type": "PIX",   
+          "date": "2021-01-01",   
+          "currency": "BRL",   
+          "amount": "100000.12",   
+          "ibgeTownCode": "5300108",   
+          "details": {   
+            "localInstrument": "DICT",   
+            "qrCode": "00020104141234567890123426660014BR.GOV.BCB.PIX014466756C616E6F32303139406578616D706C652E636F6   
+            D27300012\nBR.COM.OUTRO011001234567895204000053039865406123.455802BR5915NOMEDORECEBEDOR6008   
+            BRASILIA61087007490062\n530515RP12345678-201950300017BR.GOV.BCB.BRCODE01051.0.08045   
+            0014BR.GOV.BCB.PIX0123PADRAO.URL.PIX/0123AB\nCD81390012BR.COM.OUTRO01190123.ABC   
+            D.3456.WXYZ6304EB76\n",   
+            "proxy": "12345678901",   
+            "creditorAccount": {   
+              "ispb": "12345678",   
+              "issuer": "1774",   
+              "number": "1234567890",   
+              "accountType": "CACC",   
+            }   
+          }   
+        },   
+        "debtorAccount": {   
+          "ispb": "12345678",   
+          "issuer": "1774",   
+          "number": "1234567890",   
+          "accountType": "CACC",   
+        }   
+      },   
+      "links": {   
+        "self": "https://api.banco.com.br/open-banking/payments/v1/consents",   
+      },   
+      "meta": {   
+        "totalRecords": 1,   
+        "totalPages": 1,   
+        "requestDateTime": "2021-05-21T08:30:00Z",   
+      }   
+    }
+
+    - **Exemplo -  PIX agendado**
+
+    {   
+      "alg": "PS256",   
+      "typ": "JWT",   
+      "kid": "PWAi5ruQcHfzPzq2JFdpY7nAUh6LzTTQtDBUpOM37JQ"   
+    }   
+    {   
+      "aud": "3449bf21-0b07-48e6-b6fc-13eb161a9901",   
+      "iss": "ca1b98e1-97a2-43db-947f-8a08054c342e",   
+      "jti": "a2fd393c-107a-4ad4-be22-3cfeeea90efe",   
+      "iat": 1628257737",   
+      "data": {   
+        "consentId": "urn:bancoex:C1DD33123",   
+        "creationDateTime": "2021-05-21T08:30:00Z",   
+        "expirationDateTime": "2021-05-21T08:30:00Z",   
+        "statusUpdateDateTime": "2021-05-21T08:30:00Z",   
+        "status": "AWAITING_AUTHORISATION",   
+        "loggedUser": {   
+          "document": {   
+            "identification": "11111111111",   
+            "rel": "CPF"   
+          }   
+        },   
+        "businessEntity": {,   
+          "document": {   
+            "identification": "11111111111111",   
+            "rel": "CNPJ",   
+          }   
+        },   
+        "creditor": {   
+          "personType": "PESSOA_NATURAL",   
+          "cpfCnpj": "58764789000137",   
+          "name": "Marco Antonio de Brito"   
+        },   
+        "payment": {   
+          "type": "PIX",   
+          "schedule": {   
+            "single": {   
+              "date": "2021-01-01"   
+            }   
+          },   
+          "currency": "BRL",   
+          "amount": "100000.12",   
+          "ibgeTownCode": "5300108",   
+          "details": {   
+            "localInstrument": "DICT",   
+            "qrCode": "00020104141234567890123426660014BR.GOV.BCB.PIX014466756C616E6F32303139406578616D706C652E636F6   
+            D27300012\nBR.COM.OUTRO011001234567895204000053039865406123.455802BR5915NOMEDORECEBEDOR6008   
+            BRASILIA61087007490062\n530515RP12345678-201950300017BR.GOV.BCB.BRCODE01051.0.08045   
+            0014BR.GOV.BCB.PIX0123PADRAO.URL.PIX/0123AB\nCD81390012BR.COM.OUTRO01190123.AB   
+            CD.3456.WXYZ6304EB76\n",   
+            "proxy": "12345678901",   
+            "creditorAccount": {   
+              "ispb": "12345678",   
+              "issuer": "1774",   
+              "number": "1234567890",   
+              "accountType": "CACC",   
+            }   
+          }   
+        },   
+        "debtorAccount": {   
+          "ispb": "12345678",   
+          "issuer": "1774",   
+          "number": "1234567890",   
+          "accountType": "CACC",   
+        }   
+      },   
+      "links": {   
+        "self": "https://api.banco.com.br/open-banking/payments/v1/consents",   
+      },   
+      "meta": {   
+        "totalRecords": 1,   
+        "totalPages": 1,   
+        "requestDateTime": "2021-05-21T08:30:00Z",   
+      }   
+    }
   version: 1.1.0
 tags:
   - name: API - Pagamentos
@@ -551,6 +704,8 @@ paths:
       operationId: paymentsPostConsents
       description: |
         Método para a criação do consentimento para iniciação de pagamento.
+
+        Para consultar os payloads correspondentes ao tipo do pagamento PIX, <a href="#orientacoes">acesse aqui.</a>
 
         ### Dicionário de dados
 
@@ -859,6 +1014,8 @@ components:
       $ref: ./schemas/enum/EnumAccountPaymentsType.yaml
     EnumAuthorisationStatusType:
       $ref: ./schemas/enum/EnumAuthorisationStatusType.yaml
+    EnumAuthorisationPatchStatusType:
+      $ref: ./schemas/enum/EnumAuthorisationPatchStatusType.yaml
     EnumErrorsCreateConsent:
       $ref: ./schemas/enum/EnumErrorsCreateConsent.yaml
     EnumErrorsCreatePayment:
