@@ -163,6 +163,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/TermsAndConditions'
+          minItems: 1
         globalCapital:
           type: boolean
           description: A considerar os seguintes domínios&#58;<br><ol><li>true</li><li>false</li></ol>
@@ -305,74 +306,9 @@ components:
                   - OUTRA
                 example: DIARIA
             contributionTax:
-              type: object
-              description: Distribuição por frequência.
-              required:
-                - prices
-                - minimum
-                - maximum
-              properties:
-                prices:
-                  type: array
-                  description: Distribuição dos preços.
-                  items:
-                    type: object
-                    required:
-                      - interval
-                      - value
-                      - customerRate
-                    properties:
-                      interval:
-                        type: string
-                        description: Faixas de frequência
-                        maxLength: 7
-                        enum:
-                          - 1_FAIXA
-                          - 2_FAIXA
-                          - 3_FAIXA
-                          - 4_FAIXA
-                        example: 1_FAIXA
-                      value:
-                        type: string
-                        description: Mediana.
-                        example: '0.020300'
-                        maxLength: 8
-                        pattern: '^\d{1}\.\d{1,6}$'
-                      customerRate:
-                        type: string
-                        description: Percentual de clientes.
-                        example: '0.500000'
-                        maxLength: 8
-                        pattern: '^\d{1}\.\d{1,6}$'
-                    additionalProperties: false
-                  minItems: 4
-                  maxItems: 4
-                  example:
-                    - interval: 1_FAIXA
-                      value: '0.020300'
-                      customerRate: '0.500000'
-                    - interval: 2_FAIXA
-                      value: '0.030600'
-                      customerRate: '0.100000'
-                    - interval: 3_FAIXA
-                      value: '0.034300'
-                      customerRate: '0.300000'
-                    - interval: 4_FAIXA
-                      value: '0.246800'
-                      customerRate: '0.100000'
-                minimum:
-                  type: string
-                  description: Valor mínimo.
-                  maxLength: 8
-                  pattern: '^\d{1}\.\d{1,6}$'
-                  example: '0.010000'
-                maximum:
-                  type: string
-                  description: Valor máximo.
-                  maxLength: 8
-                  pattern: '^\d{1}\.\d{1,6}$'
-                  example: '0.300000'
-              additionalProperties: false
+              type: string
+              description: 'Distribuição de frequência relativa aos valores referentes às taxas cobradas, nos termos do Anexo III.'
+              maxLength: 500
           additionalProperties: false
         minimumRequirement:
           $ref: '#/components/schemas/RiskPensionMinimumRequirement'
@@ -451,6 +387,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/TermsAndConditions'
+          minItems: 1
         type:
           $ref: '#/components/schemas/SurvivalPensionType'
         defferalPeriod:
@@ -597,8 +534,10 @@ components:
           pattern: '^[0-1]\.\d{6}$'
           description: Percentual de reversão de excedente financeiro na concessão. Em %.
           example: '0.051230'
-        minimumPremium:
-          $ref: '#/components/schemas/SurvivalPensionMinimumPremium'
+        minimumPremiums:
+          type: array
+          items:
+            $ref: '#/components/schemas/SurvivalPensionMinimumPremium'
         premiumPaymentMethods:
           type: array
           items:
@@ -782,6 +721,7 @@ components:
             - TRIMESTRAL
             - SEMESTRAL
             - ANUAL
+            - UNICO
         amount:
           type: string
           maxLength: 21
@@ -1066,16 +1006,6 @@ components:
             - outros
         attributes:
           $ref: '#/components/schemas/CoverageAttributes'
-        coveragePeriod:
-          type: string
-          description: |
-            1. Vitalícia;
-            2. Temporária.
-          maxLength: 10
-          enum:
-            - VITALICIA
-            - TEMPORARIA
-          example: TEMPORARIA
       additionalProperties: false
     EnumRiskPensionCoverageType:
       type: string
@@ -1115,12 +1045,6 @@ components:
               - INDENIZACAO_UNICA
               - DIARIA_OU_PARCELA
             example: INDENIZACAO_UNICA
-        indemnifiableDeadline:
-          type: integer
-          format: int32
-          description: 'Caso o período de pagamento seja relacionado a Prazo, listagem de número máximo de parcelas do benefício. Em meses.'
-          maximum: 9999
-          example: 48
         minValue:
           $ref: '#/components/schemas/InsurancePensionMinValue'
         maxValue:
