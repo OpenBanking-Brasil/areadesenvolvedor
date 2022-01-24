@@ -1,0 +1,100 @@
+type: object
+description: Conjunto de informações relativas a Identificação ou seja a ação e o efeito de identificar de forma única a pessoa natural através de seus dados cadastrais.
+required:
+  - updateDateTime
+  - personalId
+  - brandName
+  - civilName
+  - socialName
+  - birthDate
+  - maritalStatusCode
+  - sex
+  - companyCnpj
+  - documents
+  - otherDocuments
+  - hasBrazilianNationality
+  - nationality
+  - filiation
+  - contacts
+properties:
+  updateDateTime:
+    type: string
+    maxLength: 20
+    format: date-time
+    pattern: ^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$
+    example: '2021-05-21T08:30:00Z'
+  personalId:
+    type: string
+    pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
+    maxLength: 100
+    description: Um identificador único e imutável usado para identificar o recurso cliente pessoa natural. Este identificador não tem significado para o cliente que deu o consentimento
+    example: "578-psd-71md6971kjh-2d414"
+  brandName:
+    type: string
+    maxLength: 80
+    pattern: '[\w\W\s]*'
+    example: Organização A
+    description: Nome da Marca reportada pelo participante do Open Banking. O conceito a que se refere a 'marca' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes
+  civilName:
+    type: string
+    maxLength: 70
+    pattern: '[\w\W\s]*'
+    example: Juan Kaique Cláudio Fernandes
+    description: Nome civil completo da pessoa natural (Direito fundamental da pessoa, o nome civil é aquele atribuído à pessoa natural desde o registro de seu nascimento, com o qual será identificada por toda a sua vida, bem como após a sua morte)
+  socialName:
+    type: string
+    maxLength: 70
+    pattern: '[\w\W\s]*'
+    example: Jaqueline de Freitas
+    description: Nome social da pessoa natural, se houver. (aquele pelo qual travestis e transexuais se reconhecem, bem como são identificados por sua comunidade e em seu meio social, conforme Decreto Local)
+  birthDate:
+    type: string
+    maxLength: 10
+    format: date
+    pattern: ^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$
+    example: '2021-05-21'
+    description: Data de nascimento, conforme especificação RFC-3339
+  maritalStatusCode:
+    $ref: ../enum/EnumMaritalStatusCode.yaml
+  maritalStatusAdditionalInfo:
+    type: string
+    pattern: '[\w\W\s]*'
+    maxLength: 50
+    example: 'Casado'
+    description: Campo livre para complementar a informação relativa ao estado marital, quando selecionada a opção 'OUTROS'
+  sex:
+    $ref: ../enum/EnumSex.yaml
+  companyCnpj:
+    type: array
+    items:
+      type: string
+      pattern: '\d{14}|^NA$'
+      maxLength: 14
+    example: ["01773247000103", "01773247000563"]
+    description: |
+      Número completo do CNPJ da instituição responsável pelo Cadastro - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. 
+      Deve-se ter apenas os números do CNPJ, sem máscara
+  documents:
+    $ref: ./PersonalDocument.yaml
+  otherDocuments:
+    type: array
+    items:
+      $ref: ./PersonalOtherDocument.yaml
+    minItems: 1
+    description: Relação dos demais documentos
+  hasBrazilianNationality:
+    type: boolean
+    nullable: true
+    example: false
+    description: Informa se o Cliente tem nacionalidade brasileira.
+  nationality:
+    type: array
+    items:
+      $ref: ./Nationality.yaml
+  filiation:
+    type: array          
+    items:
+      $ref: ./Filiation.yaml
+  contacts:
+    $ref: ./PersonalContacts.yaml
+additionalProperties: false

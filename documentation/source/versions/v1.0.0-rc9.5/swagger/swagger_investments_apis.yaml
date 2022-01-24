@@ -1,0 +1,994 @@
+﻿openapi: 3.0.0
+info:
+  title: API Investments - Open Banking Brasil
+  description: |
+    Estas APIs visam o compartilhamento de dados sobre Investimentos e suas
+    características entre as Instituições Financeiras participantes do Open Banking Brasil
+  version: 1.0.0
+  license:
+    name: Apache 2.0
+    url: 'https://www.apache.org/licenses/LICENSE-2.0'
+  contact:
+    name: Governança do Open Banking Brasil – Especificações
+    email: gt-interfaces@openbankingbr.org
+    url: 'https://openbanking-brasil.github.io/areadesenvolvedor/'
+servers:
+  - url: 'https://api.banco.com.br/open-banking/opendata-investments/v1'
+    description: Servidor de Produção
+  - url: 'https://apih.banco.com.br/open-banking/opendata-investments/v1'
+    description: Servidor de Homologação
+tags:
+  - name: Funds
+    description: Método para obter a lista de Fundos de Investimentos
+  - name: Bank Fixed Incomes
+    description: 'Método para obter a lista de produtos de Renda Fixa Bancária (CDB, RDB, LCI e LCA)'
+  - name: Credit Fixed Incomes
+    description: 'Método para obter a lista de produtos de Renda Fixa Crédito (Debênture, CRI e CRA)'
+  - name: Variable Incomes
+    description: Método para obter a lista de informações de produtos de Renda Variável (Ações e Fundos de Índices)
+  - name: Treasure Titles
+    description: Método para obter informações de Títulos do Tesouro Direto
+paths:
+  /funds:
+    get:
+      tags:
+        - Funds
+      summary: Conjunto de informações dos Fundos de Investimentos
+      operationId: investmentsGetFunds
+      description: Método para obter a lista de Fundos de Investimentos
+      parameters:
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+      responses:
+        '200':
+          $ref: '#/components/responses/OKResponseInvestmentsFund'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /bank-fixed-incomes:
+    get:
+      tags:
+        - Bank Fixed Incomes
+      summary: 'Conjunto de informações de produtos de Renda Fixa Bancária (CDB, RDB, LCI e LCA)'
+      operationId: investmentsGetFixedIncomeBank
+      description: 'Método para obter a lista de produtos de Renda Fixa Bancária (CDB, RDB, LCI e LCA)'
+      parameters:
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+      responses:
+        '200':
+          $ref: '#/components/responses/OKResponseInvestmentsFixedIncomeBank'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /credit-fixed-incomes:
+    get:
+      tags:
+        - Credit Fixed Incomes
+      summary: 'Conjunto de informações de produtos de Renda Fixa Crédito (Debênture, CRI e CRA)'
+      operationId: investmentsGetFixedIncomeCredit
+      description: 'Método para obter a lista de produtos de Renda Fixa Crédito (Debênture, CRI e CRA)'
+      parameters:
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+      responses:
+        '200':
+          $ref: '#/components/responses/OKResponseInvestmentsFixedIncomeCredit'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /variable-incomes:
+    get:
+      tags:
+        - Variable Incomes
+      summary: Conjunto de informações de produtos de Renda Variável (Ações e Fundos de Índices)
+      operationId: investmentsGetVariableIncome
+      description: Método para obter a lista de informações de produtos de Renda Variável (Ações e Fundos de Índices)
+      parameters:
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+      responses:
+        '200':
+          $ref: '#/components/responses/OKResponseInvestmentsVariableIncome'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /treasure-titles:
+    get:
+      tags:
+        - Treasure Titles
+      summary: Conjunto de informações de Títulos do Tesouro Direto
+      operationId: investmentsGetTreasure
+      description: Método para obter informações de Títulos do Tesouro Direto
+      parameters:
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+      responses:
+        '200':
+          $ref: '#/components/responses/OKResponseInvestmentsTreasure'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+components:
+  schemas:
+    OKResponseInvestmentsFund:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/InvestmentsFund'
+        links:
+          $ref: '#/components/schemas/Links'
+        meta:
+          $ref: '#/components/schemas/Phase4Meta'
+      additionalProperties: false
+    OKResponseInvestmentsFixedIncomeBank:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/InvestmentsFixedIncomeBank'
+        links:
+          $ref: '#/components/schemas/Links'
+        meta:
+          $ref: '#/components/schemas/Phase4Meta'
+      additionalProperties: false
+    OKResponseInvestmentsFixedIncomeCredit:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/InvestmentsFixedIncomeCredit'
+        links:
+          $ref: '#/components/schemas/Links'
+        meta:
+          $ref: '#/components/schemas/Phase4Meta'
+      additionalProperties: false
+    OKResponseInvestmentsVariableIncome:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/InvestmentsVariableIncome'
+        links:
+          $ref: '#/components/schemas/Links'
+        meta:
+          $ref: '#/components/schemas/Phase4Meta'
+      additionalProperties: false
+    OKResponseInvestmentsTreasure:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/InvestmentsTreasure'
+        links:
+          $ref: '#/components/schemas/Links'
+        meta:
+          $ref: '#/components/schemas/Phase4Meta'
+      additionalProperties: false
+    InvestmentsFrequencyDistribution:
+      type: object
+      description: Distribuição por frequência.
+      required:
+        - prices
+        - minimum
+        - maximum
+      properties:
+        prices:
+          type: array
+          description: Distribuição dos preços.
+          items:
+            $ref: '#/components/schemas/InvestmentsFrequencyDistributionPrice'
+          minItems: 4
+          maxItems: 4
+          example:
+            - interval: 1_FAIXA
+              value: '0.020300'
+              customerRate: '0.500000'
+            - interval: 2_FAIXA
+              value: '0.030600'
+              customerRate: '0.100000'
+            - interval: 3_FAIXA
+              value: '0.034300'
+              customerRate: '0.300000'
+            - interval: 4_FAIXA
+              value: '0.246800'
+              customerRate: '0.100000'
+        minimum:
+          type: string
+          description: Valor mínimo.
+          maxLength: 8
+          pattern: '^\d{1}\.\d{1,6}$'
+          example: '0.010000'
+        maximum:
+          type: string
+          description: Valor máximo.
+          maxLength: 8
+          pattern: '^\d{1}\.\d{1,6}$'
+          example: '0.300000'
+    InvestmentsFrequencyDistributionPrice:
+      type: object
+      required:
+        - interval
+        - value
+        - customerRate
+      properties:
+        interval:
+          $ref: '#/components/schemas/EnumInterval'
+        value:
+          type: string
+          description: Mediana.
+          example: '0.020300'
+          maxLength: 8
+          pattern: '^\d{1}\.\d{1,6}$'
+        customerRate:
+          type: string
+          description: Percentual de clientes.
+          example: '0.500000'
+          maxLength: 8
+          pattern: '^\d{1}\.\d{1,6}$'
+    InvestmentsFixedIncomeBank:
+      type: object
+      required:
+        - participant
+        - issuerInstitutionCnpjNumber
+        - investimentType
+        - index
+        - investmentConditions
+      properties:
+        participant:
+          $ref: '#/components/schemas/Participant'
+        issuerInstitutionCnpjNumber:
+          type: string
+          description: CNPJ da instituição emissora.
+          maxLength: 14
+          pattern: '^\d{14}$'
+          example: '45086338000178'
+        investimentType:
+          $ref: '#/components/schemas/EnumInvestmentsFixedIncomeBankProductType'
+        index:
+          $ref: '#/components/schemas/InvestmentsFixedIncomeBankIndex'
+        investmentConditions:
+          $ref: '#/components/schemas/InvestmentsFixedIncomeBankInvestmentConditions'
+      additionalProperties: false
+    InvestmentsFixedIncomeBankIndex:
+      type: object
+      required:
+        - indexer
+        - issueRemunerationRate
+      properties:
+        indexer:
+          $ref: '#/components/schemas/EnumInvestmentsFixedIncomeBankIndexer'
+        indexerAdditionalInfo:
+          type: string
+          description: Campo a ser preenchido pelas participantes quando houver ‘Outros’ no campo ‘Indexador’.
+          maxLength: 50
+          example: Dólar
+        issueRemunerationRate:
+          $ref: '#/components/schemas/InvestmentsFrequencyDistribution'
+      additionalProperties: false
+    InvestimentFundMinimumAmount:
+      type: object
+      required:
+        - value
+        - currency
+      properties:
+        value:
+          type: string
+          description: Valor mínimo do primeiro aporte.
+          minLength: 4
+          maxLength: 19
+          pattern: '^\d{1,16}\.\d{2}$'
+          example: '100000.12'
+        currency:
+          type: string
+          pattern: '^[A-Z]{3}$'
+          description: 'Moeda referente ao valor da transação, segundo modelo ISO-4217. p.ex. ''BRL''<br>Todos os saldos informados estão representados com a moeda vigente do Brasil'
+          example: BRL
+    InvestmentsFixedIncomeBankInvestmentConditions:
+      type: object
+      required:
+        - minimumAmount
+        - redemptionTerm
+        - minimumExpirationTerm
+        - maximumExpirationTerm
+        - minimumGracePeriod
+        - maximumGracePeriod
+      properties:
+        minimumAmount:
+          type: string
+          description: Valor mínimo de aplicação no ativo.
+          minLength: 4
+          maxLength: 19
+          pattern: '^\d{1,16}\.\d{2}$'
+          example: '100.00'
+        redemptionTerm:
+          $ref: '#/components/schemas/EnumInvestmentsFixedIncomeBankRedemptionTerm'
+        minimumExpirationTerm:
+          type: number
+          format: int32
+          description: Prazo mínimo referente ao vencimento do título
+          minimum: 1
+          example: 30
+        maximumExpirationTerm:
+          type: number
+          format: int32
+          description: Prazo máximo referente ao vencimento do título
+          minimum: 1
+          example: 720
+        minimumGracePeriod:
+          type: number
+          format: int32
+          description: 'Prazo mínimo da carência, ou seja, quando passa a ser possível resgatar o investimento'
+          minimum: 0
+          example: 5
+        maximumGracePeriod:
+          type: number
+          format: int32
+          description: 'Prazo máximo da carência, ou seja, quando passa a ser possível resgatar o investimento'
+          minimum: 0
+          example: 180
+      additionalProperties: false
+    InvestmentsFixedIncomeCredit:
+      type: object
+      required:
+        - investmentType
+        - custodyFee
+        - loadingRate
+      properties:
+        participant:
+          $ref: '#/components/schemas/Participant'
+        investmentType:
+          $ref: '#/components/schemas/EnumInvestmentsFixedIncomeCreditInvestmentType'
+        custodyFee:
+          $ref: '#/components/schemas/InvestmentsFrequencyDistribution'
+        loadingRate:
+          $ref: '#/components/schemas/InvestmentsFrequencyDistribution'
+      additionalProperties: false
+    InvestmentsFund:
+      type: object
+      required:
+        - participant
+        - name
+        - cnpjNumber
+        - admin
+        - fundManager
+        - anbimaCategory
+        - generalConditions
+        - taxation
+      properties:
+        participant:
+          $ref: '#/components/schemas/Participant'
+        name:
+          type: string
+          description: Nome oficial do fundo de investimento.
+          maxLength: 250
+          example: FUNDO DE INVESTIMENTO EM COTAS DE FUNDOS DE INVESTIMENTO
+        cnpjNumber:
+          type: string
+          description: CNPJ do fundo de investimento.
+          maxLength: 14
+          pattern: '^\d{14}$'
+          example: '64108803000191'
+        isinCode:
+          type: string
+          description: 'Código universal que identifica cada valor mobiliário ou instrumento financeiro, conforme Norma ISO 6166.<br><br>DEFINIÇÃO&#58;O ISIN (International Securities Identification Number) é um código que identifica um valor mobiliário, conforme a norma ISO 6166.<br>ESTRUTURA<br>O ISIN é um código alfanumérico que possui 12 caracteres com a seguinte estrutura&#58;<ul><li>um prefixo, composto de 2 caracteres alfa, que identifica o código do país (Norma ISO 3166);</li><li>o número básico, composto de 9 caracteres alfabéticos ou numéricos em sua extensão;</li><li>um dígito numérico de controle.</li></ul>'
+          maxLength: 12
+          pattern: '^[A-Z]{2}([A-Z0-9]){9}\d{1}$'
+          example: BRAAAAAAA000
+        admin:
+          $ref: '#/components/schemas/InvestmentsFundAdmin'
+        fundManager:
+          $ref: '#/components/schemas/InvestmentsFundFundManager'
+        anbimaCategory:
+          $ref: '#/components/schemas/EnumInvestmentsFundProductAnbimaCategory'
+        fees:
+          $ref: '#/components/schemas/InvestmentsFundFees'
+        generalConditions:
+          $ref: '#/components/schemas/InvestmentsFundGeneralConditions'
+        taxation:
+          $ref: '#/components/schemas/EnumInvestmentsFundTaxation'
+      additionalProperties: false
+    InvestmentsFundAdmin:
+      required:
+        - name
+        - cnpjNumber
+      properties:
+        name:
+          type: string
+          description: Razão social da pessoa jurídica autorizada pela CVM para o exercício de administrador de carteiras de valores mobiliários e responsável pela administração do fundo.
+          maxLength: 100
+          example: ADM OPEN BANKING DTVM S.A.
+        cnpjNumber:
+          type: string
+          description: CNPJ do administrador.
+          maxLength: 14
+          pattern: '^\d{14}$'
+          example: '14511732000150'
+    InvestmentsFundFundManager:
+      required:
+        - name
+        - cnpjNumber
+      properties:
+        name:
+          type: string
+          description: Pessoa natural ou jurídica responsável pela gestão profissional dos ativos da carteira de valores mobiliários autorizado pela CVM.
+          maxLength: 100
+          example: GESTOR OPEN BANKING DTVM S.A.
+        cnpjNumber:
+          type: string
+          description: CNPJ do gestor do fundo de investimento.
+          maxLength: 14
+          pattern: '^\d{14}$'
+          example: '16332711000101'
+    InvestmentsFundFees:
+      type: object
+      properties:
+        maxAdminFee:
+          type: string
+          description: 'Taxa máxima cobrada para remunerar o administrador e os demais prestadores de serviços do fundo. Caso não haja a difererença de Máximo e Mínimo, considerar a taxa de administração do fundo.'
+          minLength: 3
+          maxLength: 8
+          pattern: '^\d{1}\.\d{1,6}$'
+          example: '0.020000'
+        entryFee:
+          type: string
+          description: 'Taxa cobrada no momento da aplicação, que incide sobre o valor investido no fundo.'
+          minLength: 3
+          maxLength: 8
+          pattern: '^\d{1}\.\d{1,6}$'
+          example: '0.010000'
+        performanceFee:
+          $ref: '#/components/schemas/InvestmentsFundFeesPerformanceFee'
+        exitFee:
+          type: string
+          description: Taxa paga pelo cotista ao resgatar recursos de um fundo.
+          minLength: 3
+          maxLength: 8
+          pattern: '^\d{1}\.\d{1,6}$'
+          example: '0.030000'
+      additionalProperties: false
+    InvestmentsFundFeesPerformanceFee:
+      type: object
+      properties:
+        method:
+          $ref: '#/components/schemas/EnumInvestmentsFundFeesPerformanceFeeMethod'
+        benchmark:
+          $ref: '#/components/schemas/EnumInvestmentsFundFeesPerformanceFeeBenchmark'
+        benchmarkAdditionalInfo:
+          type: string
+          description: Campo a ser preenchido pelas participantes quando houver ‘Outros’ no campo ‘Taxa de Performance - Benchmark’.
+        amount:
+          type: string
+          description: Taxa cobrada do fundo em função de resultado conforme regras dispostas no regulamento do fundo.
+          minLength: 3
+          maxLength: 8
+          pattern: '^\d{1}\.\d{1,6}$'
+          example: '0.050000'
+    InvestmentsFundGeneralConditionsRedemption:
+      type: object
+      required:
+        - quotationDays
+        - quotationTerm
+        - paymentDays
+        - paymentTerm
+      properties:
+        quotationDays:
+          type: integer
+          format: int32
+          description: Prazo em dias indicada no regulamento do fundo para a conversão das cotas em dinheiro.
+          minimum: 0
+          example: 3
+        quotationTerm:
+          $ref: '#/components/schemas/EnumInvestmentsFundGeneralConditionsTermType'
+        paymentDays:
+          type: integer
+          format: int32
+          description: 'Prazo em dias do efetivo pagamento, pelo fundo, do valor líquido devido ao cotista que efetuou pedido de resgate.'
+          example: 3
+          minimum: 0
+        paymentTerm:
+          $ref: '#/components/schemas/EnumInvestmentsFundGeneralConditionsTermType'
+        graceDays:
+          type: integer
+          format: int32
+          description: 'Estabelece um período em quantidade de dias corridos em que o investidor não pode resgatar os recursos aplicados no fundo. Caso ocorra resgate antes do período, o investidor perderá a rentabilidade do período. Caso não exista, não informe o campo.'
+          minimum: 0
+          example: 60
+    InvestmentsFundGeneralConditionsApplication:
+      type: object
+      required:
+        - quotationDays
+        - quotationTerm
+      properties:
+        quotationDays:
+          type: integer
+          format: int32
+          description: 'Indica se o fundo estabelece um período em que o investidor não pode resgatar os recursos aplicados no fundo. Caso ocorra resgate antes do período, o investidor perderá a rentabilidade do período.'
+          minimum: 0
+          example: 60
+        quotationTerm:
+          $ref: '#/components/schemas/EnumInvestmentsFundGeneralConditionsTermType'
+    InvestmentsFundGeneralConditions:
+      type: object
+      required:
+        - minimumAmount
+        - currency
+        - redemption
+        - application
+        - fundQuotaType
+      properties:
+        minimumAmount:
+          $ref: '#/components/schemas/InvestimentFundMinimumAmount'
+        redemption:
+          $ref: '#/components/schemas/InvestmentsFundGeneralConditionsRedemption'
+        application:
+          $ref: '#/components/schemas/InvestmentsFundGeneralConditionsApplication'
+        fundQuotaType:
+          $ref: '#/components/schemas/EnumInvestmentsFundGeneralConditionsFundQuotaType'
+      additionalProperties: false
+    InvestmentsTreasure:
+      type: object
+      required:
+        - investmentType
+        - custodyFee
+        - loadingRate
+      properties:
+        participant:
+          $ref: '#/components/schemas/Participant'
+        investmentType:
+          $ref: '#/components/schemas/EnumInvestmentsTreasureInvestmentType'
+        custodyFee:
+          $ref: '#/components/schemas/InvestmentsFrequencyDistribution'
+        loadingRate:
+          $ref: '#/components/schemas/InvestmentsFrequencyDistribution'
+      additionalProperties: false
+    InvestmentsVariableIncome:
+      type: object
+      required:
+        - investmentType
+        - custodyFee
+        - loadingRate
+      properties:
+        participant:
+          $ref: '#/components/schemas/Participant'
+        investmentType:
+          $ref: '#/components/schemas/EnumInvestmentsVariableIncomeInvestmentType'
+        custodyFee:
+          $ref: '#/components/schemas/InvestmentsFrequencyDistribution'
+        loadingRate:
+          $ref: '#/components/schemas/InvestmentsFrequencyDistribution'
+      additionalProperties: false
+    EnumInvestmentsFixedIncomeBankIndexer:
+      type: string
+      description: 'Índice utilizado como referência para a correção da rentabilidade e/ou rendimentos do ativo (p.ex. CDI).<br><br>Pré-fixado, em linha com padronização da B3&#58;<br><br><ol><li>CDI</li><li>DI</li><li>TR</li><li>IPCA</li><li>IGP-M</li><li>IGP-DI</li><li>INPC</li><li>BCP</li><li>TLC</li><li>Selic</li><li>Outros</li></ol>'
+      maxLength: 6
+      enum:
+        - CDI
+        - DI
+        - TR
+        - IPCA
+        - IGP_M
+        - IGP_DI
+        - INPC
+        - BCP
+        - TLC
+        - SELIC
+        - OUTROS
+      example: CDI
+    EnumInvestmentsFixedIncomeBankProductType:
+      type: string
+      description: Especificação do ativo em questão.<br><ol><li>CDB</li><li>RDB</li><li>LCI</li><li>LCA</li></ol>
+      maxLength: 3
+      enum:
+        - CDB
+        - RDB
+        - LCI
+        - LCA
+      example: CDB
+    EnumInvestmentsFixedIncomeBankRedemptionTerm:
+      type: string
+      description: Capacidade de conversão do título em dinheiro (resgate ou recompra).<br><br><ol><li>diária</li><li>na data de vencimento</li><li>diária após prazo de carência</li></ol>
+      maxLength: 29
+      enum:
+        - DIARIA
+        - DATA_VENCIMENTO
+        - DIARIA_APOS_PRAZO_CARENCIA
+      example: DIARIA
+    EnumInvestmentsFixedIncomeCreditInvestmentType:
+      type: string
+      description: Especifica o tipo de ativo negociado&#58;<br><br><ol><li>Debêntures</li><li>CRI</li><li>CRA</li></ol>
+      maxLength: 11
+      enum:
+        - DEBENTURES
+        - CRI
+        - CRA
+      example: CRI
+    EnumInvestmentsFundFeesPerformanceFeeBenchmark:
+      type: string
+      description: 'Índice utilizado como referência para avaliação de desempenho do fundo de investimento.<br><br>Em linha com padronização na listagem de fundos da ANBIMA, com opção “outros”, permitindo campo livre caso a opção não seja previamente fornecida. Listagem de benchmark disponível no link https://data.anbima.com.br/fundos , opção Características > Benchmark'
+      enum:
+        - CDI
+        - IBOVESPA_FECHAMENTO
+        - IBOVESPA
+        - IMA_B
+        - IBRX
+        - IPCA
+        - IMA_B_5
+        - DOLAR_PTAX
+        - IBRX_100
+        - TAXA_SELIC
+        - IMA_B_5_PLUS
+        - IBOVESPA_MEDIO
+        - IRF_M
+        - IMA_GERAL
+        - INPC
+        - IGP_M
+        - SMLL_SMALL_CAP
+        - IDA_IPCA
+        - ISE
+        - IRF_M_1
+        - IBRX_50
+        - IDIV_DIVIDENDOS
+        - IFIX
+        - GLOBAL_BDRX
+        - IMA_S
+        - IDKA_IPCA_2A
+        - IRF_M_1_PLUS
+        - OUTROS
+      example: CDI
+    EnumInvestmentsFundFeesPerformanceFeeMethod:
+      type: string
+      description: Metodologia do campo para taxa de performance.<br><ol><li>Passivo</li><li>Ativo</li><li>Ajuste</li></ol>
+      maxLength: 7
+      enum:
+        - PASSIVO
+        - ATIVO
+        - AJUSTE
+      example: PASSIVO
+    EnumInvestmentsFundGeneralConditionsFundQuotaType:
+      type: string
+      description: Referente a incidência de tributos sobre o produto de investimento&#58;<br><br><ol><li>Cota de abertura</li><li>Cota de fechamento</li></ol>
+      maxLength: 18
+      enum:
+        - COTA_ABERTURA
+        - COTA_FECHAMENTO
+      example: COTA_ABERTURA
+    EnumInvestmentsFundGeneralConditionsTermType:
+      type: string
+      description: Período em dias corridos ou dias úteis do prazo de cotização.<br><br><ol><li>Dias corridos</li><li>Dias úteis</li></ol>
+      maxLength: 13
+      enum:
+        - DIAS_CORRIDOS
+        - DIAS_UTEIS
+      example: DIAS_CORRIDOS
+    EnumInvestmentsFundProductAnbimaCategory:
+      type: string
+      description: 'Conforme classificação ANBIMA, que segue a deliberação 77 da ANBIMA.<br><ol><li>Renda Fixa</li><li>Ações</li><li>Multimercado</li><li>Cambial</li></ol><br><br> [https://www.anbima.com.br/data/files/5A/44/2C/B7/8411B510CD3B4DA568A80AC2/DeliberacaoN77-Diretriz-de-Classificacao-de-Fundos.pdf](https://www.anbima.com.br/data/files/5A/44/2C/B7/8411B510CD3B4DA568A80AC2/DeliberacaoN77-Diretriz-de-Classificacao-de-Fundos.pdf)'
+      maxLength: 12
+      enum:
+        - RENDA_FIXA
+        - ACOES
+        - MULTIMERCADO
+        - CAMBIAL
+      example: MULTIMERCADO
+    EnumInvestmentsFundTaxation:
+      type: string
+      description: 'Indica o tipo de tributação, podendo ser&#58;<br><ol><li>Curto prazo</li><li>Longo prazo</li><li>Variável</li></ol>'
+      maxLength: 11
+      enum:
+        - CURTO_PRAZO
+        - LONGO_PRAZO
+        - VARIAVEL
+      example: CURTO_PRAZO
+    EnumInvestmentsTreasureInvestmentType:
+      type: string
+      description: Especifica o tipo de ativo negociado&#58;<br><br><ol><li>Tesouro direto</li></ol>
+      maxLength: 14
+      enum:
+        - TESOURO_DIRETO
+      example: TESOURO_DIRETO
+    EnumInvestmentsVariableIncomeInvestmentType:
+      type: string
+      description: Especifica o tipo de ativo negociado&#58;<br><br><ol><li>Ações</li><li>Fundo de índices</li></ol>
+      maxLength: 16
+      enum:
+        - ACOES
+        - FUNDO_INDICES
+      example: ACOES
+    Participant:
+      type: object
+      description: Conjunto de informações relativas ao participante do produto de open banking
+      required:
+        - brand
+        - name
+        - cnpjNumber
+      properties:
+        brand:
+          type: string
+          description: 'Nome da marca reportada pelo participante do Open Banking. O conceito a que se refere a ''marca'' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes.'
+          maxLength: 80
+          example: Organização
+        name:
+          type: string
+          description: Nome do participante do Open Banking.
+          maxLength: 80
+          example: Organização A1
+        cnpjNumber:
+          type: string
+          description: 'O CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. Deve-se ter apenas os números do CNPJ, sem máscara.'
+          pattern: '\d{14}$'
+          example: '13456789000112'
+        urlComplementaryList:
+          type: string
+          maxLength: 1024
+          pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
+          example: 'https://empresaa1.com/companies'
+      additionalProperties: false
+    EnumInterval:
+      type: string
+      description: Faixas de frequência
+      maxLength: 7
+      enum:
+        - 1_FAIXA
+        - 2_FAIXA
+        - 3_FAIXA
+        - 4_FAIXA
+      example: 1_FAIXA
+    Links:
+      type: object
+      description: Referências para outros recusos da API requisitada.
+      required:
+        - self
+      properties:
+        self:
+          type: string
+          format: uri
+          maxLength: 2000
+          description: URI completo que gerou a resposta atual.
+          example: 'https://api.banco.com.br/open-banking/api/v1/resource'
+          pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
+        first:
+          type: string
+          format: uri
+          maxLength: 2000
+          description: URI da primeira página que originou essa lista de resultados. Restrição - Obrigatório quando não for a primeira página da resposta
+          example: 'https://api.banco.com.br/open-banking/api/v1/resource'
+          pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
+        prev:
+          type: string
+          format: uri
+          maxLength: 2000
+          description: "URI da página anterior dessa lista de resultados. Restrição - \tObrigatório quando não for a primeira página da resposta"
+          example: 'https://api.banco.com.br/open-banking/api/v1/resource'
+          pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
+        next:
+          type: string
+          format: uri
+          maxLength: 2000
+          description: URI da próxima página dessa lista de resultados. Restrição - Obrigatório quando não for a última página da resposta
+          example: 'https://api.banco.com.br/open-banking/api/v1/resource'
+          pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
+        last:
+          type: string
+          format: uri
+          maxLength: 2000
+          description: URI da última página dessa lista de resultados. Restrição - Obrigatório quando não for a última página da resposta
+          example: 'https://api.banco.com.br/open-banking/api/v1/resource'
+          pattern: '^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$'
+      additionalProperties: false
+    Phase4Meta:
+      type: object
+      description: Meta informações referente à API requisitada.
+      required:
+        - totalRecords
+        - totalPages
+      properties:
+        totalRecords:
+          type: integer
+          format: int32
+          description: Número total de registros no resultado
+          example: 1
+        totalPages:
+          type: integer
+          format: int32
+          description: Número total de páginas no resultado
+          example: 1
+      additionalProperties: false
+  parameters:
+    page:
+      name: page
+      in: query
+      description: Número da página que está sendo requisitada (o valor da primeira página é 1).
+      schema:
+        type: integer
+        default: 1
+        minimum: 1
+        format: int32
+    pageSize:
+      name: page-size
+      in: query
+      description: Quantidade total de registros por páginas.
+      schema:
+        type: integer
+        default: 25
+        minimum: 1
+        format: int32
+        maximum: 1000
+  responses:
+    OKResponseInvestmentsFund:
+      description: Dados de fundos de investimentos obtidos com sucesso.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OKResponseInvestmentsFund'
+    OKResponseInvestmentsFixedIncomeBank:
+      description: Dados de produtos de renda fixa bancária obtidos com sucesso.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OKResponseInvestmentsFixedIncomeBank'
+    OKResponseInvestmentsFixedIncomeCredit:
+      description: Dados de produtos de renda fixa crédito obtidos com sucesso.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OKResponseInvestmentsFixedIncomeCredit'
+    OKResponseInvestmentsVariableIncome:
+      description: Dados de produtos de renda variável obtidos com sucesso.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OKResponseInvestmentsVariableIncome'
+    OKResponseInvestmentsTreasure:
+      description: Dados de títulos do tesouro direto obtidos com sucesso.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OKResponseInvestmentsTreasure'
+    BadRequest:
+      description: 'A requisição foi malformada, omitindo atributos obrigatórios, seja no payload ou através de atributos na URL.'
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/responses/NotFound/content/application~1json%3B%20charset%3Dutf-8/schema'
+    InternalServerError:
+      description: Ocorreu um erro no gateway da API ou no microsserviço
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/responses/NotFound/content/application~1json%3B%20charset%3Dutf-8/schema'
+    MethodNotAllowed:
+      description: O consumidor tentou acessar o recurso com um método não suportado
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/responses/NotFound/content/application~1json%3B%20charset%3Dutf-8/schema'
+    NotFound:
+      description: O recurso solicitado não existe ou não foi implementado
+      content:
+        application/json; charset=utf-8:
+          schema:
+            type: object
+            required:
+              - errors
+            properties:
+              errors:
+                type: array
+                minItems: 1
+                maxItems: 13
+                items:
+                  type: object
+                  required:
+                    - code
+                    - title
+                    - detail
+                  properties:
+                    code:
+                      description: Código de erro específico do endpoint
+                      type: string
+                      pattern: '[\w\W\s]*'
+                      maxLength: 255
+                    title:
+                      description: Título legível por humanos deste erro específico
+                      type: string
+                      pattern: '[\w\W\s]*'
+                      maxLength: 255
+                    detail:
+                      description: Descrição legível por humanos deste erro específico
+                      type: string
+                      pattern: '[\w\W\s]*'
+                      maxLength: 2048
+                  additionalProperties: false
+              meta:
+                type: object
+                description: Meta informações referente a API requisitada.
+                required:
+                  - totalRecords
+                  - totalPages
+                  - requestDateTime
+                properties:
+                  totalRecords:
+                    type: integer
+                    format: int32
+                    description: Número total de registros no resultado
+                    example: 1
+                  totalPages:
+                    type: integer
+                    format: int32
+                    description: Número total de páginas no resultado
+                    example: 1
+                  requestDateTime:
+                    description: 'Data e hora da consulta, conforme especificação RFC-3339, formato UTC.'
+                    type: string
+                    maxLength: 20
+                    format: date-time
+                    example: '2021-05-21T08:30:00Z'
+                additionalProperties: false
+            additionalProperties: false
+    TooManyRequests:
+      description: 'A operação foi recusada, pois muitas solicitações foram feitas dentro de um determinado período ou o limite global de requisições concorrentes foi atingido'
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/responses/NotFound/content/application~1json%3B%20charset%3Dutf-8/schema'
