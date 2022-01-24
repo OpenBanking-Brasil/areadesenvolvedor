@@ -28,7 +28,7 @@ info:
     O endpoint de consulta de pagamento GET /pix/payments/{​​​paymentId}​​​ deve suportar acesso a partir de access_token emitido por meio de um grant_type do tipo `client credentials`, como opção do uso do token vinculado ao consentimento (hybrid flow).
 
     Para evitar vazamento de informação, a detentora deve validar que o pagamento consultado pertence ao ClientId que o criou e, caso haja divergências, retorne um erro HTTP 400.
-  version: 1.0.1
+  version: 1.1.0
   license:
     name: Apache 2.0
     url: 'https://www.apache.org/licenses/LICENSE-2.0'
@@ -139,6 +139,62 @@ paths:
               schema:
                 $ref: '#/components/schemas/ResponseError'
       security:
+        - OAuth2ClientCredentials:
+            - payments
+    patch:
+      tags:
+        - Pagamentos
+      summary: Revogar consentimento de pagamento.
+      operationId: paymentsPatchPixPayments
+      description: Método para revogação do consentimento.
+      parameters:
+        - $ref: '#/components/parameters/consentId'
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/xFapiAuthDate'
+        - $ref: '#/components/parameters/xFapiCustomerIpAddress'
+        - $ref: '#/components/parameters/xFapiInteractionId'
+        - $ref: '#/components/parameters/xCustomerUserAgent'
+        - $ref: '#/components/parameters/XIdempotencyKey'
+      requestBody:
+        content:
+          application/jwt:
+            schema:
+              $ref: '#/components/schemas/PatchPaymentsConsent'
+        description: Payload para revogação do consentimento.
+        required: true
+      responses:
+        '200':
+          $ref: '#/components/responses/200PatchPaymentsConsent'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntityPatchConsent'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          description: Erro inesperado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+      security:
+        - OAuth2AuthorizationCode:
+            - 'consent:consentId'
+            - payments
         - OAuth2ClientCredentials:
             - payments
   /pix/payments:
@@ -680,17 +736,30 @@ components:
         - AUTHORISED
         - REJECTED
         - CONSUMED
-      example: AWAITING_AUTHORISATION
+        - REVOKED
+      example: REVOKED
       description: |
         Retorna o estado do consentimento, o qual no momento de sua criação será AWAITING_AUTHORISATION.
-        Este estado será alterado depois da autorização do consentimento na detentora da conta do pagador (Debtor) para AUTHORISED ou REJECTED. 
-        O consentimento fica no estado CONSUMED após ocorrer a iniciação do pagamento referente ao consentimento.  
-        Em caso de consentimento expirado a detentora deverá retornar o status REJECTED.  
-        Estados possíveis:  
-        AWAITING_AUTHORISATION - Aguardando autorização  
-        AUTHORISED - Autorizado   
-        REJECTED - Rejeitado  
-        CONSUMED - Consumido 
+        Este estado será alterado depois da autorização do consentimento na detentora da conta do pagador (Debtor) para AUTHORISED, REJECTED ou REVOKED.
+        O consentimento fica no estado CONSUMED após ocorrer a iniciação do pagamento referente ao consentimento.
+        Em caso de consentimento expirado a detentora deverá retornar o status REJECTED.
+        Em caso de revogação do consentimento a detentora deverá retornar o status REVOKED.
+        Estados possíveis:
+        AWAITING_AUTHORISATION - Aguardando autorização
+        AUTHORISED - Autorizado
+        REJECTED - Rejeitado
+        CONSUMED - Consumido
+        REVOKED - Revogado
+    EnumAuthorisationPatchStatusType:
+      type: string
+      maxLength: 22
+      enum:
+        - REVOKED
+      example: REVOKED
+      description: |
+        Estado para o qual deve ir.
+
+        [Restrição] O único valor válido é REVOKED. (caso contrário a detentora deve retornar erro HTTP 400)
     EnumErrorsCreatePayment:
       type: string
       maxLength: 25
@@ -748,6 +817,8 @@ components:
       maxLength: 45
       enum:
         - PDNG
+        - SASP
+        - SASC
         - PART
         - ACSP
         - ACSC
@@ -757,10 +828,13 @@ components:
       description: |
         Estado atual da iniciação de pagamento. O estado evolui na seguinte ordem:  
         1. PDNG (PENDING) - Iniciação de pagamento ou transação de pagamento está pendente. Checagens adicionais em realização.  
-        2. PART (PARTIALLY ACCEPTED) - Aguardando autorização múltipla alçada.  
-        3. ACSP (ACCEPTED_SETTLEMENT_IN_PROCESS) - Iniciação de pagamento aceita e processamento do pagamento foi iniciado.  
-        4. ACSC (ACCEPTED_SETTLEMENT_COMPLETED_DEBITOR_ACCOUNT) - Débito realizado na conta do pagador.  
-        5. ACCC (ACCEPTED_SETTLEMENT_COMPLETED) - Crédito realizado na instituição de destino.  
+        2. SASP (SCHEDULE_ACCEPTED_SETTLEMENT_IN_PROCESS) - Indica que o processo de agendamento está em processamento.  
+        3. SASC (SCHEDULE_ACCEPTED_SETTLEMENT_COMPLETED) - Indica que o processo de agendamento foi realizado.  
+        4. PART (PARTIALLY ACCEPTED) - Aguardando autorização múltipla alçada.  
+        5. ACSP (ACCEPTED_SETTLEMENT_IN_PROCESS) - Iniciação de pagamento aceita e processamento do pagamento foi iniciado.  
+        6. ACSC (ACCEPTED_SETTLEMENT_COMPLETED_DEBITOR_ACCOUNT) - Débito realizado na conta do pagador.  
+        7. ACCC (ACCEPTED_SETTLEMENT_COMPLETED) - Crédito realizado na instituição de destino.  
+
         Em caso insucesso:  
         RJCT (REJECTED) - Instrução de pagamento rejeitada.
     EnumPaymentType:
@@ -899,13 +973,16 @@ components:
       additionalProperties: false
     LoggedUser:
       type: object
-      description: Usuário (pessoa natural) que encontra-se logado na instituição Iniciadora de Pagamento.
+      description: |
+        Usuário (pessoa natural) que encontra-se logado na instituição Iniciadora de Pagamento.
+        [Restrição] Deve obrigatoriamente ser enviado quando a revogação for feita pelo usuário final, ou seja, se o campo revokedBy estiver com o valor 'USER'.
       additionalProperties: false
       required:
         - document
       properties:
         document:
           type: object
+          description: Objeto que contém os dados de identificação do usuário.
           additionalProperties: false
           required:
             - identification
@@ -925,7 +1002,7 @@ components:
               pattern: '^[A-Z]{3}$'
     Meta:
       type: object
-      description: Meta informações referente a API requisitada.
+      description: Meta informações referente à API requisitada.
       required:
         - totalRecords
         - totalPages
@@ -953,20 +1030,23 @@ components:
       description: Objeto contendo dados de pagamento para consentimento.
       required:
         - type
-        - date
         - currency
         - amount
         - details
       properties:
         type:
           $ref: '#/components/schemas/EnumPaymentType'
+        schedule:
+          oneOf:
+            - $ref: '#/components/schemas/Schedule'
         date:
           type: string
           format: date
           maxLength: 10
           pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
           example: '2021-01-01'
-          description: 'Data do pagamento, conforme especificação RFC-3339.'
+          description: |
+            Mutuamente exclusivo com o objeto schedule. Este campo é obrigatório no caso de pagamento único. Neste caso, o objeto schedule não deve ser informado.
         currency:
           type: string
           maxLength: 3
@@ -997,6 +1077,31 @@ components:
         details:
           $ref: '#/components/schemas/Details'
       additionalProperties: false
+    Schedule:
+      type: object
+      description: |
+        Mutuamente exclusivo com o campo date. Este campo é obrigatório no caso de agendamento. Neste caso, o campo date não deve ser informado.
+      required:
+        - single
+      properties:
+        single:
+          $ref: '#/components/schemas/Single'
+    Single:
+      type: object
+      description: Define a política de agendamento único.
+      additionalProperties: false
+      required:
+        - date
+      properties:
+        date:
+          type: string
+          format: date
+          maxLength: 10
+          pattern: '^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$'
+          example: '2021-01-01'
+          description: |
+            Define a data alvo da liquidação do pagamento. O fuso horário de Brasilia deve ser utilizado para criação e racionalização sobre os dados deste campo.  
+            OBS:Esse campo deverá sempre ser no mínimo D+1 corrido, ou seja, a data imediatamente posterior em relação a data do consentimento considerando o fuso horário de Brasília e deverá ser no máximo um ano corrido a partir da data do consentimento considerando o fuso horário de Brasília.
     PaymentPix:
       type: object
       description: Objeto contendo dados do pagameto como moeda e valor.
@@ -1119,6 +1224,8 @@ components:
                 Data e hora em que o recurso foi atualizado. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).
             status:
               $ref: '#/components/schemas/EnumAuthorisationStatusType'
+            revocation:
+              $ref: '#/components/schemas/Revocation'
             loggedUser:
               $ref: '#/components/schemas/LoggedUser'
             businessEntity:
@@ -1290,20 +1397,153 @@ components:
       pattern: '^[a-zA-Z0-9][a-zA-Z0-9\-]{0,99}$'
       maxLength: 100
       description: 'Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.'
+    PatchPaymentsConsent:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          $ref: '#/components/schemas/PatchPaymentsConsentData'
+      additionalProperties: false
+    PatchPaymentsConsentData:
+      type: object
+      description: Objeto contendo dados do pagamento e do recebedor (creditor).
+      required:
+        - status
+        - revocation
+      properties:
+        status:
+          $ref: '#/components/schemas/EnumAuthorisationPatchStatusType'
+        revocation:
+          $ref: '#/components/schemas/Revocation'
+    Revocation:
+      type: object
+      description: |
+        Objeto que contém as informações das circunstância da revogação.   
+
+        [Restrição] O campo loggedUser deve ser preenchido quando a revogação for feita pelo usuário final, ou seja, se o campo data.revocation.revokedBy estiver com o valor 'USER'.
+      required:
+        - revokedBy
+        - reason
+      properties:
+        loggedUser:
+          $ref: '#/components/schemas/LoggedUser'
+        revokedBy:
+          $ref: '#/components/schemas/EnumRevokedBy'
+        reason:
+          $ref: '#/components/schemas/Reason'
+    EnumRevokedBy:
+      type: string
+      maxLength: 8
+      enum:
+        - USER
+        - ASPSP
+        - TPP
+      example: USER
+      description: |
+        Define qual das partes envolvidas na transação está realizando a revogação. Valores possíveis:
+        - USER (Revogado pelo usuário)
+        - ASPSP (Provedor de serviços de pagamento para serviços de conta - Detentora de conta)
+        - TPP (Instituições Provedoras - iniciadora de pagamentos)
+    Reason:
+      type: object
+      description: Define a razão pela qual o consentimento foi revogado.
+      required:
+        - code
+      properties:
+        code:
+          $ref: '#/components/schemas/EnumRevocationReason'
+        additionalInformation:
+          type: string
+          maxLength: 140
+          pattern: '[\w\W\s]*'
+          example: Não quero mais o serviço
+          description: |
+            Contém informações adicionais definidas pelo requisitante da revogação.
+
+            [Restrição] Deverá ser obrigatoriamente preenchido quando a revogação for feita pela iniciadora ou pela detentora unilateralmente, ou seja, quando o campo revokedBy for igual a TPP ou ASPSP e o motivo de revogação for OTHER.
+    EnumRevocationReason:
+      type: string
+      maxLength: 22
+      enum:
+        - FRAUD
+        - ACCOUNT_CLOSURE
+        - OTHER
+      example: OTHER
+      description: "Define o código da razão pela qual o consentimento foi revogado. \nValores possíveis:\_\nFRAUD\_- Indica suspeita de fraude\_\nACCOUNT_CLOSURE - Indica que a conta do usuário foi encerrada\_\nOTHER\_- Indica que motivo do cancelamento está fora dos motivos pré-estabelecidos.\n"
+    422ResponseErrorPatchConsent:
+      type: object
+      required:
+        - errors
+      properties:
+        errors:
+          type: array
+          minItems: 1
+          maxItems: 9
+          items:
+            type: object
+            required:
+              - code
+              - title
+              - detail
+            properties:
+              code:
+                $ref: '#/components/schemas/EnumErrorsPatchConsent'
+              title:
+                type: string
+                maxLength: 255
+                pattern: \w*\W*
+                example: Motivo de revogação não permitido.
+                description: |
+                  Título específico do erro reportado, de acordo com o código enviado:  
+                  • INFORMACAO_USUARIO_REQUERIDA: Informação do usuário requerida.  
+                  • OPERACAO_NAO_PERMITIDA_STATUS: Operação não permitida.  
+                  • OPERACAO_NAO_SUPORTADA_TIPO_CONSENTIMENTO: Operação não permitida.  
+                  • TEMPO_LIMITE_REVOGACAO_EXCEDIDO: Prazo limite para revogação excedido.  
+                  • MOTIVO_REVOGACAO_NAO_PERMITIDO: Motivo de revogação não permitido.  
+                  • INFORMACAO_ADICIONAL_REVOGACAO_REQUERIDA: Informação adicional requerida.
+              detail:
+                type: string
+                maxLength: 2048
+                pattern: \w*\W*
+                example: Operação não suportada pelo tipo de consentimento.
+                description: |
+                  Descrição específica do erro de acordo com o código reportado:  
+                  • INFORMACAO_USUARIO_REQUERIDA: Informação do usuário requerida.  
+                  • OPERACAO_NAO_PERMITIDA_STATUS: Operação não permitida devido ao status atual do consentimento.  
+                  • OPERACAO_NAO_SUPORTADA_TIPO_CONSENTIMENTO: Operação não suportada pelo tipo de consentimento.  
+                  • TEMPO_LIMITE_REVOGACAO_EXCEDIDO: Prazo limite para revogação excedido.  
+                  • MOTIVO_REVOGACAO_NAO_PERMITIDO: Motivo de revogação não permitido.  
+                  • INFORMACAO_ADICIONAL_REVOGACAO_REQUERIDA: Informação adicional requerida.
+            additionalProperties: false
+        meta:
+          $ref: '#/components/schemas/Meta'
+      additionalProperties: false
+    EnumErrorsPatchConsent:
+      type: string
+      maxLength: 50
+      enum:
+        - INFORMACAO_USUARIO_REQUERIDA
+        - OPERACAO_NAO_PERMITIDA_STATUS
+        - OPERACAO_NAO_SUPORTADA_TIPO_CONSENTIMENTO
+        - TEMPO_LIMITE_REVOGACAO_EXCEDIDO
+        - MOTIVO_REVOGACAO_NAO_PERMITIDO
+        - INFORMACAO_ADICIONAL_REVOGACAO_REQUERIDA
+      example: OPERACAO_NAO_PERMITIDA_STATUS
+      description: |
+        Códigos de erros previstos na revogação do consentimento de pagamento:  
+        • INFORMACAO_USUARIO_REQUERIDA - O campo data.revocation.loggedUser deve ser preenchido quando a revogação for feita pelo usuário final, ou seja, se o campo data.revocation.revokedBy estiver com o valor USER.  
+        • OPERACAO_NAO_PERMITIDA_STATUS: O consentimento só pode ser revogado nos status CONSUMED.  
+        • OPERACAO_NAO_SUPORTADA_TIPO_CONSENTIMENTO: Somente consentimentos para pagamentos agendados podem ser revogados, ou seja, que possuam o campo data.payment.schedule preenchido.  
+        • TEMPO_LIMITE_REVOGACAO_EXCEDIDO: O consentimento só pode ser revogado até o dia anterior, ou seja, a meia noite no fuso horário de Brasília do dia imediatamente anterior a data alvo da liquidação do pagamento.  
+        • MOTIVO_REVOGACAO_NAO_PERMITIDO: Os motivos de revogação do consentimento: FRAUD e ACCOUNT_CLOSURE só podem ser usados caso o campo: data.revocation.revokedBy tenha o valor TPP ou ASPSP, ou seja, somente no caso de revogação unilateral pela iniciadora ou detentora.  
+        • INFORMACAO_ADICIONAL_REVOGACAO_REQUERIDA: O campo data.revocation.reason.additionalInformation é obrigatório quando a revogação for feita pela iniciadora ou pela detentora unilateralmente, ou seja, o campo revokedBy igual a TPP ou ASPSP e o motivo de revogação for OTHER.
   parameters:
     consentId:
       name: consentId
       in: path
       description: |
-        O consentId é o identificador único do consentimento e deverá ser um URN - Uniform Resource Name.  
-        Um URN, conforme definido na [RFC8141](https://tools.ietf.org/html/rfc8141) é um Uniform Resource 
-        Identifier - URI - que é atribuído sob o URI scheme "urn" e um namespace URN específico, com a intenção de que o URN 
-        seja um identificador de recurso persistente e independente da localização.  
-        Considerando a string urn:bancoex:C1DD33123 como exemplo para consentId temos:
-        - o namespace(urn)
-        - o identificador associado ao namespace da instituição transnmissora (bancoex) 
-        - o identificador específico dentro do namespace (C1DD33123).  
-        Informações mais detalhadas sobre a construção de namespaces devem ser consultadas na [RFC8141](https://tools.ietf.org/html/rfc8141).
+        O consentId é o identificador único do consentimento a ser revogado e deverá ser um URN - Uniform Resource Name.
       required: true
       schema:
         type: string
@@ -1561,6 +1801,30 @@ components:
             Um UUID RFC4122 usado como um ID de correlação. O transmissor deve usar o mesmo valor recebido na requisição para o cabeçalho de resposta recebido na requisição, caso não tenha sido fornecido, deve se usar um UUID RFC4122.
           schema:
             $ref: '#/components/schemas/XFapiInteractionId'
+    UnprocessableEntityPatchConsent:
+      description: 'A solicitação foi bem formada, mas não pôde ser processada devido à lógica de negócios específica da solicitação.'
+      content:
+        application/jwt:
+          schema:
+            $ref: '#/components/schemas/422ResponseErrorPatchConsent'
+          examples:
+            Motivo de revogação não permitido:
+              summary: Motivo de revogação não permitido
+              value:
+                errors:
+                  - code: MOTIVO_REVOGACAO_NAO_PERMITIDO
+                    title: Motivo de revogação não permitido.
+                    detail: Motivo de revogação não permitido.
+                meta:
+                  totalRecords: 1
+                  totalPages: 1
+                  requestDateTime: '2021-05-21T08:30:00Z'
+      headers:
+        x-fapi-interaction-id:
+          description: |
+            Um UUID RFC4122 usado como um ID de correlação. O transmissor deve usar o mesmo valor recebido na requisição para o cabeçalho de resposta recebido na requisição, caso não tenha sido fornecido, deve se usar um UUID RFC4122.
+          schema:
+            $ref: '#/components/schemas/XFapiInteractionId'
     201PaymentsConsentsConsentCreated:
       description: Consentimento de pagamento criado com sucesso.
       headers:
@@ -1609,3 +1873,15 @@ components:
         application/jwt:
           schema:
             $ref: '#/components/schemas/ResponsePixPayment'
+    200PatchPaymentsConsent:
+      description: Revogação do Consentimento informado com sucesso.
+      headers:
+        x-fapi-interaction-id:
+          description: |
+            Um UUID RFC4122 usado como um ID de correlação. O transmissor deve usar o mesmo valor recebido na requisição para o cabeçalho de resposta recebido na requisição, caso não tenha sido fornecido, deve se usar um UUID RFC4122.
+          schema:
+            $ref: '#/components/schemas/XFapiInteractionId'
+      content:
+        application/jwt:
+          schema:
+            $ref: '#/components/schemas/ResponsePaymentConsent'

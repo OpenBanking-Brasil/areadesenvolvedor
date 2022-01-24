@@ -9,19 +9,46 @@ Para o cenário em que o status assumiu AUTHORISED, o tempo máximo do expiratio
 O tempo do expirationDateTime é garantido com os 15 minutos do access token, sendo possível utilizar mais três refresh tokens até totalizar 60 minutos.";Date Hora;20;Obrigatório;^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$;;1;1;"";Não permitido;string;2021-05-21T08:30:00Z
 /data/statusUpdateDateTime;statusUpdateDateTime;Data e hora em que o recurso foi atualizado. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).;Date Hora;20;Obrigatório;^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$;;1;1;"";Não permitido;string;2021-05-21T08:30:00Z
 /data/status;status;"Retorna o estado do consentimento, o qual no momento de sua criação será AWAITING_AUTHORISATION.
-Este estado será alterado depois da autorização do consentimento na detentora da conta do pagador (Debtor) para AUTHORISED ou REJECTED. 
-O consentimento fica no estado CONSUMED após ocorrer a iniciação do pagamento referente ao consentimento.  
-Em caso de consentimento expirado a detentora deverá retornar o status REJECTED.  
-Estados possíveis:  
-AWAITING_AUTHORISATION - Aguardando autorização  
-AUTHORISED - Autorizado   
-REJECTED - Rejeitado  
-CONSUMED - Consumido";Texto;22;Obrigatório;;"AWAITING_AUTHORISATION 
+Este estado será alterado depois da autorização do consentimento na detentora da conta do pagador (Debtor) para AUTHORISED, REJECTED ou REVOKED.
+O consentimento fica no estado CONSUMED após ocorrer a iniciação do pagamento referente ao consentimento.
+Em caso de consentimento expirado a detentora deverá retornar o status REJECTED.
+Em caso de revogação do consentimento a detentora deverá retornar o status REVOKED.
+Estados possíveis:
+AWAITING_AUTHORISATION - Aguardando autorização
+AUTHORISED - Autorizado
+REJECTED - Rejeitado
+CONSUMED - Consumido
+REVOKED - Revogado";Texto;22;Obrigatório;;"AWAITING_AUTHORISATION 
 AUTHORISED 
 REJECTED 
-CONSUMED";1;1;"";Não permitido;string;AWAITING_AUTHORISATION
-/data/loggedUser;loggedUser;Usuário (pessoa natural) que encontra-se logado na instituição Iniciadora de Pagamento.;Objeto;;Obrigatório;;;1;1;"";Não permitido;object;
-/data/loggedUser/document;document;"";Objeto;;Obrigatório;;;1;1;"";Não permitido;object;
+CONSUMED 
+REVOKED";1;1;"";Não permitido;string;REVOKED
+/data/revocation;revocation;Objeto que contém as informações das circunstância da revogação.;Objeto;;Condicional;;;0;1;" O campo loggedUser deve ser preenchido quando a revogação for feita pelo usuário final, ou seja, se o campo data.revocation.revokedBy estiver com o valor 'USER'.
+";Não permitido;object;
+/data/revocation/loggedUser;loggedUser;Usuário (pessoa natural) que encontra-se logado na instituição Iniciadora de Pagamento.;Objeto;;Condicional;;;0;1;" Deve obrigatoriamente ser enviado quando a revogação for feita pelo usuário final, ou seja, se o campo revokedBy estiver com o valor 'USER'.
+";Não permitido;object;
+/data/revocation/loggedUser/document;document;Objeto que contém os dados de identificação do usuário.;Objeto;;Obrigatório;;;1;1;"";Não permitido;object;
+/data/revocation/loggedUser/document/identification;identification;Número do documento de identificação oficial do usuário.;Texto;11;Obrigatório;^\d{11}$;;1;1;"";Não permitido;string;11111111111
+/data/revocation/loggedUser/document/rel;rel;Tipo do documento de identificação oficial do usuário.;Texto;3;Obrigatório;^[A-Z]{3}$;;1;1;"";Não permitido;string;CPF
+/data/revocation/revokedBy;revokedBy;"Define qual das partes envolvidas na transação está realizando a revogação. Valores possíveis:
+- USER (Revogado pelo usuário)
+- ASPSP (Provedor de serviços de pagamento para serviços de conta - Detentora de conta)
+- TPP (Instituições Provedoras - iniciadora de pagamentos)";Texto;8;Obrigatório;;"USER 
+ASPSP 
+TPP";1;1;"";Não permitido;string;USER
+/data/revocation/reason;reason;Define a razão pela qual o consentimento foi revogado.;Objeto;;Obrigatório;;;1;1;"";Não permitido;object;
+/data/revocation/reason/code;code;"Define o código da razão pela qual o consentimento foi revogado. 
+Valores possíveis: 
+FRAUD - Indica suspeita de fraude 
+ACCOUNT_CLOSURE - Indica que a conta do usuário foi encerrada 
+OTHER - Indica que motivo do cancelamento está fora dos motivos pré-estabelecidos.";Texto;22;Obrigatório;;"FRAUD 
+ACCOUNT_CLOSURE 
+OTHER";1;1;"";Não permitido;string;OTHER
+/data/revocation/reason/additionalInformation;additionalInformation;Contém informações adicionais definidas pelo requisitante da revogação.;Texto;140;Condicional;[\w\W\s]*;;0;1;" Deverá ser obrigatoriamente preenchido quando a revogação for feita pela iniciadora ou pela detentora unilateralmente, ou seja, quando o campo revokedBy for igual a TPP ou ASPSP e o motivo de revogação for OTHER.
+";Não permitido;string;Não quero mais o serviço
+/data/loggedUser;loggedUser;Usuário (pessoa natural) que encontra-se logado na instituição Iniciadora de Pagamento.;Objeto;;Condicional;;;1;1;" Deve obrigatoriamente ser enviado quando a revogação for feita pelo usuário final, ou seja, se o campo revokedBy estiver com o valor 'USER'.
+";Não permitido;object;
+/data/loggedUser/document;document;Objeto que contém os dados de identificação do usuário.;Objeto;;Obrigatório;;;1;1;"";Não permitido;object;
 /data/loggedUser/document/identification;identification;Número do documento de identificação oficial do usuário.;Texto;11;Obrigatório;^\d{11}$;;1;1;"";Não permitido;string;11111111111
 /data/loggedUser/document/rel;rel;Tipo do documento de identificação oficial do usuário.;Texto;3;Obrigatório;^[A-Z]{3}$;;1;1;"";Não permitido;string;CPF
 /data/businessEntity;businessEntity;Usuário (pessoa jurídica) que encontra-se logado na instituição Iniciadora de Pagamento.;Objeto;;Condicional;;;0;1; Preenchimento obrigatório se usuário logado na instituição Iniciadora de Pagamento for um CNPJ (pessoa jurídica).;Não permitido;object;
@@ -39,7 +66,8 @@ O CNPJ será utilizado com 14 números e deverá ser informado sem pontos ou tra
 Em caso de pessoa jurídica deve ser informada a razão social ou o nome fantasia da conta do recebedor.";Texto;140;Obrigatório;[\w\W\s]*;;1;1;"";Não permitido;string;Marco Antonio de Brito
 /data/payment;payment;Objeto contendo dados de pagamento para consentimento.;Objeto;;Obrigatório;;;1;1;"";Não permitido;object;
 /data/payment/type;type;Este campo define o tipo de pagamento que será iniciado após a autorização do consentimento.;Texto;3;Obrigatório;;PIX;1;1;"";Não permitido;string;PIX
-/data/payment/date;date;Data do pagamento, conforme especificação RFC-3339.;Data;10;Obrigatório;^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$;;1;1;"";Não permitido;string;2021-01-01
+/data/payment/schedule;schedule;"";"";;Opcional;;;0;1;"";Não permitido;;
+/data/payment/date;date;Mutuamente exclusivo com o objeto schedule. Este campo é obrigatório no caso de pagamento único. Neste caso, o objeto schedule não deve ser informado.;Data;10;Opcional;^(\d{4})-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$;;0;1;"";Não permitido;string;2021-01-01
 /data/payment/currency;currency;"Código da moeda nacional segundo modelo ISO-4217, ou seja, 'BRL'.
 Todos os valores monetários informados estão representados com a moeda vigente do Brasil.";Texto;3;Obrigatório;^([A-Z]{3})$;;1;1;"";Não permitido;string;BRL
 /data/payment/amount;amount;Valor da transação com 2 casas decimais.;Texto;19;Obrigatório;^((\d{1,16}\.\d{2}))$;;1;1;"";Não permitido;string;100000.12
