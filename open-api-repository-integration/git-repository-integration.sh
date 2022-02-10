@@ -16,6 +16,7 @@ COMMIT_MESSAGE=$6
 git config --global user.email $EMAIL
 git config --global user.name $NAME
 git clone https://$TOKEN@github.com/Sensedia/$REPOSITORY repointegration
+`git checkout ORB-486`
 cd repointegration
 `git checkout -B $BRANCH`
 git pull origin $BRANCH
