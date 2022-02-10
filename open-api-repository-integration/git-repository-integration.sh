@@ -16,7 +16,7 @@ COMMIT_MESSAGE=$6
 `git config --global user.email $EMAIL`
 `git config --global user.name $NAME`
 `git clone https://$TOKEN@github.com/Sensedia/$REPOSITORY repointegration`
-`git checkout ORB-486`
+`git checkout "ORB-486"`
 cd repointegration
 `git checkout -B $BRANCH`
 git pull origin $BRANCH
@@ -28,7 +28,7 @@ HAS_FILES_TO_BE_COMMITED=`git status | grep -Rin "nothing to commit"`
 
 if [[ $HAS_FILES_TO_BE_COMMITED == '' ]]
 then
-    `git commit -m "$COMMIT_MESSAGE"`
+    `git commit -m $COMMIT_MESSAGE`
     git push origin $BRANCH
     cd ..
 fi
