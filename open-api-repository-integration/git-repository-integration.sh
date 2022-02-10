@@ -21,6 +21,7 @@ cd repointegration
 `git checkout -B $BRANCH`
 git pull origin $BRANCH
 cp -Rf ../generated-sources/swagger-apis .
+cp -Rf ../template-swagger-files/* .
 cp -Rf ../../documentation/source/dictionary .
 git add .
 HAS_FILES_TO_BE_COMMITED=`git status | grep -Rin "nothing to commit"`
