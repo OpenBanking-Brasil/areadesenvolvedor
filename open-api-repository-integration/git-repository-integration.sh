@@ -13,6 +13,7 @@ BRANCH=$4
 REPOSITORY=$5
 COMMIT_MESSAGE=$6
 
+bash generated-swagger-ui-html.sh
 git config --global user.email $EMAIL
 git config --global user.name $NAME
 git clone https://$TOKEN@github.com/Sensedia/$REPOSITORY repointegration
@@ -22,7 +23,6 @@ cd repointegration
 git pull origin $BRANCH
 cp -Rf ../generated-sources/swagger-apis .
 cp -Rf ../../documentation/source/dictionary .
-`bash generated-swagger-ui-html.sh`
 git add .
 HAS_FILES_TO_BE_COMMITED=`git status | grep -Rin "nothing to commit"`
 
