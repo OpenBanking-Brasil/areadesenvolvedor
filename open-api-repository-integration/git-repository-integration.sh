@@ -22,6 +22,7 @@ cd repointegration
 git pull origin $BRANCH
 cp -Rf ../generated-sources/swagger-apis .
 cp -Rf ../../documentation/source/dictionary .
+`bash generated-swagger-ui-html.sh`
 git add .
 HAS_FILES_TO_BE_COMMITED=`git status | grep -Rin "nothing to commit"`
 
