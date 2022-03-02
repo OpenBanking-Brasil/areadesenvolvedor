@@ -1,10 +1,10 @@
 name: Deploy
 on:
-  push:
-    branches:
-      - OPB_Homologacao
-      - master
-
+  workflow_dispatch:
+    inputs:
+      build_id:
+        description: 'ID of build to deploy'     
+        required: true
 jobs:
   deploy:
     name: Deploy Github pages
@@ -14,107 +14,36 @@ jobs:
         working-directory: documentation
     env:
       ruby-version: 2.5
-
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
+
+      #############################################
+      # Deploy artifact built in 'Build' Workflow #
+      #############################################
+      
+      # 1. Download build.tar.gz from Github repository artifacts
+      - uses: dawidd6/action-download-artifact@v2
         with:
-          ruby-version: ${{ env.ruby-version }}
+          github_token: ${{secrets.AREADEV_INTEGRATION}}
+          workflow: build.yml
+          branch: ${{ github.ref_name }}
+          run_id: ${{ github.event.inputs.build_id }}
+          name: build_folder_artifact
+          path: ./documentation
 
-      - uses: actions/cache@v1
-        with:
-          path: vendor/bundle
-          key: gems-${{ runner.os }}-${{ env.ruby-version }}-${{ hashFiles('**/Gemfile.lock') }}
-
-      - uses: actions/setup-node@v1
-        with:
-          node-version: "12"
-
-      - run: npm install -g widdershins
-      - run: npm install -g @apidevtools/swagger-cli
-
-      ###
-      #ATENÇÃO: não é parar ligar a automação da Fase 1 sem a autorização do comitê de Open Banking
-      # Open Banking Fase 1
-      #- run: swagger-cli bundle source/swagger/parts/_open_banking_fase1_apis_part.yml --outfile source/swagger/swagger_open_banking_fase1_apis.yml --type=yaml
-      ###
-
-      # Open Banking Fase 2
-      - run: swagger-cli bundle source/swagger/parts/_consents_apis_part.yml --outfile source/swagger/swagger_consents_apis.yaml --type=yaml
-      - run: swagger-cli bundle source/swagger/parts/_resources_apis_part.yml --outfile source/swagger/swagger_resources_apis.yaml --type=yaml
-      - run: swagger-cli bundle source/swagger/parts/_customers_apis_part.yml --outfile source/swagger/swagger_customers_apis.yaml --type=yaml
-      - run: swagger-cli bundle source/swagger/parts/_accounts_apis_part.yml --outfile source/swagger/swagger_accounts_apis.yaml --type=yaml
-      - run: swagger-cli bundle source/swagger/parts/_credit_cards_apis_part.yml --outfile source/swagger/swagger_credit_cards_apis.yaml --type=yaml
-      - run: swagger-cli bundle source/swagger/parts/_loans_apis_part.yml --outfile source/swagger/swagger_loans_apis.yaml --type=yaml
-      - run: swagger-cli bundle source/swagger/parts/_financings_apis_part.yml --outfile source/swagger/swagger_financings_apis.yaml --type=yaml
-      - run: swagger-cli bundle source/swagger/parts/_unarranged_accounts_overdraft_apis_part.yml --outfile source/swagger/swagger_unarranged_accounts_overdraft_apis.yaml --type=yaml
-      - run: swagger-cli bundle source/swagger/parts/_invoice_financings_apis_part.yml --outfile source/swagger/swagger_invoice_financings_apis.yaml --type=yaml
-      - run: swagger-cli bundle source/swagger/parts/_open_banking_fase2_apis_part.yml --outfile source/swagger/swagger_open_banking_fase2_apis.yml --type=yaml
-
-      # Open Banking Fase 3
-      - run: swagger-cli bundle source/swagger/parts/_payments_apis_part.yml --outfile source/swagger/swagger_payments_apis.yaml --type=yaml
-      - run: swagger-cli bundle source/swagger/parts/_open_banking_fase3_apis_part.yml --outfile source/swagger/swagger_open_banking_fase3_apis.yml --type=yaml
-
-      # Open Banking Fase 4
-      - run: swagger-cli bundle source/swagger/parts/_capitalization_bonds_apis_part.yml --outfile source/swagger/swagger_capitalization_bonds_apis.yaml --type=yaml
-      - run: swagger-cli bundle source/swagger/parts/_investments_apis_part.yml --outfile source/swagger/swagger_investments_apis.yaml --type=yaml
-      - run: swagger-cli bundle source/swagger/parts/_insurances_apis_part.yml --outfile source/swagger/swagger_insurances_apis.yaml --type=yaml
-      - run: swagger-cli bundle source/swagger/parts/_open_banking_fase4_apis_part.yml --outfile source/swagger/swagger_open_banking_fase4_apis.yml --type=yaml
-
-      - run: ./build-dictionary.sh
-      - run: sed -i '1s/^\(\xef\xbb\xbf\)\?/\xef\xbb\xbf/' source/swagger/swagger_*
-
-      # Open Banking Fase 1
-      - run: swagger-cli validate source/swagger/swagger_open_banking_fase1_apis.yml
-
-      # Open Banking Fase 2
-      - run: swagger-cli validate source/swagger/swagger_consents_apis.yaml
-      - run: swagger-cli validate source/swagger/swagger_resources_apis.yaml
-      - run: swagger-cli validate source/swagger/swagger_customers_apis.yaml
-      - run: swagger-cli validate source/swagger/swagger_credit_cards_apis.yaml
-      - run: swagger-cli validate source/swagger/swagger_accounts_apis.yaml
-      - run: swagger-cli validate source/swagger/swagger_loans_apis.yaml
-      - run: swagger-cli validate source/swagger/swagger_financings_apis.yaml
-      - run: swagger-cli validate source/swagger/swagger_unarranged_accounts_overdraft_apis.yaml
-      - run: swagger-cli validate source/swagger/swagger_invoice_financings_apis.yaml
-      - run: swagger-cli validate source/swagger/swagger_open_banking_fase2_apis.yml
-
-      # Open Banking Fase 3
-      - run: swagger-cli validate source/swagger/swagger_payments_apis.yaml
-      - run: swagger-cli validate source/swagger/swagger_open_banking_fase3_apis.yml
-
-      # Open Banking Fase 4
-      - run: swagger-cli validate source/swagger/swagger_capitalization_bonds_apis.yaml
-      - run: swagger-cli validate source/swagger/swagger_investments_apis.yaml
-      - run: swagger-cli validate source/swagger/swagger_insurances_apis.yaml
-      - run: swagger-cli validate source/swagger/swagger_open_banking_fase4_apis.yml
-
-      ###
-      #ATENÇÃO: não é parar ligar a automação da Fase 1 sem a autorização do comitê de Open Banking
-      #- run: widdershins source/swagger/swagger_open_banking_fase1_apis.yml -o source/includes/partials_open_banking/_open_banking_fase1_apis.md.erb --user_templates source/templates/openapi3/ --language_tabs "javascript:JavaScript:request" "python:Python:request" "java:Java::request" --omitHeader --summary --httpsnippet
-      ###
-
-      - run: widdershins source/swagger/swagger_open_banking_fase2_apis.yml -o source/includes/partials_open_banking/_open_banking_fase2_apis.md.erb --user_templates source/templates/openapi3/ --language_tabs "javascript:JavaScript:request" "python:Python:request" "java:Java::request" --omitHeader --summary --httpsnippet
-      - run: widdershins source/swagger/swagger_open_banking_fase3_apis.yml -o source/includes/partials_open_banking/_open_banking_fase3_apis.md.erb --user_templates source/templates/openapi3/ --language_tabs "javascript:JavaScript:request" "python:Python:request" "java:Java::request" --omitHeader --summary --httpsnippet
-      - run: widdershins source/swagger/swagger_open_banking_fase4_apis.yml -o source/includes/partials_open_banking/_open_banking_fase4_apis.md.erb --user_templates source/templates/openapi3/ --language_tabs "javascript:JavaScript:request" "python:Python:request" "java:Java::request" --omitHeader --summary --httpsnippet
-
-      - uses: actions/cache@v1
-        with:
-          path: build
-          key: ${{ runner.os }}-${{ hashFiles('**/source') }}
-
-      - run: bundle config set deployment 'true'
-      - run: bundle install
-      - run: bundle exec middleman build
-
-      # Run Spectral
-      - uses: stoplightio/spectral-action@v0.7.0
-        with:
-          file_glob: "documentation/source/swagger/*_apis.yaml"
-
+      # 2. Extract build.tar.gz and copy files to build
+      - name: Extract build.tar.gz and copy files to build
+        run: | 
+          tar -zxvf build.tar.gz
+          cp -Rf source/versions build
+          ls -la
+          ls -la build
+          pwd
+ 
+      #3. Deploy files in documentation/build
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./documentation/build
+      
