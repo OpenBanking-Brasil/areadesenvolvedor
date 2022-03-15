@@ -13,7 +13,7 @@ BRANCH=$4
 REPOSITORY=$5
 COMMIT_MESSAGE=$6
 
-if [[ $BRANCH == GT-PR-*]]
+if [[ $BRANCH == GT-PR-* ]]
 then
     `git config --global user.email $EMAIL`
     `git config --global user.name $NAME`
