@@ -13,22 +13,25 @@ BRANCH=$4
 REPOSITORY=$5
 COMMIT_MESSAGE=$6
 
-`git config --global user.email $EMAIL`
-`git config --global user.name $NAME`
-`git clone https://$TOKEN@github.com/Sensedia/$REPOSITORY repointegration`
-cd repointegration
-`git checkout -B $BRANCH`
-git pull origin $BRANCH
-`cp -Rf ../generated-sources/swagger-apis .`
-`cp -Rf ../template-swagger-files/* .`
-`cp -Rf ../../documentation/source/dictionary .`
-git add .
-HAS_FILES_TO_BE_COMMITED=`git status | grep -Rin "nothing to commit"`
-
-if [[ $HAS_FILES_TO_BE_COMMITED == '' ]]
+if [[ $BRANCH == GT-PR-* ]]
 then
-    git commit -m "$COMMIT_MESSAGE"
-    git push origin $BRANCH
-    cd ..
+    `git config --global user.email $EMAIL`
+    `git config --global user.name $NAME`
+    `git clone https://$TOKEN@github.com/Sensedia/$REPOSITORY repointegration`
+    cd repointegration
+    `git checkout -B $BRANCH`
+    git pull origin $BRANCH
+    `cp -Rf ../generated-sources/swagger-apis .`
+    `cp -Rf ../template-swagger-files/* .`
+    `cp -Rf ../../documentation/source/dictionary .`
+    git add .
+    HAS_FILES_TO_BE_COMMITED=`git status | grep -Rin "nothing to commit"`
+
+    if [[ $HAS_FILES_TO_BE_COMMITED == '' ]]
+    then
+        git commit -m "$COMMIT_MESSAGE"
+        git push origin $BRANCH
+        cd ..
+    fi
+    rm -rf repointegration
 fi
-rm -rf repointegration
