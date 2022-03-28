@@ -11,11 +11,11 @@ echo "Starting Swagger index.html generation."
 for file in ./generated-sources/swagger-apis/**/*
 do
     ext=`echo $file|awk -F . '{print $NF}'`
+    apiName=`realpath $file | cut -d '/' -f 11 `
 
-    if [[ $ext == "yml"  ]] 
+    if [[ $ext == "yml" ]] 
     then
         apiVersion=`basename -s .yml $file`
-        apiName=`realpath $file | cut -d '/' -f 11 `
         jsonObj="{\"name\": \"$apiVersion\", \"url\": \"./$apiVersion.yml\"}"
 
         if [[ $previousApiName == '' ]] 
@@ -24,7 +24,8 @@ do
         elif [[ $previousApiName == $apiName ]] 
         then
             jsonObjectsBuilt="$jsonObjectsBuilt,$jsonObj"
-        else
+        elif [[ ! -f "./generated-sources/swagger-apis/$previousApiName/index.html" ]]
+        then
             echo "Generated index.html for $previousApiName API."
             jsonArrayBuilt="[$jsonObjectsBuilt]"
             urlsPrimaryName=`echo $jsonArrayBuilt | jq -r '.[. | length -1].name'`
